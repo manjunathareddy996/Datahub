@@ -1,0 +1,52 @@
+name: PR SQL Guard
+
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - "SQL_DIR/**/*.sql"
+      - ".github/workflows/pr-sql-guard.yml"
+      - "scripts/validate_sql_env.py"
+
+env:
+  SQL_ROOT: SQL_DIR
+
+jobs:
+  validate-sql:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: List changed SQL files
+        id: diff
+        run: |
+          set -euo pipefail
+
+          base_sha="${{ github.event.pull_request.base.sha }}"
+          head_sha="${{ github.event.pull_request.head.sha }}"
+
+          pathspec=":(glob)${SQL_ROOT%/}/**/*.sql"
+          CHANGED=$(git diff --name-only --diff-filter=ACMR "${base_sha}" "${head_sha}" -- "$pathspec")
+
+          printf "%s\n" "$CHANGED" > changed_files.txt
+          CHANGED="${CHANGED//$'\n'/ }"
+          echo "changed=${CHANGED}" >> "$GITHUB_OUTPUT"
+
+          echo "Changed SQL files:"
+          cat changed_files.txt || true
+
+      - name: Validate SQL environment references
+        if: ${{ steps.diff.outputs.changed != '' }}
+        run: |
+          python3 scripts/validate_sql_env.py \
+            --changed-files changed_files.txt
+
+      - name: No SQL changes detected
+        if: ${{ steps.diff.outputs.changed == '' }}
+        run: echo "No SQL changes in this PR."

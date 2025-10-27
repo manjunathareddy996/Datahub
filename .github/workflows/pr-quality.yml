@@ -1,0 +1,42 @@
+name: PR Quality Gate (pylint)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: pr-quality-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  qa-pylint:
+    name: qa-pylint
+    runs-on: [self-hosted, Linux, X64]
+    steps:
+      - uses: actions/checkout@v4
+
+      # If Python isn't preinstalled on your runner, uncomment:
+      # - uses: actions/setup-python@v5
+      #   with:
+      #     python-version: '3.11'
+
+      - name: Install pylint
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install pylint
+
+      - name: Run pylint (fail on real errors)
+        shell: bash
+        run: |
+          set -euo pipefail
+          PY_FILES=$(git ls-files '*.py' | tr '\n' ' ')
+          if [ -z "$PY_FILES" ]; then
+            echo "No Python files found — passing."
+            exit 0
+          fi
+          # Fail on Errors/Fatal only; ignore C/R/W for now
+          python3 -m pylint --disable=C,R,W $PY_FILES
