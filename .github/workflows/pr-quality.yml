@@ -17,7 +17,7 @@ jobs:
     name: qa-pylint
     runs-on: [self-hosted, Linux, X64]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # If Python isn't preinstalled on your runner, uncomment:
       # - uses: actions/setup-python@v5
