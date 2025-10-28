@@ -20,9 +20,9 @@ jobs:
       - uses: actions/checkout@v4
 
       # If Python isn't preinstalled on your runner, uncomment:
-      # - uses: actions/setup-python@v5
-      #   with:
-      #     python-version: '3.11'
+      - uses: actions/setup-python@v5
+         with:
+           python-version: '3.11'
 
       - name: Install pylint
         run: |
