@@ -1,7 +1,7 @@
 name: Snowflake Deploy (dev - changed SQL only)
 on:
   push:
-    branches: [ dev ]
+    branches: [ develop ]
     paths:
       - "SQL_DIR/**/*.sql"
       - ".github/workflows/dev-snowflake-deploy.yml"
@@ -59,6 +59,11 @@ jobs:
           echo "SNOWFLAKE_PRIVATE_KEY_URI=${{ secrets.SNOWFLAKE_PRIVATE_KEY_URI_DEV }}" >> $GITHUB_ENV
           echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE=${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_DEV }}" >> $GITHUB_ENV
           echo "SNOWSQL_INSTALLER_URI=${{ secrets.SNOWSQL_INSTALLER_URI }}" >> $GITHUB_ENV
+          echo "SES_SMTP_USERNAME=${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_USERNAME_DEV }}" >> $GITHUB_ENV
+          echo "SES_SMTP_PASSWORD=${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_PASSWORD_DEV }}" >> $GITHUB_ENV
+          echo "SES_EMAIL_REGION=${{ secrets.SNOWFLAKE_DEPLOY_SES_REGION_DEV }}" >> $GITHUB_ENV
+          echo "SES_EMAIL_SENDER=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_SENDER_DEV }}" >> $GITHUB_ENV
+          echo "SES_EMAIL_RECIPIENTS=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_RECIPIENTS_DEV }}" >> $GITHUB_ENV
 
       - name: Download Snowflake private key from S3
         run: |
@@ -141,10 +146,13 @@ jobs:
       - name: Execute deployment in Snowflake (continue on individual failures)
         if: ${{ steps.diff.outputs.changed != '' }}
         shell: bash {0}
-        env:
-          SNS_TOPIC_ARN: arn:aws:sns:ap-south-1:660061364911:datahub-notifications-sns-topic
         run: |
           set -euo pipefail
+
+          if [[ -z "${SES_SMTP_USERNAME:-}" || -z "${SES_SMTP_PASSWORD:-}" || -z "${SES_EMAIL_REGION:-}" || -z "${SES_EMAIL_SENDER:-}" || -z "${SES_EMAIL_RECIPIENTS:-}" ]]; then
+            echo "SES SMTP configuration is incomplete. Ensure the required secrets are set." >&2
+            exit 1
+          fi
 
           snowsql_base=(
             snowsql
@@ -219,12 +227,43 @@ jobs:
             echo
             echo "===== DETAIL ====="
             cat snow_exec_detail.log
-          } > sns_message.txt
+          } > email_message.txt
 
-          aws sns publish \
-            --topic-arn "$SNS_TOPIC_ARN" \
-            --subject "$subject" \
-            --message file://sns_message.txt
+          EMAIL_SUBJECT="$subject" python - <<'PY'
+import os
+import smtplib
+import sys
+from email.mime.text import MIMEText
+
+try:
+    username = os.environ["SES_SMTP_USERNAME"]
+    password = os.environ["SES_SMTP_PASSWORD"]
+    region = os.environ["SES_EMAIL_REGION"]
+    sender = os.environ["SES_EMAIL_SENDER"]
+    recipients_raw = os.environ["SES_EMAIL_RECIPIENTS"]
+    subject = os.environ["EMAIL_SUBJECT"]
+
+    recipients = [addr.strip() for addr in recipients_raw.split(",") if addr.strip()]
+    if not recipients:
+        raise ValueError("SES_EMAIL_RECIPIENTS does not contain any valid recipients.")
+
+    with open("email_message.txt", "r", encoding="utf-8") as payload:
+        body = payload.read()
+
+    message = MIMEText(body, "plain")
+    message["Subject"] = subject
+    message["From"] = sender
+    message["To"] = ", ".join(recipients)
+
+    smtp_endpoint = f"email-smtp.{region}.amazonaws.com"
+    with smtplib.SMTP(smtp_endpoint, 587) as client:
+        client.starttls()
+        client.login(username, password)
+        client.sendmail(sender, recipients, message.as_string())
+except Exception as exc:
+    print(f"Failed to send SES email notification: {exc}", file=sys.stderr)
+    sys.exit(1)
+PY
 
           echo "Execution completed. Summary:"
           echo "✅ Succeeded: ${ok_count} files"
@@ -249,4 +288,4 @@ jobs:
         with:
           name: snowflake-exec-detail
           path: snow_exec_detail.log
- 
+
