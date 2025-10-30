@@ -230,40 +230,40 @@ jobs:
           } > email_message.txt
 
           EMAIL_SUBJECT="$subject" python - <<'PY'
-import os
-import smtplib
-import sys
-from email.mime.text import MIMEText
+          import os
+          import smtplib
+          import sys
+          from email.mime.text import MIMEText
 
-try:
-    username = os.environ["SES_SMTP_USERNAME"]
-    password = os.environ["SES_SMTP_PASSWORD"]
-    region = os.environ["SES_EMAIL_REGION"]
-    sender = os.environ["SES_EMAIL_SENDER"]
-    recipients_raw = os.environ["SES_EMAIL_RECIPIENTS"]
-    subject = os.environ["EMAIL_SUBJECT"]
+          try:
+              username = os.environ["SES_SMTP_USERNAME"]
+              password = os.environ["SES_SMTP_PASSWORD"]
+              region = os.environ["SES_EMAIL_REGION"]
+              sender = os.environ["SES_EMAIL_SENDER"]
+              recipients_raw = os.environ["SES_EMAIL_RECIPIENTS"]
+              subject = os.environ["EMAIL_SUBJECT"]
 
-    recipients = [addr.strip() for addr in recipients_raw.split(",") if addr.strip()]
-    if not recipients:
-        raise ValueError("SES_EMAIL_RECIPIENTS does not contain any valid recipients.")
+              recipients = [addr.strip() for addr in recipients_raw.split(",") if addr.strip()]
+              if not recipients:
+                  raise ValueError("SES_EMAIL_RECIPIENTS does not contain any valid recipients.")
 
-    with open("email_message.txt", "r", encoding="utf-8") as payload:
-        body = payload.read()
+              with open("email_message.txt", "r", encoding="utf-8") as payload:
+                  body = payload.read()
 
-    message = MIMEText(body, "plain")
-    message["Subject"] = subject
-    message["From"] = sender
-    message["To"] = ", ".join(recipients)
+              message = MIMEText(body, "plain")
+              message["Subject"] = subject
+              message["From"] = sender
+              message["To"] = ", ".join(recipients)
 
-    smtp_endpoint = f"email-smtp.{region}.amazonaws.com"
-    with smtplib.SMTP(smtp_endpoint, 587) as client:
-        client.starttls()
-        client.login(username, password)
-        client.sendmail(sender, recipients, message.as_string())
-except Exception as exc:
-    print(f"Failed to send SES email notification: {exc}", file=sys.stderr)
-    sys.exit(1)
-PY
+              smtp_endpoint = f"email-smtp.{region}.amazonaws.com"
+              with smtplib.SMTP(smtp_endpoint, 587) as client:
+                  client.starttls()
+                  client.login(username, password)
+                  client.sendmail(sender, recipients, message.as_string())
+          except Exception as exc:
+              print(f"Failed to send SES email notification: {exc}", file=sys.stderr)
+              sys.exit(1)
+          PY
 
           echo "Execution completed. Summary:"
           echo "✅ Succeeded: ${ok_count} files"
