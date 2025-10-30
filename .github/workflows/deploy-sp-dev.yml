@@ -1,7 +1,7 @@
 name: Snowflake Deploy (dev - changed SQL only)
 on:
   push:
-    branches: [ develop ]
+    branches: [ dev ]
     paths:
       - "SQL_DIR/**/*.sql"
       - ".github/workflows/dev-snowflake-deploy.yml"
