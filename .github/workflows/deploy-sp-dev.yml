@@ -145,86 +145,17 @@ jobs:
       - name: Exit early (no changed SQL)
         if: ${{ steps.diff.outputs.changed == '' }}
         run: echo "No SQL changes under ${SQL_ROOT}; nothing to deploy."
-      - name: Execute deployment in Snowflake (debug version)
+
+      - name: Execute deployment in Snowflake (continue on individual failures)
         if: ${{ steps.diff.outputs.changed != '' }}
         shell: bash {0}
         run: |
-          set -Eeuo pipefail
-
-          LOG_FILE="snowflake_deploy_full.log"
-          : > "$LOG_FILE"
-
-          exec > >(tee -a "$LOG_FILE") 2>&1
-
-          echo "========== START SNOWFLAKE DEPLOY =========="
-          echo "Timestamp: $(date -u)"
-          echo "Runner: $(hostname)"
-          echo "Workspace: ${GITHUB_WORKSPACE:-unknown}"
-          echo "Branch/Ref: ${GITHUB_REF:-unknown}"
-          echo "Commit SHA: ${GITHUB_SHA:-unknown}"
-          echo "Environment: ${ENV:-unknown}"
-          echo "SQL_ROOT: ${SQL_ROOT:-unknown}"
-          echo
-
-          echo "========== DEBUG: CHANGED FILES =========="
-          if [[ -f changed_files.txt ]]; then
-            echo "changed_files.txt exists"
-            echo "Contents:"
-            cat changed_files.txt
-          else
-            echo "changed_files.txt does not exist"
-            exit 1
-          fi
-          echo
-
-          echo "========== DEBUG: ENV CHECK =========="
-          for var in \
-            SNOWFLAKE_ACCOUNT \
-            SNOWFLAKE_USERNAME \
-            SNOWFLAKE_ROLE \
-            SNOWFLAKE_WAREHOUSE \
-            SNOWFLAKE_DATABASE \
-            SNOWFLAKE_SCHEMA \
-            SNOWFLAKE_PRIVATE_KEY_PATH \
-            SES_SMTP_USERNAME \
-            SES_SMTP_PASSWORD \
-            SES_EMAIL_REGION \
-            SES_EMAIL_SENDER \
-            SES_EMAIL_RECIPIENTS
-          do
-            if [[ -n "${!var:-}" ]]; then
-              echo "$var is set"
-            else
-              echo "$var is EMPTY"
-            fi
-          done
-          echo
-
-          if [[ -z "${SNOWFLAKE_ACCOUNT:-}" || -z "${SNOWFLAKE_USERNAME:-}" || -z "${SNOWFLAKE_ROLE:-}" || -z "${SNOWFLAKE_WAREHOUSE:-}" || -z "${SNOWFLAKE_DATABASE:-}" || -z "${SNOWFLAKE_SCHEMA:-}" || -z "${SNOWFLAKE_PRIVATE_KEY_PATH:-}" ]]; then
-            echo "Snowflake configuration is incomplete."
-            exit 1
-          fi
+          set -euo pipefail
 
           if [[ -z "${SES_SMTP_USERNAME:-}" || -z "${SES_SMTP_PASSWORD:-}" || -z "${SES_EMAIL_REGION:-}" || -z "${SES_EMAIL_SENDER:-}" || -z "${SES_EMAIL_RECIPIENTS:-}" ]]; then
-            echo "SES SMTP configuration is incomplete."
+            echo "SES SMTP configuration is incomplete. Ensure the required secrets are set." >&2
             exit 1
           fi
-
-          echo "========== DEBUG: FILE CHECK =========="
-          ls -ltr
-          if [[ -f "${SNOWFLAKE_PRIVATE_KEY_PATH}" ]]; then
-            echo "Private key file exists: ${SNOWFLAKE_PRIVATE_KEY_PATH}"
-            ls -l "${SNOWFLAKE_PRIVATE_KEY_PATH}"
-          else
-            echo "Private key file missing: ${SNOWFLAKE_PRIVATE_KEY_PATH}"
-            exit 1
-          fi
-          echo
-
-          echo "========== DEBUG: SNOWSQL VERSION =========="
-          command -v snowsql || true
-          snowsql --version || true
-          echo
 
           snowsql_base=(
             snowsql
@@ -238,75 +169,42 @@ jobs:
             -o exit_on_error=true
             -o friendly=false
             -o output_format=tsv
-            -o timing=true
+            -o timing=false
           )
-
-          echo "========== TEST CONNECTION =========="
+          echo "Testing Snowflake connection..."
           "${snowsql_base[@]}" -q "SELECT CURRENT_USER(), CURRENT_ROLE(), CURRENT_DATABASE(), CURRENT_SCHEMA();"
-          echo
 
-          echo "========== SET SESSION CONTEXT =========="
+          echo "Setting session context..."
           "${snowsql_base[@]}" -q "USE ROLE ${SNOWFLAKE_ROLE}; USE WAREHOUSE ${SNOWFLAKE_WAREHOUSE}; USE DATABASE ${SNOWFLAKE_DATABASE}; USE SCHEMA ${SNOWFLAKE_SCHEMA};"
-          echo
 
           successes=()
           failures=()
           : > snow_exec_detail.log
 
-          echo "========== EXECUTING FILES =========="
+          # Run each changed SQL file individually with snowsql
           while IFS= read -r f; do
             [[ -z "$f" ]] && continue
-            rel="${f#./}"
+            rel="${f#./}" # keep SQL_DIR/ in place; only strip leading ./ if any
 
             echo "---- Executing file: ${rel}" | tee -a snow_exec_detail.log
 
-            if [[ ! -f "$rel" ]]; then
-              echo "ERROR: File does not exist: ${rel}" | tee -a snow_exec_detail.log
-              failures+=("$rel")
-              echo >> snow_exec_detail.log
-              continue
-            fi
-
-            echo "----- FILE PREVIEW (${rel}) -----" | tee -a snow_exec_detail.log
-            sed -n '1,80p' "$rel" | tee -a snow_exec_detail.log
-            echo "----- END PREVIEW (${rel}) -----" | tee -a snow_exec_detail.log
-
             if out=$("${snowsql_base[@]}" -f "$rel" 2>&1); then
               successes+=("$rel")
-              echo "SUCCESS OUTPUT:" >> snow_exec_detail.log
-              printf '%s\n' "$out" >> snow_exec_detail.log
+              echo "SUCCESS: ${out}" >> snow_exec_detail.log
             else
               failures+=("$rel")
-              echo "ERROR OUTPUT:" >> snow_exec_detail.log
-              printf '%s\n' "$out" >> snow_exec_detail.log
+              err_first_line="$(printf '%s\n' "$out" | head -n 1)"
+              echo "ERROR for ${rel}: ${err_first_line}" | tee -a snow_exec_detail.log
+              echo "Full error output: $out" >> snow_exec_detail.log
             fi
-
             echo >> snow_exec_detail.log
           done < changed_files.txt
+          echo "__SUMMARY__" >> snow_exec_detail.log
+          echo "SUCCESS_COUNT=${#successes[@]}" >> snow_exec_detail.log
+          echo "FAIL_COUNT=${#failures[@]}" >> snow_exec_detail.log
 
-          echo "========== SUMMARY =========="
           ok_count=${#successes[@]}
           fail_count=${#failures[@]}
-
-          echo "Succeeded: ${ok_count}"
-          echo "Failed: ${fail_count}"
-
-          if (( ok_count > 0 )); then
-            printf 'Succeeded files:\n - %s\n' "${successes[@]}"
-          fi
-
-          if (( fail_count > 0 )); then
-            printf 'Failed files:\n - %s\n' "${failures[@]}"
-          fi
-
-          {
-            echo "__SUMMARY__"
-            echo "SUCCESS_COUNT=${ok_count}"
-            echo "FAIL_COUNT=${fail_count}"
-          } >> snow_exec_detail.log
-
-          cat snow_exec_detail.log >> "$LOG_FILE"
-
           subject="Snowflake deploy (${ENV}) ✔ ${ok_count} ok / ✖ ${fail_count} failed"
 
           {
@@ -328,8 +226,10 @@ jobs:
               echo "  - (none)"
             fi
             echo
+            echo "Detail log attached below."
+            echo
             echo "===== DETAIL ====="
-            cat "$LOG_FILE"
+            cat snow_exec_detail.log
           } > email_message.txt
 
           EMAIL_SUBJECT="$subject" python - <<'PY'
@@ -348,7 +248,7 @@ jobs:
 
               recipients = [addr.strip() for addr in recipients_raw.split(",") if addr.strip()]
               if not recipients:
-                  raise ValueError("SES_EMAIL_RECIPIENTS does not contain valid recipients.")
+                  raise ValueError("SES_EMAIL_RECIPIENTS does not contain any valid recipients.")
 
               with open("email_message.txt", "r", encoding="utf-8") as payload:
                   body = payload.read()
@@ -368,7 +268,14 @@ jobs:
               sys.exit(1)
           PY
 
+          echo "Execution completed. Summary:"
+          echo "✅ Succeeded: ${ok_count} files"
+          echo "❌ Failed: ${fail_count} files"
+
           if (( fail_count > 0 )); then
+            echo "⚠️  Some SQL files failed to execute. Check the detailed logs for more information."
+            echo "Failed files: ${failures[*]}"
             exit 1
           fi
-      
+
+ 
