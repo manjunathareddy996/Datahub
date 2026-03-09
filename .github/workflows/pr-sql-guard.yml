@@ -19,8 +19,7 @@ jobs:
     runs-on: [self-hosted, Linux, X64]
     permissions:
       contents: read
-    env:
-      SNOWFLAKE_BLOCKED_DATABASES: ${{ secrets.SNOWFLAKE_BLOCKED_DATABASES }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -30,30 +29,108 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
       - name: List changed SQL files
         id: diff
         run: |
           set -euo pipefail
-
           base_sha="${{ github.event.pull_request.base.sha }}"
           head_sha="${{ github.event.pull_request.head.sha }}"
 
-          pathspec=":(glob)${SQL_ROOT%/}/**/*.sql"
-          CHANGED=$(git diff --name-only --diff-filter=ACMR "${base_sha}" "${head_sha}" -- "$pathspec")
+          echo "--- All changed files (raw) ---"
+          git diff --name-only --diff-filter=ACMR "${base_sha}" "${head_sha}" || true
+
+          echo "--- Filtering for SQL files under ${SQL_ROOT} ---"
+          CHANGED=$(git diff --name-only --diff-filter=ACMR "${base_sha}" "${head_sha}" \
+            | grep -i "^${SQL_ROOT}/.*\.sql$" || true)
 
           printf "%s\n" "$CHANGED" > changed_files.txt
-          CHANGED="${CHANGED//$'\n'/ }"
-          echo "changed=${CHANGED}" >> "$GITHUB_OUTPUT"
+          sed -i '/^[[:space:]]*$/d' changed_files.txt
 
           echo "Changed SQL files:"
           cat changed_files.txt || true
 
+          if [[ -n "$CHANGED" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Validate SQL environment references
-        if: ${{ steps.diff.outputs.changed != '' }}
+        if: ${{ steps.diff.outputs.changed == 'true' }}
+        env:
+          SNOWFLAKE_BLOCKED_DATABASES: ${{ secrets.SNOWFLAKE_BLOCKED_DATABASES }}
         run: |
           python3 scripts/validate_sql_env.py \
             --changed-files changed_files.txt
 
       - name: No SQL changes detected
-        if: ${{ steps.diff.outputs.changed == '' }}
+        if: ${{ steps.diff.outputs.changed != 'true' }}
         run: echo "No SQL changes in this PR."
+
+      - name: Execute deployment in Snowflake (debug version)
+        if: ${{ steps.diff.outputs.changed == 'true' }}
+        shell: bash
+        run: |
+          set -uo pipefail
+          set -x
+          LOG_FILE="snowflake_deploy_full.log"
+          touch "$LOG_FILE"
+          exec > >(tee -a "$LOG_FILE") 2>&1
+          trap 'rc=$?; echo "ERROR: command failed at line $LINENO with exit code $rc"; exit $rc' ERR
+
+          echo "========== START =========="
+          date -u
+          pwd
+          ls -la
+
+          echo "ENV=${ENV:-}"
+          echo "SQL_ROOT=${SQL_ROOT:-}"
+          echo "SNOWFLAKE_ACCOUNT set?        $([[ -n "${SNOWFLAKE_ACCOUNT:-}"        ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_USERNAME set?       $([[ -n "${SNOWFLAKE_USERNAME:-}"       ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_ROLE set?           $([[ -n "${SNOWFLAKE_ROLE:-}"           ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_WAREHOUSE set?      $([[ -n "${SNOWFLAKE_WAREHOUSE:-}"      ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_DATABASE set?       $([[ -n "${SNOWFLAKE_DATABASE:-}"       ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_SCHEMA set?         $([[ -n "${SNOWFLAKE_SCHEMA:-}"         ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_PRIVATE_KEY_PATH=${SNOWFLAKE_PRIVATE_KEY_PATH:-missing}"
+
+          echo "========== changed_files.txt =========="
+          cat changed_files.txt || true
+
+          echo "========== snowsql check =========="
+          which snowsql
+          snowsql --version
+
+          echo "========== private key check =========="
+          test -n "${SNOWFLAKE_PRIVATE_KEY_PATH:-}"
+          test -f "${SNOWFLAKE_PRIVATE_KEY_PATH}"
+          ls -l "${SNOWFLAKE_PRIVATE_KEY_PATH}"
+
+          snowsql_base=(
+            snowsql
+            -a "$SNOWFLAKE_ACCOUNT"
+            -u "$SNOWFLAKE_USERNAME"
+            -r "$SNOWFLAKE_ROLE"
+            -w "$SNOWFLAKE_WAREHOUSE"
+            -d "$SNOWFLAKE_DATABASE"
+            -s "$SNOWFLAKE_SCHEMA"
+            --private-key-path "$SNOWFLAKE_PRIVATE_KEY_PATH"
+            -o exit_on_error=true
+            -o friendly=false
+            -o output_format=tsv
+            -o timing=true
+          )
+
+          echo "========== connection test =========="
+          "${snowsql_base[@]}" -q "SELECT CURRENT_USER(), CURRENT_ROLE(), CURRENT_DATABASE(), CURRENT_SCHEMA();"
+
+          echo "========== execute changed files =========="
+          while IFS= read -r f; do
+            [[ -z "$f" ]] && continue
+            echo "Running file: $f"
+            test -f "$f"
+            sed -n '1,40p' "$f"
+            "${snowsql_base[@]}" -f "$f"
+          done < changed_files.txt
+
+          echo "========== DONE =========="
