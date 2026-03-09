@@ -19,6 +19,8 @@ jobs:
     runs-on: [self-hosted, Linux, X64]
     permissions:
       contents: read
+    env:
+      SNOWFLAKE_BLOCKED_DATABASES: ${{ secrets.SNOWFLAKE_BLOCKED_DATABASES }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
