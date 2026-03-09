@@ -4,6 +4,8 @@ on:
   pull_request:
     branches:
       - dev
+      - uat
+      - prod
     paths:
       - "SQL_DIR/**/*.sql"
       - ".github/workflows/pr-sql-guard.yml"
