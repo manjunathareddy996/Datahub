@@ -1,7 +1,8 @@
 name: Snowflake Deploy (uat - changed SQL only)
+
 on:
   push:
-    branches: [ uat ]
+    branches: [uat]
     paths:
       - "SQL_DIR/**/*.sql"
       - ".github/workflows/deploy-sp-uat.yml"
@@ -12,22 +13,27 @@ env:
 
 jobs:
   deploy:
-    runs-on: [self-hosted, Linux, X64] # change to ubuntu-latest if you prefer
+    runs-on: [self-hosted, Linux, X64]
     permissions:
       contents: read
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Ensure SnowSQL
+        shell: bash
         run: |
           set -euo pipefail
 
-          if command -v snowsql >/dev/null 2>&1; then
+          if command -v snowsql >/uat/null 2>&1; then
             echo "SnowSQL already available on runner:"
             snowsql --version
             exit 0
@@ -35,93 +41,109 @@ jobs:
 
           if [[ -z "${SNOWSQL_INSTALLER_URI:-}" ]]; then
             echo "SnowSQL is not installed on this runner and SNOWSQL_INSTALLER_URI is not configured." >&2
-            echo "Install SnowSQL on the runner manually or provide an installer URI (e.g., S3 path)." >&2
+            echo "Install SnowSQL on the runner manually or provide an installer URI." >&2
             exit 1
           fi
 
           echo "Downloading SnowSQL installer from ${SNOWSQL_INSTALLER_URI}"
           aws s3 cp "${SNOWSQL_INSTALLER_URI}" snowsql.rpm
+
           if [[ ! -s snowsql.rpm ]]; then
             echo "Failed to download SnowSQL installer from ${SNOWSQL_INSTALLER_URI}" >&2
             exit 1
           fi
 
           sudo rpm -Uvh --replacepkgs snowsql.rpm
-          echo "$HOME/.snowsql/bin" >> $GITHUB_PATH
+          echo "$HOME/.snowsql/bin" >> "$GITHUB_PATH"
           snowsql --version
           rm -f snowsql.rpm
 
-      - name: Export Snowflake creds from GitHub Secrets (UAT)
+      - name: Export Snowflake creds from GitHub Secrets (uat)
+        shell: bash
         run: |
-          echo "SNOWFLAKE_ACCOUNT=${{ secrets.SNOWFLAKE_ACCOUNT_UAT }}" >> $GITHUB_ENV
-          echo "SNOWFLAKE_USERNAME=${{ secrets.SNOWFLAKE_USERNAME_UAT }}" >> $GITHUB_ENV
-          echo "SNOWFLAKE_ROLE=${{ secrets.SNOWFLAKE_ROLE_UAT }}" >> $GITHUB_ENV
-          echo "SNOWFLAKE_WAREHOUSE=${{ secrets.SNOWFLAKE_WAREHOUSE_UAT }}" >> $GITHUB_ENV
-          echo "SNOWFLAKE_DATABASE=${{ secrets.SNOWFLAKE_DATABASE_UAT }}" >> $GITHUB_ENV # e.g., UAT_DB
-          echo "SNOWFLAKE_SCHEMA=${{ secrets.SNOWFLAKE_SCHEMA_UAT }}" >> $GITHUB_ENV # e.g., APP
-          echo "SNOWFLAKE_PRIVATE_KEY_URI=${{ secrets.SNOWFLAKE_PRIVATE_KEY_URI_UAT }}" >> $GITHUB_ENV
-          echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE=${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_UAT }}" >> $GITHUB_ENV
-          echo "SNOWSQL_INSTALLER_URI=${{ secrets.SNOWSQL_INSTALLER_URI }}" >> $GITHUB_ENV
-          echo "SES_SMTP_USERNAME=${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_USERNAME_UAT }}" >> $GITHUB_ENV
-          echo "SES_SMTP_PASSWORD=${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_PASSWORD_UAT }}" >> $GITHUB_ENV
-          echo "SES_EMAIL_REGION=${{ secrets.SNOWFLAKE_DEPLOY_SES_REGION_UAT }}" >> $GITHUB_ENV
-          echo "SES_EMAIL_SENDER=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_SENDER_UAT }}" >> $GITHUB_ENV
-          echo "SES_EMAIL_RECIPIENTS=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_RECIPIENTS_UAT }}" >> $GITHUB_ENV
+          {
+            echo "SNOWFLAKE_ACCOUNT=${{ secrets.SNOWFLAKE_ACCOUNT_UAT }}"
+            echo "SNOWFLAKE_USERNAME=${{ secrets.SNOWFLAKE_USERNAME_UAT }}"
+            echo "SNOWFLAKE_ROLE=${{ secrets.SNOWFLAKE_ROLE_UAT }}"
+            echo "SNOWFLAKE_WAREHOUSE=${{ secrets.SNOWFLAKE_WAREHOUSE_UAT }}"
+            echo "SNOWFLAKE_DATABASE=${{ secrets.SNOWFLAKE_DATABASE_UAT }}"
+            echo "SNOWFLAKE_SCHEMA=${{ secrets.SNOWFLAKE_SCHEMA_UAT }}"
+            echo "SNOWFLAKE_PRIVATE_KEY_URI=${{ secrets.SNOWFLAKE_PRIVATE_KEY_URI_UAT }}"
+            echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE=${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_UAT }}"
+            echo "SNOWSQL_INSTALLER_URI=${{ secrets.SNOWSQL_INSTALLER_URI }}"
+            echo "SES_SMTP_USERNAME=${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_USERNAME_UAT }}"
+            echo "SES_SMTP_PASSWORD=${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_PASSWORD_UAT }}"
+            echo "SES_EMAIL_REGION=${{ secrets.SNOWFLAKE_DEPLOY_SES_REGION_UAT }}"
+            echo "SES_EMAIL_SENDER=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_SENDER_UAT }}"
+            echo "SES_EMAIL_RECIPIENTS=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_RECIPIENTS_UAT }}"
+            echo "S3_LOG_BUCKET_URI=${{ secrets.SNOWFLAKE_DEPLOY_LOG_S3_URI_UAT }}"
+          } >> "$GITHUB_ENV"
 
       - name: Download Snowflake private key from S3
+        shell: bash
         run: |
           set -euo pipefail
+
           if [[ -z "${SNOWFLAKE_PRIVATE_KEY_URI:-}" ]]; then
             echo "SNOWFLAKE_PRIVATE_KEY_URI secret is not configured" >&2
             exit 1
           fi
+
           aws s3 cp "$SNOWFLAKE_PRIVATE_KEY_URI" snowflake_rsa_key.p8
           chmod 600 snowflake_rsa_key.p8
+
           if grep -q "ENCRYPTED" snowflake_rsa_key.p8; then
             if [[ -z "${SNOWFLAKE_PRIVATE_KEY_PASSPHRASE:-}" ]]; then
               echo "The downloaded Snowflake private key is encrypted but SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_UAT is empty." >&2
-              echo "Please set the passphrase secret or provide an unencrypted PKCS8 key." >&2
               exit 1
             fi
+
             openssl pkcs8 \
               -in snowflake_rsa_key.p8 \
               -topk8 \
               -nocrypt \
               -passin env:SNOWFLAKE_PRIVATE_KEY_PASSPHRASE \
               -out snowflake_rsa_key_decrypted.p8
+
             chmod 600 snowflake_rsa_key_decrypted.p8
-            echo "SNOWFLAKE_PRIVATE_KEY_PATH=${PWD}/snowflake_rsa_key_decrypted.p8" >> $GITHUB_ENV
+            echo "SNOWFLAKE_PRIVATE_KEY_PATH=${PWD}/snowflake_rsa_key_decrypted.p8" >> "$GITHUB_ENV"
           else
-            echo "SNOWFLAKE_PRIVATE_KEY_PATH=${PWD}/snowflake_rsa_key.p8" >> $GITHUB_ENV
+            echo "SNOWFLAKE_PRIVATE_KEY_PATH=${PWD}/snowflake_rsa_key.p8" >> "$GITHUB_ENV"
           fi
 
-      - name: List changed SQL files (range or single commit)
+      - name: List changed SQL files
         id: diff
         shell: bash
         run: |
           set -euo pipefail
-          
+
           if [[ -n "${{ github.event.before }}" && "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]]; then
             range="${{ github.event.before }}..${{ github.sha }}"
             pathspec=":(glob)${SQL_ROOT%/}/**/*.sql"
-            CHANGED=$(git diff --name-only --diff-filter=ACMR "$range" -- "$pathspec")
+            git diff --name-only --diff-filter=ACMR "$range" -- "$pathspec" | sed '/^[[:space:]]*$/d' > changed_files.txt
           else
-            # First push on branch or no 'before' SHA: check this commit only
             pathspec=":(glob)${SQL_ROOT%/}/**/*.sql"
-            CHANGED=$(git diff-tree --no-commit-id --name-only -r "${GITHUB_SHA}" -- "$pathspec")
+            git diff-tree --no-commit-id --name-only -r "${GITHUB_SHA}" -- "$pathspec" | sed '/^[[:space:]]*$/d' > changed_files.txt
           fi
-          
-          printf "%s\n" "$CHANGED" > changed_files.txt
-          CHANGED="${CHANGED//$'\n'/ }"
-          echo "changed=${CHANGED}" >> "$GITHUB_OUTPUT"
-          echo "Changed SQL:"
+
+          echo "==== changed_files.txt ===="
           cat changed_files.txt || true
 
+          if [[ -s changed_files.txt ]] && grep -q '[^[:space:]]' changed_files.txt; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Detected changed SQL files."
+          else
+            : > changed_files.txt
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No changed SQL files detected."
+          fi
+
       - name: Build deploy.sql snapshot
-        if: ${{ steps.diff.outputs.changed != '' }}
+        if: ${{ steps.diff.outputs.changed == 'true' }}
         shell: bash
         run: |
           set -euo pipefail
+
           : > deploy.sql
           echo "-- env: ${ENV}" >> deploy.sql
           echo "USE ROLE ${SNOWFLAKE_ROLE};" >> deploy.sql
@@ -129,31 +151,72 @@ jobs:
           echo "USE DATABASE ${SNOWFLAKE_DATABASE};" >> deploy.sql
           echo "USE SCHEMA ${SNOWFLAKE_SCHEMA};" >> deploy.sql
           echo "-- Files deployed via snowsql" >> deploy.sql
-          for f in ${{ steps.diff.outputs.changed }}; do
-            rel="$f"
+
+          while IFS= read -r f; do
+            [[ -z "$f" ]] && continue
             {
-              echo ""
-              echo "-- file: ${rel}"
-              cat "$rel"
-              echo ""
+              echo
+              echo "-- file: ${f}"
+              cat "$f"
+              echo
             } >> deploy.sql
-          done
-          
+          done < changed_files.txt
+
           echo "----- deploy.sql -----"
           sed -n '1,200p' deploy.sql
 
       - name: Exit early (no changed SQL)
-        if: ${{ steps.diff.outputs.changed == '' }}
+        if: ${{ steps.diff.outputs.changed == 'false' }}
+        shell: bash
         run: echo "No SQL changes under ${SQL_ROOT}; nothing to deploy."
 
-      - name: Execute deployment in Snowflake (continue on individual failures)
-        if: ${{ steps.diff.outputs.changed != '' }}
-        shell: bash {0}
+      - name: Execute deployment in Snowflake
+        if: ${{ steps.diff.outputs.changed == 'true' }}
+        shell: bash
         run: |
-          set -euo pipefail
+          set -uo pipefail
+          set -x
+
+          LOG_FILE="snowflake_deploy_full.log"
+          DETAIL_LOG="snow_exec_detail.log"
+
+          : > "$LOG_FILE"
+          : > "$DETAIL_LOG"
+
+          exec > >(tee -a "$LOG_FILE") 2>&1
+
+          trap 'rc=$?; echo "ERROR: command failed at line $LINENO with exit code $rc"; exit $rc' ERR
+
+          echo "========== START =========="
+          date -u
+          echo "PWD=$(pwd)"
+          echo "GITHUB_WORKSPACE=${GITHUB_WORKSPACE:-}"
+          echo "ENV=${ENV:-}"
+          echo "SQL_ROOT=${SQL_ROOT:-}"
+
+          echo "SNOWFLAKE_ACCOUNT set? $([[ -n "${SNOWFLAKE_ACCOUNT:-}" ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_USERNAME set? $([[ -n "${SNOWFLAKE_USERNAME:-}" ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_ROLE set? $([[ -n "${SNOWFLAKE_ROLE:-}" ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_WAREHOUSE set? $([[ -n "${SNOWFLAKE_WAREHOUSE:-}" ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_DATABASE set? $([[ -n "${SNOWFLAKE_DATABASE:-}" ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_SCHEMA set? $([[ -n "${SNOWFLAKE_SCHEMA:-}" ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_PRIVATE_KEY_PATH=${SNOWFLAKE_PRIVATE_KEY_PATH:-missing}"
+
+          echo "========== CHANGED FILES =========="
+          cat changed_files.txt || true
+
+          echo "========== FILE CHECK =========="
+          ls -la
+          test -n "${SNOWFLAKE_PRIVATE_KEY_PATH:-}"
+          test -f "${SNOWFLAKE_PRIVATE_KEY_PATH}"
+          ls -l "${SNOWFLAKE_PRIVATE_KEY_PATH}"
+
+          echo "========== SNOWSQL CHECK =========="
+          which snowsql
+          snowsql --version
 
           if [[ -z "${SES_SMTP_USERNAME:-}" || -z "${SES_SMTP_PASSWORD:-}" || -z "${SES_EMAIL_REGION:-}" || -z "${SES_EMAIL_SENDER:-}" || -z "${SES_EMAIL_RECIPIENTS:-}" ]]; then
-            echo "SES SMTP configuration is incomplete. Ensure the required secrets are set." >&2
+            echo "SES SMTP configuration is incomplete." >&2
             exit 1
           fi
 
@@ -169,42 +232,64 @@ jobs:
             -o exit_on_error=true
             -o friendly=false
             -o output_format=tsv
-            -o timing=false
+            -o timing=true
           )
-          echo "Testing Snowflake connection..."
+
+          echo "========== TEST CONNECTION =========="
           "${snowsql_base[@]}" -q "SELECT CURRENT_USER(), CURRENT_ROLE(), CURRENT_DATABASE(), CURRENT_SCHEMA();"
 
-          echo "Setting session context..."
+          echo "========== SET SESSION CONTEXT =========="
           "${snowsql_base[@]}" -q "USE ROLE ${SNOWFLAKE_ROLE}; USE WAREHOUSE ${SNOWFLAKE_WAREHOUSE}; USE DATABASE ${SNOWFLAKE_DATABASE}; USE SCHEMA ${SNOWFLAKE_SCHEMA};"
 
           successes=()
           failures=()
-          : > snow_exec_detail.log
 
-          # Run each changed SQL file individually with snowsql
+          echo "========== EXECUTING FILES =========="
           while IFS= read -r f; do
             [[ -z "$f" ]] && continue
-            rel="${f#./}" # keep SQL_DIR/ in place; only strip leading ./ if any
+            rel="${f#./}"
 
-            echo "---- Executing file: ${rel}" | tee -a snow_exec_detail.log
+            echo "---- Executing file: ${rel}" | tee -a "$DETAIL_LOG"
+            test -f "$rel"
+
+            echo "----- FILE PREVIEW (${rel}) -----" | tee -a "$DETAIL_LOG"
+            sed -n '1,80p' "$rel" | tee -a "$DETAIL_LOG"
+            echo "----- END PREVIEW (${rel}) -----" | tee -a "$DETAIL_LOG"
 
             if out=$("${snowsql_base[@]}" -f "$rel" 2>&1); then
               successes+=("$rel")
-              echo "SUCCESS: ${out}" >> snow_exec_detail.log
+              echo "SUCCESS OUTPUT:" | tee -a "$DETAIL_LOG"
+              printf '%s\n' "$out" | tee -a "$DETAIL_LOG"
             else
               failures+=("$rel")
-              err_first_line="$(printf '%s\n' "$out" | head -n 1)"
-              echo "ERROR for ${rel}: ${err_first_line}" | tee -a snow_exec_detail.log
-              echo "Full error output: $out" >> snow_exec_detail.log
+              echo "ERROR OUTPUT:" | tee -a "$DETAIL_LOG"
+              printf '%s\n' "$out" | tee -a "$DETAIL_LOG"
             fi
-            echo >> snow_exec_detail.log
+
+            echo | tee -a "$DETAIL_LOG"
           done < changed_files.txt
-          echo "__SUMMARY__" >> snow_exec_detail.log
-          echo "SUCCESS_COUNT=${#successes[@]}" >> snow_exec_detail.log
-          echo "FAIL_COUNT=${#failures[@]}" >> snow_exec_detail.log
 
           ok_count=${#successes[@]}
           fail_count=${#failures[@]}
+
+          echo "========== SUMMARY =========="
+          echo "Succeeded: ${ok_count}"
+          echo "Failed: ${fail_count}"
+
+          if (( ok_count > 0 )); then
+            printf 'Succeeded files:\n - %s\n' "${successes[@]}"
+          fi
+
+          if (( fail_count > 0 )); then
+            printf 'Failed files:\n - %s\n' "${failures[@]}"
+          fi
+
+          {
+            echo "__SUMMARY__"
+            echo "SUCCESS_COUNT=${ok_count}"
+            echo "FAIL_COUNT=${fail_count}"
+          } >> "$DETAIL_LOG"
+
           subject="Snowflake deploy (${ENV}) ✔ ${ok_count} ok / ✖ ${fail_count} failed"
 
           {
@@ -212,24 +297,22 @@ jobs:
             echo "Database.Schema: ${SNOWFLAKE_DATABASE}.${SNOWFLAKE_SCHEMA}"
             echo "Warehouse: ${SNOWFLAKE_WAREHOUSE}"
             echo
-            echo "✅ SUCCEEDED (${ok_count}):"
+            echo "Succeeded (${ok_count}):"
             if (( ok_count > 0 )); then
               printf ' - %s\n' "${successes[@]}"
             else
-              echo "  - (none)"
+              echo " - (none)"
             fi
             echo
-            echo "❌ FAILED (${fail_count}):"
+            echo "Failed (${fail_count}):"
             if (( fail_count > 0 )); then
               printf ' - %s\n' "${failures[@]}"
             else
-              echo "  - (none)"
+              echo " - (none)"
             fi
             echo
-            echo "Detail log attached below."
-            echo
             echo "===== DETAIL ====="
-            cat snow_exec_detail.log
+            cat "$DETAIL_LOG"
           } > email_message.txt
 
           EMAIL_SUBJECT="$subject" python - <<'PY'
@@ -269,12 +352,11 @@ jobs:
           PY
 
           echo "Execution completed. Summary:"
-          echo "✅ Succeeded: ${ok_count} files"
-          echo "❌ Failed: ${fail_count} files"
+          echo "Succeeded: ${ok_count} files"
+          echo "Failed: ${fail_count} files"
 
           if (( fail_count > 0 )); then
-            echo "⚠️  Some SQL files failed to execute. Check the detailed logs for more information."
-            echo "Failed files: ${failures[*]}"
+            echo "Some SQL files failed to execute."
             exit 1
           fi
 
