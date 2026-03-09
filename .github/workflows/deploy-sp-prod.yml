@@ -33,7 +33,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          if command -v snowsql >/prod/null 2>&1; then
+          if command -v snowsql >/dev/null 2>&1; then
             echo "SnowSQL already available on runner:"
             snowsql --version
             exit 0
