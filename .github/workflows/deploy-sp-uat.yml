@@ -5,7 +5,6 @@ on:
     branches: [uat]
     paths:
       - "SQL_DIR/**/*.sql"
-      - ".github/workflows/deploy-sp-uat.yml"
 
 env:
   ENV: uat
