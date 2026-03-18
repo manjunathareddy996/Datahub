@@ -398,8 +398,9 @@ jobs:
 
           tar -czf "snowflake-deploy-logs-${ts}.tar.gz" log_bundle
 
-          s3_key="${S3_LOG_BUCKET_URI%/}/${ENV}/${ref_name}/run-${run_id}-attempt-${attempt}-${sha}-${ts}.tar.gz"
+          s3_key="${S3_LOG_BUCKET_URI%/}/deploy/${ENV}/${ref_name}/run-${run_id}-attempt-${attempt}-${sha}-${ts}.tar.gz"
 
           echo "Uploading logs to: ${s3_key}"
           aws s3 cp "snowflake-deploy-logs-${ts}.tar.gz" "${s3_key}"
           echo "Uploaded logs successfully."
+ 
