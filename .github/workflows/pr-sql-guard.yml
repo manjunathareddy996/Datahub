@@ -59,7 +59,6 @@ jobs:
 
       - name: Validate SQL environment references
         if: ${{ steps.diff.outputs.changed == 'true' }}
-        shell: bash
         env:
           SNOWFLAKE_BLOCKED_DATABASES: ${{ secrets.SNOWFLAKE_BLOCKED_DATABASES }}
         run: |
@@ -69,49 +68,71 @@ jobs:
 
       - name: No SQL changes detected
         if: ${{ steps.diff.outputs.changed != 'true' }}
+        run: echo "No SQL changes in this PR."
+
+      - name: Execute deployment in Snowflake (debug version)
+        if: ${{ steps.diff.outputs.changed == 'true' }}
         shell: bash
         run: |
-          echo "No SQL changes in this PR." | tee "${VALIDATION_LOG_FILE}"
+          set -uo pipefail
+          set -x
+          LOG_FILE="snowflake_deploy_full.log"
+          touch "$LOG_FILE"
+          exec > >(tee -a "$LOG_FILE") 2>&1
+          trap 'rc=$?; echo "ERROR: command failed at line $LINENO with exit code $rc"; exit $rc' ERR
 
-      - name: Upload validation logs as workflow artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: sql-validation-logs
-          path: |
-            changed_files.txt
-            sql_validation.log
-          if-no-files-found: warn
+          echo "========== START =========="
+          date -u
+          pwd
+          ls -la
 
-      - name: Upload validation logs to S3
-        if: always()
-        shell: bash
-        env:
-          S3_LOG_BUCKET_URI: ${{ secrets.SNOWFLAKE_DEPLOY_LOG_S3_URI_VALIDATION }}
-        run: |
-          set -euo pipefail
+          echo "ENV=${ENV:-}"
+          echo "SQL_ROOT=${SQL_ROOT:-}"
+          echo "SNOWFLAKE_ACCOUNT set?        $([[ -n "${SNOWFLAKE_ACCOUNT:-}"        ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_USERNAME set?       $([[ -n "${SNOWFLAKE_USERNAME:-}"       ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_ROLE set?           $([[ -n "${SNOWFLAKE_ROLE:-}"           ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_WAREHOUSE set?      $([[ -n "${SNOWFLAKE_WAREHOUSE:-}"      ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_DATABASE set?       $([[ -n "${SNOWFLAKE_DATABASE:-}"       ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_SCHEMA set?         $([[ -n "${SNOWFLAKE_SCHEMA:-}"         ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_PRIVATE_KEY_PATH=${SNOWFLAKE_PRIVATE_KEY_PATH:-missing}"
 
-          if [[ -z "${S3_LOG_BUCKET_URI:-}" ]]; then
-            echo "S3_LOG_BUCKET_URI is not set, skipping S3 upload."
-            exit 0
-          fi
+          echo "========== changed_files.txt =========="
+          cat changed_files.txt || true
 
-          ts="$(date -u +%Y%m%dT%H%M%SZ)"
-          run_id="${GITHUB_RUN_ID:-unknown}"
-          sha="${GITHUB_SHA:-unknown}"
-          attempt="${GITHUB_RUN_ATTEMPT:-1}"
-          pr_number="${{ github.event.pull_request.number }}"
-          base_ref="${GITHUB_BASE_REF:-unknown}"
+          echo "========== snowsql check =========="
+          which snowsql
+          snowsql --version
 
-          mkdir -p log_bundle
-          cp -f changed_files.txt log_bundle/ 2>/dev/null || true
-          cp -f "${VALIDATION_LOG_FILE}" log_bundle/ 2>/dev/null || true
+          echo "========== private key check =========="
+          test -n "${SNOWFLAKE_PRIVATE_KEY_PATH:-}"
+          test -f "${SNOWFLAKE_PRIVATE_KEY_PATH}"
+          ls -l "${SNOWFLAKE_PRIVATE_KEY_PATH}"
 
-          tar -czf "sql-validation-logs-${ts}.tar.gz" log_bundle
+          snowsql_base=(
+            snowsql
+            -a "$SNOWFLAKE_ACCOUNT"
+            -u "$SNOWFLAKE_USERNAME"
+            -r "$SNOWFLAKE_ROLE"
+            -w "$SNOWFLAKE_WAREHOUSE"
+            -d "$SNOWFLAKE_DATABASE"
+            -s "$SNOWFLAKE_SCHEMA"
+            --private-key-path "$SNOWFLAKE_PRIVATE_KEY_PATH"
+            -o exit_on_error=true
+            -o friendly=false
+            -o output_format=tsv
+            -o timing=true
+          )
 
-          s3_key="${S3_LOG_BUCKET_URI%/}/validation/${base_ref}/pr-${pr_number}/run-${run_id}-attempt-${attempt}-${sha}-${ts}.tar.gz"
+          echo "========== connection test =========="
+          "${snowsql_base[@]}" -q "SELECT CURRENT_USER(), CURRENT_ROLE(), CURRENT_DATABASE(), CURRENT_SCHEMA();"
 
-          echo "Uploading logs to: ${s3_key}"
-          aws s3 cp "sql-validation-logs-${ts}.tar.gz" "${s3_key}"
-          echo "Uploaded logs successfully."
- 
+          echo "========== execute changed files =========="
+          while IFS= read -r f; do
+            [[ -z "$f" ]] && continue
+            echo "Running file: $f"
+            test -f "$f"
+            sed -n '1,40p' "$f"
+            "${snowsql_base[@]}" -f "$f"
+          done < changed_files.txt
+
+          echo "========== DONE =========="
