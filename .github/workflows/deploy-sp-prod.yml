@@ -61,7 +61,7 @@ jobs:
         shell: bash
         run: |
           {
-            echo "SNOWFLAKE_ACCOUNT=${{ secrets.SNOWFLAKE_ACCOUNT_prod }}"
+            echo "SNOWFLAKE_ACCOUNT=${{ secrets.SNOWFLAKE_ACCOUNT_PROD }}"
             echo "SNOWFLAKE_USERNAME=${{ secrets.SNOWFLAKE_USERNAME_PROD }}"
             echo "SNOWFLAKE_ROLE=${{ secrets.SNOWFLAKE_ROLE_PROD }}"
             echo "SNOWFLAKE_WAREHOUSE=${{ secrets.SNOWFLAKE_WAREHOUSE_PROD }}"
@@ -390,16 +390,17 @@ jobs:
           ref_name="${GITHUB_REF_NAME:-unknown}"
 
           mkdir -p log_bundle
-          cp -f snowflake_deploy_full.log log_bundle/ 2>/prod/null || true
-          cp -f snow_exec_detail.log log_bundle/ 2>/prod/null || true
-          cp -f changed_files.txt log_bundle/ 2>/prod/null || true
-          cp -f deploy.sql log_bundle/ 2>/prod/null || true
-          cp -f email_message.txt log_bundle/ 2>/prod/null || true
+          cp -f snowflake_deploy_full.log log_bundle/ 2>/dev/null || true
+          cp -f snow_exec_detail.log log_bundle/ 2>/dev/null || true
+          cp -f changed_files.txt log_bundle/ 2>/dev/null || true
+          cp -f deploy.sql log_bundle/ 2>/dev/null || true
+          cp -f email_message.txt log_bundle/ 2>/dev/null || true
 
           tar -czf "snowflake-deploy-logs-${ts}.tar.gz" log_bundle
 
-          s3_key="${S3_LOG_BUCKET_URI%/}/${ENV}/${ref_name}/run-${run_id}-attempt-${attempt}-${sha}-${ts}.tar.gz"
+          s3_key="${S3_LOG_BUCKET_URI%/}/deploy/${ENV}/${ref_name}/run-${run_id}-attempt-${attempt}-${sha}-${ts}.tar.gz"
 
           echo "Uploading logs to: ${s3_key}"
           aws s3 cp "snowflake-deploy-logs-${ts}.tar.gz" "${s3_key}"
           echo "Uploaded logs successfully."
+ 
