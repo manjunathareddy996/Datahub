@@ -12,6 +12,9 @@ concurrency:
   group: pr-quality-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
+env:
+  QUALITY_LOG_FILE: pylint_quality.log
+
 jobs:
   qa-pylint:
     name: qa-pylint
@@ -19,15 +22,34 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Initialize pylint log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "${QUALITY_LOG_FILE}"
+          {
+            echo "========== START =========="
+            date -u
+            echo "Workflow=${GITHUB_WORKFLOW:-unknown}"
+            echo "Run ID=${GITHUB_RUN_ID:-unknown}"
+            echo "Base Ref=${GITHUB_BASE_REF:-unknown}"
+            echo "Head Ref=${GITHUB_HEAD_REF:-unknown}"
+          } | tee -a "${QUALITY_LOG_FILE}"
+
       # If Python isn't preinstalled on your runner, uncomment:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install pylint
+        shell: bash
         run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install pylint
+          set -euo pipefail
+          {
+            echo "========== INSTALL PYLINT =========="
+            python3 -m pip install --upgrade pip
+            python3 -m pip install pylint
+          } 2>&1 | tee -a "${QUALITY_LOG_FILE}"
 
       - name: Run pylint (fail on real errors)
         shell: bash
@@ -35,9 +57,52 @@ jobs:
           set -euo pipefail
           PY_FILES=$(git ls-files '*.py' | tr '\n' ' ')
           if [ -z "$PY_FILES" ]; then
-            echo "No Python files found — passing."
+            echo "No Python files found — passing." | tee -a "${QUALITY_LOG_FILE}"
             exit 0
           fi
           # Fail on Errors/Fatal only; ignore C/R/W for now
-          python3 -m pylint --disable=C,R,W $PY_FILES
+          {
+            echo "========== PYLINT =========="
+            python3 -m pylint --disable=C,R,W $PY_FILES
+          } 2>&1 | tee -a "${QUALITY_LOG_FILE}"
+
+      - name: Upload pylint logs as workflow artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pylint-quality-logs
+          path: |
+            pylint_quality.log
+          if-no-files-found: warn
+
+      - name: Upload pylint logs to S3
+        if: always()
+        shell: bash
+        env:
+          S3_LOG_BUCKET_URI: ${{ secrets.SNOWFLAKE_DEPLOY_LOG_S3_URI_VALIDATION }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${S3_LOG_BUCKET_URI:-}" ]]; then
+            echo "S3_LOG_BUCKET_URI is not set, skipping S3 upload."
+            exit 0
+          fi
+
+          ts="$(date -u +%Y%m%dT%H%M%SZ)"
+          run_id="${GITHUB_RUN_ID:-unknown}"
+          sha="${GITHUB_SHA:-unknown}"
+          attempt="${GITHUB_RUN_ATTEMPT:-1}"
+          pr_number="${{ github.event.pull_request.number }}"
+          base_ref="${GITHUB_BASE_REF:-unknown}"
+
+          mkdir -p log_bundle
+          cp -f "${QUALITY_LOG_FILE}" log_bundle/ 2>/dev/null || true
+
+          tar -czf "pylint-quality-logs-${ts}.tar.gz" log_bundle
+
+          s3_key="${S3_LOG_BUCKET_URI%/}/quality/${base_ref}/pr-${pr_number}/run-${run_id}-attempt-${attempt}-${sha}-${ts}.tar.gz"
+
+          echo "Uploading logs to: ${s3_key}"
+          aws s3 cp "pylint-quality-logs-${ts}.tar.gz" "${s3_key}"
+          echo "Uploaded logs successfully."
  
