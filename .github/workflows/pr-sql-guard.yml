@@ -92,6 +92,7 @@ jobs:
 
       - name: Upload validation logs as workflow artifact
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: sql-validation-logs
@@ -102,7 +103,6 @@ jobs:
 
       - name: Upload validation logs to S3
         if: always()
-        continue-on-error: true
         shell: bash
         env:
           S3_LOG_BUCKET_URI: ${{ secrets.SNOWFLAKE_DEPLOY_LOG_S3_URI_VALIDATION }}
