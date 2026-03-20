@@ -29,25 +29,43 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Initialize DAG deployment log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "${DAG_LOG_FILE}"
+          {
+            echo "========== START =========="
+            date -u
+            echo "Workflow=${GITHUB_WORKFLOW:-unknown}"
+            echo "Run ID=${GITHUB_RUN_ID:-unknown}"
+            echo "Ref Name=${GITHUB_REF_NAME:-unknown}"
+          } | tee -a "${DAG_LOG_FILE}"
+
       - name: Export DAG deployment settings (uat)
         shell: bash
         run: |
           {
             echo "AIRFLOW_DAGS_S3_URI=${{ secrets.AIRFLOW_DAGS_S3_URI_UAT }}"
+            echo "S3_LOG_BUCKET_URI=${{ secrets.SNOWFLAKE_DEPLOY_LOG_S3_URI_UAT }}"
           } >> "$GITHUB_ENV"
 
       - name: Check AWS CLI
         shell: bash
         run: |
           set -euo pipefail
-          which aws
-          aws --version
+          {
+            echo "========== AWS CLI =========="
+            which aws
+            aws --version
+          } 2>&1 | tee -a "${DAG_LOG_FILE}"
 
       - name: List changed DAG files
         id: diff
         shell: bash
         run: |
           set -euo pipefail
+          exec > >(tee -a "${DAG_LOG_FILE}") 2>&1
 
           if [[ -n "${{ github.event.before }}" && "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]]; then
             range="${{ github.event.before }}..${{ github.sha }}"
@@ -73,6 +91,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          exec > >(tee -a "${DAG_LOG_FILE}") 2>&1
 
           if [[ ! -d "${DAGS_ROOT}" ]]; then
             echo "DAG source directory '${DAGS_ROOT}' does not exist." >&2
@@ -93,7 +112,7 @@ jobs:
         if: ${{ steps.diff.outputs.changed == 'false' }}
         shell: bash
         run: |
-          echo "No DAG changes under ${DAGS_ROOT}; nothing to publish." | tee "${DAG_LOG_FILE}"
+          echo "No DAG changes under ${DAGS_ROOT}; nothing to publish." | tee -a "${DAG_LOG_FILE}"
 
       - name: Sync DAGs to S3
         if: ${{ steps.diff.outputs.changed == 'true' }}
@@ -101,7 +120,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          : > "${DAG_LOG_FILE}"
           exec > >(tee -a "${DAG_LOG_FILE}") 2>&1
 
           echo "========== START =========="
@@ -131,4 +149,33 @@ jobs:
             changed_dags.txt
             airflow_dags_sync.log
           if-no-files-found: warn
+
+      - name: Upload DAG deployment logs to S3
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${S3_LOG_BUCKET_URI:-}" ]]; then
+            echo "S3_LOG_BUCKET_URI is not set, skipping S3 upload." | tee -a "${DAG_LOG_FILE}"
+            exit 0
+          fi
+
+          ts="$(date -u +%Y%m%dT%H%M%SZ)"
+          run_id="${GITHUB_RUN_ID:-unknown}"
+          sha="${GITHUB_SHA:-unknown}"
+          attempt="${GITHUB_RUN_ATTEMPT:-1}"
+          ref_name="${GITHUB_REF_NAME:-unknown}"
+
+          mkdir -p log_bundle
+          cp -f "${CHANGED_DAGS_FILE}" log_bundle/ 2>/dev/null || true
+          cp -f "${DAG_LOG_FILE}" log_bundle/ 2>/dev/null || true
+
+          tar -czf "airflow-dags-logs-${ts}.tar.gz" log_bundle
+
+          s3_key="${S3_LOG_BUCKET_URI%/}/deploy/${ENV}/dags/${ref_name}/run-${run_id}-attempt-${attempt}-${sha}-${ts}.tar.gz"
+
+          echo "Uploading logs to: ${s3_key}" | tee -a "${DAG_LOG_FILE}"
+          aws s3 cp "airflow-dags-logs-${ts}.tar.gz" "${s3_key}" 2>&1 | tee -a "${DAG_LOG_FILE}"
+          echo "Uploaded logs successfully." | tee -a "${DAG_LOG_FILE}"
  
