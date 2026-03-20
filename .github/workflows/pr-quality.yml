@@ -1,32 +1,37 @@
-name: PR Quality Gate (pylint)
+name: PR SQL Guard
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
-
-permissions:
-  contents: read
-  pull-requests: read
-
-concurrency:
-  group: pr-quality-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+    branches:
+      - dev
+      - uat
+      - prod
+    paths:
+      - "SQL_DIR/**/*.sql"
+      - ".github/workflows/pr-sql-guard.yml"
+      - "scripts/validate_sql_env.py"
 
 env:
-  QUALITY_LOG_FILE: pylint_quality.log
+  SQL_ROOT: SQL_DIR
+  VALIDATION_LOG_FILE: sql_validation.log
 
 jobs:
-  qa-pylint:
-    name: qa-pylint
+  validate-sql:
     runs-on: [self-hosted, Linux, X64]
-    steps:
-      - uses: actions/checkout@v4
+    permissions:
+      contents: read
 
-      - name: Initialize pylint log
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Initialize SQL validation log
         shell: bash
         run: |
           set -euo pipefail
-          : > "${QUALITY_LOG_FILE}"
+          : > "${VALIDATION_LOG_FILE}"
           {
             echo "========== START =========="
             date -u
@@ -34,48 +39,68 @@ jobs:
             echo "Run ID=${GITHUB_RUN_ID:-unknown}"
             echo "Base Ref=${GITHUB_BASE_REF:-unknown}"
             echo "Head Ref=${GITHUB_HEAD_REF:-unknown}"
-          } | tee -a "${QUALITY_LOG_FILE}"
+          } | tee -a "${VALIDATION_LOG_FILE}"
 
-      # If Python isn't preinstalled on your runner, uncomment:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install pylint
+      - name: List changed SQL files
+        id: diff
         shell: bash
         run: |
           set -euo pipefail
-          {
-            echo "========== INSTALL PYLINT =========="
-            python3 -m pip install --upgrade pip
-            python3 -m pip install pylint
-          } 2>&1 | tee -a "${QUALITY_LOG_FILE}"
+          exec > >(tee -a "${VALIDATION_LOG_FILE}") 2>&1
+          base_sha="${{ github.event.pull_request.base.sha }}"
+          head_sha="${{ github.event.pull_request.head.sha }}"
 
-      - name: Run pylint (fail on real errors)
-        shell: bash
-        run: |
-          set -euo pipefail
-          PY_FILES=$(git ls-files '*.py' | tr '\n' ' ')
-          if [ -z "$PY_FILES" ]; then
-            echo "No Python files found — passing." | tee -a "${QUALITY_LOG_FILE}"
-            exit 0
+          echo "--- All changed files (raw) ---"
+          git diff --name-only --diff-filter=ACMR "${base_sha}" "${head_sha}" || true
+
+          echo "--- Filtering for SQL files under ${SQL_ROOT} ---"
+          CHANGED=$(git diff --name-only --diff-filter=ACMR "${base_sha}" "${head_sha}" \
+            | grep -i "^${SQL_ROOT}/.*\.sql$" || true)
+
+          printf "%s\n" "$CHANGED" > changed_files.txt
+          sed -i '/^[[:space:]]*$/d' changed_files.txt
+
+          echo "Changed SQL files:"
+          cat changed_files.txt || true
+
+          if [[ -n "$CHANGED" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
-          # Fail on Errors/Fatal only; ignore C/R/W for now
-          {
-            echo "========== PYLINT =========="
-            python3 -m pylint --disable=C,R,W $PY_FILES
-          } 2>&1 | tee -a "${QUALITY_LOG_FILE}"
 
-      - name: Upload pylint logs as workflow artifact
+      - name: Validate SQL environment references
+        if: ${{ steps.diff.outputs.changed == 'true' }}
+        shell: bash
+        env:
+          SNOWFLAKE_BLOCKED_DATABASES: ${{ secrets.SNOWFLAKE_BLOCKED_DATABASES }}
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "${VALIDATION_LOG_FILE}") 2>&1
+          python3 scripts/validate_sql_env.py \
+            --changed-files changed_files.txt
+
+      - name: No SQL changes detected
+        if: ${{ steps.diff.outputs.changed != 'true' }}
+        shell: bash
+        run: |
+          echo "No SQL changes in this PR." | tee -a "${VALIDATION_LOG_FILE}"
+
+      - name: Upload validation logs as workflow artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: pylint-quality-logs
+          name: sql-validation-logs
           path: |
-            pylint_quality.log
+            changed_files.txt
+            sql_validation.log
           if-no-files-found: warn
 
-      - name: Upload pylint logs to S3
+      - name: Upload validation logs to S3
         if: always()
         shell: bash
         env:
@@ -96,13 +121,14 @@ jobs:
           base_ref="${GITHUB_BASE_REF:-unknown}"
 
           mkdir -p log_bundle
-          cp -f "${QUALITY_LOG_FILE}" log_bundle/ 2>/dev/null || true
+          cp -f changed_files.txt log_bundle/ 2>/dev/null || true
+          cp -f "${VALIDATION_LOG_FILE}" log_bundle/ 2>/dev/null || true
 
-          tar -czf "pylint-quality-logs-${ts}.tar.gz" log_bundle
+          tar -czf "sql-validation-logs-${ts}.tar.gz" log_bundle
 
-          s3_key="${S3_LOG_BUCKET_URI%/}/quality/${base_ref}/pr-${pr_number}/run-${run_id}-attempt-${attempt}-${sha}-${ts}.tar.gz"
+          s3_key="${S3_LOG_BUCKET_URI%/}/validation/${base_ref}/pr-${pr_number}/run-${run_id}-attempt-${attempt}-${sha}-${ts}.tar.gz"
 
           echo "Uploading logs to: ${s3_key}"
-          aws s3 cp "pylint-quality-logs-${ts}.tar.gz" "${s3_key}"
+          aws s3 cp "sql-validation-logs-${ts}.tar.gz" "${s3_key}"
           echo "Uploaded logs successfully."
  
