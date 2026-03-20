@@ -9,6 +9,7 @@ on:
 env:
   ENV: dev
   SQL_ROOT: SQL_DIR
+  WORKFLOW_BOOTSTRAP_LOG: workflow_bootstrap.log
 
 jobs:
   deploy:
@@ -22,6 +23,19 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Initialize deployment bootstrap log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "${WORKFLOW_BOOTSTRAP_LOG}"
+          {
+            echo "========== START =========="
+            date -u
+            echo "Workflow=${GITHUB_WORKFLOW:-unknown}"
+            echo "Run ID=${GITHUB_RUN_ID:-unknown}"
+            echo "Ref Name=${GITHUB_REF_NAME:-unknown}"
+          } | tee -a "${WORKFLOW_BOOTSTRAP_LOG}"
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -31,6 +45,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          exec > >(tee -a "${WORKFLOW_BOOTSTRAP_LOG}") 2>&1
 
           if command -v snowsql >/dev/null 2>&1; then
             echo "SnowSQL already available on runner:"
@@ -60,6 +75,7 @@ jobs:
       - name: Export Snowflake creds from GitHub Secrets (DEV)
         shell: bash
         run: |
+          exec > >(tee -a "${WORKFLOW_BOOTSTRAP_LOG}") 2>&1
           {
             echo "SNOWFLAKE_ACCOUNT=${{ secrets.SNOWFLAKE_ACCOUNT_DEV }}"
             echo "SNOWFLAKE_USERNAME=${{ secrets.SNOWFLAKE_USERNAME_DEV }}"
@@ -82,6 +98,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          exec > >(tee -a "${WORKFLOW_BOOTSTRAP_LOG}") 2>&1
 
           if [[ -z "${SNOWFLAKE_PRIVATE_KEY_URI:-}" ]]; then
             echo "SNOWFLAKE_PRIVATE_KEY_URI secret is not configured" >&2
@@ -115,6 +132,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          exec > >(tee -a "${WORKFLOW_BOOTSTRAP_LOG}") 2>&1
 
           if [[ -n "${{ github.event.before }}" && "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]]; then
             range="${{ github.event.before }}..${{ github.sha }}"
@@ -142,6 +160,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          exec > >(tee -a "${WORKFLOW_BOOTSTRAP_LOG}") 2>&1
 
           : > deploy.sql
           echo "-- env: ${ENV}" >> deploy.sql
@@ -167,7 +186,8 @@ jobs:
       - name: Exit early (no changed SQL)
         if: ${{ steps.diff.outputs.changed == 'false' }}
         shell: bash
-        run: echo "No SQL changes under ${SQL_ROOT}; nothing to deploy."
+        run: |
+          echo "No SQL changes under ${SQL_ROOT}; nothing to deploy." | tee -a "${WORKFLOW_BOOTSTRAP_LOG}"
 
       - name: Execute deployment in Snowflake
         if: ${{ steps.diff.outputs.changed == 'true' }}
@@ -365,6 +385,7 @@ jobs:
         with:
           name: snowflake-deploy-logs
           path: |
+            workflow_bootstrap.log
             snowflake_deploy_full.log
             snow_exec_detail.log
             changed_files.txt
@@ -392,6 +413,7 @@ jobs:
           mkdir -p log_bundle
           cp -f snowflake_deploy_full.log log_bundle/ 2>/dev/null || true
           cp -f snow_exec_detail.log log_bundle/ 2>/dev/null || true
+          cp -f workflow_bootstrap.log log_bundle/ 2>/dev/null || true
           cp -f changed_files.txt log_bundle/ 2>/dev/null || true
           cp -f deploy.sql log_bundle/ 2>/dev/null || true
           cp -f email_message.txt log_bundle/ 2>/dev/null || true
