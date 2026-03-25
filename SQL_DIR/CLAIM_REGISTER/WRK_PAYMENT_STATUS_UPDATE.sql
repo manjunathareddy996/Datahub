@@ -1,0 +1,71 @@
+CREATE OR REPLACE PROCEDURE TRANSACTIONAL.WRK_PAYMENT_STATUS_UPDATE("MIRROR_DB" VARCHAR(16777216), "F_DATE" DATE DEFAULT CURRENT_DATE(), "T_DATE" DATE DEFAULT CURRENT_DATE())
+RETURNS VARCHAR(16777216)
+LANGUAGE SQL
+EXECUTE AS CALLER
+AS '
+DECLARE
+v_sqltext VARCHAR;
+BEGIN
+v_sqltext := ''TRUNCATE TABLE IF EXISTS INTERMEDIATE.WRK_PAYMENT_STATUS_DATA'';
+EXECUTE IMMEDIATE v_sqltext;
+
+v_sqltext := ''INSERT INTO INTERMEDIATE.WRK_PAYMENT_STATUS_DATA
+        SELECT CLM_REF,
+               CASE WHEN TRANS_TYPE = 20 THEN  2 ELSE 1 END STATUS_RNK,
+               CASE WHEN TRANS_TYPE = 20 THEN  ''''INTERIM'''' ELSE ''''FINAL'''' END
+                  PAYMENT_STATUS
+          FROM '' || MIRROR_DB || ''.OPUS_GG_DWHSTAGE.BJAZ_GEN_CLM_APPROVAL
+         WHERE EXISTS
+                  (SELECT 1
+                     FROM TRANSACTIONAL.MV_CLAIM_REGISTER
+                    WHERE     T_DATE_DESC >= DATE_TRUNC(''''DAY'''', TO_DATE(''''''|| T_DATE || '''''')) - 5
+                          -- AND PAID_CLAIM <> 0
+                          AND NVL(MAXIMUS_FLAG,''''RCS'''') NOT IN (''''A'''',''''Y'''',''''C'''')
+                          AND CLM_REF = C_CLAIM_NO)
+      GROUP BY CLM_REF,
+               CASE WHEN TRANS_TYPE = 20 THEN  2 ELSE 1 END,
+               CASE WHEN TRANS_TYPE = 20 THEN ''''INTERIM'''' ELSE ''''FINAL'''' END'';
+EXECUTE IMMEDIATE v_sqltext;
+
+v_sqltext := ''TRUNCATE TABLE IF EXISTS INTERMEDIATE.WRK_PAYMENT_STATUS_DATA_F'';
+EXECUTE IMMEDIATE v_sqltext;
+
+v_sqltext := ''INSERT INTO INTERMEDIATE.WRK_PAYMENT_STATUS_DATA_F
+      SELECT *
+        FROM INTERMEDIATE.WRK_PAYMENT_STATUS_DATA
+       WHERE STATUS_RNK = 1
+      UNION
+      SELECT *
+        FROM INTERMEDIATE.WRK_PAYMENT_STATUS_DATA A
+       WHERE     STATUS_RNK = 2
+             AND NOT EXISTS
+                    (SELECT 1
+                       FROM INTERMEDIATE.WRK_PAYMENT_STATUS_DATA B
+                      WHERE A.CLM_REF = B.CLM_REF AND B.STATUS_RNK = 1)'';
+EXECUTE IMMEDIATE v_sqltext;
+
+
+v_sqltext := ''UPDATE TRANSACTIONAL.MV_CLAIM_REGISTER
+as target
+            SET TRANS_TYPE = src.payment_status,
+                   CHANGE_DATE = TO_DATE(''''''|| T_DATE || ''''''),
+                TRUNC_CHANGE_DATE = DATE_TRUNC(''''DAY'''', TO_DATE(''''''|| T_DATE || ''''''))
+FROM
+(SELECT * FROM INTERMEDIATE.WRK_PAYMENT_STATUS_DATA_F) AS src
+WHERE target.C_CLAIM_NO = src.CLM_REF'';
+
+EXECUTE IMMEDIATE v_sqltext;
+
+
+EXECUTE IMMEDIATE ''COMMIT'';
+	RETURN ''Procedure executed successfully'';
+
+	EXCEPTION
+		WHEN OTHER THEN
+			EXECUTE IMMEDIATE ''ROLLBACK'';
+			RAISE ;
+			RETURN ''Error occurred: '' || SQLERRM || ''\\\\\\\\n'' || ''SQL: '' || ''\\\\\\\\n'' || v_sqltext;
+
+
+END;
+';
