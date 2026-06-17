@@ -1,0 +1,95 @@
+{{
+    config(
+        materialized='view'
+    )
+}}
+
+-- Staging: MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW_2_1
+-- Source: raw_health_claim
+
+WITH source AS (
+    SELECT *
+    FROM {{ source('raw_health_claim', 'MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW_2_1') }}
+),
+
+staged AS (
+    SELECT
+        -- Keys
+        FOREIGN_KEY,
+
+        -- Business columns
+        SUSPECT_FRAUDSTER_ID_PROOF_NAME,
+        REPUDIATION_REMARKS,
+        FIELD_TO_BE_CORRECTED,
+        CPT_DESCRIPTION,
+        USERNAME_CODE,
+        TIME,
+        ICD_DESCRIPTION,
+        AUDIT_REASON_RECOVERY,
+        ICD_RANGE_DESCRIPTION_LEVEL_2,
+        PENAL_INTEREST_AMOUNT,
+        DIAGNOSIS,
+        CREATED_BY,
+        SUSPECT_FRAUDSTER_ID_PROOF_NUMBER,
+        INVESTIGATION_REMARKS,
+        TRANSITION_TYPE,
+        CPT_CODE_DESCRIPTION,
+        REQUEST_RAISED_ON,
+        RECOVERY_PARTY,
+        TO_BE_PAID,
+        SUBTYPE_OF_ERROR,
+        REQUEST_APPROVED_BY,
+        DENIAL_DESCRIPTION,
+        FINANCIAL_LEAKAGES,
+        AUDIT_REASON,
+        TIME_OF_UPDATED,
+        REMOVE_ERROR,
+        ADJUST_TDS,
+        INVESTATION_ID,
+        REQUEST_RAISED_BY,
+        REASON_REMARKS,
+        ICD_RANGE_DESCRIPTION,
+        AUDIT_REMARK,
+        NO_OF_DAYS_DELAYED_SETTLEMENT,
+        REQUEST_UPDATED_BY,
+        FRAUD_COMMITED_BY,
+        STATUS,
+        SYSTEM_DATE,
+        CLAUSE_CODE,
+        DIAGNOSIS_TYPE,
+        REQUEST_UPDATED_ON,
+        PENAL_INTEREST,
+        RECOVERY_REMARKS,
+        REMARKS,
+        REQUEST_APPROVED_ON,
+        CREATED_DATE,
+        CLAUSE_DESCRIPTION,
+        VALIDATION_FOR_PAYOUT,
+        DENIAL_DECISION,
+        RECOVERY_REASON,
+        REASON,
+        WAIVER_OF_CLAIM_CONDITION,
+        AUDIT_USER_NAME,
+        DATE,
+        NAME_OF_SUSPECT_FRAUDESTER,
+        CPT_CODE,
+        ICD_CODE,
+        TYPE_OF_TREATMENT,
+        DURATION_IN_MONTHS,
+        CLAIM_STATUS,
+        RECOVERY_AMOUNT,
+        DENIAL_CODE,
+        _COVERSERVICE_PACKAGEBENEFIT,
+        TYPE_OF_ERROR,
+        LEVEL,
+
+        -- Metadata
+        INC_JOB_CREATED_AT,
+        REC_REFRESH_AT,
+        CURRENT_TIMESTAMP() AS load_dt_tm,
+        'MAXIMUS' AS record_source
+
+    FROM source src
+)
+
+SELECT * FROM staged

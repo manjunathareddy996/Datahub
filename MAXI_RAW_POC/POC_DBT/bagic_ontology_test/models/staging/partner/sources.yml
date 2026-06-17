@@ -1,0 +1,36 @@
+version: 2
+
+sources:
+  - name: raw_maximus
+    description: "MAXIMUS Business Partners - Flattened JSON from Kafka"
+    database: "{{ env_var('RAW_DATABASE', 'RAW_DB') }}"
+    schema: "{{ env_var('RAW_SCHEMA', 'BUSINESS_PARTNERS') }}"
+    tables:
+      - name: BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL
+        description: "Party detail - core partner attributes (PARTY_CODE is the BK)"
+        columns:
+          - name: PARTY_CODE
+            description: "Business Key - unique partner identifier"
+          - name: FOREIGN_KEY
+            description: "Links to parent BUSINESS_PARTNERS_VW_DATA"
+
+      - name: BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS
+        description: "Party address - address lines, city, state, pincode"
+
+      - name: BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW_2_1
+        description: "Address property pivot - additional address attributes (area, landmark, geo)"
+
+      - name: BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1
+        description: "Simple property pivot - 1049 partner attributes (KYC, bank, agent, hospital, etc.)"
+
+      - name: BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW_2_1
+        description: "Multi-set property pivot - bank details, LOB profile, passport, etc."
+
+      - name: BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_RELATION
+        description: "Party relation - stake codes (roles) for the partner"
+
+      - name: BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_DOCUMENT_DETAIL
+        description: "Document details for the partner"
+
+      - name: BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_RELATED_PARTY
+        description: "Related party - self-referencing relationships"
