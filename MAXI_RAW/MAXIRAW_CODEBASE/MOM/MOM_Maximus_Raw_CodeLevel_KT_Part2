@@ -1,0 +1,55 @@
+Subject: Maximus Raw Code Level Knowledge Transfer – Part 2
+Date: February 26, 2026
+Duration: ~1 hour
+Attendees: Shaik Ashraf (Presenter), Shantanu Kshatriya, L2 Team
+
+1. PURPOSE
+
+Continuation of Maximus Raw Ingestion KT sessions. previous sessions covered overview, and code level review of metadata procedure and all other helper procedures. Part 2 covers Flattening Procedure, Upsert Procedure, Email Reporting of dag run, Recon DAG, and rerun mechanisms.
+
+2. KEY TOPICS DISCUSSED
+
+2.1 Flattening Procedure
+
+• Accepts parameters: source DB/schema/table, target DB/schema, variant columns, variant keys, foreign key path, relational columns, metadata flag, sync mode, and recursive flag
+• Staging table holds raw JSON in 'data' column. Variant keys define flattening depth
+• Foreign key (quotation number/claim number) propagated from parent to all child tables for use in upsert Procedure
+• Supports both Full Refresh Overwrite (FRO) and Incremental Update (INU) modes via sync mode parameter
+  - FRO creates permanent tables
+  - INU creates temporary tables for later upsert into permanent tables
+• Safety checks: if base or child table is deleted, procedure recreates it from staging table (for base table) or parent-level table (for child table)
+• Metadata procedure retrieves column metadata (level, key, path, data type) used to build DDL statements dynamically
+• Dictionaries/maps built for level-to-key, alias, and path mapping to help in DDL construction and recursively flattening json
+• FROM query generated dynamically: arrays require FLATTEN; plain do not
+• Audit columns (file name, refresh date, created-by,..) excluded from hash record to avoid false upserts
+• Procedure calls itself recursively for child table levels. Output table names passed to Upsert Procedure
+
+2.2 Upsert Procedure
+• Parameters: source DB/schema/table, target DB/schema/table, and foreign key
+• Validates both source and target tables exist and column lists match before proceeding
+• Transaction initiated for atomicity (ACID compliance); any failure triggers ull rollback
+• All foreign keys present in incremental data are deleted from permanent table, then latest records re-inserted — effectively a delete-and-insert (upsert) operation
+
+2.3 Mirror Result Logging
+• After each pipeline run, Mirror Result generated capturing:
+  - Base table check status
+  - Metadata differences (new columns)
+  - DDL queries executed
+  - Upsert results per table
+• XCOM results are temporary (not stored permanently) and sent via email after each DAG run
+• Duplicate report checks stage table for duplicate JSON files using foreign key, file name, and timestamp. Sensitive data masked, error-code JSON data unmasked for debugging
+• Email summary includes: total records, distinct records, min/max file timestamp of that load, Mirror Result, and duplicate json report
+• One email sent per topic per DAG run. Multiple runs per day means multiple emails
+
+2.4 Recon DAG
+• Separate Recon DAG runs after ingestion and executes SQL minus queries comparing Claim Register and Premium Register against Maximus Raw base tables
+• Outputs mismatch report showing total JSONs in S3, total mismatches, and Excel sheet for review
+
+3. Q&A SUMMARY
+
+Q: Will we receive multiple emails if pipeline runs more frequently than daily?
+A: Yes – one email per topic per DAG run. Multiple runs = multiple emails.
+Q: How to rerun a specific table for a specific date?
+A: Trigger the Orchestrator DAG manually with the table name. For backdated 
+   reprocessing, clear json records upto that specific date and update the last_modified_timestamp
+   from state table and trigger the Orchestrator dag with that table name.

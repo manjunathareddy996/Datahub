@@ -1,0 +1,789 @@
+[{
+  "errorCode": 0,
+  "errorDescription": "Success",
+  "policyDetails": {
+    "agentCode": null,
+    "commision": null,
+    "dispatchDetails": [
+      {
+        "address": null,
+        "city": null,
+        "courierName": null,
+        "dispatchDate": null,
+        "dispatchDestination": null,
+        "dispatchMode": null,
+        "dispatchStatus": null,
+        "district": null,
+        "documentType": null,
+        "pODNumber": null,
+        "pinCode": null,
+        "priority": null,
+        "recipientName": null,
+        "remarks": null,
+        "serialNo": null,
+        "state": null
+      }
+    ],
+    "documentDetails": [
+      {
+        "documentGenerationDate": null,
+        "documentId": null,
+        "documentName": null,
+        "documentType": null
+      }
+    ],
+    "endorsementDetails": [
+      {
+        "endorsementApprovedDate": null,
+        "endorsementEffectiveDate": null,
+        "endorsementNumber": null,
+        "endorsementPremium": null,
+        "endorsementRevisedSumInsured": null,
+        "endorsementSumInsured": null,
+        "remarks": null,
+        "typeofEndorsement": null
+      }
+    ],
+    "gst": null,
+    "insuredDetails": [
+      {
+        "coverDetails": [],
+        "documentDetails": [],
+        "memberDetails": {
+          "businessName": null,
+          "createdBy": null,
+          "dateOfBirth": null,
+          "documentDetail": [],
+          "firstName": null,
+          "gender": null,
+          "lastName": null,
+          "middleName": null,
+          "nationality": null,
+          "occupation": null,
+          "parentPartyCode": null,
+          "partyAddress": [],
+          "partyCode": null,
+          "partyEndDate": null,
+          "partyLastModificationDate": null,
+          "partyProperty": null,
+          "partyRelation": [],
+          "partyStartDate": null,
+          "partyStatus": null,
+          "registrationDate": null,
+          "registrationNo": null,
+          "relatedParty": [],
+          "title": null,
+          "typeOfOrganization": null,
+          "typeOfParty": null
+        },
+        "netPremium": "",
+        "riskCode": "",
+        "riskDesc": null,
+        "riskProperty": {
+          "multiSetProperty": [],
+          "simpleProperty": []
+        },
+        "riskSerialNumber": "",
+        "sumInsured": null,
+        "totalPremium": ""
+      }
+    ],
+    "netPremium": null,
+    "officeDetails": {
+      "officeAddress": [
+        {
+          "address1": null,
+          "address2": null,
+          "address3": null,
+          "addressProperty": [],
+          "addressType": null,
+          "alternateEmailId": null,
+          "city": null,
+          "country": null,
+          "district": null,
+          "eMailId": null,
+          "fax": null,
+          "landlineNo": null,
+          "mobileNo": null,
+          "phoneNo": null,
+          "pincode": null,
+          "state": null,
+          "stdCode": null,
+          "workNo": null
+        }
+      ],
+      "officeCode": null
+    },
+    "paymentFrequency": null,
+    "policyDuration": null,
+    "policyDurationunit": null,
+    "policyExpiryDate": null,
+    "policyHolderCode": null,
+    "policyInceptionDate": null,
+    "policyNumber": null,
+    "policyPaymentInformation": [
+      {
+        "chequeNumber": null,
+        "chequeRealisationDate": null,
+        "chequeStatus": null,
+        "collectionAmount": null,
+        "collectionDate": null,
+        "collectionMode": null,
+        "collectionSource": null,
+        "collectionType": null,
+        "receiptGenerationDate": null,
+        "receiptNumber": null,
+        "subCode": null,
+        "transactionDate": null,
+        "transactionId": null
+      }
+    ],
+    "policyProperty": {
+      "multiSetProperty": [
+        {
+          "multiSetDetail": [],
+          "multiSetName": null
+        }
+      ],
+      "simpleProperty": [
+        {
+          "paramName": "Policy Id",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Policy Sub Status",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Created By",
+          "paramValue": ""
+        }
+      ]
+    },
+    "policyRelation": [
+      {
+        "partyCode": null,
+        "partyName": null,
+        "partySharePercentage": null,
+        "stakeCode": null
+      }
+    ],
+    "policyStatus": null,
+    "premiumMode": null,
+    "previousPolicyDetails": [
+      {
+        "policyExpiryDate": null,
+        "policyInceptionDate": null,
+        "policyNumber": null,
+        "productCode": null,
+        "productName": null,
+        "sumInsured": null,
+        "totalPremium": null
+      }
+    ],
+    "productCode": null,
+    "productName": null,
+    "proposerDetails": {
+      "businessName": null,
+      "createdBy": null,
+      "dateOfBirth": null,
+      "documentDetail": [
+        {
+          "documentGenerationDate": null,
+          "documentId": null,
+          "documentName": null,
+          "documentType": null
+        }
+      ],
+      "firstName": null,
+      "gender": null,
+      "lastName": null,
+      "middleName": null,
+      "nationality": null,
+      "occupation": null,
+      "parentPartyCode": null,
+      "partyAddress": [
+        {
+          "address1": null,
+          "address2": null,
+          "address3": null,
+          "addressProperty": [],
+          "addressType": null,
+          "alternateEmailId": null,
+          "city": null,
+          "country": null,
+          "district": null,
+          "eMailId": null,
+          "fax": null,
+          "landlineNo": null,
+          "mobileNo": null,
+          "phoneNo": null,
+          "pincode": null,
+          "state": null,
+          "stdCode": null,
+          "workNo": null
+        }
+      ],
+      "partyCode": null,
+      "partyEndDate": null,
+      "partyLastModificationDate": null,
+      "partyProperty": {
+        "multiSetProperty": [
+          {
+            "multiSetDetail": [],
+            "multiSetName": null
+          }
+        ],
+        "simpleProperty": [
+          {
+            "paramName": "",
+            "paramValue": ""
+          }
+        ]
+      },
+      "partyRelation": [
+        {
+          "stakeName": null,
+          "startDate": null
+        }
+      ],
+      "partyStartDate": null,
+      "partyStatus": null,
+      "registrationDate": null,
+      "registrationNo": null,
+      "relatedParty": [],
+      "title": null,
+      "typeOfOrganization": null,
+      "typeOfParty": null
+    },
+    "quotationNumber": null,
+    "renewalFlag": null,
+    "stampDuty": null,
+    "strPolicyBranchName": null,
+    "strPolicyIntimationDate": null,
+    "teleVerificationDetails": [
+      {
+        "endTime": null,
+        "startTime": null,
+        "teleVarificationInitiatedDate": null,
+        "teleVarificationStatus": null,
+        "transactionId": null
+      }
+    ],
+    "totalPremium": null,
+    "workItemDetails": [
+      {
+        "completionDate": null,
+        "raisedBy": null,
+        "raisedDate": null,
+        "remarks": null,
+        "status": null,
+        "taskType": null
+      }
+    ]
+  },
+  "premiumDetails": {
+    "collectedPremium": "0",
+    "errorCode": 0,
+    "errorDescription": "Success",
+    "outstandingPremium": "0",
+    "premcalcDetail": null,
+    "taxDetail": null
+  },
+  "quoteParamDetails": {
+    "additionalPartyList": null,
+    "buildingDetails": null,
+    "partyDetails": null,
+    "polPropPropList": null,
+    "policyProperty": {
+      "multiSetPropertyInput": [
+        {
+          "multiSetDetailInput": [],
+          "multiSetName": null
+        }
+      ],
+      "ruleList": [
+        {
+          "strParamName": "Policy Id",
+          "strParamSeq": "0",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Policy Sub Status",
+          "strParamSeq": "1",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Created By",
+          "strParamSeq": "2",
+          "strParamValue": ""
+        }
+      ],
+      "strBusinessEvent": "SCR-BSCDTL"
+    },
+    "riskList": [
+      {
+        "additionalPartyCode": null,
+        "baseCurrency": "INR",
+        "multiSetPropertyInput": [],
+        "partyDetails": null,
+        "premCurrency": "INR",
+        "riskCover": [],
+        "riskProperty": {
+          "ruleList": [],
+          "strEventCode": "SCR-RSKDTL"
+        },
+        "strAddr1": null,
+        "strAddr2": null,
+        "strAddr3": null,
+        "strBillingStake": null,
+        "strCityCode": null,
+        "strCountryCode": "INDIA",
+        "strDiscount": "0",
+        "strDocumentID": null,
+        "strLoading": "0",
+        "strPartyCode": null,
+        "strPolRiskId": null,
+        "strPolicyCountry": "INDIA",
+        "strPolicyId": null,
+        "strPostalCode": null,
+        "strRiskCode": "",
+        "strRiskDesc": null,
+        "strRiskExpiryDate": null,
+        "strRiskInceptionDate": null,
+        "strRiskSerialNumber": "",
+        "strRiskSumInsured": null,
+        "strStateCode": null
+      }
+    ],
+    "strAgentCode": "",
+    "strApplicationCode": "",
+    "strBaseCurrency": "INR",
+    "strBaseCurrencyRate": "1",
+    "strBillingStake": "POLICY-HOL",
+    "strCalculatePremiumIndicator": "",
+    "strCommission": null,
+    "strDocumentID": null,
+    "strIntimationDate": "",
+    "strMultithreadIndicator": "Y",
+    "strNewPremIndicator": "Y",
+    "strPartyCodesForRemoval": null,
+    "strPolicyBranchName": "",
+    "strPolicyDetailsChangeIndicator": "",
+    "strPolicyExpiryDate": "",
+    "strPolicyHolderCode": "",
+    "strPolicyInceptionDate": "",
+    "strPolicyQuoteNumber": "",
+    "strPolicyStatusCode": null,
+    "strPolicyTerm": "",
+    "strPolicyTermUnit": "",
+    "strPremiumCurrency": "INR",
+    "strPremiumCurrencyRate": "1",
+    "strPremiumFrequency": "",
+    "strPremiumMode": "",
+    "strProductCode": "",
+    "strReferIndicator": "",
+    "strRetCode": "0",
+    "strRetError": "",
+    "strRiskIdForRemoval": "",
+    "strTotalDiscountAmount": "0.0",
+    "strTotalLoadingAmount": "0.0",
+    "strUpdatePartyIndicator": "Y",
+    "strprivilegeCode": ""
+  }
+},
+{
+  "errorCode": 0,
+  "errorDescription": "Success",
+  "policyDetails": {
+    "agentCode": null,
+    "commision": null,
+    "dispatchDetails": [
+      {
+        "address": null,
+        "city": null,
+        "courierName": null,
+        "dispatchDate": null,
+        "dispatchDestination": null,
+        "dispatchMode": null,
+        "dispatchStatus": null,
+        "district": null,
+        "documentType": null,
+        "pODNumber": null,
+        "pinCode": null,
+        "priority": null,
+        "recipientName": null,
+        "remarks": null,
+        "serialNo": null,
+        "state": null
+      }
+    ],
+    "documentDetails": [
+      {
+        "documentGenerationDate": null,
+        "documentId": null,
+        "documentName": null,
+        "documentType": null
+      }
+    ],
+    "endorsementDetails": [
+      {
+        "endorsementApprovedDate": null,
+        "endorsementEffectiveDate": null,
+        "endorsementNumber": null,
+        "endorsementPremium": null,
+        "endorsementRevisedSumInsured": null,
+        "endorsementSumInsured": null,
+        "remarks": null,
+        "typeofEndorsement": null
+      }
+    ],
+    "gst": null,
+    "insuredDetails": [
+      {
+        "coverDetails": [],
+        "documentDetails": [],
+        "memberDetails": {
+          "businessName": null,
+          "createdBy": null,
+          "dateOfBirth": null,
+          "documentDetail": [],
+          "firstName": null,
+          "gender": null,
+          "lastName": null,
+          "middleName": null,
+          "nationality": null,
+          "occupation": null,
+          "parentPartyCode": null,
+          "partyAddress": [],
+          "partyCode": null,
+          "partyEndDate": null,
+          "partyLastModificationDate": null,
+          "partyProperty": null,
+          "partyRelation": [],
+          "partyStartDate": null,
+          "partyStatus": null,
+          "registrationDate": null,
+          "registrationNo": null,
+          "relatedParty": [],
+          "title": null,
+          "typeOfOrganization": null,
+          "typeOfParty": null
+        },
+        "netPremium": "",
+        "riskCode": "",
+        "riskDesc": null,
+        "riskProperty": {
+          "multiSetProperty": [],
+          "simpleProperty": []
+        },
+        "riskSerialNumber": "",
+        "sumInsured": null,
+        "totalPremium": ""
+      }
+    ],
+    "netPremium": null,
+    "officeDetails": {
+      "officeAddress": [
+        {
+          "address1": null,
+          "address2": null,
+          "address3": null,
+          "addressProperty": [],
+          "addressType": null,
+          "alternateEmailId": null,
+          "city": null,
+          "country": null,
+          "district": null,
+          "eMailId": null,
+          "fax": null,
+          "landlineNo": null,
+          "mobileNo": null,
+          "phoneNo": null,
+          "pincode": null,
+          "state": null,
+          "stdCode": null,
+          "workNo": null
+        }
+      ],
+      "officeCode": null
+    },
+    "paymentFrequency": null,
+    "policyDuration": null,
+    "policyDurationunit": null,
+    "policyExpiryDate": null,
+    "policyHolderCode": null,
+    "policyInceptionDate": null,
+    "policyNumber": null,
+    "policyPaymentInformation": [
+      {
+        "chequeNumber": null,
+        "chequeRealisationDate": null,
+        "chequeStatus": null,
+        "collectionAmount": null,
+        "collectionDate": null,
+        "collectionMode": null,
+        "collectionSource": null,
+        "collectionType": null,
+        "receiptGenerationDate": null,
+        "receiptNumber": null,
+        "subCode": null,
+        "transactionDate": null,
+        "transactionId": null
+      }
+    ],
+    "policyProperty": {
+      "multiSetProperty": [
+        {
+          "multiSetDetail": [],
+          "multiSetName": null
+        }
+      ],
+      "simpleProperty": [
+        {
+          "paramName": "Policy Id",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Policy Sub Status",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Created By",
+          "paramValue": ""
+        }
+      ]
+    },
+    "policyRelation": [
+      {
+        "partyCode": null,
+        "partyName": null,
+        "partySharePercentage": null,
+        "stakeCode": null
+      }
+    ],
+    "policyStatus": null,
+    "premiumMode": null,
+    "previousPolicyDetails": [
+      {
+        "policyExpiryDate": null,
+        "policyInceptionDate": null,
+        "policyNumber": null,
+        "productCode": null,
+        "productName": null,
+        "sumInsured": null,
+        "totalPremium": null
+      }
+    ],
+    "productCode": null,
+    "productName": null,
+    "proposerDetails": {
+      "businessName": null,
+      "createdBy": null,
+      "dateOfBirth": null,
+      "documentDetail": [
+        {
+          "documentGenerationDate": null,
+          "documentId": null,
+          "documentName": null,
+          "documentType": null
+        }
+      ],
+      "firstName": null,
+      "gender": null,
+      "lastName": null,
+      "middleName": null,
+      "nationality": null,
+      "occupation": null,
+      "parentPartyCode": null,
+      "partyAddress": [
+        {
+          "address1": null,
+          "address2": null,
+          "address3": null,
+          "addressProperty": [],
+          "addressType": null,
+          "alternateEmailId": null,
+          "city": null,
+          "country": null,
+          "district": null,
+          "eMailId": null,
+          "fax": null,
+          "landlineNo": null,
+          "mobileNo": null,
+          "phoneNo": null,
+          "pincode": null,
+          "state": null,
+          "stdCode": null,
+          "workNo": null
+        }
+      ],
+      "partyCode": null,
+      "partyEndDate": null,
+      "partyLastModificationDate": null,
+      "partyProperty": {
+        "multiSetProperty": [
+          {
+            "multiSetDetail": [],
+            "multiSetName": null
+          }
+        ],
+        "simpleProperty": [
+          {
+            "paramName": "",
+            "paramValue": ""
+          }
+        ]
+      },
+      "partyRelation": [
+        {
+          "stakeName": null,
+          "startDate": null
+        }
+      ],
+      "partyStartDate": null,
+      "partyStatus": null,
+      "registrationDate": null,
+      "registrationNo": null,
+      "relatedParty": [],
+      "title": null,
+      "typeOfOrganization": null,
+      "typeOfParty": null
+    },
+    "quotationNumber": null,
+    "renewalFlag": null,
+    "stampDuty": null,
+    "strPolicyBranchName": null,
+    "strPolicyIntimationDate": null,
+    "teleVerificationDetails": [
+      {
+        "endTime": null,
+        "startTime": null,
+        "teleVarificationInitiatedDate": null,
+        "teleVarificationStatus": null,
+        "transactionId": null
+      }
+    ],
+    "totalPremium": null,
+    "workItemDetails": [
+      {
+        "completionDate": null,
+        "raisedBy": null,
+        "raisedDate": null,
+        "remarks": null,
+        "status": null,
+        "taskType": null
+      }
+    ]
+  },
+  "premiumDetails": {
+    "collectedPremium": "0",
+    "errorCode": 0,
+    "errorDescription": "Success",
+    "outstandingPremium": null,
+    "premcalcDetail": null,
+    "taxDetail": null
+  },
+  "quoteParamDetails": {
+    "additionalPartyList": null,
+    "buildingDetails": null,
+    "partyDetails": null,
+    "polPropPropList": null,
+    "policyProperty": {
+      "multiSetPropertyInput": [
+        {
+          "multiSetDetailInput": [],
+          "multiSetName": null
+        }
+      ],
+      "ruleList": [
+        {
+          "strParamName": "Policy Id",
+          "strParamSeq": "0",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Policy Sub Status",
+          "strParamSeq": "1",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Created By",
+          "strParamSeq": "2",
+          "strParamValue": ""
+        }
+      ],
+      "strBusinessEvent": "SCR-BSCDTL"
+    },
+    "riskList": [
+      {
+        "additionalPartyCode": null,
+        "baseCurrency": "INR",
+        "multiSetPropertyInput": [],
+        "partyDetails": null,
+        "premCurrency": "INR",
+        "riskCover": [],
+        "riskProperty": {
+          "ruleList": [],
+          "strEventCode": "SCR-RSKDTL"
+        },
+        "strAddr1": null,
+        "strAddr2": null,
+        "strAddr3": null,
+        "strBillingStake": null,
+        "strCityCode": null,
+        "strCountryCode": "INDIA",
+        "strDiscount": "0",
+        "strDocumentID": null,
+        "strLoading": "0",
+        "strPartyCode": null,
+        "strPolRiskId": null,
+        "strPolicyCountry": "INDIA",
+        "strPolicyId": null,
+        "strPostalCode": null,
+        "strRiskCode": "",
+        "strRiskDesc": null,
+        "strRiskExpiryDate": null,
+        "strRiskInceptionDate": null,
+        "strRiskSerialNumber": "",
+        "strRiskSumInsured": null,
+        "strStateCode": null
+      }
+    ],
+    "strAgentCode": "",
+    "strApplicationCode": "",
+    "strBaseCurrency": "INR",
+    "strBaseCurrencyRate": "1",
+    "strBillingStake": "POLICY-HOL",
+    "strCalculatePremiumIndicator": "",
+    "strCommission": null,
+    "strDocumentID": null,
+    "strIntimationDate": "",
+    "strMultithreadIndicator": "Y",
+    "strNewPremIndicator": "Y",
+    "strPartyCodesForRemoval": null,
+    "strPolicyBranchName": "",
+    "strPolicyDetailsChangeIndicator": "",
+    "strPolicyExpiryDate": "",
+    "strPolicyHolderCode": "",
+    "strPolicyInceptionDate": "",
+    "strPolicyQuoteNumber": "",
+    "strPolicyStatusCode": null,
+    "strPolicyTerm": "",
+    "strPolicyTermUnit": "",
+    "strPremiumCurrency": "INR",
+    "strPremiumCurrencyRate": "1",
+    "strPremiumFrequency": "",
+    "strPremiumMode": "",
+    "strProductCode": "",
+    "strReferIndicator": "",
+    "strRetCode": "0",
+    "strRetError": "",
+    "strRiskIdForRemoval": "",
+    "strTotalDiscountAmount": "0.0",
+    "strTotalLoadingAmount": "0.0",
+    "strUpdatePartyIndicator": "Y",
+    "strprivilegeCode": ""
+  }
+}]
+

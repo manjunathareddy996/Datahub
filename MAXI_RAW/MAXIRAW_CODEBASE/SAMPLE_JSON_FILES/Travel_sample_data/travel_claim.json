@@ -1,0 +1,1698 @@
+{
+  "claimDetails": {
+    "claimAttribute": {
+      "multiSetProperty": [
+        {
+          "multiSetDetail": [
+            {
+              "property": [
+                {
+                  "paramName": "Mode of Inward",
+                  "paramValue": "EMAIL"
+                },
+                {
+                  "paramName": "Document Received Date",
+                  "paramValue": "12/12/2025"
+                },
+                {
+                  "paramName": "Inward Date",
+                  "paramValue": "12/12/2025"
+                },
+                {
+                  "paramName": "Courier Name",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "POD Number",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "City",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Pin Code",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Sender Name",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "State",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Document Type Inward",
+                  "paramValue": "FRSCLMDOC"
+                },
+                {
+                  "paramName": "Document Details",
+                  "paramValue": "na"
+                },
+                {
+                  "paramName": "Inward Number",
+                  "paramValue": "IN-9910-25-1002-00215782-01"
+                },
+                {
+                  "paramName": "Special Enclosures Flag",
+                  "paramValue": "N"
+                },
+                {
+                  "paramName": "Special Enclosures Details",
+                  "paramValue": ""
+                }
+              ],
+              "sequenceNumber": "1"
+            }
+          ],
+          "multiSetName": "Inward Details Claim"
+        },
+        {
+          "multiSetDetail": [
+            {
+              "property": [
+                {
+                  "paramName": "Requirement  Status",
+                  "paramValue": "NEW"
+                },
+                {
+                  "paramName": "Requirement Type Name",
+                  "paramValue": "RQMNT91"
+                },
+                {
+                  "paramName": "Remarks",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Last Updated By",
+                  "paramValue": "EM00008116"
+                },
+                {
+                  "paramName": "Intimation Date",
+                  "paramValue": "12/12/2025"
+                },
+                {
+                  "paramName": "Required From",
+                  "paramValue": "INSURED"
+                },
+                {
+                  "paramName": "Cover Name",
+                  "paramValue": "TRV02"
+                }
+              ],
+              "sequenceNumber": "9"
+            },
+            {
+              "property": [
+                {
+                  "paramName": "Required From",
+                  "paramValue": "INSURED"
+                },
+                {
+                  "paramName": "Remarks",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Requirement Type Name",
+                  "paramValue": "RQMNT68"
+                },
+                {
+                  "paramName": "Requirement  Status",
+                  "paramValue": "NEW"
+                },
+                {
+                  "paramName": "Cover Name",
+                  "paramValue": "TRV02"
+                },
+                {
+                  "paramName": "Last Updated By",
+                  "paramValue": "EM00008116"
+                },
+                {
+                  "paramName": "Intimation Date",
+                  "paramValue": "12/12/2025"
+                }
+              ],
+              "sequenceNumber": "8"
+            },
+            {
+              "property": [
+                {
+                  "paramName": "Required From",
+                  "paramValue": "INSURED"
+                },
+                {
+                  "paramName": "Requirement  Status",
+                  "paramValue": "NEW"
+                },
+                {
+                  "paramName": "Requirement Type Name",
+                  "paramValue": "RQMNT61"
+                },
+                {
+                  "paramName": "Intimation Date",
+                  "paramValue": "12/12/2025"
+                },
+                {
+                  "paramName": "Last Updated By",
+                  "paramValue": "EM00008116"
+                },
+                {
+                  "paramName": "Cover Name",
+                  "paramValue": "TRV02"
+                },
+                {
+                  "paramName": "Remarks",
+                  "paramValue": ""
+                }
+              ],
+              "sequenceNumber": "7"
+            },
+            {
+              "property": [
+                {
+                  "paramName": "1st Reminder Date",
+                  "paramValue": "27/12/2025"
+                },
+                {
+                  "paramName": "Closure Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "2nd Reminder Date",
+                  "paramValue": "11/01/2026"
+                },
+                {
+                  "paramName": "Requirement  Status",
+                  "paramValue": "WAIVED"
+                },
+                {
+                  "paramName": "Required From",
+                  "paramValue": "INSURED"
+                },
+                {
+                  "paramName": "Response",
+                  "paramValue": "na"
+                },
+                {
+                  "paramName": "Last Updated By",
+                  "paramValue": "EM00006802"
+                },
+                {
+                  "paramName": "Cover Name",
+                  "paramValue": "TRV02"
+                },
+                {
+                  "paramName": "Remarks",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Requirement Type Name",
+                  "paramValue": "RQMNT71"
+                },
+                {
+                  "paramName": "Intimation Date",
+                  "paramValue": "12/12/2025"
+                }
+              ],
+              "sequenceNumber": "6"
+            },
+            {
+              "property": [
+                {
+                  "paramName": "Intimation Date",
+                  "paramValue": "12/12/2025"
+                },
+                {
+                  "paramName": "Last Updated By",
+                  "paramValue": "EM00008116"
+                },
+                {
+                  "paramName": "Requirement Type Name",
+                  "paramValue": "RQMNT23"
+                },
+                {
+                  "paramName": "Remarks",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Name",
+                  "paramValue": "TRV02"
+                },
+                {
+                  "paramName": "Required From",
+                  "paramValue": "INSURED"
+                },
+                {
+                  "paramName": "Requirement  Status",
+                  "paramValue": "NEW"
+                }
+              ],
+              "sequenceNumber": "5"
+            },
+            {
+              "property": [
+                {
+                  "paramName": "Requirement Type Name",
+                  "paramValue": "RQMNT1"
+                },
+                {
+                  "paramName": "Last Updated By",
+                  "paramValue": "EM00008116"
+                },
+                {
+                  "paramName": "Remarks",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Name",
+                  "paramValue": "TRV02"
+                },
+                {
+                  "paramName": "Required From",
+                  "paramValue": "INSURED"
+                },
+                {
+                  "paramName": "Intimation Date",
+                  "paramValue": "12/12/2025"
+                },
+                {
+                  "paramName": "Requirement  Status",
+                  "paramValue": "NEW"
+                }
+              ],
+              "sequenceNumber": "4"
+            },
+            {
+              "property": [
+                {
+                  "paramName": "2nd Reminder Date",
+                  "paramValue": "11/01/2026"
+                },
+                {
+                  "paramName": "1st Reminder Date",
+                  "paramValue": "27/12/2025"
+                },
+                {
+                  "paramName": "Response",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Closure Date",
+                  "paramValue": "12/12/2025"
+                },
+                {
+                  "paramName": "Last Updated By",
+                  "paramValue": "EM00006802"
+                },
+                {
+                  "paramName": "Requirement  Status",
+                  "paramValue": "RCVACCP"
+                },
+                {
+                  "paramName": "Required From",
+                  "paramValue": "INSURED"
+                },
+                {
+                  "paramName": "Cover Name",
+                  "paramValue": "TRV02"
+                },
+                {
+                  "paramName": "Requirement Type Name",
+                  "paramValue": "RQMNT10"
+                },
+                {
+                  "paramName": "Intimation Date",
+                  "paramValue": "12/12/2025"
+                },
+                {
+                  "paramName": "Remarks",
+                  "paramValue": "VND\\n12-05-25 2798625 paid"
+                }
+              ],
+              "sequenceNumber": "3"
+            },
+            {
+              "property": [
+                {
+                  "paramName": "Last Updated By",
+                  "paramValue": "EM00006802"
+                },
+                {
+                  "paramName": "Intimation Date",
+                  "paramValue": "12/12/2025"
+                },
+                {
+                  "paramName": "Closure Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "2nd Reminder Date",
+                  "paramValue": "11/01/2026"
+                },
+                {
+                  "paramName": "Cover Name",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "1st Reminder Date",
+                  "paramValue": "27/12/2025"
+                },
+                {
+                  "paramName": "Remarks",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Requirement  Status",
+                  "paramValue": "NEW"
+                },
+                {
+                  "paramName": "Required From",
+                  "paramValue": "INSURED"
+                },
+                {
+                  "paramName": "Requirement Type Name",
+                  "paramValue": "RQMNT78"
+                },
+                {
+                  "paramName": "Response",
+                  "paramValue": ""
+                }
+              ],
+              "sequenceNumber": "2"
+            },
+            {
+              "property": [
+                {
+                  "paramName": "Cover Name",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Last Updated By",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Intimation Date",
+                  "paramValue": "12/12/2025"
+                },
+                {
+                  "paramName": "Closure Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "2nd Reminder Date",
+                  "paramValue": "11/01/2026"
+                },
+                {
+                  "paramName": "1st Reminder Date",
+                  "paramValue": "27/12/2025"
+                },
+                {
+                  "paramName": "Response",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Requirement  Status",
+                  "paramValue": "NEW"
+                },
+                {
+                  "paramName": "Required From",
+                  "paramValue": "INSURED"
+                },
+                {
+                  "paramName": "Remarks",
+                  "paramValue": "please share pancard"
+                },
+                {
+                  "paramName": "Requirement Type Name",
+                  "paramValue": "RQMNT73"
+                }
+              ],
+              "sequenceNumber": "1"
+            }
+          ],
+          "multiSetName": "Requirement Management"
+        },
+        {
+          "multiSetDetail": [
+            {
+              "property": [
+                {
+                  "paramName": "Particular",
+                  "paramValue": "C"
+                },
+                {
+                  "paramName": "Bill Break-Up",
+                  "paramValue": "2798625"
+                },
+                {
+                  "paramName": "Bill Amount",
+                  "paramValue": "2798625"
+                },
+                {
+                  "paramName": "Disallowed Break-Up",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Disallowed Amount",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Approved Amount",
+                  "paramValue": "2798625"
+                },
+                {
+                  "paramName": "Disallowance  Reason",
+                  "paramValue": "na"
+                }
+              ],
+              "sequenceNumber": "1"
+            }
+          ],
+          "multiSetName": "Medical Bill Details"
+        }
+      ],
+      "properties": [
+        {
+          "parameterName": "Caller Email Id",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "City",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Claim  Substatus",
+          "parameterValue": "MEDASS"
+        },
+        {
+          "parameterName": "Claim Circumstances",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Claim Reported By",
+          "parameterValue": "Sunil KUMAR GARG"
+        },
+        {
+          "parameterName": "Co-Insurance Applicable",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Communication Contact number",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Communication Email Id",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Country of Loss",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Courier Name",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Deductible Comment",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Disease Category",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Document Details",
+          "parameterValue": "na"
+        },
+        {
+          "parameterName": "Document Received Date",
+          "parameterValue": "12/12/2025"
+        },
+        {
+          "parameterName": "Document Type Inward",
+          "parameterValue": "FRSCLMDOC"
+        },
+        {
+          "parameterName": "Estimated Loss Amount",
+          "parameterValue": "96000"
+        },
+        {
+          "parameterName": "Final Diagnosis",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "General Team Comments (Tracking Comments)",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Hospital Email Id",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "ICD Description",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Insured Contact Number",
+          "parameterValue": "9999999999"
+        },
+        {
+          "parameterName": "Insured Email Id",
+          "parameterValue": "NA@NA.COM"
+        },
+        {
+          "parameterName": "Internal Claim Comments",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Intimation Number",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Inward Date",
+          "parameterValue": "12/12/2025"
+        },
+        {
+          "parameterName": "Inward Number",
+          "parameterValue": "IN-9910-25-1002-00215782-01"
+        },
+        {
+          "parameterName": "Inward Property Id",
+          "parameterValue": "6132819212122025"
+        },
+        {
+          "parameterName": "Key Contact Number",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Key Email Id",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Leader/Follower",
+          "parameterValue": "NA"
+        },
+        {
+          "parameterName": "Linked Claim Number",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Medical Claim No.",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Medical Comments",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Member Name",
+          "parameterValue": "LENISHA  GARG"
+        },
+        {
+          "parameterName": "Member UHC Code",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Mode of Document Inward",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Mode of Inward",
+          "parameterValue": "EMAIL"
+        },
+        {
+          "parameterName": "Non Disclosure",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "PCS Descreption",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "POD Number",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Passport Number",
+          "parameterValue": "W5660393"
+        },
+        {
+          "parameterName": "Pin Code",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Policy Branch",
+          "parameterValue": "2224"
+        },
+        {
+          "parameterName": "Policy Risk Cover List",
+          "parameterValue": "TRV02"
+        },
+        {
+          "parameterName": "Remarks",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Risk Code",
+          "parameterValue": "MEMBER"
+        },
+        {
+          "parameterName": "Risk Description",
+          "parameterValue": "Member Risk"
+        },
+        {
+          "parameterName": "Risk Serial No",
+          "parameterValue": "1"
+        },
+        {
+          "parameterName": "Sender Name",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Source of Intimation",
+          "parameterValue": "INSURED"
+        },
+        {
+          "parameterName": "Special Enclosures Details",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Special Enclosures Flag",
+          "parameterValue": "N"
+        },
+        {
+          "parameterName": "State",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Stored Company Code",
+          "parameterValue": "BAGIC"
+        },
+        {
+          "parameterName": "Stored Country Code",
+          "parameterValue": "INDIA"
+        },
+        {
+          "parameterName": "Stored LOB Code",
+          "parameterValue": "TRAVEL"
+        },
+        {
+          "parameterName": "Stored Product Code",
+          "parameterValue": "9910"
+        },
+        {
+          "parameterName": "Stored State Code",
+          "parameterValue": "ALL"
+        },
+        {
+          "parameterName": "Type of Claim",
+          "parameterValue": "REIMBSTMNT"
+        }
+      ]
+    },
+    "claimBucket": "Intimated",
+    "claimCover": [
+      {
+        "multiSetDetail": [
+          {
+            "property": [
+              {
+                "paramName": "Mode of Inward",
+                "paramValue": "EMAIL"
+              },
+              {
+                "paramName": "Document Received Date",
+                "paramValue": "12/12/2025"
+              },
+              {
+                "paramName": "Sender Name",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Pin Code",
+                "paramValue": ""
+              },
+              {
+                "paramName": "City",
+                "paramValue": ""
+              },
+              {
+                "paramName": "POD Number",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Courier Name",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Inward Date",
+                "paramValue": "12/12/2025"
+              },
+              {
+                "paramName": "Special Enclosures Details",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Special Enclosures Flag",
+                "paramValue": "N"
+              },
+              {
+                "paramName": "Inward Number",
+                "paramValue": "IN-9910-25-1002-00215782-01"
+              },
+              {
+                "paramName": "Document Details",
+                "paramValue": "na"
+              },
+              {
+                "paramName": "Document Type Inward",
+                "paramValue": "FRSCLMDOC"
+              },
+              {
+                "paramName": "State",
+                "paramValue": ""
+              }
+            ],
+            "sequenceNumber": "1"
+          }
+        ],
+        "multiSetName": "Inward Details Claim"
+      },
+      {
+        "multiSetDetail": [
+          {
+            "property": [
+              {
+                "paramName": "Requirement  Status",
+                "paramValue": "NEW"
+              },
+              {
+                "paramName": "Requirement Type Name",
+                "paramValue": "RQMNT91"
+              },
+              {
+                "paramName": "Remarks",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Cover Name",
+                "paramValue": "TRV02"
+              },
+              {
+                "paramName": "Last Updated By",
+                "paramValue": "EM00008116"
+              },
+              {
+                "paramName": "Intimation Date",
+                "paramValue": "12/12/2025"
+              },
+              {
+                "paramName": "Required From",
+                "paramValue": "INSURED"
+              }
+            ],
+            "sequenceNumber": "1"
+          },
+          {
+            "property": [
+              {
+                "paramName": "Requirement  Status",
+                "paramValue": "NEW"
+              },
+              {
+                "paramName": "Requirement Type Name",
+                "paramValue": "RQMNT68"
+              },
+              {
+                "paramName": "Remarks",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Cover Name",
+                "paramValue": "TRV02"
+              },
+              {
+                "paramName": "Last Updated By",
+                "paramValue": "EM00008116"
+              },
+              {
+                "paramName": "Intimation Date",
+                "paramValue": "12/12/2025"
+              },
+              {
+                "paramName": "Required From",
+                "paramValue": "INSURED"
+              }
+            ],
+            "sequenceNumber": "2"
+          },
+          {
+            "property": [
+              {
+                "paramName": "Requirement  Status",
+                "paramValue": "NEW"
+              },
+              {
+                "paramName": "Requirement Type Name",
+                "paramValue": "RQMNT61"
+              },
+              {
+                "paramName": "Remarks",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Cover Name",
+                "paramValue": "TRV02"
+              },
+              {
+                "paramName": "Last Updated By",
+                "paramValue": "EM00008116"
+              },
+              {
+                "paramName": "Intimation Date",
+                "paramValue": "12/12/2025"
+              },
+              {
+                "paramName": "Required From",
+                "paramValue": "INSURED"
+              }
+            ],
+            "sequenceNumber": "3"
+          },
+          {
+            "property": [
+              {
+                "paramName": "Remarks",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Cover Name",
+                "paramValue": "TRV02"
+              },
+              {
+                "paramName": "Last Updated By",
+                "paramValue": "EM00006802"
+              },
+              {
+                "paramName": "Closure Date",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Requirement  Status",
+                "paramValue": "WAIVED"
+              },
+              {
+                "paramName": "2nd Reminder Date",
+                "paramValue": "11/01/2026"
+              },
+              {
+                "paramName": "1st Reminder Date",
+                "paramValue": "27/12/2025"
+              },
+              {
+                "paramName": "Intimation Date",
+                "paramValue": "12/12/2025"
+              },
+              {
+                "paramName": "Requirement Type Name",
+                "paramValue": "RQMNT71"
+              },
+              {
+                "paramName": "Response",
+                "paramValue": "na"
+              },
+              {
+                "paramName": "Required From",
+                "paramValue": "INSURED"
+              }
+            ],
+            "sequenceNumber": "4"
+          },
+          {
+            "property": [
+              {
+                "paramName": "Requirement  Status",
+                "paramValue": "NEW"
+              },
+              {
+                "paramName": "Requirement Type Name",
+                "paramValue": "RQMNT23"
+              },
+              {
+                "paramName": "Remarks",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Cover Name",
+                "paramValue": "TRV02"
+              },
+              {
+                "paramName": "Last Updated By",
+                "paramValue": "EM00008116"
+              },
+              {
+                "paramName": "Intimation Date",
+                "paramValue": "12/12/2025"
+              },
+              {
+                "paramName": "Required From",
+                "paramValue": "INSURED"
+              }
+            ],
+            "sequenceNumber": "5"
+          },
+          {
+            "property": [
+              {
+                "paramName": "Requirement  Status",
+                "paramValue": "NEW"
+              },
+              {
+                "paramName": "Requirement Type Name",
+                "paramValue": "RQMNT1"
+              },
+              {
+                "paramName": "Remarks",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Cover Name",
+                "paramValue": "TRV02"
+              },
+              {
+                "paramName": "Last Updated By",
+                "paramValue": "EM00008116"
+              },
+              {
+                "paramName": "Intimation Date",
+                "paramValue": "12/12/2025"
+              },
+              {
+                "paramName": "Required From",
+                "paramValue": "INSURED"
+              }
+            ],
+            "sequenceNumber": "6"
+          },
+          {
+            "property": [
+              {
+                "paramName": "Remarks",
+                "paramValue": "VND\\n12-05-25 2798625 paid"
+              },
+              {
+                "paramName": "Closure Date",
+                "paramValue": "12/12/2025"
+              },
+              {
+                "paramName": "Requirement  Status",
+                "paramValue": "RCVACCP"
+              },
+              {
+                "paramName": "Cover Name",
+                "paramValue": "TRV02"
+              },
+              {
+                "paramName": "Last Updated By",
+                "paramValue": "EM00006802"
+              },
+              {
+                "paramName": "Intimation Date",
+                "paramValue": "12/12/2025"
+              },
+              {
+                "paramName": "Required From",
+                "paramValue": "INSURED"
+              },
+              {
+                "paramName": "2nd Reminder Date",
+                "paramValue": "11/01/2026"
+              },
+              {
+                "paramName": "Requirement Type Name",
+                "paramValue": "RQMNT10"
+              },
+              {
+                "paramName": "Response",
+                "paramValue": ""
+              },
+              {
+                "paramName": "1st Reminder Date",
+                "paramValue": "27/12/2025"
+              }
+            ],
+            "sequenceNumber": "7"
+          },
+          {
+            "property": [
+              {
+                "paramName": "Requirement Type Name",
+                "paramValue": "RQMNT78"
+              },
+              {
+                "paramName": "Required From",
+                "paramValue": "INSURED"
+              },
+              {
+                "paramName": "Requirement  Status",
+                "paramValue": "NEW"
+              },
+              {
+                "paramName": "Remarks",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Response",
+                "paramValue": ""
+              },
+              {
+                "paramName": "1st Reminder Date",
+                "paramValue": "27/12/2025"
+              },
+              {
+                "paramName": "2nd Reminder Date",
+                "paramValue": "11/01/2026"
+              },
+              {
+                "paramName": "Closure Date",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Intimation Date",
+                "paramValue": "12/12/2025"
+              },
+              {
+                "paramName": "Last Updated By",
+                "paramValue": "EM00006802"
+              },
+              {
+                "paramName": "Cover Name",
+                "paramValue": ""
+              }
+            ],
+            "sequenceNumber": "8"
+          },
+          {
+            "property": [
+              {
+                "paramName": "Requirement Type Name",
+                "paramValue": "RQMNT73"
+              },
+              {
+                "paramName": "Required From",
+                "paramValue": "INSURED"
+              },
+              {
+                "paramName": "Requirement  Status",
+                "paramValue": "NEW"
+              },
+              {
+                "paramName": "Remarks",
+                "paramValue": "please share pancard"
+              },
+              {
+                "paramName": "Response",
+                "paramValue": ""
+              },
+              {
+                "paramName": "1st Reminder Date",
+                "paramValue": "27/12/2025"
+              },
+              {
+                "paramName": "2nd Reminder Date",
+                "paramValue": "11/01/2026"
+              },
+              {
+                "paramName": "Closure Date",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Intimation Date",
+                "paramValue": "12/12/2025"
+              },
+              {
+                "paramName": "Last Updated By",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Cover Name",
+                "paramValue": ""
+              }
+            ],
+            "sequenceNumber": "9"
+          }
+        ],
+        "multiSetName": "Requirement Management"
+      }
+    ],
+    "claimEventFollowup": [
+      {
+        "assignedPersonal": "EM00008116",
+        "claimFollowupStatus": "A",
+        "createdBy": "EM00008116",
+        "createdDate": "12/12/2025 12:19:11",
+        "descriptionRemarks": "",
+        "eventCode": "A-INT-CLM",
+        "eventEffectiveDate": "05/12/2025 00:00:00",
+        "followupTimestamp": "12/12/2025 12:19:11",
+        "jobStatus": "COMPLETE",
+        "keyword": "",
+        "lastUpdatedBy": "EM00008116",
+        "lastUpdatedDate": "12/12/2025 12:19:11",
+        "priorityIndicator": "N"
+      }
+    ],
+    "claimHistory": [],
+    "claimNotes": [],
+    "claimNotificationDetails": [],
+    "claimParty": [
+      {
+        "businessName": "AWP SERVICES (INDIA) PRIVATE LIMITED (OLD NAME AGA SERVICES(INDIA) PRIVATE LIMITED)",
+        "firstname": "",
+        "lastname": "",
+        "middlename": "",
+        "nif": "",
+        "partycode": "47009585",
+        "ptyattr": {
+          "properties": []
+        },
+        "stakecode": "TPA"
+      },
+      {
+        "businessName": "",
+        "firstname": "Sunil",
+        "lastname": "GARG",
+        "middlename": "KUMAR",
+        "nif": "",
+        "partycode": "PI36355412",
+        "ptyattr": {
+          "properties": []
+        },
+        "stakecode": "POLICY-HOL"
+      }
+    ],
+    "claimPayment": [],
+    "claimReserve": [
+      {
+        "paidamount": "0",
+        "pendingamount": "0",
+        "reserveamount": "0",
+        "reservestake": "TPA",
+        "reservetype": "INDEMNITY",
+        "reservetypedesc": "Indemnity",
+        "reservparty": "47009585"
+      },
+      {
+        "paidamount": "0",
+        "pendingamount": "0",
+        "reserveamount": "0",
+        "reservestake": "POLICY-HOL",
+        "reservetype": "INDEMNITY",
+        "reservetypedesc": "Indemnity",
+        "reservparty": "PI36355412"
+      },
+      {
+        "paidamount": "0",
+        "pendingamount": "0",
+        "reserveamount": "96000",
+        "reservestake": "TPA",
+        "reservetype": "INDEMNITY",
+        "reservetypedesc": "Indemnity",
+        "reservparty": "47009585"
+      },
+      {
+        "paidamount": "0",
+        "pendingamount": "0",
+        "reserveamount": "96000",
+        "reservestake": "POLICY-HOL",
+        "reservetype": "INDEMNITY",
+        "reservetypedesc": "Indemnity",
+        "reservparty": "PI36355412"
+      }
+    ],
+    "claimRisk": {
+      "riskAttribute": {
+        "multiSetProperty": [
+          {
+            "multiSetDetail": [
+              {
+                "property": [
+                  {
+                    "paramName": "Bill No.",
+                    "paramValue": "21-9910-25-1002-00215782-01"
+                  },
+                  {
+                    "paramName": "Applicable Date of Conversion",
+                    "paramValue": "05/12/2025"
+                  },
+                  {
+                    "paramName": "Payment Status",
+                    "paramValue": "Final"
+                  },
+                  {
+                    "paramName": "Term Start Date",
+                    "paramValue": "02/12/2025"
+                  },
+                  {
+                    "paramName": "Term End Date",
+                    "paramValue": "15/12/2025"
+                  },
+                  {
+                    "paramName": "BSI",
+                    "paramValue": "50000"
+                  },
+                  {
+                    "paramName": "Bill Payable Reason",
+                    "paramValue": "MEDEXPNS"
+                  },
+                  {
+                    "paramName": "Loss Reason",
+                    "paramValue": "M1"
+                  },
+                  {
+                    "paramName": "Actual Bill Currency",
+                    "paramValue": "VND"
+                  },
+                  {
+                    "paramName": "Actual Bill Amount",
+                    "paramValue": "2798625"
+                  },
+                  {
+                    "paramName": "Type of Payment",
+                    "paramValue": "REIMBURS"
+                  },
+                  {
+                    "paramName": "Payee Function",
+                    "paramValue": "POLICY-HOL"
+                  },
+                  {
+                    "paramName": "Payee Code",
+                    "paramValue": "PI36355412"
+                  },
+                  {
+                    "paramName": "Payment Mode",
+                    "paramValue": "N"
+                  },
+                  {
+                    "paramName": "Facility Name",
+                    "paramValue": "na"
+                  },
+                  {
+                    "paramName": "Country of Loss",
+                    "paramValue": "COL223"
+                  },
+                  {
+                    "paramName": "Non Admissible Amount",
+                    "paramValue": "0"
+                  },
+                  {
+                    "paramName": "Non Admissible Remarks",
+                    "paramValue": "na"
+                  },
+                  {
+                    "paramName": "Discount",
+                    "paramValue": "0"
+                  },
+                  {
+                    "paramName": "AGA Discount / Repricing",
+                    "paramValue": "0"
+                  },
+                  {
+                    "paramName": "Deduction in SI Currency",
+                    "paramValue": "100"
+                  },
+                  {
+                    "paramName": "Final  Admissible Amount in bill currency",
+                    "paramValue": "2798625"
+                  },
+                  {
+                    "paramName": "Total SI Policy Currency",
+                    "paramValue": "USD"
+                  },
+                  {
+                    "paramName": "Total SI amount in Policy SI Currency",
+                    "paramValue": "50000"
+                  },
+                  {
+                    "paramName": "Conversion Rate to Policy SI Currency",
+                    "paramValue": ".00004"
+                  },
+                  {
+                    "paramName": "Final Admissible Amount in Policy SI Currency",
+                    "paramValue": "11.95"
+                  },
+                  {
+                    "paramName": "Conversion Rate in INR",
+                    "paramValue": "85.42"
+                  },
+                  {
+                    "paramName": "Actual Admissible amount in INR",
+                    "paramValue": "1020.77"
+                  },
+                  {
+                    "paramName": "Confirm Payment",
+                    "paramValue": "NO"
+                  },
+                  {
+                    "paramName": "Invoice Number",
+                    "paramValue": ""
+                  },
+                  {
+                    "paramName": "TPA Fee Currency",
+                    "paramValue": ""
+                  },
+                  {
+                    "paramName": "TPA Fee",
+                    "paramValue": ""
+                  },
+                  {
+                    "paramName": "Bill Status",
+                    "paramValue": ""
+                  },
+                  {
+                    "paramName": "Payment Id",
+                    "paramValue": ""
+                  }
+                ],
+                "sequenceNumber": "1"
+              }
+            ],
+            "multiSetName": "Billing Information"
+          },
+          {
+            "multiSetDetail": [
+              {
+                "property": [
+                  {
+                    "paramName": "Particular",
+                    "paramValue": "C"
+                  },
+                  {
+                    "paramName": "Bill Break-Up",
+                    "paramValue": "2798625"
+                  },
+                  {
+                    "paramName": "Bill Amount",
+                    "paramValue": "2798625"
+                  },
+                  {
+                    "paramName": "Disallowed Break-Up",
+                    "paramValue": "0"
+                  },
+                  {
+                    "paramName": "Disallowed Amount",
+                    "paramValue": "0"
+                  },
+                  {
+                    "paramName": "Approved Amount",
+                    "paramValue": "2798625"
+                  },
+                  {
+                    "paramName": "Disallowance  Reason",
+                    "paramValue": "na"
+                  }
+                ],
+                "sequenceNumber": "1"
+              }
+            ],
+            "multiSetName": "Medical Bill Details"
+          }
+        ],
+        "properties": [
+          {
+            "parameterName": "Cover Code",
+            "parameterValue": "TRV02"
+          },
+          {
+            "parameterName": "Deductible",
+            "parameterValue": "100"
+          },
+          {
+            "parameterName": "Hospital Name",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Loss Amount Currency",
+            "parameterValue": "INR"
+          },
+          {
+            "parameterName": "Deductible Comment",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Cover Sum Insured Currency",
+            "parameterValue": "USD"
+          },
+          {
+            "parameterName": "Hospital Country",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Hospital Address",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Hospital Contact No.",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Pre-Existing Description",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Pre-Existing Illness",
+            "parameterValue": "N"
+          },
+          {
+            "parameterName": "Adverse Medical History",
+            "parameterValue": "N"
+          },
+          {
+            "parameterName": "Do yo want to save Non Medical Details?",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Loss Amount in INR",
+            "parameterValue": "96000"
+          },
+          {
+            "parameterName": "SI Validation Override",
+            "parameterValue": "No"
+          },
+          {
+            "parameterName": "SI Validation Override Remarks",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Additional Amount over SI",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Cover Sum Insured",
+            "parameterValue": "50000"
+          },
+          {
+            "parameterName": "Country of Loss",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Is extensions, clauses, conditions and warranties applicable",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Co-Insurance Loss reserve (INR)",
+            "parameterValue": "0"
+          },
+          {
+            "parameterName": "Loss reserve (INR)",
+            "parameterValue": "96000"
+          },
+          {
+            "parameterName": "Loss Amount",
+            "parameterValue": "96000"
+          },
+          {
+            "parameterName": "Benefit Limit (USD)",
+            "parameterValue": "50000"
+          },
+          {
+            "parameterName": "Deductible Waived",
+            "parameterValue": "N"
+          },
+          {
+            "parameterName": "Actual Date of Admission (DOA)",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Actual Date of Discharge (DOD)",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Hospital ID",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Treating Doctor Details",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Mode of Treatment",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Investigation Number",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "ILM Interim Update",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "ILM Case Status",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Vendor Score",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Who is at fault",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "severity of fraud",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "ground of rejection",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Investigation findings",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "type",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Deceased",
+            "parameterValue": "N"
+          },
+          {
+            "parameterName": "TTD/PTD",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Percentage of Disability",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Final Diagnosis",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Non Disclosure",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "ICD Description",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Disease Category",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "PCS Descreption",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Case Management",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Medical Comments",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "General Team Comments (Tracking Comments)",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "System of Medicine",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "City name",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Purpose of Visit",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Claim Admissible (Non Medical)",
+            "parameterValue": ""
+          },
+          {
+            "parameterName": "Claim Admissible Comments (Non Medical)",
+            "parameterValue": ""
+          }
+        ]
+      },
+      "riskcode": "MEMBER",
+      "riskdesc": "Member taking the travel policy with Bajaj Allianz"
+    },
+    "claimRiskParty": [
+      {
+        "businessName": "",
+        "firstname": "LENISHA",
+        "lastname": "GARG",
+        "middlename": "",
+        "nif": "",
+        "partycode": "ME23708077",
+        "ptyattr": {
+          "properties": []
+        },
+        "stakecode": "MEMBER"
+      }
+    ],
+    "claimSurveyorDeputation": [],
+    "claimTriggerDetails": [],
+    "claimbranch": "1002",
+    "claimno": "21-9910-25-1002-00215782",
+    "claimstatus": "Intimated",
+    "documentDetails": [
+      {
+        "documentGenerationDate": "12/12/2025",
+        "documentId": "375308360",
+        "documentName": "UPLOAD_2025-12-12_12_20_21.903_CLM.msg",
+        "documentType": "Bills/Invoices - Invoices/Bills Supporting The Claim Amount"
+      },
+      {
+        "documentGenerationDate": "12/12/2025",
+        "documentId": "375307916",
+        "documentName": "9910_CLAIM_INTIMATION_43241044.pdf",
+        "documentType": "CLAIM_INTIMATION"
+      }
+    ],
+    "intimationdate": "12/12/2025",
+    "lossdate": "05/12/2025 12:17:38",
+    "lossdesc": " ",
+    "netAssessedAmount": "",
+    "policyno": "12-9910-0008499765-00",
+    "primarycausecode": "",
+    "primarycausedesc": "",
+    "savingAmount": "",
+    "secondarycausecode": "MEDICAL",
+    "secondarycausedesc": "Medical",
+    "statuschangedate": "12/12/2025 12:19:11",
+    "subclaimno": "",
+    "vahanRegistrationVerified": "No"
+  },
+  "errorCode": 0,
+  "errorDescription": "Success"
+}

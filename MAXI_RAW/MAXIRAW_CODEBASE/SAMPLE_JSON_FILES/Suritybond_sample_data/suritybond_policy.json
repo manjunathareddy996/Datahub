@@ -1,0 +1,1616 @@
+{
+  "errorCode": 0,
+  "errorDescription": "Success",
+  "policyDetails": {
+    "agentCode": null,
+    "commision": null,
+    "dispatchDetails": [
+      {
+        "address": null,
+        "city": null,
+        "courierName": null,
+        "dispatchDate": null,
+        "dispatchDestination": null,
+        "dispatchMode": null,
+        "dispatchStatus": null,
+        "district": null,
+        "documentType": null,
+        "pODNumber": null,
+        "pinCode": null,
+        "priority": null,
+        "recipientName": null,
+        "remarks": null,
+        "serialNo": null,
+        "state": null
+      }
+    ],
+    "documentDetails": [
+      {
+        "documentGenerationDate": "19/12/2025",
+        "documentId": "378283582",
+        "documentName": "BR-Draft_2025_12_19_19_15_29_601_POL_378283582.docx",
+        "documentType": "Draft Contract Agreement (DCA) of the project"
+      },
+      {
+        "documentGenerationDate": "19/12/2025",
+        "documentId": "378254263",
+        "documentName": "TW-05_01-Section_-_I_IFB_SSTE_Vol-I_2025_12_19_18_02_27_164_POL_378254263.docx",
+        "documentType": "Sanction Letters for Bank Guarantee Limits"
+      },
+      {
+        "documentGenerationDate": "19/12/2025",
+        "documentId": "378283675",
+        "documentName": "6621_Bagic_PF_44917375.pdf",
+        "documentType": "Bagic_PF"
+      },
+      {
+        "documentGenerationDate": "19/12/2025",
+        "documentId": "378254030",
+        "documentName": "TW-05_01-Section_-_I_IFB_SSTE_Vol-I_2025_12_19_18_01_51_023_POL_378254030.docx",
+        "documentType": "Duly Filled Proposal Form"
+      },
+      {
+        "documentGenerationDate": "19/12/2025",
+        "documentId": "378283487",
+        "documentName": "BR-Draft_2025_12_19_19_15_10_83_POL_378283487.docx",
+        "documentType": "Detailed Project Report (DPR)"
+      },
+      {
+        "documentGenerationDate": "19/12/2025",
+        "documentId": "378253055",
+        "documentName": "TW-05_01-Section_-_I_IFB_SSTE_Vol-I_2025_12_19_17_59_53_903_POL_378253055.docx",
+        "documentType": "Letter of Award for the project"
+      },
+      {
+        "documentGenerationDate": "19/12/2025",
+        "documentId": "378253460",
+        "documentName": "TW-05_01-Section_-_I_IFB_SSTE_Vol-I_2025_12_19_18_00_44_046_POL_378253460.docx",
+        "documentType": "Provisional Financials for Current Year and Projected Financials for Next Year"
+      },
+      {
+        "documentGenerationDate": "19/12/2025",
+        "documentId": "378283641",
+        "documentName": "BR-Draft_2025_12_19_19_15_47_914_POL_378283641.docx",
+        "documentType": "Credit Rating Certificate"
+      },
+      {
+        "documentGenerationDate": "19/12/2025",
+        "documentId": "378252869",
+        "documentName": "TW-05_01-Section_-_I_IFB_SSTE_Vol-I_2025_12_19_17_59_16_008_POL_378252869.docx",
+        "documentType": "Audited Financials for last 3 years"
+      }
+    ],
+    "endorsementDetails": [
+      {
+        "endorsementApprovedDate": null,
+        "endorsementEffectiveDate": null,
+        "endorsementNumber": null,
+        "endorsementPremium": null,
+        "endorsementRevisedSumInsured": null,
+        "endorsementSumInsured": null,
+        "remarks": null,
+        "typeofEndorsement": null
+      }
+    ],
+    "gst": "0",
+    "insuredDetails": [
+      {
+        "coverDetails": [
+          {
+            "coverCode": "MAINTAINBOND",
+            "coverExpiryDate": "19/12/2026 00:00:00",
+            "coverInceptionDate": "20/12/2025 00:00:00",
+            "coverName": "Maintenance Bond",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "10607465"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "10607465"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "212149"
+                },
+                {
+                  "paramName": "Sum Insured",
+                  "paramValue": "10607465"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "212149"
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVBOND",
+            "netPremium": "212149",
+            "totalPremium": "212149"
+          }
+        ],
+        "documentDetails": [
+          {
+            "documentGenerationDate": null,
+            "documentId": null,
+            "documentName": null,
+            "documentType": null
+          }
+        ],
+        "memberDetails": {
+          "businessName": null,
+          "createdBy": null,
+          "dateOfBirth": null,
+          "documentDetail": [],
+          "firstName": null,
+          "gender": null,
+          "lastName": null,
+          "middleName": null,
+          "nationality": null,
+          "occupation": null,
+          "parentPartyCode": null,
+          "partyAddress": [],
+          "partyCode": null,
+          "partyEndDate": null,
+          "partyLastModificationDate": null,
+          "partyProperty": null,
+          "partyRelation": [],
+          "partyStartDate": null,
+          "partyStatus": null,
+          "registrationDate": null,
+          "registrationNo": null,
+          "relatedParty": [],
+          "title": null,
+          "typeOfOrganization": null,
+          "typeOfParty": null
+        },
+        "netPremium": "212149",
+        "riskCode": "BOND",
+        "riskDesc": null,
+        "riskProperty": {
+          "multiSetProperty": [
+            {
+              "multiSetDetail": [],
+              "multiSetName": null
+            }
+          ],
+          "simpleProperty": [
+            {
+              "paramName": "Reins_Pending_Indicator",
+              "paramValue": "N"
+            },
+            {
+              "paramName": "Premium Currency",
+              "paramValue": "INR"
+            },
+            {
+              "paramName": "Premium Currency Exchange Rate",
+              "paramValue": "1"
+            },
+            {
+              "paramName": "Sum Insured Currency",
+              "paramValue": "INR"
+            },
+            {
+              "paramName": "Sum Insured Currency Exchange Rate",
+              "paramValue": "1"
+            },
+            {
+              "paramName": "Policy Expiry Date",
+              "paramValue": "19/12/2026"
+            },
+            {
+              "paramName": "Risk Level Base Currency",
+              "paramValue": "INR"
+            },
+            {
+              "paramName": "Risk Level Transaction Currency",
+              "paramValue": "INR"
+            },
+            {
+              "paramName": "Risk Sum Insured in Base Currency",
+              "paramValue": "10607465"
+            },
+            {
+              "paramName": "Risk Sum Insured in Transaction Currency",
+              "paramValue": "10607465"
+            },
+            {
+              "paramName": "Risk Premium in Base Currency",
+              "paramValue": "212149"
+            },
+            {
+              "paramName": "Risk Premium in Transaction Currency",
+              "paramValue": "212149"
+            },
+            {
+              "paramName": "Forex Rate at Risk Level",
+              "paramValue": "1"
+            },
+            {
+              "paramName": "Risk Level Transaction Currency for Sum Insured",
+              "paramValue": "INR"
+            },
+            {
+              "paramName": "Risk Plan",
+              "paramValue": "MAINTAINBOND"
+            },
+            {
+              "paramName": "Sum Insured in SI Currency",
+              "paramValue": "10607465"
+            },
+            {
+              "paramName": "Net Premium in Premium Currency",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Basic Details",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Leading Cover",
+              "paramValue": "MAINTAINBOND"
+            }
+          ]
+        },
+        "riskSerialNumber": "1",
+        "sumInsured": null,
+        "totalPremium": "212149"
+      }
+    ],
+    "netPremium": "250335",
+    "officeDetails": {
+      "officeAddress": [
+        {
+          "address1": "Bajaj General Insurance Limited, 4TH FLOOR,",
+          "address2": "NORTH EAST PLAZA, ERRAMANZIL X ROADS, ",
+          "address3": "BESIDE BMW SHOWROOM",
+          "addressProperty": [
+            {
+              "paramName": "Alternate Mob Number/Landline Number",
+              "paramValue": "04033122800"
+            },
+            {
+              "paramName": "Area",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Facebook Id",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Geo Co-Ordinate Altitude",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Geo Co-Ordinate Latitude",
+              "paramValue": "17.453333"
+            },
+            {
+              "paramName": "Geo Co-Ordinate Longitude",
+              "paramValue": "78.4625"
+            },
+            {
+              "paramName": "Instagram Id",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Land Mark",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Linked In Id",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Location Type",
+              "paramValue": "Rural"
+            },
+            {
+              "paramName": "Post office",
+              "paramValue": ","
+            },
+            {
+              "paramName": "Twitter Id",
+              "paramValue": ""
+            },
+            {
+              "paramName": "WhatsApp No",
+              "paramValue": ""
+            }
+          ],
+          "addressType": "Permanent",
+          "alternateEmailId": "vamsikrishna.patro@bajajallianz.co.in",
+          "city": "HYDERABAD",
+          "country": "INDIA",
+          "district": null,
+          "eMailId": "d.krishnababu@bajajallianz.co.in",
+          "fax": "04023373788",
+          "landlineNo": null,
+          "mobileNo": "9999999999",
+          "phoneNo": null,
+          "pincode": "500082",
+          "state": "TELANGANA",
+          "stdCode": null,
+          "workNo": null
+        }
+      ],
+      "officeCode": "1801"
+    },
+    "paymentFrequency": "B",
+    "policyDuration": "365",
+    "policyDurationunit": "D",
+    "policyExpiryDate": "19/12/2026 23:59:59",
+    "policyHolderCode": null,
+    "policyInceptionDate": "20/12/2025 00:00:01",
+    "policyNumber": null,
+    "policyPaymentInformation": [
+      {
+        "chequeNumber": null,
+        "chequeRealisationDate": null,
+        "chequeStatus": null,
+        "collectionAmount": null,
+        "collectionDate": null,
+        "collectionMode": null,
+        "collectionSource": null,
+        "collectionType": null,
+        "receiptGenerationDate": null,
+        "receiptNumber": null,
+        "subCode": null,
+        "transactionDate": null,
+        "transactionId": null
+      }
+    ],
+    "policyProperty": {
+      "multiSetProperty": [
+        {
+          "multiSetDetail": [
+            {
+              "property": [
+                {
+                  "paramName": "Subjectivities",
+                  "paramValue": "10% Cash Margin"
+                }
+              ],
+              "sequenceNumber": "1"
+            }
+          ],
+          "multiSetName": "Subjectivities"
+        }
+      ],
+      "simpleProperty": [
+        {
+          "paramName": "Accepted by RM",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Auto Adjusted Amount",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "BAGIC Capacity",
+          "paramValue": "100"
+        },
+        {
+          "paramName": "BAGIC RM ECode",
+          "paramValue": "EMP41172"
+        },
+        {
+          "paramName": "Base Premium",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Bond Sum Insured",
+          "paramValue": "10607465"
+        },
+        {
+          "paramName": "Branch Code",
+          "paramValue": "1801"
+        },
+        {
+          "paramName": "CGST Amount",
+          "paramValue": "19093"
+        },
+        {
+          "paramName": "CLU Discount",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Co-insurance Applicable",
+          "paramValue": "N"
+        },
+        {
+          "paramName": "Commission Amount",
+          "paramValue": "26518.625"
+        },
+        {
+          "paramName": "Commission Type",
+          "paramValue": "PERCENTAGE"
+        },
+        {
+          "paramName": "Commission Value",
+          "paramValue": "12.5"
+        },
+        {
+          "paramName": "Country",
+          "paramValue": "INDIA"
+        },
+        {
+          "paramName": "Credit Limit CIN No",
+          "paramValue": "U14101AP2006ULL050133"
+        },
+        {
+          "paramName": "First Time Executed",
+          "paramValue": "N"
+        },
+        {
+          "paramName": "Forex Rate at Policy Level",
+          "paramValue": "1"
+        },
+        {
+          "paramName": "GST TDS",
+          "paramValue": "NO"
+        },
+        {
+          "paramName": "GST Type",
+          "paramValue": "GST"
+        },
+        {
+          "paramName": "Governing Law & Jurisdiction",
+          "paramValue": "India"
+        },
+        {
+          "paramName": "IGST Amount",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "IMD Code",
+          "paramValue": "10046938"
+        },
+        {
+          "paramName": "Issuance Source",
+          "paramValue": "BACKOFFICE"
+        },
+        {
+          "paramName": "Joint Venture",
+          "paramValue": "NO"
+        },
+        {
+          "paramName": "Loaded Premium",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Mandatory Questionnaire",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Net Premium",
+          "paramValue": "185630.375"
+        },
+        {
+          "paramName": "Net Premium in Premium Currency",
+          "paramValue": "212149"
+        },
+        {
+          "paramName": "Old Product Code",
+          "paramValue": "6621"
+        },
+        {
+          "paramName": "Policy Id",
+          "paramValue": "3287470542119122025"
+        },
+        {
+          "paramName": "Policy Level Base Currency",
+          "paramValue": "INR"
+        },
+        {
+          "paramName": "Policy Level Transaction Currency",
+          "paramValue": "INR"
+        },
+        {
+          "paramName": "Policy Level Transaction Currency for Sum Insured",
+          "paramValue": "INR"
+        },
+        {
+          "paramName": "Policy Premium Value",
+          "paramValue": "212149"
+        },
+        {
+          "paramName": "Policy Premium WithOut Loading",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Policy Premium in Base Currency",
+          "paramValue": "212149"
+        },
+        {
+          "paramName": "Policy Premium in Transaction Currency",
+          "paramValue": "212149"
+        },
+        {
+          "paramName": "Policy Sub Status",
+          "paramValue": "BIND"
+        },
+        {
+          "paramName": "Policy Sum Insured in Base Currency",
+          "paramValue": "10607465"
+        },
+        {
+          "paramName": "Policy Sum Insured in Transaction Currency",
+          "paramValue": "10607465"
+        },
+        {
+          "paramName": "Premium Collected",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Premium Currency",
+          "paramValue": "INR"
+        },
+        {
+          "paramName": "Premium Currency Exchange Rate",
+          "paramValue": "1"
+        },
+        {
+          "paramName": "Principal",
+          "paramValue": "PN0000537"
+        },
+        {
+          "paramName": "Project Description",
+          "paramValue": "TW 05 -construction of 132 KV S/C (on D/C Tower) Seppa– Rilloh Transmission Line under Comprehensive Scheme for Strengthening of Transmission Distribution System in Arunachal Pradesh."
+        },
+        {
+          "paramName": "SGST Amount",
+          "paramValue": "19093"
+        },
+        {
+          "paramName": "SUB IMD Code",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Securities Taken",
+          "paramValue": "YES"
+        },
+        {
+          "paramName": "Subjectivities",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Sum Insured Currency",
+          "paramValue": "INR"
+        },
+        {
+          "paramName": "Sum Insured Currency Exchange Rate",
+          "paramValue": "1"
+        },
+        {
+          "paramName": "Sum Insured in SI Currency",
+          "paramValue": "10607465"
+        },
+        {
+          "paramName": "Tender ID",
+          "paramValue": "CC-CS/165-NER/TW-3520/3/G4 (TW05)"
+        },
+        {
+          "paramName": "Territory District",
+          "paramValue": "Arunachal Pradesh"
+        },
+        {
+          "paramName": "Total Fees",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Total Taxes",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Type Of Business",
+          "paramValue": "CASH"
+        },
+        {
+          "paramName": "Type of Bond",
+          "paramValue": "MAINTAINBOND"
+        },
+        {
+          "paramName": "UTGST Amount",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "UW Gross Premium",
+          "paramValue": "212149"
+        },
+        {
+          "paramName": "Underwriting Rqrd Flag",
+          "paramValue": "N"
+        },
+        {
+          "paramName": "Validity of Quote in Days",
+          "paramValue": "15"
+        },
+        {
+          "paramName": "Policy Sub Status",
+          "paramValue": "Bind"
+        },
+        {
+          "paramName": "Created By",
+          "paramValue": "EMP12424"
+        }
+      ]
+    },
+    "policyRelation": [
+      {
+        "partyCode": "PO32609000",
+        "partyName": "PLR PROJECTS PRIVATE LIMITED",
+        "partySharePercentage": "0",
+        "stakeCode": "POLICY-HOL"
+      },
+      {
+        "partyCode": "96826779",
+        "partyName": "APEX INSURANCE BROKING SERVICES PVT LTD",
+        "partySharePercentage": "0",
+        "stakeCode": "AGENT"
+      },
+      {
+        "partyCode": "PN0000537",
+        "partyName": "POWER GRID CORPORATION OF INDIA LIMITED",
+        "partySharePercentage": "0",
+        "stakeCode": "PRINCIPAL"
+      },
+      {
+        "partyCode": "CGS00000001",
+        "partyName": "CENTRAL GOVT ",
+        "partySharePercentage": "0",
+        "stakeCode": "CGS"
+      },
+      {
+        "partyCode": "SGS00000059",
+        "partyName": "TELANGANA - State Govt. ",
+        "partySharePercentage": "0",
+        "stakeCode": "SGS"
+      }
+    ],
+    "policyStatus": "03",
+    "premiumMode": "C",
+    "previousPolicyDetails": [
+      {
+        "policyExpiryDate": null,
+        "policyInceptionDate": null,
+        "policyNumber": null,
+        "productCode": null,
+        "productName": null,
+        "sumInsured": null,
+        "totalPremium": null
+      }
+    ],
+    "productCode": "6621",
+    "productName": "SURETY BOND",
+    "proposerDetails": {
+      "businessName": "PLR PROJECTS PRIVATE LIMITED",
+      "createdBy": null,
+      "dateOfBirth": null,
+      "documentDetail": [
+        {
+          "documentGenerationDate": null,
+          "documentId": null,
+          "documentName": null,
+          "documentType": null
+        }
+      ],
+      "firstName": null,
+      "gender": null,
+      "lastName": null,
+      "middleName": null,
+      "nationality": null,
+      "occupation": null,
+      "parentPartyCode": null,
+      "partyAddress": [
+        {
+          "address1": "5TH FLOOR PLOT NO 22912A1AMG1 SY NO 12 PART ASTRA TOWERS HITECH CITYKONDAPUR KOTHAGUDA",
+          "address2": null,
+          "address3": "KVRANGAREDDY",
+          "addressProperty": [
+            {
+              "paramName": "Area",
+              "paramValue": ""
+            }
+          ],
+          "addressType": "Permanent",
+          "alternateEmailId": null,
+          "city": "K.V.RANGAREDDY",
+          "country": "INDIA",
+          "district": null,
+          "eMailId": "MALGA.MALLESHA@BAJAJALLIANZ.CO.IN",
+          "fax": null,
+          "landlineNo": null,
+          "mobileNo": "7420927311",
+          "phoneNo": "7420927311",
+          "pincode": "500084",
+          "state": "TELANGANA",
+          "stdCode": null,
+          "workNo": null
+        }
+      ],
+      "partyCode": "PO32609000",
+      "partyEndDate": null,
+      "partyLastModificationDate": "02/01/2025 16:57:35",
+      "partyProperty": {
+        "multiSetProperty": [
+          {
+            "multiSetDetail": [],
+            "multiSetName": null
+          }
+        ],
+        "simpleProperty": [
+          {
+            "paramName": "Annual Turnover",
+            "paramValue": "0"
+          },
+          {
+            "paramName": "Are you Registered Company",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Banking  Details",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Banking Details",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Blacklist Details",
+            "paramValue": "\u0006LABEL\u0006"
+          },
+          {
+            "paramName": "Blacklisted",
+            "paramValue": "NO"
+          },
+          {
+            "paramName": "Business Type",
+            "paramValue": "CREDIT"
+          },
+          {
+            "paramName": "CIN Number",
+            "paramValue": "U14101AP2006ULL050133"
+          },
+          {
+            "paramName": "CKYC Details",
+            "paramValue": "\u0006LABEL\u0006"
+          },
+          {
+            "paramName": "CKYC Number",
+            "paramValue": ""
+          },
+          {
+            "paramName": "CKYC Status",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Certification No.",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Communication and Preferred Language",
+            "paramValue": "\u0006LABEL\u0006"
+          },
+          {
+            "paramName": "Company",
+            "paramValue": "BAGIC"
+          },
+          {
+            "paramName": "Credit Limit CIN No",
+            "paramValue": "U14101AP2006ULL050133"
+          },
+          {
+            "paramName": "Date of Birth",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Date of Blacklisting",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Date of Registration Or Incorporation",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Do you have CKYC Number",
+            "paramValue": "YES"
+          },
+          {
+            "paramName": "Employee Number",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Filed IT Last 2 years",
+            "paramValue": ""
+          },
+          {
+            "paramName": "GSTIN Issuance Dt",
+            "paramValue": "01/07/2017"
+          },
+          {
+            "paramName": "GSTN Number",
+            "paramValue": "36AADCP9069L1ZR"
+          },
+          {
+            "paramName": "GSTN Regn status",
+            "paramValue": "REG"
+          },
+          {
+            "paramName": "Height",
+            "paramValue": "0"
+          },
+          {
+            "paramName": "Industry Code",
+            "paramValue": " "
+          },
+          {
+            "paramName": "Infrastructure Sub-sector",
+            "paramValue": " "
+          },
+          {
+            "paramName": "Is The Organisation A Registered Business / Trust?",
+            "paramValue": ""
+          },
+          {
+            "paramName": "KYC Related Details",
+            "paramValue": "\u0006LABEL6\u0006"
+          },
+          {
+            "paramName": "Languages Preferred",
+            "paramValue": "US"
+          },
+          {
+            "paramName": "Lower TDS Certificate",
+            "paramValue": "\u0006LABEL\u0006"
+          },
+          {
+            "paramName": "Lower TDS certificate",
+            "paramValue": ""
+          },
+          {
+            "paramName": "MSME Applicable",
+            "paramValue": "N"
+          },
+          {
+            "paramName": "MSME Classification",
+            "paramValue": "NS"
+          },
+          {
+            "paramName": "Member Type",
+            "paramValue": "Applicant"
+          },
+          {
+            "paramName": "Name as per CKYC",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Occupation List",
+            "paramValue": "Construction"
+          },
+          {
+            "paramName": "PAN Aadhaar Linked",
+            "paramValue": ""
+          },
+          {
+            "paramName": "PAN Number",
+            "paramValue": "AADCP9069L"
+          },
+          {
+            "paramName": "POA Status",
+            "paramValue": "VC"
+          },
+          {
+            "paramName": "POI Status",
+            "paramValue": "VC"
+          },
+          {
+            "paramName": "Paid Up Capital",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Partner Ref",
+            "paramValue": "A"
+          },
+          {
+            "paramName": "Preferred Mode Of Alert",
+            "paramValue": "SMS"
+          },
+          {
+            "paramName": "Preferred Mode of Communication",
+            "paramValue": "Email"
+          },
+          {
+            "paramName": "Reason for Blacklisting",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Reference Code",
+            "paramValue": ""
+          },
+          {
+            "paramName": "SEZ Expiry Date",
+            "paramValue": ""
+          },
+          {
+            "paramName": "SEZ Registration Date",
+            "paramValue": ""
+          },
+          {
+            "paramName": "SEZ Registration No",
+            "paramValue": ""
+          },
+          {
+            "paramName": "TAN Number",
+            "paramValue": ""
+          },
+          {
+            "paramName": "TDS Code",
+            "paramValue": ""
+          },
+          {
+            "paramName": "TDS Code Desc",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Type Of Insured",
+            "paramValue": " "
+          },
+          {
+            "paramName": "Type of Endorsement",
+            "paramValue": "B"
+          },
+          {
+            "paramName": "Weight",
+            "paramValue": "0"
+          }
+        ]
+      },
+      "partyRelation": [
+        {
+          "stakeName": "POLICY-HOL",
+          "startDate": "02/01/2025 10:16:45"
+        },
+        {
+          "stakeName": "CLAIMANT",
+          "startDate": "02/01/2025 00:00:00"
+        },
+        {
+          "stakeName": "PREMPAYER",
+          "startDate": "02/01/2025 10:28:02"
+        },
+        {
+          "stakeName": "MEMBER",
+          "startDate": "02/01/2025 10:28:02"
+        },
+        {
+          "stakeName": "DFLTSTKORG",
+          "startDate": "02/01/2025 10:16:45"
+        }
+      ],
+      "partyStartDate": "02/01/2025",
+      "partyStatus": "ACTIVE",
+      "registrationDate": "01/07/2017",
+      "registrationNo": null,
+      "relatedParty": [],
+      "title": null,
+      "typeOfOrganization": "A",
+      "typeOfParty": "O"
+    },
+    "quotationNumber": "11-6621-0015125451-00",
+    "renewalFlag": "N",
+    "stampDuty": "0",
+    "strPolicyBranchName": "1801",
+    "strPolicyIntimationDate": "19/12/2025 00:00:00",
+    "teleVerificationDetails": [
+      {
+        "endTime": null,
+        "startTime": null,
+        "teleVarificationInitiatedDate": null,
+        "teleVarificationStatus": null,
+        "transactionId": null
+      }
+    ],
+    "totalPremium": "212149",
+    "workItemDetails": [
+      {
+        "completionDate": "19/12/2025 23:59:59",
+        "raisedBy": "EMP12424",
+        "raisedDate": "19/12/2025 18:02:47",
+        "remarks": "ok",
+        "status": "Approved",
+        "taskType": "Referral for details verification and premium finalization"
+      }
+    ]
+  },
+  "premiumDetails": {
+    "collectedPremium": "0",
+    "errorCode": 0,
+    "errorDescription": "Success",
+    "outstandingPremium": "250335",
+    "premcalcDetail": null,
+    "taxDetail": null
+  },
+  "quoteParamDetails": {
+    "additionalPartyList": null,
+    "buildingDetails": null,
+    "partyDetails": null,
+    "polPropPropList": null,
+    "policyProperty": {
+      "multiSetPropertyInput": [
+        {
+          "multiSetDetailInput": [
+            {
+              "operationCode": "ADD",
+              "property": [
+                {
+                  "paramName": "Subjectivities",
+                  "paramValue": "10% Cash Margin"
+                }
+              ],
+              "sequenceNumber": "1"
+            }
+          ],
+          "multiSetName": "Subjectivities"
+        }
+      ],
+      "ruleList": [
+        {
+          "strParamName": "Accepted by RM",
+          "strParamSeq": "0",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Auto Adjusted Amount",
+          "strParamSeq": "1",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "BAGIC Capacity",
+          "strParamSeq": "2",
+          "strParamValue": "100"
+        },
+        {
+          "strParamName": "BAGIC RM ECode",
+          "strParamSeq": "3",
+          "strParamValue": "EMP41172"
+        },
+        {
+          "strParamName": "Base Premium",
+          "strParamSeq": "4",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "Bond Sum Insured",
+          "strParamSeq": "5",
+          "strParamValue": "10607465"
+        },
+        {
+          "strParamName": "Branch Code",
+          "strParamSeq": "6",
+          "strParamValue": "1801"
+        },
+        {
+          "strParamName": "CGST Amount",
+          "strParamSeq": "7",
+          "strParamValue": "19093"
+        },
+        {
+          "strParamName": "CLU Discount",
+          "strParamSeq": "8",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "Co-insurance Applicable",
+          "strParamSeq": "9",
+          "strParamValue": "N"
+        },
+        {
+          "strParamName": "Commission Amount",
+          "strParamSeq": "10",
+          "strParamValue": "26518.625"
+        },
+        {
+          "strParamName": "Commission Type",
+          "strParamSeq": "11",
+          "strParamValue": "PERCENTAGE"
+        },
+        {
+          "strParamName": "Commission Value",
+          "strParamSeq": "12",
+          "strParamValue": "12.5"
+        },
+        {
+          "strParamName": "Country",
+          "strParamSeq": "13",
+          "strParamValue": "INDIA"
+        },
+        {
+          "strParamName": "Credit Limit CIN No",
+          "strParamSeq": "14",
+          "strParamValue": "U14101AP2006ULL050133"
+        },
+        {
+          "strParamName": "First Time Executed",
+          "strParamSeq": "15",
+          "strParamValue": "N"
+        },
+        {
+          "strParamName": "Forex Rate at Policy Level",
+          "strParamSeq": "16",
+          "strParamValue": "1"
+        },
+        {
+          "strParamName": "GST TDS",
+          "strParamSeq": "17",
+          "strParamValue": "NO"
+        },
+        {
+          "strParamName": "GST Type",
+          "strParamSeq": "18",
+          "strParamValue": "GST"
+        },
+        {
+          "strParamName": "Governing Law & Jurisdiction",
+          "strParamSeq": "19",
+          "strParamValue": "India"
+        },
+        {
+          "strParamName": "IGST Amount",
+          "strParamSeq": "20",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "IMD Code",
+          "strParamSeq": "21",
+          "strParamValue": "10046938"
+        },
+        {
+          "strParamName": "Issuance Source",
+          "strParamSeq": "22",
+          "strParamValue": "BACKOFFICE"
+        },
+        {
+          "strParamName": "Joint Venture",
+          "strParamSeq": "23",
+          "strParamValue": "NO"
+        },
+        {
+          "strParamName": "Loaded Premium",
+          "strParamSeq": "24",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "Mandatory Questionnaire",
+          "strParamSeq": "25",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Net Premium",
+          "strParamSeq": "26",
+          "strParamValue": "185630.375"
+        },
+        {
+          "strParamName": "Net Premium in Premium Currency",
+          "strParamSeq": "27",
+          "strParamValue": "212149"
+        },
+        {
+          "strParamName": "Old Product Code",
+          "strParamSeq": "28",
+          "strParamValue": "6621"
+        },
+        {
+          "strParamName": "Policy Id",
+          "strParamSeq": "29",
+          "strParamValue": "3287470542119122025"
+        },
+        {
+          "strParamName": "Policy Level Base Currency",
+          "strParamSeq": "30",
+          "strParamValue": "INR"
+        },
+        {
+          "strParamName": "Policy Level Transaction Currency",
+          "strParamSeq": "31",
+          "strParamValue": "INR"
+        },
+        {
+          "strParamName": "Policy Level Transaction Currency for Sum Insured",
+          "strParamSeq": "32",
+          "strParamValue": "INR"
+        },
+        {
+          "strParamName": "Policy Premium Value",
+          "strParamSeq": "33",
+          "strParamValue": "212149"
+        },
+        {
+          "strParamName": "Policy Premium WithOut Loading",
+          "strParamSeq": "34",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "Policy Premium in Base Currency",
+          "strParamSeq": "35",
+          "strParamValue": "212149"
+        },
+        {
+          "strParamName": "Policy Premium in Transaction Currency",
+          "strParamSeq": "36",
+          "strParamValue": "212149"
+        },
+        {
+          "strParamName": "Policy Sub Status",
+          "strParamSeq": "37",
+          "strParamValue": "BIND"
+        },
+        {
+          "strParamName": "Policy Sum Insured in Base Currency",
+          "strParamSeq": "38",
+          "strParamValue": "10607465"
+        },
+        {
+          "strParamName": "Policy Sum Insured in Transaction Currency",
+          "strParamSeq": "39",
+          "strParamValue": "10607465"
+        },
+        {
+          "strParamName": "Premium Collected",
+          "strParamSeq": "40",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "Premium Currency",
+          "strParamSeq": "41",
+          "strParamValue": "INR"
+        },
+        {
+          "strParamName": "Premium Currency Exchange Rate",
+          "strParamSeq": "42",
+          "strParamValue": "1"
+        },
+        {
+          "strParamName": "Principal",
+          "strParamSeq": "43",
+          "strParamValue": "PN0000537"
+        },
+        {
+          "strParamName": "Project Description",
+          "strParamSeq": "44",
+          "strParamValue": "TW 05 -construction of 132 KV S/C (on D/C Tower) Seppa– Rilloh Transmission Line under Comprehensive Scheme for Strengthening of Transmission Distribution System in Arunachal Pradesh."
+        },
+        {
+          "strParamName": "SGST Amount",
+          "strParamSeq": "45",
+          "strParamValue": "19093"
+        },
+        {
+          "strParamName": "SUB IMD Code",
+          "strParamSeq": "46",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Securities Taken",
+          "strParamSeq": "47",
+          "strParamValue": "YES"
+        },
+        {
+          "strParamName": "Subjectivities",
+          "strParamSeq": "48",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Sum Insured Currency",
+          "strParamSeq": "49",
+          "strParamValue": "INR"
+        },
+        {
+          "strParamName": "Sum Insured Currency Exchange Rate",
+          "strParamSeq": "50",
+          "strParamValue": "1"
+        },
+        {
+          "strParamName": "Sum Insured in SI Currency",
+          "strParamSeq": "51",
+          "strParamValue": "10607465"
+        },
+        {
+          "strParamName": "Tender ID",
+          "strParamSeq": "52",
+          "strParamValue": "CC-CS/165-NER/TW-3520/3/G4 (TW05)"
+        },
+        {
+          "strParamName": "Territory District",
+          "strParamSeq": "53",
+          "strParamValue": "Arunachal Pradesh"
+        },
+        {
+          "strParamName": "Total Fees",
+          "strParamSeq": "54",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "Total Taxes",
+          "strParamSeq": "55",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "Type Of Business",
+          "strParamSeq": "56",
+          "strParamValue": "CASH"
+        },
+        {
+          "strParamName": "Type of Bond",
+          "strParamSeq": "57",
+          "strParamValue": "MAINTAINBOND"
+        },
+        {
+          "strParamName": "UTGST Amount",
+          "strParamSeq": "58",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "UW Gross Premium",
+          "strParamSeq": "59",
+          "strParamValue": "212149"
+        },
+        {
+          "strParamName": "Underwriting Rqrd Flag",
+          "strParamSeq": "60",
+          "strParamValue": "N"
+        },
+        {
+          "strParamName": "Validity of Quote in Days",
+          "strParamSeq": "61",
+          "strParamValue": "15"
+        },
+        {
+          "strParamName": "Policy Sub Status",
+          "strParamSeq": "62",
+          "strParamValue": "Bind"
+        },
+        {
+          "strParamName": "Created By",
+          "strParamSeq": "63",
+          "strParamValue": "EMP12424"
+        }
+      ],
+      "strBusinessEvent": "SCR-BSCDTL"
+    },
+    "riskList": [
+      {
+        "additionalPartyCode": null,
+        "baseCurrency": "INR",
+        "multiSetPropertyInput": [
+          {
+            "multiSetDetailInput": [],
+            "multiSetName": null
+          }
+        ],
+        "partyDetails": null,
+        "premCurrency": "INR",
+        "riskCover": [
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "0",
+                  "strParamValue": "10607465"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "1",
+                  "strParamValue": "10607465"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "212149"
+                },
+                {
+                  "strParamName": "Sum Insured",
+                  "strParamSeq": "3",
+                  "strParamValue": "10607465"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "212149"
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "6",
+                  "strParamValue": "1"
+                }
+              ],
+              "strEventCode": "SCR-COVBOND"
+            },
+            "strCoverCode": "MAINTAINBOND",
+            "strCoverExpiryDate": "19/12/2026 00:00:00",
+            "strCoverInceptionDate": "20/12/2025 00:00:00",
+            "strRiskSerialNo": "1"
+          }
+        ],
+        "riskProperty": {
+          "ruleList": [
+            {
+              "strParamName": "Reins_Pending_Indicator",
+              "strParamSeq": "0",
+              "strParamValue": "N"
+            },
+            {
+              "strParamName": "Premium Currency",
+              "strParamSeq": "1",
+              "strParamValue": "INR"
+            },
+            {
+              "strParamName": "Premium Currency Exchange Rate",
+              "strParamSeq": "2",
+              "strParamValue": "1"
+            },
+            {
+              "strParamName": "Sum Insured Currency",
+              "strParamSeq": "3",
+              "strParamValue": "INR"
+            },
+            {
+              "strParamName": "Sum Insured Currency Exchange Rate",
+              "strParamSeq": "4",
+              "strParamValue": "1"
+            },
+            {
+              "strParamName": "Policy Expiry Date",
+              "strParamSeq": "5",
+              "strParamValue": "19/12/2026"
+            },
+            {
+              "strParamName": "Risk Level Base Currency",
+              "strParamSeq": "6",
+              "strParamValue": "INR"
+            },
+            {
+              "strParamName": "Risk Level Transaction Currency",
+              "strParamSeq": "7",
+              "strParamValue": "INR"
+            },
+            {
+              "strParamName": "Risk Sum Insured in Base Currency",
+              "strParamSeq": "8",
+              "strParamValue": "10607465"
+            },
+            {
+              "strParamName": "Risk Sum Insured in Transaction Currency",
+              "strParamSeq": "9",
+              "strParamValue": "10607465"
+            },
+            {
+              "strParamName": "Risk Premium in Base Currency",
+              "strParamSeq": "10",
+              "strParamValue": "212149"
+            },
+            {
+              "strParamName": "Risk Premium in Transaction Currency",
+              "strParamSeq": "11",
+              "strParamValue": "212149"
+            },
+            {
+              "strParamName": "Forex Rate at Risk Level",
+              "strParamSeq": "12",
+              "strParamValue": "1"
+            },
+            {
+              "strParamName": "Risk Level Transaction Currency for Sum Insured",
+              "strParamSeq": "13",
+              "strParamValue": "INR"
+            },
+            {
+              "strParamName": "Risk Plan",
+              "strParamSeq": "14",
+              "strParamValue": "MAINTAINBOND"
+            },
+            {
+              "strParamName": "Sum Insured in SI Currency",
+              "strParamSeq": "15",
+              "strParamValue": "10607465"
+            },
+            {
+              "strParamName": "Net Premium in Premium Currency",
+              "strParamSeq": "16",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Basic Details",
+              "strParamSeq": "17",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Leading Cover",
+              "strParamSeq": "18",
+              "strParamValue": "MAINTAINBOND"
+            }
+          ],
+          "strEventCode": "SCR-RSKDTL"
+        },
+        "strAddr1": null,
+        "strAddr2": null,
+        "strAddr3": null,
+        "strBillingStake": null,
+        "strCityCode": null,
+        "strCountryCode": "INDIA",
+        "strDiscount": "0",
+        "strDocumentID": null,
+        "strLoading": "0",
+        "strPartyCode": null,
+        "strPolRiskId": null,
+        "strPolicyCountry": "INDIA",
+        "strPolicyId": null,
+        "strPostalCode": null,
+        "strRiskCode": "BOND",
+        "strRiskDesc": null,
+        "strRiskExpiryDate": "19/12/2026 23:59:59",
+        "strRiskInceptionDate": "20/12/2025 00:00:01",
+        "strRiskSerialNumber": "1",
+        "strRiskSumInsured": null,
+        "strStateCode": null
+      }
+    ],
+    "strAgentCode": "",
+    "strApplicationCode": "",
+    "strBaseCurrency": "INR",
+    "strBaseCurrencyRate": "1",
+    "strBillingStake": "POLICY-HOL",
+    "strCalculatePremiumIndicator": "",
+    "strCommission": null,
+    "strDocumentID": null,
+    "strIntimationDate": "19/12/2025 00:00:00",
+    "strMultithreadIndicator": "Y",
+    "strNewPremIndicator": "Y",
+    "strPartyCodesForRemoval": null,
+    "strPolicyBranchName": "1801",
+    "strPolicyDetailsChangeIndicator": "",
+    "strPolicyExpiryDate": "19/12/2026 23:59:59",
+    "strPolicyHolderCode": "PO32609000",
+    "strPolicyInceptionDate": "20/12/2025 00:00:01",
+    "strPolicyQuoteNumber": "11-6621-0015125451-00",
+    "strPolicyStatusCode": "03",
+    "strPolicyTerm": "365",
+    "strPolicyTermUnit": "D",
+    "strPremiumCurrency": "INR",
+    "strPremiumCurrencyRate": "1",
+    "strPremiumFrequency": "B",
+    "strPremiumMode": "C",
+    "strProductCode": "6621",
+    "strReferIndicator": "",
+    "strRetCode": "0",
+    "strRetError": "",
+    "strRiskIdForRemoval": "",
+    "strTotalDiscountAmount": "0.0",
+    "strTotalLoadingAmount": "0.0",
+    "strUpdatePartyIndicator": "Y",
+    "strprivilegeCode": ""
+  }
+}

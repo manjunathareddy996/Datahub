@@ -1,0 +1,5289 @@
+{
+  "errorCode": 0,
+  "errorDescription": "Success",
+  "policyDetails": {
+    "agentCode": null,
+    "commision": null,
+    "dispatchDetails": [
+      {
+        "address": null,
+        "city": null,
+        "courierName": null,
+        "dispatchDate": null,
+        "dispatchDestination": null,
+        "dispatchMode": null,
+        "dispatchStatus": null,
+        "district": null,
+        "documentType": null,
+        "pODNumber": null,
+        "pinCode": null,
+        "priority": null,
+        "recipientName": null,
+        "remarks": null,
+        "serialNo": null,
+        "state": null
+      }
+    ],
+    "documentDetails": [
+      {
+        "documentGenerationDate": "27/12/2025",
+        "documentId": "381478598",
+        "documentName": "9910_Travel_policy_schedule_46832714.pdf",
+        "documentType": "Travel_policy_schedule_V12"
+      },
+      {
+        "documentGenerationDate": "27/12/2025",
+        "documentId": "381478599",
+        "documentName": "9910_Customer_Information_Sheet_46832715.pdf",
+        "documentType": "Customer_Information_Sheet"
+      },
+      {
+        "documentGenerationDate": "27/12/2025",
+        "documentId": "381478571",
+        "documentName": "9910_Travel_Quotation_doc_46832689.pdf",
+        "documentType": "Travel_Quotation_doc"
+      },
+      {
+        "documentGenerationDate": "18/02/2026",
+        "documentId": "403162272",
+        "documentName": "9910_Cancellation_Endorsement_Schedule_58628668.pdf",
+        "documentType": "Cancellation_Endorsement_Schedule"
+      },
+      {
+        "documentGenerationDate": "18/02/2026",
+        "documentId": "403162520",
+        "documentName": "RELEVENT_MAIL_2026_02_18_17_53_36_748_POL_403162520.pdf",
+        "documentType": "UW Approval"
+      }
+    ],
+    "endorsementDetails": [
+      {
+        "endorsementApprovedDate": null,
+        "endorsementEffectiveDate": null,
+        "endorsementNumber": null,
+        "endorsementPremium": null,
+        "endorsementRevisedSumInsured": null,
+        "endorsementSumInsured": null,
+        "remarks": null,
+        "typeofEndorsement": null
+      }
+    ],
+    "gst": "0",
+    "insuredDetails": [
+      {
+        "coverDetails": [
+          {
+            "coverCode": "TRV01",
+            "coverExpiryDate": "30/04/2026 00:00:00",
+            "coverInceptionDate": "31/01/2026 00:00:01",
+            "coverName": "Personal Accident",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Inception Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Expiry Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level Base Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "15000"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency for Sum Insured",
+                  "paramValue": "USD"
+                },
+                {
+                  "paramName": "Sum Insured",
+                  "paramValue": "15000"
+                },
+                {
+                  "paramName": "Basis of Deductible",
+                  "paramValue": "Not Applicable"
+                },
+                {
+                  "paramName": "Deductible Value",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Sub Condition1",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVD10",
+            "netPremium": "0",
+            "totalPremium": "0"
+          },
+          {
+            "coverCode": "TRV03",
+            "coverExpiryDate": "30/04/2026 00:00:00",
+            "coverInceptionDate": "31/01/2026 00:00:01",
+            "coverName": "Emergency Dental Pain Relief",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Inception Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Expiry Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level Base Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "500"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency for Sum Insured",
+                  "paramValue": "USD"
+                },
+                {
+                  "paramName": "Sum Insured",
+                  "paramValue": "500"
+                },
+                {
+                  "paramName": "Basis of Deductible",
+                  "paramValue": "Amount"
+                },
+                {
+                  "paramName": "Deductible Value",
+                  "paramValue": "100"
+                },
+                {
+                  "paramName": "Sub Condition1",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVD10",
+            "netPremium": "0",
+            "totalPremium": "0"
+          },
+          {
+            "coverCode": "TRV05",
+            "coverExpiryDate": "30/04/2026 00:00:00",
+            "coverInceptionDate": "31/01/2026 00:00:03",
+            "coverName": "Medical Expenses,Evacuation and Repatriation",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Inception Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Expiry Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level Base Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "50000"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency for Sum Insured",
+                  "paramValue": "USD"
+                },
+                {
+                  "paramName": "Sum Insured",
+                  "paramValue": "50000"
+                },
+                {
+                  "paramName": "Basis of Deductible",
+                  "paramValue": "Amount"
+                },
+                {
+                  "paramName": "Deductible Value",
+                  "paramValue": "100"
+                },
+                {
+                  "paramName": "Sub-Limit Details",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Sub Condition1",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level FAC R/I",
+                  "paramValue": "N"
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                },
+                {
+                  "paramName": "Net Premium",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "0"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVD4",
+            "netPremium": "0",
+            "totalPremium": "0"
+          },
+          {
+            "coverCode": "TRV06",
+            "coverExpiryDate": "30/04/2026 00:00:00",
+            "coverInceptionDate": "31/01/2026 00:00:01",
+            "coverName": "Loss of Checked Baggage",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Inception Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Expiry Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level Base Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "500"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency for Sum Insured",
+                  "paramValue": "USD"
+                },
+                {
+                  "paramName": "Sum Insured",
+                  "paramValue": "500"
+                },
+                {
+                  "paramName": "Basis of Deductible",
+                  "paramValue": "Not Applicable"
+                },
+                {
+                  "paramName": "Deductible Value",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Sub Condition1",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVD10",
+            "netPremium": "0",
+            "totalPremium": "0"
+          },
+          {
+            "coverCode": "TRV07",
+            "coverExpiryDate": "30/04/2026 00:00:00",
+            "coverInceptionDate": "31/01/2026 00:00:01",
+            "coverName": "Accidental Death and Disability (Common Carrier)",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Inception Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Expiry Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level Base Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "2500"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency for Sum Insured",
+                  "paramValue": "USD"
+                },
+                {
+                  "paramName": "Sum Insured",
+                  "paramValue": "2500"
+                },
+                {
+                  "paramName": "Basis of Deductible",
+                  "paramValue": "Not Applicable"
+                },
+                {
+                  "paramName": "Deductible Value",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Sub Condition1",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVD10",
+            "netPremium": "0",
+            "totalPremium": "0"
+          },
+          {
+            "coverCode": "TRV08",
+            "coverExpiryDate": "30/04/2026 00:00:00",
+            "coverInceptionDate": "31/01/2026 00:00:01",
+            "coverName": "Loss of Passport",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Inception Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Expiry Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level Base Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "250"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency for Sum Insured",
+                  "paramValue": "USD"
+                },
+                {
+                  "paramName": "Sum Insured",
+                  "paramValue": "250"
+                },
+                {
+                  "paramName": "Basis of Deductible",
+                  "paramValue": "Amount"
+                },
+                {
+                  "paramName": "Deductible Value",
+                  "paramValue": "25"
+                },
+                {
+                  "paramName": "Sub Condition1",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVD10",
+            "netPremium": "0",
+            "totalPremium": "0"
+          },
+          {
+            "coverCode": "TRV09",
+            "coverExpiryDate": "30/04/2026 00:00:00",
+            "coverInceptionDate": "31/01/2026 00:00:01",
+            "coverName": "Personal Liability",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Inception Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Expiry Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level Base Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "100000"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency for Sum Insured",
+                  "paramValue": "USD"
+                },
+                {
+                  "paramName": "Sum Insured",
+                  "paramValue": "100000"
+                },
+                {
+                  "paramName": "Basis of Deductible",
+                  "paramValue": "Amount"
+                },
+                {
+                  "paramName": "Deductible Value",
+                  "paramValue": "100"
+                },
+                {
+                  "paramName": "Sub Condition1",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVD10",
+            "netPremium": "0",
+            "totalPremium": "0"
+          },
+          {
+            "coverCode": "TRV10",
+            "coverExpiryDate": "30/04/2026 00:00:00",
+            "coverInceptionDate": "31/01/2026 00:00:01",
+            "coverName": "Hijack Cover",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Inception Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Expiry Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level Base Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "300"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency for Sum Insured",
+                  "paramValue": "USD"
+                },
+                {
+                  "paramName": "SI Per Unit",
+                  "paramValue": "50"
+                },
+                {
+                  "paramName": "Unit in Hours",
+                  "paramValue": "24"
+                },
+                {
+                  "paramName": "Maximum Sum Insured",
+                  "paramValue": "300"
+                },
+                {
+                  "paramName": "Basis of Deductible",
+                  "paramValue": "Not Applicable"
+                },
+                {
+                  "paramName": "Deductible Value",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Number of Days",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Sub Condition1",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level FAC R/I",
+                  "paramValue": "N"
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVD3",
+            "netPremium": "0",
+            "totalPremium": "0"
+          },
+          {
+            "coverCode": "TRV11",
+            "coverExpiryDate": "30/04/2026 00:00:00",
+            "coverInceptionDate": "31/01/2026 00:00:01",
+            "coverName": "Trip Delay",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Inception Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Expiry Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level Base Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "120"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency for Sum Insured",
+                  "paramValue": "USD"
+                },
+                {
+                  "paramName": "SI Per Unit",
+                  "paramValue": "20"
+                },
+                {
+                  "paramName": "Unit in Hours",
+                  "paramValue": "12"
+                },
+                {
+                  "paramName": "Maximum Sum Insured",
+                  "paramValue": "120"
+                },
+                {
+                  "paramName": "Basis of Deductible",
+                  "paramValue": "Number of Hours"
+                },
+                {
+                  "paramName": "Deductible Value",
+                  "paramValue": "12"
+                },
+                {
+                  "paramName": "Number of Days",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Sub Condition1",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level FAC R/I",
+                  "paramValue": "N"
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVD3",
+            "netPremium": "0",
+            "totalPremium": "0"
+          },
+          {
+            "coverCode": "TRV12",
+            "coverExpiryDate": "30/04/2026 00:00:00",
+            "coverInceptionDate": "31/01/2026 00:00:01",
+            "coverName": "Hospitalization Daily Allowance",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Inception Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Expiry Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level Base Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "100"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency for Sum Insured",
+                  "paramValue": "USD"
+                },
+                {
+                  "paramName": "SI Per Unit",
+                  "paramValue": "25"
+                },
+                {
+                  "paramName": "Unit in Hours",
+                  "paramValue": "24"
+                },
+                {
+                  "paramName": "Maximum Sum Insured",
+                  "paramValue": "100"
+                },
+                {
+                  "paramName": "Basis of Deductible",
+                  "paramValue": "Not Applicable"
+                },
+                {
+                  "paramName": "Deductible Value",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Number of Days",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Sub Condition1",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level FAC R/I",
+                  "paramValue": "N"
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVD3",
+            "netPremium": "0",
+            "totalPremium": "0"
+          },
+          {
+            "coverCode": "TRV13",
+            "coverExpiryDate": "30/04/2026 00:00:00",
+            "coverInceptionDate": "31/01/2026 00:00:01",
+            "coverName": "Golfer’s Hole-in-one",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Inception Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Expiry Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level Base Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "250"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency for Sum Insured",
+                  "paramValue": "USD"
+                },
+                {
+                  "paramName": "Sum Insured",
+                  "paramValue": "250"
+                },
+                {
+                  "paramName": "Basis of Deductible",
+                  "paramValue": "Not Applicable"
+                },
+                {
+                  "paramName": "Deductible Value",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Sub Condition1",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVD10",
+            "netPremium": "0",
+            "totalPremium": "0"
+          },
+          {
+            "coverCode": "TRV14",
+            "coverExpiryDate": "30/04/2026 00:00:00",
+            "coverInceptionDate": "31/01/2026 00:00:01",
+            "coverName": "Trip Cancellation",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Inception Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Expiry Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level Base Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "500"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency for Sum Insured",
+                  "paramValue": "USD"
+                },
+                {
+                  "paramName": "Sum Insured",
+                  "paramValue": "500"
+                },
+                {
+                  "paramName": "Basis of Deductible",
+                  "paramValue": "Not Applicable"
+                },
+                {
+                  "paramName": "Deductible Value",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Sub Condition1",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVD10",
+            "netPremium": "0",
+            "totalPremium": "0"
+          },
+          {
+            "coverCode": "TRV15",
+            "coverExpiryDate": "30/04/2026 00:00:00",
+            "coverInceptionDate": "31/01/2026 00:00:01",
+            "coverName": "Trip Curtailment",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Inception Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Expiry Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level Base Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "200"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency for Sum Insured",
+                  "paramValue": "USD"
+                },
+                {
+                  "paramName": "Sum Insured",
+                  "paramValue": "200"
+                },
+                {
+                  "paramName": "Basis of Deductible",
+                  "paramValue": "Not Applicable"
+                },
+                {
+                  "paramName": "Deductible Value",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Sub Condition1",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVD10",
+            "netPremium": "0",
+            "totalPremium": "0"
+          },
+          {
+            "coverCode": "TRV16",
+            "coverExpiryDate": "30/04/2026 00:00:00",
+            "coverInceptionDate": "31/01/2026 00:00:01",
+            "coverName": "Delay of Checked Baggage",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Inception Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Expiry Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level Base Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "100"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency for Sum Insured",
+                  "paramValue": "USD"
+                },
+                {
+                  "paramName": "Sum Insured",
+                  "paramValue": "100"
+                },
+                {
+                  "paramName": "Basis of Deductible",
+                  "paramValue": "Number of Hours"
+                },
+                {
+                  "paramName": "Deductible Value",
+                  "paramValue": "12"
+                },
+                {
+                  "paramName": "Sub Condition1",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVD10",
+            "netPremium": "0",
+            "totalPremium": "0"
+          },
+          {
+            "coverCode": "TRV17",
+            "coverExpiryDate": "30/04/2026 00:00:00",
+            "coverInceptionDate": "31/01/2026 00:00:01",
+            "coverName": "Home Burglary Insurance",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Inception Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Expiry Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level Base Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "100000"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency for Sum Insured",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Sum Insured",
+                  "paramValue": "100000"
+                },
+                {
+                  "paramName": "Basis of Deductible",
+                  "paramValue": "Not Applicable"
+                },
+                {
+                  "paramName": "Deductible Value",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Sub Condition1",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVD10",
+            "netPremium": "0",
+            "totalPremium": "0"
+          },
+          {
+            "coverCode": "TRV18",
+            "coverExpiryDate": "30/04/2026 00:00:00",
+            "coverInceptionDate": "31/01/2026 00:00:01",
+            "coverName": "Emergency Cash Benefit",
+            "coverProperty": {
+              "multiSetProperty": [
+                {
+                  "multiSetDetail": [],
+                  "multiSetName": null
+                }
+              ],
+              "simpleProperty": [
+                {
+                  "paramName": "Cover Inception Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Expiry Date",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Cover Level Base Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency",
+                  "paramValue": "INR"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Sum Insured in Transaction Currency",
+                  "paramValue": "500"
+                },
+                {
+                  "paramName": "Cover Premium in Base Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Premium in Transaction Currency",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Cover Level Transaction Currency for Sum Insured",
+                  "paramValue": "USD"
+                },
+                {
+                  "paramName": "Sum Insured",
+                  "paramValue": "500"
+                },
+                {
+                  "paramName": "Basis of Deductible",
+                  "paramValue": "Not Applicable"
+                },
+                {
+                  "paramName": "Deductible Value",
+                  "paramValue": "0"
+                },
+                {
+                  "paramName": "Sub Condition1",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Forex Rate at Cover Level",
+                  "paramValue": "1"
+                }
+              ]
+            },
+            "eventCode": "SCR-COVD10",
+            "netPremium": "0",
+            "totalPremium": "0"
+          }
+        ],
+        "documentDetails": [
+          {
+            "documentGenerationDate": null,
+            "documentId": null,
+            "documentName": null,
+            "documentType": null
+          }
+        ],
+        "memberDetails": {
+          "businessName": null,
+          "createdBy": null,
+          "dateOfBirth": "12/07/1999",
+          "documentDetail": [
+            {
+              "documentGenerationDate": null,
+              "documentId": null,
+              "documentName": null,
+              "documentType": null
+            }
+          ],
+          "firstName": "MONIKA",
+          "gender": "F",
+          "lastName": "MONIKA",
+          "middleName": null,
+          "nationality": "A103",
+          "occupation": null,
+          "parentPartyCode": null,
+          "partyAddress": [
+            {
+              "address1": "VPO",
+              "address2": "JALBEHRA",
+              "address3": "KURUKSHETRA",
+              "addressProperty": [
+                {
+                  "paramName": "Area",
+                  "paramValue": "KURUKSHETRA"
+                }
+              ],
+              "addressType": "Permanent",
+              "alternateEmailId": null,
+              "city": "KURUKSHETRA",
+              "country": "INDIA",
+              "district": null,
+              "eMailId": "eltecfatehabad@gmail.com",
+              "fax": null,
+              "landlineNo": null,
+              "mobileNo": "8059812388",
+              "phoneNo": null,
+              "pincode": "136129",
+              "state": "HARYANA",
+              "stdCode": null,
+              "workNo": null
+            }
+          ],
+          "partyCode": "PI36626363",
+          "partyEndDate": null,
+          "partyLastModificationDate": "27/12/2025 13:16:28",
+          "partyProperty": {
+            "multiSetProperty": [
+              {
+                "multiSetDetail": [
+                  {
+                    "property": [
+                      {
+                        "paramName": "Passport Number",
+                        "paramValue": "U1983549"
+                      }
+                    ],
+                    "sequenceNumber": "1"
+                  }
+                ],
+                "multiSetName": "Passport details"
+              }
+            ],
+            "simpleProperty": [
+              {
+                "paramName": "ABHA ID",
+                "paramValue": "0"
+              },
+              {
+                "paramName": "Aadhaar Number",
+                "paramValue": "0"
+              },
+              {
+                "paramName": "Age",
+                "paramValue": "0"
+              },
+              {
+                "paramName": "Company",
+                "paramValue": "BAGIC"
+              },
+              {
+                "paramName": "Credit Card details",
+                "paramValue": "SUB-CREDDTL"
+              },
+              {
+                "paramName": "Date Of Birth",
+                "paramValue": "12/07/1999"
+              },
+              {
+                "paramName": "Date of Birth",
+                "paramValue": "12/07/1999"
+              },
+              {
+                "paramName": "Disability Percentage",
+                "paramValue": "0"
+              },
+              {
+                "paramName": "Driving License experience",
+                "paramValue": "0"
+              },
+              {
+                "paramName": "EMandate details",
+                "paramValue": "SUB-EMANDTL"
+              },
+              {
+                "paramName": "Gender",
+                "paramValue": "F"
+              },
+              {
+                "paramName": "Height",
+                "paramValue": "0"
+              },
+              {
+                "paramName": "Is The Organisation A Registered Business / Trust?",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Languages Preferred",
+                "paramValue": "ENGLISH"
+              },
+              {
+                "paramName": "Marital Status",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Monthly income",
+                "paramValue": "0"
+              },
+              {
+                "paramName": "Number of Daughters",
+                "paramValue": "0"
+              },
+              {
+                "paramName": "Number of Son",
+                "paramValue": "0"
+              },
+              {
+                "paramName": "POA Document Status",
+                "paramValue": "SUB-POADOC"
+              },
+              {
+                "paramName": "POI Document Status",
+                "paramValue": "SUB-POIDOC"
+              },
+              {
+                "paramName": "Partner Ref",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Passport details",
+                "paramValue": "SUB-PASSDTL"
+              },
+              {
+                "paramName": "Preferred Mode Of Alert",
+                "paramValue": "SMS"
+              },
+              {
+                "paramName": "Preferred Mode of Communication",
+                "paramValue": "Email"
+              },
+              {
+                "paramName": "Reference Code",
+                "paramValue": ""
+              },
+              {
+                "paramName": "Relationship with Employee",
+                "paramValue": "HEADING"
+              },
+              {
+                "paramName": "Statewise GSTIN details",
+                "paramValue": "SUB-MUGST"
+              },
+              {
+                "paramName": "VID",
+                "paramValue": "0"
+              },
+              {
+                "paramName": "Weight",
+                "paramValue": "0"
+              }
+            ]
+          },
+          "partyRelation": [
+            {
+              "stakeName": "POLICY-HOL",
+              "startDate": "27/12/2025 13:16:28"
+            },
+            {
+              "stakeName": "MEMBER",
+              "startDate": "27/12/2025 13:16:28"
+            },
+            {
+              "stakeName": "DFLTSTKIND",
+              "startDate": "27/12/2025 13:16:28"
+            }
+          ],
+          "partyStartDate": "27/12/2025",
+          "partyStatus": "ACTIVE",
+          "registrationDate": null,
+          "registrationNo": null,
+          "relatedParty": [],
+          "title": "Miss",
+          "typeOfOrganization": null,
+          "typeOfParty": "I"
+        },
+        "netPremium": "0",
+        "riskCode": "MEMBER",
+        "riskDesc": null,
+        "riskProperty": {
+          "multiSetProperty": [
+            {
+              "multiSetDetail": [
+                {
+                  "property": [
+                    {
+                      "paramName": "Nominee Name",
+                      "paramValue": "KANWARPAL"
+                    },
+                    {
+                      "paramName": "Date of Birth",
+                      "paramValue": ""
+                    },
+                    {
+                      "paramName": "Relation with Insured",
+                      "paramValue": "LHEIR"
+                    },
+                    {
+                      "paramName": "Allocation Percentage",
+                      "paramValue": ""
+                    },
+                    {
+                      "paramName": "Appointee Name",
+                      "paramValue": ""
+                    }
+                  ],
+                  "sequenceNumber": "1"
+                }
+              ],
+              "multiSetName": "Nominee  Details"
+            },
+            {
+              "multiSetDetail": [
+                {
+                  "property": [
+                    {
+                      "paramName": "Travel Date",
+                      "paramValue": "31/01/2026"
+                    },
+                    {
+                      "paramName": "Return Date",
+                      "paramValue": "30/04/2026"
+                    },
+                    {
+                      "paramName": "Trip Duration in Days",
+                      "paramValue": ""
+                    }
+                  ],
+                  "sequenceNumber": "1"
+                }
+              ],
+              "multiSetName": "Trip  Details"
+            }
+          ],
+          "simpleProperty": [
+            {
+              "paramName": "Premium",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Other Discount",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Gross Premium",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Reins_Pending_Indicator",
+              "paramValue": "N"
+            },
+            {
+              "paramName": "Policy Type",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Policy Inception Date",
+              "paramValue": "31/01/2026"
+            },
+            {
+              "paramName": "Total Fees",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Minimum Deposit Premium Applicable",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Minimum Deposit Premium Type",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Free Cancellation Period",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Category Name",
+              "paramValue": "INDIVIDUAL"
+            },
+            {
+              "paramName": "Member Type",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "cover code",
+              "paramValue": "HEADING"
+            },
+            {
+              "paramName": "Insured Name",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Source of Business",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Premium Currency",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Premium Currency Exchange Rate",
+              "paramValue": "1"
+            },
+            {
+              "paramName": "Sum Insured Currency",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Sum Insured Currency Exchange Rate",
+              "paramValue": "1"
+            },
+            {
+              "paramName": "Policy Expiry Date",
+              "paramValue": "30/04/2026"
+            },
+            {
+              "paramName": "Risk Inception Date",
+              "paramValue": "31/01/2026"
+            },
+            {
+              "paramName": "Premium (in BHD)",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Unit",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Risk Type",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Nature of Loss",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Hide Check Box",
+              "paramValue": "HEADING"
+            },
+            {
+              "paramName": "Show Search Bar",
+              "paramValue": "HEADING"
+            },
+            {
+              "paramName": "Show Pagination Tool Bar",
+              "paramValue": "HEADING"
+            },
+            {
+              "paramName": "Risk Expiry Date",
+              "paramValue": "30/04/2026"
+            },
+            {
+              "paramName": "Total Taxes",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Policy Expiry Time",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Total Premium Due",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Cover Inception Date",
+              "paramValue": "31/01/2026"
+            },
+            {
+              "paramName": "Cover Expiry Date",
+              "paramValue": "30/04/2026"
+            },
+            {
+              "paramName": "Mode of Premium Calculation",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Registration No",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Conditional Section",
+              "paramValue": "COND-T9"
+            },
+            {
+              "paramName": "Policy Level Base Currency",
+              "paramValue": "INR"
+            },
+            {
+              "paramName": "Policy Level Transaction Currency",
+              "paramValue": "INR"
+            },
+            {
+              "paramName": "Policy Level Transaction Currency for Sum Insured",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Risk Level Base Currency",
+              "paramValue": "INR"
+            },
+            {
+              "paramName": "Risk Level Transaction Currency",
+              "paramValue": "INR"
+            },
+            {
+              "paramName": "Risk Sum Insured in Base Currency",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Risk Sum Insured in Transaction Currency",
+              "paramValue": "50000"
+            },
+            {
+              "paramName": "Risk Premium in Base Currency",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Risk Premium in Transaction Currency",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Forex Rate at Risk Level",
+              "paramValue": "1"
+            },
+            {
+              "paramName": "Risk Level Transaction Currency for Sum Insured",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Cover Level Base Currency",
+              "paramValue": "INR"
+            },
+            {
+              "paramName": "Cover Level Transaction Currency",
+              "paramValue": "INR"
+            },
+            {
+              "paramName": "Cover Level Transaction Currency for Sum Insured",
+              "paramValue": "INR"
+            },
+            {
+              "paramName": "Cover Premium in Base Currency",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Cover Premium in Transaction Currency",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Cover Sum Insured in Base Currency",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Cover Sum Insured in Transaction Currency",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Is the Insured same as Policy Holder?",
+              "paramValue": "YES"
+            },
+            {
+              "paramName": "Model Group List",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Risk Plan",
+              "paramValue": "TRELSILVER"
+            },
+            {
+              "paramName": "covercode",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Rate Percentage",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "TypeofPolicy",
+              "paramValue": "INTINDV"
+            },
+            {
+              "paramName": "InsuredInterest",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Sum Insured in SI Currency",
+              "paramValue": "500"
+            },
+            {
+              "paramName": "Net Premium in Premium Currency",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Policy Duration",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Cover Name",
+              "paramValue": "HEADING"
+            },
+            {
+              "paramName": "Relationship to Insured",
+              "paramValue": "SELF"
+            },
+            {
+              "paramName": "Coverage",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Insured Interest",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "filler1",
+              "paramValue": "HEADING"
+            },
+            {
+              "paramName": "filler4",
+              "paramValue": "HEADING"
+            },
+            {
+              "paramName": "Limit",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Column Details",
+              "paramValue": "SEC-GSTTRXSUB#null#null"
+            },
+            {
+              "paramName": "Srl No.",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Policy Plan",
+              "paramValue": "TRELSILVER"
+            },
+            {
+              "paramName": "Policy Inception Time",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Claim Details",
+              "paramValue": ""
+            },
+            {
+              "paramName": "sub1",
+              "paramValue": "COND-T10"
+            },
+            {
+              "paramName": "Data Source",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Basic Details",
+              "paramValue": "HEADING"
+            },
+            {
+              "paramName": "Entry Date",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Type Of Client",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Is Consumer Loading Applicable",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Leading Cover",
+              "paramValue": "TRV05"
+            },
+            {
+              "paramName": "Premium Adjustment Type",
+              "paramValue": ""
+            },
+            {
+              "paramName": "policyplan",
+              "paramValue": "TRELSILVER"
+            },
+            {
+              "paramName": "BANCA Policy",
+              "paramValue": "N"
+            },
+            {
+              "paramName": "Endorsement Premium",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "PED",
+              "paramValue": "NO"
+            },
+            {
+              "paramName": "Premium Adjustment",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Premium Collected",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Auto Adjusted Amount",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Do you smoke or consume tobacco?",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Drink Alcohol?",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Do you do Recreational Drug Use?",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Insurance Details if Any (Health/PA etc)",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Policy Reference Number",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Priority Member",
+              "paramValue": ""
+            },
+            {
+              "paramName": "Total Stay Overseas in Days",
+              "paramValue": "0"
+            },
+            {
+              "paramName": "Travelling Companion Discount",
+              "paramValue": "0"
+            }
+          ]
+        },
+        "riskSerialNumber": "1",
+        "sumInsured": null,
+        "totalPremium": "0"
+      }
+    ],
+    "netPremium": "0",
+    "officeDetails": {
+      "officeAddress": [
+        {
+          "address1": "SCO- 156 TO 159",
+          "address2": "2ND FLOOR",
+          "address3": "SECTOR- 9 C",
+          "addressProperty": [
+            {
+              "paramName": "Area",
+              "paramValue": ""
+            }
+          ],
+          "addressType": "Permanent",
+          "alternateEmailId": "devinder@bajajallianz.co.in",
+          "city": "CHANDIGARH",
+          "country": "INDIA",
+          "district": null,
+          "eMailId": "devinder@bajajallianz.co.in",
+          "fax": "0172-4692923",
+          "landlineNo": null,
+          "mobileNo": "9999999999",
+          "phoneNo": null,
+          "pincode": "160009",
+          "state": "CHANDIGARH",
+          "stdCode": null,
+          "workNo": null
+        }
+      ],
+      "officeCode": "1201"
+    },
+    "paymentFrequency": "B",
+    "policyDuration": "90",
+    "policyDurationunit": "D",
+    "policyExpiryDate": "30/04/2026 23:59:59",
+    "policyHolderCode": null,
+    "policyInceptionDate": "31/01/2026 00:00:01",
+    "policyNumber": "12-9910-0008667432-00",
+    "policyPaymentInformation": [
+      {
+        "chequeNumber": null,
+        "chequeRealisationDate": null,
+        "chequeStatus": null,
+        "collectionAmount": "2089",
+        "collectionDate": "27/12/2025",
+        "collectionMode": "NF",
+        "collectionSource": null,
+        "collectionType": "A",
+        "receiptGenerationDate": "27/12/2025",
+        "receiptNumber": "SYS-25-000012913941/1",
+        "subCode": "399981602000",
+        "transactionDate": "27/12/2025",
+        "transactionId": "PC-25-000003278895"
+      }
+    ],
+    "policyProperty": {
+      "multiSetProperty": [
+        {
+          "multiSetDetail": [
+            {
+              "property": [
+                {
+                  "paramName": "Excluded Countries",
+                  "paramValue": "PAKISTAN"
+                }
+              ],
+              "sequenceNumber": "1"
+            },
+            {
+              "property": [
+                {
+                  "paramName": "Excluded Countries",
+                  "paramValue": "AFGHANISTAN"
+                }
+              ],
+              "sequenceNumber": "2"
+            },
+            {
+              "property": [
+                {
+                  "paramName": "Excluded Countries",
+                  "paramValue": "DRCONGO"
+                }
+              ],
+              "sequenceNumber": "3"
+            },
+            {
+              "property": [
+                {
+                  "paramName": "Excluded Countries",
+                  "paramValue": "IRAN"
+                }
+              ],
+              "sequenceNumber": "4"
+            },
+            {
+              "property": [
+                {
+                  "paramName": "Excluded Countries",
+                  "paramValue": "IRAQ"
+                }
+              ],
+              "sequenceNumber": "5"
+            },
+            {
+              "property": [
+                {
+                  "paramName": "Excluded Countries",
+                  "paramValue": "YEMEN"
+                }
+              ],
+              "sequenceNumber": "6"
+            },
+            {
+              "property": [
+                {
+                  "paramName": "Excluded Countries",
+                  "paramValue": "SYRIA"
+                }
+              ],
+              "sequenceNumber": "7"
+            },
+            {
+              "property": [
+                {
+                  "paramName": "Excluded Countries",
+                  "paramValue": "NORTHKOREA"
+                }
+              ],
+              "sequenceNumber": "8"
+            }
+          ],
+          "multiSetName": "Excluded Country Details"
+        },
+        {
+          "multiSetDetail": [
+            {
+              "property": [
+                {
+                  "paramName": "Excluded Events",
+                  "paramValue": "HAJ"
+                }
+              ],
+              "sequenceNumber": "1"
+            },
+            {
+              "property": [
+                {
+                  "paramName": "Excluded Events",
+                  "paramValue": "MANASAROVARYATRA"
+                }
+              ],
+              "sequenceNumber": "2"
+            }
+          ],
+          "multiSetName": "Excluded Event Details"
+        },
+        {
+          "multiSetDetail": [
+            {
+              "property": [
+                {
+                  "paramName": "Nominee Name",
+                  "paramValue": "KANWARPAL"
+                },
+                {
+                  "paramName": "Date of Birth",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Relation with Insured",
+                  "paramValue": "LHEIR"
+                },
+                {
+                  "paramName": "Allocation Percentage",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Appointee Name",
+                  "paramValue": ""
+                }
+              ],
+              "sequenceNumber": "1"
+            }
+          ],
+          "multiSetName": "Nominee  Details"
+        },
+        {
+          "multiSetDetail": [
+            {
+              "property": [
+                {
+                  "paramName": "Travel Date",
+                  "paramValue": "31/01/2026"
+                },
+                {
+                  "paramName": "Return Date",
+                  "paramValue": "30/04/2026"
+                },
+                {
+                  "paramName": "Trip Duration in Days",
+                  "paramValue": ""
+                }
+              ],
+              "sequenceNumber": "1"
+            }
+          ],
+          "multiSetName": "Trip  Details"
+        }
+      ],
+      "simpleProperty": [
+        {
+          "paramName": "Admin Charges",
+          "paramValue": "Not Applicable"
+        },
+        {
+          "paramName": "Amount Recevied",
+          "paramValue": "2089"
+        },
+        {
+          "paramName": "Base Premium",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Bill To",
+          "paramValue": "AGENT"
+        },
+        {
+          "paramName": "Branch Code",
+          "paramValue": "1201"
+        },
+        {
+          "paramName": "CGST Amount",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Calculated Amount For Elapsed Period",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Calculated Amount For Remaining Period",
+          "paramValue": "2089"
+        },
+        {
+          "paramName": "Cancellation Basis",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Cancelled By",
+          "paramValue": "CBIN"
+        },
+        {
+          "paramName": "Co-insurance Applicable",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Country",
+          "paramValue": "INDIA"
+        },
+        {
+          "paramName": "Effective date",
+          "paramValue": "31/01/2026"
+        },
+        {
+          "paramName": "Entry Date",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Excluded Countries Remarks",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Excluded Events Remarks",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Expiring Policy Expiry Date",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Expiring Policy Number",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Forex Rate at Policy Level",
+          "paramValue": "1"
+        },
+        {
+          "paramName": "GST Bifurcation",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Geographical Coverage",
+          "paramValue": "WWEXUSCAN"
+        },
+        {
+          "paramName": "IGST Amount",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "IMD Code",
+          "paramValue": "42540001"
+        },
+        {
+          "paramName": "Insurance Company Name",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Issuance Source",
+          "paramValue": "WEBSERVICE"
+        },
+        {
+          "paramName": "Loaded Premium",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Mode of Payment",
+          "paramValue": "OTHERS"
+        },
+        {
+          "paramName": "Net Premium in Premium Currency",
+          "paramValue": "2089"
+        },
+        {
+          "paramName": "Old Product Code",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Plan Category",
+          "paramValue": "INDIVIDUAL"
+        },
+        {
+          "paramName": "Policy Duration",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Policy Expiry Date",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Policy Expiry Time",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Policy Id",
+          "paramValue": "3311374792927122025"
+        },
+        {
+          "paramName": "Policy Inception Date",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Policy Inception Time",
+          "paramValue": "00:00:01"
+        },
+        {
+          "paramName": "Policy Plan",
+          "paramValue": "TRELSILVER"
+        },
+        {
+          "paramName": "Policy Premium Value",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Policy Premium WithOut Loading",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Policy Premium in Base Currency",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Policy Premium in Transaction Currency",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Policy Sum Insured in Transaction Currency",
+          "paramValue": "50000"
+        },
+        {
+          "paramName": "Policy Type",
+          "paramValue": "INTINDV"
+        },
+        {
+          "paramName": "Policy holder",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Portal Payment Mode",
+          "paramValue": "FLOAT"
+        },
+        {
+          "paramName": "Premium Currency",
+          "paramValue": "INR"
+        },
+        {
+          "paramName": "Premium Currency Exchange Rate",
+          "paramValue": "1"
+        },
+        {
+          "paramName": "Reason",
+          "paramValue": "Pax trip cancel"
+        },
+        {
+          "paramName": "Refund Amount",
+          "paramValue": "2089"
+        },
+        {
+          "paramName": "Refund Amount Manual",
+          "paramValue": "2089"
+        },
+        {
+          "paramName": "Remarks",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Renewal Applicable",
+          "paramValue": "N"
+        },
+        {
+          "paramName": "Retained Admin Charges",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "SGST Amount",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "SUB IMD Code",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Stamp Receipt No",
+          "paramValue": "1012112025"
+        },
+        {
+          "paramName": "Sum Insured Currency",
+          "paramValue": "INR"
+        },
+        {
+          "paramName": "Sum Insured Currency Exchange Rate",
+          "paramValue": "1"
+        },
+        {
+          "paramName": "Sum Insured in SI Currency",
+          "paramValue": "50000"
+        },
+        {
+          "paramName": "Type Of Business",
+          "paramValue": "CREDIT"
+        },
+        {
+          "paramName": "UTGST Amount",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Underwriting Rqrd Flag",
+          "paramValue": "N"
+        },
+        {
+          "paramName": "Unit",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Policy Sub Status",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Created By",
+          "paramValue": "EXT1068011"
+        }
+      ]
+    },
+    "policyRelation": [
+      {
+        "partyCode": "PI36626363",
+        "partyName": "MONIKA  MONIKA",
+        "partySharePercentage": "0",
+        "stakeCode": "POLICY-HOL"
+      },
+      {
+        "partyCode": "399981602",
+        "partyName": "CHOICE INSURANCE BROKING INDIA PVT. LTD",
+        "partySharePercentage": "0",
+        "stakeCode": "AGENT"
+      },
+      {
+        "partyCode": "CGS00000001",
+        "partyName": "CENTRAL GOVT",
+        "partySharePercentage": "0",
+        "stakeCode": "CGS"
+      },
+      {
+        "partyCode": "SGS00000034",
+        "partyName": "HARYANA - State Govt. ",
+        "partySharePercentage": "0",
+        "stakeCode": "SGS"
+      }
+    ],
+    "policyStatus": "09",
+    "premiumMode": "C",
+    "previousPolicyDetails": [
+      {
+        "policyExpiryDate": null,
+        "policyInceptionDate": null,
+        "policyNumber": null,
+        "productCode": null,
+        "productName": null,
+        "sumInsured": null,
+        "totalPremium": null
+      }
+    ],
+    "productCode": "9910",
+    "productName": "INDIVIDUAL TRAVEL",
+    "proposerDetails": {
+      "businessName": null,
+      "createdBy": null,
+      "dateOfBirth": "12/07/1999",
+      "documentDetail": [
+        {
+          "documentGenerationDate": null,
+          "documentId": null,
+          "documentName": null,
+          "documentType": null
+        }
+      ],
+      "firstName": "MONIKA",
+      "gender": "F",
+      "lastName": "MONIKA",
+      "middleName": null,
+      "nationality": "A103",
+      "occupation": null,
+      "parentPartyCode": null,
+      "partyAddress": [
+        {
+          "address1": "VPO",
+          "address2": "JALBEHRA",
+          "address3": "KURUKSHETRA",
+          "addressProperty": [
+            {
+              "paramName": "Area",
+              "paramValue": "KURUKSHETRA"
+            }
+          ],
+          "addressType": "Permanent",
+          "alternateEmailId": null,
+          "city": "KURUKSHETRA",
+          "country": "INDIA",
+          "district": null,
+          "eMailId": "eltecfatehabad@gmail.com",
+          "fax": null,
+          "landlineNo": null,
+          "mobileNo": "8059812388",
+          "phoneNo": null,
+          "pincode": "136129",
+          "state": "HARYANA",
+          "stdCode": null,
+          "workNo": null
+        }
+      ],
+      "partyCode": "PI36626363",
+      "partyEndDate": null,
+      "partyLastModificationDate": "27/12/2025 13:16:28",
+      "partyProperty": {
+        "multiSetProperty": [
+          {
+            "multiSetDetail": [
+              {
+                "property": [
+                  {
+                    "paramName": "Passport Number",
+                    "paramValue": "U1983549"
+                  }
+                ],
+                "sequenceNumber": "1"
+              }
+            ],
+            "multiSetName": "Passport details"
+          }
+        ],
+        "simpleProperty": [
+          {
+            "paramName": "ABHA ID",
+            "paramValue": "0"
+          },
+          {
+            "paramName": "Aadhaar Number",
+            "paramValue": "0"
+          },
+          {
+            "paramName": "Age",
+            "paramValue": "0"
+          },
+          {
+            "paramName": "Company",
+            "paramValue": "BAGIC"
+          },
+          {
+            "paramName": "Credit Card details",
+            "paramValue": "SUB-CREDDTL"
+          },
+          {
+            "paramName": "Date Of Birth",
+            "paramValue": "12/07/1999"
+          },
+          {
+            "paramName": "Date of Birth",
+            "paramValue": "12/07/1999"
+          },
+          {
+            "paramName": "Disability Percentage",
+            "paramValue": "0"
+          },
+          {
+            "paramName": "Driving License experience",
+            "paramValue": "0"
+          },
+          {
+            "paramName": "EMandate details",
+            "paramValue": "SUB-EMANDTL"
+          },
+          {
+            "paramName": "Gender",
+            "paramValue": "F"
+          },
+          {
+            "paramName": "Height",
+            "paramValue": "0"
+          },
+          {
+            "paramName": "Is The Organisation A Registered Business / Trust?",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Languages Preferred",
+            "paramValue": "ENGLISH"
+          },
+          {
+            "paramName": "Marital Status",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Monthly income",
+            "paramValue": "0"
+          },
+          {
+            "paramName": "Number of Daughters",
+            "paramValue": "0"
+          },
+          {
+            "paramName": "Number of Son",
+            "paramValue": "0"
+          },
+          {
+            "paramName": "POA Document Status",
+            "paramValue": "SUB-POADOC"
+          },
+          {
+            "paramName": "POI Document Status",
+            "paramValue": "SUB-POIDOC"
+          },
+          {
+            "paramName": "Partner Ref",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Passport details",
+            "paramValue": "SUB-PASSDTL"
+          },
+          {
+            "paramName": "Preferred Mode Of Alert",
+            "paramValue": "SMS"
+          },
+          {
+            "paramName": "Preferred Mode of Communication",
+            "paramValue": "Email"
+          },
+          {
+            "paramName": "Reference Code",
+            "paramValue": ""
+          },
+          {
+            "paramName": "Relationship with Employee",
+            "paramValue": "HEADING"
+          },
+          {
+            "paramName": "Statewise GSTIN details",
+            "paramValue": "SUB-MUGST"
+          },
+          {
+            "paramName": "VID",
+            "paramValue": "0"
+          },
+          {
+            "paramName": "Weight",
+            "paramValue": "0"
+          }
+        ]
+      },
+      "partyRelation": [
+        {
+          "stakeName": "POLICY-HOL",
+          "startDate": "27/12/2025 13:16:28"
+        },
+        {
+          "stakeName": "MEMBER",
+          "startDate": "27/12/2025 13:16:28"
+        },
+        {
+          "stakeName": "DFLTSTKIND",
+          "startDate": "27/12/2025 13:16:28"
+        }
+      ],
+      "partyStartDate": "27/12/2025",
+      "partyStatus": "ACTIVE",
+      "registrationDate": null,
+      "registrationNo": null,
+      "relatedParty": [],
+      "title": "Miss",
+      "typeOfOrganization": null,
+      "typeOfParty": "I"
+    },
+    "quotationNumber": "11-9910-0015183288-00",
+    "renewalFlag": "N",
+    "stampDuty": "0",
+    "strPolicyBranchName": "1201",
+    "strPolicyIntimationDate": "27/12/2025 13:16:30",
+    "teleVerificationDetails": [
+      {
+        "endTime": null,
+        "startTime": null,
+        "teleVarificationInitiatedDate": null,
+        "teleVarificationStatus": null,
+        "transactionId": null
+      }
+    ],
+    "totalPremium": "0",
+    "workItemDetails": [
+      {
+        "completionDate": null,
+        "raisedBy": null,
+        "raisedDate": null,
+        "remarks": null,
+        "status": null,
+        "taskType": null
+      }
+    ]
+  },
+  "premiumDetails": {
+    "collectedPremium": "2089",
+    "errorCode": 0,
+    "errorDescription": "Success",
+    "outstandingPremium": "0",
+    "premcalcDetail": null,
+    "taxDetail": null
+  },
+  "quoteParamDetails": {
+    "additionalPartyList": null,
+    "buildingDetails": null,
+    "partyDetails": null,
+    "polPropPropList": null,
+    "policyProperty": {
+      "multiSetPropertyInput": [
+        {
+          "multiSetDetailInput": [
+            {
+              "operationCode": "ADD",
+              "property": [
+                {
+                  "paramName": "Excluded Countries",
+                  "paramValue": "PAKISTAN"
+                }
+              ],
+              "sequenceNumber": "1"
+            },
+            {
+              "operationCode": "ADD",
+              "property": [
+                {
+                  "paramName": "Excluded Countries",
+                  "paramValue": "AFGHANISTAN"
+                }
+              ],
+              "sequenceNumber": "2"
+            },
+            {
+              "operationCode": "ADD",
+              "property": [
+                {
+                  "paramName": "Excluded Countries",
+                  "paramValue": "DRCONGO"
+                }
+              ],
+              "sequenceNumber": "3"
+            },
+            {
+              "operationCode": "ADD",
+              "property": [
+                {
+                  "paramName": "Excluded Countries",
+                  "paramValue": "IRAN"
+                }
+              ],
+              "sequenceNumber": "4"
+            },
+            {
+              "operationCode": "ADD",
+              "property": [
+                {
+                  "paramName": "Excluded Countries",
+                  "paramValue": "IRAQ"
+                }
+              ],
+              "sequenceNumber": "5"
+            },
+            {
+              "operationCode": "ADD",
+              "property": [
+                {
+                  "paramName": "Excluded Countries",
+                  "paramValue": "YEMEN"
+                }
+              ],
+              "sequenceNumber": "6"
+            },
+            {
+              "operationCode": "ADD",
+              "property": [
+                {
+                  "paramName": "Excluded Countries",
+                  "paramValue": "SYRIA"
+                }
+              ],
+              "sequenceNumber": "7"
+            },
+            {
+              "operationCode": "ADD",
+              "property": [
+                {
+                  "paramName": "Excluded Countries",
+                  "paramValue": "NORTHKOREA"
+                }
+              ],
+              "sequenceNumber": "8"
+            }
+          ],
+          "multiSetName": "Excluded Country Details"
+        },
+        {
+          "multiSetDetailInput": [
+            {
+              "operationCode": "ADD",
+              "property": [
+                {
+                  "paramName": "Excluded Events",
+                  "paramValue": "HAJ"
+                }
+              ],
+              "sequenceNumber": "1"
+            },
+            {
+              "operationCode": "ADD",
+              "property": [
+                {
+                  "paramName": "Excluded Events",
+                  "paramValue": "MANASAROVARYATRA"
+                }
+              ],
+              "sequenceNumber": "2"
+            }
+          ],
+          "multiSetName": "Excluded Event Details"
+        },
+        {
+          "multiSetDetailInput": [
+            {
+              "operationCode": "ADD",
+              "property": [
+                {
+                  "paramName": "Nominee Name",
+                  "paramValue": "KANWARPAL"
+                },
+                {
+                  "paramName": "Date of Birth",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Relation with Insured",
+                  "paramValue": "LHEIR"
+                },
+                {
+                  "paramName": "Allocation Percentage",
+                  "paramValue": ""
+                },
+                {
+                  "paramName": "Appointee Name",
+                  "paramValue": ""
+                }
+              ],
+              "sequenceNumber": "1"
+            }
+          ],
+          "multiSetName": "Nominee  Details"
+        },
+        {
+          "multiSetDetailInput": [
+            {
+              "operationCode": "ADD",
+              "property": [
+                {
+                  "paramName": "Travel Date",
+                  "paramValue": "31/01/2026"
+                },
+                {
+                  "paramName": "Return Date",
+                  "paramValue": "30/04/2026"
+                },
+                {
+                  "paramName": "Trip Duration in Days",
+                  "paramValue": ""
+                }
+              ],
+              "sequenceNumber": "1"
+            }
+          ],
+          "multiSetName": "Trip  Details"
+        }
+      ],
+      "ruleList": [
+        {
+          "strParamName": "Admin Charges",
+          "strParamSeq": "0",
+          "strParamValue": "Not Applicable"
+        },
+        {
+          "strParamName": "Amount Recevied",
+          "strParamSeq": "1",
+          "strParamValue": "2089"
+        },
+        {
+          "strParamName": "Base Premium",
+          "strParamSeq": "2",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Bill To",
+          "strParamSeq": "3",
+          "strParamValue": "AGENT"
+        },
+        {
+          "strParamName": "Branch Code",
+          "strParamSeq": "4",
+          "strParamValue": "1201"
+        },
+        {
+          "strParamName": "CGST Amount",
+          "strParamSeq": "5",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "Calculated Amount For Elapsed Period",
+          "strParamSeq": "6",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "Calculated Amount For Remaining Period",
+          "strParamSeq": "7",
+          "strParamValue": "2089"
+        },
+        {
+          "strParamName": "Cancellation Basis",
+          "strParamSeq": "8",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Cancelled By",
+          "strParamSeq": "9",
+          "strParamValue": "CBIN"
+        },
+        {
+          "strParamName": "Co-insurance Applicable",
+          "strParamSeq": "10",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Country",
+          "strParamSeq": "11",
+          "strParamValue": "INDIA"
+        },
+        {
+          "strParamName": "Effective date",
+          "strParamSeq": "12",
+          "strParamValue": "31/01/2026"
+        },
+        {
+          "strParamName": "Entry Date",
+          "strParamSeq": "13",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Excluded Countries Remarks",
+          "strParamSeq": "14",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Excluded Events Remarks",
+          "strParamSeq": "15",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Expiring Policy Expiry Date",
+          "strParamSeq": "16",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Expiring Policy Number",
+          "strParamSeq": "17",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Forex Rate at Policy Level",
+          "strParamSeq": "18",
+          "strParamValue": "1"
+        },
+        {
+          "strParamName": "GST Bifurcation",
+          "strParamSeq": "19",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "Geographical Coverage",
+          "strParamSeq": "20",
+          "strParamValue": "WWEXUSCAN"
+        },
+        {
+          "strParamName": "IGST Amount",
+          "strParamSeq": "21",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "IMD Code",
+          "strParamSeq": "22",
+          "strParamValue": "42540001"
+        },
+        {
+          "strParamName": "Insurance Company Name",
+          "strParamSeq": "23",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Issuance Source",
+          "strParamSeq": "24",
+          "strParamValue": "WEBSERVICE"
+        },
+        {
+          "strParamName": "Loaded Premium",
+          "strParamSeq": "25",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Mode of Payment",
+          "strParamSeq": "26",
+          "strParamValue": "OTHERS"
+        },
+        {
+          "strParamName": "Net Premium in Premium Currency",
+          "strParamSeq": "27",
+          "strParamValue": "2089"
+        },
+        {
+          "strParamName": "Old Product Code",
+          "strParamSeq": "28",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Plan Category",
+          "strParamSeq": "29",
+          "strParamValue": "INDIVIDUAL"
+        },
+        {
+          "strParamName": "Policy Duration",
+          "strParamSeq": "30",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "Policy Expiry Date",
+          "strParamSeq": "31",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Policy Expiry Time",
+          "strParamSeq": "32",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Policy Id",
+          "strParamSeq": "33",
+          "strParamValue": "3311374792927122025"
+        },
+        {
+          "strParamName": "Policy Inception Date",
+          "strParamSeq": "34",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Policy Inception Time",
+          "strParamSeq": "35",
+          "strParamValue": "00:00:01"
+        },
+        {
+          "strParamName": "Policy Plan",
+          "strParamSeq": "36",
+          "strParamValue": "TRELSILVER"
+        },
+        {
+          "strParamName": "Policy Premium Value",
+          "strParamSeq": "37",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "Policy Premium WithOut Loading",
+          "strParamSeq": "38",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "Policy Premium in Base Currency",
+          "strParamSeq": "39",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "Policy Premium in Transaction Currency",
+          "strParamSeq": "40",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "Policy Sum Insured in Transaction Currency",
+          "strParamSeq": "41",
+          "strParamValue": "50000"
+        },
+        {
+          "strParamName": "Policy Type",
+          "strParamSeq": "42",
+          "strParamValue": "INTINDV"
+        },
+        {
+          "strParamName": "Policy holder",
+          "strParamSeq": "43",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Portal Payment Mode",
+          "strParamSeq": "44",
+          "strParamValue": "FLOAT"
+        },
+        {
+          "strParamName": "Premium Currency",
+          "strParamSeq": "45",
+          "strParamValue": "INR"
+        },
+        {
+          "strParamName": "Premium Currency Exchange Rate",
+          "strParamSeq": "46",
+          "strParamValue": "1"
+        },
+        {
+          "strParamName": "Reason",
+          "strParamSeq": "47",
+          "strParamValue": "Pax trip cancel"
+        },
+        {
+          "strParamName": "Refund Amount",
+          "strParamSeq": "48",
+          "strParamValue": "2089"
+        },
+        {
+          "strParamName": "Refund Amount Manual",
+          "strParamSeq": "49",
+          "strParamValue": "2089"
+        },
+        {
+          "strParamName": "Remarks",
+          "strParamSeq": "50",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Renewal Applicable",
+          "strParamSeq": "51",
+          "strParamValue": "N"
+        },
+        {
+          "strParamName": "Retained Admin Charges",
+          "strParamSeq": "52",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "SGST Amount",
+          "strParamSeq": "53",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "SUB IMD Code",
+          "strParamSeq": "54",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Stamp Receipt No",
+          "strParamSeq": "55",
+          "strParamValue": "1012112025"
+        },
+        {
+          "strParamName": "Sum Insured Currency",
+          "strParamSeq": "56",
+          "strParamValue": "INR"
+        },
+        {
+          "strParamName": "Sum Insured Currency Exchange Rate",
+          "strParamSeq": "57",
+          "strParamValue": "1"
+        },
+        {
+          "strParamName": "Sum Insured in SI Currency",
+          "strParamSeq": "58",
+          "strParamValue": "50000"
+        },
+        {
+          "strParamName": "Type Of Business",
+          "strParamSeq": "59",
+          "strParamValue": "CREDIT"
+        },
+        {
+          "strParamName": "UTGST Amount",
+          "strParamSeq": "60",
+          "strParamValue": "0"
+        },
+        {
+          "strParamName": "Underwriting Rqrd Flag",
+          "strParamSeq": "61",
+          "strParamValue": "N"
+        },
+        {
+          "strParamName": "Unit",
+          "strParamSeq": "62",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Policy Sub Status",
+          "strParamSeq": "63",
+          "strParamValue": ""
+        },
+        {
+          "strParamName": "Created By",
+          "strParamSeq": "64",
+          "strParamValue": "EXT1068011"
+        }
+      ],
+      "strBusinessEvent": "SCR-BSCDTL"
+    },
+    "riskList": [
+      {
+        "additionalPartyCode": null,
+        "baseCurrency": "INR",
+        "multiSetPropertyInput": [
+          {
+            "multiSetDetailInput": [
+              {
+                "operationCode": "ADD",
+                "property": [
+                  {
+                    "paramName": "Nominee Name",
+                    "paramValue": "KANWARPAL"
+                  },
+                  {
+                    "paramName": "Date of Birth",
+                    "paramValue": ""
+                  },
+                  {
+                    "paramName": "Relation with Insured",
+                    "paramValue": "LHEIR"
+                  },
+                  {
+                    "paramName": "Allocation Percentage",
+                    "paramValue": ""
+                  },
+                  {
+                    "paramName": "Appointee Name",
+                    "paramValue": ""
+                  }
+                ],
+                "sequenceNumber": "1"
+              }
+            ],
+            "multiSetName": "Nominee  Details"
+          },
+          {
+            "multiSetDetailInput": [
+              {
+                "operationCode": "ADD",
+                "property": [
+                  {
+                    "paramName": "Travel Date",
+                    "paramValue": "31/01/2026"
+                  },
+                  {
+                    "paramName": "Return Date",
+                    "paramValue": "30/04/2026"
+                  },
+                  {
+                    "paramName": "Trip Duration in Days",
+                    "paramValue": ""
+                  }
+                ],
+                "sequenceNumber": "1"
+              }
+            ],
+            "multiSetName": "Trip  Details"
+          }
+        ],
+        "partyDetails": null,
+        "premCurrency": "INR",
+        "riskCover": [
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Inception Date",
+                  "strParamSeq": "0",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Expiry Date",
+                  "strParamSeq": "1",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level Base Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "3",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "15000"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "6",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "7",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency for Sum Insured",
+                  "strParamSeq": "8",
+                  "strParamValue": "USD"
+                },
+                {
+                  "strParamName": "Sum Insured",
+                  "strParamSeq": "9",
+                  "strParamValue": "15000"
+                },
+                {
+                  "strParamName": "Basis of Deductible",
+                  "strParamSeq": "10",
+                  "strParamValue": "Not Applicable"
+                },
+                {
+                  "strParamName": "Deductible Value",
+                  "strParamSeq": "11",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Sub Condition1",
+                  "strParamSeq": "12",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "13",
+                  "strParamValue": "1"
+                }
+              ],
+              "strEventCode": "SCR-COVD10"
+            },
+            "strCoverCode": "TRV01",
+            "strCoverExpiryDate": "30/04/2026 00:00:00",
+            "strCoverInceptionDate": "31/01/2026 00:00:01",
+            "strRiskSerialNo": "1"
+          },
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Inception Date",
+                  "strParamSeq": "0",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Expiry Date",
+                  "strParamSeq": "1",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level Base Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "3",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "500"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "6",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "7",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency for Sum Insured",
+                  "strParamSeq": "8",
+                  "strParamValue": "USD"
+                },
+                {
+                  "strParamName": "Sum Insured",
+                  "strParamSeq": "9",
+                  "strParamValue": "500"
+                },
+                {
+                  "strParamName": "Basis of Deductible",
+                  "strParamSeq": "10",
+                  "strParamValue": "Amount"
+                },
+                {
+                  "strParamName": "Deductible Value",
+                  "strParamSeq": "11",
+                  "strParamValue": "100"
+                },
+                {
+                  "strParamName": "Sub Condition1",
+                  "strParamSeq": "12",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "13",
+                  "strParamValue": "1"
+                }
+              ],
+              "strEventCode": "SCR-COVD10"
+            },
+            "strCoverCode": "TRV03",
+            "strCoverExpiryDate": "30/04/2026 00:00:00",
+            "strCoverInceptionDate": "31/01/2026 00:00:01",
+            "strRiskSerialNo": "1"
+          },
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Inception Date",
+                  "strParamSeq": "0",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Expiry Date",
+                  "strParamSeq": "1",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level Base Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "3",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "50000"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency for Sum Insured",
+                  "strParamSeq": "6",
+                  "strParamValue": "USD"
+                },
+                {
+                  "strParamName": "Sum Insured",
+                  "strParamSeq": "7",
+                  "strParamValue": "50000"
+                },
+                {
+                  "strParamName": "Basis of Deductible",
+                  "strParamSeq": "8",
+                  "strParamValue": "Amount"
+                },
+                {
+                  "strParamName": "Deductible Value",
+                  "strParamSeq": "9",
+                  "strParamValue": "100"
+                },
+                {
+                  "strParamName": "Sub-Limit Details",
+                  "strParamSeq": "10",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Sub Condition1",
+                  "strParamSeq": "11",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level FAC R/I",
+                  "strParamSeq": "12",
+                  "strParamValue": "N"
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "13",
+                  "strParamValue": "1"
+                },
+                {
+                  "strParamName": "Net Premium",
+                  "strParamSeq": "14",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "15",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "16",
+                  "strParamValue": "0"
+                }
+              ],
+              "strEventCode": "SCR-COVD4"
+            },
+            "strCoverCode": "TRV05",
+            "strCoverExpiryDate": "30/04/2026 00:00:00",
+            "strCoverInceptionDate": "31/01/2026 00:00:03",
+            "strRiskSerialNo": "1"
+          },
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Inception Date",
+                  "strParamSeq": "0",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Expiry Date",
+                  "strParamSeq": "1",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level Base Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "3",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "500"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "6",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "7",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency for Sum Insured",
+                  "strParamSeq": "8",
+                  "strParamValue": "USD"
+                },
+                {
+                  "strParamName": "Sum Insured",
+                  "strParamSeq": "9",
+                  "strParamValue": "500"
+                },
+                {
+                  "strParamName": "Basis of Deductible",
+                  "strParamSeq": "10",
+                  "strParamValue": "Not Applicable"
+                },
+                {
+                  "strParamName": "Deductible Value",
+                  "strParamSeq": "11",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Sub Condition1",
+                  "strParamSeq": "12",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "13",
+                  "strParamValue": "1"
+                }
+              ],
+              "strEventCode": "SCR-COVD10"
+            },
+            "strCoverCode": "TRV06",
+            "strCoverExpiryDate": "30/04/2026 00:00:00",
+            "strCoverInceptionDate": "31/01/2026 00:00:01",
+            "strRiskSerialNo": "1"
+          },
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Inception Date",
+                  "strParamSeq": "0",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Expiry Date",
+                  "strParamSeq": "1",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level Base Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "3",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "2500"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "6",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "7",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency for Sum Insured",
+                  "strParamSeq": "8",
+                  "strParamValue": "USD"
+                },
+                {
+                  "strParamName": "Sum Insured",
+                  "strParamSeq": "9",
+                  "strParamValue": "2500"
+                },
+                {
+                  "strParamName": "Basis of Deductible",
+                  "strParamSeq": "10",
+                  "strParamValue": "Not Applicable"
+                },
+                {
+                  "strParamName": "Deductible Value",
+                  "strParamSeq": "11",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Sub Condition1",
+                  "strParamSeq": "12",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "13",
+                  "strParamValue": "1"
+                }
+              ],
+              "strEventCode": "SCR-COVD10"
+            },
+            "strCoverCode": "TRV07",
+            "strCoverExpiryDate": "30/04/2026 00:00:00",
+            "strCoverInceptionDate": "31/01/2026 00:00:01",
+            "strRiskSerialNo": "1"
+          },
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Inception Date",
+                  "strParamSeq": "0",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Expiry Date",
+                  "strParamSeq": "1",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level Base Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "3",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "250"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "6",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "7",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency for Sum Insured",
+                  "strParamSeq": "8",
+                  "strParamValue": "USD"
+                },
+                {
+                  "strParamName": "Sum Insured",
+                  "strParamSeq": "9",
+                  "strParamValue": "250"
+                },
+                {
+                  "strParamName": "Basis of Deductible",
+                  "strParamSeq": "10",
+                  "strParamValue": "Amount"
+                },
+                {
+                  "strParamName": "Deductible Value",
+                  "strParamSeq": "11",
+                  "strParamValue": "25"
+                },
+                {
+                  "strParamName": "Sub Condition1",
+                  "strParamSeq": "12",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "13",
+                  "strParamValue": "1"
+                }
+              ],
+              "strEventCode": "SCR-COVD10"
+            },
+            "strCoverCode": "TRV08",
+            "strCoverExpiryDate": "30/04/2026 00:00:00",
+            "strCoverInceptionDate": "31/01/2026 00:00:01",
+            "strRiskSerialNo": "1"
+          },
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Inception Date",
+                  "strParamSeq": "0",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Expiry Date",
+                  "strParamSeq": "1",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level Base Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "3",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "100000"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "6",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "7",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency for Sum Insured",
+                  "strParamSeq": "8",
+                  "strParamValue": "USD"
+                },
+                {
+                  "strParamName": "Sum Insured",
+                  "strParamSeq": "9",
+                  "strParamValue": "100000"
+                },
+                {
+                  "strParamName": "Basis of Deductible",
+                  "strParamSeq": "10",
+                  "strParamValue": "Amount"
+                },
+                {
+                  "strParamName": "Deductible Value",
+                  "strParamSeq": "11",
+                  "strParamValue": "100"
+                },
+                {
+                  "strParamName": "Sub Condition1",
+                  "strParamSeq": "12",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "13",
+                  "strParamValue": "1"
+                }
+              ],
+              "strEventCode": "SCR-COVD10"
+            },
+            "strCoverCode": "TRV09",
+            "strCoverExpiryDate": "30/04/2026 00:00:00",
+            "strCoverInceptionDate": "31/01/2026 00:00:01",
+            "strRiskSerialNo": "1"
+          },
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Inception Date",
+                  "strParamSeq": "0",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Expiry Date",
+                  "strParamSeq": "1",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level Base Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "3",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "300"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "6",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "7",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency for Sum Insured",
+                  "strParamSeq": "8",
+                  "strParamValue": "USD"
+                },
+                {
+                  "strParamName": "SI Per Unit",
+                  "strParamSeq": "9",
+                  "strParamValue": "50"
+                },
+                {
+                  "strParamName": "Unit in Hours",
+                  "strParamSeq": "10",
+                  "strParamValue": "24"
+                },
+                {
+                  "strParamName": "Maximum Sum Insured",
+                  "strParamSeq": "11",
+                  "strParamValue": "300"
+                },
+                {
+                  "strParamName": "Basis of Deductible",
+                  "strParamSeq": "12",
+                  "strParamValue": "Not Applicable"
+                },
+                {
+                  "strParamName": "Deductible Value",
+                  "strParamSeq": "13",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Number of Days",
+                  "strParamSeq": "14",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Sub Condition1",
+                  "strParamSeq": "15",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level FAC R/I",
+                  "strParamSeq": "16",
+                  "strParamValue": "N"
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "17",
+                  "strParamValue": "1"
+                }
+              ],
+              "strEventCode": "SCR-COVD3"
+            },
+            "strCoverCode": "TRV10",
+            "strCoverExpiryDate": "30/04/2026 00:00:00",
+            "strCoverInceptionDate": "31/01/2026 00:00:01",
+            "strRiskSerialNo": "1"
+          },
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Inception Date",
+                  "strParamSeq": "0",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Expiry Date",
+                  "strParamSeq": "1",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level Base Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "3",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "120"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "6",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "7",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency for Sum Insured",
+                  "strParamSeq": "8",
+                  "strParamValue": "USD"
+                },
+                {
+                  "strParamName": "SI Per Unit",
+                  "strParamSeq": "9",
+                  "strParamValue": "20"
+                },
+                {
+                  "strParamName": "Unit in Hours",
+                  "strParamSeq": "10",
+                  "strParamValue": "12"
+                },
+                {
+                  "strParamName": "Maximum Sum Insured",
+                  "strParamSeq": "11",
+                  "strParamValue": "120"
+                },
+                {
+                  "strParamName": "Basis of Deductible",
+                  "strParamSeq": "12",
+                  "strParamValue": "Number of Hours"
+                },
+                {
+                  "strParamName": "Deductible Value",
+                  "strParamSeq": "13",
+                  "strParamValue": "12"
+                },
+                {
+                  "strParamName": "Number of Days",
+                  "strParamSeq": "14",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Sub Condition1",
+                  "strParamSeq": "15",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level FAC R/I",
+                  "strParamSeq": "16",
+                  "strParamValue": "N"
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "17",
+                  "strParamValue": "1"
+                }
+              ],
+              "strEventCode": "SCR-COVD3"
+            },
+            "strCoverCode": "TRV11",
+            "strCoverExpiryDate": "30/04/2026 00:00:00",
+            "strCoverInceptionDate": "31/01/2026 00:00:01",
+            "strRiskSerialNo": "1"
+          },
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Inception Date",
+                  "strParamSeq": "0",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Expiry Date",
+                  "strParamSeq": "1",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level Base Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "3",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "100"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "6",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "7",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency for Sum Insured",
+                  "strParamSeq": "8",
+                  "strParamValue": "USD"
+                },
+                {
+                  "strParamName": "SI Per Unit",
+                  "strParamSeq": "9",
+                  "strParamValue": "25"
+                },
+                {
+                  "strParamName": "Unit in Hours",
+                  "strParamSeq": "10",
+                  "strParamValue": "24"
+                },
+                {
+                  "strParamName": "Maximum Sum Insured",
+                  "strParamSeq": "11",
+                  "strParamValue": "100"
+                },
+                {
+                  "strParamName": "Basis of Deductible",
+                  "strParamSeq": "12",
+                  "strParamValue": "Not Applicable"
+                },
+                {
+                  "strParamName": "Deductible Value",
+                  "strParamSeq": "13",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Number of Days",
+                  "strParamSeq": "14",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Sub Condition1",
+                  "strParamSeq": "15",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level FAC R/I",
+                  "strParamSeq": "16",
+                  "strParamValue": "N"
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "17",
+                  "strParamValue": "1"
+                }
+              ],
+              "strEventCode": "SCR-COVD3"
+            },
+            "strCoverCode": "TRV12",
+            "strCoverExpiryDate": "30/04/2026 00:00:00",
+            "strCoverInceptionDate": "31/01/2026 00:00:01",
+            "strRiskSerialNo": "1"
+          },
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Inception Date",
+                  "strParamSeq": "0",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Expiry Date",
+                  "strParamSeq": "1",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level Base Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "3",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "250"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "6",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "7",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency for Sum Insured",
+                  "strParamSeq": "8",
+                  "strParamValue": "USD"
+                },
+                {
+                  "strParamName": "Sum Insured",
+                  "strParamSeq": "9",
+                  "strParamValue": "250"
+                },
+                {
+                  "strParamName": "Basis of Deductible",
+                  "strParamSeq": "10",
+                  "strParamValue": "Not Applicable"
+                },
+                {
+                  "strParamName": "Deductible Value",
+                  "strParamSeq": "11",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Sub Condition1",
+                  "strParamSeq": "12",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "13",
+                  "strParamValue": "1"
+                }
+              ],
+              "strEventCode": "SCR-COVD10"
+            },
+            "strCoverCode": "TRV13",
+            "strCoverExpiryDate": "30/04/2026 00:00:00",
+            "strCoverInceptionDate": "31/01/2026 00:00:01",
+            "strRiskSerialNo": "1"
+          },
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Inception Date",
+                  "strParamSeq": "0",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Expiry Date",
+                  "strParamSeq": "1",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level Base Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "3",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "500"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "6",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "7",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency for Sum Insured",
+                  "strParamSeq": "8",
+                  "strParamValue": "USD"
+                },
+                {
+                  "strParamName": "Sum Insured",
+                  "strParamSeq": "9",
+                  "strParamValue": "500"
+                },
+                {
+                  "strParamName": "Basis of Deductible",
+                  "strParamSeq": "10",
+                  "strParamValue": "Not Applicable"
+                },
+                {
+                  "strParamName": "Deductible Value",
+                  "strParamSeq": "11",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Sub Condition1",
+                  "strParamSeq": "12",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "13",
+                  "strParamValue": "1"
+                }
+              ],
+              "strEventCode": "SCR-COVD10"
+            },
+            "strCoverCode": "TRV14",
+            "strCoverExpiryDate": "30/04/2026 00:00:00",
+            "strCoverInceptionDate": "31/01/2026 00:00:01",
+            "strRiskSerialNo": "1"
+          },
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Inception Date",
+                  "strParamSeq": "0",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Expiry Date",
+                  "strParamSeq": "1",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level Base Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "3",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "200"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "6",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "7",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency for Sum Insured",
+                  "strParamSeq": "8",
+                  "strParamValue": "USD"
+                },
+                {
+                  "strParamName": "Sum Insured",
+                  "strParamSeq": "9",
+                  "strParamValue": "200"
+                },
+                {
+                  "strParamName": "Basis of Deductible",
+                  "strParamSeq": "10",
+                  "strParamValue": "Not Applicable"
+                },
+                {
+                  "strParamName": "Deductible Value",
+                  "strParamSeq": "11",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Sub Condition1",
+                  "strParamSeq": "12",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "13",
+                  "strParamValue": "1"
+                }
+              ],
+              "strEventCode": "SCR-COVD10"
+            },
+            "strCoverCode": "TRV15",
+            "strCoverExpiryDate": "30/04/2026 00:00:00",
+            "strCoverInceptionDate": "31/01/2026 00:00:01",
+            "strRiskSerialNo": "1"
+          },
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Inception Date",
+                  "strParamSeq": "0",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Expiry Date",
+                  "strParamSeq": "1",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level Base Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "3",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "100"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "6",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "7",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency for Sum Insured",
+                  "strParamSeq": "8",
+                  "strParamValue": "USD"
+                },
+                {
+                  "strParamName": "Sum Insured",
+                  "strParamSeq": "9",
+                  "strParamValue": "100"
+                },
+                {
+                  "strParamName": "Basis of Deductible",
+                  "strParamSeq": "10",
+                  "strParamValue": "Number of Hours"
+                },
+                {
+                  "strParamName": "Deductible Value",
+                  "strParamSeq": "11",
+                  "strParamValue": "12"
+                },
+                {
+                  "strParamName": "Sub Condition1",
+                  "strParamSeq": "12",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "13",
+                  "strParamValue": "1"
+                }
+              ],
+              "strEventCode": "SCR-COVD10"
+            },
+            "strCoverCode": "TRV16",
+            "strCoverExpiryDate": "30/04/2026 00:00:00",
+            "strCoverInceptionDate": "31/01/2026 00:00:01",
+            "strRiskSerialNo": "1"
+          },
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Inception Date",
+                  "strParamSeq": "0",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Expiry Date",
+                  "strParamSeq": "1",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level Base Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "3",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "100000"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "6",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "7",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency for Sum Insured",
+                  "strParamSeq": "8",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Sum Insured",
+                  "strParamSeq": "9",
+                  "strParamValue": "100000"
+                },
+                {
+                  "strParamName": "Basis of Deductible",
+                  "strParamSeq": "10",
+                  "strParamValue": "Not Applicable"
+                },
+                {
+                  "strParamName": "Deductible Value",
+                  "strParamSeq": "11",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Sub Condition1",
+                  "strParamSeq": "12",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "13",
+                  "strParamValue": "1"
+                }
+              ],
+              "strEventCode": "SCR-COVD10"
+            },
+            "strCoverCode": "TRV17",
+            "strCoverExpiryDate": "30/04/2026 00:00:00",
+            "strCoverInceptionDate": "31/01/2026 00:00:01",
+            "strRiskSerialNo": "1"
+          },
+          {
+            "riskCoverProperty": {
+              "multiSetPropertyInput": null,
+              "ruleList": [
+                {
+                  "strParamName": "Cover Inception Date",
+                  "strParamSeq": "0",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Expiry Date",
+                  "strParamSeq": "1",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Cover Level Base Currency",
+                  "strParamSeq": "2",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency",
+                  "strParamSeq": "3",
+                  "strParamValue": "INR"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Base Currency",
+                  "strParamSeq": "4",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Sum Insured in Transaction Currency",
+                  "strParamSeq": "5",
+                  "strParamValue": "500"
+                },
+                {
+                  "strParamName": "Cover Premium in Base Currency",
+                  "strParamSeq": "6",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Premium in Transaction Currency",
+                  "strParamSeq": "7",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Cover Level Transaction Currency for Sum Insured",
+                  "strParamSeq": "8",
+                  "strParamValue": "USD"
+                },
+                {
+                  "strParamName": "Sum Insured",
+                  "strParamSeq": "9",
+                  "strParamValue": "500"
+                },
+                {
+                  "strParamName": "Basis of Deductible",
+                  "strParamSeq": "10",
+                  "strParamValue": "Not Applicable"
+                },
+                {
+                  "strParamName": "Deductible Value",
+                  "strParamSeq": "11",
+                  "strParamValue": "0"
+                },
+                {
+                  "strParamName": "Sub Condition1",
+                  "strParamSeq": "12",
+                  "strParamValue": ""
+                },
+                {
+                  "strParamName": "Forex Rate at Cover Level",
+                  "strParamSeq": "13",
+                  "strParamValue": "1"
+                }
+              ],
+              "strEventCode": "SCR-COVD10"
+            },
+            "strCoverCode": "TRV18",
+            "strCoverExpiryDate": "30/04/2026 00:00:00",
+            "strCoverInceptionDate": "31/01/2026 00:00:01",
+            "strRiskSerialNo": "1"
+          }
+        ],
+        "riskProperty": {
+          "ruleList": [
+            {
+              "strParamName": "Premium",
+              "strParamSeq": "0",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Other Discount",
+              "strParamSeq": "1",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Gross Premium",
+              "strParamSeq": "2",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Reins_Pending_Indicator",
+              "strParamSeq": "3",
+              "strParamValue": "N"
+            },
+            {
+              "strParamName": "Policy Type",
+              "strParamSeq": "4",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Policy Inception Date",
+              "strParamSeq": "5",
+              "strParamValue": "31/01/2026"
+            },
+            {
+              "strParamName": "Total Fees",
+              "strParamSeq": "6",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Minimum Deposit Premium Applicable",
+              "strParamSeq": "7",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Minimum Deposit Premium Type",
+              "strParamSeq": "8",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Free Cancellation Period",
+              "strParamSeq": "9",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Category Name",
+              "strParamSeq": "10",
+              "strParamValue": "INDIVIDUAL"
+            },
+            {
+              "strParamName": "Member Type",
+              "strParamSeq": "11",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "cover code",
+              "strParamSeq": "12",
+              "strParamValue": "HEADING"
+            },
+            {
+              "strParamName": "Insured Name",
+              "strParamSeq": "13",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Source of Business",
+              "strParamSeq": "14",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Premium Currency",
+              "strParamSeq": "15",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Premium Currency Exchange Rate",
+              "strParamSeq": "16",
+              "strParamValue": "1"
+            },
+            {
+              "strParamName": "Sum Insured Currency",
+              "strParamSeq": "17",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Sum Insured Currency Exchange Rate",
+              "strParamSeq": "18",
+              "strParamValue": "1"
+            },
+            {
+              "strParamName": "Policy Expiry Date",
+              "strParamSeq": "19",
+              "strParamValue": "30/04/2026"
+            },
+            {
+              "strParamName": "Risk Inception Date",
+              "strParamSeq": "20",
+              "strParamValue": "31/01/2026"
+            },
+            {
+              "strParamName": "Premium (in BHD)",
+              "strParamSeq": "21",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Unit",
+              "strParamSeq": "22",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Risk Type",
+              "strParamSeq": "23",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Nature of Loss",
+              "strParamSeq": "24",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Hide Check Box",
+              "strParamSeq": "25",
+              "strParamValue": "HEADING"
+            },
+            {
+              "strParamName": "Show Search Bar",
+              "strParamSeq": "26",
+              "strParamValue": "HEADING"
+            },
+            {
+              "strParamName": "Show Pagination Tool Bar",
+              "strParamSeq": "27",
+              "strParamValue": "HEADING"
+            },
+            {
+              "strParamName": "Risk Expiry Date",
+              "strParamSeq": "28",
+              "strParamValue": "30/04/2026"
+            },
+            {
+              "strParamName": "Total Taxes",
+              "strParamSeq": "29",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Policy Expiry Time",
+              "strParamSeq": "30",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Total Premium Due",
+              "strParamSeq": "31",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Cover Inception Date",
+              "strParamSeq": "32",
+              "strParamValue": "31/01/2026"
+            },
+            {
+              "strParamName": "Cover Expiry Date",
+              "strParamSeq": "33",
+              "strParamValue": "30/04/2026"
+            },
+            {
+              "strParamName": "Mode of Premium Calculation",
+              "strParamSeq": "34",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Registration No",
+              "strParamSeq": "35",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Conditional Section",
+              "strParamSeq": "36",
+              "strParamValue": "COND-T9"
+            },
+            {
+              "strParamName": "Policy Level Base Currency",
+              "strParamSeq": "37",
+              "strParamValue": "INR"
+            },
+            {
+              "strParamName": "Policy Level Transaction Currency",
+              "strParamSeq": "38",
+              "strParamValue": "INR"
+            },
+            {
+              "strParamName": "Policy Level Transaction Currency for Sum Insured",
+              "strParamSeq": "39",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Risk Level Base Currency",
+              "strParamSeq": "40",
+              "strParamValue": "INR"
+            },
+            {
+              "strParamName": "Risk Level Transaction Currency",
+              "strParamSeq": "41",
+              "strParamValue": "INR"
+            },
+            {
+              "strParamName": "Risk Sum Insured in Base Currency",
+              "strParamSeq": "42",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Risk Sum Insured in Transaction Currency",
+              "strParamSeq": "43",
+              "strParamValue": "50000"
+            },
+            {
+              "strParamName": "Risk Premium in Base Currency",
+              "strParamSeq": "44",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Risk Premium in Transaction Currency",
+              "strParamSeq": "45",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Forex Rate at Risk Level",
+              "strParamSeq": "46",
+              "strParamValue": "1"
+            },
+            {
+              "strParamName": "Risk Level Transaction Currency for Sum Insured",
+              "strParamSeq": "47",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Cover Level Base Currency",
+              "strParamSeq": "48",
+              "strParamValue": "INR"
+            },
+            {
+              "strParamName": "Cover Level Transaction Currency",
+              "strParamSeq": "49",
+              "strParamValue": "INR"
+            },
+            {
+              "strParamName": "Cover Level Transaction Currency for Sum Insured",
+              "strParamSeq": "50",
+              "strParamValue": "INR"
+            },
+            {
+              "strParamName": "Cover Premium in Base Currency",
+              "strParamSeq": "51",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Cover Premium in Transaction Currency",
+              "strParamSeq": "52",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Cover Sum Insured in Base Currency",
+              "strParamSeq": "53",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Cover Sum Insured in Transaction Currency",
+              "strParamSeq": "54",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Is the Insured same as Policy Holder?",
+              "strParamSeq": "55",
+              "strParamValue": "YES"
+            },
+            {
+              "strParamName": "Model Group List",
+              "strParamSeq": "56",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Risk Plan",
+              "strParamSeq": "57",
+              "strParamValue": "TRELSILVER"
+            },
+            {
+              "strParamName": "covercode",
+              "strParamSeq": "58",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Rate Percentage",
+              "strParamSeq": "59",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "TypeofPolicy",
+              "strParamSeq": "60",
+              "strParamValue": "INTINDV"
+            },
+            {
+              "strParamName": "InsuredInterest",
+              "strParamSeq": "61",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Sum Insured in SI Currency",
+              "strParamSeq": "62",
+              "strParamValue": "500"
+            },
+            {
+              "strParamName": "Net Premium in Premium Currency",
+              "strParamSeq": "63",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Policy Duration",
+              "strParamSeq": "64",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Cover Name",
+              "strParamSeq": "65",
+              "strParamValue": "HEADING"
+            },
+            {
+              "strParamName": "Relationship to Insured",
+              "strParamSeq": "66",
+              "strParamValue": "SELF"
+            },
+            {
+              "strParamName": "Coverage",
+              "strParamSeq": "67",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Insured Interest",
+              "strParamSeq": "68",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "filler1",
+              "strParamSeq": "69",
+              "strParamValue": "HEADING"
+            },
+            {
+              "strParamName": "filler4",
+              "strParamSeq": "70",
+              "strParamValue": "HEADING"
+            },
+            {
+              "strParamName": "Limit",
+              "strParamSeq": "71",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Column Details",
+              "strParamSeq": "72",
+              "strParamValue": "SEC-GSTTRXSUB#null#null"
+            },
+            {
+              "strParamName": "Srl No.",
+              "strParamSeq": "73",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Policy Plan",
+              "strParamSeq": "74",
+              "strParamValue": "TRELSILVER"
+            },
+            {
+              "strParamName": "Policy Inception Time",
+              "strParamSeq": "75",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Claim Details",
+              "strParamSeq": "76",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "sub1",
+              "strParamSeq": "77",
+              "strParamValue": "COND-T10"
+            },
+            {
+              "strParamName": "Data Source",
+              "strParamSeq": "78",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Basic Details",
+              "strParamSeq": "79",
+              "strParamValue": "HEADING"
+            },
+            {
+              "strParamName": "Entry Date",
+              "strParamSeq": "80",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Type Of Client",
+              "strParamSeq": "81",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Is Consumer Loading Applicable",
+              "strParamSeq": "82",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Leading Cover",
+              "strParamSeq": "83",
+              "strParamValue": "TRV05"
+            },
+            {
+              "strParamName": "Premium Adjustment Type",
+              "strParamSeq": "84",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "policyplan",
+              "strParamSeq": "85",
+              "strParamValue": "TRELSILVER"
+            },
+            {
+              "strParamName": "BANCA Policy",
+              "strParamSeq": "86",
+              "strParamValue": "N"
+            },
+            {
+              "strParamName": "Endorsement Premium",
+              "strParamSeq": "87",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "PED",
+              "strParamSeq": "88",
+              "strParamValue": "NO"
+            },
+            {
+              "strParamName": "Premium Adjustment",
+              "strParamSeq": "89",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Premium Collected",
+              "strParamSeq": "90",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Auto Adjusted Amount",
+              "strParamSeq": "91",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Do you smoke or consume tobacco?",
+              "strParamSeq": "92",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Drink Alcohol?",
+              "strParamSeq": "93",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Do you do Recreational Drug Use?",
+              "strParamSeq": "94",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Insurance Details if Any (Health/PA etc)",
+              "strParamSeq": "95",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Policy Reference Number",
+              "strParamSeq": "96",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Priority Member",
+              "strParamSeq": "97",
+              "strParamValue": ""
+            },
+            {
+              "strParamName": "Total Stay Overseas in Days",
+              "strParamSeq": "98",
+              "strParamValue": "0"
+            },
+            {
+              "strParamName": "Travelling Companion Discount",
+              "strParamSeq": "99",
+              "strParamValue": "0"
+            }
+          ],
+          "strEventCode": "SCR-RSKDTL"
+        },
+        "strAddr1": null,
+        "strAddr2": null,
+        "strAddr3": null,
+        "strBillingStake": null,
+        "strCityCode": null,
+        "strCountryCode": "INDIA",
+        "strDiscount": "0",
+        "strDocumentID": null,
+        "strLoading": "0",
+        "strPartyCode": "PI36626363",
+        "strPolRiskId": null,
+        "strPolicyCountry": "INDIA",
+        "strPolicyId": null,
+        "strPostalCode": null,
+        "strRiskCode": "MEMBER",
+        "strRiskDesc": null,
+        "strRiskExpiryDate": "30/04/2026 23:59:59",
+        "strRiskInceptionDate": "31/01/2026 00:00:01",
+        "strRiskSerialNumber": "1",
+        "strRiskSumInsured": null,
+        "strStateCode": null
+      }
+    ],
+    "strAgentCode": "",
+    "strApplicationCode": "",
+    "strBaseCurrency": "INR",
+    "strBaseCurrencyRate": "1",
+    "strBillingStake": "POLICY-HOL",
+    "strCalculatePremiumIndicator": "",
+    "strCommission": null,
+    "strDocumentID": null,
+    "strIntimationDate": "27/12/2025 13:16:30",
+    "strMultithreadIndicator": "Y",
+    "strNewPremIndicator": "Y",
+    "strPartyCodesForRemoval": null,
+    "strPolicyBranchName": "1201",
+    "strPolicyDetailsChangeIndicator": "",
+    "strPolicyExpiryDate": "30/04/2026 23:59:59",
+    "strPolicyHolderCode": "PI36626363",
+    "strPolicyInceptionDate": "31/01/2026 00:00:01",
+    "strPolicyQuoteNumber": "11-9910-0015183288-00",
+    "strPolicyStatusCode": "09",
+    "strPolicyTerm": "90",
+    "strPolicyTermUnit": "D",
+    "strPremiumCurrency": "INR",
+    "strPremiumCurrencyRate": "1",
+    "strPremiumFrequency": "B",
+    "strPremiumMode": "C",
+    "strProductCode": "9910",
+    "strReferIndicator": "",
+    "strRetCode": "0",
+    "strRetError": "",
+    "strRiskIdForRemoval": "",
+    "strTotalDiscountAmount": "0.0",
+    "strTotalLoadingAmount": "0.0",
+    "strUpdatePartyIndicator": "Y",
+    "strprivilegeCode": ""
+  }
+}

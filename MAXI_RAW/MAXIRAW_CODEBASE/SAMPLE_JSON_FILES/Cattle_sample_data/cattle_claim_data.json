@@ -1,0 +1,292 @@
+{
+  "claimDetails": {
+    "claimAttribute": {
+      "multiSetProperty": [
+        {
+          "multiSetDetail": [],
+          "multiSetName": null
+        }
+      ],
+      "properties": [
+        {
+          "parameterName": "Any Special Remarks",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Area",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Bank Account Number",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Bank Account Type",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Bank IFSC Code",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Caller Email Id",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "City",
+          "parameterValue": "SOLAPUR"
+        },
+        {
+          "parameterName": "Claim  Substatus",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Claim Circumstances",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Claim Reported By",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Claim Types",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "E-Mail",
+          "parameterValue": "na@gmail.com"
+        },
+        {
+          "parameterName": "Estimated Loss Amount",
+          "parameterValue": "70000"
+        },
+        {
+          "parameterName": "GSTN Number",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Identification Number",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Insured Contact Number",
+          "parameterValue": "8999908580"
+        },
+        {
+          "parameterName": "Insured Email Id",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Internal Claim Comments",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Intimation Number",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Inward Property Id",
+          "parameterValue": "6137688716122025"
+        },
+        {
+          "parameterName": "Key Contact Number",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Key Email Id",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Landmark",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Loss Address",
+          "parameterValue": "solapur"
+        },
+        {
+          "parameterName": "Loss Description",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Mobile Number",
+          "parameterValue": "8999908580"
+        },
+        {
+          "parameterName": "Name of Person",
+          "parameterValue": "DADA PANDURANG BURALE"
+        },
+        {
+          "parameterName": "PAN Number",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Pincode where loss happened",
+          "parameterValue": ""
+        },
+        {
+          "parameterName": "Policy Branch",
+          "parameterValue": "2001"
+        },
+        {
+          "parameterName": "Policy Risk Cover List",
+          "parameterValue": "DEATH"
+        },
+        {
+          "parameterName": "Registered Mobile Number",
+          "parameterValue": "8999908580"
+        },
+        {
+          "parameterName": "Risk Code",
+          "parameterValue": "LOCATION"
+        },
+        {
+          "parameterName": "Risk Description",
+          "parameterValue": "LOCATION"
+        },
+        {
+          "parameterName": "Risk Serial No",
+          "parameterValue": "1"
+        },
+        {
+          "parameterName": "State",
+          "parameterValue": "MAHARASHTRA"
+        },
+        {
+          "parameterName": "Stored Company Code",
+          "parameterValue": "BAGIC"
+        },
+        {
+          "parameterName": "Stored Country Code",
+          "parameterValue": "INDIA"
+        },
+        {
+          "parameterName": "Stored LOB Code",
+          "parameterValue": "RURAL"
+        },
+        {
+          "parameterName": "Stored Product Code",
+          "parameterValue": "6622"
+        },
+        {
+          "parameterName": "Stored State Code",
+          "parameterValue": "ALL"
+        },
+        {
+          "parameterName": "Telephone Number",
+          "parameterValue": "8999908580"
+        }
+      ]
+    },
+    "claimBucket": "Registered",
+    "claimCover": [],
+    "claimEventFollowup": [
+      {
+        "assignedPersonal": "PRODUCT",
+        "claimFollowupStatus": "B",
+        "createdBy": "PRODUCT",
+        "createdDate": "16/12/2025 15:05:43",
+        "descriptionRemarks": "",
+        "eventCode": "A-APP-CLM",
+        "eventEffectiveDate": "16/12/2025 00:00:00",
+        "followupTimestamp": "16/12/2025 15:05:43",
+        "jobStatus": "COMPLETE",
+        "keyword": "",
+        "lastUpdatedBy": "PRODUCT",
+        "lastUpdatedDate": "16/12/2025 15:05:43",
+        "priorityIndicator": "N"
+      },
+      {
+        "assignedPersonal": "PRODUCT",
+        "claimFollowupStatus": "A",
+        "createdBy": "PRODUCT",
+        "createdDate": "16/12/2025 15:05:42",
+        "descriptionRemarks": "",
+        "eventCode": "A-INT-CLM",
+        "eventEffectiveDate": "20/11/2025 00:00:00",
+        "followupTimestamp": "16/12/2025 15:05:42",
+        "jobStatus": "COMPLETE",
+        "keyword": "",
+        "lastUpdatedBy": "PRODUCT",
+        "lastUpdatedDate": "16/12/2025 15:05:42",
+        "priorityIndicator": "N"
+      }
+    ],
+    "claimHistory": [],
+    "claimNotes": [],
+    "claimNotificationDetails": [],
+    "claimParty": [
+      {
+        "businessName": "",
+        "firstname": "DADA",
+        "lastname": "BURALE",
+        "middlename": "PANDURANG",
+        "nif": "",
+        "partycode": "PI35074424",
+        "ptyattr": {
+          "properties": []
+        },
+        "stakecode": "POLICY-HOL"
+      }
+    ],
+    "claimPayment": [],
+    "claimReserve": [
+      {
+        "paidamount": "0",
+        "pendingamount": "0",
+        "reserveamount": "36000",
+        "reservestake": "POLICY-HOL",
+        "reservetype": "INDEMNITY",
+        "reservetypedesc": "Indemnity",
+        "reservparty": "PI35074424"
+      }
+    ],
+    "claimRisk": {
+      "riskAttribute": {
+        "multiSetProperty": [
+          {
+            "multiSetDetail": [],
+            "multiSetName": null
+          }
+        ],
+        "properties": [
+          {
+            "parameterName": "Cover Code",
+            "parameterValue": "DEATH"
+          }
+        ]
+      },
+      "riskcode": "LOCATION",
+      "riskdesc": ""
+    },
+    "claimRiskParty": [],
+    "claimSurveyorDeputation": [],
+    "claimTriggerDetails": [],
+    "claimbranch": "2001",
+    "claimno": "21-25-2001-5002-00000009",
+    "claimstatus": "Registered",
+    "documentDetails": [
+      {
+        "documentGenerationDate": null,
+        "documentId": null,
+        "documentName": null,
+        "documentType": null
+      }
+    ],
+    "intimationdate": "16/12/2025",
+    "lossdate": "20/11/2025 15:03:00",
+    "lossdesc": " ",
+    "netAssessedAmount": "",
+    "policyno": "12-5002-0007682643-00",
+    "primarycausecode": "COL91",
+    "primarycausedesc": "Death",
+    "savingAmount": "",
+    "secondarycausecode": "ALL",
+    "secondarycausedesc": "All",
+    "statuschangedate": "16/12/2025 15:05:43",
+    "subclaimno": "",
+    "vahanRegistrationVerified": "No"
+  },
+  "errorCode": 0,
+  "errorDescription": "Success"
+}

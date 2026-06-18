@@ -1,0 +1,6873 @@
+{
+  "ClaimPolicyHistory": [
+    {
+      "multisetAttribute": [
+        {
+          "attributes": [
+            {
+              "name": "Claim Number",
+              "value": "250316925P"
+            },
+            {
+              "name": "Policy Number",
+              "value": "12-8436-0000005911-05"
+            },
+            {
+              "name": "Type of Claim",
+              "value": "CA"
+            },
+            {
+              "name": "Date",
+              "value": "19/12/2025"
+            },
+            {
+              "name": "Claimed Amount",
+              "value": "0"
+            },
+            {
+              "name": "Approved Amount",
+              "value": "0"
+            },
+            {
+              "name": "Status",
+              "value": "Final Bill Received"
+            },
+            {
+              "name": "Source",
+              "value": "MAXIMUS"
+            },
+            {
+              "name": "View/Inward Number",
+              "value": " "
+            }
+          ]
+        }
+      ],
+      "name": "Claim History",
+      "value": ""
+    }
+  ],
+  "PolicyClaimHistory": [
+    {
+      "multisetAttribute": [
+        {
+          "attributes": [
+            {
+              "name": "Policy Number",
+              "value": "12-8436-0000005911-05"
+            },
+            {
+              "name": "Product code",
+              "value": "8436"
+            },
+            {
+              "name": "Product name",
+              "value": "Health Ensure - Floater"
+            },
+            {
+              "name": "Status",
+              "value": "Active"
+            },
+            {
+              "name": "Sub Status",
+              "value": ""
+            },
+            {
+              "name": "Risk Start Date",
+              "value": "02/10/2025"
+            },
+            {
+              "name": "Risk Expiry Date",
+              "value": "01/10/2026"
+            },
+            {
+              "name": "Source",
+              "value": "MAXIMUS"
+            },
+            {
+              "name": "View/Proposal Number",
+              "value": "11-8436-0000005911-05"
+            },
+            {
+              "name": "Type of Proposal",
+              "value": "ORNWL"
+            }
+          ]
+        },
+        {
+          "attributes": [
+            {
+              "name": "Policy Number",
+              "value": "11-8436-0000005911-05-00"
+            },
+            {
+              "name": "Product code",
+              "value": "8436"
+            },
+            {
+              "name": "Product name",
+              "value": "Health Ensure - Floater"
+            },
+            {
+              "name": "Status",
+              "value": "Rejected"
+            },
+            {
+              "name": "Sub Status",
+              "value": "System Auto Rejected"
+            },
+            {
+              "name": "Risk Start Date",
+              "value": "02/10/2025"
+            },
+            {
+              "name": "Risk Expiry Date",
+              "value": "01/10/2026"
+            },
+            {
+              "name": "Source",
+              "value": "MAXIMUS"
+            },
+            {
+              "name": "View/Proposal Number",
+              "value": "11-8436-0000005911-05-00"
+            },
+            {
+              "name": "Type of Proposal",
+              "value": "ORNWL"
+            }
+          ]
+        },
+        {
+          "attributes": [
+            {
+              "name": "Policy Number",
+              "value": "12-8436-0000005911-04"
+            },
+            {
+              "name": "Product code",
+              "value": "8436"
+            },
+            {
+              "name": "Product name",
+              "value": "Health Ensure - Floater"
+            },
+            {
+              "name": "Status",
+              "value": "Active"
+            },
+            {
+              "name": "Sub Status",
+              "value": ""
+            },
+            {
+              "name": "Risk Start Date",
+              "value": "02/10/2024"
+            },
+            {
+              "name": "Risk Expiry Date",
+              "value": "01/10/2025"
+            },
+            {
+              "name": "Source",
+              "value": "MAXIMUS"
+            },
+            {
+              "name": "View/Proposal Number",
+              "value": "11-8436-0000005911-04"
+            },
+            {
+              "name": "Type of Proposal",
+              "value": "ORNWL"
+            }
+          ]
+        },
+        {
+          "attributes": [
+            {
+              "name": "Policy Number",
+              "value": "11-8436-0000005911-04-00"
+            },
+            {
+              "name": "Product code",
+              "value": "8436"
+            },
+            {
+              "name": "Product name",
+              "value": "Health Ensure - Floater"
+            },
+            {
+              "name": "Status",
+              "value": "Rejected"
+            },
+            {
+              "name": "Sub Status",
+              "value": "System Auto Rejected"
+            },
+            {
+              "name": "Risk Start Date",
+              "value": "27/07/2024"
+            },
+            {
+              "name": "Risk Expiry Date",
+              "value": "26/07/2025"
+            },
+            {
+              "name": "Source",
+              "value": "MAXIMUS"
+            },
+            {
+              "name": "View/Proposal Number",
+              "value": "11-8436-0000005911-04-00"
+            },
+            {
+              "name": "Type of Proposal",
+              "value": "ORNWL"
+            }
+          ]
+        },
+        {
+          "attributes": [
+            {
+              "name": "Policy Number",
+              "value": "11-8436-0000005911-02-00"
+            },
+            {
+              "name": "Product code",
+              "value": "8436"
+            },
+            {
+              "name": "Product name",
+              "value": "Health Ensure - Floater"
+            },
+            {
+              "name": "Status",
+              "value": "Rejected"
+            },
+            {
+              "name": "Sub Status",
+              "value": "System Auto Rejected"
+            },
+            {
+              "name": "Risk Start Date",
+              "value": "27/07/2023"
+            },
+            {
+              "name": "Risk Expiry Date",
+              "value": "26/07/2024"
+            },
+            {
+              "name": "Source",
+              "value": "MAXIMUS"
+            },
+            {
+              "name": "View/Proposal Number",
+              "value": "11-8436-0000005911-02-00"
+            },
+            {
+              "name": "Type of Proposal",
+              "value": "ORNWL"
+            }
+          ]
+        },
+        {
+          "attributes": [
+            {
+              "name": "Policy Number",
+              "value": "12-8436-0000005911-03"
+            },
+            {
+              "name": "Product code",
+              "value": "8436"
+            },
+            {
+              "name": "Product name",
+              "value": "Health Ensure - Floater"
+            },
+            {
+              "name": "Status",
+              "value": "Active"
+            },
+            {
+              "name": "Sub Status",
+              "value": ""
+            },
+            {
+              "name": "Risk Start Date",
+              "value": "27/07/2023"
+            },
+            {
+              "name": "Risk Expiry Date",
+              "value": "26/07/2024"
+            },
+            {
+              "name": "Source",
+              "value": "MAXIMUS"
+            },
+            {
+              "name": "View/Proposal Number",
+              "value": "11-8436-0000005911-03"
+            },
+            {
+              "name": "Type of Proposal",
+              "value": "ORNWL"
+            }
+          ]
+        },
+        {
+          "attributes": [
+            {
+              "name": "Policy Number",
+              "value": "11-8436-0000005911-02"
+            },
+            {
+              "name": "Product code",
+              "value": "8436"
+            },
+            {
+              "name": "Product name",
+              "value": "Health Ensure - Floater"
+            },
+            {
+              "name": "Status",
+              "value": "Rejected"
+            },
+            {
+              "name": "Sub Status",
+              "value": "Rejected"
+            },
+            {
+              "name": "Risk Start Date",
+              "value": "27/07/2023"
+            },
+            {
+              "name": "Risk Expiry Date",
+              "value": "26/07/2024"
+            },
+            {
+              "name": "Source",
+              "value": "MAXIMUS"
+            },
+            {
+              "name": "View/Proposal Number",
+              "value": "11-8436-0000005911-02"
+            },
+            {
+              "name": "Type of Proposal",
+              "value": "ORNWL"
+            }
+          ]
+        },
+        {
+          "attributes": [
+            {
+              "name": "Policy Number",
+              "value": "11-8436-0000189067-00"
+            },
+            {
+              "name": "Product code",
+              "value": "8436"
+            },
+            {
+              "name": "Product name",
+              "value": "Health Ensure - Floater"
+            },
+            {
+              "name": "Status",
+              "value": "Rejected"
+            },
+            {
+              "name": "Sub Status",
+              "value": "Others"
+            },
+            {
+              "name": "Risk Start Date",
+              "value": "27/07/2022"
+            },
+            {
+              "name": "Risk Expiry Date",
+              "value": "26/07/2023"
+            },
+            {
+              "name": "Source",
+              "value": "MAXIMUS"
+            },
+            {
+              "name": "View/Proposal Number",
+              "value": "11-8436-0000189067-00"
+            },
+            {
+              "name": "Type of Proposal",
+              "value": "ORNWL"
+            }
+          ]
+        },
+        {
+          "attributes": [
+            {
+              "name": "Policy Number",
+              "value": "12-8436-0000005911-01"
+            },
+            {
+              "name": "Product code",
+              "value": "8436"
+            },
+            {
+              "name": "Product name",
+              "value": "Health Ensure - Floater"
+            },
+            {
+              "name": "Status",
+              "value": "Active"
+            },
+            {
+              "name": "Sub Status",
+              "value": ""
+            },
+            {
+              "name": "Risk Start Date",
+              "value": "27/07/2022"
+            },
+            {
+              "name": "Risk Expiry Date",
+              "value": "26/07/2023"
+            },
+            {
+              "name": "Source",
+              "value": "MAXIMUS"
+            },
+            {
+              "name": "View/Proposal Number",
+              "value": "11-8436-0000005911-01"
+            },
+            {
+              "name": "Type of Proposal",
+              "value": "ORNWL"
+            }
+          ]
+        },
+        {
+          "attributes": [
+            {
+              "name": "Policy Number",
+              "value": "12-8436-0000005911-00"
+            },
+            {
+              "name": "Product code",
+              "value": "8436"
+            },
+            {
+              "name": "Product name",
+              "value": "Health Ensure - Floater"
+            },
+            {
+              "name": "Status",
+              "value": "Active"
+            },
+            {
+              "name": "Sub Status",
+              "value": ""
+            },
+            {
+              "name": "Risk Start Date",
+              "value": "27/07/2021"
+            },
+            {
+              "name": "Risk Expiry Date",
+              "value": "26/07/2022"
+            },
+            {
+              "name": "Source",
+              "value": "MAXIMUS"
+            },
+            {
+              "name": "View/Proposal Number",
+              "value": "11-8436-0000027252-00"
+            },
+            {
+              "name": "Type of Proposal",
+              "value": "NB"
+            }
+          ]
+        }
+      ],
+      "name": "Policy History",
+      "value": ""
+    }
+  ],
+  "authorizationRemarks": [
+    {
+      "multisetAttribute": [
+        {
+          "attributes": [
+            {
+              "name": "Authorization Type",
+              "value": "AUTO"
+            },
+            {
+              "name": "Authorization Code",
+              "value": "AUTHCODE4"
+            },
+            {
+              "name": "Authorization Message",
+              "value": "Room rent + Nursing Eligible max up to 1% of Sum Insured / Max 5000/day whichever lower for Normal Room, In case a higher room is availed than the eligibility, proportionate deductions shall be applicable at the time of Discharge. & For ICU 2% of Sum insured or Max 10000/ Day whichever lower is applicable, & Proportionate deductions is NOT applicable."
+            }
+          ]
+        },
+        {
+          "attributes": [
+            {
+              "name": "Authorization Type",
+              "value": "AUTO"
+            },
+            {
+              "name": "Authorization Code",
+              "value": "AUTHCODE15"
+            },
+            {
+              "name": "Authorization Message",
+              "value": "Please note that Preauthorization expiry date should be always 15 days from date of Authorization or policy end date whichever is earlier."
+            }
+          ]
+        },
+        {
+          "attributes": [
+            {
+              "name": "Authorization Type",
+              "value": "AUTO"
+            },
+            {
+              "name": "Authorization Code",
+              "value": "AUTHCODE16"
+            },
+            {
+              "name": "Authorization Message",
+              "value": "Final approval is subject to the receipt of discharge summary and detailed final hospital bill."
+            }
+          ]
+        }
+      ],
+      "name": "Claim Authorization Remarks",
+      "value": ""
+    }
+  ],
+  "claimDetail": {
+    "Query Details": [
+      {
+        "rows": [
+          {
+            "columns": [
+              {
+                "name": "Document Name",
+                "value": "QUERY_LETTER_3329292019122025_19122025"
+              },
+              {
+                "name": " Document Belongs To",
+                "value": "NEW MILLENNIUM WOMENS & CHILD HOSPITAL - SANPADA - NAVI MUMBAI(Beneficiary)"
+              },
+              {
+                "name": "Document Type",
+                "value": "QUERY LETTER"
+              },
+              {
+                "name": "Created On",
+                "value": "19/12/2025"
+              },
+              {
+                "childRows": [
+                  {
+                    "rows": [
+                      {
+                        "columns": [
+                          {
+                            "name": "Sequence No",
+                            "value": "1"
+                          },
+                          {
+                            "name": "Chaser Date",
+                            "value": "19-12-2025 22:59:05"
+                          },
+                          {
+                            "name": "Chaser Status",
+                            "value": "CL"
+                          },
+                          {
+                            "name": "Chaser Document",
+                            "value": "NA"
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Sequence No",
+                            "value": "2"
+                          },
+                          {
+                            "name": "Chaser Date",
+                            "value": "20-12-2025 01:59:05"
+                          },
+                          {
+                            "name": "Chaser Status",
+                            "value": "CL"
+                          },
+                          {
+                            "name": "Chaser Document",
+                            "value": "NA"
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Sequence No",
+                            "value": "3"
+                          },
+                          {
+                            "name": "Chaser Date",
+                            "value": "20-12-2025 04:59:05"
+                          },
+                          {
+                            "name": "Chaser Status",
+                            "value": "CL"
+                          },
+                          {
+                            "name": "Chaser Document",
+                            "value": "NA"
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Sequence No",
+                            "value": "4"
+                          },
+                          {
+                            "name": "Chaser Date",
+                            "value": "20-12-2025 07:59:05"
+                          },
+                          {
+                            "name": "Chaser Status",
+                            "value": "CL"
+                          },
+                          {
+                            "name": "Chaser Document",
+                            "value": "NA"
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Sequence No",
+                            "value": "5"
+                          },
+                          {
+                            "name": "Chaser Date",
+                            "value": "20-12-2025 10:59:05"
+                          },
+                          {
+                            "name": "Chaser Status",
+                            "value": "CL"
+                          },
+                          {
+                            "name": "Chaser Document",
+                            "value": "NA"
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Sequence No",
+                            "value": "6"
+                          },
+                          {
+                            "name": "Chaser Date",
+                            "value": "20-12-2025 13:59:05"
+                          },
+                          {
+                            "name": "Chaser Status",
+                            "value": "CL"
+                          },
+                          {
+                            "name": "Chaser Document",
+                            "value": "NA"
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Sequence No",
+                            "value": "7"
+                          },
+                          {
+                            "name": "Chaser Date",
+                            "value": "20-12-2025 16:59:05"
+                          },
+                          {
+                            "name": "Chaser Status",
+                            "value": "CL"
+                          },
+                          {
+                            "name": "Chaser Document",
+                            "value": "NA"
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Sequence No",
+                            "value": "8"
+                          },
+                          {
+                            "name": "Chaser Date",
+                            "value": "20-12-2025 19:59:05"
+                          },
+                          {
+                            "name": "Chaser Status",
+                            "value": "CL"
+                          },
+                          {
+                            "name": "Chaser Document",
+                            "value": "NA"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "rows": [
+                      {
+                        "columns": [
+                          {
+                            "name": "Requirement Details",
+                            "value": "Kindly provide First Consultation letter and all subsequent treatment papers for _ _lumbar radiculopathy _ _ _ _ _ _ _"
+                          },
+                          {
+                            "name": "Medical/Technical",
+                            "value": "Medical"
+                          },
+                          {
+                            "name": "Document Title",
+                            "value": "First consultation papers"
+                          },
+                          {
+                            "name": "Raised By",
+                            "value": "EMP36861"
+                          },
+                          {
+                            "name": "Raised Date",
+                            "value": "19-12-2025 19:58:50"
+                          },
+                          {
+                            "name": "Requirement Status",
+                            "value": "RR"
+                          },
+                          {
+                            "name": "Remarks",
+                            "value": ""
+                          },
+                          {
+                            "name": "Modified Date",
+                            "value": "22-12-2025 13:19:35"
+                          },
+                          {
+                            "name": "Modified By",
+                            "value": "EMP36861"
+                          },
+                          {
+                            "name": "Uploaded Documents",
+                            "value": ""
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Requirement Details",
+                            "value": "Kindly provide Investigation report of _lumbar radiculopathy _."
+                          },
+                          {
+                            "name": "Medical/Technical",
+                            "value": "Medical"
+                          },
+                          {
+                            "name": "Document Title",
+                            "value": "Investigation Report"
+                          },
+                          {
+                            "name": "Raised By",
+                            "value": "EMP36861"
+                          },
+                          {
+                            "name": "Raised Date",
+                            "value": "19-12-2025 19:58:50"
+                          },
+                          {
+                            "name": "Requirement Status",
+                            "value": "RR"
+                          },
+                          {
+                            "name": "Remarks",
+                            "value": ""
+                          },
+                          {
+                            "name": "Modified Date",
+                            "value": "22-12-2025 13:07:41"
+                          },
+                          {
+                            "name": "Modified By",
+                            "value": "EMP36861"
+                          },
+                          {
+                            "name": "Uploaded Documents",
+                            "value": "25"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "TotalClaimedAmount": "",
+    "cancellationDate": "",
+    "claimAdjust": [
+      {
+        "name": "Stake Holder",
+        "value": "IMD"
+      },
+      {
+        "name": "Stake Code",
+        "value": "10077200"
+      },
+      {
+        "name": "Name",
+        "value": "LIFEMART INSURANCE BROKERS PVT LTD"
+      },
+      {
+        "name": "Contact Number",
+        "value": "08879237758"
+      },
+      {
+        "name": "Contact Email ID",
+        "value": "SUPPORT@LIFEMARTINSURANCEBROKERS.COM"
+      },
+      {
+        "name": "Stake Holder",
+        "value": "SUB-IMD"
+      },
+      {
+        "name": "Stake Code",
+        "value": "3544309803"
+      },
+      {
+        "name": "Name",
+        "value": "CHINCHPOKLI"
+      },
+      {
+        "name": "Contact Number",
+        "value": "9324335755"
+      },
+      {
+        "name": "Contact Email ID",
+        "value": "support@lifemartinsurancebrokers.com"
+      },
+      {
+        "name": "Stake Holder",
+        "value": "HAT Coordinator"
+      },
+      {
+        "name": "Stake Code",
+        "value": "BG29906"
+      },
+      {
+        "name": "Name",
+        "value": "Pavankumar Jaiswal"
+      },
+      {
+        "name": "Contact Number",
+        "value": "7738887714"
+      },
+      {
+        "name": "Contact Email ID",
+        "value": "Healthclaims.Mumbai2@bajajallianz.co.in"
+      },
+      {
+        "name": "Stake Holder",
+        "value": "Customer Details"
+      },
+      {
+        "name": "Stake Code",
+        "value": "PI20378090"
+      },
+      {
+        "name": "Name",
+        "value": "MAHADEV D NIKAM"
+      },
+      {
+        "name": "Contact Number",
+        "value": "9999999999,"
+      },
+      {
+        "name": "Contact Email ID",
+        "value": "NIKAMMD03@GMAIL.COM,"
+      },
+      {
+        "name": "Stake Holder",
+        "value": "Medical Director"
+      },
+      {
+        "name": "Stake Code",
+        "value": ""
+      },
+      {
+        "name": "Name",
+        "value": "DR VENKATESH"
+      },
+      {
+        "name": "Contact Number",
+        "value": "9324692625"
+      },
+      {
+        "name": "Contact Email ID",
+        "value": "NEWMILLENNIUMWOMENHOSPITAL@GMAIL.COM"
+      },
+      {
+        "name": "Stake Holder",
+        "value": "TPA-Coordinator"
+      },
+      {
+        "name": "Stake Code",
+        "value": ""
+      },
+      {
+        "name": "Name",
+        "value": "MANISHA"
+      },
+      {
+        "name": "Contact Number",
+        "value": "7710869444"
+      },
+      {
+        "name": "Contact Email ID",
+        "value": "NEWMILLENNIUMWOMENHOSPITAL@GMAIL.COM"
+      },
+      {
+        "name": "Stake Holder",
+        "value": "Finance Officer"
+      },
+      {
+        "name": "Stake Code",
+        "value": ""
+      },
+      {
+        "name": "Name",
+        "value": ""
+      },
+      {
+        "name": "Contact Number",
+        "value": "0"
+      },
+      {
+        "name": "Contact Email ID",
+        "value": ","
+      }
+    ],
+    "claimCopayDetails": [],
+    "claimNumber": "250316925P",
+    "claimParty": [],
+    "claimPartydetails": [
+      {
+        "name": "Address Line 1",
+        "value": "OFFICE NO 102,,,103,104 PRIYANKA PLACE, SECTOR 10 ,NEAR UNION BANK SANPADA."
+      },
+      {
+        "name": "Emirates/StateP",
+        "value": "MAHARASHTRA"
+      },
+      {
+        "name": "PinCode1",
+        "value": "400705"
+      }
+    ],
+    "claimPayment": [],
+    "claimReserve": [
+      {
+        "attributes": [
+          {
+            "name": "Type",
+            "value": "INDEMNITY"
+          },
+          {
+            "name": "Impacted cover code",
+            "value": "IPTT"
+          },
+          {
+            "name": "Reserve Amount",
+            "value": "32000"
+          },
+          {
+            "name": "Pending Amount",
+            "value": "0"
+          },
+          {
+            "name": "Paid Amount",
+            "value": "0"
+          }
+        ]
+      }
+    ],
+    "claimReserveHistory": [
+      {
+        "attributes": [
+          {
+            "name": "Type",
+            "value": "INDEMNITY"
+          },
+          {
+            "name": "Impacted cover code",
+            "value": "IPTT"
+          },
+          {
+            "name": "Reserve Amount",
+            "value": "32000"
+          },
+          {
+            "name": "Reserve Date",
+            "value": "19-12-2025 07:36:12 PM"
+          },
+          {
+            "name": "Reason",
+            "value": "Setting Automatic Reserve"
+          },
+          {
+            "name": "Status",
+            "value": "A"
+          },
+          {
+            "name": "Transaction",
+            "value": "INCR"
+          },
+          {
+            "name": "User Code",
+            "value": "APIUSER"
+          }
+        ]
+      }
+    ],
+    "claimbenefitlimit": [],
+    "claimdetailAttribute": [
+      {
+        "multisetAttribute": [],
+        "name": "Type of Claim",
+        "value": "CA"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Claim Submission Type",
+        "value": "WP"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Claim Submission Reason",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Health Card Number",
+        "value": "31-8436-0011456368-0005"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Document Number",
+        "value": "12-8436-0000005911-05"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Claim Mode",
+        "value": "HP"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Group Policy Number",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Corporate Name",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "PRODUCT CODE",
+        "value": "8436"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Product Name",
+        "value": "Health Ensure - Floater"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Plan Name",
+        "value": "Health Ensure - Floater"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Feature claim",
+        "value": "N"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Claim Reason",
+        "value": "P"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Claim Number",
+        "value": "250316925P"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Additional CLID Reference Number",
+        "value": "21-2025-1000-8436-00006579"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Line of business",
+        "value": "HEALTH"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Product Types",
+        "value": "BAGHLTH"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Registration Type",
+        "value": "CWP"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Type of Document",
+        "value": "POLICYNO"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Sub Plan Code",
+        "value": "8436"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Claim Received Date",
+        "value": "19/12/2025"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Proposal Number",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Pre-Auth Number",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Plan Code",
+        "value": "8436"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Team name",
+        "value": "Claim Intimation Team"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Old Deductible Consumed",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Vendor Status",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Investigation Id",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Intimation Date",
+        "value": "19/12/2025"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Is Calculation Required",
+        "value": "Y"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Claim Servicing By",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "TPA Claim Number",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Group TPA Name",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Sum  Insured",
+        "value": "300000"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "DNF Flag",
+        "value": "N"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Leader Claim Status",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Leader Company Name",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Leader Claim Number",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "TPA Billing",
+        "value": "N"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Is IMD in MD/CEO Club",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "High Loss Ratio IMD",
+        "value": "N"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Document fraud trigger",
+        "value": "N"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Policy Holder Name",
+        "value": "MAHADEV D NIKAM"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Insured Name",
+        "value": "MAHADEV D NIKAM"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Mobile Number",
+        "value": "9999999999"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Age",
+        "value": "46"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Sub Type Name",
+        "value": "8436"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "HNI Flag",
+        "value": "NO"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Insured Member Code",
+        "value": "PI20378090"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Risk Inception Date",
+        "value": "02/10/2025"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Risk Expiry Date",
+        "value": "01/10/2026"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "First inception Date",
+        "value": "24/07/2021"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Customer Segment Workflow",
+        "value": "4-Very High"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Customer Segment",
+        "value": "Eternia"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Credit Score",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Mobile No1",
+        "value": "9999999999"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Email ID",
+        "value": "tpa@gmail.com"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Nationality",
+        "value": "A103"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Cover",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Expected Amount",
+        "value": "32000"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Approved Amount",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Probable DOA",
+        "value": "17/12/2025"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Diagnosis",
+        "value": "lumbar radiculopathy"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Name of the Treating doctor",
+        "value": "DR."
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Probable DOD",
+        "value": "23/12/2025"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Estimated Number of Days for Hospitalization",
+        "value": "6"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Type of Admission",
+        "value": "EM"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "IPD Number",
+        "value": "-"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Adjudication Flag",
+        "value": "N"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Total Beds",
+        "value": "27"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Death Claim",
+        "value": "N"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Hospital Code",
+        "value": "199385105"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Hospital_Name",
+        "value": "NEW MILLENNIUM WOMENS & CHILD HOSPITAL - SANPADA - NAVI MUMBAI"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Hospital Location",
+        "value": "NAVI MUMBAI"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Emirates/StateP",
+        "value": "MAHARASHTRA"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "City1",
+        "value": "NAVI MUMBAI"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Zip CodeP",
+        "value": "400705"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Claim Zone",
+        "value": "Zone A"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Rohini ID",
+        "value": "8900080424326"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Type_of_Provider",
+        "value": "Network"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Catastrophe Evacuation / Event",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Branch GST Number",
+        "value": "11234564"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Type of Provider",
+        "value": "PR"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Hospital Grade",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "GST Number",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Room Type",
+        "value": "101001-2"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Room Type Description",
+        "value": "General Ward - AC"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Blacklisted",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Suspected Fraud",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Suspended",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "BAGIC GST",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Claim year number",
+        "value": "1"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "CKYC number",
+        "value": "10007781463089"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "CKYC Status",
+        "value": "VC"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "PAN Number",
+        "value": "AENPN4333A"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Date of Birth",
+        "value": "03/07/1979"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "POI Status",
+        "value": "VC"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "POA Status",
+        "value": "VC"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Name as per CKYC",
+        "value": "MR MAHADEO DNYANESHWAR NIKAM"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Is the patient being Admitted in a room higher than eligibility /  Higher than normal treatment cost or service charge / test charges higher than authorized",
+        "value": "NO"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Does the instance uses High-end equipment, Advanced technology or Costly implants",
+        "value": "NO"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Remarks1",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "ILM Team1",
+        "value": "Negotiations, ILM"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Remarks3",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Remarks2",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "ILM Team2",
+        "value": "Analytic, Negotiations, ILM"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Is it a case of Single surgery being split in multiple or multiple surgeries in same OT?",
+        "value": "NO"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "ILM Team3",
+        "value": "Negotiations, ILM, Audit"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "The case has prolonged-stay or unjustified investigations / procedure our of tariff / reports / pre-post hospitalization investigation not available?",
+        "value": "NO"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Remarks4",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "ILM Team4",
+        "value": "Analytic, Negotiations, ILM"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Does the patient has co-morbidities or pre-existing ailments",
+        "value": "NO"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Remarks5",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "ILM Team5",
+        "value": "ILM"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Are there any over-writings or striking-off text on the papers or tampering of documents?",
+        "value": "NO"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Remarks6",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "ILM Team6",
+        "value": "ILM, Audit"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Is it a case of chronic conditions projected as acute illness or close proximity case?",
+        "value": "NO"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Remarks7",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "ILM Team7",
+        "value": "ILM"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Is it a case of OPD converted to IPD?",
+        "value": "NO"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Remarks8",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "ILM Team8",
+        "value": "ILM"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Is there adverse family history noted in case papers?",
+        "value": "NO"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Remarks9",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "ILM Team9",
+        "value": "Actuarial"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Personal Habits",
+        "value": "NO"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Remarks10",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "ILM Team10",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Life Threatening Condition",
+        "value": "NO"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Remarks11",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "ILM Team11",
+        "value": "Actuarial"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Special power observation (Free text)",
+        "value": "NO"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Remarks12",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "ILM Team12",
+        "value": "Negotiations, Actuarial, ILM, Audit"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Eligible Room Rent",
+        "value": "3000"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Doctor Registration Number",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Old Health Card Number",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "View Member Details",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Date of Death",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Reinstatement Trigger",
+        "value": "NO"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Reason For Hospitalisation",
+        "value": "ILL"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Doctor ID",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Treating Doctor PAN Card",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Doctor Qualifications",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Diagnosis Centre Name",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Address",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Medically Admissible Flag",
+        "value": "Y"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Medically Admissible Bypass",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Non Discloser Flag",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Closer Reason",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": [
+              {
+                "name": "Diagnosis Type",
+                "value": "PRM"
+              },
+              {
+                "name": "ICD Code",
+                "value": "M54.4"
+              },
+              {
+                "name": "ICD Description",
+                "value": "Lumbago With Sciatica"
+              },
+              {
+                "name": "ICD Range Description",
+                "value": "Diseases Of The Musculoskeletal System And Connective Tissue - Other Dorsopa"
+              },
+              {
+                "name": "Duration in Months",
+                "value": ""
+              },
+              {
+                "name": "ICD Range Description level 2",
+                "value": "Other Dorsopathies"
+              }
+            ]
+          }
+        ],
+        "name": "ICD Details",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": []
+          }
+        ],
+        "name": "CPT Details",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Type of Treatment",
+        "value": "MDCL"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Sub Treatment Type",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "System of Medicine used",
+        "value": "ALP"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Reason of Rejection of claim",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Other Reason of Claim Rejection",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Ground of Fraud Rejection",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": []
+          }
+        ],
+        "name": "Fraud Committed Details",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Type of Hospitalization2",
+        "value": "IPH"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Procedure Limit Factor",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Other Insurance company Name",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Cost Negotiation",
+        "value": "0"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Recovery from other Claim Number",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Recovery Amount from Other claim",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": []
+          }
+        ],
+        "name": "Deductable Details",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "CRC Clause",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "DNF Reason",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "DNF Description",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "BRE Decision",
+        "value": "APPROVED"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "ILM Flag",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "ILM Status",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Analytics Flag",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Investigation Comments",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Investigating Triggers",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Fraud-ometer score",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Reinstatement Applicable",
+        "value": "NO"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Audit Flag",
+        "value": "N"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Modern and Advanced Treatment Method",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": []
+          }
+        ],
+        "name": "Fraud Questionnaire",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Claim Holding Decision Multiset",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": []
+          }
+        ],
+        "name": "ILM REPORTS",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "PED Flag",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": []
+          }
+        ],
+        "name": "WaiverClaimCondition",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": []
+          }
+        ],
+        "name": "Radiologist Details",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": []
+          }
+        ],
+        "name": "Pathologist Details",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": []
+          }
+        ],
+        "name": "Investigation Reports Details",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "64VB Status",
+        "value": "NA"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Critical Illness and Accident Multiplier Applicable",
+        "value": "N"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Sum Insured Reinstatement Applicable",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Restoration Date",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Restoration Flag",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Reinstatement Count",
+        "value": "0"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Double Sum Insured Benefit Applicable",
+        "value": "N"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Claim Approval Remark",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": [
+              {
+                "name": "Level",
+                "value": "CVR"
+              },
+              {
+                "name": " Cover/Service /Package/Benefit",
+                "value": "In-patient Hospitalisation Treatment"
+              },
+              {
+                "name": "Denial Decision",
+                "value": "APPROVED"
+              },
+              {
+                "name": "Denial Code",
+                "value": "CA_WP_55"
+              },
+              {
+                "name": "Denial Description",
+                "value": ""
+              },
+              {
+                "name": "Clause Code",
+                "value": ""
+              },
+              {
+                "name": "Clause Description",
+                "value": ""
+              },
+              {
+                "name": "Repudiation Remarks",
+                "value": ""
+              }
+            ]
+          }
+        ],
+        "name": "Denial Reason",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "HAT Follow-Up",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": []
+          }
+        ],
+        "name": "Audit Info",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Test Package Details",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": []
+          }
+        ],
+        "name": "Payout Reason",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Name As Per PAN",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Aadhaar No",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Name as per Aadhaar",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Voter Id",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Driving License Number",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "GSTIN/UIN",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "NREGA Job card",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Passport Number",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Passport File No",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Total Billed Amount",
+        "value": "0"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Total Approved Amount",
+        "value": "0"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Total Final Payable Amount",
+        "value": "0"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Total Recovery Amount",
+        "value": "0"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Total Rejected Amount",
+        "value": "0"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Total Co pay deductible amount",
+        "value": "0"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Deductible Consumed",
+        "value": "0"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Total Discount Amount",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [],
+        "name": "Audit Required",
+        "value": "N"
+      },
+      {
+        "multisetAttribute": [],
+        "name": "CLM_REFERRAL_TEAM",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": []
+          }
+        ],
+        "name": "Penal Interest Data",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": []
+          }
+        ],
+        "name": "Recovery Details",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": []
+          }
+        ],
+        "name": "Recovery Action",
+        "value": ""
+      },
+      {
+        "multisetAttribute": [
+          {
+            "attributes": []
+          }
+        ],
+        "name": "Follow Up Details",
+        "value": ""
+      }
+    ],
+    "claimtransition": [
+      {
+        "attributes": [
+          {
+            "name": "Status",
+            "value": "Q"
+          },
+          {
+            "name": "Date",
+            "value": "19-12-2025 07:36:11 PM"
+          },
+          {
+            "name": "User Code",
+            "value": "APIUSER"
+          },
+          {
+            "name": "Comments",
+            "value": ""
+          }
+        ]
+      },
+      {
+        "attributes": [
+          {
+            "name": "Status",
+            "value": "PA"
+          },
+          {
+            "name": "Date",
+            "value": "19-12-2025 07:36:16 PM"
+          },
+          {
+            "name": "User Code",
+            "value": "APIUSER"
+          },
+          {
+            "name": "Comments",
+            "value": ""
+          }
+        ]
+      },
+      {
+        "attributes": [
+          {
+            "name": "Status",
+            "value": "MA"
+          },
+          {
+            "name": "Date",
+            "value": "19-12-2025 07:36:23 PM"
+          },
+          {
+            "name": "User Code",
+            "value": "APIUSER"
+          },
+          {
+            "name": "Comments",
+            "value": ""
+          }
+        ]
+      },
+      {
+        "attributes": [
+          {
+            "name": "Status",
+            "value": "DC"
+          },
+          {
+            "name": "Date",
+            "value": "19-12-2025 07:59:04 PM"
+          },
+          {
+            "name": "User Code",
+            "value": "EMP36861"
+          },
+          {
+            "name": "Comments",
+            "value": " "
+          }
+        ]
+      },
+      {
+        "attributes": [
+          {
+            "name": "Status",
+            "value": "DR"
+          },
+          {
+            "name": "Date",
+            "value": "22-12-2025 01:07:47 PM"
+          },
+          {
+            "name": "User Code",
+            "value": "EM00007910"
+          },
+          {
+            "name": "Comments",
+            "value": " "
+          }
+        ]
+      },
+      {
+        "attributes": [
+          {
+            "name": "Status",
+            "value": "MA"
+          },
+          {
+            "name": "Date",
+            "value": "22-12-2025 01:07:53 PM"
+          },
+          {
+            "name": "User Code",
+            "value": "EM00007910"
+          },
+          {
+            "name": "Comments",
+            "value": " "
+          }
+        ]
+      },
+      {
+        "attributes": [
+          {
+            "name": "Status",
+            "value": "CA"
+          },
+          {
+            "name": "Date",
+            "value": "22-12-2025 01:21:27 PM"
+          },
+          {
+            "name": "User Code",
+            "value": "EMP29081"
+          },
+          {
+            "name": "Comments",
+            "value": " "
+          }
+        ]
+      },
+      {
+        "attributes": [
+          {
+            "name": "Status",
+            "value": "FB"
+          },
+          {
+            "name": "Date",
+            "value": "23-12-2025 01:11:52 PM"
+          },
+          {
+            "name": "User Code",
+            "value": "APIUSER"
+          },
+          {
+            "name": "Comments",
+            "value": ""
+          }
+        ]
+      }
+    ],
+    "documents": [
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "13_10_57_Discharge_250316925P"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "DISCHARGE SUMMARY"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "23/12/2025 13:11:49"
+          },
+          {
+            "name": "Document Id",
+            "value": "37960962123122025"
+          }
+        ]
+      },
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "13_10_57_Discharge_250316925P"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "FINAL HOSPITAL BILL"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "23/12/2025 13:11:49"
+          },
+          {
+            "name": "Document Id",
+            "value": "37960961023122025"
+          }
+        ]
+      },
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "13_10_57_Discharge_250316925P"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "INVESTIGATION REPORTS"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "23/12/2025 13:11:48"
+          },
+          {
+            "name": "Document Id",
+            "value": "37960960223122025"
+          }
+        ]
+      },
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "CASHLESS_AUTHORIZATION_LETTER__20251222_45485785"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "CASHLESS_AUTHORIZATION_LETTER"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "22/12/2025 13:21:27"
+          },
+          {
+            "name": "Document Id",
+            "value": "37915118522122025"
+          }
+        ]
+      },
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "25"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "INVESTIGATION REPORT"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "22/12/2025 13:07:41"
+          },
+          {
+            "name": "Document Id",
+            "value": "37914350722122025"
+          }
+        ]
+      },
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "MAHADEV"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "INTERIM BILL"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "21/12/2025 12:53:41"
+          },
+          {
+            "name": "Document Id",
+            "value": "37884825321122025"
+          }
+        ]
+      },
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "INTERIM_REMINDER_LETTER__20251220_45131316"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "SECOND_REMINDER_LETTER"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "20/12/2025 17:01:25"
+          },
+          {
+            "name": "Document Id",
+            "value": "37861736720122025"
+          }
+        ]
+      },
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "INTERIM_REMINDER_LETTER__20251220_45101576"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "SECOND_REMINDER_LETTER"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "20/12/2025 14:01:31"
+          },
+          {
+            "name": "Document Id",
+            "value": "37854680220122025"
+          }
+        ]
+      },
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "INTERIM_REMINDER_LETTER__20251220_45065719"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "SECOND_REMINDER_LETTER"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "20/12/2025 11:01:30"
+          },
+          {
+            "name": "Document Id",
+            "value": "37847073820122025"
+          }
+        ]
+      },
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "INTERIM_REMINDER_LETTER__20251220_45054885"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "SECOND_REMINDER_LETTER"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "20/12/2025 08:01:30"
+          },
+          {
+            "name": "Document Id",
+            "value": "37844802820122025"
+          }
+        ]
+      },
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "INTERIM_REMINDER_LETTER__20251220_45052398"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "SECOND_REMINDER_LETTER"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "20/12/2025 05:01:24"
+          },
+          {
+            "name": "Document Id",
+            "value": "37844447420122025"
+          }
+        ]
+      },
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "INTERIM_REMINDER_LETTER__20251220_45047094"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "SECOND_REMINDER_LETTER"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "20/12/2025 02:01:32"
+          },
+          {
+            "name": "Document Id",
+            "value": "37844275720122025"
+          }
+        ]
+      },
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "FIRST_REMINDER_LETTER__20251219_44936774"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "FIRST_REMINDER_LETTER"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "19/12/2025 23:01:21"
+          },
+          {
+            "name": "Document Id",
+            "value": "37833176819122025"
+          }
+        ]
+      },
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "CASHLESS_QUERY_LETTER__20251219_44922709"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "CASHLESS_QUERY_LETTER"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "19/12/2025 19:59:05"
+          },
+          {
+            "name": "Document Id",
+            "value": "37829288419122025"
+          }
+        ]
+      },
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "20"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "PRE-AUTHORIZATION FORM"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "19/12/2025 19:36:14"
+          },
+          {
+            "name": "Document Id",
+            "value": "37828819919122025"
+          }
+        ]
+      },
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "20"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "CONSULTATION PAPERS"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "19/12/2025 19:36:13"
+          },
+          {
+            "name": "Document Id",
+            "value": "37828819319122025"
+          }
+        ]
+      },
+      {
+        "document": [
+          {
+            "name": "Document Name",
+            "value": "CLAIM_INTIMATION_LETTER__20251219_44920096"
+          },
+          {
+            "name": "Document Belongs To",
+            "value": "250316925P(CLAIM)"
+          },
+          {
+            "name": "Document Type",
+            "value": "CLAIM_INTIMATION_LETTER"
+          },
+          {
+            "name": "Upload Status",
+            "value": "PASS"
+          },
+          {
+            "name": "Adhoc Doc Type",
+            "value": "NA"
+          },
+          {
+            "name": "Document Size",
+            "value": "0 B"
+          },
+          {
+            "name": "Created On",
+            "value": "19/12/2025 19:36:12"
+          },
+          {
+            "name": "Document Id",
+            "value": "37828819219122025"
+          }
+        ]
+      }
+    ],
+    "listOfCovers": [
+      {
+        "coverSetAttribute": [
+          {
+            "name": "Cover",
+            "value": "IPTT"
+          },
+          {
+            "name": "Cover Name",
+            "value": "In-patient Hospitalisation Treatment"
+          },
+          {
+            "name": "Expected Amount",
+            "value": "32000"
+          },
+          {
+            "name": "Approved Amount",
+            "value": "20000"
+          },
+          {
+            "name": "Balance Sum insured",
+            "value": "0"
+          }
+        ],
+        "entityHeads": [
+          {
+            "entityGridRows": [
+              {
+                "rowAttributes": [
+                  {
+                    "multisetAttribute": [],
+                    "name": "Discount Amount",
+                    "value": "0"
+                  },
+                  {
+                    "multisetAttribute": [],
+                    "name": "GST Amount",
+                    "value": "0"
+                  },
+                  {
+                    "multisetAttribute": [],
+                    "name": "Hospital GST Amount",
+                    "value": "0"
+                  },
+                  {
+                    "multisetAttribute": [],
+                    "name": "Tariff Applicable",
+                    "value": "N"
+                  },
+                  {
+                    "multisetAttribute": [],
+                    "name": "Service Name",
+                    "value": "Discount Amount"
+                  },
+                  {
+                    "multisetAttribute": [],
+                    "name": "Service Type Code",
+                    "value": "C-100"
+                  },
+                  {
+                    "multisetAttribute": [],
+                    "name": "Service Type Description",
+                    "value": "Discount"
+                  },
+                  {
+                    "multisetAttribute": [],
+                    "name": "Service Code",
+                    "value": "C-100.1"
+                  }
+                ],
+                "setId": "1"
+              }
+            ],
+            "entityHeadCode": "C-100",
+            "entityHeadName": "Discount",
+            "entityType": "SERVICE"
+          }
+        ]
+      }
+    ],
+    "notes": [],
+    "packageandservice": [
+      {
+        "name": "Charge Head",
+        "value": "C-14"
+      },
+      {
+        "name": "Service Code",
+        "value": "676340"
+      },
+      {
+        "name": "Service Description",
+        "value": "CT ABDOMEN-WHOLE ABDOMEN (CONTRAST)"
+      },
+      {
+        "name": "Type of Room",
+        "value": "RM-680597"
+      },
+      {
+        "name": "Duration from",
+        "value": ""
+      },
+      {
+        "name": "Duration to",
+        "value": ""
+      },
+      {
+        "name": "Price Per Unit",
+        "value": "9300"
+      },
+      {
+        "name": "CURRENCY",
+        "value": "INR"
+      },
+      {
+        "name": "Effective Date",
+        "value": "22-JUL-22"
+      },
+      {
+        "name": "Last Updated By",
+        "value": "BATCH"
+      }
+    ],
+    "pol_policy_number": "12-8436-0000005911-05",
+    "previousinsurancedetail": [
+      {
+        "name": "Type of Proposal",
+        "value": "ORNWL"
+      }
+    ],
+    "previousinsurancedetails": [
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "0"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "Y"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "0"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "Y"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "0"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "0"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "15000"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "0"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "0"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "0"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "Y"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "Y"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "15000"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "15000"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "0"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "0"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "0"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "Y"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "0"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "15000"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "0"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "0"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "Y"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "0"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "Y"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "0"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "0"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "0"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "0"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "0"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "0"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "Y"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "15000"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "Y"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "15000"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "Y"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "0"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "0"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "0"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "Y"
+      },
+      {
+        "name": "Continuity Indicator Approved",
+        "value": "Y"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "15000"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "0"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "0"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "0"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "0"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "0"
+      },
+      {
+        "name": "Cumulative Bonus in Previous Policy",
+        "value": "15000"
+      },
+      {
+        "name": "Insurer",
+        "value": "Bajaj Allianz General Insurance Co.Ltd."
+      },
+      {
+        "name": "Insurer",
+        "value": "5"
+      },
+      {
+        "name": "Insurer",
+        "value": "5"
+      },
+      {
+        "name": "Insurer",
+        "value": "5"
+      },
+      {
+        "name": "Insurer",
+        "value": "Bajaj Allianz General Insurance Co.Ltd."
+      },
+      {
+        "name": "Insurer",
+        "value": "5"
+      },
+      {
+        "name": "Insurer",
+        "value": "Bajaj Allianz General Insurance Co.Ltd."
+      },
+      {
+        "name": "Insurer",
+        "value": "5"
+      },
+      {
+        "name": "Insurer",
+        "value": "Bajaj Allianz General Insurance Co.Ltd."
+      },
+      {
+        "name": "Insurer",
+        "value": "Bajaj Allianz General Insurance Co.Ltd."
+      },
+      {
+        "name": "Insurer",
+        "value": "Bajaj Allianz General Insurance Co.Ltd."
+      },
+      {
+        "name": "Insurer",
+        "value": "5"
+      },
+      {
+        "name": "Insurer",
+        "value": "5"
+      },
+      {
+        "name": "Insurer",
+        "value": "Bajaj Allianz General Insurance Co.Ltd."
+      },
+      {
+        "name": "Insurer",
+        "value": "5"
+      },
+      {
+        "name": "Insurer",
+        "value": "Bajaj Allianz General Insurance Co.Ltd."
+      },
+      {
+        "name": "Insurer",
+        "value": "5"
+      },
+      {
+        "name": "Insurer",
+        "value": "5"
+      },
+      {
+        "name": "Insurer",
+        "value": "Bajaj Allianz General Insurance Co.Ltd."
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Number of Claims Lodged",
+        "value": "0"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2023"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2022"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2024"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2022"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2022"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "01/10/2025"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2022"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2023"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2022"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2024"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "01/10/2025"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2022"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2024"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2022"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2022"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2023"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "01/10/2025"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2022"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2023"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2022"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2022"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "01/10/2025"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2022"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2021"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2021"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2021"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "02/10/2024"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2021"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2022"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2021"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2023"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "02/10/2024"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2021"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2023"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2021"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2021"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2022"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2021"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2022"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2021"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2021"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "02/10/2024"
+      },
+      {
+        "name": "Remarks",
+        "value": "0"
+      },
+      {
+        "name": "Remarks",
+        "value": "Previous policy before Renewal"
+      },
+      {
+        "name": "Remarks",
+        "value": "0"
+      },
+      {
+        "name": "Remarks",
+        "value": "Previous policy before Renewal"
+      },
+      {
+        "name": "Remarks",
+        "value": "0"
+      },
+      {
+        "name": "Remarks",
+        "value": "Previous policy before Renewal"
+      },
+      {
+        "name": "Remarks",
+        "value": "0"
+      },
+      {
+        "name": "Remarks",
+        "value": "0"
+      },
+      {
+        "name": "Remarks",
+        "value": "Previous policy before Renewal"
+      },
+      {
+        "name": "Remarks",
+        "value": "0"
+      },
+      {
+        "name": "Remarks",
+        "value": "Previous policy before Renewal"
+      },
+      {
+        "name": "Remarks",
+        "value": "Previous policy before Renewal"
+      },
+      {
+        "name": "Remarks",
+        "value": "0"
+      },
+      {
+        "name": "Remarks",
+        "value": "Previous policy before Renewal"
+      },
+      {
+        "name": "Remarks",
+        "value": "0"
+      },
+      {
+        "name": "Remarks",
+        "value": "0"
+      },
+      {
+        "name": "Remarks",
+        "value": "Previous policy before Renewal"
+      },
+      {
+        "name": "Remarks",
+        "value": "Previous policy before Renewal"
+      },
+      {
+        "name": "Remarks",
+        "value": "Previous policy before Renewal"
+      },
+      {
+        "name": "Remarks",
+        "value": "0"
+      },
+      {
+        "name": "Remarks",
+        "value": "0"
+      },
+      {
+        "name": "Remarks",
+        "value": "Previous policy before Renewal"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Sum Insured in Previous Policy",
+        "value": "300000"
+      },
+      {
+        "name": "Remarks",
+        "value": "Previous policy before Renewal"
+      },
+      {
+        "name": "Insurer",
+        "value": "Bajaj Allianz General Insurance Co.Ltd."
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2023"
+      },
+      {
+        "name": "Insurer",
+        "value": "5"
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2022"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2021"
+      },
+      {
+        "name": "Insurer",
+        "value": "5"
+      },
+      {
+        "name": "Insurer",
+        "value": "Bajaj Allianz General Insurance Co.Ltd."
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "02/10/2024"
+      },
+      {
+        "name": "Insurer",
+        "value": "Bajaj Allianz General Insurance Co.Ltd."
+      },
+      {
+        "name": "Previous Policy Expiry Date",
+        "value": "26/07/2024"
+      },
+      {
+        "name": "Previous Policy Start Date",
+        "value": "27/07/2023"
+      },
+      {
+        "name": "Remarks",
+        "value": "0"
+      }
+    ],
+    "relations": [
+      {
+        "party": {
+          "Stakeholder / Role": "Beneficiary",
+          "businessName": "NEW MILLENNIUM WOMENS & CHILD HOSPITAL - SANPADA - NAVI MUMBAI",
+          "citizenshipId": "",
+          "company": "BAGIC",
+          "contactDetails": [
+            {
+              "addressLine1": "OFFICE NO 102,,,103,104 PRIYANKA PLACE, SECTOR 10 ,NEAR UNION BANK SANPADA.",
+              "addressLine2": "",
+              "addressLine3": "",
+              "cityCode": "NAVI MUMBAI",
+              "countryCode": "INDIA",
+              "districtCode": "400705",
+              "effectiveDate": "20/11/2025 21:00:43",
+              "email1": "NEWMILLENNIUMWOMENHOSPITAL@GMAIL.COM",
+              "email2": "",
+              "email3": "ALL",
+              "faxNumber": "0",
+              "mobileNumber": "8355983958",
+              "pinCode": "400705",
+              "stateCode": "MAHARASHTRA",
+              "telephoneNumber": "",
+              "typeOfContact": "Permanent"
+            },
+            {
+              "addressLine1": "OFFICE NO 102,,,103,104 PRIYANKA PLACE, SECTOR 10 ,NEAR UNION BANK SANPADA.",
+              "addressLine2": "",
+              "addressLine3": "",
+              "cityCode": "NAVI MUMBAI",
+              "countryCode": "INDIA",
+              "districtCode": "400705",
+              "effectiveDate": "20/11/2025 21:00:43",
+              "email1": "NEWMILLENNIUMWOMENHOSPITAL@GMAIL.COM",
+              "email2": "",
+              "email3": "ALL",
+              "faxNumber": "0",
+              "mobileNumber": "8355983958",
+              "pinCode": "400705",
+              "stateCode": "MAHARASHTRA",
+              "telephoneNumber": "",
+              "typeOfContact": "Mailing"
+            }
+          ],
+          "dateofBirth": "",
+          "effectiveDate": "",
+          "firstName": ",",
+          "indvOrOrg": "O",
+          "initial": "",
+          "lastName": ",",
+          "middleName": "",
+          "nationality": "A103",
+          "occupation": "",
+          "otherName": "",
+          "parentPartyCode": "",
+          "partyCode": "199385105",
+          "partyDetails": [
+            {
+              "attributes": {
+                "attributeName": "Filed IT Last 2 years",
+                "attributeValue": "Y"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "PAN Aadhaar Linked",
+                "attributeValue": "Y"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "No of Doctors with the  qualification of MBBS available for ICU  exclusively taking all the shifts together",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "No of consultant who are not on rolls of the hospital",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "No of surgeons or interventionists(Not on full time roll of hospital)",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "No of qualified nurses available exclusively in ICU taking all the shifts together",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Total No of qualified nurses (BSc Nursing GNM) in the hospital",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "No of doctors exclusively available for ICU",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Doctor- Bed Ratio - No of  Medical Practitioners with MBBS Qualifications as proportion of beds",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Nurse-Bed Ratio - No of Qualified and Registered Nurses  (GNM Post BSc BSC & MSC (Nursing) as proportion of occupied beds",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Doctor-Patient(Bed) Ratio In ICU - No of Medical Practitioners exclusively for ICU as proportion of beds in ICU",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Nurse-Patient (Bed)  Ratio In ICU - Number of Qualified Nurses  exclusively for ICU as  proportion of Beds in ICU",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Hospital Visited By",
+                "attributeValue": "Sana Sayyed"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Assign to ILM",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "ILM feedback",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "ILM remarks",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "PAN No",
+                "attributeValue": "AAJFN8602L"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "TAN No",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "GSTIN/UIN No",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Service Tax No",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Total Beds",
+                "attributeValue": "27"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Type of Room Applicable",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "General Ward - Non AC",
+                "attributeValue": "12"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "General Ward -  AC",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Semi Private Room - Non AC",
+                "attributeValue": "2"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Semi Private Room - AC",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Triple Sharing - Non AC",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Triple Sharing - AC",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Emergency/Casuality Bed",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Day Care Bed",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Single/Private Room - Non AC",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Single/Private Room - AC",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "HDU",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "PICU Bed",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "SICU Bed",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Other Room",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "No of Operation Theatre Major",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "No of Operation Theatre Minor",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Labor OT",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Private",
+                "attributeValue": "5"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Deluxe Beds",
+                "attributeValue": "1"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Single Deluxe room",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Suite",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "ICU Beds",
+                "attributeValue": "3"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Burn Ward",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "NICU Beds",
+                "attributeValue": "5"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "No of Operation Theatre",
+                "attributeValue": "1"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Neuro ICU Charges",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Pediatric/Neonatal",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Surgical ICU",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Surcharge",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Service Charge",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Emergency Value",
+                "attributeValue": "Y"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Bio Chemistry",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Clinical Pathology",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Hematology",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Radio Immuno Assay",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Ultra sound",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "X Ray",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "ECG",
+                "attributeValue": "Y"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "CT Scan",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "MRI",
+                "attributeValue": "No"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "PFT/Spirometry",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Treadmill Test",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Chemotherapy Unit",
+                "attributeValue": "No"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Dialysis Unit",
+                "attributeValue": "No"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Blood Bank (24 hrs)",
+                "attributeValue": "No"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "In house Pharmacy",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Isolation Wards",
+                "attributeValue": "No"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Holter",
+                "attributeValue": "No"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Echo",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "EMG",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Gamma Knife",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Cobalt Unit",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "X-Knife",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Bronchoscopy Lab",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Cath Lab",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Linear Accelerator",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "DSA",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Lasers",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Physiotherapy",
+                "attributeValue": "Covered"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Ambulance",
+                "attributeValue": "No"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Operating hrs",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Phototherapy",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "EEG",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Recovery Rooms",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Medical Establishment Indemnity Cover Present",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Fire Safety Equipment",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Portable ECG, Cardiac Monitor",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Ultrasound/Scanning Facility Register with District Health and Family Welfare Officer",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Medical Records Dept",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Boyles Apparatus",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Coding Procedure followed by medical records department",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Biomedical Waste Facility",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Portable X- Ray within OT",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Bed Occupancy Rate in Hospital",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Use of ICD 10",
+                "attributeValue": "No"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Centralized Oxygen Connections",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Centralize Sterile Supply Department",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Incubators",
+                "attributeValue": "No"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Separate sterilization area",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "24 HR Power Backup",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "OT-Laminar Air Flow",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Medical audit on regular basis",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Hospital Infection Control Measures",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Ophthalmology",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Pediatric",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Cardiology",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Pulmonology",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "ENT",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Oncology",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Critical care",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Dermatology",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Burn",
+                "attributeValue": "No"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Orthopedics",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "General Medicine",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Endocrinology",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Plastic Surgery",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Trauma",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Infectious disease",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Dental",
+                "attributeValue": "Y"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "OBS& Gynecology",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "General Surgery",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Nephrology",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Day Care",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Genitourinary",
+                "attributeValue": "No"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Gastroenterology",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Neurology",
+                "attributeValue": "Yes"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Laparoscopic Surgery",
+                "attributeValue": "Y"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Rheumatology",
+                "attributeValue": "Y"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Type of MOU",
+                "attributeValue": "New"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "MOU Validity Start Date",
+                "attributeValue": "03/12/2025"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "MOU Validity End Date",
+                "attributeValue": "03/12/2030"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Date of MOU Revision",
+                "attributeValue": "01/01/2000"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Authorized Signature (Hospital)",
+                "attributeValue": "DR VENKATESH"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Designation of the Person",
+                "attributeValue": "Medical Director"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Empanel Date",
+                "attributeValue": "03/12/2020"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Delayed Submission Discount Applicable",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Special Remarks",
+                "attributeValue": "File Barcode  FG000003994003"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Rooms allowed for Step Down",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Tariff Standardization",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Special Tariff Applicable",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Special Tariff",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Advance Payment Applicable",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Advance Amount",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Client Geography",
+                "attributeValue": "INDIA"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "NABH Certified",
+                "attributeValue": "N"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Availability of In house doctors",
+                "attributeValue": "MBBS;MD/MS"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Availability of Nurses",
+                "attributeValue": "ARN;BN"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Medical Speciality",
+                "attributeValue": "Others"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Normal offer",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Early payment offer",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Cash Back Offer",
+                "attributeValue": "Remarks"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Hospital ID",
+                "attributeValue": "123804"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Hospital Name",
+                "attributeValue": "NEW MILLENNIUM WOMENS & CHILD HOSPITAL  SANPADA  NAVI MUMBAI"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "TPA Timings Mon to Sat",
+                "attributeValue": "10:00"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "TPA Timings for Sun",
+                "attributeValue": "10:00"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Credit Card Accepted",
+                "attributeValue": "N"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Package Rate",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Package Class",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Initiated By",
+                "attributeValue": "Dr. Kulwanth"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Closure By",
+                "attributeValue": "Dr. Kulwanth"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Referral By",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Visited By BAGIC Person",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Claim Remarks",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Effective Date",
+                "attributeValue": "01/01/2000"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Expiry Date",
+                "attributeValue": "01/01/2000"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Reason for Reactivation",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Reason Blacklisted",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Reason Suspected Fraud",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Reason Delisting",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Beneficiary Name",
+                "attributeValue": "NEW MILLENNIUM MULTY SPECIALITY HOSPITAL"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "GSTIN or UIN No",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Mobile Finance Officer",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Emergency",
+                "attributeValue": "Y"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "PFT Spirometry",
+                "attributeValue": "Y"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Blood Bank 24 hrs",
+                "attributeValue": "N"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "X Knife",
+                "attributeValue": "Y"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Portable ECG Cardiac Monitor",
+                "attributeValue": "Y"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "OT Laminar Air Flow",
+                "attributeValue": "Y"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Regional Coordinators Remark",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "QRS Status",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Span of Control Nurse to Patient",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Span of Control Doctor to Patient",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Teaching or Training",
+                "attributeValue": "N"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "NABH Accreditation Level",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "JCI Accreditation",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "MOU Validity from Date",
+                "attributeValue": "03/12/2025"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "MOU Validity to Date",
+                "attributeValue": "01/01/2000"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Authorized Signature",
+                "attributeValue": "DR VENKATESH"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Designation Code",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Cost Negotiation",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "City Class",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Score of City",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Score of Discount",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Hospital Tariff Docs",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "View Tariff Docs",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Tariff Master Upload",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "View Hospital Docs",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "User Web ID",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Change in field",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Previous details",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Remarks",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Discrepancy",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Manual Remark",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Service Status",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Service Remarks",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Category Value",
+                "attributeValue": "Coupon"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Coupon Type",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Quantity Value",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Value",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Date Of Start",
+                "attributeValue": "01/01/2000"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Date of Expiry",
+                "attributeValue": "01/01/2000"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Coupon type",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Quantity",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Date Of Expiry",
+                "attributeValue": "01/01/2000"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Help Desk",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Health Video",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Other Services",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Service Name",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "PA Policy",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Discount Type",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Discount Percentage",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Discount on services",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Existing Partner ID",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Covered Area In Kms",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Supplier Location",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Composition Scheme",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Overall Rating",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "OBS and Gynecology",
+                "attributeValue": "Y"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Hospital Tariff under negotiation",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Area",
+                "attributeValue": "SANPADA"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Webaddress",
+                "attributeValue": "NEWMILLENNIUMWOMENHOSPITAL@GMAIL.COM"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "STD Code",
+                "attributeValue": "22"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Phone No 1",
+                "attributeValue": "8355983958"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Latitude",
+                "attributeValue": "19.05802719096738"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Longitude",
+                "attributeValue": "73.01642419684883"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Is The Mailing/Communication Address Same As The Primary Address?",
+                "attributeValue": "Y"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Company",
+                "attributeValue": "BAGIC"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Country",
+                "attributeValue": "INDIA"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Preferred Mode of Communication",
+                "attributeValue": "Email"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Preferred Mode Of Alert",
+                "attributeValue": "SMS"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Languages Preferred",
+                "attributeValue": "English"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Blacklisted",
+                "attributeValue": "N"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "GSTN Regn status",
+                "attributeValue": "PROVREG"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Business Type",
+                "attributeValue": "Bank/Insurance /Trust/Leasing/Real estate"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Provider Category",
+                "attributeValue": "Hospital"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Type_of_Provider",
+                "attributeValue": "Network"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Hospital Grade",
+                "attributeValue": "Secondary"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Provider Description",
+                "attributeValue": "Private"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Provider Name",
+                "attributeValue": "NEW MILLENNIUM WOMENS & CHILD HOSPITAL  SANPADA  NAVI MUMBAI"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Provider Priority",
+                "attributeValue": "No"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Hospital Status Remark",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "NABH Level",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Registration No",
+                "attributeValue": "339"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Legal Constitution",
+                "attributeValue": "IC"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "IRDA Unique ID",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "ROHINI code",
+                "attributeValue": "8900080424326"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Login id",
+                "attributeValue": "newmill123804@hat.co.in"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Online Hospital Reference Number",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Empanelment request date",
+                "attributeValue": "03/12/2020"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Previous Provider ref",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Zone",
+                "attributeValue": "Zone A"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "TPA- Coordinator - Name",
+                "attributeValue": "MANISHA"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "TPA- Coordinator - Mobile no",
+                "attributeValue": "7710869444"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "TPA- Coordinator - Email ID",
+                "attributeValue": "NEWMILLENNIUMWOMENHOSPITAL@GMAIL.COM"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Finance Officer Mobile Number",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Finance Officer Email ID",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Billing Persons - Name",
+                "attributeValue": "DARKSHA"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Billing Persons - Mobile no",
+                "attributeValue": "9004808847"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Billing Persons - Email ID",
+                "attributeValue": "NEWMILLENNIUMWOMENHOSPITAL@GMAIL.COM"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Administrator - Name",
+                "attributeValue": "SHITAL"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Administrator - Mobile no",
+                "attributeValue": "9821237031"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Administrator - Email ID",
+                "attributeValue": "NEWMILLENNIUMWOMENHOSPITAL@GMAIL.COM"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Medical Director - Name",
+                "attributeValue": "DR VENKATESH"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Medical Director - Mobile no",
+                "attributeValue": "9324692625"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Medical Director - Email ID",
+                "attributeValue": "NEWMILLENNIUMWOMENHOSPITAL@GMAIL.COM"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Medical Superintendent - Name",
+                "attributeValue": "DR VENKATESH"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Medical Superintendent - Mobile No",
+                "attributeValue": "9324692625"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Medical Superintendent - Email ID",
+                "attributeValue": "NEWMILLENNIUMWOMENHOSPITAL@GMAIL.COM"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Marketing Head - Name",
+                "attributeValue": "PRANITA"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Marketing Head - Mobile no",
+                "attributeValue": "9870637285"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Marketing Head - Email ID",
+                "attributeValue": "NEWMILLENNIUMWOMENHOSPITAL@GMAIL.COM"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "CEO - Name",
+                "attributeValue": "SHITAL"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "CEO - Mobile no",
+                "attributeValue": "9821237031"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "CEO - Email ID",
+                "attributeValue": "NEWMILLENNIUMWOMENHOSPITAL@GMAIL.COM"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Hospital Qualifier",
+                "attributeValue": "NonPPN"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Hospital Speciific Item Codes In Bill",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "PPN Types",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Package Type",
+                "attributeValue": "GIPSA"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "BAGIC Package Class",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Package Acceptance Date",
+                "attributeValue": "03/12/2020"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Package Expiry Date",
+                "attributeValue": "03/12/2022"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "QRS Date",
+                "attributeValue": "01/01/2000"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "QRS type",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Hospital_Visited",
+                "attributeValue": "N"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "RC (Regional Coordinators) Remark",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "TL Remark",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Hospital Visited",
+                "attributeValue": "Y"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Hospital Visit Date",
+                "attributeValue": "06/11/2020"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Total No of Full time doctors with qualification approved by MCI in the rolls of the Hospital",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Total No of Post graduate (MD (anesthesia Gen Med etc)) qualified doctors  exclusively available for ICU",
+                "attributeValue": ","
+              },
+              "multiSetAttribute": []
+            }
+          ],
+          "sex": "T"
+        },
+        "relationAttribute": [
+          {
+            "name": "Address Line 1",
+            "value": "OFFICE NO 102,,,103,104 PRIYANKA PLACE, SECTOR 10 ,NEAR UNION BANK SANPADA."
+          },
+          {
+            "name": "PinCode1",
+            "value": "400705"
+          },
+          {
+            "name": "Emirates/StateP",
+            "value": "MAHARASHTRA"
+          }
+        ],
+        "role": "BENFICIARY"
+      },
+      {
+        "party": {
+          "Stakeholder / Role": "Policy Holder",
+          "businessName": "",
+          "citizenshipId": "",
+          "company": "BAGIC",
+          "contactDetails": [
+            {
+              "addressLine1": "FLAT NO 104 SHIV PARVATI APT HOUSE NO 1491",
+              "addressLine2": "",
+              "addressLine3": "THANE",
+              "cityCode": "THANE",
+              "countryCode": "INDIA",
+              "districtCode": "400703",
+              "effectiveDate": "24/07/0021 19:36:36",
+              "email1": "NIKAMMD03@GMAIL.COM",
+              "email2": "",
+              "email3": "",
+              "faxNumber": "",
+              "mobileNumber": "9999999999",
+              "pinCode": "400703",
+              "stateCode": "MAHARASHTRA",
+              "telephoneNumber": "",
+              "typeOfContact": "Permanent"
+            }
+          ],
+          "dateofBirth": "03/07/1979",
+          "effectiveDate": "",
+          "firstName": "MAHADEV",
+          "indvOrOrg": "I",
+          "initial": "MR",
+          "lastName": "NIKAM",
+          "middleName": "D",
+          "nationality": "A103",
+          "occupation": "125",
+          "otherName": "",
+          "parentPartyCode": "",
+          "partyCode": "PI20378090",
+          "partyDetails": [
+            {
+              "attributes": {
+                "attributeName": "Driving License experience",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Occupation",
+                "attributeValue": "125"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Date Of Birth",
+                "attributeValue": "03/07/1979"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Age",
+                "attributeValue": "46"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Gender",
+                "attributeValue": "M"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Aadhaar Number",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "VID",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "PAN Number",
+                "attributeValue": "AENPN4333A"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Monthly income",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Passport details",
+                "attributeValue": "SUBPASSDTL"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Credit Card details",
+                "attributeValue": "SUBCREDDTL"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Preferred Mode of Communication",
+                "attributeValue": "Email"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Preferred Mode Of Alert",
+                "attributeValue": "SMS"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Languages Preferred",
+                "attributeValue": "US"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Statewise GSTIN details",
+                "attributeValue": "SUBMUGST"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "EMandate details",
+                "attributeValue": "SUBEMANDTL"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Height",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Weight",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Relationship with Employee",
+                "attributeValue": "HEADING"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Date of Birth",
+                "attributeValue": "03/07/1979"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Disability Percentage",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Company",
+                "attributeValue": "BAGIC"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Number of Son",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Number of Daughters",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "UID",
+                "attributeValue": "0"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "POI Status",
+                "attributeValue": "VC"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "CKYC Number",
+                "attributeValue": "10007781463089"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Do you have CKYC Number",
+                "attributeValue": "YES"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "CKYC Status",
+                "attributeValue": "VC"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "POA Status",
+                "attributeValue": "VC"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "Name as per CKYC",
+                "attributeValue": "MR MAHADEO DNYANESHWAR NIKAM"
+              },
+              "multiSetAttribute": []
+            },
+            {
+              "attributes": {
+                "attributeName": "HNI Flag",
+                "attributeValue": "NO"
+              },
+              "multiSetAttribute": []
+            }
+          ],
+          "sex": "M"
+        },
+        "relationAttribute": [],
+        "role": "POLICY-HOL"
+      }
+    ],
+    "renewalFlag": "RENEWAL",
+    "reopenIndicator": "",
+    "requirements": [
+      {
+        "rows": [
+          {
+            "columns": [
+              {
+                "name": "Document Name",
+                "value": "REQUIREMENT_LETTER_3329292019122025_19122025"
+              },
+              {
+                "name": " Required From",
+                "value": "NEW MILLENNIUM WOMENS & CHILD HOSPITAL - SANPADA - NAVI MUMBAI(Beneficiary)"
+              },
+              {
+                "name": "Document Type",
+                "value": "DOCUMENT"
+              },
+              {
+                "name": "Created On",
+                "value": "19/12/2025"
+              },
+              {
+                "name": "Created By",
+                "value": "SYSADMIN"
+              },
+              {
+                "childRows": [
+                  {
+                    "rows": [
+                      {
+                        "columns": [
+                          {
+                            "name": "Sequence No",
+                            "value": "1"
+                          },
+                          {
+                            "name": "Chaser Date",
+                            "value": "19-12-2025 22:36:12"
+                          },
+                          {
+                            "name": "Chaser Status",
+                            "value": "CL"
+                          },
+                          {
+                            "name": "Chaser Document",
+                            "value": "NA"
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Sequence No",
+                            "value": "2"
+                          },
+                          {
+                            "name": "Chaser Date",
+                            "value": "20-12-2025 01:36:12"
+                          },
+                          {
+                            "name": "Chaser Status",
+                            "value": "CL"
+                          },
+                          {
+                            "name": "Chaser Document",
+                            "value": "NA"
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Sequence No",
+                            "value": "3"
+                          },
+                          {
+                            "name": "Chaser Date",
+                            "value": "20-12-2025 04:36:12"
+                          },
+                          {
+                            "name": "Chaser Status",
+                            "value": "CL"
+                          },
+                          {
+                            "name": "Chaser Document",
+                            "value": "NA"
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Sequence No",
+                            "value": "4"
+                          },
+                          {
+                            "name": "Chaser Date",
+                            "value": "20-12-2025 07:36:12"
+                          },
+                          {
+                            "name": "Chaser Status",
+                            "value": "CL"
+                          },
+                          {
+                            "name": "Chaser Document",
+                            "value": "NA"
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Sequence No",
+                            "value": "5"
+                          },
+                          {
+                            "name": "Chaser Date",
+                            "value": "20-12-2025 10:36:12"
+                          },
+                          {
+                            "name": "Chaser Status",
+                            "value": "CL"
+                          },
+                          {
+                            "name": "Chaser Document",
+                            "value": "NA"
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Sequence No",
+                            "value": "6"
+                          },
+                          {
+                            "name": "Chaser Date",
+                            "value": "20-12-2025 13:36:12"
+                          },
+                          {
+                            "name": "Chaser Status",
+                            "value": "CL"
+                          },
+                          {
+                            "name": "Chaser Document",
+                            "value": "NA"
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Sequence No",
+                            "value": "7"
+                          },
+                          {
+                            "name": "Chaser Date",
+                            "value": "20-12-2025 16:36:12"
+                          },
+                          {
+                            "name": "Chaser Status",
+                            "value": "CL"
+                          },
+                          {
+                            "name": "Chaser Document",
+                            "value": "NA"
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Sequence No",
+                            "value": "8"
+                          },
+                          {
+                            "name": "Chaser Date",
+                            "value": "20-12-2025 19:36:12"
+                          },
+                          {
+                            "name": "Chaser Status",
+                            "value": "CL"
+                          },
+                          {
+                            "name": "Chaser Document",
+                            "value": "NA"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "rows": [
+                      {
+                        "columns": [
+                          {
+                            "name": "Requirement Details",
+                            "value": "pre-authorization form duly filled and signed by Insured along with Hospital seal and signature"
+                          },
+                          {
+                            "name": "Medical/Technical",
+                            "value": "Technical"
+                          },
+                          {
+                            "name": "Document Title",
+                            "value": "Pre-authorization Form"
+                          },
+                          {
+                            "name": "Mandatory/Optional",
+                            "value": "Mandatory"
+                          },
+                          {
+                            "name": "Required In",
+                            "value": "Original"
+                          },
+                          {
+                            "name": "Modified Date",
+                            "value": "19-12-2025 19:58:08"
+                          },
+                          {
+                            "name": "Requirement Status",
+                            "value": "RR"
+                          },
+                          {
+                            "name": "Remarks",
+                            "value": ""
+                          },
+                          {
+                            "name": "Modified By",
+                            "value": "APIUSER"
+                          },
+                          {
+                            "name": "Documents Uploaded Date",
+                            "value": ""
+                          },
+                          {
+                            "name": "Source of document",
+                            "value": ""
+                          },
+                          {
+                            "name": "Uploaded Requirement",
+                            "value": "20"
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Requirement Details",
+                            "value": "Attested copies of Indoor case papers"
+                          },
+                          {
+                            "name": "Medical/Technical",
+                            "value": "Medical"
+                          },
+                          {
+                            "name": "Document Title",
+                            "value": "Indoor Case Papers"
+                          },
+                          {
+                            "name": "Mandatory/Optional",
+                            "value": "Optional"
+                          },
+                          {
+                            "name": "Required In",
+                            "value": "Attested PhotoCopy"
+                          },
+                          {
+                            "name": "Modified Date",
+                            "value": "19-12-2025 19:58:08"
+                          },
+                          {
+                            "name": "Requirement Status",
+                            "value": "RR"
+                          },
+                          {
+                            "name": "Remarks",
+                            "value": ""
+                          },
+                          {
+                            "name": "Modified By",
+                            "value": "APIUSER"
+                          },
+                          {
+                            "name": "Documents Uploaded Date",
+                            "value": ""
+                          },
+                          {
+                            "name": "Source of document",
+                            "value": ""
+                          },
+                          {
+                            "name": "Uploaded Requirement",
+                            "value": ""
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Requirement Details",
+                            "value": "Original Investigation Reports against Investigations done."
+                          },
+                          {
+                            "name": "Medical/Technical",
+                            "value": "Medical"
+                          },
+                          {
+                            "name": "Document Title",
+                            "value": "Investigation Reports"
+                          },
+                          {
+                            "name": "Mandatory/Optional",
+                            "value": "Optional"
+                          },
+                          {
+                            "name": "Required In",
+                            "value": "Original"
+                          },
+                          {
+                            "name": "Modified Date",
+                            "value": "23-12-2025 13:11:48"
+                          },
+                          {
+                            "name": "Requirement Status",
+                            "value": "RR"
+                          },
+                          {
+                            "name": "Remarks",
+                            "value": ""
+                          },
+                          {
+                            "name": "Modified By",
+                            "value": "APIUSER"
+                          },
+                          {
+                            "name": "Documents Uploaded Date",
+                            "value": ""
+                          },
+                          {
+                            "name": "Source of document",
+                            "value": ""
+                          },
+                          {
+                            "name": "Uploaded Requirement",
+                            "value": "13_10_57_Discharge_250316925P"
+                          }
+                        ]
+                      },
+                      {
+                        "columns": [
+                          {
+                            "name": "Requirement Details",
+                            "value": "All Consultation paper for the current ailment"
+                          },
+                          {
+                            "name": "Medical/Technical",
+                            "value": "Medical"
+                          },
+                          {
+                            "name": "Document Title",
+                            "value": "Consultation Papers"
+                          },
+                          {
+                            "name": "Mandatory/Optional",
+                            "value": "Mandatory"
+                          },
+                          {
+                            "name": "Required In",
+                            "value": "Original"
+                          },
+                          {
+                            "name": "Modified Date",
+                            "value": "19-12-2025 19:58:08"
+                          },
+                          {
+                            "name": "Requirement Status",
+                            "value": "RR"
+                          },
+                          {
+                            "name": "Remarks",
+                            "value": ""
+                          },
+                          {
+                            "name": "Modified By",
+                            "value": "APIUSER"
+                          },
+                          {
+                            "name": "Documents Uploaded Date",
+                            "value": ""
+                          },
+                          {
+                            "name": "Source of document",
+                            "value": ""
+                          },
+                          {
+                            "name": "Uploaded Requirement",
+                            "value": "20"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "status": "Final bill Received"
+  },
+  "penalInterest": [],
+  "response": {
+    "messages": null,
+    "responseCode": "200",
+    "responseMessage": "Result fetched successfully."
+  }
+}

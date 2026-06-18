@@ -1,0 +1,217 @@
+{
+  "errorCode": 0,
+  "errorDescription": "0",
+  "partyDetail": {
+    "businessName": null,
+    "createdBy": "EXT992379",
+    "dateOfBirth": "04/02/1999",
+    "documentDetail": [
+      {
+        "documentGenerationDate": null,
+        "documentId": null,
+        "documentName": null,
+        "documentType": null
+      }
+    ],
+    "firstName": "Balaji",
+    "gender": "M",
+    "lastName": "Shetty",
+    "middleName": "Umesh",
+    "nationality": "A103",
+    "occupation": null,
+    "parentPartyCode": null,
+    "partyAddress": [
+      {
+        "address1": "room no 102 joyo sadan behind vartak tower tulinj",
+        "address2": " ",
+        "address3": " ",
+        "addressProperty": [
+          {
+            "paramName": "Area",
+            "paramValue": "THANE"
+          }
+        ],
+        "addressType": "Permanent",
+        "alternateEmailId": null,
+        "city": "THANE",
+        "country": "INDIA",
+        "district": null,
+        "eMailId": "shettybalaji202@gmail.com",
+        "fax": null,
+        "landlineNo": null,
+        "mobileNo": "7021438669",
+        "phoneNo": null,
+        "pincode": "401209",
+        "state": "MAHARASHTRA",
+        "stdCode": null,
+        "workNo": null
+      }
+    ],
+    "partyCode": "PI36486934",
+    "partyEndDate": null,
+    "partyLastModificationDate": "13/12/2025 20:41:33",
+    "partyProperty": {
+      "multiSetProperty": [
+        {
+          "multiSetDetail": [
+            {
+              "property": [
+                {
+                  "paramName": "Passport Number",
+                  "paramValue": "T6166304"
+                }
+              ],
+              "sequenceNumber": "1"
+            }
+          ],
+          "multiSetName": "Passport details"
+        }
+      ],
+      "simpleProperty": [
+        {
+          "paramName": "ABHA ID",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Aadhaar Number",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Age",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Company",
+          "paramValue": "BAGIC"
+        },
+        {
+          "paramName": "Credit Card details",
+          "paramValue": "SUB-CREDDTL"
+        },
+        {
+          "paramName": "Date Of Birth",
+          "paramValue": "04/02/1999"
+        },
+        {
+          "paramName": "Date of Birth",
+          "paramValue": "04/02/1999"
+        },
+        {
+          "paramName": "Disability Percentage",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Driving License experience",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "EMandate details",
+          "paramValue": "SUB-EMANDTL"
+        },
+        {
+          "paramName": "Gender",
+          "paramValue": "M"
+        },
+        {
+          "paramName": "Height",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Is The Organisation A Registered Business / Trust?",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Languages Preferred",
+          "paramValue": "ENGLISH"
+        },
+        {
+          "paramName": "Marital Status",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Monthly income",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Number of Daughters",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Number of Son",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "POA Document Status",
+          "paramValue": "SUB-POADOC"
+        },
+        {
+          "paramName": "POI Document Status",
+          "paramValue": "SUB-POIDOC"
+        },
+        {
+          "paramName": "Partner Ref",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Passport details",
+          "paramValue": "SUB-PASSDTL"
+        },
+        {
+          "paramName": "Preferred Mode Of Alert",
+          "paramValue": "SMS"
+        },
+        {
+          "paramName": "Preferred Mode of Communication",
+          "paramValue": "Email"
+        },
+        {
+          "paramName": "Reference Code",
+          "paramValue": ""
+        },
+        {
+          "paramName": "Relationship with Employee",
+          "paramValue": "HEADING"
+        },
+        {
+          "paramName": "Statewise GSTIN details",
+          "paramValue": "SUB-MUGST"
+        },
+        {
+          "paramName": "VID",
+          "paramValue": "0"
+        },
+        {
+          "paramName": "Weight",
+          "paramValue": "0"
+        }
+      ]
+    },
+    "partyRelation": [
+      {
+        "stakeName": "POLICY-HOL",
+        "startDate": "13/12/2025 20:41:33"
+      },
+      {
+        "stakeName": "MEMBER",
+        "startDate": "13/12/2025 20:41:33"
+      },
+      {
+        "stakeName": "DFLTSTKIND",
+        "startDate": "13/12/2025 20:41:33"
+      }
+    ],
+    "partyStartDate": "13/12/2025",
+    "partyStatus": "ACTIVE",
+    "registrationDate": null,
+    "registrationNo": null,
+    "relatedParty": [
+      {
+        "partyCode": null,
+        "stakeCode": null
+      }
+    ],
+    "title": "MR",
+    "typeOfOrganization": null,
+    "typeOfParty": "I"
+  }
+}

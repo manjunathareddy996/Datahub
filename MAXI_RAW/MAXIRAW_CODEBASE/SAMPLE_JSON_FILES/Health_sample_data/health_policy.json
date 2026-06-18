@@ -1,0 +1,1541 @@
+{
+  "CommunicationDetailsAdditiontab": {
+    "mail": [],
+    "sms": []
+  },
+  "baseCurrency": "INR",
+  "basicdetailAttribute": [
+    {
+      "multisetAttribute": "[]",
+      "name": "Titular Document Number",
+      "value": "1065"
+    },
+    {
+      "multisetAttribute": "[]",
+      "name": "Policy Tenure",
+      "value": "1Y"
+    },
+    {
+      "multisetAttribute": "[]",
+      "name": "Type of Entity",
+      "value": "F"
+    },
+    {
+      "multisetAttribute": "[]",
+      "name": "Type of Business",
+      "value": "NB"
+    },
+    {
+      "multisetAttribute": "[]",
+      "name": "Policy Expiry Time",
+      "value": "23:59:59"
+    },
+    {
+      "multisetAttribute": "[]",
+      "name": "Party Links",
+      "value": "I"
+    },
+    {
+      "multisetAttribute": "[]",
+      "name": "Expected Policy Start Date",
+      "value": "05/12/2025"
+    },
+    {
+      "multisetAttribute": "[]",
+      "name": "Group Category",
+      "value": "CATEGORY 1"
+    },
+    {
+      "multisetAttribute": "[]",
+      "name": "Plan",
+      "value": "Individual"
+    },
+    {
+      "multisetAttribute": "[]",
+      "name": "Sub Plan Type",
+      "value": "Individual Plan 3"
+    },
+    {
+      "multisetAttribute": "[]",
+      "name": "Plan Type",
+      "value": ""
+    },
+    {
+      "multisetAttribute": "[]",
+      "name": "Policy-holder First name",
+      "value": "NARSHI RAM CHODHARY"
+    },
+    {
+      "multisetAttribute": "[]",
+      "name": "Full Name",
+      "value": "NARSHI RAM CHODHARY"
+    },
+    {
+      "multisetAttribute": "[]",
+      "name": "Policy-holder Gender",
+      "value": "M"
+    },
+    {
+      "multisetAttribute": "[]",
+      "name": "Policy-holder Date of Birth",
+      "value": "07-Feb-1986"
+    },
+    {
+      "multisetAttribute": "[]",
+      "name": "ID Details",
+      "value": ""
+    },
+    {
+      "multisetAttribute": "[]",
+      "name": "Marital Status",
+      "value": ""
+    }
+  ],
+  "communicationDetails": [],
+  "documentDetails": [],
+  "endorsementDetails": [],
+  "endorsementHistoryReport": [],
+  "followUpDetails": [],
+  "medicalStatus": "",
+  "memberDetailsTab": {
+    "gradesSIDetails": [],
+    "memberData": [
+      {
+        "Member Code": "PI2505340860",
+        "Member Name": "NARSHI RAM CHODHARY"
+      }
+    ]
+  },
+  "memberDetailsTabs": {
+    "PolicyandClaimHistory": [],
+    "memberStatusHistory": [
+      {
+        "Effective Date": "05-DEC-25",
+        "Member Status": "DRAFT",
+        "Member Substatus": "",
+        "Remarks": "",
+        "User": "EMP17200"
+      }
+    ]
+  },
+  "memberRiderDetails": [
+    {
+      "Cover Code": "IPTT",
+      "Cover Name": "In-patient Hospitalization Treatment",
+      "Member Code": "PI2505340860",
+      "Member Name": "NARSHI RAM CHODHARY"
+    }
+  ],
+  "members": [
+    {
+      "FollowUpReport": [
+        {
+          "attributes": [
+            {
+              "name": "DATE",
+              "value": "19-12-2025"
+            },
+            {
+              "name": "Time",
+              "value": "16:39:52"
+            },
+            {
+              "name": "Status",
+              "value": "DRAFT"
+            },
+            {
+              "name": "Sub-Status",
+              "value": "Quote"
+            },
+            {
+              "name": "Endorsement Number / Claim Number",
+              "value": ""
+            },
+            {
+              "name": "Effective Date",
+              "value": "05-12-2025"
+            },
+            {
+              "name": "Remarks",
+              "value": "Policy Created Successfully with policyId : 3184406491319122025"
+            },
+            {
+              "name": "User Code",
+              "value": "EMP17200"
+            }
+          ]
+        },
+        {
+          "attributes": [
+            {
+              "name": "DATE",
+              "value": "19-12-2025"
+            },
+            {
+              "name": "Time",
+              "value": "19:41:46"
+            },
+            {
+              "name": "Status",
+              "value": "ACTIVE"
+            },
+            {
+              "name": "Sub-Status",
+              "value": "Refer"
+            },
+            {
+              "name": "Endorsement Number / Claim Number",
+              "value": ""
+            },
+            {
+              "name": "Effective Date",
+              "value": "05-12-2025"
+            },
+            {
+              "name": "Remarks",
+              "value": "ISSUE-POL;APIUSER;05/12/2025 00:00:00;Policy Issued"
+            },
+            {
+              "name": "User Code",
+              "value": "APIUSER"
+            }
+          ]
+        }
+      ],
+      "PPC PACKAGE": [
+        {
+          "name": "HERizon_Care_Plan_2",
+          "value": ""
+        },
+        {
+          "name": "NIDAAN_SWASTHYA_1",
+          "value": ""
+        },
+        {
+          "name": "Criticare_1",
+          "value": ""
+        },
+        {
+          "name": "Port_Set",
+          "value": ""
+        },
+        {
+          "name": "Women Specific Critical Illness_2",
+          "value": ""
+        },
+        {
+          "name": "Women Specific Critical Illness_1",
+          "value": ""
+        },
+        {
+          "name": "CHLP_1",
+          "value": ""
+        },
+        {
+          "name": "Global-set",
+          "value": ""
+        },
+        {
+          "name": "SET-1",
+          "value": ""
+        },
+        {
+          "name": "CHLP_2",
+          "value": ""
+        },
+        {
+          "name": "CCP_2",
+          "value": ""
+        },
+        {
+          "name": "HERizon_Care_Plan_1",
+          "value": ""
+        },
+        {
+          "name": "HERizon_Care_Plan_3",
+          "value": ""
+        },
+        {
+          "name": "CRITICARE",
+          "value": ""
+        },
+        {
+          "name": "INFINITY_1",
+          "value": ""
+        },
+        {
+          "name": "VHC",
+          "value": ""
+        },
+        {
+          "name": "INFINITY_2",
+          "value": ""
+        },
+        {
+          "name": "CCP_1",
+          "value": ""
+        }
+      ],
+      "additionaltest": [
+        {
+          "name": "MCHC (Mean Corpuscular Haemoglobin Concentration)",
+          "value": ""
+        },
+        {
+          "name": "X-ray Both Knee joint",
+          "value": ""
+        },
+        {
+          "name": "Sodium",
+          "value": ""
+        },
+        {
+          "name": "Total Lipids",
+          "value": ""
+        },
+        {
+          "name": "Immunoglobulin G (IgG)",
+          "value": ""
+        },
+        {
+          "name": "Medical Fitness",
+          "value": ""
+        },
+        {
+          "name": "Serum CPK (Creatinine PhosphoKinase)",
+          "value": ""
+        },
+        {
+          "name": "X ray-Lumbar spine Lateral Extension",
+          "value": ""
+        },
+        {
+          "name": "X ray-Lumbar spine Lateral Flexation",
+          "value": ""
+        },
+        {
+          "name": "X ray-Right Hip AP Lateral",
+          "value": ""
+        },
+        {
+          "name": "X-Ray (Wrist)",
+          "value": ""
+        },
+        {
+          "name": "Uric Acid",
+          "value": ""
+        },
+        {
+          "name": "X Ray Cervical spine (AP and Lateral View)",
+          "value": ""
+        },
+        {
+          "name": "X-ray Lumbar and cervical spine with orthopedic opinion",
+          "value": ""
+        },
+        {
+          "name": "Peripheral Blood Smear (MP)",
+          "value": ""
+        },
+        {
+          "name": "T3 (Free)",
+          "value": ""
+        },
+        {
+          "name": "Neurologist Opinion",
+          "value": ""
+        },
+        {
+          "name": "ESR",
+          "value": ""
+        },
+        {
+          "name": "LFT",
+          "value": ""
+        },
+        {
+          "name": "X ray Left foot",
+          "value": ""
+        },
+        {
+          "name": "Parathyroid Level",
+          "value": ""
+        },
+        {
+          "name": "Mantoux Test / Tuberculin Test",
+          "value": ""
+        },
+        {
+          "name": "Serium Ferittin",
+          "value": ""
+        },
+        {
+          "name": "X ray-Hip AP Lateral",
+          "value": ""
+        },
+        {
+          "name": "Ultrasound Whole Abdomen with KUB",
+          "value": ""
+        },
+        {
+          "name": "VDRL (Venereal Disease Research Laboratory)",
+          "value": ""
+        },
+        {
+          "name": "MCH (Mean Corpuscular Haemoglobin)",
+          "value": ""
+        },
+        {
+          "name": "Neurologist Consultation",
+          "value": ""
+        },
+        {
+          "name": "Orthopedic Consultation",
+          "value": ""
+        },
+        {
+          "name": "ECG (Second Opinion) Report",
+          "value": ""
+        },
+        {
+          "name": "X-Ray right hand wrist",
+          "value": ""
+        },
+        {
+          "name": "Physician Opinion",
+          "value": ""
+        },
+        {
+          "name": "Serum Electrolytes",
+          "value": ""
+        },
+        {
+          "name": "T4 (Thyroxine)",
+          "value": ""
+        },
+        {
+          "name": "Prothrombin Time",
+          "value": ""
+        },
+        {
+          "name": "TMT (Tread Mill Test)",
+          "value": ""
+        },
+        {
+          "name": "Immunoglobulin M (IgM)",
+          "value": ""
+        },
+        {
+          "name": "CA 125",
+          "value": ""
+        },
+        {
+          "name": "CBC ( Complete blood Count)",
+          "value": ""
+        },
+        {
+          "name": "Opthalmic check up",
+          "value": ""
+        },
+        {
+          "name": "Serum Acid Phosphatase",
+          "value": ""
+        },
+        {
+          "name": "X ray-Lumbar spine AP and Lateral",
+          "value": ""
+        },
+        {
+          "name": "Urine Routine",
+          "value": ""
+        },
+        {
+          "name": "X ray Thoracic spine (AP and Lateral)",
+          "value": ""
+        },
+        {
+          "name": "Fitness Certificate",
+          "value": ""
+        },
+        {
+          "name": "X-Ray right knee AP / Lat and Ortho Opinion",
+          "value": ""
+        },
+        {
+          "name": "Serum Uric acid",
+          "value": ""
+        },
+        {
+          "name": "T3 (Triiodothyronine)",
+          "value": ""
+        },
+        {
+          "name": "TSH (Thyroid Stimulating Hormone)",
+          "value": ""
+        },
+        {
+          "name": "Total Leucocyte Count (TLC)",
+          "value": ""
+        },
+        {
+          "name": "HBA1C",
+          "value": ""
+        },
+        {
+          "name": "X- Ray Left hand AP and Lateral view",
+          "value": ""
+        },
+        {
+          "name": "X-Ray left knee AP / Lat and Ortho Opinion",
+          "value": ""
+        },
+        {
+          "name": "X-ray Both Knee joint and Ortho Opinion",
+          "value": ""
+        },
+        {
+          "name": "Pulmonologist opinion",
+          "value": ""
+        },
+        {
+          "name": "C-Reactive Protein (CRP)",
+          "value": ""
+        },
+        {
+          "name": "MicroAlbumin (Urine)",
+          "value": ""
+        },
+        {
+          "name": "RBC (Red Blood Cells)",
+          "value": ""
+        },
+        {
+          "name": "SGOT/AST Serum Glutamic Oxalate Transaminase/Alanine Asparate AminoTransferase",
+          "value": ""
+        },
+        {
+          "name": "X ray pelvis",
+          "value": ""
+        },
+        {
+          "name": "Ultrasound Whole Abdomen",
+          "value": ""
+        },
+        {
+          "name": "Ultrasound Whole Abdomen   Ultrasound Pelvis",
+          "value": ""
+        },
+        {
+          "name": "WBC (White Blood Cells)",
+          "value": ""
+        },
+        {
+          "name": "Vitamin D3",
+          "value": ""
+        },
+        {
+          "name": "CTMT",
+          "value": ""
+        },
+        {
+          "name": "X-Ray Spinal Cord",
+          "value": ""
+        },
+        {
+          "name": "Xray lumbar spine with orthopaedic opinion",
+          "value": ""
+        },
+        {
+          "name": "PFT (Pulmonary Function Test / Spirometry)",
+          "value": ""
+        },
+        {
+          "name": "PSA (Prostrate Specific Antigen)",
+          "value": ""
+        },
+        {
+          "name": "PCV (Haematocrit)",
+          "value": ""
+        },
+        {
+          "name": "Serum LH (Luetenizing Hormone)",
+          "value": ""
+        },
+        {
+          "name": "T4 (Free)",
+          "value": ""
+        },
+        {
+          "name": "Proteins (Albumin)",
+          "value": ""
+        },
+        {
+          "name": "Ultra Sound OBST",
+          "value": ""
+        },
+        {
+          "name": "RENAL/KIDNEY FUNCTION TEST (Serum Creatinine, Urine Routine, Urea, Total Proteins, Calcium, Phosphorous, Chloride, Sodium, Potassium",
+          "value": ""
+        },
+        {
+          "name": "MCV (Mean Corpuscular Volume)",
+          "value": ""
+        },
+        {
+          "name": "X-Ray (Barium Swallow)",
+          "value": ""
+        },
+        {
+          "name": "X-Ray (Chest - PA )",
+          "value": ""
+        },
+        {
+          "name": "Urine Culture",
+          "value": ""
+        },
+        {
+          "name": "Vitamin B12",
+          "value": ""
+        },
+        {
+          "name": "prostate sonography",
+          "value": ""
+        },
+        {
+          "name": "X-Ray Right leg with Ankle - AP and Lateral",
+          "value": ""
+        },
+        {
+          "name": "Orhtopaedic opinion",
+          "value": ""
+        },
+        {
+          "name": "Serum Creatinine",
+          "value": ""
+        },
+        {
+          "name": "Serum Lipase",
+          "value": ""
+        },
+        {
+          "name": "Serum Triglycerides",
+          "value": ""
+        },
+        {
+          "name": "Proteins (Total)",
+          "value": ""
+        },
+        {
+          "name": "Prothrombin Time (PT INR)",
+          "value": ""
+        },
+        {
+          "name": "Ultrasound Pelvis",
+          "value": ""
+        },
+        {
+          "name": "HBA1C",
+          "value": ""
+        },
+        {
+          "name": "Mg (Magnesium)",
+          "value": ""
+        },
+        {
+          "name": "Nephrologist opinion",
+          "value": ""
+        },
+        {
+          "name": "SGPT/ALT Serum Glutamic Pyruvic Transaminase/Alanine AminoTransferase",
+          "value": ""
+        },
+        {
+          "name": "Widal (Tube Method)",
+          "value": ""
+        },
+        {
+          "name": "Full Medical Report(FMR)",
+          "value": ""
+        },
+        {
+          "name": "X ray spine",
+          "value": ""
+        },
+        {
+          "name": "X -RAY CHEST (SECOND OPINION)",
+          "value": ""
+        },
+        {
+          "name": "Phosphorus",
+          "value": ""
+        },
+        {
+          "name": "Serum Cholesterol",
+          "value": ""
+        },
+        {
+          "name": "Stool Microscopy",
+          "value": ""
+        },
+        {
+          "name": "Stool Routine",
+          "value": ""
+        },
+        {
+          "name": "ophthalmic opinion",
+          "value": ""
+        },
+        {
+          "name": "Sr. Calcium",
+          "value": ""
+        },
+        {
+          "name": "X ray Right foot",
+          "value": ""
+        },
+        {
+          "name": "Random Blood Sugar (BSL)",
+          "value": ""
+        },
+        {
+          "name": "Serum Amylase",
+          "value": ""
+        },
+        {
+          "name": "X-Ray Right  Arm ( Humerus )",
+          "value": ""
+        },
+        {
+          "name": "Ultrasound Thyroid",
+          "value": ""
+        },
+        {
+          "name": "Urine Microscopy",
+          "value": ""
+        },
+        {
+          "name": "2D Echo",
+          "value": ""
+        },
+        {
+          "name": "Dermatologist Consultation",
+          "value": ""
+        },
+        {
+          "name": "2D Echo  CTMT",
+          "value": ""
+        },
+        {
+          "name": "Pap Smear",
+          "value": ""
+        },
+        {
+          "name": "Peripheral Smear for expert opinion",
+          "value": ""
+        },
+        {
+          "name": "Platelets",
+          "value": ""
+        },
+        {
+          "name": "Potassium",
+          "value": ""
+        },
+        {
+          "name": "RA Factor",
+          "value": ""
+        },
+        {
+          "name": "THYROID PROFILE",
+          "value": ""
+        },
+        {
+          "name": "USG OBST NT Scan related to Pregnancy",
+          "value": ""
+        },
+        {
+          "name": "Mammography",
+          "value": ""
+        }
+      ],
+      "benefits": [
+        {
+          "Gross Premium": "4682.012333",
+          "attributes": [],
+          "benefitCode": "IPTT",
+          "benefitName": "In-patient Hospitalization Treatment",
+          "expiryDate": "26/11/2026",
+          "inceptionDate": "05/12/2025",
+          "mandatoryOptional": "Y",
+          "premium": "3967.807062"
+        }
+      ],
+      "expiryDate": "26/11/2026",
+      "grosspremium": "4682.012333",
+      "inceptionDate": "05/12/2025",
+      "medicalDetails": [],
+      "medicalDigitization": [],
+      "medicalrating": {
+        "CTMT": [],
+        "decisions": [
+          {
+            "name": "Terms of Acceptance and Rejection",
+            "value": ""
+          },
+          {
+            "name": "Positive Health Declaration",
+            "value": ""
+          }
+        ],
+        "digitallabreports": [],
+        "exclusions": []
+      },
+      "memberDetails": [
+        {
+          "multisetAttribute": "[]",
+          "name": "Date of Marriage",
+          "value": ""
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Location",
+          "value": ""
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Gender",
+          "value": "M"
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Date of Birth",
+          "value": "07/02/1986"
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Age",
+          "value": "39"
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Category",
+          "value": "CATEGORY 1"
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Member Substatus",
+          "value": "329"
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Entity Type",
+          "value": ""
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Plan",
+          "value": "Individual"
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Grade",
+          "value": ""
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Member Status",
+          "value": "DRAFT"
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "First Name",
+          "value": "NARSHI RAM CHODHARY"
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Designation",
+          "value": ""
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Relationship",
+          "value": "24"
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Mobile Number",
+          "value": ""
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Member Name",
+          "value": "NARSHI RAM CHODHARY"
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Sub Plan Type",
+          "value": "Individual Plan 3"
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Employee Code",
+          "value": "1065"
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Member Code",
+          "value": ""
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Full Name",
+          "value": "NARSHI RAM CHODHARY"
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "First Effective Date",
+          "value": "05/12/2025"
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "TPA Name",
+          "value": ""
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Date of Joining",
+          "value": "05/12/2025"
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Applicable Suminsured",
+          "value": "500000"
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Employee E-Mail",
+          "value": ""
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Wellness Cover1",
+          "value": ""
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Group Medical Expenses Coverage",
+          "value": ""
+        },
+        {
+          "multisetAttribute": "[]",
+          "name": "Top up(SI)",
+          "value": ""
+        }
+      ],
+      "netpremium": "3967.807062",
+      "party": {
+        "businessName": "",
+        "citizenshipId": "",
+        "company": "BAGIC",
+        "contactDetails": [
+          {
+            "addressLine1": "F641 AND F641A 2ND PHASE BASNI BEHIND BASNI RAILWAY STATION JODHPUR RAJASTHAN 342001",
+            "addressLine2": "",
+            "addressLine3": "",
+            "cityCode": "JODHPUR",
+            "countryCode": "INDIA",
+            "effectiveDate": "05/12/2025",
+            "email1": "",
+            "email2": "",
+            "email3": "",
+            "faxNumber": "",
+            "mobileNumber": "",
+            "pinCode": "342001",
+            "stateCode": "RAJASTHAN",
+            "telephoneNumber": "",
+            "typeOfContact": "Permanent"
+          }
+        ],
+        "dateofBirth": "07/02/1986",
+        "effectiveDate": "05/12/2025",
+        "firstName": "NARSHI RAM CHODHARY",
+        "fullName": "NARSHI RAM CHODHARY",
+        "indvOrOrg": "I",
+        "initial": "",
+        "lastName": "",
+        "middleName": "",
+        "nationality": "",
+        "occupation": "",
+        "otherName": "",
+        "parentPartyCode": "",
+        "partyCode": "PI2505340860",
+        "partyDetails": [
+          {
+            "multiSetAttribute": "[]",
+            "name": "First Name",
+            "value": "NARSHI RAM CHODHARY"
+          },
+          {
+            "multiSetAttribute": "[]",
+            "name": "Middle Name",
+            "value": ""
+          },
+          {
+            "multiSetAttribute": "[]",
+            "name": "Date of Birth",
+            "value": "07/02/1986"
+          },
+          {
+            "multiSetAttribute": "[]",
+            "name": "Gender",
+            "value": "M"
+          },
+          {
+            "multiSetAttribute": "[]",
+            "name": "Last Name",
+            "value": ""
+          },
+          {
+            "multiSetAttribute": "[]",
+            "name": "Company",
+            "value": "BAGIC"
+          }
+        ],
+        "partyStatus": "ACTIVE",
+        "sex": "M"
+      },
+      "questionnaire": [],
+      "requirementDetails": []
+    }
+  ],
+  "notesDetails": [],
+  "paymentInfo": [],
+  "policyBranch": "1001",
+  "policyExpiryDate": "26/11/2026",
+  "policyInceptionDate": "05/12/2025",
+  "policyNumber": "",
+  "policyPaymentCycleDetails": [
+    {
+      "paymentCycleDetails": [
+        {
+          "paymentCycle": [
+            {
+              "name": "Payment Status",
+              "value": "To be raised"
+            },
+            {
+              "name": "Payee Code",
+              "value": "PO36330020"
+            },
+            {
+              "name": "Payment due date",
+              "value": "05/12/2025 00:00:00"
+            },
+            {
+              "name": "Payment to date",
+              "value": "04/12/2026 00:00:00"
+            },
+            {
+              "name": "Actual Payment date",
+              "value": ""
+            },
+            {
+              "name": "Invoice Number",
+              "value": ""
+            },
+            {
+              "name": "Payment Amount",
+              "value": "3967.81"
+            },
+            {
+              "name": "Payment unpaid amount",
+              "value": "3967.81"
+            }
+          ]
+        }
+      ],
+      "paymentDetails": [
+        {
+          "name": "Payment Purpose",
+          "value": "Net Premium"
+        },
+        {
+          "name": "In/Out",
+          "value": "I"
+        },
+        {
+          "name": "Involving Party",
+          "value": " "
+        },
+        {
+          "name": "Role",
+          "value": "EMPLOYER"
+        },
+        {
+          "name": "Payment Mode",
+          "value": "SINGLE PREMIUM"
+        },
+        {
+          "name": "Payment Amount",
+          "value": "3967.81"
+        }
+      ]
+    },
+    {
+      "paymentCycleDetails": [
+        {
+          "paymentCycle": [
+            {
+              "name": "Payment Status",
+              "value": "To Be Paid"
+            },
+            {
+              "name": "Payee Code",
+              "value": "CGSD0000001"
+            },
+            {
+              "name": "Payment due date",
+              "value": "05/12/2025 00:00:00"
+            },
+            {
+              "name": "Payment to date",
+              "value": "04/12/2026 00:00:00"
+            },
+            {
+              "name": "Actual Payment date",
+              "value": ""
+            },
+            {
+              "name": "Invoice Number",
+              "value": ""
+            },
+            {
+              "name": "Payment Amount",
+              "value": ".5"
+            },
+            {
+              "name": "Payment unpaid amount",
+              "value": ".5"
+            }
+          ]
+        }
+      ],
+      "paymentDetails": [
+        {
+          "name": "Payment Purpose",
+          "value": "STAMP DUTY"
+        },
+        {
+          "name": "In/Out",
+          "value": "O"
+        },
+        {
+          "name": "Involving Party",
+          "value": "CENTRAL GOVT STAMP DUTY"
+        },
+        {
+          "name": "Role",
+          "value": "CGS"
+        },
+        {
+          "name": "Payment Mode",
+          "value": "SINGLE PREMIUM"
+        },
+        {
+          "name": "Payment Amount",
+          "value": ".5"
+        }
+      ]
+    },
+    {
+      "paymentCycleDetails": [
+        {
+          "paymentCycle": [
+            {
+              "name": "Payment Status",
+              "value": "To Be Paid"
+            },
+            {
+              "name": "Payee Code",
+              "value": "CGS00000001"
+            },
+            {
+              "name": "Payment due date",
+              "value": "05/12/2025 00:00:00"
+            },
+            {
+              "name": "Payment to date",
+              "value": "26/11/2026 00:00:00"
+            },
+            {
+              "name": "Actual Payment date",
+              "value": "05/12/2025 00:00:00"
+            },
+            {
+              "name": "Invoice Number",
+              "value": ""
+            },
+            {
+              "name": "Payment Amount",
+              "value": "714"
+            },
+            {
+              "name": "Payment unpaid amount",
+              "value": "714"
+            }
+          ]
+        }
+      ],
+      "paymentDetails": [
+        {
+          "name": "Payment Purpose",
+          "value": "Integrated Goods and Service Tax"
+        },
+        {
+          "name": "In/Out",
+          "value": "O"
+        },
+        {
+          "name": "Involving Party",
+          "value": "CENTRAL GOVT"
+        },
+        {
+          "name": "Role",
+          "value": "CGS"
+        },
+        {
+          "name": "Payment Mode",
+          "value": "SINGLE PREMIUM"
+        },
+        {
+          "name": "Payment Amount",
+          "value": "714"
+        }
+      ]
+    },
+    {
+      "paymentCycleDetails": [
+        {
+          "paymentCycle": [
+            {
+              "name": "Payment Status",
+              "value": "To be raised"
+            },
+            {
+              "name": "Payee Code",
+              "value": "PO36330020"
+            },
+            {
+              "name": "Payment due date",
+              "value": "05/12/2025 00:00:00"
+            },
+            {
+              "name": "Payment to date",
+              "value": "26/11/2026 00:00:00"
+            },
+            {
+              "name": "Actual Payment date",
+              "value": "05/12/2025 00:00:00"
+            },
+            {
+              "name": "Invoice Number",
+              "value": ""
+            },
+            {
+              "name": "Payment Amount",
+              "value": "714"
+            },
+            {
+              "name": "Payment unpaid amount",
+              "value": "714"
+            }
+          ]
+        }
+      ],
+      "paymentDetails": [
+        {
+          "name": "Payment Purpose",
+          "value": "GST"
+        },
+        {
+          "name": "In/Out",
+          "value": "I"
+        },
+        {
+          "name": "Involving Party",
+          "value": " "
+        },
+        {
+          "name": "Role",
+          "value": "EMPLOYER"
+        },
+        {
+          "name": "Payment Mode",
+          "value": "SINGLE PREMIUM"
+        },
+        {
+          "name": "Payment Amount",
+          "value": "714"
+        }
+      ]
+    }
+  ],
+  "policyStatus": "01",
+  "policySubStatus": "72",
+  "policyTerm": "1",
+  "policyTermUnit": "G",
+  "premiumCalculationDetails": [
+    {
+      "Base Premium": "4056.721506",
+      "Cover": "IPTT",
+      "Cover Name": "In-patient Hospitalization Treatment",
+      "Duration": "",
+      "Gross Premium": "4056.721506",
+      "Loading/Discount": "0",
+      "Member Name": "NARSHI RAM CHODHARY",
+      "Period End Date": "",
+      "Period Start Date": "05/12/2025",
+      "Prorated Premium": "",
+      "Total Cover Period": "357",
+      "Total Premium For A Cover(Pre_Tax)": "",
+      "Total Premium For Policy(Pre_Tax)": ""
+    }
+  ],
+  "premiumCurrency": "INR",
+  "premiumDepositMode": "B",
+  "premiumDetails": {
+    "premiumDetails": [
+      {
+        "name": "Gross Premium",
+        "value": "4682.01"
+      },
+      {
+        "name": "Net Premium",
+        "value": "3967.81"
+      },
+      {
+        "name": "Tax Amount",
+        "value": "714.2"
+      },
+      {
+        "name": "Base Premium",
+        "value": ""
+      },
+      {
+        "name": "Discount Amount",
+        "value": ""
+      },
+      {
+        "name": "Loading Amount",
+        "value": ""
+      },
+      {
+        "name": "CESS",
+        "value": "0"
+      },
+      {
+        "name": "ND Retention Premium",
+        "value": ""
+      }
+    ]
+  },
+  "premiumFrequency": "B",
+  "productCode": "8604",
+  "productName": "Flexi Health Protect Plan (Group)",
+  "proposalNumber": "86042500050820",
+  "proposerAddress": {
+    "contactDetails": []
+  },
+  "receiptDetailsList": [],
+  "relations": [
+    {
+      "party": {
+        "businessName": "",
+        "citizenshipId": "",
+        "company": "BAGIC",
+        "contactDetails": [
+          {
+            "addressLine1": "F641 AND F641A 2ND PHASE BASNI BEHIND BASNI RAILWAY STATION JODHPUR RAJASTHAN 342001",
+            "addressLine2": "",
+            "addressLine3": "",
+            "cityCode": "JODHPUR",
+            "countryCode": "INDIA",
+            "effectiveDate": "05/12/2025",
+            "email1": "",
+            "email2": "",
+            "email3": "",
+            "faxNumber": "",
+            "mobileNumber": "",
+            "pinCode": "342001",
+            "stateCode": "RAJASTHAN",
+            "telephoneNumber": "",
+            "typeOfContact": "Permanent"
+          }
+        ],
+        "dateofBirth": "07/02/1986",
+        "effectiveDate": "05/12/2025",
+        "firstName": "NARSHI RAM CHODHARY",
+        "fullName": "NARSHI RAM CHODHARY",
+        "indvOrOrg": "I",
+        "initial": "",
+        "lastName": "",
+        "middleName": "",
+        "nationality": "",
+        "occupation": "",
+        "otherName": "",
+        "parentPartyCode": "",
+        "partyCode": "PI2505340860",
+        "partyDetails": [
+          {
+            "multiSetAttribute": "[]",
+            "name": "First Name",
+            "value": "NARSHI RAM CHODHARY"
+          },
+          {
+            "multiSetAttribute": "[]",
+            "name": "Middle Name",
+            "value": ""
+          },
+          {
+            "multiSetAttribute": "[]",
+            "name": "Date of Birth",
+            "value": "07/02/1986"
+          },
+          {
+            "multiSetAttribute": "[]",
+            "name": "Gender",
+            "value": "M"
+          },
+          {
+            "multiSetAttribute": "[]",
+            "name": "Last Name",
+            "value": ""
+          },
+          {
+            "multiSetAttribute": "[]",
+            "name": "Company",
+            "value": "BAGIC"
+          }
+        ],
+        "partyStatus": "ACTIVE",
+        "sex": "M"
+      },
+      "relationAttribute": [],
+      "role": "POLICY-HOL"
+    },
+    {
+      "party": {
+        "businessName": "CENTRAL GOVT",
+        "citizenshipId": "",
+        "company": "NEDIC",
+        "contactDetails": [
+          {
+            "addressLine1": "new delhi",
+            "addressLine2": "new delhi",
+            "addressLine3": "",
+            "cityCode": "",
+            "countryCode": "",
+            "effectiveDate": "15/06/2018",
+            "email1": "centralgovt.xyz.com",
+            "email2": "",
+            "email3": "",
+            "faxNumber": "",
+            "mobileNumber": "9999999999",
+            "pinCode": "110001",
+            "stateCode": "",
+            "telephoneNumber": "999999999",
+            "typeOfContact": "Permanent"
+          }
+        ],
+        "dateofBirth": "",
+        "effectiveDate": "15/06/2018",
+        "firstName": "",
+        "fullName": "CENTRAL GOVT",
+        "indvOrOrg": "O",
+        "initial": "",
+        "lastName": "",
+        "middleName": "",
+        "nationality": "",
+        "occupation": "",
+        "otherName": "",
+        "parentPartyCode": "",
+        "partyCode": "CGS00000001",
+        "partyDetails": [
+          {
+            "multiSetAttribute": "[]",
+            "name": "Are you Registered Company",
+            "value": ""
+          },
+          {
+            "multiSetAttribute": "[]",
+            "name": "Company",
+            "value": "NEDIC"
+          },
+          {
+            "multiSetAttribute": "[]",
+            "name": "Is The Organisation A Registered Business / Trust?",
+            "value": ""
+          }
+        ],
+        "partyStatus": "ACTIVE",
+        "sex": ""
+      },
+      "relationAttribute": [],
+      "role": "CGS"
+    },
+    {
+      "party": {
+        "businessName": "RAJASTHAN - State Govt.",
+        "citizenshipId": "",
+        "company": "NEDIC",
+        "contactDetails": [
+          {
+            "addressLine1": "Address 1",
+            "addressLine2": "Address 2",
+            "addressLine3": "Address 3",
+            "cityCode": "",
+            "countryCode": "",
+            "effectiveDate": "08/10/2018",
+            "email1": "a.b@c.com",
+            "email2": "",
+            "email3": "",
+            "faxNumber": "",
+            "mobileNumber": "9999999999",
+            "pinCode": "11111",
+            "stateCode": "",
+            "telephoneNumber": "99999999",
+            "typeOfContact": "Postal"
+          }
+        ],
+        "dateofBirth": "",
+        "effectiveDate": "08/10/2018",
+        "firstName": "",
+        "fullName": "RAJASTHAN - State Govt.",
+        "indvOrOrg": "O",
+        "initial": "",
+        "lastName": "",
+        "middleName": "",
+        "nationality": "",
+        "occupation": "",
+        "otherName": "",
+        "parentPartyCode": "",
+        "partyCode": "SGS00000035",
+        "partyDetails": [
+          {
+            "multiSetAttribute": "[]",
+            "name": "Company",
+            "value": "NEDIC"
+          }
+        ],
+        "partyStatus": "ACTIVE",
+        "sex": ""
+      },
+      "relationAttribute": [],
+      "role": "SGS"
+    }
+  ],
+  "renewalDetails": [],
+  "userCode": "APIUSER",
+  "viewCollections": [],
+  "viewCollectionsAdditionalDeatails": []
+}
