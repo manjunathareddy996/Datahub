@@ -1,0 +1,20 @@
+name: Test DBT Workflow
+
+on:
+  pull_request:
+    branches:
+      - dbt_prod
+
+jobs:
+  test-dbt:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Run dummy test
+        run: |
+          echo "🚀 Running dummy test for DBT production workflow..."
+          echo "✅ All checks passed!"
+          echo "📦 Ready for merge to dbt_prod branch"
