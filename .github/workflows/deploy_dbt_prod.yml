@@ -7,14 +7,24 @@ on:
 
 jobs:
   test-dbt:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64]
+    permissions:
+      contents: read
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: Run dummy test
+        shell: bash
         run: |
+          set -euo pipefail
+          echo "========== DBT TEST START =========="
+          date -u
           echo "🚀 Running dummy test for DBT production workflow..."
+          echo "Workflow=${GITHUB_WORKFLOW:-unknown}"
+          echo "Run ID=${GITHUB_RUN_ID:-unknown}"
+          echo "Ref Name=${GITHUB_REF_NAME:-unknown}"
           echo "✅ All checks passed!"
           echo "📦 Ready for merge to dbt_prod branch"
+          echo "========== DBT TEST END =========="
