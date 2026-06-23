@@ -1,0 +1,153 @@
+name: DBT Prod - Print configured things (dry run)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [dbt_prod]
+    paths:
+      - "MAXI_RAW/POC_DBT/bagic_ontology_test/**"
+
+env:
+  ENV: prod
+  DBT_PROJECT_DIR: MAXI_RAW/POC_DBT/bagic_ontology_test
+  DBT_OBJECT_NAME: bagic_ontology_dbt_prod
+  DBT_VERSION: "1.10.15"
+  DBT_TARGET: prod
+  SNOWFLAKE_CLI_FEATURES_ENABLE_DBT: "true"
+  SNOWFLAKE_CLI_FEATURES_ENABLE_DBT_VERSION: "true"
+
+jobs:
+  inspect:
+    runs-on: [self-hosted, Linux, X64]
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Ensure Snowflake CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          if command -v snow >/dev/null 2>&1; then
+            echo "Snowflake CLI already available on runner:"
+            snow --version
+            exit 0
+          fi
+          echo "Installing Snowflake CLI via pip"
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade snowflake-cli
+          snow --version
+
+      - name: Export Snowflake creds from GitHub Secrets (PROD)
+        shell: bash
+        run: |
+          {
+            echo "SNOWFLAKE_ACCOUNT=${{ secrets.SNOWFLAKE_ACCOUNT_PROD }}"
+            echo "SNOWFLAKE_USER=${{ secrets.SNOWFLAKE_USERNAME_PROD }}"
+            echo "SNOWFLAKE_ROLE=${{ secrets.SNOWFLAKE_ROLE_PROD }}"
+            echo "SNOWFLAKE_WAREHOUSE=${{ secrets.SNOWFLAKE_WAREHOUSE_PROD }}"
+            echo "SNOWFLAKE_DATABASE=${{ secrets.SNOWFLAKE_DATABASE_PROD }}"
+            echo "SNOWFLAKE_SCHEMA=${{ secrets.SNOWFLAKE_SCHEMA_PROD }}"
+            echo "SNOWFLAKE_PRIVATE_KEY_URI=${{ secrets.SNOWFLAKE_PRIVATE_KEY_URI_PROD }}"
+            echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE=${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_PROD }}"
+          } >> "$GITHUB_ENV"
+
+      - name: Download Snowflake private key from S3
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${SNOWFLAKE_PRIVATE_KEY_URI:-}" ]]; then
+            echo "SNOWFLAKE_PRIVATE_KEY_URI secret is not configured" >&2
+            exit 1
+          fi
+
+          aws s3 cp "$SNOWFLAKE_PRIVATE_KEY_URI" snowflake_rsa_key.p8
+          chmod 600 snowflake_rsa_key.p8
+
+          if grep -q "ENCRYPTED" snowflake_rsa_key.p8; then
+            if [[ -z "${SNOWFLAKE_PRIVATE_KEY_PASSPHRASE:-}" ]]; then
+              echo "The downloaded Snowflake private key is encrypted but SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_PROD is empty." >&2
+              exit 1
+            fi
+            openssl pkcs8 \
+              -in snowflake_rsa_key.p8 \
+              -topk8 \
+              -nocrypt \
+              -passin env:SNOWFLAKE_PRIVATE_KEY_PASSPHRASE \
+              -out snowflake_rsa_key_decrypted.p8
+            chmod 600 snowflake_rsa_key_decrypted.p8
+            echo "SNOWFLAKE_PRIVATE_KEY_PATH=${PWD}/snowflake_rsa_key_decrypted.p8" >> "$GITHUB_ENV"
+          else
+            echo "SNOWFLAKE_PRIVATE_KEY_PATH=${PWD}/snowflake_rsa_key.p8" >> "$GITHUB_ENV"
+          fi
+
+      - name: Print diagnostics (config, variables, connection, user)
+        shell: bash
+        run: |
+          set -uo pipefail
+
+          echo "========== GITHUB CONTEXT =========="
+          echo "Workflow=${GITHUB_WORKFLOW:-unknown}"
+          echo "Run ID=${GITHUB_RUN_ID:-unknown}"
+          echo "Run attempt=${GITHUB_RUN_ATTEMPT:-unknown}"
+          echo "Ref Name=${GITHUB_REF_NAME:-unknown}"
+          echo "SHA=${GITHUB_SHA:-unknown}"
+          echo "Actor=${GITHUB_ACTOR:-unknown}"
+          echo "Workspace=${GITHUB_WORKSPACE:-unknown}"
+
+          echo "========== WORKFLOW ENV (non-secret) =========="
+          echo "ENV=${ENV:-}"
+          echo "DBT_PROJECT_DIR=${DBT_PROJECT_DIR:-}"
+          echo "DBT_OBJECT_NAME=${DBT_OBJECT_NAME:-}"
+          echo "DBT_VERSION=${DBT_VERSION:-}"
+          echo "DBT_TARGET=${DBT_TARGET:-}"
+          echo "SNOWFLAKE_CLI_FEATURES_ENABLE_DBT=${SNOWFLAKE_CLI_FEATURES_ENABLE_DBT:-}"
+          echo "SNOWFLAKE_CLI_FEATURES_ENABLE_DBT_VERSION=${SNOWFLAKE_CLI_FEATURES_ENABLE_DBT_VERSION:-}"
+
+          echo "========== SNOWFLAKE CONNECTION VARIABLES =========="
+          echo "SNOWFLAKE_ACCOUNT=${SNOWFLAKE_ACCOUNT:-<empty>}"
+          echo "SNOWFLAKE_USER=${SNOWFLAKE_USER:-<empty>}"
+          echo "SNOWFLAKE_ROLE=${SNOWFLAKE_ROLE:-<empty>}"
+          echo "SNOWFLAKE_WAREHOUSE=${SNOWFLAKE_WAREHOUSE:-<empty>}"
+          echo "SNOWFLAKE_DATABASE=${SNOWFLAKE_DATABASE:-<empty>}"
+          echo "SNOWFLAKE_SCHEMA=${SNOWFLAKE_SCHEMA:-<empty>}"
+          echo "SNOWFLAKE_PRIVATE_KEY_URI=${SNOWFLAKE_PRIVATE_KEY_URI:-<empty>}"
+          echo "SNOWFLAKE_PRIVATE_KEY_PATH=${SNOWFLAKE_PRIVATE_KEY_PATH:-<missing>}"
+          echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE set? $([[ -n "${SNOWFLAKE_PRIVATE_KEY_PASSPHRASE:-}" ]] && echo yes || echo no)"
+
+          echo "========== FILE / PROJECT CHECK =========="
+          echo "PWD=$(pwd)"
+          echo "Project dir exists? $([[ -d "${DBT_PROJECT_DIR}" ]] && echo yes || echo no)"
+          test -f "${DBT_PROJECT_DIR}/dbt_project.yml" && echo "dbt_project.yml found" || echo "dbt_project.yml MISSING"
+          test -f "${DBT_PROJECT_DIR}/profiles.yml" && echo "profiles.yml found" || echo "profiles.yml MISSING"
+          [[ -n "${SNOWFLAKE_PRIVATE_KEY_PATH:-}" && -f "${SNOWFLAKE_PRIVATE_KEY_PATH}" ]] && echo "Private key file present" || echo "Private key file NOT present"
+
+          echo "========== SNOW CLI =========="
+          if command -v snow >/dev/null 2>&1; then
+            which snow
+            snow --version
+          else
+            echo "snow CLI not found on PATH"
+          fi
+
+          echo "========== SNOWFLAKE CONNECTION TEST =========="
+          export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
+          if command -v snow >/dev/null 2>&1; then
+            snow connection test -x || echo "WARNING: snow connection test failed (review variables above)."
+            echo "---- CURRENT_USER / ROLE / WAREHOUSE / DB / SCHEMA ----"
+            snow sql -x -q "SELECT CURRENT_USER(), CURRENT_ROLE(), CURRENT_WAREHOUSE(), CURRENT_DATABASE(), CURRENT_SCHEMA();" \
+              || echo "WARNING: snow sql identity query failed."
+          else
+            echo "Skipping connection test; snow CLI unavailable."
+          fi
+
+          echo "========== END DIAGNOSTICS =========="

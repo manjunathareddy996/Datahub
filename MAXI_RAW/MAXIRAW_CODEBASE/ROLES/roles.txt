@@ -1,1 +1,1 @@
-empower_db_utils_sfull_role  --> to access empower_db.utils 
+empower_db_utils_sfull_role  --> to access empower_db.utils
