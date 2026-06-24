@@ -82,6 +82,15 @@ jobs:
             echo "SNOWFLAKE_SCHEMA=${{ secrets.SNOWFLAKE_SCHEMA_PROD }}"
             echo "SNOWFLAKE_PRIVATE_KEY_URI=${{ secrets.SNOWFLAKE_PRIVATE_KEY_URI_PROD }}"
             echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE=${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_PROD }}"
+            echo "SNOWFLAKE_PASSWORD=${{ secrets.SNOWFLAKE_PASSWORD_PROD }}"
+            echo "SES_EMAIL_RECIPIENTS=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_RECIPIENTS_PROD }}"
+            echo "SES_EMAIL_SENDER=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_SENDER_PROD }}"
+            echo "SES_EMAIL_REGION=${{ secrets.SNOWFLAKE_DEPLOY_SES_REGION_PROD }}"
+            echo "SES_SMTP_USERNAME=${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_USERNAME_PROD }}"
+            echo "SES_SMTP_PASSWORD=${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_PASSWORD_PROD }}"
+            echo "DEPLOY_LOG_S3_URI=${{ secrets.SNOWFLAKE_DEPLOY_LOG_S3_URI_PROD }}"
+            echo "AIRFLOW_DAGS_S3_URI=${{ secrets.AIRFLOW_DAGS_S3_URI_PROD }}"
+            echo "SNOWFLAKE_BLOCKED_DATABASES=${{ secrets.SNOWFLAKE_BLOCKED_DATABASES }}"
           } >> "$GITHUB_ENV"
 
       - name: Download Snowflake private key from S3
@@ -151,6 +160,20 @@ jobs:
           echo "SNOWFLAKE_PRIVATE_KEY_PATH=${SNOWFLAKE_PRIVATE_KEY_PATH:-<missing>}"
           echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE set? $([[ -n "${SNOWFLAKE_PRIVATE_KEY_PASSPHRASE:-}" ]] && echo yes || echo no)"
 
+          echo "========== SES / S3 / OTHER VARIABLES =========="
+          echo "SES_EMAIL_RECIPIENTS=${SES_EMAIL_RECIPIENTS:-<empty>}"
+          echo "SES_EMAIL_SENDER=${SES_EMAIL_SENDER:-<empty>}"
+          echo "SES_EMAIL_REGION=${SES_EMAIL_REGION:-<empty>}"
+          echo "SES_SMTP_USERNAME=${SES_SMTP_USERNAME:-<empty>}"
+          echo "DEPLOY_LOG_S3_URI=${DEPLOY_LOG_S3_URI:-<empty>}"
+          echo "AIRFLOW_DAGS_S3_URI=${AIRFLOW_DAGS_S3_URI:-<empty>}"
+          echo "SNOWFLAKE_BLOCKED_DATABASES=${SNOWFLAKE_BLOCKED_DATABASES:-<empty>}"
+
+          echo "========== SECRETS PRESENCE (passwords never printed) =========="
+          echo "SNOWFLAKE_PASSWORD set? $([[ -n "${SNOWFLAKE_PASSWORD:-}" ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE set? $([[ -n "${SNOWFLAKE_PRIVATE_KEY_PASSPHRASE:-}" ]] && echo yes || echo no)"
+          echo "SES_SMTP_PASSWORD set? $([[ -n "${SES_SMTP_PASSWORD:-}" ]] && echo yes || echo no)"
+
           echo "========== FILE / PROJECT CHECK =========="
           echo "PWD=$(pwd)"
           echo "Project dir exists? $([[ -d "${DBT_PROJECT_DIR}" ]] && echo yes || echo no)"
@@ -178,6 +201,96 @@ jobs:
           fi
 
           echo "========== END DIAGNOSTICS =========="
+
+      - name: Print ALL configured secrets (DEV / PROD / UAT / shared)
+        shell: bash
+        run: |
+          set -uo pipefail
+          exec > >(tee -a "${RUN_LOG}") 2>&1
+          echo "===== STEP: Print ALL configured secrets ====="
+          echo "NOTE: credential secrets (passwords / passphrases) are shown as set? yes/no only."
+
+          echo "---------- SNOWFLAKE_ACCOUNT ----------"
+          echo "DEV=${{ secrets.SNOWFLAKE_ACCOUNT_DEV }}"
+          echo "PROD=${{ secrets.SNOWFLAKE_ACCOUNT_PROD }}"
+          echo "UAT=${{ secrets.SNOWFLAKE_ACCOUNT_UAT }}"
+
+          echo "---------- SNOWFLAKE_USERNAME ----------"
+          echo "DEV=${{ secrets.SNOWFLAKE_USERNAME_DEV }}"
+          echo "PROD=${{ secrets.SNOWFLAKE_USERNAME_PROD }}"
+          echo "UAT=${{ secrets.SNOWFLAKE_USERNAME_UAT }}"
+
+          echo "---------- SNOWFLAKE_ROLE ----------"
+          echo "DEV=${{ secrets.SNOWFLAKE_ROLE_DEV }}"
+          echo "PROD=${{ secrets.SNOWFLAKE_ROLE_PROD }}"
+          echo "UAT=${{ secrets.SNOWFLAKE_ROLE_UAT }}"
+
+          echo "---------- SNOWFLAKE_WAREHOUSE ----------"
+          echo "DEV=${{ secrets.SNOWFLAKE_WAREHOUSE_DEV }}"
+          echo "PROD=${{ secrets.SNOWFLAKE_WAREHOUSE_PROD }}"
+          echo "UAT=${{ secrets.SNOWFLAKE_WAREHOUSE_UAT }}"
+
+          echo "---------- SNOWFLAKE_DATABASE ----------"
+          echo "DEV=${{ secrets.SNOWFLAKE_DATABASE_DEV }}"
+          echo "PROD=${{ secrets.SNOWFLAKE_DATABASE_PROD }}"
+          echo "UAT=${{ secrets.SNOWFLAKE_DATABASE_UAT }}"
+
+          echo "---------- SNOWFLAKE_SCHEMA ----------"
+          echo "DEV=${{ secrets.SNOWFLAKE_SCHEMA_DEV }}"
+          echo "PROD=${{ secrets.SNOWFLAKE_SCHEMA_PROD }}"
+          echo "UAT=${{ secrets.SNOWFLAKE_SCHEMA_UAT }}"
+
+          echo "---------- SNOWFLAKE_PRIVATE_KEY_URI ----------"
+          echo "DEV=${{ secrets.SNOWFLAKE_PRIVATE_KEY_URI_DEV }}"
+          echo "PROD=${{ secrets.SNOWFLAKE_PRIVATE_KEY_URI_PROD }}"
+          echo "UAT=${{ secrets.SNOWFLAKE_PRIVATE_KEY_URI_UAT }}"
+
+          echo "---------- AIRFLOW_DAGS_S3_URI ----------"
+          echo "DEV=${{ secrets.AIRFLOW_DAGS_S3_URI_DEV }}"
+          echo "PROD=${{ secrets.AIRFLOW_DAGS_S3_URI_PROD }}"
+          echo "UAT=${{ secrets.AIRFLOW_DAGS_S3_URI_UAT }}"
+
+          echo "---------- SNOWFLAKE_DEPLOY_LOG_S3_URI ----------"
+          echo "DEV=${{ secrets.SNOWFLAKE_DEPLOY_LOG_S3_URI_DEV }}"
+          echo "PROD=${{ secrets.SNOWFLAKE_DEPLOY_LOG_S3_URI_PROD }}"
+          echo "UAT=${{ secrets.SNOWFLAKE_DEPLOY_LOG_S3_URI_UAT }}"
+          echo "VALIDATION=${{ secrets.SNOWFLAKE_DEPLOY_LOG_S3_URI_VALIDATION }}"
+
+          echo "---------- SNOWFLAKE_DEPLOY_EMAIL_RECIPIENTS ----------"
+          echo "DEV=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_RECIPIENTS_DEV }}"
+          echo "PROD=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_RECIPIENTS_PROD }}"
+          echo "UAT=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_RECIPIENTS_UAT }}"
+
+          echo "---------- SNOWFLAKE_DEPLOY_EMAIL_SENDER ----------"
+          echo "DEV=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_SENDER_DEV }}"
+          echo "PROD=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_SENDER_PROD }}"
+          echo "UAT=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_SENDER_UAT }}"
+
+          echo "---------- SNOWFLAKE_DEPLOY_SES_REGION ----------"
+          echo "DEV=${{ secrets.SNOWFLAKE_DEPLOY_SES_REGION_DEV }}"
+          echo "PROD=${{ secrets.SNOWFLAKE_DEPLOY_SES_REGION_PROD }}"
+          echo "UAT=${{ secrets.SNOWFLAKE_DEPLOY_SES_REGION_UAT }}"
+
+          echo "---------- SNOWFLAKE_DEPLOY_SES_SMTP_USERNAME ----------"
+          echo "DEV=${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_USERNAME_DEV }}"
+          echo "PROD=${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_USERNAME_PROD }}"
+          echo "UAT=${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_USERNAME_UAT }}"
+
+          echo "---------- SHARED ----------"
+          echo "SNOWFLAKE_BLOCKED_DATABASES=${{ secrets.SNOWFLAKE_BLOCKED_DATABASES }}"
+
+          echo "---------- CREDENTIALS (presence only, never printed) ----------"
+          echo "SNOWFLAKE_PASSWORD_DEV set? $([[ -n "${{ secrets.SNOWFLAKE_PASSWORD_DEV }}" ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_PASSWORD_PROD set? $([[ -n "${{ secrets.SNOWFLAKE_PASSWORD_PROD }}" ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_PASSWORD_UAT set? $([[ -n "${{ secrets.SNOWFLAKE_PASSWORD_UAT }}" ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_DEV set? $([[ -n "${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_DEV }}" ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_PROD set? $([[ -n "${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_PROD }}" ]] && echo yes || echo no)"
+          echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_UAT set? $([[ -n "${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_UAT }}" ]] && echo yes || echo no)"
+          echo "SES_SMTP_PASSWORD_DEV set? $([[ -n "${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_PASSWORD_DEV }}" ]] && echo yes || echo no)"
+          echo "SES_SMTP_PASSWORD_PROD set? $([[ -n "${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_PASSWORD_PROD }}" ]] && echo yes || echo no)"
+          echo "SES_SMTP_PASSWORD_UAT set? $([[ -n "${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_PASSWORD_UAT }}" ]] && echo yes || echo no)"
+
+          echo "===== END Print ALL configured secrets ====="
 
       - name: Upload combined log to S3
         if: always()
