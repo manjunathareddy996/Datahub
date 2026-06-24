@@ -165,35 +165,31 @@ jobs:
 
           echo "===== END Test table access ====="
 
-      - name: Install dbt (Snowflake)
+      - name: Ensure dbt (Snowflake)
         shell: bash
         run: |
           set -euo pipefail
           exec > >(tee -a "${RUN_LOG}") 2>&1
-          echo "===== STEP: Install dbt ====="
-          python -m pip install --upgrade pip
+          echo "===== STEP: Ensure dbt ====="
+          if command -v dbt >/dev/null 2>&1; then
+            echo "dbt already available on runner:"
+            dbt --version
+            exit 0
+          fi
+          echo "Installing dbt-core + dbt-snowflake via pip"
           python -m pip install "dbt-core" "dbt-snowflake"
           dbt --version
 
-      - name: dbt deps
+      - name: dbt compile (target dev)
         shell: bash
         run: |
           set -euo pipefail
           exec > >(tee -a "${RUN_LOG}") 2>&1
-          echo "===== STEP: dbt deps ====="
+          echo "===== STEP: dbt compile (target dev) ====="
           export DBT_PROFILES_DIR="${DBT_PROJECT_DIR}"
           export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
-          dbt deps --project-dir "${DBT_PROJECT_DIR}"
-
-      - name: dbt build (target dev)
-        shell: bash
-        run: |
-          set -euo pipefail
-          exec > >(tee -a "${RUN_LOG}") 2>&1
-          echo "===== STEP: dbt build (target dev) ====="
-          export DBT_PROFILES_DIR="${DBT_PROJECT_DIR}"
-          export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
-          dbt build --project-dir "${DBT_PROJECT_DIR}" --target dev
+          # Packages are vendored in dbt_packages/, so dbt deps is intentionally skipped.
+          dbt compile --project-dir "${DBT_PROJECT_DIR}" --target dev
 
       - name: Upload combined log to S3
         if: always()
