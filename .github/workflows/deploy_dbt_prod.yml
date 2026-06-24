@@ -1,4 +1,4 @@
-name: DBT Prod - Print configured things (dry run)
+name: DBT Prod - Table access test
 
 on:
   workflow_dispatch:
@@ -10,15 +10,17 @@ on:
 env:
   ENV: prod
   DBT_PROJECT_DIR: MAXI_RAW/POC_DBT/bagic_ontology_test
-  DBT_OBJECT_NAME: bagic_ontology_dbt_prod
-  DBT_VERSION: "1.10.15"
-  DBT_TARGET: prod
   SNOWFLAKE_CLI_FEATURES_ENABLE_DBT: "true"
   SNOWFLAKE_CLI_FEATURES_ENABLE_DBT_VERSION: "true"
   # Single combined log file for every step
   RUN_LOG: dbt_run.log
   # Hardcoded S3 destination (base bucket + prefix). Uses the dev folder as requested.
   S3_LOG_BASE_URI: s3://bagic-dpm-prod-artifact/Github_logs/deploy/dev/dev
+  # Hardcoded table access test target
+  TEST_DATABASE: BAGIC_PREPROD_CURATED_DB
+  TEST_SCHEMA: BGIL_DEV_DATA_MODEL
+  TEST_TABLE: HUB_CLM
+  TEST_WAREHOUSE: BAGIC_DPM_MAXI_RAW_WH
 
 jobs:
   inspect:
@@ -72,7 +74,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          echo "===== STEP: Export Snowflake creds (values masked in this step) =====" | tee -a "${RUN_LOG}"
+          echo "===== STEP: Export Snowflake creds =====" | tee -a "${RUN_LOG}"
           {
             echo "SNOWFLAKE_ACCOUNT=${{ secrets.SNOWFLAKE_ACCOUNT_PROD }}"
             echo "SNOWFLAKE_USER=${{ secrets.SNOWFLAKE_USERNAME_PROD }}"
@@ -82,15 +84,6 @@ jobs:
             echo "SNOWFLAKE_SCHEMA=${{ secrets.SNOWFLAKE_SCHEMA_PROD }}"
             echo "SNOWFLAKE_PRIVATE_KEY_URI=${{ secrets.SNOWFLAKE_PRIVATE_KEY_URI_PROD }}"
             echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE=${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_PROD }}"
-            echo "SNOWFLAKE_PASSWORD=${{ secrets.SNOWFLAKE_PASSWORD_PROD }}"
-            echo "SES_EMAIL_RECIPIENTS=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_RECIPIENTS_PROD }}"
-            echo "SES_EMAIL_SENDER=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_SENDER_PROD }}"
-            echo "SES_EMAIL_REGION=${{ secrets.SNOWFLAKE_DEPLOY_SES_REGION_PROD }}"
-            echo "SES_SMTP_USERNAME=${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_USERNAME_PROD }}"
-            echo "SES_SMTP_PASSWORD=${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_PASSWORD_PROD }}"
-            echo "DEPLOY_LOG_S3_URI=${{ secrets.SNOWFLAKE_DEPLOY_LOG_S3_URI_PROD }}"
-            echo "AIRFLOW_DAGS_S3_URI=${{ secrets.AIRFLOW_DAGS_S3_URI_PROD }}"
-            echo "SNOWFLAKE_BLOCKED_DATABASES=${{ secrets.SNOWFLAKE_BLOCKED_DATABASES }}"
           } >> "$GITHUB_ENV"
 
       - name: Download Snowflake private key from S3
@@ -124,173 +117,53 @@ jobs:
             echo "SNOWFLAKE_PRIVATE_KEY_PATH=${PWD}/snowflake_rsa_key.p8" >> "$GITHUB_ENV"
           fi
 
-      - name: Print diagnostics (config, variables, connection, user)
+      - name: Connection check
         shell: bash
         run: |
           set -uo pipefail
           exec > >(tee -a "${RUN_LOG}") 2>&1
-          echo "===== STEP: Print diagnostics ====="
-
-          echo "========== GITHUB CONTEXT =========="
-          echo "Workflow=${GITHUB_WORKFLOW:-unknown}"
-          echo "Run ID=${GITHUB_RUN_ID:-unknown}"
-          echo "Run attempt=${GITHUB_RUN_ATTEMPT:-unknown}"
-          echo "Ref Name=${GITHUB_REF_NAME:-unknown}"
-          echo "SHA=${GITHUB_SHA:-unknown}"
-          echo "Actor=${GITHUB_ACTOR:-unknown}"
-          echo "Workspace=${GITHUB_WORKSPACE:-unknown}"
-
-          echo "========== WORKFLOW ENV (non-secret) =========="
-          echo "ENV=${ENV:-}"
-          echo "DBT_PROJECT_DIR=${DBT_PROJECT_DIR:-}"
-          echo "DBT_OBJECT_NAME=${DBT_OBJECT_NAME:-}"
-          echo "DBT_VERSION=${DBT_VERSION:-}"
-          echo "DBT_TARGET=${DBT_TARGET:-}"
-          echo "SNOWFLAKE_CLI_FEATURES_ENABLE_DBT=${SNOWFLAKE_CLI_FEATURES_ENABLE_DBT:-}"
-          echo "SNOWFLAKE_CLI_FEATURES_ENABLE_DBT_VERSION=${SNOWFLAKE_CLI_FEATURES_ENABLE_DBT_VERSION:-}"
-
-          echo "========== SNOWFLAKE CONNECTION VARIABLES =========="
-          echo "SNOWFLAKE_ACCOUNT=${SNOWFLAKE_ACCOUNT:-<empty>}"
-          echo "SNOWFLAKE_USER=${SNOWFLAKE_USER:-<empty>}"
-          echo "SNOWFLAKE_ROLE=${SNOWFLAKE_ROLE:-<empty>}"
-          echo "SNOWFLAKE_WAREHOUSE=${SNOWFLAKE_WAREHOUSE:-<empty>}"
-          echo "SNOWFLAKE_DATABASE=${SNOWFLAKE_DATABASE:-<empty>}"
-          echo "SNOWFLAKE_SCHEMA=${SNOWFLAKE_SCHEMA:-<empty>}"
-          echo "SNOWFLAKE_PRIVATE_KEY_URI=${SNOWFLAKE_PRIVATE_KEY_URI:-<empty>}"
-          echo "SNOWFLAKE_PRIVATE_KEY_PATH=${SNOWFLAKE_PRIVATE_KEY_PATH:-<missing>}"
-          echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE set? $([[ -n "${SNOWFLAKE_PRIVATE_KEY_PASSPHRASE:-}" ]] && echo yes || echo no)"
-
-          echo "========== SES / S3 / OTHER VARIABLES =========="
-          echo "SES_EMAIL_RECIPIENTS=${SES_EMAIL_RECIPIENTS:-<empty>}"
-          echo "SES_EMAIL_SENDER=${SES_EMAIL_SENDER:-<empty>}"
-          echo "SES_EMAIL_REGION=${SES_EMAIL_REGION:-<empty>}"
-          echo "SES_SMTP_USERNAME=${SES_SMTP_USERNAME:-<empty>}"
-          echo "DEPLOY_LOG_S3_URI=${DEPLOY_LOG_S3_URI:-<empty>}"
-          echo "AIRFLOW_DAGS_S3_URI=${AIRFLOW_DAGS_S3_URI:-<empty>}"
-          echo "SNOWFLAKE_BLOCKED_DATABASES=${SNOWFLAKE_BLOCKED_DATABASES:-<empty>}"
-
-          echo "========== SECRETS PRESENCE (passwords never printed) =========="
-          echo "SNOWFLAKE_PASSWORD set? $([[ -n "${SNOWFLAKE_PASSWORD:-}" ]] && echo yes || echo no)"
-          echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE set? $([[ -n "${SNOWFLAKE_PRIVATE_KEY_PASSPHRASE:-}" ]] && echo yes || echo no)"
-          echo "SES_SMTP_PASSWORD set? $([[ -n "${SES_SMTP_PASSWORD:-}" ]] && echo yes || echo no)"
-
-          echo "========== FILE / PROJECT CHECK =========="
-          echo "PWD=$(pwd)"
-          echo "Project dir exists? $([[ -d "${DBT_PROJECT_DIR}" ]] && echo yes || echo no)"
-          test -f "${DBT_PROJECT_DIR}/dbt_project.yml" && echo "dbt_project.yml found" || echo "dbt_project.yml MISSING"
-          test -f "${DBT_PROJECT_DIR}/profiles.yml" && echo "profiles.yml found" || echo "profiles.yml MISSING"
-          [[ -n "${SNOWFLAKE_PRIVATE_KEY_PATH:-}" && -f "${SNOWFLAKE_PRIVATE_KEY_PATH}" ]] && echo "Private key file present" || echo "Private key file NOT present"
-
-          echo "========== SNOW CLI =========="
-          if command -v snow >/dev/null 2>&1; then
-            which snow
-            snow --version
-          else
-            echo "snow CLI not found on PATH"
-          fi
-
-          echo "========== SNOWFLAKE CONNECTION TEST =========="
+          echo "===== STEP: Connection check ====="
           export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
           if command -v snow >/dev/null 2>&1; then
-            snow connection test -x || echo "WARNING: snow connection test failed (review variables above)."
-            echo "---- CURRENT_USER / ROLE / WAREHOUSE / DB / SCHEMA ----"
-            snow sql -x -q "SELECT CURRENT_USER(), CURRENT_ROLE(), CURRENT_WAREHOUSE(), CURRENT_DATABASE(), CURRENT_SCHEMA();" \
-              || echo "WARNING: snow sql identity query failed."
+            snow connection test -x || echo "WARNING: snow connection test failed."
           else
-            echo "Skipping connection test; snow CLI unavailable."
+            echo "snow CLI unavailable; skipping connection check."
           fi
 
-          echo "========== END DIAGNOSTICS =========="
-
-      - name: Print ALL configured secrets (DEV / PROD / UAT / shared)
+      - name: Test table access for each role
         shell: bash
         run: |
           set -uo pipefail
           exec > >(tee -a "${RUN_LOG}") 2>&1
-          echo "===== STEP: Print ALL configured secrets ====="
-          echo "NOTE: credential secrets (passwords / passphrases) are shown as set? yes/no only."
+          echo "===== STEP: Test table access ====="
+          echo "Target table: ${TEST_DATABASE}.${TEST_SCHEMA}.${TEST_TABLE}"
 
-          echo "---------- SNOWFLAKE_ACCOUNT ----------"
-          echo "DEV=${{ secrets.SNOWFLAKE_ACCOUNT_DEV }}"
-          echo "PROD=${{ secrets.SNOWFLAKE_ACCOUNT_PROD }}"
-          echo "UAT=${{ secrets.SNOWFLAKE_ACCOUNT_UAT }}"
+          export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
 
-          echo "---------- SNOWFLAKE_USERNAME ----------"
-          echo "DEV=${{ secrets.SNOWFLAKE_USERNAME_DEV }}"
-          echo "PROD=${{ secrets.SNOWFLAKE_USERNAME_PROD }}"
-          echo "UAT=${{ secrets.SNOWFLAKE_USERNAME_UAT }}"
+          if ! command -v snow >/dev/null 2>&1; then
+            echo "snow CLI unavailable; skipping table access test."
+            exit 0
+          fi
 
-          echo "---------- SNOWFLAKE_ROLE ----------"
-          echo "DEV=${{ secrets.SNOWFLAKE_ROLE_DEV }}"
-          echo "PROD=${{ secrets.SNOWFLAKE_ROLE_PROD }}"
-          echo "UAT=${{ secrets.SNOWFLAKE_ROLE_UAT }}"
+          # Roles to test access with
+          ROLES=("EMPOWER_FOUNDATION_ROLE" "INGESTION_PREPROD_ROLE")
 
-          echo "---------- SNOWFLAKE_WAREHOUSE ----------"
-          echo "DEV=${{ secrets.SNOWFLAKE_WAREHOUSE_DEV }}"
-          echo "PROD=${{ secrets.SNOWFLAKE_WAREHOUSE_PROD }}"
-          echo "UAT=${{ secrets.SNOWFLAKE_WAREHOUSE_UAT }}"
+          for role in "${ROLES[@]}"; do
+            echo "---------- Testing with role: ${role} ----------"
+            if snow sql -x \
+                --role "${role}" \
+                --warehouse "${TEST_WAREHOUSE}" \
+                --database "${TEST_DATABASE}" \
+                --schema "${TEST_SCHEMA}" \
+                -q "SELECT * FROM ${TEST_DATABASE}.${TEST_SCHEMA}.${TEST_TABLE} LIMIT 10;"; then
+              echo "ACCESS OK: ${role} can read ${TEST_DATABASE}.${TEST_SCHEMA}.${TEST_TABLE}"
+            else
+              echo "ACCESS FAILED: ${role} could not read ${TEST_DATABASE}.${TEST_SCHEMA}.${TEST_TABLE} (check grants)."
+            fi
+            echo
+          done
 
-          echo "---------- SNOWFLAKE_DATABASE ----------"
-          echo "DEV=${{ secrets.SNOWFLAKE_DATABASE_DEV }}"
-          echo "PROD=${{ secrets.SNOWFLAKE_DATABASE_PROD }}"
-          echo "UAT=${{ secrets.SNOWFLAKE_DATABASE_UAT }}"
-
-          echo "---------- SNOWFLAKE_SCHEMA ----------"
-          echo "DEV=${{ secrets.SNOWFLAKE_SCHEMA_DEV }}"
-          echo "PROD=${{ secrets.SNOWFLAKE_SCHEMA_PROD }}"
-          echo "UAT=${{ secrets.SNOWFLAKE_SCHEMA_UAT }}"
-
-          echo "---------- SNOWFLAKE_PRIVATE_KEY_URI ----------"
-          echo "DEV=${{ secrets.SNOWFLAKE_PRIVATE_KEY_URI_DEV }}"
-          echo "PROD=${{ secrets.SNOWFLAKE_PRIVATE_KEY_URI_PROD }}"
-          echo "UAT=${{ secrets.SNOWFLAKE_PRIVATE_KEY_URI_UAT }}"
-
-          echo "---------- AIRFLOW_DAGS_S3_URI ----------"
-          echo "DEV=${{ secrets.AIRFLOW_DAGS_S3_URI_DEV }}"
-          echo "PROD=${{ secrets.AIRFLOW_DAGS_S3_URI_PROD }}"
-          echo "UAT=${{ secrets.AIRFLOW_DAGS_S3_URI_UAT }}"
-
-          echo "---------- SNOWFLAKE_DEPLOY_LOG_S3_URI ----------"
-          echo "DEV=${{ secrets.SNOWFLAKE_DEPLOY_LOG_S3_URI_DEV }}"
-          echo "PROD=${{ secrets.SNOWFLAKE_DEPLOY_LOG_S3_URI_PROD }}"
-          echo "UAT=${{ secrets.SNOWFLAKE_DEPLOY_LOG_S3_URI_UAT }}"
-          echo "VALIDATION=${{ secrets.SNOWFLAKE_DEPLOY_LOG_S3_URI_VALIDATION }}"
-
-          echo "---------- SNOWFLAKE_DEPLOY_EMAIL_RECIPIENTS ----------"
-          echo "DEV=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_RECIPIENTS_DEV }}"
-          echo "PROD=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_RECIPIENTS_PROD }}"
-          echo "UAT=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_RECIPIENTS_UAT }}"
-
-          echo "---------- SNOWFLAKE_DEPLOY_EMAIL_SENDER ----------"
-          echo "DEV=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_SENDER_DEV }}"
-          echo "PROD=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_SENDER_PROD }}"
-          echo "UAT=${{ secrets.SNOWFLAKE_DEPLOY_EMAIL_SENDER_UAT }}"
-
-          echo "---------- SNOWFLAKE_DEPLOY_SES_REGION ----------"
-          echo "DEV=${{ secrets.SNOWFLAKE_DEPLOY_SES_REGION_DEV }}"
-          echo "PROD=${{ secrets.SNOWFLAKE_DEPLOY_SES_REGION_PROD }}"
-          echo "UAT=${{ secrets.SNOWFLAKE_DEPLOY_SES_REGION_UAT }}"
-
-          echo "---------- SNOWFLAKE_DEPLOY_SES_SMTP_USERNAME ----------"
-          echo "DEV=${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_USERNAME_DEV }}"
-          echo "PROD=${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_USERNAME_PROD }}"
-          echo "UAT=${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_USERNAME_UAT }}"
-
-          echo "---------- SHARED ----------"
-          echo "SNOWFLAKE_BLOCKED_DATABASES=${{ secrets.SNOWFLAKE_BLOCKED_DATABASES }}"
-
-          echo "---------- CREDENTIALS (presence only, never printed) ----------"
-          echo "SNOWFLAKE_PASSWORD_DEV set? $([[ -n "${{ secrets.SNOWFLAKE_PASSWORD_DEV }}" ]] && echo yes || echo no)"
-          echo "SNOWFLAKE_PASSWORD_PROD set? $([[ -n "${{ secrets.SNOWFLAKE_PASSWORD_PROD }}" ]] && echo yes || echo no)"
-          echo "SNOWFLAKE_PASSWORD_UAT set? $([[ -n "${{ secrets.SNOWFLAKE_PASSWORD_UAT }}" ]] && echo yes || echo no)"
-          echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_DEV set? $([[ -n "${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_DEV }}" ]] && echo yes || echo no)"
-          echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_PROD set? $([[ -n "${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_PROD }}" ]] && echo yes || echo no)"
-          echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_UAT set? $([[ -n "${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_UAT }}" ]] && echo yes || echo no)"
-          echo "SES_SMTP_PASSWORD_DEV set? $([[ -n "${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_PASSWORD_DEV }}" ]] && echo yes || echo no)"
-          echo "SES_SMTP_PASSWORD_PROD set? $([[ -n "${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_PASSWORD_PROD }}" ]] && echo yes || echo no)"
-          echo "SES_SMTP_PASSWORD_UAT set? $([[ -n "${{ secrets.SNOWFLAKE_DEPLOY_SES_SMTP_PASSWORD_UAT }}" ]] && echo yes || echo no)"
-
-          echo "===== END Print ALL configured secrets ====="
+          echo "===== END Test table access ====="
 
       - name: Upload combined log to S3
         if: always()
