@@ -1,0 +1,135 @@
+name: PR SQL Guard
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - uat
+      - prod
+    paths:
+      - "SQL_DIR/**/*.sql"
+      - ".github/workflows/pr-sql-guard.yml"
+      - "scripts/validate_sql_env.py"
+
+env:
+  SQL_ROOT: SQL_DIR
+  VALIDATION_LOG_FILE: sql_validation.log
+
+jobs:
+  validate-sql:
+    runs-on: [self-hosted, Linux, X64]
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Initialize SQL validation log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "${VALIDATION_LOG_FILE}"
+          {
+            echo "========== START =========="
+            date -u
+            echo "Workflow=${GITHUB_WORKFLOW:-unknown}"
+            echo "Run ID=${GITHUB_RUN_ID:-unknown}"
+            echo "Base Ref=${GITHUB_BASE_REF:-unknown}"
+            echo "Head Ref=${GITHUB_HEAD_REF:-unknown}"
+          } | tee -a "${VALIDATION_LOG_FILE}"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: List changed SQL files
+        id: diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "${VALIDATION_LOG_FILE}") 2>&1
+          base_sha="${{ github.event.pull_request.base.sha }}"
+          head_sha="${{ github.event.pull_request.head.sha }}"
+
+          echo "--- All changed files (raw) ---"
+          git diff --name-only --diff-filter=ACMR "${base_sha}" "${head_sha}" || true
+
+          echo "--- Filtering for SQL files under ${SQL_ROOT} ---"
+          CHANGED=$(git diff --name-only --diff-filter=ACMR "${base_sha}" "${head_sha}" \
+            | grep -i "^${SQL_ROOT}/.*\.sql$" || true)
+
+          printf "%s\n" "$CHANGED" > changed_files.txt
+          sed -i '/^[[:space:]]*$/d' changed_files.txt
+
+          echo "Changed SQL files:"
+          cat changed_files.txt || true
+
+          if [[ -n "$CHANGED" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validate SQL environment references
+        if: ${{ steps.diff.outputs.changed == 'true' }}
+        shell: bash
+        env:
+          SNOWFLAKE_BLOCKED_DATABASES: ${{ secrets.SNOWFLAKE_BLOCKED_DATABASES }}
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "${VALIDATION_LOG_FILE}") 2>&1
+          python3 scripts/validate_sql_env.py \
+            --changed-files changed_files.txt
+
+      - name: No SQL changes detected
+        if: ${{ steps.diff.outputs.changed != 'true' }}
+        shell: bash
+        run: |
+          echo "No SQL changes in this PR." | tee -a "${VALIDATION_LOG_FILE}"
+
+      - name: Upload validation logs as workflow artifact
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: sql-validation-logs
+          path: |
+            changed_files.txt
+            sql_validation.log
+          if-no-files-found: warn
+
+      - name: Upload validation logs to S3
+        if: always()
+        shell: bash
+        env:
+          S3_LOG_BUCKET_URI: ${{ secrets.SNOWFLAKE_DEPLOY_LOG_S3_URI_VALIDATION }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${S3_LOG_BUCKET_URI:-}" ]]; then
+            echo "S3_LOG_BUCKET_URI is not set, skipping S3 upload."
+            exit 0
+          fi
+
+          ts="$(date -u +%Y%m%dT%H%M%SZ)"
+          run_id="${GITHUB_RUN_ID:-unknown}"
+          sha="${GITHUB_SHA:-unknown}"
+          attempt="${GITHUB_RUN_ATTEMPT:-1}"
+          pr_number="${{ github.event.pull_request.number }}"
+          base_ref="${GITHUB_BASE_REF:-unknown}"
+
+          mkdir -p log_bundle
+          cp -f changed_files.txt log_bundle/ 2>/dev/null || true
+          cp -f "${VALIDATION_LOG_FILE}" log_bundle/ 2>/dev/null || true
+
+          tar -czf "sql-validation-logs-${ts}.tar.gz" log_bundle
+
+          s3_key="${S3_LOG_BUCKET_URI%/}/validation/${base_ref}/pr-${pr_number}/run-${run_id}-attempt-${attempt}-${sha}-${ts}.tar.gz"
+
+          echo "Uploading logs to: ${s3_key}"
+          aws s3 cp "sql-validation-logs-${ts}.tar.gz" "${s3_key}"
+          echo "Uploaded logs successfully."
+ 
