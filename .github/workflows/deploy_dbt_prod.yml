@@ -165,6 +165,36 @@ jobs:
 
           echo "===== END Test table access ====="
 
+      - name: Install dbt (Snowflake)
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "${RUN_LOG}") 2>&1
+          echo "===== STEP: Install dbt ====="
+          python -m pip install --upgrade pip
+          python -m pip install "dbt-core" "dbt-snowflake"
+          dbt --version
+
+      - name: dbt deps
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "${RUN_LOG}") 2>&1
+          echo "===== STEP: dbt deps ====="
+          export DBT_PROFILES_DIR="${DBT_PROJECT_DIR}"
+          export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
+          dbt deps --project-dir "${DBT_PROJECT_DIR}"
+
+      - name: dbt build (target dev)
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "${RUN_LOG}") 2>&1
+          echo "===== STEP: dbt build (target dev) ====="
+          export DBT_PROFILES_DIR="${DBT_PROJECT_DIR}"
+          export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
+          dbt build --project-dir "${DBT_PROJECT_DIR}" --target dev
+
       - name: Upload combined log to S3
         if: always()
         shell: bash
