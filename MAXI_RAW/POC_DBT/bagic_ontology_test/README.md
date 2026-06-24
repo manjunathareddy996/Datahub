@@ -22,4 +22,4 @@ workflow test4 - s3 secrets complete
 
 workflow test5 - table access test for EMPOWER_FOUNDATION_ROLE and INGESTION_PREPROD_ROLE
 
-test direct
+test dbt depoly

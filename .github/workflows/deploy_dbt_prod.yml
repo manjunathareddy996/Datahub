@@ -16,11 +16,6 @@ env:
   RUN_LOG: dbt_run.log
   # Hardcoded S3 destination (base bucket + prefix). Uses the dev folder as requested.
   S3_LOG_BASE_URI: s3://bagic-dpm-prod-artifact/Github_logs/deploy/dev/dev
-  # Hardcoded table access test target
-  TEST_DATABASE: BAGIC_PREPROD_CURATED_DB
-  TEST_SCHEMA: BGIL_DEV_DATA_MODEL
-  TEST_TABLE: HUB_CLM
-  TEST_WAREHOUSE: BAGIC_DPM_MAXI_RAW_WH
 
 jobs:
   inspect:
@@ -130,41 +125,6 @@ jobs:
             echo "snow CLI unavailable; skipping connection check."
           fi
 
-      - name: Test table access for each role
-        shell: bash
-        run: |
-          set -uo pipefail
-          exec > >(tee -a "${RUN_LOG}") 2>&1
-          echo "===== STEP: Test table access ====="
-          echo "Target table: ${TEST_DATABASE}.${TEST_SCHEMA}.${TEST_TABLE}"
-
-          export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
-
-          if ! command -v snow >/dev/null 2>&1; then
-            echo "snow CLI unavailable; skipping table access test."
-            exit 0
-          fi
-
-          # Roles to test access with
-          ROLES=("EMPOWER_FOUNDATION_ROLE" "INGESTION_PREPROD_ROLE")
-
-          for role in "${ROLES[@]}"; do
-            echo "---------- Testing with role: ${role} ----------"
-            if snow sql -x \
-                --role "${role}" \
-                --warehouse "${TEST_WAREHOUSE}" \
-                --database "${TEST_DATABASE}" \
-                --schema "${TEST_SCHEMA}" \
-                -q "SELECT * FROM ${TEST_DATABASE}.${TEST_SCHEMA}.${TEST_TABLE} LIMIT 10;"; then
-              echo "ACCESS OK: ${role} can read ${TEST_DATABASE}.${TEST_SCHEMA}.${TEST_TABLE}"
-            else
-              echo "ACCESS FAILED: ${role} could not read ${TEST_DATABASE}.${TEST_SCHEMA}.${TEST_TABLE} (check grants)."
-            fi
-            echo
-          done
-
-          echo "===== END Test table access ====="
-
       - name: Ensure dbt (Snowflake)
         shell: bash
         run: |
@@ -180,16 +140,29 @@ jobs:
           python -m pip install "dbt-core" "dbt-snowflake"
           dbt --version
 
-      - name: dbt compile (target dev)
+      - name: Deploy dbt project to Snowflake (git_dbt_test)
         shell: bash
         run: |
           set -euo pipefail
           exec > >(tee -a "${RUN_LOG}") 2>&1
-          echo "===== STEP: dbt compile (target dev) ====="
-          export DBT_PROFILES_DIR="${DBT_PROJECT_DIR}"
+          echo "===== STEP: snow dbt deploy (git_dbt_test) ====="
           export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
+          # -x builds the connection from the SNOWFLAKE_* env vars (no config.toml on runner).
           # Packages are vendored in dbt_packages/, so dbt deps is intentionally skipped.
-          dbt compile --project-dir "${DBT_PROJECT_DIR}" --target dev
+          snow dbt deploy git_dbt_test \
+            --source "${DBT_PROJECT_DIR}" \
+            --default-target dev \
+            --force \
+            -x
+
+      - name: List dbt project objects
+        shell: bash
+        run: |
+          set -uo pipefail
+          exec > >(tee -a "${RUN_LOG}") 2>&1
+          echo "===== STEP: snow dbt list ====="
+          export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
+          snow dbt list -x || echo "WARNING: snow dbt list failed."
 
       - name: Upload combined log to S3
         if: always()

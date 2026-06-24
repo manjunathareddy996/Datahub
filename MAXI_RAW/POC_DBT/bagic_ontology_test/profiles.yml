@@ -3,10 +3,8 @@ demo_dbt:
   outputs:
     dev:
       type: snowflake
-      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
-      user: "{{ env_var('SNOWFLAKE_USER') }}"
-      authenticator: snowflake_jwt
-      private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH') }}"
+      account: "_" # overwritten by Snowflake CLI connection (env var) at deploy time
+      user: "_"    # overwritten by Snowflake CLI connection (env var) at deploy time
       role: INGESTION_PREPROD_ROLE
       warehouse: BAGIC_DPM_MAXI_RAW_WH
       database: BAGIC_PREPROD_CURATED_DB
