@@ -17,3 +17,5 @@ Try running the following commands:
 workflow test2
 
 workflow test3 - s3 logs first attempt to get variables, configs
+
+workflow test4 - s3 secrets complete
