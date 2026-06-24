@@ -15,6 +15,10 @@ env:
   DBT_TARGET: prod
   SNOWFLAKE_CLI_FEATURES_ENABLE_DBT: "true"
   SNOWFLAKE_CLI_FEATURES_ENABLE_DBT_VERSION: "true"
+  # Single combined log file for every step
+  RUN_LOG: dbt_run.log
+  # Hardcoded S3 destination (base bucket + prefix). Uses the dev folder as requested.
+  S3_LOG_BASE_URI: s3://bagic-dpm-prod-artifact/Github_logs/deploy/dev/dev
 
 jobs:
   inspect:
@@ -28,6 +32,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Initialize combined run log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "${RUN_LOG}"
+          {
+            echo "########## RUN LOG START ##########"
+            date -u
+            echo "Workflow=${GITHUB_WORKFLOW:-unknown}"
+            echo "Run ID=${GITHUB_RUN_ID:-unknown}"
+            echo "Run attempt=${GITHUB_RUN_ATTEMPT:-unknown}"
+            echo "Ref Name=${GITHUB_REF_NAME:-unknown}"
+            echo "SHA=${GITHUB_SHA:-unknown}"
+          } | tee -a "${RUN_LOG}"
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -37,6 +56,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          exec > >(tee -a "${RUN_LOG}") 2>&1
+          echo "===== STEP: Ensure Snowflake CLI ====="
           if command -v snow >/dev/null 2>&1; then
             echo "Snowflake CLI already available on runner:"
             snow --version
@@ -50,6 +71,8 @@ jobs:
       - name: Export Snowflake creds from GitHub Secrets (PROD)
         shell: bash
         run: |
+          set -euo pipefail
+          echo "===== STEP: Export Snowflake creds (values masked in this step) =====" | tee -a "${RUN_LOG}"
           {
             echo "SNOWFLAKE_ACCOUNT=${{ secrets.SNOWFLAKE_ACCOUNT_PROD }}"
             echo "SNOWFLAKE_USER=${{ secrets.SNOWFLAKE_USERNAME_PROD }}"
@@ -65,6 +88,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          exec > >(tee -a "${RUN_LOG}") 2>&1
+          echo "===== STEP: Download Snowflake private key ====="
           if [[ -z "${SNOWFLAKE_PRIVATE_KEY_URI:-}" ]]; then
             echo "SNOWFLAKE_PRIVATE_KEY_URI secret is not configured" >&2
             exit 1
@@ -94,6 +119,8 @@ jobs:
         shell: bash
         run: |
           set -uo pipefail
+          exec > >(tee -a "${RUN_LOG}") 2>&1
+          echo "===== STEP: Print diagnostics ====="
 
           echo "========== GITHUB CONTEXT =========="
           echo "Workflow=${GITHUB_WORKFLOW:-unknown}"
@@ -151,3 +178,24 @@ jobs:
           fi
 
           echo "========== END DIAGNOSTICS =========="
+
+      - name: Upload combined log to S3
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "########## RUN LOG END ##########"
+            date -u
+          } >> "${RUN_LOG}"
+
+          ts="$(date -u +%Y%m%dT%H%M%SZ)"
+          run_id="${GITHUB_RUN_ID:-unknown}"
+          attempt="${GITHUB_RUN_ATTEMPT:-1}"
+          sha="${GITHUB_SHA:-unknown}"
+
+          dest="${S3_LOG_BASE_URI%/}/dbt_run-${run_id}-attempt-${attempt}-${sha}-${ts}.log"
+
+          echo "Uploading combined log to: ${dest}"
+          aws s3 cp "${RUN_LOG}" "${dest}"
+          echo "Uploaded successfully."
