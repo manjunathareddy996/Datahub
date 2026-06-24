@@ -3,12 +3,14 @@ demo_dbt:
   outputs:
     dev:
       type: snowflake
-      role: INGESTION_PREPROD_ROLE  # need to be created
-      warehouse: BAGIC_DPM_MAXI_RAW_WH # as per role set
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      authenticator: snowflake_jwt
+      private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH') }}"
+      role: INGESTION_PREPROD_ROLE
+      warehouse: BAGIC_DPM_MAXI_RAW_WH
       database: BAGIC_PREPROD_CURATED_DB
       schema: BGIL_DEV_DATA_MODEL
-      account: 'your-account-identifier'   # Your Snowflake account
-      user: 'your-username'      # Your Snowflake username
       threads: 7
 
     prod:
