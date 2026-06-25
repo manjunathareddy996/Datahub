@@ -25,3 +25,5 @@ workflow test5 - table access test for EMPOWER_FOUNDATION_ROLE and INGESTION_PRE
 test dbt depoly
 
 test dbt deploy debug
+
+test proxy
