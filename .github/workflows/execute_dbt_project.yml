@@ -1,8 +1,6 @@
-name: Transfer DBT Project Ownership
+name: Execute DBT Project
 
-# Transfers ownership of the GIT_DBT_TEST dbt project object to
-# INGESTION_PREPROD_ROLE. Ownership can only be granted by the current
-# owner (CICD_ROLE) or an admin, so the grant runs as CICD_ROLE.
+# Runs EXECUTE DBT PROJECT against Snowflake for the POC_DBT_TEST project.
 
 on:
   push:
@@ -14,29 +12,23 @@ on:
         description: "Fully-qualified dbt project name"
         required: true
         default: BAGIC_DEV_CURATED_DB.INTERMEDIATE.GIT_DBT_TEST
-      new_owner_role:
-        description: "Role to receive ownership"
+      dbt_args:
+        description: "ARGS passed to EXECUTE DBT PROJECT"
         required: true
-        default: ETL_DEV_ROLE
-      current_owner_role:
-        description: "Role that currently owns the object (runs the grant)"
-        required: true
-        default: CICD_ROLE
+        default: "run --full-refresh --select sat_hlth_clm_mdcl_dtls --target dev"
 
 env:
   ENV: prod
-  RUN_LOG: dbt_ownership.log
+  RUN_LOG: dbt_execute.log
   SNOWFLAKE_CLI_FEATURES_ENABLE_DBT: "true"
   SNOWFLAKE_CLI_FEATURES_ENABLE_DBT_VERSION: "true"
   S3_LOG_BASE_URI: s3://bagic-dpm-prod-artifact/Github_logs/deploy/dev/dev
-  # On a push trigger github.event.inputs.* are empty, so fall back to these
-  # defaults. workflow_dispatch inputs override them when provided.
+  # On a push trigger github.event.inputs.* are empty, so fall back to defaults.
   DBT_PROJECT_FQN: ${{ github.event.inputs.dbt_project_fqn || 'BAGIC_DEV_CURATED_DB.INTERMEDIATE.GIT_DBT_TEST' }}
-  NEW_OWNER_ROLE: ${{ github.event.inputs.new_owner_role || 'ETL_DEV_ROLE' }}
-  CURRENT_OWNER_ROLE: ${{ github.event.inputs.current_owner_role || 'CICD_ROLE' }}
+  DBT_ARGS: ${{ github.event.inputs.dbt_args || 'run --full-refresh --select sat_hlth_clm_mdcl_dtls --target dev' }}
 
 jobs:
-  transfer-ownership:
+  execute:
     runs-on: [self-hosted, Linux, X64]
     permissions:
       contents: read
@@ -61,8 +53,7 @@ jobs:
             echo "Ref Name=${GITHUB_REF_NAME:-unknown}"
             echo "SHA=${GITHUB_SHA:-unknown}"
             echo "DBT project=${DBT_PROJECT_FQN}"
-            echo "New owner=${NEW_OWNER_ROLE}"
-            echo "Current owner=${CURRENT_OWNER_ROLE}"
+            echo "DBT args=${DBT_ARGS}"
           } | tee -a "${RUN_LOG}"
 
       - name: Setup Python
@@ -94,13 +85,12 @@ jobs:
           {
             echo "SNOWFLAKE_ACCOUNT=${{ secrets.SNOWFLAKE_ACCOUNT_PROD }}"
             echo "SNOWFLAKE_USER=${{ secrets.SNOWFLAKE_USERNAME_PROD }}"
+            echo "SNOWFLAKE_ROLE=${{ secrets.SNOWFLAKE_ROLE_PROD }}"
             echo "SNOWFLAKE_WAREHOUSE=${{ secrets.SNOWFLAKE_WAREHOUSE_PROD }}"
             echo "SNOWFLAKE_DATABASE=${{ secrets.SNOWFLAKE_DATABASE_PROD }}"
             echo "SNOWFLAKE_SCHEMA=${{ secrets.SNOWFLAKE_SCHEMA_PROD }}"
             echo "SNOWFLAKE_PRIVATE_KEY_URI=${{ secrets.SNOWFLAKE_PRIVATE_KEY_URI_PROD }}"
             echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE=${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_PROD }}"
-            # Override role with the current owner so GRANT OWNERSHIP is permitted.
-            echo "SNOWFLAKE_ROLE=${CURRENT_OWNER_ROLE}"
           } >> "$GITHUB_ENV"
 
       - name: Download Snowflake private key from S3
@@ -147,40 +137,16 @@ jobs:
             echo "snow CLI unavailable; skipping connection check."
           fi
 
-      - name: Show current ownership (before)
-        shell: bash
-        run: |
-          set -uo pipefail
-          exec > >(tee -a "${RUN_LOG}") 2>&1
-          echo "===== STEP: SHOW GRANTS (before) ====="
-          export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
-          snow sql -x -q "SHOW GRANTS ON DBT PROJECT ${DBT_PROJECT_FQN};" \
-            || echo "WARNING: SHOW GRANTS (before) failed."
-
-      - name: Transfer ownership
+      - name: Execute dbt project
         shell: bash
         run: |
           set -euo pipefail
           exec > >(tee -a "${RUN_LOG}") 2>&1
-          echo "===== STEP: GRANT OWNERSHIP ====="
+          echo "===== STEP: EXECUTE DBT PROJECT ====="
           export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
 
-          # CICD_ROLE owns the object so it can transfer ownership directly.
-          # COPY/REVOKE CURRENT GRANTS is intentionally omitted because it
-          # requires MANAGE GRANTS on the account, and there are no other
-          # privilege grants on the object to preserve.
-          snow sql -x -q "GRANT OWNERSHIP ON DBT PROJECT ${DBT_PROJECT_FQN} TO ROLE ${NEW_OWNER_ROLE};" \
+          snow sql -x -q "EXECUTE DBT PROJECT ${DBT_PROJECT_FQN} ARGS='${DBT_ARGS}';" \
             --debug
-
-      - name: Show current ownership (after)
-        shell: bash
-        run: |
-          set -uo pipefail
-          exec > >(tee -a "${RUN_LOG}") 2>&1
-          echo "===== STEP: SHOW GRANTS (after) ====="
-          export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
-          snow sql -x -q "SHOW GRANTS ON DBT PROJECT ${DBT_PROJECT_FQN};" \
-            || echo "WARNING: SHOW GRANTS (after) failed."
 
       - name: Upload combined log to S3
         if: always()
@@ -197,7 +163,7 @@ jobs:
           attempt="${GITHUB_RUN_ATTEMPT:-1}"
           sha="${GITHUB_SHA:-unknown}"
 
-          dest="${S3_LOG_BASE_URI%/}/dbt_ownership-${run_id}-attempt-${attempt}-${sha}-${ts}.log"
+          dest="${S3_LOG_BASE_URI%/}/dbt_execute-${run_id}-attempt-${attempt}-${sha}-${ts}.log"
 
           echo "Uploading combined log to: ${dest}"
           aws s3 cp "${RUN_LOG}" "${dest}"
