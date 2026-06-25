@@ -165,9 +165,11 @@ jobs:
           echo "===== STEP: GRANT OWNERSHIP ====="
           export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
 
-          # COPY CURRENT GRANTS preserves existing privilege grants on the object
-          # so downstream roles keep their access after the ownership change.
-          snow sql -x -q "GRANT OWNERSHIP ON DBT PROJECT ${DBT_PROJECT_FQN} TO ROLE ${NEW_OWNER_ROLE} COPY CURRENT GRANTS;" \
+          # CICD_ROLE owns the object so it can transfer ownership directly.
+          # COPY/REVOKE CURRENT GRANTS is intentionally omitted because it
+          # requires MANAGE GRANTS on the account, and there are no other
+          # privilege grants on the object to preserve.
+          snow sql -x -q "GRANT OWNERSHIP ON DBT PROJECT ${DBT_PROJECT_FQN} TO ROLE ${NEW_OWNER_ROLE};" \
             --debug
 
       - name: Show current ownership (after)
