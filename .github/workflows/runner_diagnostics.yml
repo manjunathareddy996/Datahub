@@ -136,6 +136,33 @@ jobs:
             echo
           done
 
+      - name: Verbose curl to failing internal-stage S3 endpoint
+        shell: bash
+        run: |
+          set -uo pipefail
+          exec > >(tee -a "${RUN_LOG}") 2>&1
+          echo "===== VERBOSE CURL: failing Snowflake internal-stage S3 endpoint ====="
+          FAIL_URL="https://sfc-in-ds1-65-customer-stage.s3.ap-south-1.amazonaws.com"
+          echo "Target: ${FAIL_URL}"
+          echo
+          echo "---------- curl -v (TLS handshake + response headers + body) ----------"
+          # -v: full verbose incl. TLS + request/response headers
+          # --connect-timeout / -m: bound the probe
+          # Do not fail the step regardless of HTTP status
+          curl -v -sS -m 20 "${FAIL_URL}" 2>&1 || echo "CONNECT FAILED: ${FAIL_URL}"
+          echo
+          echo "---------- HEAD request with status/timing ----------"
+          curl -v -sS -o /dev/null -m 20 -I \
+            -w "HTTP=%{http_code} dns=%{time_namelookup}s connect=%{time_connect}s appconnect=%{time_appconnect}s total=%{time_total}s\n" \
+            "${FAIL_URL}" 2>&1 || echo "HEAD FAILED: ${FAIL_URL}"
+          echo
+          echo "---------- simulated PUT (path like the dbt deploy upload) ----------"
+          # Snowflake PUTs objects under /<account-prefix>/stages/<id>/...; we cannot use the
+          # real signed URL, so this is expected to return 403/AccessDenied if egress is open,
+          # or fail to connect / be proxy-rejected if egress is blocked. The distinction matters.
+          curl -v -sS -m 20 -X PUT --data "diagnostic-probe" \
+            "${FAIL_URL}/diagnostic-probe-object.txt" 2>&1 || echo "PUT PROBE FAILED: ${FAIL_URL}"
+
       - name: Proxy / egress environment
         shell: bash
         run: |
