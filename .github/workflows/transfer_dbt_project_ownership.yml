@@ -1,0 +1,202 @@
+name: Transfer DBT Project Ownership
+
+# Transfers ownership of the GIT_DBT_TEST dbt project object to
+# INGESTION_PREPROD_ROLE. Ownership can only be granted by the current
+# owner (CICD_ROLE) or an admin, so the grant runs as CICD_ROLE.
+
+on:
+  push:
+    paths:
+      - ".github/workflows/**"
+  workflow_dispatch:
+    inputs:
+      dbt_project_fqn:
+        description: "Fully-qualified dbt project name"
+        required: true
+        default: BAGIC_DEV_CURATED_DB.INTERMEDIATE.GIT_DBT_TEST
+      new_owner_role:
+        description: "Role to receive ownership"
+        required: true
+        default: ETL_DEV_ROLE
+      current_owner_role:
+        description: "Role that currently owns the object (runs the grant)"
+        required: true
+        default: CICD_ROLE
+
+env:
+  ENV: prod
+  RUN_LOG: dbt_ownership.log
+  SNOWFLAKE_CLI_FEATURES_ENABLE_DBT: "true"
+  SNOWFLAKE_CLI_FEATURES_ENABLE_DBT_VERSION: "true"
+  S3_LOG_BASE_URI: s3://bagic-dpm-prod-artifact/Github_logs/deploy/dev/dev
+  # On a push trigger github.event.inputs.* are empty, so fall back to these
+  # defaults. workflow_dispatch inputs override them when provided.
+  DBT_PROJECT_FQN: ${{ github.event.inputs.dbt_project_fqn || 'BAGIC_DEV_CURATED_DB.INTERMEDIATE.GIT_DBT_TEST' }}
+  NEW_OWNER_ROLE: ${{ github.event.inputs.new_owner_role || 'ETL_DEV_ROLE' }}
+  CURRENT_OWNER_ROLE: ${{ github.event.inputs.current_owner_role || 'CICD_ROLE' }}
+
+jobs:
+  transfer-ownership:
+    runs-on: [self-hosted, Linux, X64]
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Initialize combined run log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "${RUN_LOG}"
+          {
+            echo "########## RUN LOG START ##########"
+            date -u
+            echo "Workflow=${GITHUB_WORKFLOW:-unknown}"
+            echo "Run ID=${GITHUB_RUN_ID:-unknown}"
+            echo "Run attempt=${GITHUB_RUN_ATTEMPT:-unknown}"
+            echo "Ref Name=${GITHUB_REF_NAME:-unknown}"
+            echo "SHA=${GITHUB_SHA:-unknown}"
+            echo "DBT project=${DBT_PROJECT_FQN}"
+            echo "New owner=${NEW_OWNER_ROLE}"
+            echo "Current owner=${CURRENT_OWNER_ROLE}"
+          } | tee -a "${RUN_LOG}"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Ensure Snowflake CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "${RUN_LOG}") 2>&1
+          echo "===== STEP: Ensure Snowflake CLI ====="
+          if command -v snow >/dev/null 2>&1; then
+            echo "Snowflake CLI already available on runner:"
+            snow --version
+            exit 0
+          fi
+          echo "Installing Snowflake CLI via pip"
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade snowflake-cli
+          snow --version
+
+      - name: Export Snowflake creds from GitHub Secrets (PROD)
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "===== STEP: Export Snowflake creds =====" | tee -a "${RUN_LOG}"
+          {
+            echo "SNOWFLAKE_ACCOUNT=${{ secrets.SNOWFLAKE_ACCOUNT_PROD }}"
+            echo "SNOWFLAKE_USER=${{ secrets.SNOWFLAKE_USERNAME_PROD }}"
+            echo "SNOWFLAKE_WAREHOUSE=${{ secrets.SNOWFLAKE_WAREHOUSE_PROD }}"
+            echo "SNOWFLAKE_DATABASE=${{ secrets.SNOWFLAKE_DATABASE_PROD }}"
+            echo "SNOWFLAKE_SCHEMA=${{ secrets.SNOWFLAKE_SCHEMA_PROD }}"
+            echo "SNOWFLAKE_PRIVATE_KEY_URI=${{ secrets.SNOWFLAKE_PRIVATE_KEY_URI_PROD }}"
+            echo "SNOWFLAKE_PRIVATE_KEY_PASSPHRASE=${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_PROD }}"
+            # Override role with the current owner so GRANT OWNERSHIP is permitted.
+            echo "SNOWFLAKE_ROLE=${CURRENT_OWNER_ROLE}"
+          } >> "$GITHUB_ENV"
+
+      - name: Download Snowflake private key from S3
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "${RUN_LOG}") 2>&1
+          echo "===== STEP: Download Snowflake private key ====="
+          if [[ -z "${SNOWFLAKE_PRIVATE_KEY_URI:-}" ]]; then
+            echo "SNOWFLAKE_PRIVATE_KEY_URI secret is not configured" >&2
+            exit 1
+          fi
+
+          aws s3 cp "$SNOWFLAKE_PRIVATE_KEY_URI" snowflake_rsa_key.p8
+          chmod 600 snowflake_rsa_key.p8
+
+          if grep -q "ENCRYPTED" snowflake_rsa_key.p8; then
+            if [[ -z "${SNOWFLAKE_PRIVATE_KEY_PASSPHRASE:-}" ]]; then
+              echo "The downloaded Snowflake private key is encrypted but SNOWFLAKE_PRIVATE_KEY_PASSPHRASE_PROD is empty." >&2
+              exit 1
+            fi
+            openssl pkcs8 \
+              -in snowflake_rsa_key.p8 \
+              -topk8 \
+              -nocrypt \
+              -passin env:SNOWFLAKE_PRIVATE_KEY_PASSPHRASE \
+              -out snowflake_rsa_key_decrypted.p8
+            chmod 600 snowflake_rsa_key_decrypted.p8
+            echo "SNOWFLAKE_PRIVATE_KEY_PATH=${PWD}/snowflake_rsa_key_decrypted.p8" >> "$GITHUB_ENV"
+          else
+            echo "SNOWFLAKE_PRIVATE_KEY_PATH=${PWD}/snowflake_rsa_key.p8" >> "$GITHUB_ENV"
+          fi
+
+      - name: Connection check
+        shell: bash
+        run: |
+          set -uo pipefail
+          exec > >(tee -a "${RUN_LOG}") 2>&1
+          echo "===== STEP: Connection check ====="
+          export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
+          if command -v snow >/dev/null 2>&1; then
+            snow connection test -x || echo "WARNING: snow connection test failed."
+          else
+            echo "snow CLI unavailable; skipping connection check."
+          fi
+
+      - name: Show current ownership (before)
+        shell: bash
+        run: |
+          set -uo pipefail
+          exec > >(tee -a "${RUN_LOG}") 2>&1
+          echo "===== STEP: SHOW GRANTS (before) ====="
+          export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
+          snow sql -x -q "SHOW GRANTS ON DBT PROJECT ${DBT_PROJECT_FQN};" \
+            || echo "WARNING: SHOW GRANTS (before) failed."
+
+      - name: Transfer ownership
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "${RUN_LOG}") 2>&1
+          echo "===== STEP: GRANT OWNERSHIP ====="
+          export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
+
+          # COPY CURRENT GRANTS preserves existing privilege grants on the object
+          # so downstream roles keep their access after the ownership change.
+          snow sql -x -q "GRANT OWNERSHIP ON DBT PROJECT ${DBT_PROJECT_FQN} TO ROLE ${NEW_OWNER_ROLE} COPY CURRENT GRANTS;" \
+            --debug
+
+      - name: Show current ownership (after)
+        shell: bash
+        run: |
+          set -uo pipefail
+          exec > >(tee -a "${RUN_LOG}") 2>&1
+          echo "===== STEP: SHOW GRANTS (after) ====="
+          export SNOWFLAKE_AUTHENTICATOR="SNOWFLAKE_JWT"
+          snow sql -x -q "SHOW GRANTS ON DBT PROJECT ${DBT_PROJECT_FQN};" \
+            || echo "WARNING: SHOW GRANTS (after) failed."
+
+      - name: Upload combined log to S3
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "########## RUN LOG END ##########"
+            date -u
+          } >> "${RUN_LOG}"
+
+          ts="$(date -u +%Y%m%dT%H%M%SZ)"
+          run_id="${GITHUB_RUN_ID:-unknown}"
+          attempt="${GITHUB_RUN_ATTEMPT:-1}"
+          sha="${GITHUB_SHA:-unknown}"
+
+          dest="${S3_LOG_BASE_URI%/}/dbt_ownership-${run_id}-attempt-${attempt}-${sha}-${ts}.log"
+
+          echo "Uploading combined log to: ${dest}"
+          aws s3 cp "${RUN_LOG}" "${dest}"
+          echo "Uploaded successfully."
