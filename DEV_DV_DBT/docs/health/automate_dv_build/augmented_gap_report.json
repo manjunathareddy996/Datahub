@@ -1,0 +1,1774 @@
+{
+ "excluded": [
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BA_HCP_PROD_8428_GPG_LOADER",
+   "col": "MD_PREV_EXPIRY_DATE",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BA_HCP_PROD_8428_GPG_LOADER",
+   "col": "MLC_DEATH_CB_PER",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BA_HCP_PROD_8428_GPG_LOADER",
+   "col": "MLC_DEATH_CB_AMOUNT",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BA_HCP_PROD_8428_GPG_LOADER",
+   "col": "MLC_PTD_CB_PER",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BA_HCP_PROD_8428_GPG_LOADER",
+   "col": "MLC_PTD_CB_AMOUNT",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BA_HCP_PROD_8428_GPG_LOADER",
+   "col": "MLC_PPD_CB_PER",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BA_HCP_PROD_8428_GPG_LOADER",
+   "col": "MLC_PPD_CB_AMOUNT",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BGIL_GMC_FINAL_INSTL_DATA",
+   "col": "CLAIMN_REG_FLAG",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BJAZ_CARD_DTLS",
+   "col": "BASE_SI",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BJAZ_CTNGY_SCHEME_MST",
+   "col": "FAMILY_FLOATER",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BJAZ_EC_MEM_DTLS_EXTN",
+   "col": "CON_SI",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BJAZ_GRP_HLT_DTLS",
+   "col": "HPR_BROKERAGE_RATE",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "CHILD_NO_MATENITY_BENIFIT",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BJAZ_HCF_MEMBER_DTLS",
+   "col": "LOADSUM_AMT",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BJAZ_HCS_PLANSI_MAPP",
+   "col": "PARAM_ID",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BJAZ_HCS_PLANSI_MAPP",
+   "col": "PARAM_GROUP",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BJAZ_HCS_PLANSI_MAPP",
+   "col": "IS_APPLICABLE",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BJAZ_HC_PART_EXTN",
+   "col": "NO_OF_DAYS",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BJAZ_HM_COINSU_CLM_DTLS",
+   "col": "NOT_COVERED_AMT",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BJAZ_HM_COINSU_CLM_DTLS",
+   "col": "BUFFER_UTILISED_AMT",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_COVERAGE",
+   "table": "BJAZ_TPA_CLAIM_DETAILS_WS",
+   "col": "BALANCE_SUM_INSURED",
+   "reason": "table has no verified key to HUB_COVERAGE"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_CTNGY_SCHEME_MST",
+   "col": "AUTO_DEBIT",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_CTNGY_SCHEME_MST",
+   "col": "SERTAX_FLAG",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_BILL_CHARGE",
+   "col": "BILL_AMT_COPAY",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_BILL_CHARGE",
+   "col": "BILL_DIS_AMT_COPAY",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_BILL_CHARGE",
+   "col": "ROOM_RENT_COPAY",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_BILL_DETAIL",
+   "col": "DISCOUNT",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_BILL_DETAIL",
+   "col": "TOT_COPAY_AMT",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER",
+   "col": "DISCOUNT",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER",
+   "col": "DISCOUNT_ON",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER",
+   "col": "EARLY_DISCOUNT",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER",
+   "col": "IMPS_DISCNT",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER",
+   "col": "IMPS_DISCNT_ON",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "DISCOUNT_TYPE1",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "DISCOUNT_TYPE2",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "DISCOUNT_TYPE3",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "DISCOUNT_TYPE4",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "DISCOUNT_TYPE5",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "DISCOUNT_TYPE6",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "DISCOUNT_TYPE7",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "DISCOUNT_TYPE8",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "DISCOUNT_TYPE9",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "DISCOUNT_TYPE10",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "DISCOUNT_TYPE11",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "DISCOUNT_TYPE12",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "PP_DISCOUNT13",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "PP_DISC_SERVICES13",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "DISCOUNT_TYPE13",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "PP_DISCOUNT14",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "PP_DISC_SERVICES14",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "DISCOUNT_TYPE14",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "PP_DISCOUNT15",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "PP_DISC_SERVICES15",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "DISCOUNT_TYPE15",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+   "col": "EARLYPAYDISC",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+   "col": "CBDISC",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+   "col": "CBDISCON",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+   "col": "EARLYPAYDISCON",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_POLICY (premium/financials)",
+   "table": "BJAZ_HM_PRO_ASSESSMENT",
+   "col": "BALANCE_INSTALL",
+   "reason": "table has no verified key to HUB_POLICY"
+  },
+  {
+   "bucket": "HUB_PARTY",
+   "table": "BJAZ_CTNGY_PA_MEM_DTLS",
+   "col": "BANK_CUST_ID",
+   "reason": "table has no verified key to HUB_PARTY"
+  },
+  {
+   "bucket": "HUB_PARTY",
+   "table": "BJAZ_HEALTH_WEBSERVICE_INFO",
+   "col": "BANK_CUSTID",
+   "reason": "table has no verified key to HUB_PARTY"
+  },
+  {
+   "bucket": "HUB_ASSESSMENT",
+   "table": "BA_HCP_DT_PREMIUM",
+   "col": "VOLUNTARY_REFERRAL",
+   "reason": "table has no verified key to HUB_ASSESSMENT"
+  },
+  {
+   "bucket": "HUB_ASSESSMENT",
+   "table": "BJAZ_HCF_MEMBER_DTLS",
+   "col": "MED_REPORT_RECEIVED",
+   "reason": "table has no verified key to HUB_ASSESSMENT"
+  },
+  {
+   "bucket": "HUB_ASSESSMENT",
+   "table": "BJAZ_HCF_MEMBER_DTLS",
+   "col": "MED_EXAM_FLAG",
+   "reason": "table has no verified key to HUB_ASSESSMENT"
+  },
+  {
+   "bucket": "HUB_ASSESSMENT",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "SCORE_CITY",
+   "reason": "table has no verified key to HUB_ASSESSMENT"
+  },
+  {
+   "bucket": "HUB_ASSESSMENT",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "SCORE_BED_STRENGTH",
+   "reason": "table has no verified key to HUB_ASSESSMENT"
+  },
+  {
+   "bucket": "HUB_ASSESSMENT",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "SCORE_ICU",
+   "reason": "table has no verified key to HUB_ASSESSMENT"
+  },
+  {
+   "bucket": "HUB_ASSESSMENT",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "SCORE_OT",
+   "reason": "table has no verified key to HUB_ASSESSMENT"
+  },
+  {
+   "bucket": "HUB_ASSESSMENT",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "SCORE_DIAGNOSTICS",
+   "reason": "table has no verified key to HUB_ASSESSMENT"
+  },
+  {
+   "bucket": "HUB_ASSESSMENT",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "SCORE1_DIAGNOSTICS",
+   "reason": "table has no verified key to HUB_ASSESSMENT"
+  },
+  {
+   "bucket": "HUB_ASSESSMENT",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "SCORE2_DIAGNOSTICS",
+   "reason": "table has no verified key to HUB_ASSESSMENT"
+  },
+  {
+   "bucket": "HUB_ASSESSMENT",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "SCORE3_DIAGNOSTICS",
+   "reason": "table has no verified key to HUB_ASSESSMENT"
+  },
+  {
+   "bucket": "HUB_ASSESSMENT",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "SCORE_ASSISTANCE",
+   "reason": "table has no verified key to HUB_ASSESSMENT"
+  },
+  {
+   "bucket": "HUB_ASSESSMENT",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "SCORE_DISCOUNT",
+   "reason": "table has no verified key to HUB_ASSESSMENT"
+  },
+  {
+   "bucket": "HUB_ASSESSMENT",
+   "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+   "col": "HOSPVISITED",
+   "reason": "table has no verified key to HUB_ASSESSMENT"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_PARTY, HUB_POLICY, HUB_PROPOSAL), no keyword to pick one",
+   "table": "BA_HCP_PP_MEM_DTLS",
+   "col": "SUB_STATUS_DESC",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BGIL_GMC_FINAL_INSTL_DATA",
+   "col": "ANNUAL_ER_CNTR",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BGIL_GMC_FINAL_INSTL_DATA",
+   "col": "PRORATA_ER_CNTR",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_GRP_HLT_DTLS",
+   "col": "GUIDELINE_ADDITION",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_GRP_HLT_DTLS",
+   "col": "GUIDELINE_DELETION",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_GRP_HLT_DTLS",
+   "col": "FINAL_MEMB_COUNT_ATEXPIRY",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_GRP_HLT_DTLS",
+   "col": "AGE_BRACKET",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_HAT_ID_MEM_DETLS",
+   "col": "FAMILY_HIST_DETAILS",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_HC_PART_EXTN",
+   "col": "CLAIM_HISTORY",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_HM_COINSU_CLM_DTLS",
+   "col": "SI_EXHAUSTED_AMT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_HM_COINSU_CLM_DTLS",
+   "col": "CLAIM_LOD_MEMBER_PAID",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_HM_DOCTOR_MULTI_ASSESS",
+   "col": "ICD_ID",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "RELATION",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_HM_INWARD_DTLS",
+   "col": "DOC_WT_INWARD",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_HM_MEMBER_DTLS",
+   "col": "OLD_MEMBER_NO",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_IHG_MEM_DTLS_EXTN",
+   "col": "OTHER_HLT_DTLS",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "SELFHEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "SELFWEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "SELFNOMINEE",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "SELFNOMINEERELATION",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER1HEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER1WEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER1NOMINEE",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER1NOMINEERELATION",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER2HEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER2WEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER2NOMINEE",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER2NOMINEERELATION",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER3HEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER3WEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER3NOMINEE",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER3NOMINEERELATION",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER4HEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER4WEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER4NOMINEE",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER4NOMINEERELATION",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER5HEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER5WEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER5NOMINEE",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER5NOMINEERELATION",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER6HEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER6WEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER6NOMINEE",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER6NOMINEERELATION",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER7HEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER7WEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER7NOMINEE",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER7NOMINEERELATION",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER8HEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER8WEIGHT",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER8NOMINEE",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_RISK_OBJECT (member)",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "col": "MEMBER8NOMINEERELATION",
+   "reason": "table has no verified key to HUB_RISK_OBJECT"
+  },
+  {
+   "bucket": "HUB_CLAIM",
+   "table": "BA_HCP_PROD_8428_GPG_LOADER",
+   "col": "MD_NO_OF_CLAIMS_ON_PREV_POLICY",
+   "reason": "table has no verified key to HUB_CLAIM"
+  },
+  {
+   "bucket": "HUB_CLAIM",
+   "table": "BJAZ_GRP_HLT_DTLS",
+   "col": "CLAIM_INTIMATION",
+   "reason": "table has no verified key to HUB_CLAIM"
+  },
+  {
+   "bucket": "HUB_CLAIM",
+   "table": "BJAZ_HC_PART_EXTN",
+   "col": "PRESCRIPTION",
+   "reason": "table has no verified key to HUB_CLAIM"
+  },
+  {
+   "bucket": "HUB_CLAIM",
+   "table": "BJAZ_HC_PART_EXTN",
+   "col": "PRESCRIPTION_DETAIL",
+   "reason": "table has no verified key to HUB_CLAIM"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_ORG_UNIT, HUB_PARTY, HUB_POLICY, HUB_PRODUCT, HUB_RISK_OBJECT), no keyword to pick one",
+   "table": "BA_HCP_PROD_8428_GPG_LOADER",
+   "col": "MLAC_EMI_PC_SANCTIONED_LOAN",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_ORG_UNIT, HUB_PARTY, HUB_POLICY, HUB_PRODUCT, HUB_RISK_OBJECT), no keyword to pick one",
+   "table": "BA_HCP_PROD_8433_FHC_LOADER",
+   "col": "PLC_WAIVER_OF_MEDICAL_TEST",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_ORG_UNIT, HUB_PARTY, HUB_POLICY, HUB_PRODUCT, HUB_RISK_OBJECT), no keyword to pick one",
+   "table": "BA_HCP_PROD_8433_FHC_LOADER",
+   "col": "PLC_MEDICAL_TEST_ALRDY_CON",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "HUB_PARTY (provider)",
+   "table": "BJAZ_INVESTIGATION_REPORTS",
+   "col": "HOSPITAL_NAME",
+   "reason": "table has no verified key to HUB_PARTY"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_ORG_UNIT, HUB_PARTY, HUB_POLICY, HUB_PRODUCT), no keyword to pick one",
+   "table": "BA_HCP_PROD_8432_ECP_LOADER",
+   "col": "MD_SELF_COVERED",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_ORG_UNIT, HUB_PARTY, HUB_POLICY, HUB_PRODUCT), no keyword to pick one",
+   "table": "BA_HCP_PROD_8432_ECP_LOADER",
+   "col": "PLC_MEDICAL_TEST_ALRDY_CON",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_ORG_UNIT, HUB_PARTY, HUB_POLICY, HUB_PRODUCT), no keyword to pick one",
+   "table": "BA_HCP_PROD_8439_CLH_LOADER",
+   "col": "MD_FIRST_POLICY_INCEPTION_DATE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_ORG_UNIT, HUB_PARTY, HUB_POLICY, HUB_PRODUCT), no keyword to pick one",
+   "table": "BA_HCP_PROD_8439_CLH_LOADER",
+   "col": "MD_PREV_COMP_ADDRESS",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_ORG_UNIT, HUB_PARTY, HUB_POLICY, HUB_PRODUCT), no keyword to pick one",
+   "table": "BA_HCP_PROD_8439_CLH_LOADER",
+   "col": "MD_NO_OF_CLAIMS_ON_PREV_POLICY",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_ORG_UNIT, HUB_PARTY, HUB_POLICY, HUB_PRODUCT), no keyword to pick one",
+   "table": "BA_HCP_PROD_8439_CLH_LOADER",
+   "col": "PLC_NO_OF_COAPPLICANT",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_ORG_UNIT, HUB_PARTY, HUB_POLICY, HUB_PRODUCT), no keyword to pick one",
+   "table": "BA_HCP_PROD_8439_CLH_LOADER",
+   "col": "PLC_LOAN_PERIOD",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_ORG_UNIT, HUB_PARTY, HUB_POLICY, HUB_PRODUCT), no keyword to pick one",
+   "table": "BA_HCP_PROD_8439_CLH_LOADER",
+   "col": "PLC_ASSIGNMENT_AMOUNT",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_LOCATION, HUB_PARTY, HUB_POLICY, HUB_PRODUCT), no keyword to pick one",
+   "table": "BJAZ_BANDHAN_MEDI_CLAM",
+   "col": "PER_DAY_BENIFIT",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "ALWRLTN2_DTLS",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "ALWMRTL_DTLS",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "NATADD_BRNCHLD_YN",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "NATADD_SPOUSE_YN",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "ALWSIENHS_DTLS",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "FAMILY_SIZE_YN",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "FAMILY_SIZE",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "PRNT_CRSRLTN_YN",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "PRNT_CRSRLTN",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "FMAL_CVRINLW_YN",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "FMAL_CVRINLW",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "FMAL_CVRPRNT_YN",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "FMAL_CVRPRNT",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "MAL_CVRINLW_YN",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "MAL_CVRINLW",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "MAL_CVRPRNT_YN",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "MAL_CVRPRNT",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "ALWRLTN1_DTLS",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "NO_DPND_COVR",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "HUB_PRODUCT",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "ADDON_COND",
+   "reason": "table has no verified key to HUB_PRODUCT"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_DISTRIBUTION_CHANNEL, HUB_DOCUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_CARD_DTLS",
+   "col": "CARD_SEND_TO_PERSON_NAME",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "ENDROSEMENT_WINPRD",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "LOCK_IN_PERIOD",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "SHORT_PERIOD_DATE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_ECARD_POL_DTLS_CONFIG",
+   "col": "COMP_CONTR_AMT",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_DISTRIBUTION_CHANNEL, HUB_DOCUMENT, HUB_PARTY, HUB_POLICY, HUB_RISK_OBJECT), no keyword to pick one",
+   "table": "BJAZ_EC_MEM_DTLS_EXTN",
+   "col": "PREGNANT_MONTHS",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_DISTRIBUTION_CHANNEL, HUB_DOCUMENT, HUB_PARTY, HUB_POLICY, HUB_RISK_OBJECT), no keyword to pick one",
+   "table": "BJAZ_EC_MEM_DTLS_EXTN",
+   "col": "ILLNESS_DURATION",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_DISTRIBUTION_CHANNEL, HUB_DOCUMENT, HUB_PARTY, HUB_POLICY, HUB_RISK_OBJECT), no keyword to pick one",
+   "table": "BJAZ_EC_MEM_DTLS_EXTN",
+   "col": "PAST_4YR_TREATMENT",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_DISTRIBUTION_CHANNEL, HUB_DOCUMENT, HUB_PARTY, HUB_POLICY, HUB_RISK_OBJECT), no keyword to pick one",
+   "table": "BJAZ_EC_MEM_DTLS_EXTN",
+   "col": "PRIOR_4YR_TREATMENT",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "HUB_LOCATION",
+   "table": "BJAZ_GPG_POL_DTLS",
+   "col": "PREV_POLICY_BRANCH_ADDRESS",
+   "reason": "table has no verified key to HUB_LOCATION"
+  },
+  {
+   "bucket": "HUB_LOCATION",
+   "table": "BJAZ_HG_POL_DTLS",
+   "col": "ADDRESS_LINE4",
+   "reason": "table has no verified key to HUB_LOCATION"
+  },
+  {
+   "bucket": "HUB_LOCATION",
+   "table": "BJAZ_HG_POL_DTLS",
+   "col": "ADDRESS_LINE6",
+   "reason": "table has no verified key to HUB_LOCATION"
+  },
+  {
+   "bucket": "HUB_LOCATION",
+   "table": "BJAZ_HG_POL_DTLS",
+   "col": "DISP_ADDRESS_LINE4",
+   "reason": "table has no verified key to HUB_LOCATION"
+  },
+  {
+   "bucket": "HUB_LOCATION",
+   "table": "BJAZ_HG_POL_DTLS",
+   "col": "DISP_ADDRESS_LINE6",
+   "reason": "table has no verified key to HUB_LOCATION"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_ORG_UNIT, HUB_PARTY, HUB_POLICY, HUB_PRODUCT, HUB_REINSURANCE_TREATY), no keyword to pick one",
+   "table": "BJAZ_GPG_POL_DTLS",
+   "col": "BANK_REFERENCE_NO_1",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_ORG_UNIT, HUB_PARTY, HUB_POLICY, HUB_PRODUCT, HUB_REINSURANCE_TREATY), no keyword to pick one",
+   "table": "BJAZ_GPG_POL_DTLS",
+   "col": "BANK_REFERENCE_NO_2",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "HUB_PROPOSAL",
+   "table": "BJAZ_HCP_TRANSCRIPT_URL",
+   "col": "PROP_FORMYN",
+   "reason": "table has no verified key to HUB_PROPOSAL"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_ORG_UNIT, HUB_POLICY, HUB_PRODUCT, HUB_PROPOSAL, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_DTLS",
+   "col": "SUBJECT",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_ORG_UNIT, HUB_POLICY, HUB_PRODUCT, HUB_PROPOSAL, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_DTLS",
+   "col": "DESCRIPTION",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_ORG_UNIT, HUB_POLICY, HUB_PRODUCT, HUB_PROPOSAL, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_DTLS",
+   "col": "CLAIMS_PAID_OUTSTANDING",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_ORG_UNIT, HUB_POLICY, HUB_PRODUCT, HUB_PROPOSAL, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_DTLS",
+   "col": "BROKERAGE_RATE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_ORG_UNIT, HUB_POLICY, HUB_PRODUCT, HUB_PROPOSAL, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_DTLS",
+   "col": "OPD_CLAIM_AMT",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_ORG_UNIT, HUB_POLICY, HUB_PRODUCT, HUB_PROPOSAL, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_DTLS",
+   "col": "ADDITION_IN_YEAR",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_ORG_UNIT, HUB_POLICY, HUB_PRODUCT, HUB_PROPOSAL, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_DTLS",
+   "col": "DELETION_INAYEAR",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "REF_SPE_CONDITION",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "OTHER_SPE_CONDITIONS_1",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "OTHER_SPE_CONDITIONS_2",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "OTHER_SPE_CONDITIONS_3",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "SPE_CONDITIONS_HO",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "ROOM_SPECIAL_REMARKS",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "SPE_CNDS_HO_ROOM_RENT_RSTRCTN",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "SPE_CNDS_HO_EMRGCY_AMBLCE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "SPE_CNDS_HO_CO_PYMNT",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "SPE_CNDS_HO_CORP_BUFF",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "SPE_CNDS_HO_OTH1",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "SPE_CNDS_HO_OTH2",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "SPE_CNDS_HO_OTH3",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "SPE_CNDS_HO_OTH4",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "SPE_CNDS_HO_OTH5",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "SPE_CNDS_HO_OTH6",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "ENROLLMENT_SPECIAL_CONDUCTION",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "SPE_CNDS_HO_OTH7",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "SPE_CNDS_HO_OTH8",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "SPE_CNDS_HO_OTH9",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_POLICY, HUB_PRODUCT, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+   "col": "SPE_CNDS_HO_OTH10",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "HUB_AGREEMENT",
+   "table": "BJAZ_GRP_TPA_EXTN",
+   "col": "SERVICE_A",
+   "reason": "table has no verified key to HUB_AGREEMENT"
+  },
+  {
+   "bucket": "HUB_AGREEMENT",
+   "table": "BJAZ_GRP_TPA_EXTN",
+   "col": "SERVICE_B",
+   "reason": "table has no verified key to HUB_AGREEMENT"
+  },
+  {
+   "bucket": "HUB_AGREEMENT",
+   "table": "BJAZ_GRP_TPA_EXTN",
+   "col": "SERVICE_C",
+   "reason": "table has no verified key to HUB_AGREEMENT"
+  },
+  {
+   "bucket": "HUB_AGREEMENT",
+   "table": "BJAZ_GRP_TPA_EXTN",
+   "col": "SERVICE_D",
+   "reason": "table has no verified key to HUB_AGREEMENT"
+  },
+  {
+   "bucket": "HUB_AGREEMENT",
+   "table": "BJAZ_GRP_TPA_EXTN",
+   "col": "SERVICE_E",
+   "reason": "table has no verified key to HUB_AGREEMENT"
+  },
+  {
+   "bucket": "HUB_AGREEMENT",
+   "table": "BJAZ_GRP_TPA_EXTN",
+   "col": "SERVICE_F",
+   "reason": "table has no verified key to HUB_AGREEMENT"
+  },
+  {
+   "bucket": "HUB_FINANCIAL_TRANSACTION",
+   "table": "BJAZ_HAT_OCR_BILL_DETAILS",
+   "col": "IS_PAYBLE",
+   "reason": "table has no verified key to HUB_FINANCIAL_TRANSACTION"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_DISTRIBUTION_CHANNEL, HUB_PARTY, HUB_POLICY, HUB_RISK_OBJECT), no keyword to pick one",
+   "table": "BJAZ_HCF_MEMBER_DTLS",
+   "col": "CONCURRENT_POLICY_DETAILS",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_ASSESSMENT, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_ORG_UNIT, HUB_POLICY, HUB_PRODUCT), no keyword to pick one",
+   "table": "BJAZ_HEALTH_WEBSERVICE_INFO",
+   "col": "MICR_NUMBER",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_COVERAGE, HUB_DISTRIBUTION_CHANNEL, HUB_ORG_UNIT, HUB_PARTY, HUB_POLICY, HUB_PRODUCT, HUB_PROPOSAL, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_HG_POL_DTLS",
+   "col": "AADHAR_YN",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_COVERAGE, HUB_DISTRIBUTION_CHANNEL, HUB_ORG_UNIT, HUB_PARTY, HUB_POLICY, HUB_PRODUCT, HUB_PROPOSAL, HUB_QUOTE), no keyword to pick one",
+   "table": "BJAZ_HG_POL_DTLS",
+   "col": "IND_NATIONAL_CARD_HOLDERS",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_DISTRIBUTION_CHANNEL, HUB_PARTY, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HLT_ENSURE_MEM_DTLS",
+   "col": "PREVIOUS_CUM_AMOUNT",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_PARTY, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_CASHLESS_INWARD",
+   "col": "INWARD_STATUS",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_PARTY, HUB_POLICY, HUB_PRODUCT), no keyword to pick one",
+   "table": "BJAZ_HM_COINSU_CLM_DTLS",
+   "col": "DISEASE_CATAGORY",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_PARTY, HUB_POLICY, HUB_PRODUCT), no keyword to pick one",
+   "table": "BJAZ_HM_COINSU_CLM_DTLS",
+   "col": "PRIMARY_CLASSIFICATION",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "HUB_CASE",
+   "table": "BJAZ_HM_COINSU_CLM_DTLS",
+   "col": "MAJOR_DISEASES",
+   "reason": "table has no verified key to HUB_CASE"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_CLAIM), no keyword to pick one",
+   "table": "BJAZ_HM_DOCTOR_ASSESS",
+   "col": "HLTH_TIPS",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_CLAIM, HUB_COVERAGE), no keyword to pick one",
+   "table": "BJAZ_HM_DOCTOR_MULTI_ASSESS",
+   "col": "DIAGNOSIS_ID",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_ASSESSMENT, HUB_CLAIM, HUB_COVERAGE), no keyword to pick one",
+   "table": "BJAZ_HM_DOCTOR_MULTI_ASSESS",
+   "col": "ICD_SNO",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR (no keyword signal, table has no hub key at all)",
+   "table": "BJAZ_HM_EXCLUSION_MASTER",
+   "col": "EXCLUSION_SUB_ID",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "EXPECTED_DOA",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "PROVISIONAL_DIAGNOSIS",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "CORPORATE_BUFFER_AMT",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "DISEASE_CATEGORY",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "DOCTOR_CHARGES",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "PATHOLOGY",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "RADIOLOGY",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "CARDIOLOGY",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "EQUIPEMENT",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "NON_MEDICAL",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "INSURED_DISALLOWED_AMT",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "INSURED_DISALLOW_AMT_REASON",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "DENIAL_DATE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "ORPHAN_REMARK",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "DR_INTIMATION_DATE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "DR_REPLY_DATE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "ORPHAN_INTIMATION_DT",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "SERVICE_CHARGES",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "IP_TYPE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "AVAILED_ROOM_RENT_PER_DAY",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "NEO_NATAL_CHARGES",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_FINANCIAL_TRANSACTION, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_HCM_EXTRACT",
+   "col": "AVAILED_ROOM_RENT_PER_DAY_H",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_DISTRIBUTION_CHANNEL, HUB_LOCATION, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSPITAL_MASTER",
+   "col": "DESIGNATION",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_DISTRIBUTION_CHANNEL, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "LANDMARK_2",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_DISTRIBUTION_CHANNEL, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "SURCHARGE_PERC",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_DISTRIBUTION_CHANNEL, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "SERV_CHARGE_PERC",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_DISTRIBUTION_CHANNEL, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "PACKAGE_CLASS",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_DISTRIBUTION_CHANNEL, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "PACKAGE_TYPE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_DISTRIBUTION_CHANNEL, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "PACK_ACCEPT_DATE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_DISTRIBUTION_CHANNEL, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "PACK_EXPIRY_DATE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_DISTRIBUTION_CHANNEL, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "PP_EFFECTIVE_DATE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_DISTRIBUTION_CHANNEL, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "PP_EXPIRAY_DATE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_DISTRIBUTION_CHANNEL, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "PP_REMARKS",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_DISTRIBUTION_CHANNEL, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "MON_SAT_FROM",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_DISTRIBUTION_CHANNEL, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "MON_SAT_TO",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_DISTRIBUTION_CHANNEL, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "SUN_FROM",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_DISTRIBUTION_CHANNEL, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+   "col": "SUN_TO",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+   "col": "SUSPFRAUDREASON",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+   "col": "DOCT_BED_RATIO",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+   "col": "NURSE_BED_RATIO",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+   "col": "DOCT_PATNT_RATIO",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+   "col": "NURSE_PTNT_RATIO",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+   "col": "AVG_ADMSION_TIME",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+   "col": "AVG_STY_MEDI_CASE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+   "col": "AVG_DSCRG_TIME",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+   "col": "AVG_STY_SURGCL_CASE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_PARTY), no keyword to pick one",
+   "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+   "col": "C_SECTION_RATE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DOCUMENT, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_INWARD_DTLS",
+   "col": "DOCUMENT_FLAG",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DOCUMENT, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_INWARD_DTLS",
+   "col": "INWARD_DATE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DOCUMENT, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_INWARD_DTLS",
+   "col": "DELAY_REASON",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DOCUMENT, HUB_LOCATION, HUB_LOSS_EVENT, HUB_PARTY, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_HM_INWARD_DTLS",
+   "col": "DOC_REC_TIME",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_ACCOUNT, HUB_PARTY, HUB_POLICY, HUB_PRODUCT), no keyword to pick one",
+   "table": "BJAZ_HM_MEMBER_DTLS",
+   "col": "MONTHLY_SALARY",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_AGREEMENT, HUB_CLAIM, HUB_DOCUMENT, HUB_PARTY, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_REMEDINET_CLAIM_DETAILS",
+   "col": "APPROVED_PACKAGE_AMOUNT",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_TRANSACTION, HUB_LOSS_EVENT, HUB_ORG_UNIT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_TPA_CLAIM_DETAILS_WS",
+   "col": "DIAGNOSIS_CODE_LEVEL2",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_TRANSACTION, HUB_LOSS_EVENT, HUB_ORG_UNIT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_TPA_CLAIM_DETAILS_WS",
+   "col": "DIAGNOSIS_DESCRIPTION_LEVEL1",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_TRANSACTION, HUB_LOSS_EVENT, HUB_ORG_UNIT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_TPA_CLAIM_DETAILS_WS",
+   "col": "DIAGNOSIS_DESCRIPTION_LEVEL2",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_TRANSACTION, HUB_LOSS_EVENT, HUB_ORG_UNIT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_TPA_CLAIM_DETAILS_WS",
+   "col": "PROCEDURE_CODES_LEVEL2",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_TRANSACTION, HUB_LOSS_EVENT, HUB_ORG_UNIT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_TPA_CLAIM_DETAILS_WS",
+   "col": "PROCEDURE_DESCRIPTION_LEVEL2",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_TRANSACTION, HUB_LOSS_EVENT, HUB_ORG_UNIT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_TPA_CLAIM_DETAILS_WS",
+   "col": "PAY_TO_INSURED",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_TRANSACTION, HUB_LOSS_EVENT, HUB_ORG_UNIT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_TPA_CLAIM_DETAILS_WS",
+   "col": "PAY_TO_HOSPITAL",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_TRANSACTION, HUB_LOSS_EVENT, HUB_ORG_UNIT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_TPA_CLAIM_DETAILS_WS",
+   "col": "SPECIALIST_CHARGES",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_TRANSACTION, HUB_LOSS_EVENT, HUB_ORG_UNIT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_TPA_CLAIM_DETAILS_WS",
+   "col": "CONSULTANT_CHARGES",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_TRANSACTION, HUB_LOSS_EVENT, HUB_ORG_UNIT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_TPA_CLAIM_DETAILS_WS",
+   "col": "PHYSICIAN_FEES",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_TRANSACTION, HUB_LOSS_EVENT, HUB_ORG_UNIT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_TPA_CLAIM_DETAILS_WS",
+   "col": "IMAGING_STUDIES_CHARGES",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CLAIM, HUB_DISTRIBUTION_CHANNEL, HUB_FINANCIAL_TRANSACTION, HUB_LOSS_EVENT, HUB_ORG_UNIT, HUB_PARTY, HUB_PAYMENT_INSTRUMENT, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_TPA_CLAIM_DETAILS_WS",
+   "col": "BRANCH_CONTACT_NO_MANDATE",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  },
+  {
+   "bucket": "UNCLEAR -- table has multiple hubs (HUB_CASE, HUB_POLICY), no keyword to pick one",
+   "table": "BJAZ_TRV_CLM_ITRACK_DTLS",
+   "col": "LOCAL_DOCTOR",
+   "reason": "no identifiable hub (UNCLEAR bucket)"
+  }
+ ]
+}

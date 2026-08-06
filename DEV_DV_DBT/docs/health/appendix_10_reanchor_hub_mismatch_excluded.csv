@@ -1,0 +1,3 @@
+sat_code,source_table,source_column,label,reason
+SAT_COMMON_ADDRESS,BJAZ_TPA_CLAIM_DETAILS_WS,HOSPITAL_CITY,hospital,"canonical parent is not HUB_PARTY (e.g. HUB_LOCATION); reanchoring to the party would mix hkey types in one satellite -- excluded, needs a mapping decision on the correct target satellite"
+SAT_COMMON_ADDRESS,BJAZ_TPA_CLAIM_DETAILS_WS,HOSPITAL_STATE,hospital,"canonical parent is not HUB_PARTY (e.g. HUB_LOCATION); reanchoring to the party would mix hkey types in one satellite -- excluded, needs a mapping decision on the correct target satellite"

@@ -1,0 +1,694 @@
+sat_code,branch,physical_table,category,hub_used,is_subject_attribution_reanchor,reason
+SAT_ACCOUNT_BALANCE,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_FINANCIAL_ACCOUNT,False,has full grain (PLC_LOAN_ACC_NO); joined into the stitched row
+SAT_ACCOUNT_DEFINITION,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,joined,HUB_FINANCIAL_ACCOUNT,False,has full grain (MLAC_EMI_PC_LOAN_ACCOUNT_NO); joined into the stitched row
+SAT_ACCOUNT_DEFINITION,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_FINANCIAL_ACCOUNT,False,has full grain (PLC_LOAN_ACC_NO); joined into the stitched row
+SAT_AGREEMENT_COMMERCIAL_TERMS,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,joined,HUB_AGREEMENT,False,has full grain (HOSID); joined into the stitched row
+SAT_AGREEMENT_DEFINITION,BJAZ_HM_HOSPITAL_MASTER,BJAZ_HM_HOSPITAL_MASTER,joined,HUB_AGREEMENT,False,has full grain (HOSID); joined into the stitched row
+SAT_AGREEMENT_DEFINITION,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,joined,HUB_AGREEMENT,False,has full grain (HOSID); joined into the stitched row
+SAT_AGREEMENT_DEFINITION,BJAZ_HM_HOSP_MASTER_EXTN1,BJAZ_HM_HOSP_MASTER_EXTN1,joined,HUB_AGREEMENT,False,has full grain (HOSID); joined into the stitched row
+SAT_AGREEMENT_DEFINITION,BJAZ_REMEDINET_CLAIM_DETAILS,BJAZ_REMEDINET_CLAIM_DETAILS,joined,HUB_AGREEMENT,False,has full grain (REMEDINET_PROVIDER_CODE); joined into the stitched row
+SAT_AGREEMENT_SLA,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,joined,HUB_AGREEMENT,False,has full grain (HOSID); joined into the stitched row
+SAT_ASSESSMENT_HEADER,BA_HCP_PP_MEM_DTLS,BA_HCP_PP_MEM_DTLS,joined,HUB_ASSESSMENT,False,has full grain (SCRUTINY_NO); joined into the stitched row
+SAT_ASSESSMENT_HEADER,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_ASSESSMENT,False,has full grain (PD_SCRUTINY_NUMBER); joined into the stitched row
+SAT_ASSESSMENT_HEADER,BJAZ_HM_PRO_ASSESSMENT,BJAZ_HM_PRO_ASSESSMENT,joined,HUB_ASSESSMENT,False,has full grain (ASSESS_ID); joined into the stitched row
+SAT_ASSESSMENT_HEADER,BJAZ_SCR_HLTH_PORTABLE_DTLS,BJAZ_SCR_HLTH_PORTABLE_DTLS,joined,HUB_ASSESSMENT,False,has full grain (SCRUTINY_NO); joined into the stitched row
+SAT_ASSESSMENT_HEADER,BJAZ_CLM_PRE_AUTH_HLT_DTLS,BJAZ_CLM_PRE_AUTH_HLT_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_ASSESSMENT_HEADER,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_ASSESSMENT_HEADER,BJAZ_HM_HOSP_MASTER_EXTN1,BJAZ_HM_HOSP_MASTER_EXTN1,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_ASSESSMENT_HEADER,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_ASSESSMENT_MEDICAL,BA_HCP_PP_MEM_DTLS,BA_HCP_PP_MEM_DTLS,joined,HUB_ASSESSMENT,False,has full grain (SCRUTINY_NO); joined into the stitched row
+SAT_ASSESSMENT_MEDICAL,BJAZ_HM_DOCTOR_ASSESS,BJAZ_HM_DOCTOR_ASSESS,joined,HUB_ASSESSMENT,False,has full grain (DOCASESS_ID); joined into the stitched row
+SAT_ASSESSMENT_MEDICAL,BJAZ_HM_DOCTOR_MULTI_ASSESS,BJAZ_HM_DOCTOR_MULTI_ASSESS,joined,HUB_ASSESSMENT,False,has full grain (DOCASESS_ID); joined into the stitched row
+SAT_ASSESSMENT_MEDICAL,BJAZ_HM_PCS_MULTI_ASSESS,BJAZ_HM_PCS_MULTI_ASSESS,joined,HUB_ASSESSMENT,False,has full grain (DOCASESS_ID); joined into the stitched row
+SAT_ASSESSMENT_MEDICAL,BJAZ_HCF_MEMBER_DTLS,BJAZ_HCF_MEMBER_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_ASSESSMENT_MEDICAL,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_ASSESSMENT_UNDERWRITING,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,joined,HUB_ASSESSMENT,False,has full grain (PD_SCRUTINY_NUMBER); joined into the stitched row
+SAT_ASSESSMENT_UNDERWRITING,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_ASSESSMENT,False,has full grain (PD_SCRUTINY_NUMBER); joined into the stitched row
+SAT_ASSESSMENT_UNDERWRITING,BJAZ_BANDHAN_MEDI_CLAM,BJAZ_BANDHAN_MEDI_CLAM,joined,HUB_ASSESSMENT,False,has full grain (SCRUTINY_NO); joined into the stitched row
+SAT_CASE_HEADER,BJAZ_HM_INWARD_AUTOALLOCATION,BJAZ_HM_INWARD_AUTOALLOCATION,joined,HUB_CASE,False,has full grain (ALLOCATE_ID); joined into the stitched row
+SAT_CHANNEL_DEFINITION,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,joined,HUB_DISTRIBUTION_CHANNEL,False,has full grain (PD_PARTNER_ID); joined into the stitched row
+SAT_CHANNEL_DEFINITION,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,joined,HUB_DISTRIBUTION_CHANNEL,False,has full grain (PD_PARTNER_ID); joined into the stitched row
+SAT_CHANNEL_DEFINITION,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_DISTRIBUTION_CHANNEL,False,has full grain (PD_PARTNER_ID); joined into the stitched row
+SAT_CHANNEL_DEFINITION,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_DISTRIBUTION_CHANNEL,False,has full grain (PD_PARTNER_ID); joined into the stitched row
+SAT_CHANNEL_DEFINITION,BJAZ_BANDHAN_MEDI_CLAM,BJAZ_BANDHAN_MEDI_CLAM,joined,HUB_DISTRIBUTION_CHANNEL,False,has full grain (PARTNER_ID); joined into the stitched row
+SAT_CHANNEL_DEFINITION,BJAZ_EHH_POL_DTLS,BJAZ_EHH_POL_DTLS,joined,HUB_DISTRIBUTION_CHANNEL,False,has full grain (PARTNER_ID); joined into the stitched row
+SAT_CHANNEL_DEFINITION,BJAZ_GP_HOSPITAL_CASH,BJAZ_GP_HOSPITAL_CASH,joined,HUB_DISTRIBUTION_CHANNEL,False,has full grain (IMD_CODE); joined into the stitched row
+SAT_CHANNEL_DEFINITION,BJAZ_HDFC_SEC_FHPP,BJAZ_HDFC_SEC_FHPP,joined,HUB_DISTRIBUTION_CHANNEL,False,has full grain (IMD_CODE); joined into the stitched row
+SAT_CHANNEL_DEFINITION,BJAZ_GRP_HLT_CUST_DTLS,BJAZ_GRP_HLT_CUST_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_CHANNEL_DEFINITION,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_CLAIM_ASSESSMENT_SUMMARY,BJAZ_REMEDINET_CLAIM_DETAILS,BJAZ_REMEDINET_CLAIM_DETAILS,joined,HUB_CLAIM,False,has full grain (CLAIM_NO); joined into the stitched row
+SAT_CLAIM_ASSESSMENT_SUMMARY,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_CLAIM,False,has full grain (BJAZ_CLAIM_ID); joined into the stitched row
+SAT_CLAIM_BENEFIT_HEAD,BJAZ_HAT_OCR_FINA_DTLS_LST,BJAZ_HAT_OCR_FINA_DTLS_LST,union_fallback,HUB_CLAIM,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_CLAIM_BENEFIT_HEAD,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,union_fallback,HUB_CLAIM,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_CLAIM_BILL_DIGITISATION,BJAZ_HAT_OCR_BILL_DETAILS,BJAZ_HAT_OCR_BILL_DETAILS,joined,HUB_CLAIM,False,has full grain (CASE_ID); joined into the stitched row
+SAT_CLAIM_BILL_DIGITISATION,BJAZ_HM_BILL_DETAIL,BJAZ_HM_BILL_DETAIL,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_BILL_DIGITISATION,BJAZ_HM_BILL_DETAIL_OCR,BJAZ_HM_BILL_DETAIL_OCR,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_COMMUNICATION,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_CLAIM,False,has full grain (BJAZ_CLAIM_ID); joined into the stitched row
+SAT_CLAIM_CO_RI_SHARE,BJAZ_HM_COINSU_CLM_DTLS,BJAZ_HM_COINSU_CLM_DTLS,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_DISBURSEMENT_BATCH,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_CLAIM,False,has full grain (BJAZ_CLAIM_ID); joined into the stitched row
+SAT_CLAIM_FNOL,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_CLAIM,False,has full grain (BJAZ_CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEADER,BJAZ_HAT_OCR_FINA_DTLS_LST,BJAZ_HAT_OCR_FINA_DTLS_LST,joined,HUB_CLAIM,False,has full grain (CASE_ID); joined into the stitched row
+SAT_CLAIM_HEADER,BJAZ_HM_COINSU_CLM_DTLS,BJAZ_HM_COINSU_CLM_DTLS,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEADER,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,joined,HUB_CLAIM,False,has full grain (CLID); joined into the stitched row
+SAT_CLAIM_HEADER,BJAZ_HM_ORPHAN_REG,BJAZ_HM_ORPHAN_REG,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEADER,BJAZ_HM_PRO_ASSESSMENT,BJAZ_HM_PRO_ASSESSMENT,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEADER,BJAZ_REMEDINET_CLAIM_DETAILS,BJAZ_REMEDINET_CLAIM_DETAILS,joined,HUB_CLAIM,False,has full grain (CLAIM_NO); joined into the stitched row
+SAT_CLAIM_HEADER,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_CLAIM,False,has full grain (BJAZ_CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEADER,BJAZ_EC_MEM_DTLS_EXTN,BJAZ_EC_MEM_DTLS_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_CLAIM_HEADER,BJAZ_HCF_MEMBER_DTLS,BJAZ_HCF_MEMBER_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_CLAIM_HEADER,BJAZ_HM_CLAIM_STATUS_DASH_APP,BJAZ_HM_CLAIM_STATUS_DASH_APP,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_CLM_PRE_AUTH_HLT_DTLS,BJAZ_CLM_PRE_AUTH_HLT_DTLS,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_CLM_WG_TRANS_DTLS,BJAZ_CLM_WG_TRANS_DTLS,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_CLM_WG_TRANS_DTLS_HIST,BJAZ_CLM_WG_TRANS_DTLS_HIST,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_FPLM_OD_HOSPITAL_DETAILS,BJAZ_FPLM_OD_HOSPITAL_DETAILS,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_HAT_DEDUTION_SUMMARY,BJAZ_HAT_DEDUTION_SUMMARY,joined,HUB_CLAIM,False,has full grain (CASE_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_HM_BILL_DETAIL,BJAZ_HM_BILL_DETAIL,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_HM_BILL_DETAIL_OCR,BJAZ_HM_BILL_DETAIL_OCR,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_HM_CASHLESS_INWARD,BJAZ_HM_CASHLESS_INWARD,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_HM_CLAIM_PAYMENT,BJAZ_HM_CLAIM_PAYMENT,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_HM_CLM_REGISTER,BJAZ_HM_CLM_REGISTER,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_HM_CLM_REGISTER_EXTN,BJAZ_HM_CLM_REGISTER_EXTN,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_HM_COINSU_CLM_DTLS,BJAZ_HM_COINSU_CLM_DTLS,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_HM_DOCTOR_ASSESS,BJAZ_HM_DOCTOR_ASSESS,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_HM_DOCTOR_MULTI_ASSESS,BJAZ_HM_DOCTOR_MULTI_ASSESS,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,joined,HUB_CLAIM,False,has full grain (CLID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_HM_INWARD_AUTOALLOCATION,BJAZ_HM_INWARD_AUTOALLOCATION,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_HM_PREAUTH_ENHANCE,BJAZ_HM_PREAUTH_ENHANCE,joined,HUB_CLAIM,False,has full grain (CLID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_HM_PRO_ASSESSMENT,BJAZ_HM_PRO_ASSESSMENT,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_INVESTIGATION_REPORTS,BJAZ_INVESTIGATION_REPORTS,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_REMEDINET_CLAIM_DETAILS,BJAZ_REMEDINET_CLAIM_DETAILS,joined,HUB_CLAIM,False,has full grain (CLAIM_NO); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_CLAIM,False,has full grain (BJAZ_CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_TPCLM_COURT_DTL_EXTN,BJAZ_TPCLM_COURT_DTL_EXTN,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_TPCLM_HOSPITAL_DTL,BJAZ_TPCLM_HOSPITAL_DTL,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_TPCLM_HOSPITAL_TRAN_DTL,BJAZ_TPCLM_HOSPITAL_TRAN_DTL,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_WG_INSPECTION_DTLS,BJAZ_WG_INSPECTION_DTLS,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_EC_MEM_DTLS_EXTN,BJAZ_EC_MEM_DTLS_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_FPLM_DISABILITY_DETAILS,BJAZ_FPLM_DISABILITY_DETAILS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_FPLM_HOSPT_TRTMNT_DTLS,BJAZ_FPLM_HOSPT_TRTMNT_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_FPLM_POST_MORTEM_DTLS,BJAZ_FPLM_POST_MORTEM_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_GRP_HLT_MATERNITY_DTLS,BJAZ_GRP_HLT_MATERNITY_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_HM_GMC_AHC,BJAZ_HM_GMC_AHC,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_SH_MEM_DTLS_EXTN,BJAZ_SH_MEM_DTLS_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_SPP_MEMBER_DTLS,BJAZ_SPP_MEMBER_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_CLAIM_HEALTH_DETAIL,BJAZ_TRV_CLM_ITRACK_DTLS,BJAZ_TRV_CLM_ITRACK_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_CLAIM_NOTE,BJAZ_HM_BILL_DETAIL,BJAZ_HM_BILL_DETAIL,union_fallback,HUB_CLAIM,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_CLAIM_NOTE,BJAZ_HM_ORPHAN_REG,BJAZ_HM_ORPHAN_REG,union_fallback,HUB_CLAIM,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_CLAIM_NOTE,BJAZ_HM_QUERY_REMARK,BJAZ_HM_QUERY_REMARK,union_fallback,HUB_CLAIM,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_CLAIM_PROVIDER_BILLING,BJAZ_HM_BILL_CHARGE,BJAZ_HM_BILL_CHARGE,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_PROVIDER_BILLING,BJAZ_HM_BILL_DETAIL,BJAZ_HM_BILL_DETAIL,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_PROVIDER_BILLING,BJAZ_HM_BILL_DETAIL_OCR,BJAZ_HM_BILL_DETAIL_OCR,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_PROVIDER_BILLING,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,joined,HUB_CLAIM,False,has full grain (CLID); joined into the stitched row
+SAT_CLAIM_PROVIDER_BILLING,BJAZ_HM_PRO_ASSESSMENT,BJAZ_HM_PRO_ASSESSMENT,union_fallback,HUB_CLAIM,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_CLAIM_REPUDIATION,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,joined,HUB_CLAIM,False,has full grain (CLID); joined into the stitched row
+SAT_CLAIM_REPUDIATION,BJAZ_HM_PRO_ASSESSMENT,BJAZ_HM_PRO_ASSESSMENT,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_REPUDIATION,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_CLAIM,False,has full grain (BJAZ_CLAIM_ID); joined into the stitched row
+SAT_CLAIM_RESERVE,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,union_fallback,HUB_CLAIM,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_CLAIM_SETTLEMENT,BJAZ_HM_COINSU_CLM_DTLS,BJAZ_HM_COINSU_CLM_DTLS,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_SETTLEMENT,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,joined,HUB_CLAIM,False,has full grain (CLID); joined into the stitched row
+SAT_CLAIM_SETTLEMENT,BJAZ_REMEDINET_CLAIM_DETAILS,BJAZ_REMEDINET_CLAIM_DETAILS,joined,HUB_CLAIM,False,has full grain (CLAIM_NO); joined into the stitched row
+SAT_CLAIM_SETTLEMENT,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_CLAIM,False,has full grain (BJAZ_CLAIM_ID); joined into the stitched row
+SAT_CLAIM_TPA_INTERACTION,BJAZ_CLM_PRE_AUTH_HLT_DTLS,BJAZ_CLM_PRE_AUTH_HLT_DTLS,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_TPA_INTERACTION,BJAZ_HM_CASHLESS_INWARD,BJAZ_HM_CASHLESS_INWARD,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_TPA_INTERACTION,BJAZ_HM_CLM_ENHANCE,BJAZ_HM_CLM_ENHANCE,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_CLAIM_TPA_INTERACTION,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,joined,HUB_CLAIM,False,has full grain (CLID); joined into the stitched row
+SAT_CLAIM_TPA_INTERACTION,BJAZ_HM_PREAUTH_ENHANCE,BJAZ_HM_PREAUTH_ENHANCE,joined,HUB_CLAIM,False,has full grain (CLID); joined into the stitched row
+SAT_CLAIM_TPA_INTERACTION,BJAZ_REMEDINET_CLAIM_DETAILS,BJAZ_REMEDINET_CLAIM_DETAILS,joined,HUB_CLAIM,False,has full grain (CLAIM_NO); joined into the stitched row
+SAT_CLAIM_TPA_INTERACTION,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_CLAIM,False,has full grain (BJAZ_CLAIM_ID); joined into the stitched row
+SAT_COMMON_ADDRESS,BJAZ_EHH_POL_DTLS,BJAZ_EHH_POL_DTLS,joined,HUB_LOCATION,False,has full grain (RISK_LOCATION); joined into the stitched row
+SAT_COMMON_ADDRESS,BJAZ_GENERIC_LOADER_LOG_TABLE,BJAZ_GENERIC_LOADER_LOG_TABLE,joined,HUB_LOCATION,False,has full grain (LOCATIONCODE); joined into the stitched row
+SAT_COMMON_ADDRESS,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,joined,HUB_LOCATION,False,has full grain (POLICY_LOCATION); joined into the stitched row
+SAT_COMMON_ADDRESS,BJAZ_HM_HOSPITAL_MASTER,BJAZ_HM_HOSPITAL_MASTER,joined,HUB_LOCATION,False,has full grain (PIN_CODE); joined into the stitched row
+SAT_COMMON_ADDRESS,BJAZ_HM_INWARD_DTLS,BJAZ_HM_INWARD_DTLS,joined,HUB_LOCATION,False,has full grain (LOCATION_CODE); joined into the stitched row
+SAT_COMMON_ADDRESS,BJAZ_HM_ORPHAN_REG,BJAZ_HM_ORPHAN_REG,joined,HUB_LOCATION,False,has full grain (ORPHAN_LOC); joined into the stitched row
+SAT_COMMON_ADDRESS,BA_HCP_PP_MEM_DTLS,BA_HCP_PP_MEM_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_ADDRESS,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_ADDRESS,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_ADDRESS,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_ADDRESS,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_ADDRESS,BJAZ_GPG_POL_DTLS,BJAZ_GPG_POL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_ADDRESS,BJAZ_GRP_HLT_CUST_DTLS,BJAZ_GRP_HLT_CUST_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_ADDRESS,BJAZ_HAT_ID_MEM_DETLS,BJAZ_HAT_ID_MEM_DETLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_ADDRESS,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_ADDRESS,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_ADDRESS,BJAZ_HM_HOSP_MASTER_EXTN1,BJAZ_HM_HOSP_MASTER_EXTN1,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_ADDRESS,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_ADDRESS,BJAZ_SH_MEM_DTLS_EXTN,BJAZ_SH_MEM_DTLS_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_ADDRESS,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_ADMIN_GEOGRAPHY,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,joined,HUB_PARTY,False,has full grain (HOSID); joined into the stitched row
+SAT_COMMON_CONSENT,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_COMMON_CONSENT,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_COMMON_CONSENT,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_COMMON_CONSENT,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_COMMON_CONTACT,BA_HCP_PP_MEM_DTLS,BA_HCP_PP_MEM_DTLS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_COMMON_CONTACT,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_COMMON_CONTACT,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_COMMON_CONTACT,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_COMMON_CONTACT,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_COMMON_CONTACT,BJAZ_BANDHAN_MEDI_CLAM,BJAZ_BANDHAN_MEDI_CLAM,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_COMMON_CONTACT,BJAZ_HAT_ID_MEM_DETLS,BJAZ_HAT_ID_MEM_DETLS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_COMMON_CONTACT,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_COMMON_CONTACT,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_COMMON_CONTACT,BJAZ_HM_HOSPITAL_MASTER,BJAZ_HM_HOSPITAL_MASTER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_COMMON_CONTACT,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_COMMON_CONTACT,BJAZ_HM_HOSP_MASTER_EXTN1,BJAZ_HM_HOSP_MASTER_EXTN1,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_COMMON_CONTACT,BJAZ_HM_INWARD_DTLS,BJAZ_HM_INWARD_DTLS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_COMMON_CONTACT,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_COMMON_CONTACT,BJAZ_SH_MEM_DTLS_EXTN,BJAZ_SH_MEM_DTLS_EXTN,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_COMMON_CONTACT,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_COMMON_CONTACT,BA_HCP_PORT_WORDINGS,BA_HCP_PORT_WORDINGS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_CONTACT,BJAZ_EHH_POL_DTLS,BJAZ_EHH_POL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_CONTACT,BJAZ_GENERIC_LOADER_LOG_TABLE,BJAZ_GENERIC_LOADER_LOG_TABLE,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_CONTACT,BJAZ_GRP_HLT_CUST_DTLS,BJAZ_GRP_HLT_CUST_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_CONTACT,BJAZ_HCP_TRANSCRIPT_URL,BJAZ_HCP_TRANSCRIPT_URL,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_CONTACT,BJAZ_HM_GMC_AHC,BJAZ_HM_GMC_AHC,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_CONTACT,BJAZ_HM_ORPHAN_REG,BJAZ_HM_ORPHAN_REG,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_GEO,BJAZ_HM_INWARD_DTLS,BJAZ_HM_INWARD_DTLS,joined,HUB_LOCATION,False,has full grain (LOCATION_CODE); joined into the stitched row
+SAT_COMMON_GEO,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_GEO,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_COMMON_STATUS,BJAZ_HM_HOSPITAL_MASTER,BJAZ_HM_HOSPITAL_MASTER,joined,HUB_PARTY,False,has full grain (HOSID); joined into the stitched row
+SAT_DOCUMENT_CHECKLIST,BJAZ_REMEDINET_CLAIM_DETAILS,BJAZ_REMEDINET_CLAIM_DETAILS,union_fallback,HUB_DOCUMENT,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_DOCUMENT_CHECKLIST,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_DOCUMENT_DEFINITION,BJAZ_CARD_DTLS,BJAZ_CARD_DTLS,joined,HUB_DOCUMENT,False,has full grain (CARD_NO); joined into the stitched row
+SAT_DOCUMENT_DEFINITION,BJAZ_HM_INWARD_DTLS,BJAZ_HM_INWARD_DTLS,joined,HUB_DOCUMENT,False,has full grain (INWARD_ID); joined into the stitched row
+SAT_DOCUMENT_DEFINITION,BJAZ_REMEDINET_CLAIM_DETAILS,BJAZ_REMEDINET_CLAIM_DETAILS,joined,HUB_DOCUMENT,False,has full grain (OMNI_INWARD_NO); joined into the stitched row
+SAT_DOCUMENT_DEFINITION,BJAZ_HCP_TRANSCRIPT_URL,BJAZ_HCP_TRANSCRIPT_URL,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_DOCUMENT_DEFINITION,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_CLAIM_PAYMENT,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,joined,HUB_FINANCIAL_TRANSACTION,False,has full grain (CLAIM_NO+UTR_NO); joined into the stitched row
+SAT_FINTXN_CLAIM_PAYMENT,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_FINANCIAL_TRANSACTION,False,has full grain (TPA_TRANS_KEY); joined into the stitched row
+SAT_FINTXN_CLAIM_PAYMENT,BJAZ_REMEDINET_CLAIM_DETAILS,BJAZ_REMEDINET_CLAIM_DETAILS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_COMMISSION,BJAZ_HEALTH_WEBSERVICE_INFO,BJAZ_HEALTH_WEBSERVICE_INFO,joined,HUB_FINANCIAL_TRANSACTION,False,has full grain (PTRANSACTION_ID); joined into the stitched row
+SAT_FINTXN_HEADER,BJAZ_HEALTH_WEBSERVICE_INFO,BJAZ_HEALTH_WEBSERVICE_INFO,joined,HUB_FINANCIAL_TRANSACTION,False,has full grain (PTRANSACTION_ID); joined into the stitched row
+SAT_FINTXN_HEADER,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_HEADER,BJAZ_HM_GMC_AHC,BJAZ_HM_GMC_AHC,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_PREMIUM,BJAZ_HEALTH_WEBSERVICE_INFO,BJAZ_HEALTH_WEBSERVICE_INFO,joined,HUB_FINANCIAL_TRANSACTION,False,has full grain (PTRANSACTION_ID); joined into the stitched row
+SAT_FINTXN_PREMIUM,BA_HCP_DT_PREMIUM,BA_HCP_DT_PREMIUM,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_PREMIUM,BA_HCP_PRIME_RIDER_DTLS,BA_HCP_PRIME_RIDER_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_PREMIUM,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_PREMIUM,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_PREMIUM,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_PREMIUM,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_PREMIUM,BJAZ_EHH_POL_DTLS,BJAZ_EHH_POL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_PREMIUM,BJAZ_GENERIC_LOADER_LOG_TABLE,BJAZ_GENERIC_LOADER_LOG_TABLE,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_PREMIUM,BJAZ_GPG_POL_DTLS,BJAZ_GPG_POL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_PREMIUM,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_PREMIUM,BJAZ_IHG_MEM_DTLS_EXTN,BJAZ_IHG_MEM_DTLS_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_PREMIUM,BJAZ_SH_MEM_DTLS_EXTN,BJAZ_SH_MEM_DTLS_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_RECON_INSTRUMENT,BJAZ_HEALTH_WEBSERVICE_INFO,BJAZ_HEALTH_WEBSERVICE_INFO,union_fallback,HUB_FINANCIAL_TRANSACTION,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_FINTXN_TAX,BJAZ_HEALTH_WEBSERVICE_INFO,BJAZ_HEALTH_WEBSERVICE_INFO,union_fallback,HUB_FINANCIAL_TRANSACTION,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_FINTXN_TAX,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,union_fallback,HUB_FINANCIAL_TRANSACTION,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_FINTXN_TAX,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,union_fallback,HUB_FINANCIAL_TRANSACTION,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_FINTXN_TAX,BA_HCP_DT_PREMIUM,BA_HCP_DT_PREMIUM,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_TAX,BA_HCP_PRIME_RIDER_DTLS,BA_HCP_PRIME_RIDER_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_TAX,BJAZ_GPG_POL_DTLS,BJAZ_GPG_POL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_TAX,BJAZ_GRP_HLT_MATERNITY_DTLS,BJAZ_GRP_HLT_MATERNITY_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FINTXN_TAX,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FIN_CHARGE_RATE,BJAZ_GRP_TPA_EXTN,BJAZ_GRP_TPA_EXTN,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_FIN_RECEIPT,BJAZ_HEALTH_WEBSERVICE_INFO,BJAZ_HEALTH_WEBSERVICE_INFO,joined,HUB_FINANCIAL_TRANSACTION,False,has full grain (PTRANSACTION_ID); joined into the stitched row
+SAT_FIN_RECEIPT,BA_HCP_DT_PREMIUM,BA_HCP_DT_PREMIUM,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FIN_RECEIPT,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FIN_RECEIPT,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FIN_RECEIPT,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FIN_RECEIPT,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FIN_RECEIPT,BJAZ_BANDHAN_MEDI_CLAM,BJAZ_BANDHAN_MEDI_CLAM,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FIN_RECEIPT,BJAZ_EHH_POL_DTLS,BJAZ_EHH_POL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FIN_RECEIPT,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_FIN_RECEIPT,BJAZ_HM_PRO_ASSESSMENT,BJAZ_HM_PRO_ASSESSMENT,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_INSTRUMENT_DEFINITION,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,joined,HUB_PAYMENT_INSTRUMENT,False,has full grain (CHEQUE_NO); joined into the stitched row
+SAT_INSTRUMENT_DEFINITION,BJAZ_HEALTH_WEBSERVICE_INFO,BJAZ_HEALTH_WEBSERVICE_INFO,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_INSTRUMENT_DEFINITION,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_LNK_PARTY_ROLE_CORE,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_LNK_PARTY_ROLE_CORE,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_LNK_PARTY_ROLE_CORE,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_LNK_PARTY_ROLE_CORE,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_LNK_ROLE_AGENT,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,joined,HUB_PARTY,False,has full grain (PART_ID); joined into the stitched row
+SAT_LNK_ROLE_AGENT,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_PARTY,False,has full grain (CUSTOMER_ID); joined into the stitched row
+SAT_LNK_ROLE_CUSTOMER,BJAZ_HM_CASHLESS_INWARD,BJAZ_HM_CASHLESS_INWARD,joined,HUB_PARTY,False,has full grain (HOSPITAL_ID); joined into the stitched row
+SAT_LNK_ROLE_CUSTOMER,BJAZ_HM_INWARD_DTLS,BJAZ_HM_INWARD_DTLS,joined,HUB_PARTY,False,has full grain (COURIER_ID); joined into the stitched row
+SAT_LNK_ROLE_CUSTOMER,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,joined,HUB_PARTY,False,has full grain (MEMBER_ID); joined into the stitched row
+SAT_LNK_ROLE_EMPLOYEE,BA_HCP_PROD_8428_GPG_LOADER::imd-relationship-manager,BA_HCP_PROD_8428_GPG_LOADER,joined,HUB_PARTY,True,has full grain (PD_IMD_RM_E_CODE); joined into the stitched row
+SAT_LNK_ROLE_EMPLOYEE,BA_HCP_PROD_8428_GPG_LOADER::insurer-relationship-manager,BA_HCP_PROD_8428_GPG_LOADER,joined,HUB_PARTY,True,has full grain (PD_BAGIC_RM_E_CODE); joined into the stitched row
+SAT_LNK_ROLE_EMPLOYEE,BA_HCP_PROD_8432_ECP_LOADER::imd-relationship-manager,BA_HCP_PROD_8432_ECP_LOADER,joined,HUB_PARTY,True,has full grain (PD_IMD_RM_E_CODE); joined into the stitched row
+SAT_LNK_ROLE_EMPLOYEE,BA_HCP_PROD_8432_ECP_LOADER::insurer-relationship-manager,BA_HCP_PROD_8432_ECP_LOADER,joined,HUB_PARTY,True,has full grain (PD_BAGIC_RM_E_CODE); joined into the stitched row
+SAT_LNK_ROLE_EMPLOYEE,BA_HCP_PROD_8433_FHC_LOADER::imd-relationship-manager,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_PARTY,True,has full grain (PD_IMD_RM_E_CODE); joined into the stitched row
+SAT_LNK_ROLE_EMPLOYEE,BA_HCP_PROD_8433_FHC_LOADER::insurer-relationship-manager,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_PARTY,True,has full grain (PD_BAGIC_RM_E_CODE); joined into the stitched row
+SAT_LNK_ROLE_EMPLOYEE,BA_HCP_PROD_8439_CLH_LOADER::imd-relationship-manager,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_PARTY,True,has full grain (PD_IMD_RM_E_CODE); joined into the stitched row
+SAT_LNK_ROLE_EMPLOYEE,BA_HCP_PROD_8439_CLH_LOADER::insurer-relationship-manager,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_PARTY,True,has full grain (PD_BAGIC_RM_E_CODE); joined into the stitched row
+SAT_LNK_ROLE_EMPLOYEE,BJAZ_GPG_POL_DTLS,BJAZ_GPG_POL_DTLS,joined,HUB_PARTY,False,has full grain (BAGIC_E_CODE); joined into the stitched row
+SAT_LNK_ROLE_EMPLOYEE,BJAZ_GPG_POL_DTLS::relationship-manager,BJAZ_GPG_POL_DTLS,joined,HUB_PARTY,True,has full grain (BAGIC_E_CODE); joined into the stitched row
+SAT_LNK_ROLE_NOMINEE_BENEFICIARY,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_LNK_ROLE_NOMINEE_BENEFICIARY,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_LNK_ROLE_NOMINEE_BENEFICIARY,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_LNK_ROLE_NOMINEE_BENEFICIARY,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_LNK_ROLE_NOMINEE_BENEFICIARY,BJAZ_BANDHAN_MEDI_CLAM,BJAZ_BANDHAN_MEDI_CLAM,joined,HUB_PARTY,False,has full grain (CUSTOMER_ID); joined into the stitched row
+SAT_LNK_ROLE_NOMINEE_BENEFICIARY,BJAZ_EC_MEM_DTLS_EXTN,BJAZ_EC_MEM_DTLS_EXTN,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_LNK_ROLE_NOMINEE_BENEFICIARY,BJAZ_GP_HOSPITAL_CASH,BJAZ_GP_HOSPITAL_CASH,joined,HUB_PARTY,False,has full grain (USER_ID); joined into the stitched row
+SAT_LNK_ROLE_NOMINEE_BENEFICIARY,BJAZ_HCF_MEMBER_DTLS,BJAZ_HCF_MEMBER_DTLS,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_LNK_ROLE_NOMINEE_BENEFICIARY,BJAZ_HC_PART_EXTN,BJAZ_HC_PART_EXTN,joined,HUB_PARTY,False,has full grain (PART_ID); joined into the stitched row
+SAT_LNK_ROLE_NOMINEE_BENEFICIARY,BJAZ_HDFC_SEC_FHPP,BJAZ_HDFC_SEC_FHPP,joined,HUB_PARTY,False,has full grain (CLIENT_ID); joined into the stitched row
+SAT_LNK_ROLE_NOMINEE_BENEFICIARY,BJAZ_HLT_ENSURE_MEM_DTLS,BJAZ_HLT_ENSURE_MEM_DTLS,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_LNK_ROLE_NOMINEE_BENEFICIARY,BJAZ_IHG_MEM_DTLS_EXTN,BJAZ_IHG_MEM_DTLS_EXTN,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_LNK_ROLE_NOMINEE_BENEFICIARY,BJAZ_SH_MEM_DTLS_EXTN,BJAZ_SH_MEM_DTLS_EXTN,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_LNK_ROLE_NOMINEE_BENEFICIARY,BJAZ_ILLNESS_BASES_EXTN,BJAZ_ILLNESS_BASES_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_LNK_ROLE_PROVIDER,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,joined,HUB_PARTY,False,has full grain (HOSPITAL_ID); joined into the stitched row
+SAT_LNK_ROLE_PROVIDER,BJAZ_HM_HOSPITAL_MASTER,BJAZ_HM_HOSPITAL_MASTER,joined,HUB_PARTY,False,has full grain (HOSID); joined into the stitched row
+SAT_LNK_ROLE_PROVIDER,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,joined,HUB_PARTY,False,has full grain (HOSID); joined into the stitched row
+SAT_LNK_ROLE_PROVIDER,BJAZ_HM_HOSP_MASTER_EXTN1,BJAZ_HM_HOSP_MASTER_EXTN1,joined,HUB_PARTY,False,has full grain (HOSID); joined into the stitched row
+SAT_LNK_ROLE_PROVIDER,BJAZ_REMEDINET_CLAIM_DETAILS,BJAZ_REMEDINET_CLAIM_DETAILS,joined,HUB_PARTY,False,has full grain (PAYER_CODE); joined into the stitched row
+SAT_LNK_ROLE_PROVIDER,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_PARTY,False,has full grain (CUSTOMER_ID); joined into the stitched row
+SAT_LNK_ROLE_TPA,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_PARTY,False,has full grain (CUSTOMER_ID); joined into the stitched row
+SAT_LOCATION_PROFILE,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,joined,HUB_LOCATION,False,has full grain (POLICY_LOCATION); joined into the stitched row
+SAT_LOSS_EVENT_DETAIL,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,joined,HUB_LOSS_EVENT,False,has full grain (CLAIM_NO); joined into the stitched row
+SAT_LOSS_EVENT_DETAIL,BJAZ_HM_INWARD_DTLS,BJAZ_HM_INWARD_DTLS,joined,HUB_LOSS_EVENT,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_LOSS_EVENT_DETAIL,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_LOSS_EVENT,False,has full grain (TPA_CLAIM_NO); joined into the stitched row
+SAT_ORG_UNIT_DEFINITION,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_ORG_UNIT,False,has full grain (OPERATING_OFFICE); joined into the stitched row
+SAT_ORG_UNIT_DEFINITION,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_ORG_UNIT_DEFINITION,BJAZ_REMEDINET_CLAIM_DETAILS,BJAZ_REMEDINET_CLAIM_DETAILS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_ADDRESS_USAGE,BA_HCP_PP_MEM_DTLS,BA_HCP_PP_MEM_DTLS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_ADDRESS_USAGE,BJAZ_BANDHAN_MEDI_CLAM,BJAZ_BANDHAN_MEDI_CLAM,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_ADDRESS_USAGE,BJAZ_HAT_ID_MEM_DETLS,BJAZ_HAT_ID_MEM_DETLS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_ADDRESS_USAGE,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_BANKING,BJAZ_BANDHAN_MEDI_CLAM,BJAZ_BANDHAN_MEDI_CLAM,joined,HUB_PARTY,False,has full grain (CUSTOMER_ID); joined into the stitched row
+SAT_PARTY_BANKING,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,joined,HUB_PARTY,False,has full grain (HOSPITAL_ID); joined into the stitched row
+SAT_PARTY_BANKING,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,joined,HUB_PARTY,False,has full grain (HOSID); joined into the stitched row
+SAT_PARTY_BANKING,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_PARTY,False,has full grain (CUSTOMER_ID); joined into the stitched row
+SAT_PARTY_BANKING,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_BANKING,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_BANKING,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_BANKING,BJAZ_HEALTH_WEBSERVICE_INFO,BJAZ_HEALTH_WEBSERVICE_INFO,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_CLAIM_HISTORY,BJAZ_HAT_ID_MEM_DETLS,BJAZ_HAT_ID_MEM_DETLS,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_CLAIM_HISTORY,BJAZ_HC_PART_EXTN,BJAZ_HC_PART_EXTN,joined,HUB_PARTY,False,has full grain (PART_ID); joined into the stitched row
+SAT_PARTY_CLAIM_HISTORY,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,joined,HUB_PARTY,False,has full grain (MEMBER_ID); joined into the stitched row
+SAT_PARTY_CLAIM_HISTORY,BJAZ_IHG_MEM_DTLS_EXTN,BJAZ_IHG_MEM_DTLS_EXTN,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_CLAIM_HISTORY,BJAZ_SH_MEM_DTLS_EXTN,BJAZ_SH_MEM_DTLS_EXTN,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_CORRESPONDENCE,BJAZ_HM_OUTWARD_DTLS,BJAZ_HM_OUTWARD_DTLS,joined,HUB_CLAIM,False,has full grain (CLAIM_ID); joined into the stitched row
+SAT_PARTY_DIGITAL_IDENTITY,BJAZ_HM_POLICY_USERMAPPING,BJAZ_HM_POLICY_USERMAPPING,joined,HUB_PARTY,False,has full grain (LOGINNAME); joined into the stitched row
+SAT_PARTY_EMPLOYMENT,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_PARTY_EMPLOYMENT,BJAZ_EC_MEM_DTLS_EXTN,BJAZ_EC_MEM_DTLS_EXTN,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_EMPLOYMENT,BJAZ_HAT_ID_MEM_DETLS,BJAZ_HAT_ID_MEM_DETLS,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_EMPLOYMENT,BJAZ_HCF_MEMBER_DTLS,BJAZ_HCF_MEMBER_DTLS,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_EMPLOYMENT,BJAZ_HC_PART_EXTN,BJAZ_HC_PART_EXTN,joined,HUB_PARTY,False,has full grain (PART_ID); joined into the stitched row
+SAT_PARTY_EMPLOYMENT,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,joined,HUB_PARTY,False,has full grain (MEMBER_ID); joined into the stitched row
+SAT_PARTY_EMPLOYMENT,BJAZ_IHG_MEM_DTLS_EXTN,BJAZ_IHG_MEM_DTLS_EXTN,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_EMPLOYMENT,BJAZ_SH_MEM_DTLS_EXTN,BJAZ_SH_MEM_DTLS_EXTN,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_EMPLOYMENT,BJAZ_GENERIC_LOADER_LOG_TABLE,BJAZ_GENERIC_LOADER_LOG_TABLE,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_FINANCIAL_PROFILE,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_PARTY_FINANCIAL_PROFILE,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_PARTY_FINANCIAL_PROFILE,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_PARTY_FINANCIAL_PROFILE,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_PARTY_FINANCIAL_PROFILE,BJAZ_EC_MEM_DTLS_EXTN,BJAZ_EC_MEM_DTLS_EXTN,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_FINANCIAL_PROFILE,BJAZ_HCF_MEMBER_DTLS,BJAZ_HCF_MEMBER_DTLS,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_FINANCIAL_PROFILE,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,joined,HUB_PARTY,False,has full grain (MEMBER_ID); joined into the stitched row
+SAT_PARTY_FINANCIAL_PROFILE,BJAZ_IHG_MEM_DTLS_EXTN,BJAZ_IHG_MEM_DTLS_EXTN,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_FINANCIAL_PROFILE,BJAZ_SH_MEM_DTLS_EXTN,BJAZ_SH_MEM_DTLS_EXTN,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_FINANCIAL_PROFILE,BJAZ_ILLNESS_BASES_EXTN,BJAZ_ILLNESS_BASES_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_FRAUD_PROFILE,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,joined,HUB_PARTY,False,has full grain (HOSID); joined into the stitched row
+SAT_PARTY_FRAUD_PROFILE,BJAZ_HM_HOSP_MASTER_EXTN1,BJAZ_HM_HOSP_MASTER_EXTN1,joined,HUB_PARTY,False,has full grain (HOSID); joined into the stitched row
+SAT_PARTY_GROUP_CENSUS,BGIL_GMC_FINAL_INSTL_DATA,BGIL_GMC_FINAL_INSTL_DATA,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_GROUP_CENSUS,BJAZ_ECARD_MEMBR_DEL_DTLS,BJAZ_ECARD_MEMBR_DEL_DTLS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_GROUP_CENSUS,BJAZ_HAT_ID_MEM_DETLS,BJAZ_HAT_ID_MEM_DETLS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_GROUP_CENSUS,BJAZ_HC_PART_EXTN,BJAZ_HC_PART_EXTN,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_GROUP_CENSUS,BJAZ_HM_COINSU_CLM_DTLS,BJAZ_HM_COINSU_CLM_DTLS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_GROUP_CENSUS,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_GROUP_CENSUS,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_GROUP_CENSUS,BJAZ_REMEDINET_CLAIM_DETAILS,BJAZ_REMEDINET_CLAIM_DETAILS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_GROUP_CENSUS,BJAZ_CARD_DTLS,BJAZ_CARD_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_GROUP_CENSUS,BJAZ_GENERIC_LOADER_LOG_TABLE,BJAZ_GENERIC_LOADER_LOG_TABLE,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_GROUP_CENSUS,BJAZ_HM_GMC_AHC,BJAZ_HM_GMC_AHC,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_GROUP_HOUSEHOLD,BA_HCP_DT_PREMIUM,BA_HCP_DT_PREMIUM,joined,HUB_PARTY,False,has full grain (USER_ID); joined into the stitched row
+SAT_PARTY_GROUP_HOUSEHOLD,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_PARTY_GROUP_HOUSEHOLD,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_PARTY_GROUP_HOUSEHOLD,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,joined,HUB_PARTY,False,has full grain (PART_ID); joined into the stitched row
+SAT_PARTY_GROUP_HOUSEHOLD,BJAZ_WS_FAMILY_DTLS_BANDHAN,BJAZ_WS_FAMILY_DTLS_BANDHAN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_GROUP_SCHEME,BJAZ_HM_COINSU_CLM_DTLS,BJAZ_HM_COINSU_CLM_DTLS,joined,HUB_PARTY,False,has full grain (LDR_PID); joined into the stitched row
+SAT_PARTY_HEALTH_PROFILE,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_PARTY_HEALTH_PROFILE,BJAZ_ADLD_PREM_DTLS,BJAZ_ADLD_PREM_DTLS,joined,HUB_PARTY,False,has full grain (BDR_CODE); joined into the stitched row
+SAT_PARTY_HEALTH_PROFILE,BJAZ_EC_MEM_DTLS_EXTN,BJAZ_EC_MEM_DTLS_EXTN,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_HEALTH_PROFILE,BJAZ_FLEXI_CYBER_DATA,BJAZ_FLEXI_CYBER_DATA,joined,HUB_PARTY,False,has full grain (BDR_CODE); joined into the stitched row
+SAT_PARTY_HEALTH_PROFILE,BJAZ_GG_PREM_DTLS,BJAZ_GG_PREM_DTLS,joined,HUB_PARTY,False,has full grain (BDR_CODE); joined into the stitched row
+SAT_PARTY_HEALTH_PROFILE,BJAZ_HAT_ID_MEM_DETLS,BJAZ_HAT_ID_MEM_DETLS,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_HEALTH_PROFILE,BJAZ_HDFC_FLEXIPA,BJAZ_HDFC_FLEXIPA,joined,HUB_PARTY,False,has full grain (BDR_CODE); joined into the stitched row
+SAT_PARTY_HEALTH_PROFILE,BJAZ_PNB_GPA_DATA,BJAZ_PNB_GPA_DATA,joined,HUB_PARTY,False,has full grain (BDR_CODE); joined into the stitched row
+SAT_PARTY_HEALTH_PROFILE,BJAZ_RR_PREM_DTLS,BJAZ_RR_PREM_DTLS,joined,HUB_PARTY,False,has full grain (BDR_CODE); joined into the stitched row
+SAT_PARTY_HEALTH_PROFILE,BJAZ_SPP_MEMBER_DTLS,BJAZ_SPP_MEMBER_DTLS,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_HEALTH_PROFILE,BJAZ_SUPER_SURAKSHA_DTLS,BJAZ_SUPER_SURAKSHA_DTLS,joined,HUB_PARTY,False,has full grain (CUSTOMER_ID); joined into the stitched row
+SAT_PARTY_HEALTH_PROFILE,BJAZ_INVESTIGATION_REPORTS,BJAZ_INVESTIGATION_REPORTS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_HEALTH_PROFILE,BJAZ_M_KYC_DRIVING_LICENCE,BJAZ_M_KYC_DRIVING_LICENCE,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_HIERARCHY,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_PARTY,False,has full grain (CUSTOMER_ID); joined into the stitched row
+SAT_PARTY_IDENTIFICATION,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_IDENTIFICATION,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_IDENTIFICATION,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_IDENTIFICATION,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_IDENTIFICATION,BJAZ_BANDHAN_MEDI_CLAM,BJAZ_BANDHAN_MEDI_CLAM,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_IDENTIFICATION,BJAZ_EC_MEM_DTLS_EXTN,BJAZ_EC_MEM_DTLS_EXTN,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_IDENTIFICATION,BJAZ_GPG_POL_DTLS,BJAZ_GPG_POL_DTLS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_IDENTIFICATION,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_IDENTIFICATION,BJAZ_HLT_ENSURE_MEM_DTLS,BJAZ_HLT_ENSURE_MEM_DTLS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_IDENTIFICATION,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_IDENTIFICATION,BJAZ_HM_HOSPITAL_MASTER,BJAZ_HM_HOSPITAL_MASTER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_IDENTIFICATION,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_IDENTIFICATION,BJAZ_HM_INWARD_DTLS,BJAZ_HM_INWARD_DTLS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_IDENTIFICATION,BJAZ_IHG_MEM_DTLS_EXTN,BJAZ_IHG_MEM_DTLS_EXTN,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_IDENTIFICATION,BJAZ_REMEDINET_CLAIM_DETAILS,BJAZ_REMEDINET_CLAIM_DETAILS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_IDENTIFICATION,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_IDENTIFICATION,BJAZ_EHH_POL_DTLS,BJAZ_EHH_POL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_IDENTIFICATION,BJAZ_GENERIC_LOADER_LOG_TABLE,BJAZ_GENERIC_LOADER_LOG_TABLE,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_IDENTIFICATION,BJAZ_GRP_HLT_MATERNITY_DTLS,BJAZ_GRP_HLT_MATERNITY_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_IDENTITY,BA_HCP_DT_MEM,BA_HCP_DT_MEM,joined,HUB_PARTY,False,has full grain (PART_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BA_HCP_DT_MEM_COV,BA_HCP_DT_MEM_COV,joined,HUB_PARTY,False,has full grain (PART_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BA_HCP_DT_POL_COV,BA_HCP_DT_POL_COV,joined,HUB_PARTY,False,has full grain (PART_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BA_HCP_POL_MST,BA_HCP_POL_MST,joined,HUB_PARTY,False,has full grain (USER_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BA_HCP_PP_MEM_DTLS,BA_HCP_PP_MEM_DTLS,joined,HUB_PARTY,False,has full grain (ALLOTED_TO); joined into the stitched row
+SAT_PARTY_IDENTITY,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BA_HCP_PROD_8432_ECP_LOADER::imd-relationship-manager,BA_HCP_PROD_8432_ECP_LOADER,joined,HUB_PARTY,True,has full grain (PD_IMD_RM_E_CODE); joined into the stitched row
+SAT_PARTY_IDENTITY,BA_HCP_PROD_8432_ECP_LOADER::insurer-relationship-manager,BA_HCP_PROD_8432_ECP_LOADER,joined,HUB_PARTY,True,has full grain (PD_BAGIC_RM_E_CODE); joined into the stitched row
+SAT_PARTY_IDENTITY,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BA_HCP_PROD_8433_FHC_LOADER::imd-relationship-manager,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_PARTY,True,has full grain (PD_IMD_RM_E_CODE); joined into the stitched row
+SAT_PARTY_IDENTITY,BA_HCP_PROD_8433_FHC_LOADER::insurer-relationship-manager,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_PARTY,True,has full grain (PD_BAGIC_RM_E_CODE); joined into the stitched row
+SAT_PARTY_IDENTITY,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BGIL_GMC_FINAL_INSTL_DATA,BGIL_GMC_FINAL_INSTL_DATA,joined,HUB_PARTY,False,has full grain (EMP_CODE); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_BANDHAN_MEDI_CLAM,BJAZ_BANDHAN_MEDI_CLAM,joined,HUB_PARTY,False,has full grain (CUSTOMER_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_EC_MEM_DTLS_EXTN,BJAZ_EC_MEM_DTLS_EXTN,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_EWR_POL_DTLS,BJAZ_EWR_POL_DTLS,joined,HUB_PARTY,False,has full grain (EMP_CODE); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_GC_GROUP_GUARD_DTLS,BJAZ_GC_GROUP_GUARD_DTLS,joined,HUB_PARTY,False,has full grain (USER_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_GPG_POL_DTLS::intermediary,BJAZ_GPG_POL_DTLS,joined,HUB_PARTY,True,has full grain (IMD_CODE); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_GPG_POL_DTLS::relationship-manager,BJAZ_GPG_POL_DTLS,joined,HUB_PARTY,True,has full grain (BAGIC_RM_E_CODE); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_GPG_POL_DTLS::sub-intermediary,BJAZ_GPG_POL_DTLS,joined,HUB_PARTY,True,has full grain (SUB_IMD_CODE); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_GP_HOSPITAL_CASH,BJAZ_GP_HOSPITAL_CASH,joined,HUB_PARTY,False,has full grain (USER_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_GRP_HLT_IMD_DTLS::intermediary,BJAZ_GRP_HLT_IMD_DTLS,joined,HUB_PARTY,True,has full grain (IMD_CODE); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_GRP_HLT_IMD_DTLS::relationship-manager,BJAZ_GRP_HLT_IMD_DTLS,joined,HUB_PARTY,True,has full grain (RM_CODE); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_GRP_HLT_IMD_DTLS::sub-intermediary,BJAZ_GRP_HLT_IMD_DTLS,joined,HUB_PARTY,True,has full grain (SUB_IMD_CODE); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_HAT_ID_MEM_DETLS,BJAZ_HAT_ID_MEM_DETLS,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_HCF_MEMBER_DTLS,BJAZ_HCF_MEMBER_DTLS,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_HC_PART_EXTN,BJAZ_HC_PART_EXTN,joined,HUB_PARTY,False,has full grain (PART_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_HDFC_SEC_FHPP,BJAZ_HDFC_SEC_FHPP,joined,HUB_PARTY,False,has full grain (CLIENT_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,joined,HUB_PARTY,False,has full grain (PART_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_HLT_ENSURE_MEM_DTLS,BJAZ_HLT_ENSURE_MEM_DTLS,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_HM_CASHLESS_INWARD,BJAZ_HM_CASHLESS_INWARD,joined,HUB_PARTY,False,has full grain (HOSPITAL_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_HM_COINSU_CLM_DTLS,BJAZ_HM_COINSU_CLM_DTLS,joined,HUB_PARTY,False,has full grain (LDR_PID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,joined,HUB_PARTY,False,has full grain (HOSPITAL_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_HM_HCM_EXTRACT::hospital,BJAZ_HM_HCM_EXTRACT,joined,HUB_PARTY,True,has full grain (HOSPITAL_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_HM_HOSPITAL_MASTER,BJAZ_HM_HOSPITAL_MASTER,joined,HUB_PARTY,False,has full grain (HOSID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,joined,HUB_PARTY,False,has full grain (HOSID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_HM_HOSP_MASTER_EXTN1,BJAZ_HM_HOSP_MASTER_EXTN1,joined,HUB_PARTY,False,has full grain (HOSID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_HM_INWARD_DTLS,BJAZ_HM_INWARD_DTLS,joined,HUB_PARTY,False,has full grain (COURIER_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,joined,HUB_PARTY,False,has full grain (MEMBER_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_IHG_MEM_DTLS_EXTN,BJAZ_IHG_MEM_DTLS_EXTN,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_PC_ONLINE_POL_DTLS_MV,BJAZ_PC_ONLINE_POL_DTLS_MV,joined,HUB_PARTY,False,has full grain (PART_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_REMEDINET_CLAIM_DETAILS,BJAZ_REMEDINET_CLAIM_DETAILS,joined,HUB_PARTY,False,has full grain (PAYER_CODE); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_REMEDINET_CLAIM_DETAILS::provider,BJAZ_REMEDINET_CLAIM_DETAILS,joined,HUB_PARTY,True,has full grain (REMEDINET_PROVIDER_CODE); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_SCR_HLTH_PORTABLE_DTLS,BJAZ_SCR_HLTH_PORTABLE_DTLS,joined,HUB_PARTY,False,has full grain (MEMBER_IDENTIFIER); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_SH_MEM_DTLS_EXTN,BJAZ_SH_MEM_DTLS_EXTN,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_PARTY,False,has full grain (CUSTOMER_ID); joined into the stitched row
+SAT_PARTY_IDENTITY,BJAZ_TPA_CLAIM_DETAILS_WS::provider,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_PARTY,True,has full grain (HOSPITAL_CODE); joined into the stitched row
+SAT_PARTY_IDENTITY,BA_HCP_PORT_WORDINGS,BA_HCP_PORT_WORDINGS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_IDENTITY,BJAZ_CARD_DTLS,BJAZ_CARD_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_IDENTITY,BJAZ_CTNGY_FF_DTLS_EXTN,BJAZ_CTNGY_FF_DTLS_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_IDENTITY,BJAZ_CTNGY_GC_MEM_DATA,BJAZ_CTNGY_GC_MEM_DATA,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_IDENTITY,BJAZ_CTNGY_PA_MEM_DTLS,BJAZ_CTNGY_PA_MEM_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_IDENTITY,BJAZ_ECARD_POL_DTLS_CONFIG,BJAZ_ECARD_POL_DTLS_CONFIG,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_IDENTITY,BJAZ_EHH_POL_DTLS,BJAZ_EHH_POL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_IDENTITY,BJAZ_GENERIC_LOADER_LOG_TABLE,BJAZ_GENERIC_LOADER_LOG_TABLE,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_IDENTITY,BJAZ_GRP_HLT_CUST_DTLS,BJAZ_GRP_HLT_CUST_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_IDENTITY,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_IDENTITY,BJAZ_HAT_OCR_FINA_DTLS_LST,BJAZ_HAT_OCR_FINA_DTLS_LST,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_IDENTITY,BJAZ_HM_GMC_AHC,BJAZ_HM_GMC_AHC,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_IDENTITY,BJAZ_HM_ORPHAN_REG,BJAZ_HM_ORPHAN_REG,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_PARTY,False,has full grain (PD_PREMIUM_PAYER_ID); joined into the stitched row
+SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS,BJAZ_GENERIC_LOADER_LOG_TABLE,BJAZ_GENERIC_LOADER_LOG_TABLE,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_ORGANISATION_PROFILE,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,joined,HUB_PARTY,False,has full grain (HOSID); joined into the stitched row
+SAT_PARTY_ORGANISATION_PROFILE,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PARTY_POLICY_HISTORY,BJAZ_EC_MEM_DTLS_EXTN,BJAZ_EC_MEM_DTLS_EXTN,joined,HUB_PARTY,False,has full grain (MEMBER_NO); joined into the stitched row
+SAT_PARTY_PROVIDER_CAPABILITY,BJAZ_HC_PART_EXTN,BJAZ_HC_PART_EXTN,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_PROVIDER_CAPABILITY,BJAZ_HM_HOSPITAL_MASTER,BJAZ_HM_HOSPITAL_MASTER,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_PROVIDER_CAPABILITY,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PARTY_PROVIDER_CAPABILITY,BJAZ_HM_HOSP_MASTER_EXTN1,BJAZ_HM_HOSP_MASTER_EXTN1,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_BONUS_TRACKING,BA_HCP_DT_PREMIUM,BA_HCP_DT_PREMIUM,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_BONUS_TRACKING,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_POLICY,False,has full grain (POL_SERIAL_NO); joined into the stitched row
+SAT_POLICY_BONUS_TRACKING,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_BONUS_TRACKING,BJAZ_IHG_MEM_DTLS_EXTN,BJAZ_IHG_MEM_DTLS_EXTN,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_BONUS_TRACKING,BJAZ_SH_MEM_DTLS_EXTN,BJAZ_SH_MEM_DTLS_EXTN,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_BONUS_TRACKING,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_POLICY,False,has full grain (POLICY_NO); joined into the stitched row
+SAT_POLICY_CERTIFICATE,BJAZ_HM_INWARD_DTLS,BJAZ_HM_INWARD_DTLS,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_POLICY_CERTIFICATE,BA_HCP_DT_MEM,BA_HCP_DT_MEM,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CERTIFICATE,BA_HCP_DT_MEM_COV,BA_HCP_DT_MEM_COV,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CERTIFICATE,BA_HCP_DT_POL_COV,BA_HCP_DT_POL_COV,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CERTIFICATE,BGIL_GMC_FINAL_INSTL_DATA,BGIL_GMC_FINAL_INSTL_DATA,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CERTIFICATE,BJAZ_CTNGY_PA_MEM_DTLS,BJAZ_CTNGY_PA_MEM_DTLS,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CERTIFICATE,BJAZ_EC_MEM_DTLS_EXTN,BJAZ_EC_MEM_DTLS_EXTN,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CERTIFICATE,BJAZ_HAT_ID_MEM_DETLS,BJAZ_HAT_ID_MEM_DETLS,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CERTIFICATE,BJAZ_HCF_MEMBER_DTLS,BJAZ_HCF_MEMBER_DTLS,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CERTIFICATE,BJAZ_HC_PART_EXTN,BJAZ_HC_PART_EXTN,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CERTIFICATE,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CERTIFICATE,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CERTIFICATE,BJAZ_IHG_MEM_DTLS_EXTN,BJAZ_IHG_MEM_DTLS_EXTN,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CERTIFICATE,BJAZ_SH_MEM_DTLS_EXTN,BJAZ_SH_MEM_DTLS_EXTN,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CERTIFICATE,BJAZ_ECARD_MEMBR_DEL_DTLS,BJAZ_ECARD_MEMBR_DEL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_POLICY_CLASSIFICATION,BA_HCP_DT_PREMIUM,BA_HCP_DT_PREMIUM,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CLASSIFICATION,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CLASSIFICATION,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CLASSIFICATION,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CLASSIFICATION,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CLASSIFICATION,BGIL_GMC_FINAL_INSTL_DATA,BGIL_GMC_FINAL_INSTL_DATA,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CLASSIFICATION,BJAZ_BANDHAN_MEDI_CLAM,BJAZ_BANDHAN_MEDI_CLAM,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CLASSIFICATION,BJAZ_GPG_POL_DTLS,BJAZ_GPG_POL_DTLS,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CLASSIFICATION,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CLASSIFICATION,BJAZ_HEALTH_WEBSERVICE_INFO,BJAZ_HEALTH_WEBSERVICE_INFO,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_CLASSIFICATION,BJAZ_HCP_TRANSCRIPT_URL,BJAZ_HCP_TRANSCRIPT_URL,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_POLICY_CLAUSE_ATTACHED,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_COINSURANCE,BJAZ_HM_COINSU_CLM_DTLS,BJAZ_HM_COINSU_CLM_DTLS,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_POLICY_COVERAGE_SCHEDULE,BA_HCP_DT_POL_COV,BA_HCP_DT_POL_COV,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_COVERAGE_SCHEDULE,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_COVERAGE_SCHEDULE,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_COVERAGE_SCHEDULE,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_COVERAGE_SCHEDULE,BJAZ_GRP_HLT_MATERNITY_DTLS,BJAZ_GRP_HLT_MATERNITY_DTLS,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_COVERAGE_SCHEDULE,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_DISCOUNT_LOADING_APPLIED,BA_HCP_DT_PREMIUM,BA_HCP_DT_PREMIUM,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_DISCOUNT_LOADING_APPLIED,BA_HCP_POL_MST,BA_HCP_POL_MST,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_DISCOUNT_LOADING_APPLIED,BJAZ_HEALTH_WEBSERVICE_INFO,BJAZ_HEALTH_WEBSERVICE_INFO,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_ENDORSEMENT,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_ENDORSEMENT,BJAZ_PMJAY_PRMBOOK_DTLS,BJAZ_PMJAY_PRMBOOK_DTLS,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_POLICY_GROUP,BJAZ_CARD_DTLS,BJAZ_CARD_DTLS,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_POLICY_GROUP,BJAZ_ECARD_POL_DTLS_CONFIG,BJAZ_ECARD_POL_DTLS_CONFIG,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_POLICY_GROUP,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,joined,HUB_POLICY,False,has full grain (REG_NO); joined into the stitched row
+SAT_POLICY_GROUP,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_HEADER,BA_HCP_POL_MST,BA_HCP_POL_MST,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_HEADER,BA_HCP_PORT_WORDINGS,BA_HCP_PORT_WORDINGS,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_HEADER,BA_HCP_PRIME_RIDER_DTLS,BA_HCP_PRIME_RIDER_DTLS,joined,HUB_POLICY,False,has full grain (BASE_POLICY_REF); joined into the stitched row
+SAT_POLICY_HEADER,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,joined,HUB_POLICY,False,has full grain (POL_SERIAL_NO); joined into the stitched row
+SAT_POLICY_HEADER,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,joined,HUB_POLICY,False,has full grain (POL_SERIAL_NO); joined into the stitched row
+SAT_POLICY_HEADER,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_POLICY,False,has full grain (POL_SERIAL_NO); joined into the stitched row
+SAT_POLICY_HEADER,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_POLICY,False,has full grain (POL_SERIAL_NO); joined into the stitched row
+SAT_POLICY_HEADER,BGIL_GMC_FINAL_INSTL_DATA,BGIL_GMC_FINAL_INSTL_DATA,joined,HUB_POLICY,False,has full grain (POLICY_NO); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_BANDHAN_MEDI_CLAM,BJAZ_BANDHAN_MEDI_CLAM,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_CARD_DTLS,BJAZ_CARD_DTLS,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_ECARD_POL_DTLS_CONFIG,BJAZ_ECARD_POL_DTLS_CONFIG,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_EC_MEM_DTLS_EXTN,BJAZ_EC_MEM_DTLS_EXTN,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_EHH_POL_DTLS,BJAZ_EHH_POL_DTLS,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_GENERIC_LOADER_LOG_TABLE,BJAZ_GENERIC_LOADER_LOG_TABLE,joined,HUB_POLICY,False,has full grain (PMASTERPOLICYNUMBER); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_GPG_POL_DTLS,BJAZ_GPG_POL_DTLS,joined,HUB_POLICY,False,has full grain (REFERENCE_ID); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_GP_HOSPITAL_CASH,BJAZ_GP_HOSPITAL_CASH,joined,HUB_POLICY,False,has full grain (MASTER_POLICY_NO); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,joined,HUB_POLICY,False,has full grain (REG_NO); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_GRP_HLT_MATERNITY_DTLS,BJAZ_GRP_HLT_MATERNITY_DTLS,joined,HUB_POLICY,False,has full grain (REG_NO); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_HC_PART_EXTN,BJAZ_HC_PART_EXTN,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_HDFC_SEC_FHPP,BJAZ_HDFC_SEC_FHPP,joined,HUB_POLICY,False,has full grain (REFERENCE_ID); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_HEALTH_WEBSERVICE_INFO,BJAZ_HEALTH_WEBSERVICE_INFO,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_HM_COINSU_CLM_DTLS,BJAZ_HM_COINSU_CLM_DTLS,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,joined,HUB_POLICY,False,has full grain (POLICY); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_HM_ORPHAN_REG,BJAZ_HM_ORPHAN_REG,joined,HUB_POLICY,False,has full grain (POLICY_NUMBER); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_IHG_MEM_DTLS_EXTN,BJAZ_IHG_MEM_DTLS_EXTN,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_ILLNESS_BASES_EXTN,BJAZ_ILLNESS_BASES_EXTN,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_PMJAY_PRMBOOK_DTLS,BJAZ_PMJAY_PRMBOOK_DTLS,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_SH_MEM_DTLS_EXTN,BJAZ_SH_MEM_DTLS_EXTN,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,joined,HUB_POLICY,False,has full grain (POLICY_NO); joined into the stitched row
+SAT_POLICY_HEADER,BJAZ_HM_HOSPITAL_MASTER,BJAZ_HM_HOSPITAL_MASTER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_POLICY_INSTALMENT_SCHEDULE,BA_HCP_DT_PREMIUM,BA_HCP_DT_PREMIUM,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_INTERMEDIARY_SPLIT,BJAZ_GENERIC_LOADER_LOG_TABLE,BJAZ_GENERIC_LOADER_LOG_TABLE,joined,HUB_POLICY,False,has full grain (PMASTERPOLICYNUMBER); joined into the stitched row
+SAT_POLICY_LIFECYCLE,BJAZ_ECARD_POL_DTLS_CONFIG,BJAZ_ECARD_POL_DTLS_CONFIG,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_POLICY_PORTABILITY_MIGRATION,BA_HCP_PORT_WORDINGS,BA_HCP_PORT_WORDINGS,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_PORTABILITY_MIGRATION,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,joined,HUB_POLICY,False,has full grain (POL_SERIAL_NO); joined into the stitched row
+SAT_POLICY_PORTABILITY_MIGRATION,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_POLICY,False,has full grain (POL_SERIAL_NO); joined into the stitched row
+SAT_POLICY_PORTABILITY_MIGRATION,BJAZ_EC_MEM_DTLS_EXTN,BJAZ_EC_MEM_DTLS_EXTN,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_PORTABILITY_MIGRATION,BJAZ_GPG_POL_DTLS,BJAZ_GPG_POL_DTLS,joined,HUB_POLICY,False,has full grain (REFERENCE_ID); joined into the stitched row
+SAT_POLICY_PORTABILITY_MIGRATION,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,joined,HUB_POLICY,False,has full grain (REG_NO); joined into the stitched row
+SAT_POLICY_PORTABILITY_MIGRATION,BJAZ_HAT_ID_MEM_DETLS,BJAZ_HAT_ID_MEM_DETLS,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_PORTABILITY_MIGRATION,BJAZ_HCF_MEMBER_DTLS,BJAZ_HCF_MEMBER_DTLS,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_PORTABILITY_MIGRATION,BJAZ_HC_PART_EXTN,BJAZ_HC_PART_EXTN,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_PORTABILITY_MIGRATION,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_PORTABILITY_MIGRATION,BJAZ_HLT_ENSURE_MEM_DTLS,BJAZ_HLT_ENSURE_MEM_DTLS,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_PORTABILITY_MIGRATION,BJAZ_IHG_MEM_DTLS_EXTN,BJAZ_IHG_MEM_DTLS_EXTN,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_PORTABILITY_MIGRATION,BJAZ_SH_MEM_DTLS_EXTN,BJAZ_SH_MEM_DTLS_EXTN,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_PORTABILITY_MIGRATION,BJAZ_SCR_HLTH_PORTABLE_DTLS,BJAZ_SCR_HLTH_PORTABLE_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_POLICY_PREMIUM_HEAD,BA_HCP_DT_MEM,BA_HCP_DT_MEM,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_PREMIUM_HEAD,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_PREMIUM_HEAD,BJAZ_GRP_HLT_MATERNITY_DTLS,BJAZ_GRP_HLT_MATERNITY_DTLS,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_PREMIUM_HEAD,BJAZ_HCF_MEMBER_DTLS,BJAZ_HCF_MEMBER_DTLS,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_PREMIUM_HEAD,BJAZ_HEALTH_WEBSERVICE_INFO,BJAZ_HEALTH_WEBSERVICE_INFO,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_PREMIUM_SUMMARY,BA_HCP_DT_PREMIUM,BA_HCP_DT_PREMIUM,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BA_HCP_POL_MST,BA_HCP_POL_MST,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BA_HCP_PRIME_RIDER_DTLS,BA_HCP_PRIME_RIDER_DTLS,joined,HUB_POLICY,False,has full grain (BASE_POLICY_REF); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,joined,HUB_POLICY,False,has full grain (POL_SERIAL_NO); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,joined,HUB_POLICY,False,has full grain (POL_SERIAL_NO); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_POLICY,False,has full grain (POL_SERIAL_NO); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_POLICY,False,has full grain (POL_SERIAL_NO); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BGIL_GMC_FINAL_INSTL_DATA,BGIL_GMC_FINAL_INSTL_DATA,joined,HUB_POLICY,False,has full grain (POLICY_NO); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BJAZ_BANDHAN_MEDI_CLAM,BJAZ_BANDHAN_MEDI_CLAM,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BJAZ_EHH_POL_DTLS,BJAZ_EHH_POL_DTLS,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BJAZ_GENERIC_LOADER_LOG_TABLE,BJAZ_GENERIC_LOADER_LOG_TABLE,joined,HUB_POLICY,False,has full grain (PMASTERPOLICYNUMBER); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BJAZ_GPG_POL_DTLS,BJAZ_GPG_POL_DTLS,joined,HUB_POLICY,False,has full grain (REFERENCE_ID); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BJAZ_GP_HOSPITAL_CASH,BJAZ_GP_HOSPITAL_CASH,joined,HUB_POLICY,False,has full grain (MASTER_POLICY_NO); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,joined,HUB_POLICY,False,has full grain (REG_NO); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BJAZ_GRP_HLT_MATERNITY_DTLS,BJAZ_GRP_HLT_MATERNITY_DTLS,joined,HUB_POLICY,False,has full grain (REG_NO); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BJAZ_HDFC_SEC_FHPP,BJAZ_HDFC_SEC_FHPP,joined,HUB_POLICY,False,has full grain (REFERENCE_ID); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BJAZ_HEALTH_WEBSERVICE_INFO,BJAZ_HEALTH_WEBSERVICE_INFO,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_POLICY_PREMIUM_SUMMARY,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_REFUND_DETAIL,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_RENEWAL,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,joined,HUB_POLICY,False,has full grain (REG_NO); joined into the stitched row
+SAT_POLICY_TAX_HEAD,BJAZ_GENERIC_LOADER_LOG_TABLE,BJAZ_GENERIC_LOADER_LOG_TABLE,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_TAX_HEAD,BJAZ_GRP_HLT_MATERNITY_DTLS,BJAZ_GRP_HLT_MATERNITY_DTLS,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_TENURE_SCHEDULE,BJAZ_EHH_POL_DTLS,BJAZ_EHH_POL_DTLS,union_fallback,HUB_POLICY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_POLICY_TERMS,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,joined,HUB_POLICY,False,has full grain (POL_SERIAL_NO); joined into the stitched row
+SAT_POLICY_TERMS,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,joined,HUB_POLICY,False,has full grain (POL_SERIAL_NO); joined into the stitched row
+SAT_POLICY_TERMS,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_POLICY,False,has full grain (POL_SERIAL_NO); joined into the stitched row
+SAT_POLICY_TERMS,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_POLICY,False,has full grain (POL_SERIAL_NO); joined into the stitched row
+SAT_POLICY_TERMS,BJAZ_GPG_POL_DTLS,BJAZ_GPG_POL_DTLS,joined,HUB_POLICY,False,has full grain (REFERENCE_ID); joined into the stitched row
+SAT_POLICY_TERMS,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,joined,HUB_POLICY,False,has full grain (REG_NO); joined into the stitched row
+SAT_POLICY_TERMS,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_TERMS,BJAZ_HLT_ENSURE_MEM_DTLS,BJAZ_HLT_ENSURE_MEM_DTLS,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_POLICY_TERMS,BJAZ_ILLNESS_BASES_EXTN,BJAZ_ILLNESS_BASES_EXTN,joined,HUB_POLICY,False,has full grain (CONTRACT_ID); joined into the stitched row
+SAT_PRODUCT_DEFINITION,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_PRODUCT,False,has full grain (PD_PRODUCT_CODE); joined into the stitched row
+SAT_PRODUCT_DEFINITION,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,joined,HUB_PRODUCT,False,has full grain (PD_PRODUCT_CODE); joined into the stitched row
+SAT_PRODUCT_DEFINITION,BJAZ_CTNGY_SCHEME_MST,BJAZ_CTNGY_SCHEME_MST,joined,HUB_PRODUCT,False,has full grain (SCHEME_CODE); joined into the stitched row
+SAT_PRODUCT_DEFINITION,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,joined,HUB_PRODUCT,False,has full grain (PRODUCT); joined into the stitched row
+SAT_PRODUCT_DEFINITION,BJAZ_HCS_PLANSI_MAPP,BJAZ_HCS_PLANSI_MAPP,joined,HUB_PRODUCT,False,has full grain (PRODUCT_CODE); joined into the stitched row
+SAT_PRODUCT_DEFINITION,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,joined,HUB_PRODUCT,False,has full grain (PRODUCT_4DIGIT_CODE); joined into the stitched row
+SAT_PRODUCT_DEFINITION,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,joined,HUB_PRODUCT,False,has full grain (PRODUCT_CODE); joined into the stitched row
+SAT_PRODUCT_DEFINITION,BJAZ_HM_GMC_AHC,BJAZ_HM_GMC_AHC,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PRODUCT_DEFINITION,BJAZ_HM_INWARD_DTLS,BJAZ_HM_INWARD_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PRODUCT_DEFINITION,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PRODUCT_DEFINITION,BJAZ_WS_FAMILY_DTLS_BANDHAN,BJAZ_WS_FAMILY_DTLS_BANDHAN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PRODUCT_HEALTH_MEMBERSHIP_RULES,BJAZ_ECARD_POL_DTLS_CONFIG,BJAZ_ECARD_POL_DTLS_CONFIG,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_PRODUCT_RATING_FACTOR,BJAZ_ECARD_POL_DTLS_CONFIG,BJAZ_ECARD_POL_DTLS_CONFIG,joined,HUB_POLICY,False,has full grain (POLICY_REF); joined into the stitched row
+SAT_PRODUCT_TERMS,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,joined,HUB_PRODUCT,False,has full grain (PRODUCT); joined into the stitched row
+SAT_PRODUCT_TERMS,BJAZ_GRP_HLT_MATERNITY_DTLS,BJAZ_GRP_HLT_MATERNITY_DTLS,joined,HUB_PRODUCT,False,has full grain (PRODUCT); joined into the stitched row
+SAT_PRODUCT_VERSION,BJAZ_HCS_PLANSI_MAPP,BJAZ_HCS_PLANSI_MAPP,joined,HUB_PRODUCT,False,has full grain (PRODUCT_CODE); joined into the stitched row
+SAT_PROPOSAL_QUESTIONNAIRE,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,union_fallback,HUB_PROPOSAL,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PROPOSAL_QUESTIONNAIRE,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_PROPOSAL_UNDERWRITING,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,joined,HUB_PROPOSAL,False,has full grain (QUOTE_REF_NO); joined into the stitched row
+SAT_PROVIDER_QUALITY,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,joined,HUB_PARTY,False,has full grain (HOSID); joined into the stitched row
+SAT_PROVIDER_TARIFF,BJAZ_HM_HOSPITAL_MASTER_EXTN,BJAZ_HM_HOSPITAL_MASTER_EXTN,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_PROVIDER_TARIFF,BJAZ_HM_HOSP_MASTER_EXTN1,BJAZ_HM_HOSP_MASTER_EXTN1,union_fallback,HUB_PARTY,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_QUOTE_HEADER,BJAZ_ECARD_POL_DTLS_CONFIG,BJAZ_ECARD_POL_DTLS_CONFIG,joined,HUB_QUOTE,False,has full grain (QUOTE_REF); joined into the stitched row
+SAT_QUOTE_HEADER,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,joined,HUB_QUOTE,False,has full grain (QUOTE_SUB_NO); joined into the stitched row
+SAT_QUOTE_HEADER,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,joined,HUB_QUOTE,False,has full grain (QUOTE_REF_NO); joined into the stitched row
+SAT_QUOTE_RATING,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,joined,HUB_QUOTE,False,has full grain (QUOTE_SUB_NO); joined into the stitched row
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_EC_MEM_DTLS_EXTN,BJAZ_EC_MEM_DTLS_EXTN,union_fallback,HUB_RISK_OBJECT,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_HCF_MEMBER_DTLS,BJAZ_HCF_MEMBER_DTLS,union_fallback,HUB_RISK_OBJECT,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BGIL_GMC_FINAL_INSTL_DATA,BGIL_GMC_FINAL_INSTL_DATA,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_CARD_DTLS,BJAZ_CARD_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_GENERIC_LOADER_LOG_TABLE,BJAZ_GENERIC_LOADER_LOG_TABLE,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_GP_HOSPITAL_CASH,BJAZ_GP_HOSPITAL_CASH,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_GRP_HLT_MATERNITY_DTLS,BJAZ_GRP_HLT_MATERNITY_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_HAT_ID_MEM_DETLS,BJAZ_HAT_ID_MEM_DETLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_HC_PART_EXTN,BJAZ_HC_PART_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_HDFC_SEC_FHPP,BJAZ_HDFC_SEC_FHPP,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_HLT_ENSURE_MEM_DTLS,BJAZ_HLT_ENSURE_MEM_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_HM_COINSU_CLM_DTLS,BJAZ_HM_COINSU_CLM_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_HM_HCM_EXTRACT,BJAZ_HM_HCM_EXTRACT,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_HM_ORPHAN_REG,BJAZ_HM_ORPHAN_REG,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_IHG_MEM_DTLS_EXTN,BJAZ_IHG_MEM_DTLS_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_ILLNESS_BASES_EXTN,BJAZ_ILLNESS_BASES_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_SCR_HLTH_PORTABLE_DTLS,BJAZ_SCR_HLTH_PORTABLE_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_SH_MEM_DTLS_EXTN,BJAZ_SH_MEM_DTLS_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_SPP_MEMBER_DTLS,BJAZ_SPP_MEMBER_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_COVERAGE,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,union_fallback,HUB_RISK_OBJECT,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_CTNGY_PA_MEM_DTLS,BJAZ_CTNGY_PA_MEM_DTLS,union_fallback,HUB_RISK_OBJECT,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_EC_MEM_DTLS_EXTN,BJAZ_EC_MEM_DTLS_EXTN,union_fallback,HUB_RISK_OBJECT,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_HCF_MEMBER_DTLS,BJAZ_HCF_MEMBER_DTLS,union_fallback,HUB_RISK_OBJECT,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_ADLD_PREM_DTLS,BJAZ_ADLD_PREM_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_BANDHAN_MEDI_CLAM,BJAZ_BANDHAN_MEDI_CLAM,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_CLM_SUPP_EXTN,BJAZ_CLM_SUPP_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_CTNGY_FF_DTLS_EXTN,BJAZ_CTNGY_FF_DTLS_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_FLEXI_CYBER_DATA,BJAZ_FLEXI_CYBER_DATA,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_GC_GROUP_GUARD_DTLS,BJAZ_GC_GROUP_GUARD_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_GG_PREM_DTLS,BJAZ_GG_PREM_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_GP_HOSPITAL_CASH,BJAZ_GP_HOSPITAL_CASH,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_HAT_ID_MEM_DETLS,BJAZ_HAT_ID_MEM_DETLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_HDFC_FLEXIPA,BJAZ_HDFC_FLEXIPA,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_HDFC_SEC_FHPP,BJAZ_HDFC_SEC_FHPP,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_HDFC_SURK_SHOP,BJAZ_HDFC_SURK_SHOP,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_IHG_MEM_DTLS_EXTN,BJAZ_IHG_MEM_DTLS_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_INVESTIGATION_REPORTS,BJAZ_INVESTIGATION_REPORTS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_PNB_GPA_DATA,BJAZ_PNB_GPA_DATA,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_RR_PREM_DTLS,BJAZ_RR_PREM_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_SCRUTINY_IP_DTLS,BJAZ_SCRUTINY_IP_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_SH_MEM_DTLS_EXTN,BJAZ_SH_MEM_DTLS_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_SPP_MEMBER_DTLS,BJAZ_SPP_MEMBER_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_STARPKG_FF_DTLS,BJAZ_STARPKG_FF_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_HEALTH_MEMBER_MEDICAL,BJAZ_SUPER_SURAKSHA_DTLS,BJAZ_SUPER_SURAKSHA_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_OBJECT_CORE,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,joined,HUB_RISK_OBJECT,False,has full grain (POL_SERIAL_NO+MD_SEQ_NO); joined into the stitched row
+SAT_RISK_OBJECT_CORE,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_OBJECT_CORE,BJAZ_GRP_HLT_DTLS,BJAZ_GRP_HLT_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,joined,HUB_RISK_OBJECT,False,has full grain (POL_SERIAL_NO+MD_SEQ_NO); joined into the stitched row
+SAT_RISK_PERSON_INSURED,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,joined,HUB_RISK_OBJECT,False,has full grain (POL_SERIAL_NO+MD_SEQ_NO); joined into the stitched row
+SAT_RISK_PERSON_INSURED,BJAZ_CTNGY_PA_MEM_DTLS,BJAZ_CTNGY_PA_MEM_DTLS,joined,HUB_RISK_OBJECT,False,has full grain (CONTRACT_ID+MEMBER_REF_NUMBER); joined into the stitched row
+SAT_RISK_PERSON_INSURED,BJAZ_EC_MEM_DTLS_EXTN,BJAZ_EC_MEM_DTLS_EXTN,joined,HUB_RISK_OBJECT,False,has full grain (CONTRACT_ID+MEMBER_NO); joined into the stitched row
+SAT_RISK_PERSON_INSURED,BJAZ_HCF_MEMBER_DTLS,BJAZ_HCF_MEMBER_DTLS,joined,HUB_RISK_OBJECT,False,has full grain (CONTRACT_ID+MEMBER_NO); joined into the stitched row
+SAT_RISK_PERSON_INSURED,BA_HCP_PORT_WORDINGS,BA_HCP_PORT_WORDINGS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BGIL_GMC_FINAL_INSTL_DATA,BGIL_GMC_FINAL_INSTL_DATA,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_ADLD_PREM_DTLS,BJAZ_ADLD_PREM_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_CARD_DTLS,BJAZ_CARD_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_CTNGY_FF_DTLS_EXTN,BJAZ_CTNGY_FF_DTLS_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_CTNGY_GC_MEM_DATA,BJAZ_CTNGY_GC_MEM_DATA,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_ECARD_MEMBR_DEL_DTLS,BJAZ_ECARD_MEMBR_DEL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_FLEXI_CYBER_DATA,BJAZ_FLEXI_CYBER_DATA,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_GG_PREM_DTLS,BJAZ_GG_PREM_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_GP_HOSPITAL_CASH,BJAZ_GP_HOSPITAL_CASH,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_HAT_ID_MEM_DETLS,BJAZ_HAT_ID_MEM_DETLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_HC_PART_EXTN,BJAZ_HC_PART_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_HDFC_FLEXIPA,BJAZ_HDFC_FLEXIPA,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_HDFC_SEC_FHPP,BJAZ_HDFC_SEC_FHPP,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_HG_POL_DTLS,BJAZ_HG_POL_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_HLT_ENSURE_MEM_DTLS,BJAZ_HLT_ENSURE_MEM_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_HM_CASHLESS_INWARD,BJAZ_HM_CASHLESS_INWARD,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_HM_COINSU_CLM_DTLS,BJAZ_HM_COINSU_CLM_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_HM_GMC_AHC,BJAZ_HM_GMC_AHC,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_HM_INWARD_DTLS,BJAZ_HM_INWARD_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_HM_MEMBER_DTLS,BJAZ_HM_MEMBER_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_HM_ORPHAN_REG,BJAZ_HM_ORPHAN_REG,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_HM_OUTWARD_DTLS,BJAZ_HM_OUTWARD_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_IHG_MEM_DTLS_EXTN,BJAZ_IHG_MEM_DTLS_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_ILLNESS_BASES_EXTN,BJAZ_ILLNESS_BASES_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_INVESTIGATION_REPORTS,BJAZ_INVESTIGATION_REPORTS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_KBL_LEAD_PROCESSING,BJAZ_KBL_LEAD_PROCESSING,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_PA_DETL_EXTN,BJAZ_PA_DETL_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_PNB_GPA_DATA,BJAZ_PNB_GPA_DATA,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_RR_PREM_DTLS,BJAZ_RR_PREM_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_SH_MEM_DTLS_EXTN,BJAZ_SH_MEM_DTLS_EXTN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_SPP_MEMBER_DTLS,BJAZ_SPP_MEMBER_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_STARPKG_FF_DTLS,BJAZ_STARPKG_FF_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_TPA_CLAIM_DETAILS_WS,BJAZ_TPA_CLAIM_DETAILS_WS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_INSURED,BJAZ_TRV_CLM_ITRACK_DTLS,BJAZ_TRV_CLM_ITRACK_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_MEMBER,BA_HCP_PROD_8428_GPG_LOADER,BA_HCP_PROD_8428_GPG_LOADER,union_fallback,HUB_RISK_OBJECT,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_RISK_PERSON_MEMBER,BA_HCP_PROD_8433_FHC_LOADER,BA_HCP_PROD_8433_FHC_LOADER,union_fallback,HUB_RISK_OBJECT,False,has parent key but not the full multi-active child-key grain; contributes its own row via UNION ALL
+SAT_RISK_PERSON_MEMBER,BA_HCP_DT_MEM,BA_HCP_DT_MEM,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_MEMBER,BA_HCP_DT_MEM_COV,BA_HCP_DT_MEM_COV,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_MEMBER,BA_HCP_DT_POL_COV,BA_HCP_DT_POL_COV,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_MEMBER,BA_HCP_PROD_8432_ECP_LOADER,BA_HCP_PROD_8432_ECP_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_MEMBER,BA_HCP_PROD_8439_CLH_LOADER,BA_HCP_PROD_8439_CLH_LOADER,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_MEMBER,BJAZ_CARD_DTLS,BJAZ_CARD_DTLS,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_MEMBER,BJAZ_KBL_LEAD_PROCESSING,BJAZ_KBL_LEAD_PROCESSING,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_MEMBER,BJAZ_PNB_GPA_DATA,BJAZ_PNB_GPA_DATA,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_MEMBER,BJAZ_WS_FAMILY_DTLS_BANDHAN,BJAZ_WS_FAMILY_DTLS_BANDHAN,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
+SAT_RISK_PERSON_MEMBER,T_PREM_DATA_COM,T_PREM_DATA_COM,excluded,,False,no parent hub key (explicit/discovered/confirmed/reanchor) on this branch
