@@ -1,0 +1,32 @@
+{{ config(materialized='view') }}
+
+-- STANDARD-MODEL stage() pass for stitch_party_health_profile -- serves SAT_PARTY_HEALTH_PROFILE.
+-- The ONE place PARTY_HK gets hashed for this cluster (namespaced: 'HUB_PARTY|' || raw key,
+-- same collision-prevention convention as the rest of this build -- see gen_common.namespaced_hash).
+
+{%- set yaml_metadata -%}
+source_model: 'stitch_party_health_profile'
+hashed_columns:
+  PARTY_HKEY: 'PARTY_NK'
+  HASHDIFF:
+    is_hashdiff: true
+    columns:
+      - 'BLOOD_GROUP'
+      - 'BODY_MASS_INDEX'
+      - 'CHRONIC_ILLNESS_INDICATOR'
+      - 'FAMILY_MEDICAL_HISTORY_INDICATOR'
+      - 'HEIGHT'
+      - 'PRE_EXISTING_DISEASE_DESCRIPTION'
+      - 'TOBACCO_CONSUMPTION_DETAIL'
+      - 'WEIGHT'
+derived_columns:
+  PARTY_NK: "'HUB_PARTY|' || PARENT_BK"
+  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=true,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

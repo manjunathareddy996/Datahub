@@ -1,0 +1,44 @@
+name: 'health_dv'
+version: '1.0.0'
+config-version: 2
+
+profile: 'health_dv'
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+vars:
+  health_raw_database: RAW
+  health_raw_schema: HEALTH
+
+models:
+  health_dv:
+    staging:
+      health:
+        +materialized: view
+        +schema: stg_health
+    automate_dv:
+      standard:
+        +schema: std_automate_dv
+        stitched:
+          +materialized: view
+        staging:
+          +materialized: view
+        hubs:
+          +materialized: incremental
+        links:
+          +materialized: incremental
+        satellites:
+          +materialized: incremental
+        references:
+          +materialized: view
+      augmented:
+        +schema: aug_automate_dv
+        staging:
+          +materialized: view
+        satellites:
+          +materialized: incremental
