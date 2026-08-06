@@ -38,14 +38,14 @@ models:
         +materialized: view
         +schema: BGIL_DEV_DATA_MODEL
         +tags: ["partner", "partner_stg"]
-      travel:
-        +materialized: view
-        +schema: BGIL_DEV_DATA_MODEL
-        +tags: ["travel", "travel_stg"]
-      health:
-        +materialized: view
-        +schema: BGIL_DEV_DATA_MODEL
-        +tags: ["health", "health_stg"]
+      # travel:
+      #   +materialized: view
+      #   +schema: BGIL_DEV_DATA_MODEL
+      #   +tags: ["travel", "travel_stg"]
+      # health:
+      #   +materialized: view
+      #   +schema: BGIL_DEV_DATA_MODEL
+      #   +tags: ["health", "health_stg"]
     raw_vault:
       partner:
         +tags: ["partner"]
@@ -78,37 +78,37 @@ models:
           satellites:
             +materialized: incremental
             +tags: ["partner", "partner_aug_sat"]
-      health:
-        +tags: ["health"]
-        standard:
-          +schema: BGIL_DEV_DATA_MODEL
-          stitched:
-            +materialized: view
-            +tags: ["health", "health_stitch"]
-          staging:
-            +materialized: view
-            +tags: ["health", "health_stg2"]
-          hubs:
-            +materialized: incremental
-            +tags: ["health", "health_hub"]
-          links:
-            +materialized: incremental
-            +tags: ["health", "health_lnk"]
-          satellites:
-            +materialized: incremental
-            +tags: ["health", "health_sat"]
-          references:
-            +materialized: view
-            +tags: ["health", "health_ref"]
-        augmented:
-          +schema: BGIL_DEV_DATA_MODEL
-          +tags: ["health", "health_aug"]
-          staging:
-            +materialized: view
-            +tags: ["health", "health_aug_stg"]
-          satellites:
-            +materialized: incremental
-            +tags: ["health", "health_aug_sat"]
+      # health:
+      #   +tags: ["health"]
+      #   standard:
+      #     +schema: BGIL_DEV_DATA_MODEL
+      #     stitched:
+      #       +materialized: view
+      #       +tags: ["health", "health_stitch"]
+      #     staging:
+      #       +materialized: view
+      #       +tags: ["health", "health_stg2"]
+      #     hubs:
+      #       +materialized: incremental
+      #       +tags: ["health", "health_hub"]
+      #     links:
+      #       +materialized: incremental
+      #       +tags: ["health", "health_lnk"]
+      #     satellites:
+      #       +materialized: incremental
+      #       +tags: ["health", "health_sat"]
+      #     references:
+      #       +materialized: view
+      #       +tags: ["health", "health_ref"]
+      #   augmented:
+      #     +schema: BGIL_DEV_DATA_MODEL
+      #     +tags: ["health", "health_aug"]
+      #     staging:
+      #       +materialized: view
+      #       +tags: ["health", "health_aug_stg"]
+      #     satellites:
+      #       +materialized: incremental
+      #       +tags: ["health", "health_aug_sat"]
 
 # satellite:
 #       raw_stage:
