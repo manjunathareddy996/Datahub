@@ -1,6 +1,9 @@
 {{ config(materialized='view') }}
 
 -- PARTNER STANDARD-MODEL per-table stage() for SAT_AGREEMENT_DEFINITION, table 'BJAZ_INTERMEDIARY'.
+--
+-- Stays a plain view. Incremental filtering now happens upstream in
+-- stg_partner__bjaz_intermediary, so this model needs no delta logic of its own.
 
 {%- set yaml_metadata -%}
 source_model: 'stg_partner__bjaz_intermediary'
