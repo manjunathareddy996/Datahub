@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: stg_a
+    description: "Trim + null cleaning for TABLE_A"
+    config:
+      materialized: view
+      tags: ["demo", "demo_stg"]
+
+  - name: stg_b
+    description: "Trim + null cleaning for TABLE_B"
+    config:
+      materialized: view
+      tags: ["demo", "demo_stg"]
+
+  - name: stg2_a
+    description: "Hash key + hashdiff generation for TABLE_A -> SAT_A_B"
+    config:
+      materialized: view
+      tags: ["demo", "demo_stg2"]
+
+  - name: stg2_b
+    description: "Hash key + hashdiff generation for TABLE_B -> SAT_A_B"
+    config:
+      materialized: view
+      tags: ["demo", "demo_stg2"]
+
+  - name: sat_a_b
+    description: "Multi-source satellite (TABLE_A + TABLE_B) on HUB_PARTY grain"
+    config:
+      materialized: incremental
+      tags: ["demo", "demo_sat"]
