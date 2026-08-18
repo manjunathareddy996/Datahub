@@ -3,14 +3,43 @@
 {#-- When target_sat is provided, use the parameterized watermark window
      (from_date < ldts_column <= to_date). Otherwise keep the original T-1 filter. --#}
 {%- if target_sat is not none -%}
-    {%- set to_date   = get_to_date() -%}
-    {%- set from_date = get_from_date(target_sat) -%}
+
+    {#-- Resolve to_date: var override or run_started_at --#}
+    {%- set td = var('to_date', run_started_at.strftime('%Y-%m-%d %H:%M:%S')) -%}
+    {%- set to_date = "'" ~ td ~ "'" -%}
+
+    {#-- Resolve from_date: var override -> MAX(DBT_RUN_TS) from sat -> sentinel --#}
+    {%- set sentinel = '1900-01-01' -%}
+    {%- if var('from_date', none) is not none -%}
+        {%- set from_date = "'" ~ var('from_date') ~ "'" -%}
+    {%- elif not execute -%}
+        {%- set from_date = "'" ~ sentinel ~ "'" -%}
+    {%- else -%}
+        {%- set sat_rel = adapter.get_relation(
+                database=this.database if this else target.database,
+                schema=this.schema if this else target.schema,
+                identifier=target_sat) -%}
+        {%- if sat_rel is none -%}
+            {%- set from_date = "'" ~ sentinel ~ "'" -%}
+        {%- else -%}
+            {%- set wm_query -%}
+                SELECT COALESCE(MAX(DBT_RUN_TS), TO_TIMESTAMP_NTZ('{{ sentinel }}')) AS mx FROM {{ sat_rel }}
+            {%- endset -%}
+            {%- set results = run_query(wm_query) -%}
+            {%- if results and (results.rows | length) > 0 and results.rows[0][0] is not none -%}
+                {%- set from_date = "'" ~ results.rows[0][0] ~ "'" -%}
+            {%- else -%}
+                {%- set from_date = "'" ~ sentinel ~ "'" -%}
+            {%- endif -%}
+        {%- endif -%}
+    {%- endif -%}
+
 {%- endif -%}
 
 WITH affected_keys AS (
     {% for src in sources %}
     SELECT DISTINCT {{ src.key_column }} AS {{ unique_key }}
-    FROM {{ ref(src.model) }}
+    FROM {{ this.database }}.{{ this.schema }}.{{ src.model }}
     WHERE {{ src.key_column }} IS NOT NULL
     {%- if target_sat is not none %}
       AND {{ src.ldts_column }} >  CAST({{ from_date }} AS TIMESTAMP_NTZ)
@@ -28,7 +57,7 @@ WITH affected_keys AS (
         {%- for col in src.columns %},
         NULLIF(TRIM(TO_VARCHAR({{ col.src }})), '') AS {{ col.tgt }}
         {%- endfor %}
-    FROM {{ ref(src.model) }}
+    FROM {{ this.database }}.{{ this.schema }}.{{ src.model }}
     WHERE {{ src.key_column }} IS NOT NULL
       AND {{ src.key_column }} IN (SELECT {{ unique_key }} FROM affected_keys)
     QUALIFY ROW_NUMBER() OVER (

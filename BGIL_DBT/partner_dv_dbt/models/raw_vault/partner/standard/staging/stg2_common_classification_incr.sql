@@ -17,7 +17,7 @@ hashed_columns:
 derived_columns:
   PARTY_NK: "'HUB_PARTY|' || PARENT_BK"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  DBT_RUN_TS: "!CAST({{ get_to_date() }} AS TIMESTAMP_NTZ)"
+  DBT_RUN_TS: "!CAST('{{ var('to_date', run_started_at.strftime('%Y-%m-%d %H:%M:%S')) }}' AS TIMESTAMP_NTZ)"
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
