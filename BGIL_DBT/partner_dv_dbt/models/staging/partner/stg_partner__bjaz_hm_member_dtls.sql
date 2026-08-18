@@ -73,7 +73,8 @@ with source as (
     nullif(trim("EMPLOYEE_LOCATION"::varchar), '') as employee_location,
     nullif(trim("MONTHLY_SALARY"::varchar), '') as monthly_salary,
     nullif(trim("VIP_FLG"::varchar), '') as vip_flg,
-    "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date
+    "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_raw', 'BJAZ_HM_MEMBER_DTLS') }}
 
 )

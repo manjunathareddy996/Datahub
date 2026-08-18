@@ -1,11 +1,23 @@
-{% macro stitch_incremental(sources, output_columns, coalesce_rules, unique_key='parent_bk') %}
+{% macro stitch_incremental(sources, output_columns, coalesce_rules, unique_key='parent_bk', target_sat=none) %}
+
+{#-- When target_sat is provided, use the parameterized watermark window
+     (from_date < ldts_column <= to_date). Otherwise keep the original T-1 filter. --#}
+{%- if target_sat is not none -%}
+    {%- set to_date   = get_to_date() -%}
+    {%- set from_date = get_from_date(target_sat) -%}
+{%- endif -%}
 
 WITH affected_keys AS (
     {% for src in sources %}
     SELECT DISTINCT {{ src.key_column }} AS {{ unique_key }}
     FROM {{ ref(src.model) }}
     WHERE {{ src.key_column }} IS NOT NULL
+    {%- if target_sat is not none %}
+      AND {{ src.ldts_column }} >  CAST({{ from_date }} AS TIMESTAMP_NTZ)
+      AND {{ src.ldts_column }} <= CAST({{ to_date }} AS TIMESTAMP_NTZ)
+    {%- else %}
       AND {{ src.ldts_column }} >= DATEADD(DAY, -1, CURRENT_DATE())
+    {%- endif %}
     {% if not loop.last %}UNION{% endif %}
     {% endfor %}
 ),

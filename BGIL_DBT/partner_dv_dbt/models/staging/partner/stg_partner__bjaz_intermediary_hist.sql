@@ -52,9 +52,10 @@ with source as (
     nullif(trim("FLAGGING"::varchar), '') as flagging,
     nullif(trim("REMARKS_CODE"::varchar), '') as remarks_code,
     "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
     null as website_link, -- not found in source table
     null as gst_status, -- not found in source table
-    null as gst_no, -- not found in source table
+    null as gst_no -- not found in source table
     from {{ source('partner_raw', 'BJAZ_INTERMEDIARY_HIST') }}
 
 )

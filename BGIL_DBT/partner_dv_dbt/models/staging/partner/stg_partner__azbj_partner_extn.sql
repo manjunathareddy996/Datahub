@@ -37,6 +37,7 @@ with source as (
     "FAMILY_ID"::number as family_id,
     "CLUSTER_ID"::number as cluster_id,
     "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
     nullif(trim("FROM_MODULE"::varchar), '') as from_module,
     nullif(trim("EXISTING_CUST"::varchar), '') as existing_cust,
     nullif(trim("WEBSITE"::varchar), '') as website,

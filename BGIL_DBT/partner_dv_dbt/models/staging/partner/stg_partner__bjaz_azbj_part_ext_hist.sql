@@ -38,6 +38,7 @@ with source as (
     nullif(trim("ACTION"::varchar), '') as action,
     nullif(trim("MODULE"::varchar), '') as module,
     "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at,
     nullif(trim("TELEPHONE3"::varchar), '') as telephone3,
     nullif(trim("PARTNER_REF_NO"::varchar), '') as partner_ref_no,
     nullif(trim("GLOBAL_CO_NAME"::varchar), '') as global_co_name,
