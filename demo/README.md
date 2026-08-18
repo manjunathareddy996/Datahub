@@ -22,3 +22,12 @@ First error in model 'sat_a_b': Database Error in model sat_a_b (models/raw_vaul
   compiled code at target/run/dev_dv_dbt/models/raw_vault/partner/standard/satellites/sat_a_b.sql. 
 Context: DBT 1.9.4, Command: dbt run.
  Check logs/dbt.log for more details.
+
+
+ DBT job failed: 1 model(s) failed out of 1 total (total time: 4.43s)
+First error in model 'sat_a_b': Database Error in model sat_a_b (models/raw_vault/partner/standard/satellites/sat_a_b.sql)
+  000904 (42000): SQL compilation error: error line 21 at position 8
+  invalid identifier 'A.PHONE_2'
+  compiled code at target/run/dev_dv_dbt/models/raw_vault/partner/standard/satellites/sat_a_b.sql. 
+Context: DBT 1.9.4, Command: dbt run.
+ Check logs/dbt.log for more details.
