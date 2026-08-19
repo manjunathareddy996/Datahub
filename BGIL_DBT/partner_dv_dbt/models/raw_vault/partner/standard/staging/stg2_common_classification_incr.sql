@@ -6,8 +6,14 @@
 -- NOT via automate_dv derived_columns, because the '!' prefix would wrap the whole expression in quotes.
 -- It is carried into the sat as a NON-hashdiff extra column, and is the value the stitch reads MAX() of.
 
-{#-- run_started_at is UTC; shift to IST (UTC+5:30) so DBT_RUN_TS matches source (IST) timestamps --#}
-{%- set to_date = var('to_date', (run_started_at + modules.datetime.timedelta(hours=5, minutes=30)).strftime('%Y-%m-%d %H:%M:%S')) -%}
+{#-- Convert run_started_at (UTC) to IST in SQL via CONVERT_TIMEZONE, so the result is guaranteed IST
+     regardless of how run_started_at's timezone is rendered. var('to_date') overrides (used as-is). --#}
+{%- set run_ts_utc = run_started_at.strftime('%Y-%m-%d %H:%M:%S') -%}
+{%- if var('to_date', none) is not none -%}
+    {%- set dbt_run_ts_expr = "CAST('" ~ var('to_date') ~ "' AS TIMESTAMP_NTZ)" -%}
+{%- else -%}
+    {%- set dbt_run_ts_expr = "CAST(CONVERT_TIMEZONE('UTC','Asia/Kolkata', '" ~ run_ts_utc ~ "'::timestamp_ntz) AS TIMESTAMP_NTZ)" -%}
+{%- endif -%}
 
 {%- set yaml_metadata -%}
 source_model: 'stitch_common_classification_incr'
@@ -27,7 +33,7 @@ derived_columns:
 
 SELECT
     staged.*,
-    CAST('{{ to_date }}' AS TIMESTAMP_NTZ) AS DBT_RUN_TS
+    {{ dbt_run_ts_expr }} AS DBT_RUN_TS
 FROM (
 
     {{ automate_dv.stage(include_source_columns=true,

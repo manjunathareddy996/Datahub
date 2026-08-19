@@ -4,9 +4,14 @@
      (from_date < ldts_column <= to_date). Otherwise keep the original T-1 filter. --#}
 {%- if target_sat is not none -%}
 
-    {#-- Resolve to_date: var override or run_started_at shifted UTC->IST (UTC+5:30) --#}
-    {%- set td = var('to_date', (run_started_at + modules.datetime.timedelta(hours=5, minutes=30)).strftime('%Y-%m-%d %H:%M:%S')) -%}
-    {%- set to_date = "'" ~ td ~ "'" -%}
+    {#-- Resolve to_date. var('to_date') overrides; otherwise convert run_started_at (UTC) to IST in SQL
+         via CONVERT_TIMEZONE so it is guaranteed IST regardless of run_started_at's rendered timezone.
+         Stored as a SQL expression string (not a quoted literal) so it is used directly in the filter. --#}
+    {%- if var('to_date', none) is not none -%}
+        {%- set to_date_expr = "CAST('" ~ var('to_date') ~ "' AS TIMESTAMP_NTZ)" -%}
+    {%- else -%}
+        {%- set to_date_expr = "CAST(CONVERT_TIMEZONE('UTC','Asia/Kolkata', '" ~ run_started_at.strftime('%Y-%m-%d %H:%M:%S') ~ "'::timestamp_ntz) AS TIMESTAMP_NTZ)" -%}
+    {%- endif -%}
 
     {#-- Resolve from_date: var override -> MAX(DBT_RUN_TS) from sat -> sentinel --#}
     {%- set sentinel = '1900-01-01' -%}
@@ -43,7 +48,7 @@ WITH affected_keys AS (
     WHERE {{ src.key_column }} IS NOT NULL
     {%- if target_sat is not none %}
       AND {{ src.ldts_column }} >  CAST({{ from_date }} AS TIMESTAMP_NTZ)
-      AND {{ src.ldts_column }} <= CAST({{ to_date }} AS TIMESTAMP_NTZ)
+      AND {{ src.ldts_column }} <= {{ to_date_expr }}
     {%- else %}
       AND {{ src.ldts_column }} >= DATEADD(DAY, -1, CURRENT_DATE())
     {%- endif %}
