@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="Cross-LOB PIT Example" id="cross-lob-pit">
+    <mxGraphModel dx="1800" dy="1400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2400" pageHeight="1600">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="&lt;b&gt;Cross-LOB PIT: sat_party_identity (Health + Partner → One PIT)&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=16;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="500" y="20" width="700" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- HEALTH LOB -->
+        <mxCell id="h_label" value="&lt;b&gt;HEALTH LOB&lt;/b&gt;" style="text;html=1;fontSize=13;fontColor=#1a6b3c;align=center;" vertex="1" parent="1">
+          <mxGeometry x="100" y="80" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="h_src" value="37 source tables" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="30" y="130" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="h_stitch" value="&lt;b&gt;stitch_party_identity&lt;/b&gt;&lt;br&gt;(37 stg1s COALESCEd)" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="190" y="125" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="h_stg2" value="stg2_party_identity" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="400" y="130" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="h_sat" value="&lt;b&gt;sat_party_identity&lt;/b&gt;&lt;br&gt;(Health)" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="590" y="120" width="160" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="he1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="h_src" target="h_stitch"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="he2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="h_stitch" target="h_stg2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="he3" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="h_stg2" target="h_sat"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <!-- PARTNER LOB -->
+        <mxCell id="p_label" value="&lt;b&gt;PARTNER LOB&lt;/b&gt;" style="text;html=1;fontSize=13;fontColor=#4a6fa5;align=center;" vertex="1" parent="1">
+          <mxGeometry x="100" y="210" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p_src" value="22 source tables" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="30" y="260" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p_stitch" value="&lt;b&gt;stitch_party_identity&lt;/b&gt;&lt;br&gt;(22 stg1s COALESCEd)" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="190" y="255" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p_stg2" value="stg2_party_identity" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="400" y="260" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p_sat" value="&lt;b&gt;sat_party_identity&lt;/b&gt;&lt;br&gt;(Partner)" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="590" y="250" width="160" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="pe1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="p_src" target="p_stitch"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="pe2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="p_stitch" target="p_stg2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="pe3" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="p_stg2" target="p_sat"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <!-- HUB -->
+        <mxCell id="hub" value="&lt;b&gt;HUB_PARTY&lt;/b&gt;&lt;br&gt;(shared PARTY_HK)" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#f5f5f5;strokeColor=#333333;fontSize=11;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="820" y="180" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hub_e1" style="edgeStyle=orthogonalEdgeStyle;dashed=1;" edge="1" parent="1" source="h_sat" target="hub"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="hub_e2" style="edgeStyle=orthogonalEdgeStyle;dashed=1;" edge="1" parent="1" source="p_sat" target="hub"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <!-- PIT LAYER -->
+        <mxCell id="pit_label" value="&lt;b&gt;PIT LAYER (Business Vault)&lt;/b&gt;" style="text;html=1;fontSize=13;fontColor=#b85450;align=center;" vertex="1" parent="1">
+          <mxGeometry x="300" y="350" width="300" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- as_of_date -->
+        <mxCell id="aod" value="&lt;b&gt;as_of_date_party_identity&lt;/b&gt;&lt;br&gt;&lt;br&gt;UNION of LOAD_DATETIMEs:&lt;br&gt;• Jan1 09:00 (from Health)&lt;br&gt;• Jan1 10:00 (from Partner)&lt;br&gt;• Feb1 10:00 (from Partner)&lt;br&gt;• Mar1 09:00 (from Health)" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;align=left;" vertex="1" parent="1">
+          <mxGeometry x="80" y="400" width="220" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- PIT table -->
+        <mxCell id="pit" value="&lt;b&gt;pit_party_identity&lt;/b&gt;&lt;br&gt;&lt;br&gt;PARTY_HK | AS_OF_DATE | HEALTH_LDTS | PARTNER_LDTS&lt;br&gt;─────────────────────────────────────&lt;br&gt;ABC | Jan1 09:00 | Jan1 09:00 | NULL&lt;br&gt;ABC | Jan1 10:00 | Jan1 09:00 | Jan1 10:00&lt;br&gt;ABC | Feb1 10:00 | Jan1 09:00 | Feb1 10:00&lt;br&gt;ABC | Mar1 09:00 | Mar1 09:00 | Feb1 10:00&lt;br&gt;&lt;br&gt;&lt;i&gt;Each pointer resolves INDEPENDENTLY&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#f8cecc;strokeColor=#b85450;fontSize=9;align=left;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="360" y="390" width="370" height="140" as="geometry" />
+        </mxCell>
+
+        <!-- Edges to PIT -->
+        <mxCell id="aod_e1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#82b366;strokeWidth=2;" edge="1" parent="1" source="h_sat" target="aod">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="670" y="370" /><mxPoint x="190" y="370" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="aod_e2" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#6c8ebf;strokeWidth=2;" edge="1" parent="1" source="p_sat" target="aod">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="670" y="385" /><mxPoint x="190" y="385" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="aod_pit" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="aod" target="pit"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <!-- MART LAYER -->
+        <mxCell id="mart_label" value="&lt;b&gt;MART LAYER&lt;/b&gt;" style="text;html=1;fontSize=13;fontColor=#6c3483;align=center;" vertex="1" parent="1">
+          <mxGeometry x="300" y="560" width="200" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="mart" value="&lt;b&gt;mart_party_identity&lt;/b&gt; (join PIT pointers → real values + LEAD + COALESCE)&lt;br&gt;&lt;br&gt;PARTY_ID | NAME | GENDER | DOB | STATUS | EFF_FROM | EFF_TO&lt;br&gt;───────────────────────────────────────────&lt;br&gt;1001 | Ashraf | M | 1990-05-15 | ACTIVE | Jan1 09:00 | Jan1 10:00&lt;br&gt;1001 | Ashraf | M | 1990-05-15 | ACTIVE | Jan1 10:00 | Feb1 10:00&lt;br&gt;1001 | Ashraf | M | 1990-05-15 | VIP | Feb1 10:00 | Mar1 09:00&lt;br&gt;1001 | Ashraf | M | 1990-05-16 | VIP | Mar1 09:00 | NULL&lt;br&gt;&lt;br&gt;&lt;i&gt;Row 3: Partner changed STATUS to VIP (Feb1). Health DOB unchanged.&lt;/i&gt;&lt;br&gt;&lt;i&gt;Row 4: Health corrected DOB (Mar1). Partner STATUS unchanged.&lt;/i&gt;&lt;br&gt;&lt;i&gt;No phantom combinations — each LOB resolves independently.&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;align=left;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="130" y="600" width="550" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="mart_e" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="pit" target="mart"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <!-- DATA EXAMPLE BOX -->
+        <mxCell id="data_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f0f0;strokeColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="820" y="350" width="400" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="data_text" value="&lt;b&gt;Satellite Data (party ABC = Ashraf)&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Health sat_party_identity:&lt;/b&gt;&lt;br&gt;ABC | Jan1 09:00 | Ashraf | M | 1990-05-15 | ACTIVE&lt;br&gt;ABC | Mar1 09:00 | Ashraf | M | 1990-05-16 | ACTIVE&lt;br&gt;&lt;i&gt;(DOB corrected on Mar1)&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Partner sat_party_identity:&lt;/b&gt;&lt;br&gt;ABC | Jan1 10:00 | Ashraf | M | 1990-05-15 | ACTIVE&lt;br&gt;ABC | Feb1 10:00 | Ashraf | M | 1990-05-15 | VIP&lt;br&gt;&lt;i&gt;(STATUS changed on Feb1)&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;COALESCE priority (business decision):&lt;/b&gt;&lt;br&gt;• DOB → Health wins (member system of record)&lt;br&gt;• STATUS → Partner wins (intermediary system)&lt;br&gt;&lt;br&gt;&lt;b&gt;Prerequisite:&lt;/b&gt; Both LOBs use same hub key&lt;br&gt;'HUB_PARTY|' || same_business_id → same PARTY_HK" style="text;html=1;fontSize=9;fontColor=#000000;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="830" y="355" width="380" height="240" as="geometry" />
+        </mxCell>
+
+        <!-- KEY RULES BOX -->
+        <mxCell id="rules_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="820" y="630" width="400" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="rules_text" value="&lt;b&gt;Cross-LOB PIT Rules:&lt;/b&gt;&lt;br&gt;&lt;br&gt;1. Both LOBs MUST hash same business key identically&lt;br&gt;2. Keep satellites separate per LOB (don't merge physically)&lt;br&gt;3. as_of_date = UNION of LOAD_DATETIMEs from ALL sats&lt;br&gt;4. PIT has one pointer column PER LOB satellite&lt;br&gt;5. COALESCE priority = business decision in mart, not vault&lt;br&gt;6. Both LOB satellites untouched — priority reversible anytime" style="text;html=1;fontSize=9;fontColor=#000000;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="830" y="635" width="380" height="120" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
