@@ -14,7 +14,8 @@ with source as (
     nullif(trim("ZONE1"::varchar), '') as zone1,
     nullif(trim("ZONE2"::varchar), '') as zone2,
     nullif(trim("STATUS"::varchar), '') as status,
-    "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date
+    "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_raw', 'BJAZ_PINCODE') }}
 
 )

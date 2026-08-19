@@ -17,7 +17,8 @@ with source as (
     nullif(trim(to_varchar("MAILING_ADDRESS_ID")), '') as mailing_address_id,
     "IP_NO"::number as ip_no,
     nullif(trim(to_varchar("CONTRACT_ID")), '') as contract_id,
-    "VERSION_NO"::number as version_no
+    "VERSION_NO"::number as version_no,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_raw', 'OCP_INTERESTED_PARTIES') }}
 
 )

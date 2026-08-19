@@ -4,8 +4,8 @@
      (from_date < ldts_column <= to_date). Otherwise keep the original T-1 filter. --#}
 {%- if target_sat is not none -%}
 
-    {#-- Resolve to_date: var override or run_started_at --#}
-    {%- set td = var('to_date', run_started_at.strftime('%Y-%m-%d %H:%M:%S')) -%}
+    {#-- Resolve to_date: var override or run_started_at shifted UTC->IST (UTC+5:30) --#}
+    {%- set td = var('to_date', (run_started_at + modules.datetime.timedelta(hours=5, minutes=30)).strftime('%Y-%m-%d %H:%M:%S')) -%}
     {%- set to_date = "'" ~ td ~ "'" -%}
 
     {#-- Resolve from_date: var override -> MAX(DBT_RUN_TS) from sat -> sentinel --#}

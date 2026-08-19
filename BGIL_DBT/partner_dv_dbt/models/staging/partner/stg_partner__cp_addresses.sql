@@ -20,7 +20,8 @@ with source as (
     nullif(trim("ADDRESS_LINE5"::varchar), '') as address_line5,
     nullif(trim("TELEPHONE"::varchar), '') as telephone,
     nullif(trim("EXT_USER"::varchar), '') as ext_user,
-    "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date
+    "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_raw', 'CP_ADDRESSES') }}
 
 )

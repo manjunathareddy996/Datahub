@@ -41,7 +41,8 @@ with source as (
     nullif(trim("PRESCRIPTION_DETAIL"::varchar), '') as prescription_detail,
     nullif(trim("FIRST_POLICY_REF"::varchar), '') as first_policy_ref,
     "INCEPTION_DATE"::timestamp_ntz as inception_date,
-    nullif(trim("NOMINEE_RLTN"::varchar), '') as nominee_rltn
+    nullif(trim("NOMINEE_RLTN"::varchar), '') as nominee_rltn,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_raw', 'BJAZ_HC_PART_EXTN') }}
 
 )

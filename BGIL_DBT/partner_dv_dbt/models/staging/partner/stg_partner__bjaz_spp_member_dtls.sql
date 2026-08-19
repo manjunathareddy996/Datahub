@@ -56,7 +56,8 @@ with source as (
     nullif(trim("HEIGHT_FEET"::varchar), '') as height_feet,
     nullif(trim("HEIGHT_INCHES"::varchar), '') as height_inches,
     nullif(trim("WEIGHT"::varchar), '') as weight,
-    nullif(trim("BMI"::varchar), '') as bmi
+    nullif(trim("BMI"::varchar), '') as bmi,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_raw', 'BJAZ_SPP_MEMBER_DTLS') }}
 
 )

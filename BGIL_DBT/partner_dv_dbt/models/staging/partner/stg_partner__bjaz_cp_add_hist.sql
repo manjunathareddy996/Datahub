@@ -27,7 +27,8 @@ with source as (
     nullif(trim(to_varchar("ADD_ID")), '') as add_id,
     "VERSION"::number as version,
     "EVENT_DATE"::timestamp_ntz as event_date,
-    nullif(trim("USERID"::varchar), '') as userid
+    nullif(trim("USERID"::varchar), '') as userid,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_raw', 'BJAZ_CP_ADD_HIST') }}
 
 )

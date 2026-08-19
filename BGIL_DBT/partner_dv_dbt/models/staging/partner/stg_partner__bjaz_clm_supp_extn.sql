@@ -127,7 +127,8 @@ with source as (
     "DUTY_FLAG_UPDATE_DATE"::timestamp_ntz as duty_flag_update_date,
     nullif(trim("ACKNOWLEDGEMENT_FLAG"::varchar), '') as acknowledgement_flag,
     nullif(trim("OD_MIGRATION_YN"::varchar), '') as od_migration_yn,
-    "OD_MIGRATION_DATE"::timestamp_ntz as od_migration_date
+    "OD_MIGRATION_DATE"::timestamp_ntz as od_migration_date,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_raw', 'BJAZ_CLM_SUPP_EXTN') }}
 
 )

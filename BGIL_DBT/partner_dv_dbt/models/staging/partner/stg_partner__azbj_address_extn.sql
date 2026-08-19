@@ -30,7 +30,8 @@ with source as (
     nullif(trim("ADD_TYPE"::varchar), '') as add_type,
     nullif(trim("CONTACT_DTLS"::varchar), '') as contact_dtls,
     nullif(trim("PASSPORT_NO"::varchar), '') as passport_no,
-    "NO_SON"::number as no_son
+    "NO_SON"::number as no_son,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_raw', 'AZBJ_ADDRESS_EXTN') }}
 
 )

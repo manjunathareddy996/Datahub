@@ -105,7 +105,8 @@ with source as (
     nullif(trim("CGST_DESC"::varchar), '') as cgst_desc,
     nullif(trim("IGST_DESC"::varchar), '') as igst_desc,
     nullif(trim("NCC_DESC"::varchar), '') as ncc_desc,
-    "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date
+    "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_raw', 'BJAZ_CTNGY_PA_MEM_DTLS') }}
 
 )

@@ -52,7 +52,8 @@ with source as (
     nullif(trim("TYPE_OF_CHANGE"::varchar), '') as type_of_change,
     nullif(trim("WEBSITE_LINK"::varchar), '') as website_link,
     nullif(trim("GST_STATUS"::varchar), '') as gst_status,
-    nullif(trim("GST_NO"::varchar), '') as gst_no
+    nullif(trim("GST_NO"::varchar), '') as gst_no,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_raw', 'BJAZ_INTERMEDIARY') }}
     {%- if is_incremental() %}
     where "GG_CHANGE_DATE"::timestamp_ntz > (

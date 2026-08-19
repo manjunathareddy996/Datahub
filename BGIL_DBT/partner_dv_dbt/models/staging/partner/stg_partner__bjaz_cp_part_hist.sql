@@ -62,7 +62,8 @@ with source as (
     nullif(trim("WEB_USER_ID"::varchar), '') as web_user_id,
     nullif(trim("ACTION"::varchar), '') as action,
     nullif(trim("MODULE"::varchar), '') as module,
-    "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date
+    "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_raw', 'BJAZ_CP_PART_HIST') }}
 
 )

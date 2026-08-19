@@ -11,7 +11,8 @@ with source as (
     "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
     nullif(trim("REMARKS"::varchar), '') as remarks,
     nullif(trim("PRIMARY_YN"::varchar), '') as primary_yn,
-    nullif(trim(to_varchar("ADD_ID")), '') as add_id
+    nullif(trim(to_varchar("ADD_ID")), '') as add_id,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_raw', 'BJAZ_CP_ADDRESS_LINK') }}
 
 )

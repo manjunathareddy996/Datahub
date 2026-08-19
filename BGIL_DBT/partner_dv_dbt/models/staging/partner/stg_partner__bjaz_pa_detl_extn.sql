@@ -36,7 +36,8 @@ with source as (
     nullif(trim("CUMM_BONUS_WIDER"::varchar), '') as cumm_bonus_wider,
     "CUMM_BONUS_AMT_WIDER"::number as cumm_bonus_amt_wider,
     "CUMM_BONUS_AMT_COMP"::number as cumm_bonus_amt_comp,
-    "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date
+    "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_raw', 'BJAZ_PA_DETL_EXTN') }}
 
 )
