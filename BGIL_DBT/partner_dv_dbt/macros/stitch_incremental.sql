@@ -50,7 +50,7 @@ WITH affected_keys AS (
     {% if not loop.last %}UNION{% endif %}
     {% endfor %}
 ),
-{% for src in sources %}
+{%- for src in sources %}
 {{ src.alias }} AS (
     SELECT DISTINCT
         {{ src.key_column }} AS {{ unique_key }}
@@ -59,16 +59,18 @@ WITH affected_keys AS (
         {%- endfor %}
     FROM {{ this.database }}.{{ this.schema }}.{{ src.model }}
     WHERE {{ src.key_column }} IS NOT NULL
-      AND {{ src.key_column }} IN (SELECT {{ unique_key }} FROM affected_keys)
-    QUALIFY ROW_NUMBER() OVER (
-        PARTITION BY {{ src.key_column }}
-        ORDER BY {% for col in src.columns %}{{ col.tgt }}{% if not loop.last %}, {% endif %}{% endfor %}
-    ) = 1
 ),
-{% endfor %}
-stitched AS (
+{%- endfor %}
+{#-- Build a single ORDER BY for the final QUALIFY (prefer rows that carry values) --#}
+{%- set ns = namespace(order_terms=[]) -%}
+{%- for src in sources -%}
+    {%- for col in src.columns -%}
+        {%- do ns.order_terms.append(src.alias ~ '.' ~ col.tgt ~ ' NULLS LAST') -%}
+    {%- endfor -%}
+{%- endfor -%}
+final AS (
     SELECT
-        COALESCE({% for src in sources %}{{ src.alias }}.{{ unique_key }}{% if not loop.last %}, {% endif %}{% endfor %}) AS {{ unique_key }},
+        ak.{{ unique_key }} AS {{ unique_key }},
         {%- for col in output_columns %}
         {% if coalesce_rules[col] | length == 1 %}{{ coalesce_rules[col][0] }}.{{ col }}{% else %}COALESCE({% for alias in coalesce_rules[col] %}{{ alias }}.{{ col }}{% if not loop.last %}, {% endif %}{% endfor %}){% endif %} AS {{ col }},
         {%- endfor %}
@@ -77,11 +79,14 @@ stitched AS (
             CASE WHEN {{ src.alias }}.{{ unique_key }} IS NOT NULL THEN '{{ src.source_tag }}' END{% if not loop.last %},{% endif %}
             {%- endfor %}
         ), ', ') AS record_source
-    FROM {{ sources[0].alias }}
-    {%- for src in sources[1:] %}
-    FULL OUTER JOIN {{ src.alias }}
-        ON {% if loop.index == 1 %}{{ sources[0].alias }}.{{ unique_key }}{% else %}COALESCE({% for prev in sources[:loop.index] %}{{ prev.alias }}.{{ unique_key }}{% if not loop.last %}, {% endif %}{% endfor %}){% endif %} = {{ src.alias }}.{{ unique_key }}
+    FROM affected_keys ak
+    {%- for src in sources %}
+    LEFT JOIN {{ src.alias }} ON {{ src.alias }}.{{ unique_key }} = ak.{{ unique_key }}
     {%- endfor %}
+    QUALIFY ROW_NUMBER() OVER (
+        PARTITION BY ak.{{ unique_key }}
+        ORDER BY {{ ns.order_terms | join(', ') }}
+    ) = 1
 )
 
 SELECT
@@ -90,6 +95,6 @@ SELECT
     {{ col }},
     {%- endfor %}
     record_source
-FROM stitched
+FROM final
 
 {% endmacro %}
