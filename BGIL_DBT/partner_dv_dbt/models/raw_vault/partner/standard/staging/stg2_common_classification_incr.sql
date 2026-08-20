@@ -6,14 +6,8 @@
 -- NOT via automate_dv derived_columns, because the '!' prefix would wrap the whole expression in quotes.
 -- It is carried into the sat as a NON-hashdiff extra column, and is the value the stitch reads MAX() of.
 
-{#-- Convert run_started_at (UTC) to IST in SQL via CONVERT_TIMEZONE, so the result is guaranteed IST
-     regardless of how run_started_at's timezone is rendered. var('to_date') overrides (used as-is). --#}
-{%- set run_ts_utc = run_started_at.strftime('%Y-%m-%d %H:%M:%S') -%}
-{%- if var('to_date', none) is not none -%}
-    {%- set dbt_run_ts_expr = "CAST('" ~ var('to_date') ~ "' AS TIMESTAMP_NTZ)" -%}
-{%- else -%}
-    {%- set dbt_run_ts_expr = "CAST(CONVERT_TIMEZONE('UTC','Asia/Kolkata', '" ~ run_ts_utc ~ "'::timestamp_ntz) AS TIMESTAMP_NTZ)" -%}
-{%- endif -%}
+{#-- run_started_at is UTC; use Snowflake CONVERT_TIMEZONE for reliable IST conversion --#}
+{%- set to_date = var('to_date', none) -%}
 
 {%- set yaml_metadata -%}
 source_model: 'stitch_common_classification_incr'

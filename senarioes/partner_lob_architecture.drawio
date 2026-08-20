@@ -1,179 +1,106 @@
-<mxfile host="65bd71144e">
-    <diagram name="Partner LOB - Satellite Architecture" id="partner-sat-arch">
-        <mxGraphModel dx="349" dy="443" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3000" pageHeight="2000" math="0" shadow="0">
+<mxfile host="app.diagrams.net">
+    <diagram name="Partner LOB - Satellite Patterns" id="partner-patterns">
+        <mxGraphModel dx="2200" dy="2800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2400" pageHeight="3200">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="title" value="&lt;font color=&quot;#006600&quot;&gt;&lt;b&gt;Partner LOB — Satellite Architecture (Standard)&lt;/b&gt;&lt;br&gt;3 Patterns: Single-Source | Stitch-backed | Union-fed&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=16;rounded=1;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="900" y="20" width="600" height="50" as="geometry"/>
+                <mxCell id="title" value="&lt;b&gt;Partner LOB — Standard Satellite Lineage (All 38 Satellites)&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=16;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="500" y="10" width="600" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="legend_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="50" y="20" width="350" height="110" as="geometry"/>
+                <mxCell id="summary" value="&lt;b&gt;Pattern 1:&lt;/b&gt; 11 sats (stg→stg2→sat) | &lt;b&gt;Pattern 2:&lt;/b&gt; 16 sats (stg→stitch→stg2→sat) | &lt;b&gt;Pattern 3:&lt;/b&gt; 11 sats (stg→stg2→union→sat ⚠️)" style="text;html=1;align=center;fontSize=10;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="400" y="45" width="700" height="25" as="geometry"/>
                 </mxCell>
-                <mxCell id="legend_title" value="&lt;b&gt;&lt;font&gt;Legend&lt;/font&gt;&lt;/b&gt;" style="text;html=1;fontSize=11;rounded=1;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="60" y="25" width="100" height="20" as="geometry"/>
+                <mxCell id="p1_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;opacity=20;" vertex="1" parent="1">
+                    <mxGeometry x="30" y="90" width="1150" height="280" as="geometry"/>
                 </mxCell>
-                <mxCell id="leg1" value="Source Table" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="60" y="50" width="90" height="25" as="geometry"/>
+                <mxCell id="p1_title" value="&lt;b&gt;PATTERN 1: Direct (11 sats) ✅&lt;/b&gt;  stg_ → stg2_ → sat" style="text;html=1;fontSize=11;fontColor=#1a6b3c;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="95" width="500" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="leg2" value="stg1 (clean)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="160" y="50" width="90" height="25" as="geometry"/>
+                <mxCell id="p1_list" value="1. sat_agreement_commercial_terms ← stg2_sat_bjaz_intermediary__agreement_commercial_terms ← stg_partner__bjaz_intermediary&lt;br&gt;2. sat_agreement_definition ← stg2_sat_bjaz_intermediary__agreement_definition ← stg_partner__bjaz_intermediary&lt;br&gt;3. sat_lnk_claim_party_role ← stg2_clmparty_clm_interested_parties ← stg_partner__clm_interested_parties&lt;br&gt;4. sat_lnk_policy_party_role ← stg2_pprole_ocp_interested_parties ← stg_partner__ocp_interested_parties&lt;br&gt;5. sat_lnk_role_customer ← stg2_rolesat_clm_interested_parties__lnk_role_customer ← stg_partner__clm_interested_parties&lt;br&gt;6. sat_lnk_role_surveyor ← stg2_rolesat_bjaz_clm_supp_extn__lnk_role_surveyor ← stg_partner__bjaz_clm_supp_extn&lt;br&gt;7. sat_party_contact_address_link ← stg2_pcal_bjaz_cp_address_link ← stg_partner__bjaz_cp_address_link&lt;br&gt;8. sat_party_group_household ← stg2_sat_azbj_partner_extn__party_group_household ← stg_partner__azbj_partner_extn&lt;br&gt;9. sat_policy_coverage_schedule ← stg2_sat_ba_hcp_dt_mem__policy_coverage_schedule ← stg_partner__ba_hcp_dt_mem&lt;br&gt;10. sat_policy_endorsement ← stg2_sat_bjaz_hm_member_dtls__policy_endorsement ← stg_partner__bjaz_hm_member_dtls&lt;br&gt;11. sat_provider_tariff ← stg2_sat_bjaz_hm_hospital_master__provider_tariff ← stg_partner__bjaz_hm_hospital_master" style="text;html=1;fontSize=8;fontColor=#000000;align=left;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="120" width="1100" height="240" as="geometry"/>
                 </mxCell>
-                <mxCell id="leg3" value="Stitch (COALESCE)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="260" y="50" width="110" height="25" as="geometry"/>
+                <mxCell id="p2_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;opacity=20;" vertex="1" parent="1">
+                    <mxGeometry x="30" y="390" width="1150" height="360" as="geometry"/>
                 </mxCell>
-                <mxCell id="leg4" value="stg2 (hash)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="60" y="85" width="90" height="25" as="geometry"/>
+                <mxCell id="p2_title" value="&lt;b&gt;PATTERN 2: Stitch-backed (16 sats) ✅&lt;/b&gt;  stg_ → stitch_ → stg2_ → sat" style="text;html=1;fontSize=11;fontColor=#b8860b;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="395" width="500" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="leg5" value="Union View" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=9;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="160" y="85" width="90" height="25" as="geometry"/>
+                <mxCell id="p2_list" value="1. sat_party_identity ← stg2_party_identity ← stitch_party_identity (22 stg1s)&lt;br&gt;2. sat_party_individual_demographics ← stg2_party_individual_demographics ← stitch_party_individual_demographics (10)&lt;br&gt;3. sat_policy_header ← stg2_policy_header ← stitch_policy_header (9)&lt;br&gt;4. sat_policy_bonus_tracking ← stg2_policy_bonus_tracking ← stitch_policy_bonus_tracking (7)&lt;br&gt;5. sat_party_claim_history ← stg2_party_claim_history ← stitch_party_claim_history (6)&lt;br&gt;6. sat_party_organisation_profile ← stg2_party_organisation_profile ← stitch_party_organisation_profile (5)&lt;br&gt;7. sat_common_classification ← stg2_common_classification ← stitch_common_classification (5)&lt;br&gt;8. sat_common_address ← stg2_common_address ← stitch_common_address (5)&lt;br&gt;9. sat_party_health_profile ← stg2_party_health_profile ← stitch_party_health_profile (4)&lt;br&gt;10. sat_product_definition ← stg2_product_definition ← stitch_product_definition (3)&lt;br&gt;11. sat_common_admin_geography ← stg2_shared__common_admin_geography_common_geo ← stitch_shared__common_admin_geography_common_geo (2)&lt;br&gt;12. sat_common_geo ← stg2_shared__common_admin_geography_common_geo ← stitch_shared__common_admin_geography_common_geo (2)&lt;br&gt;13. sat_party_employment ← stg2_shared__common_communication_preference_party_employment ← stitch_shared__... (2)&lt;br&gt;14. sat_common_communication_preference ← stg2_shared__common_communication_preference_party_employment ← stitch_shared__... (2)&lt;br&gt;15. sat_provider_banking ← stg2_provider_banking ← stitch_provider_banking (2)&lt;br&gt;16. sat_common_classification_incr ← stg2_common_classification_incr ← stitch_common_classification_incr (incremental)" style="text;html=1;fontSize=8;fontColor=#000000;align=left;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="420" width="1100" height="320" as="geometry"/>
                 </mxCell>
-                <mxCell id="leg6" value="Satellite" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=9;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="260" y="85" width="90" height="25" as="geometry"/>
+                <mxCell id="p3_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;opacity=20;" vertex="1" parent="1">
+                    <mxGeometry x="30" y="770" width="1150" height="300" as="geometry"/>
                 </mxCell>
-                <mxCell id="p1_header" value="&lt;b&gt;Pattern 1: Single-Source (15 satellites) ✅&lt;/b&gt;&lt;br&gt;source → stg1 → stg2 → sat" style="text;html=1;fontSize=12;fontColor=#82b366;rounded=1;" parent="1" vertex="1">
-                    <mxGeometry x="50" y="190" width="400" height="40" as="geometry"/>
+                <mxCell id="p3_title" value="&lt;b&gt;PATTERN 3: Union-fed (11 sats) ⚠️ DUPLICATE RISK&lt;/b&gt;  stg_ → stg2_ → stg2_std_union__* → sat" style="text;html=1;fontSize=11;fontColor=#b85450;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="775" width="600" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="p1_src" value="BJAZ_INTERMEDIARY" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="50" y="250" width="160" height="30" as="geometry"/>
+                <mxCell id="p3_list" value="1. sat_party_identification ← stg2_std_union__party_identification (14 stg2s)&lt;br&gt;2. sat_lnk_role_nominee_beneficiary ← stg2_std_union__lnk_role_nominee_beneficiary (12 stg2s)&lt;br&gt;3. sat_party_group_census ← stg2_std_union__party_group_census (11 stg2s)&lt;br&gt;4. sat_common_contact ← stg2_std_union__common_contact (11 stg2s)&lt;br&gt;5. sat_party_vehicle_prior_insurance ← stg2_std_union__party_vehicle_prior_insurance (8 stg2s, custom SQL)&lt;br&gt;6. sat_party_banking ← stg2_std_union__party_banking (5 stg2s)&lt;br&gt;7. sat_policy_certificate ← stg2_std_union__policy_certificate (3 stg2s)&lt;br&gt;8. sat_policy_premium_head ← stg2_std_union__policy_premium_head (2 stg2s)&lt;br&gt;9. sat_party_kyc_reference ← stg2_std_union__party_kyc_reference (2 stg2s)&lt;br&gt;10. sat_lnk_role_provider ← stg2_std_union__lnk_role_provider (2 stg2s)&lt;br&gt;11. sat_lnk_role_agent ← stg2_std_union__lnk_role_agent (2 stg2s)&lt;br&gt;&lt;br&gt;&lt;i&gt;⚠️ Each stg2 computes its OWN hashdiff. UNION interleaves them. Satellite compares against last row from ANY source → duplicate inserts.&lt;/i&gt;" style="text;html=1;fontSize=8;fontColor=#000000;align=left;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="800" width="1100" height="250" as="geometry"/>
                 </mxCell>
-                <mxCell id="p1_stg1" value="stg_partner__bjaz_intermediary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="260" y="250" width="200" height="30" as="geometry"/>
+                <mxCell id="flow_title" value="&lt;b&gt;Visual Flow per Pattern&lt;/b&gt;" style="text;html=1;fontSize=12;fontColor=#000000;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="400" y="1100" width="300" height="25" as="geometry"/>
                 </mxCell>
-                <mxCell id="p1_stg2" value="stg2_sat_bjaz_intermediary__agreement_definition" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="510" y="250" width="300" height="30" as="geometry"/>
+                <mxCell id="f1_src" value="Source" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="1150" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="p1_sat" value="sat_agreement_definition" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#82b366;strokeWidth=2;fontSize=10;fontStyle=1;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="860" y="250" width="180" height="30" as="geometry"/>
+                <mxCell id="f1_stg1" value="stg_" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" vertex="1" parent="1">
+                    <mxGeometry x="170" y="1150" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="p1_e1" style="edgeStyle=orthogonalEdgeStyle;fontColor=#000000;" parent="1" source="p1_src" target="p1_stg1" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
+                <mxCell id="f1_stg2" value="stg2_" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="1">
+                    <mxGeometry x="290" y="1150" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="p1_e2" style="edgeStyle=orthogonalEdgeStyle;fontColor=#000000;" parent="1" source="p1_stg1" target="p1_stg2" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
+                <mxCell id="f1_sat" value="sat_ ✅" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#ffe6cc;strokeColor=#82b366;fontSize=9;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="410" y="1150" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="p1_e3" style="edgeStyle=orthogonalEdgeStyle;fontColor=#000000;" parent="1" source="p1_stg2" target="p1_sat" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
+                <mxCell id="f1e1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="f1_src" target="f1_stg1"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="f1e2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="f1_stg1" target="f1_stg2"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="f1e3" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="f1_stg2" target="f1_sat"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="f1_lbl" value="&lt;b&gt;Pattern 1&lt;/b&gt;" style="text;html=1;fontSize=9;fontColor=#1a6b3c;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="1130" width="80" height="18" as="geometry"/>
                 </mxCell>
-                <mxCell id="p1_list" value="&lt;b&gt;All single-source satellites:&lt;/b&gt;&lt;br&gt;sat_agreement_commercial_terms, sat_agreement_definition,&lt;br&gt;sat_common_address, sat_common_admin_geography,&lt;br&gt;sat_common_classification, sat_common_communication_preference,&lt;br&gt;sat_common_geo, sat_lnk_claim_party_role,&lt;br&gt;sat_lnk_policy_party_role, sat_lnk_role_customer,&lt;br&gt;sat_lnk_role_surveyor, sat_party_claim_history,&lt;br&gt;sat_party_contact_address_link, sat_party_employment,&lt;br&gt;sat_party_group_household, sat_party_health_profile,&lt;br&gt;sat_party_identity, sat_party_individual_demographics,&lt;br&gt;sat_party_organisation_profile, sat_policy_bonus_tracking,&lt;br&gt;sat_policy_coverage_schedule, sat_policy_endorsement,&lt;br&gt;sat_policy_header, sat_product_definition,&lt;br&gt;sat_provider_banking, sat_provider_tariff" style="text;html=1;fontSize=9;align=left;verticalAlign=top;rounded=1;" parent="1" vertex="1">
-                    <mxGeometry x="50" y="300" width="400" height="160" as="geometry"/>
+                <mxCell id="f2_src" value="N Sources" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="1210" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="p2_header" value="&lt;b&gt;Pattern 2: Stitch-backed Multi-Source (15 stitches feed single-source sats) ✅&lt;/b&gt;&lt;br&gt;source₁..ₙ → stg1₁..ₙ → stitch (COALESCE) → stg2 → sat" style="text;html=1;fontSize=12;fontColor=#82b366;rounded=1;" parent="1" vertex="1">
-                    <mxGeometry x="50" y="540" width="600" height="40" as="geometry"/>
+                <mxCell id="f2_stg1" value="N stg_" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" vertex="1" parent="1">
+                    <mxGeometry x="170" y="1210" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="p2_src1" value="AZBJ_PARTNER_EXTN" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="50" y="600" width="140" height="25" as="geometry"/>
+                <mxCell id="f2_stitch" value="stitch_" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;" vertex="1" parent="1">
+                    <mxGeometry x="290" y="1210" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="p2_src2" value="BJAZ_HM_MEMBER_DTLS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="50" y="630" width="140" height="25" as="geometry"/>
+                <mxCell id="f2_stg2" value="stg2_" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="1">
+                    <mxGeometry x="410" y="1210" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="p2_src3" value="... (20 more tables)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8;fontStyle=2;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="50" y="660" width="140" height="25" as="geometry"/>
+                <mxCell id="f2_sat" value="sat_ ✅" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#ffe6cc;strokeColor=#82b366;fontSize=9;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="530" y="1210" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="p2_stg1a" value="stg_partner__azbj_partner_extn" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=8;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="240" y="600" width="190" height="25" as="geometry"/>
+                <mxCell id="f2e1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="f2_src" target="f2_stg1"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="f2e2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="f2_stg1" target="f2_stitch"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="f2e3" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="f2_stitch" target="f2_stg2"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="f2e4" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="f2_stg2" target="f2_sat"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="f2_lbl" value="&lt;b&gt;Pattern 2&lt;/b&gt;" style="text;html=1;fontSize=9;fontColor=#b8860b;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="1190" width="80" height="18" as="geometry"/>
                 </mxCell>
-                <mxCell id="p2_stg1b" value="stg_partner__bjaz_hm_member_dtls" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=8;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="240" y="630" width="190" height="25" as="geometry"/>
+                <mxCell id="f3_src" value="N Sources" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="1270" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="p2_stg1c" value="... (20 more stg1 views)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=8;fontStyle=2;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="240" y="660" width="190" height="25" as="geometry"/>
+                <mxCell id="f3_stg1" value="N stg_" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" vertex="1" parent="1">
+                    <mxGeometry x="170" y="1270" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="p2_stitch" value="&lt;b&gt;stitch_party_identity&lt;/b&gt;&lt;br&gt;(LEFT JOIN&amp;nbsp; with affected_keys+ COALESCE)&lt;br&gt;22 sources → 1 row per key" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="490" y="610" width="210" height="55" as="geometry"/>
+                <mxCell id="f3_stg2" value="N stg2_" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="1">
+                    <mxGeometry x="290" y="1270" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="p2_stg2" value="stg2_party_identity&lt;br&gt;(ONE hashdiff)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="750" y="620" width="150" height="35" as="geometry"/>
+                <mxCell id="f3_union" value="union_" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#f8cecc;strokeColor=#b85450;fontSize=9;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="410" y="1270" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="p2_sat" value="sat_party_identity" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#82b366;strokeWidth=2;fontSize=10;fontStyle=1;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="950" y="620" width="150" height="35" as="geometry"/>
+                <mxCell id="f3_sat" value="sat_ ⚠️" style="rounded=0;whiteSpace=wrap;html=1;fontColor=#000000;fillColor=#ffe6cc;strokeColor=#b85450;fontSize=9;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="530" y="1270" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="p2_e1a" style="edgeStyle=orthogonalEdgeStyle;fontColor=#000000;" parent="1" source="p2_src1" target="p2_stg1a" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="p2_e1b" style="edgeStyle=orthogonalEdgeStyle;fontColor=#000000;" parent="1" source="p2_src2" target="p2_stg1b" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="p2_e2a" style="edgeStyle=orthogonalEdgeStyle;fontColor=#000000;" parent="1" source="p2_stg1a" target="p2_stitch" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="p2_e2b" style="edgeStyle=orthogonalEdgeStyle;fontColor=#000000;" parent="1" source="p2_stg1b" target="p2_stitch" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="p2_e3" style="edgeStyle=orthogonalEdgeStyle;fontColor=#000000;" parent="1" source="p2_stitch" target="p2_stg2" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="p2_e4" style="edgeStyle=orthogonalEdgeStyle;fontColor=#000000;" parent="1" source="p2_stg2" target="p2_sat" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="p2_list" value="&lt;b&gt;All stitch-backed satellites (15 stitches):&lt;/b&gt;&lt;br&gt;stitch_party_identity (22) → sat_party_identity&lt;br&gt;stitch_party_individual_demographics (10) → sat_party_individual_demographics&lt;br&gt;stitch_policy_header (9) → sat_policy_header&lt;br&gt;stitch_policy_bonus_tracking (7) → sat_policy_bonus_tracking&lt;br&gt;stitch_party_claim_history (6) → sat_party_claim_history&lt;br&gt;stitch_party_organisation_profile (5) → sat_party_organisation_profile&lt;br&gt;stitch_common_classification (5) → sat_common_classification&lt;br&gt;stitch_common_address_incr (5) → sat_common_address&lt;br&gt;stitch_party_health_profile (4) → sat_party_health_profile&lt;br&gt;stitch_product_definition (3) → sat_product_definition&lt;br&gt;stitch_shared__comm_pref_party_employment (2) → sat_party_employment&lt;br&gt;stitch_shared__admin_geo_common_geo (2) → sat_common_admin_geography&lt;br&gt;stitch_provider_banking (2) → sat_provider_banking&lt;br&gt;stitch_common_classification_incr (incr) → sat_common_classification_incr&lt;br&gt;stitch_common_address (base) → sat_common_address" style="text;html=1;fontSize=9;align=left;verticalAlign=top;rounded=1;" parent="1" vertex="1">
-                    <mxGeometry x="50" y="700" width="500" height="250" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_header" value="&lt;b&gt;Pattern 3: Union-fed Multi-Source (11+1 satellites)&lt;/b&gt;&lt;br&gt;source₁..ₙ → stg1₁..ₙ → stg2₁..ₙ (each own hashdiff) → stg2_std_union__* (UNION ALL) → sat" style="text;html=1;fontSize=12;fontColor=#b85450;rounded=1;" parent="1" vertex="1">
-                    <mxGeometry x="50" y="970" width="700" height="40" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_src1" value="AZBJ_PARTNER_EXTN" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="50" y="1030" width="140" height="25" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_src2" value="BJAZ_HM_MEMBER_DTLS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="50" y="1060" width="140" height="25" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_src3" value="... (9 more tables)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8;fontStyle=2;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="50" y="1090" width="140" height="25" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_stg1a" value="stg_partner__azbj_partner_extn" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=8;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="240" y="1030" width="180" height="25" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_stg1b" value="stg_partner__bjaz_hm_member_dtls" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=8;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="240" y="1060" width="180" height="25" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_stg1c" value="..." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=8;fontStyle=2;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="240" y="1090" width="180" height="25" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_stg2a" value="stg2_sat_azbj_partner_extn__common_contact&lt;br&gt;(own HASHDIFF)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="470" y="1025" width="250" height="30" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_stg2b" value="stg2_sat_bjaz_hm_member_dtls__common_contact&lt;br&gt;(own HASHDIFF)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="470" y="1060" width="250" height="30" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_stg2c" value="... (9 more stg2, each own hashdiff)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8;fontStyle=2;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="470" y="1095" width="250" height="25" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_union" value="&lt;b&gt;stg2_std_union__common_contact&lt;/b&gt;&lt;br&gt;(UNION ALL — interleaves hashdiffs)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=9;strokeWidth=2;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="780" y="1045" width="230" height="45" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_sat" value="&lt;b&gt;sat_common_contact&lt;/b&gt;&lt;br&gt;⚠️ Muliple source for each pk_hash" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#b85450;strokeWidth=2;fontSize=10;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="1070" y="1045" width="170" height="45" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_e1a" style="edgeStyle=orthogonalEdgeStyle;fontColor=#000000;" parent="1" source="p3_src1" target="p3_stg1a" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_e1b" style="edgeStyle=orthogonalEdgeStyle;fontColor=#000000;" parent="1" source="p3_src2" target="p3_stg1b" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_e2a" style="edgeStyle=orthogonalEdgeStyle;fontColor=#000000;" parent="1" source="p3_stg1a" target="p3_stg2a" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_e2b" style="edgeStyle=orthogonalEdgeStyle;fontColor=#000000;" parent="1" source="p3_stg1b" target="p3_stg2b" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_e3a" style="edgeStyle=orthogonalEdgeStyle;fontColor=#000000;" parent="1" source="p3_stg2a" target="p3_union" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_e3b" style="edgeStyle=orthogonalEdgeStyle;fontColor=#000000;" parent="1" source="p3_stg2b" target="p3_union" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_e4" style="edgeStyle=orthogonalEdgeStyle;fontColor=#000000;" parent="1" source="p3_union" target="p3_sat" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="p3_list" value="&lt;b&gt;All union-fed satellites (12):&lt;/b&gt;&lt;br&gt;sat_party_identification (14 stg2s)&lt;br&gt;sat_lnk_role_nominee_beneficiary (12 stg2s)&lt;br&gt;sat_party_group_census (11 stg2s)&lt;br&gt;sat_common_contact (11 stg2s)&lt;br&gt;sat_party_vehicle_prior_insurance (8 stg2s, custom SQL)&lt;br&gt;sat_party_banking (5 stg2s)&lt;br&gt;sat_policy_certificate (3 stg2s)&lt;br&gt;sat_policy_premium_head (2 stg2s)&lt;br&gt;sat_party_kyc_reference (2 stg2s)&lt;br&gt;sat_lnk_role_provider (2 stg2s)&lt;br&gt;sat_lnk_role_agent (2 stg2s)&lt;br&gt;&lt;br&gt;" style="text;html=1;fontSize=9;align=left;verticalAlign=top;rounded=1;" parent="1" vertex="1">
-                    <mxGeometry x="50" y="1130" width="450" height="230" as="geometry"/>
-                </mxCell>
-                <mxCell id="summary_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f0f0;strokeColor=#333333;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="1150" y="190" width="350" height="200" as="geometry"/>
-                </mxCell>
-                <mxCell id="summary_text" value="&lt;b&gt;Partner LOB Summary&lt;/b&gt;&lt;br&gt;&lt;br&gt;✅ Single-source sats: &lt;b&gt;25&lt;/b&gt;&lt;br&gt;(includes those backed by stitches)&lt;br&gt;&lt;br&gt;✅ Stitch models: &lt;b&gt;15&lt;/b&gt;&lt;br&gt;(merge 2-22 sources, feed single stg2)&lt;br&gt;&lt;br&gt;⚠️ Union-fed sats: &lt;b&gt;12&lt;/b&gt;&lt;br&gt;(2-14 stg2s UNIONed)&lt;br&gt;&lt;br&gt;Total satellites: &lt;b&gt;37&lt;/b&gt; standard" style="text;html=1;fontSize=10;align=left;verticalAlign=top;rounded=1;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="1160" y="195" width="330" height="190" as="geometry"/>
+                <mxCell id="f3e1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="f3_src" target="f3_stg1"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="f3e2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="f3_stg1" target="f3_stg2"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="f3e3" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="f3_stg2" target="f3_union"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="f3e4" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="f3_union" target="f3_sat"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="f3_lbl" value="&lt;b&gt;Pattern 3&lt;/b&gt;" style="text;html=1;fontSize=9;fontColor=#b85450;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="1250" width="80" height="18" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
