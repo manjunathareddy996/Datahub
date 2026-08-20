@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: demo_raw
+    database: "{{ var('health_test_raw_database') }}"
+    schema: "{{ var('health_test_raw_schema') }}"
+    tables:
+      - name: TABLE_A
+      - name: TABLE_B
