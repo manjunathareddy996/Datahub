@@ -27,14 +27,12 @@ derived_columns:
     {%- set dbt_run_ts_expr = "CAST(CONVERT_TIMEZONE('UTC','Asia/Kolkata', '" ~ run_ts_utc ~ "'::timestamp_ntz) AS TIMESTAMP_NTZ)" -%}
 {%- endif -%}
 
-SELECT
-    staged.*,
-    {{ dbt_run_ts_expr }} AS DBT_RUN_TS
-FROM (
+{#-- Capture stage() output and replace its final SELECT to append DBT_RUN_TS --#}
+{%- set stage_sql -%}
+{{ automate_dv.stage(include_source_columns=true,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}
+{%- endset -%}
 
-    {{ automate_dv.stage(include_source_columns=true,
-                          source_model=metadata_dict['source_model'],
-                          hashed_columns=metadata_dict['hashed_columns'],
-                          derived_columns=metadata_dict['derived_columns']) }}
-
-) AS staged
+{{ stage_sql | replace("SELECT * FROM columns_to_select", "SELECT *, " ~ dbt_run_ts_expr ~ " AS DBT_RUN_TS FROM columns_to_select") }}
