@@ -6,15 +6,15 @@
 with source as (
 
     select
-    nullif(trim(to_varchar("SUPP_ID")), '') as supp_id,
+    nullif(trim("SUPP_ID"::varchar), '') as supp_id,
     nullif(trim("SUPP_TYPE"::varchar), '') as supp_type,
-    nullif(trim(to_varchar("PART_ID")), '') as part_id,
+    nullif(trim("PART_ID"::varchar), '') as part_id,
     "EFF_DATE"::timestamp_ntz as eff_date,
     "EXP_DATE"::timestamp_ntz as exp_date,
     nullif(trim("SUPP_STATUS"::varchar), '') as supp_status,
     nullif(trim("CONTACT"::varchar), '') as contact,
     nullif(trim("COMMENTS"::varchar), '') as comments,
-    nullif(trim(to_varchar("LOC_CODE")), '') as loc_code,
+    nullif(trim("LOC_CODE"::varchar), '') as loc_code,
     "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_raw', 'CLM_SUPPLIERS') }}

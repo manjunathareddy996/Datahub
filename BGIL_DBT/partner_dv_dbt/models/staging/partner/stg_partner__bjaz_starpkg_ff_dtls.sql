@@ -7,7 +7,7 @@ with source as (
 
     select
     nullif(trim("ACTION_CODE"::varchar), '') as action_code,
-    nullif(trim(to_varchar("CONTRACT_ID")), '') as contract_id,
+    nullif(trim("CONTRACT_ID"::varchar), '') as contract_id,
     "VERSION_NO"::number as version_no,
     "OBJECT_ID"::number as object_id,
     nullif(trim("TOP_INDICATOR"::varchar), '') as top_indicator,
@@ -25,7 +25,7 @@ with source as (
     nullif(trim("ASSIGNEE"::varchar), '') as assignee,
     "FULL_PREMIUM"::number as full_premium,
     nullif(trim("YESNO"::varchar), '') as yesno,
-    nullif(trim(to_varchar("PARTNER_ID")), '') as partner_id,
+    nullif(trim("PARTNER_ID"::varchar), '') as partner_id,
     "DOB"::timestamp_ntz as dob,
     nullif(trim("SP_CONDITIONS"::varchar), '') as sp_conditions,
     nullif(trim("CI_YN"::varchar), '') as ci_yn,

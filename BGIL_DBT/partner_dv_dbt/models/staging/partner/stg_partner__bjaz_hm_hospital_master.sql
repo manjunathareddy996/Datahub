@@ -6,7 +6,7 @@
 with source as (
 
     select
-    nullif(trim(to_varchar("HOSID")), '') as hosid,
+    nullif(trim("HOSID"::varchar), '') as hosid,
     nullif(trim("HOSPITAL_NAME"::varchar), '') as hospital_name,
     nullif(trim("ADDRESS1"::varchar), '') as address1,
     nullif(trim("ADDRESS2"::varchar), '') as address2,
@@ -30,7 +30,7 @@ with source as (
     nullif(trim("UPDATED_BY"::varchar), '') as updated_by,
     "DELETE_FLAG"::number as delete_flag,
     nullif(trim("STATE_NAME"::varchar), '') as state_name,
-    nullif(trim(to_varchar("PARTNER_ID")), '') as partner_id,
+    nullif(trim("PARTNER_ID"::varchar), '') as partner_id,
     "EFFECTIVE_DATE"::timestamp_ntz as effective_date,
     "EXPIRY_DATE"::timestamp_ntz as expiry_date,
     nullif(trim("EMAIL"::varchar), '') as email,

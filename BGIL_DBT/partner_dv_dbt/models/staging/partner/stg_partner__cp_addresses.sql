@@ -6,7 +6,7 @@
 with source as (
 
     select
-    nullif(trim(to_varchar("ADD_ID")), '') as add_id,
+    nullif(trim("ADD_ID"::varchar), '') as add_id,
     "VERSION"::number as version,
     "EVENT_DATE"::timestamp_ntz as event_date,
     nullif(trim("USERID"::varchar), '') as userid,

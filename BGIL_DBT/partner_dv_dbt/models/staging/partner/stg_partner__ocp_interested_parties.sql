@@ -11,12 +11,12 @@ with source as (
     nullif(trim("TOP_INDICATOR"::varchar), '') as top_indicator,
     "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
     nullif(trim("CUSTOMER_NAME_TEXT"::varchar), '') as customer_name_text,
-    nullif(trim(to_varchar("PARTNER_ID")), '') as partner_id,
+    nullif(trim("PARTNER_ID"::varchar), '') as partner_id,
     "PREVIOUS_VERSION"::number as previous_version,
     "REVERSING_VERSION"::number as reversing_version,
-    nullif(trim(to_varchar("MAILING_ADDRESS_ID")), '') as mailing_address_id,
+    nullif(trim("MAILING_ADDRESS_ID"::varchar), '') as mailing_address_id,
     "IP_NO"::number as ip_no,
-    nullif(trim(to_varchar("CONTRACT_ID")), '') as contract_id,
+    nullif(trim("CONTRACT_ID"::varchar), '') as contract_id,
     "VERSION_NO"::number as version_no,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_raw', 'OCP_INTERESTED_PARTIES') }}

@@ -7,7 +7,7 @@ with source as (
 
     select
     nullif(trim("ACTION_CODE"::varchar), '') as action_code,
-    nullif(trim(to_varchar("CONTRACT_ID")), '') as contract_id,
+    nullif(trim("CONTRACT_ID"::varchar), '') as contract_id,
     "LOAD_RATE"::number as load_rate,
     "LOAD_AMT"::number as load_amt,
     "EFFETIVE_DATE"::timestamp_ntz as effetive_date,
@@ -41,7 +41,7 @@ with source as (
     nullif(trim("ASTHMA_YN"::varchar), '') as asthma_yn,
     nullif(trim("MEDICAL_CHECKUP"::varchar), '') as medical_checkup,
     nullif(trim("MEDICAL_REPORT"::varchar), '') as medical_report,
-    nullif(trim(to_varchar("PARTNER_ID")), '') as partner_id,
+    nullif(trim("PARTNER_ID"::varchar), '') as partner_id,
     "OBJECT_ID"::number as object_id,
     "PREVIOUS_VERSION"::number as previous_version,
     "REVERSING_VERSION"::number as reversing_version,

@@ -22,7 +22,7 @@ with source as (
     nullif(trim("EXTRA_COL2"::varchar), '') as extra_col2,
     nullif(trim("INSURED_ADDRESS"::varchar), '') as insured_address,
     nullif(trim("TELEPHONE"::varchar), '') as telephone,
-    nullif(trim(to_varchar("PARTNER_ID")), '') as partner_id,
+    nullif(trim("PARTNER_ID"::varchar), '') as partner_id,
     nullif(trim("INFOVIEW_FLAG"::varchar), '') as infoview_flag,
     "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at

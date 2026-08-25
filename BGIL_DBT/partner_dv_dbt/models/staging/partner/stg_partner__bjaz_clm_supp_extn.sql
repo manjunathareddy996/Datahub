@@ -6,9 +6,9 @@
 with source as (
 
     select
-    nullif(trim(to_varchar("SUPP_ID")), '') as supp_id,
-    nullif(trim(to_varchar("PARTNER_ID")), '') as partner_id,
-    nullif(trim(to_varchar("LOC_CODE")), '') as loc_code,
+    nullif(trim("SUPP_ID"::varchar), '') as supp_id,
+    nullif(trim("PARTNER_ID"::varchar), '') as partner_id,
+    nullif(trim("LOC_CODE"::varchar), '') as loc_code,
     "FEES"::number as fees,
     nullif(trim("LICENSE_NO"::varchar), '') as license_no,
     "EXPIRY_DATE"::timestamp_ntz as expiry_date,
@@ -92,7 +92,7 @@ with source as (
     nullif(trim("ADHAAR_PAN_LINK_FLAG"::varchar), '') as adhaar_pan_link_flag,
     nullif(trim("MSME_CLASS"::varchar), '') as msme_class,
     nullif(trim("BILLING_STATE"::varchar), '') as billing_state,
-    nullif(trim(to_varchar("BILLING_LOC")), '') as billing_loc,
+    nullif(trim("BILLING_LOC"::varchar), '') as billing_loc,
     nullif(trim("IIISLA_MEM_NO"::varchar), '') as iiisla_mem_no,
     nullif(trim("IIISLA_MEM_STATUS"::varchar), '') as iiisla_mem_status,
     nullif(trim("SUPP_EMAIL"::varchar), '') as supp_email,
@@ -115,7 +115,7 @@ with source as (
     nullif(trim("ACCESS_ONLINE_JOURNAL"::varchar), '') as access_online_journal,
     nullif(trim("AVAILABILITY_LIBRARY"::varchar), '') as availability_library,
     nullif(trim("PHONE_DETAILS"::varchar), '') as phone_details,
-    nullif(trim(to_varchar("LOCATION_CODE")), '') as location_code,
+    nullif(trim("LOCATION_CODE"::varchar), '') as location_code,
     nullif(trim("TP_MIGRATION_YN"::varchar), '') as tp_migration_yn,
     "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
     nullif(trim("INVOICE_PATTERN"::varchar), '') as invoice_pattern,

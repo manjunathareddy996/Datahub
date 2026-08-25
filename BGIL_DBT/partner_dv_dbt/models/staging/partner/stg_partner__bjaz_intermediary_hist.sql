@@ -6,8 +6,8 @@
 with source as (
 
     select
-    nullif(trim(to_varchar("INTERMEDIARY_ID")), '') as intermediary_id,
-    nullif(trim(to_varchar("PARTNER_ID")), '') as partner_id,
+    nullif(trim("INTERMEDIARY_ID"::varchar), '') as intermediary_id,
+    nullif(trim("PARTNER_ID"::varchar), '') as partner_id,
     nullif(trim("BUSINESS_CHANNEL"::varchar), '') as business_channel,
     nullif(trim("SPL_INTER_CODE"::varchar), '') as spl_inter_code,
     nullif(trim("PAN_NUMBER"::varchar), '') as pan_number,

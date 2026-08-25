@@ -13,8 +13,8 @@ with source as (
     nullif(trim("PARTNER_REF_NO"::varchar), '') as partner_ref_no,
     nullif(trim("GLOBAL_CO_NAME"::varchar), '') as global_co_name,
     nullif(trim("PARENT_CO"::varchar), '') as parent_co,
-    nullif(trim(to_varchar("PART_ID")), '') as part_id,
-    nullif(trim(to_varchar("MAIL_ADD_ID")), '') as mail_add_id,
+    nullif(trim("PART_ID"::varchar), '') as part_id,
+    nullif(trim("MAIL_ADD_ID"::varchar), '') as mail_add_id,
     "INDUSTRY"::number as industry,
     nullif(trim("FATHER_NAME"::varchar), '') as father_name,
     nullif(trim("PLACE_OF_BIRTH"::varchar), '') as place_of_birth,
@@ -61,7 +61,7 @@ with source as (
     nullif(trim("UNIQUE_ID"::varchar), '') as unique_id,
     nullif(trim("PREFERRED_CONTACT_OPT"::varchar), '') as preferred_contact_opt,
     nullif(trim("POLICY_REF"::varchar), '') as policy_ref,
-    nullif(trim(to_varchar("EXISTING_POLICY_PID")), '') as existing_policy_pid
+    nullif(trim("EXISTING_POLICY_PID"::varchar), '') as existing_policy_pid
     from {{ source('partner_raw', 'AZBJ_PARTNER_EXTN') }}
 
 )

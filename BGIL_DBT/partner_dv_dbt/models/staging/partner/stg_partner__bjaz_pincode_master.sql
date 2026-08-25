@@ -6,7 +6,7 @@
 with source as (
 
     select
-    nullif(trim(to_varchar("PINCODE")), '') as pincode,
+    nullif(trim("PINCODE"::varchar), '') as pincode,
     nullif(trim("CITY"::varchar), '') as city,
     nullif(trim("STATE"::varchar), '') as state,
     nullif(trim("ZONE_PIN"::varchar), '') as zone_pin,

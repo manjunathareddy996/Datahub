@@ -23,7 +23,7 @@ with source as (
     nullif(trim("POLICY_REF"::varchar), '') as policy_ref,
     nullif(trim("UNIQUE_ID"::varchar), '') as unique_id,
     nullif(trim("PRPOSER_FLAG"::varchar), '') as prposer_flag,
-    nullif(trim(to_varchar("ADD_ID")), '') as add_id,
+    nullif(trim("ADD_ID"::varchar), '') as add_id,
     nullif(trim("ADDRESS_LINE7"::varchar), '') as address_line7,
     nullif(trim("ADDRESS_LINE6"::varchar), '') as address_line6,
     nullif(trim("OTHER_DETAILS"::varchar), '') as other_details,
