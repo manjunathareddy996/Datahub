@@ -1,35 +1,46 @@
 {{ config(materialized='view') }}
 
 -- PARTNER STANDARD-MODEL stitch view for SAT_COMMON_COMMUNICATION_PREFERENCE, SAT_PARTY_EMPLOYMENT (HUB_PARTY grain).
--- 2 table(s) contributing at this grain, same join_helpers logic used for Health.
--- Reads raw Partner staging directly (stg_partner__*) -- no hashing here.
+-- 2 table(s) contributing at this grain.
+-- Uses the stitch_incremental macro.
 
-select parent_bk, correspondencelanguage, marketingoptinindicator, employmentstatus, record_source
-from (
-    with t0 as (
-        select distinct
-            part_id as parent_bk,
-            nullif(trim(to_varchar(language)), '') as correspondencelanguage,
-            nullif(trim(to_varchar(literature)), '') as marketingoptinindicator
-        from {{ ref('stg_partner__bjaz_cp_part_hist') }}
-        where part_id is not null
-        qualify row_number() over (partition by parent_bk order by correspondencelanguage, marketingoptinindicator) = 1
-    ),
-         t1 as (
-        select distinct
-            part_id as parent_bk,
-            nullif(trim(to_varchar(language)), '') as correspondencelanguage,
-            nullif(trim(to_varchar(literature)), '') as marketingoptinindicator
-        from {{ ref('stg_partner__cp_partners') }}
-        where part_id is not null
-        qualify row_number() over (partition by parent_bk order by correspondencelanguage, marketingoptinindicator) = 1
-    )
-    select
-        coalesce(t0.parent_bk, t1.parent_bk) as parent_bk,
-        coalesce(t0.correspondencelanguage, t1.correspondencelanguage) as correspondencelanguage,
-        coalesce(t0.marketingoptinindicator, t1.marketingoptinindicator) as marketingoptinindicator,
-        cast(null as varchar) as employmentstatus,
-        array_to_string(array_construct_compact(case when t0.parent_bk is not null then 'BJAZ_CP_PART_HIST' end, case when t1.parent_bk is not null then 'CP_PARTNERS' end), ', ') as record_source
-    from t0
-    full outer join t1 on t0.parent_bk = t1.parent_bk
-    )
+{%- set sources = [
+    {
+        'model': 'stg_partner__bjaz_cp_part_hist',
+        'alias': 't0',
+        'key_column': 'part_id',
+        'ldts_column': 'inc_job_updated_at',
+        'columns': [
+            {'src': 'language', 'tgt': 'correspondencelanguage'},
+            {'src': 'literature', 'tgt': 'marketingoptinindicator'}
+        ],
+        'source_tag': 'BJAZ_CP_PART_HIST'
+    },
+    {
+        'model': 'stg_partner__cp_partners',
+        'alias': 't1',
+        'key_column': 'part_id',
+        'ldts_column': 'inc_job_updated_at',
+        'columns': [
+            {'src': 'language', 'tgt': 'correspondencelanguage'},
+            {'src': 'literature', 'tgt': 'marketingoptinindicator'}
+        ],
+        'source_tag': 'CP_PARTNERS'
+    }
+] -%}
+
+{%- set output_columns = ['correspondencelanguage', 'marketingoptinindicator', 'employmentstatus'] -%}
+
+{%- set coalesce_rules = {
+    'correspondencelanguage':  ['t0', 't1'],
+    'marketingoptinindicator': ['t0', 't1'],
+    'employmentstatus':        ['t0']
+} %}
+
+{{ stitch_incremental(
+    sources=sources,
+    output_columns=output_columns,
+    coalesce_rules=coalesce_rules,
+    unique_key='parent_bk',
+    target_sat='sat_common_communication_preference'
+) }}

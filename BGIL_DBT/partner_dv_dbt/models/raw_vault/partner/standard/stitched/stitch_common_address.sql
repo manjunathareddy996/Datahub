@@ -1,142 +1,113 @@
-create or replace view BAGIC_PREPROD_CURATED_DB.BGIL_DEV_DATA_MODEL.STITCH_COMMON_CLASSIFICATION_INCR(
-	PARENT_BK,
-	PRIORITYCODE,
-	SEGMENTCODE,
-	RECORD_SOURCE
-) as (
-    
+{{ config(materialized='view') }}
 
+-- Incremental stitch for SAT_COMMON_ADDRESS (HUB_LOCATION grain).
+-- 6 code_branch sources using the stitch_incremental macro.
+-- Composite-branch sources (content-hash keyed) are excluded from this macro-driven pattern.
 
+{%- set sources = [
+    {
+        'model': 'stg_partner__azbj_address_extn',
+        'alias': 't0',
+        'key_column': 'add_id',
+        'ldts_column': 'inc_job_updated_at',
+        'columns': [
+            {'src': 'address_line6', 'tgt': 'addressline2'},
+            {'src': 'address_line7', 'tgt': 'addressline3'},
+            {'src': 'building_name', 'tgt': 'buildingname'},
+            {'src': 'residence_country', 'tgt': 'countryname'},
+            {'src': 'door_no', 'tgt': 'doornumber'},
+            {'src': 'plot_street_no', 'tgt': 'streetname'}
+        ],
+        'source_tag': 'AZBJ_ADDRESS_EXTN'
+    },
+    {
+        'model': 'stg_partner__bjaz_clm_supp_extn',
+        'alias': 't1',
+        'key_column': 'billing_loc',
+        'ldts_column': 'inc_job_updated_at',
+        'columns': [
+            {'src': 'parent_co_add_line1', 'tgt': 'addressline1'},
+            {'src': 'parent_co_add_line2', 'tgt': 'addressline2'},
+            {'src': 'parent_co_add_line3', 'tgt': 'addressline3'},
+            {'src': 'country_code', 'tgt': 'countrycode'},
+            {'src': 'country', 'tgt': 'countryname'},
+            {'src': 'billing_state', 'tgt': 'statename'}
+        ],
+        'source_tag': 'BJAZ_CLM_SUPP_EXTN'
+    },
+    {
+        'model': 'stg_partner__bjaz_cp_add_hist',
+        'alias': 't2',
+        'key_column': 'add_id',
+        'ldts_column': 'inc_job_updated_at',
+        'columns': [
+            {'src': 'address_line1', 'tgt': 'addressline1'},
+            {'src': 'address_line2', 'tgt': 'addressline2'},
+            {'src': 'address_line3', 'tgt': 'addressline3'},
+            {'src': 'country_code', 'tgt': 'countrycode'},
+            {'src': 'postcode', 'tgt': 'postalcode'}
+        ],
+        'source_tag': 'BJAZ_CP_ADD_HIST'
+    },
+    {
+        'model': 'stg_partner__bjaz_pincode',
+        'alias': 't3',
+        'key_column': 'pincode',
+        'ldts_column': 'inc_job_updated_at',
+        'columns': [
+            {'src': 'city', 'tgt': 'city'},
+            {'src': 'status', 'tgt': 'postalcode'},
+            {'src': 'state', 'tgt': 'statename'}
+        ],
+        'source_tag': 'BJAZ_PINCODE'
+    },
+    {
+        'model': 'stg_partner__bjaz_pincode_master',
+        'alias': 't4',
+        'key_column': 'pincode',
+        'ldts_column': 'inc_job_updated_at',
+        'columns': [
+            {'src': 'city', 'tgt': 'city'},
+            {'src': 'state', 'tgt': 'statename'}
+        ],
+        'source_tag': 'BJAZ_PINCODE_MASTER'
+    },
+    {
+        'model': 'stg_partner__cp_addresses',
+        'alias': 't5',
+        'key_column': 'add_id',
+        'ldts_column': 'inc_job_updated_at',
+        'columns': [
+            {'src': 'address_line1', 'tgt': 'addressline1'},
+            {'src': 'address_line2', 'tgt': 'addressline2'},
+            {'src': 'address_line3', 'tgt': 'addressline3'},
+            {'src': 'country_code', 'tgt': 'countrycode'},
+            {'src': 'postcode', 'tgt': 'postalcode'}
+        ],
+        'source_tag': 'CP_ADDRESSES'
+    }
+] -%}
 
-WITH affected_keys AS (
-    
-    SELECT DISTINCT part_id AS parent_bk
-    FROM BAGIC_PREPROD_CURATED_DB.BGIL_DEV_DATA_MODEL.stg_partner__azbj_partner_extn
-    WHERE part_id IS NOT NULL
-      AND gg_change_date >= DATEADD(DAY, -1, CURRENT_DATE())
-    UNION
-    
-    SELECT DISTINCT part_id AS parent_bk
-    FROM BAGIC_PREPROD_CURATED_DB.BGIL_DEV_DATA_MODEL.stg_partner__bjaz_azbj_part_ext_hist
-    WHERE part_id IS NOT NULL
-      AND gg_change_date >= DATEADD(DAY, -1, CURRENT_DATE())
-    UNION
-    
-    SELECT DISTINCT partner_id AS parent_bk
-    FROM BAGIC_PREPROD_CURATED_DB.BGIL_DEV_DATA_MODEL.stg_partner__bjaz_hm_member_dtls
-    WHERE partner_id IS NOT NULL
-      AND gg_change_date >= DATEADD(DAY, -1, CURRENT_DATE())
-    UNION
-    
-    SELECT DISTINCT intermediary_id AS parent_bk
-    FROM BAGIC_PREPROD_CURATED_DB.BGIL_DEV_DATA_MODEL.stg_partner__bjaz_intermediary
-    WHERE intermediary_id IS NOT NULL
-      AND gg_change_date >= DATEADD(DAY, -1, CURRENT_DATE())
-    UNION
-    
-    SELECT DISTINCT intermediary_id AS parent_bk
-    FROM BAGIC_PREPROD_CURATED_DB.BGIL_DEV_DATA_MODEL.stg_partner__bjaz_intermediary_hist
-    WHERE intermediary_id IS NOT NULL
-      AND gg_change_date >= DATEADD(DAY, -1, CURRENT_DATE())
-    
-    
-),
+{%- set output_columns = ['addressline1', 'addressline2', 'addressline3', 'buildingname', 'city', 'countrycode', 'countryname', 'doornumber', 'postalcode', 'statename', 'streetname'] -%}
 
-t0 AS (
-    SELECT DISTINCT
-        part_id AS parent_bk,
-        NULLIF(TRIM(TO_VARCHAR(vip_cust)), '') AS prioritycode,
-        NULLIF(TRIM(TO_VARCHAR(ucic_flag)), '') AS segmentcode
-    FROM BAGIC_PREPROD_CURATED_DB.BGIL_DEV_DATA_MODEL.stg_partner__azbj_partner_extn
-    WHERE part_id IS NOT NULL
-      AND part_id IN (SELECT parent_bk FROM affected_keys)
-    QUALIFY ROW_NUMBER() OVER (
-        PARTITION BY part_id
-        ORDER BY prioritycode, segmentcode
-    ) = 1
-),
+{%- set coalesce_rules = {
+    'addressline1': ['t1', 't2', 't5'],
+    'addressline2': ['t0', 't1', 't2', 't5'],
+    'addressline3': ['t0', 't1', 't2', 't5'],
+    'buildingname': ['t0'],
+    'city': ['t3', 't4'],
+    'countrycode': ['t1', 't2', 't5'],
+    'countryname': ['t0', 't1'],
+    'doornumber': ['t0'],
+    'postalcode': ['t2', 't3', 't5'],
+    'statename': ['t1', 't3', 't4'],
+    'streetname': ['t0']
+} %}
 
-t1 AS (
-    SELECT DISTINCT
-        part_id AS parent_bk,
-        NULLIF(TRIM(TO_VARCHAR(vip_cust)), '') AS prioritycode
-    FROM BAGIC_PREPROD_CURATED_DB.BGIL_DEV_DATA_MODEL.stg_partner__bjaz_azbj_part_ext_hist
-    WHERE part_id IS NOT NULL
-      AND part_id IN (SELECT parent_bk FROM affected_keys)
-    QUALIFY ROW_NUMBER() OVER (
-        PARTITION BY part_id
-        ORDER BY prioritycode
-    ) = 1
-),
-
-t2 AS (
-    SELECT DISTINCT
-        partner_id AS parent_bk,
-        NULLIF(TRIM(TO_VARCHAR(vip_flg)), '') AS prioritycode
-    FROM BAGIC_PREPROD_CURATED_DB.BGIL_DEV_DATA_MODEL.stg_partner__bjaz_hm_member_dtls
-    WHERE partner_id IS NOT NULL
-      AND partner_id IN (SELECT parent_bk FROM affected_keys)
-    QUALIFY ROW_NUMBER() OVER (
-        PARTITION BY partner_id
-        ORDER BY prioritycode
-    ) = 1
-),
-
-t3 AS (
-    SELECT DISTINCT
-        intermediary_id AS parent_bk,
-        NULLIF(TRIM(TO_VARCHAR(flagging)), '') AS segmentcode
-    FROM BAGIC_PREPROD_CURATED_DB.BGIL_DEV_DATA_MODEL.stg_partner__bjaz_intermediary
-    WHERE intermediary_id IS NOT NULL
-      AND intermediary_id IN (SELECT parent_bk FROM affected_keys)
-    QUALIFY ROW_NUMBER() OVER (
-        PARTITION BY intermediary_id
-        ORDER BY segmentcode
-    ) = 1
-),
-
-t4 AS (
-    SELECT DISTINCT
-        intermediary_id AS parent_bk,
-        NULLIF(TRIM(TO_VARCHAR(flagging)), '') AS segmentcode
-    FROM BAGIC_PREPROD_CURATED_DB.BGIL_DEV_DATA_MODEL.stg_partner__bjaz_intermediary_hist
-    WHERE intermediary_id IS NOT NULL
-      AND intermediary_id IN (SELECT parent_bk FROM affected_keys)
-    QUALIFY ROW_NUMBER() OVER (
-        PARTITION BY intermediary_id
-        ORDER BY segmentcode
-    ) = 1
-),
-
-stitched AS (
-    SELECT
-        COALESCE(t0.parent_bk, t1.parent_bk, t2.parent_bk, t3.parent_bk, t4.parent_bk) AS parent_bk,
-        COALESCE(t0.prioritycode, t1.prioritycode, t2.prioritycode) AS prioritycode,
-        COALESCE(t0.segmentcode, t3.segmentcode, t4.segmentcode) AS segmentcode,
-        ARRAY_TO_STRING(ARRAY_CONSTRUCT_COMPACT(
-            CASE WHEN t0.parent_bk IS NOT NULL THEN 'AZBJ_PARTNER_EXTN' END,
-            CASE WHEN t1.parent_bk IS NOT NULL THEN 'BJAZ_AZBJ_PART_EXT_HIST' END,
-            CASE WHEN t2.parent_bk IS NOT NULL THEN 'BJAZ_HM_MEMBER_DTLS' END,
-            CASE WHEN t3.parent_bk IS NOT NULL THEN 'BJAZ_INTERMEDIARY' END,
-            CASE WHEN t4.parent_bk IS NOT NULL THEN 'BJAZ_INTERMEDIARY_HIST' END
-        ), ', ') AS record_source
-    FROM t0
-    FULL OUTER JOIN t1
-        ON t0.parent_bk = t1.parent_bk
-    FULL OUTER JOIN t2
-        ON COALESCE(t0.parent_bk, t1.parent_bk) = t2.parent_bk
-    FULL OUTER JOIN t3
-        ON COALESCE(t0.parent_bk, t1.parent_bk, t2.parent_bk) = t3.parent_bk
-    FULL OUTER JOIN t4
-        ON COALESCE(t0.parent_bk, t1.parent_bk, t2.parent_bk, t3.parent_bk) = t4.parent_bk
-)
-
-SELECT
-    parent_bk,
-    prioritycode,
-    segmentcode,
-    record_source
-FROM stitched
-
-
-  );
+{{ stitch_incremental(
+    sources=sources,
+    output_columns=output_columns,
+    coalesce_rules=coalesce_rules,
+    unique_key='parent_bk',
+    target_sat='sat_common_address'
+) }}
