@@ -2,14 +2,16 @@
     config(
         materialized='incremental',
         incremental_strategy='merge',
-        unique_key=['PARTY_HKEY', 'HASHDIFF']
+        unique_key=['PARTY_HKEY', 'HASHDIFF', 'RECORD_SOURCE']
     )
 }}
 
--- PARTNER STANDARD-MODEL sat() for SAT_LNK_ROLE_PROVIDER (HUB_PARTY grain, role-special: 'provider').
+-- PARTNER STANDARD-MODEL sat_multi_source() for SAT_LNK_ROLE_PROVIDER (HUB_PARTY grain, role-special: 'provider').
 
 {%- set yaml_metadata -%}
-source_model: 'stg2_std_union__lnk_role_provider'
+source_model:
+  - 'stg2_rolesat_bjaz_hm_hospital_master__lnk_role_provider'
+  - 'stg2_rolesat_clm_suppliers__lnk_role_provider'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'EMPANELMENT_DATE'
@@ -26,7 +28,7 @@ src_source: 'RECORD_SOURCE'
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 
-{{ automate_dv.sat(src_pk=metadata_dict['src_pk'],
+{{ sat_multi_source(src_pk=metadata_dict['src_pk'],
                     src_payload=metadata_dict['src_payload'],
                     src_hashdiff=metadata_dict['src_hashdiff'],
                     src_ldts=metadata_dict['src_ldts'],
