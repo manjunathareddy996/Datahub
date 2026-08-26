@@ -61,7 +61,8 @@ WITH affected_keys AS (
         {{ src.key_column }} AS {{ unique_key }}
         {%- for col in src.columns %},
         NULLIF(TRIM(TO_VARCHAR({{ col.src }})), '') AS {{ col.tgt }}
-        {%- endfor %}
+        {%- endfor %},
+        {{ src.ldts_column }}
     FROM {{ this.database }}.{{ this.schema }}.{{ src.model }}
     WHERE {{ src.key_column }} IS NOT NULL
 ),
@@ -83,7 +84,8 @@ final AS (
             {%- for src in sources %}
             CASE WHEN {{ src.alias }}.{{ unique_key }} IS NOT NULL THEN '{{ src.source_tag }}' END{% if not loop.last %},{% endif %}
             {%- endfor %}
-        ), ', ') AS record_source
+        ), ', ') AS record_source,
+        GREATEST({% for src in sources %}{{ src.alias }}.{{ src.ldts_column }}{% if not loop.last %}, {% endif %}{% endfor %}) AS inc_job_updated_at
     FROM affected_keys ak
     {%- for src in sources %}
     LEFT JOIN {{ src.alias }} ON {{ src.alias }}.{{ unique_key }} = ak.{{ unique_key }}
