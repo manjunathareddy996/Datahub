@@ -68,5 +68,5 @@
     output_columns=output_columns,
     coalesce_rules=coalesce_rules,
     unique_key='parent_bk',
-    target_sat='sat_party_health_profile'
+    target_sat='sat_partner_party_health_profile'
 ) }}

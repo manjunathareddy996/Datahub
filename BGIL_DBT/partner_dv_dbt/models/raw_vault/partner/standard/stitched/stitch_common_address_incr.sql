@@ -109,5 +109,5 @@
     output_columns=output_columns,
     coalesce_rules=coalesce_rules,
     unique_key='parent_bk',
-    target_sat='sat_common_address'
+    target_sat='sat_partner_common_address'
 ) }}

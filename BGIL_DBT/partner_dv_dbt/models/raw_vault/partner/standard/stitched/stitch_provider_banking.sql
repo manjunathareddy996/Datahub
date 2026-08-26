@@ -38,5 +38,5 @@
     output_columns=output_columns,
     coalesce_rules=coalesce_rules,
     unique_key='parent_bk',
-    target_sat='sat_provider_banking'
+    target_sat='sat_partner_provider_banking'
 ) }}
