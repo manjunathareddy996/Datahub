@@ -101,7 +101,8 @@ SELECT
     {%- for col in output_columns %}
     {{ col }},
     {%- endfor %}
-    record_source
+    record_source,
+    inc_job_updated_at
 FROM final
 
 {% endmacro %}

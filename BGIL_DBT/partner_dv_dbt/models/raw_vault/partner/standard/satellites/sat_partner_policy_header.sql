@@ -23,7 +23,6 @@ src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_extra_columns:
   - 'DBT_RUN_TS'
-  - 'INC_JOB_UPDATED_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

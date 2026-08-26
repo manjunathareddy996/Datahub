@@ -23,7 +23,7 @@ hashed_columns:
       - 'STREETNAME'
 derived_columns:
   LOCATION_NK: "'HUB_LOCATION|' || PARENT_BK"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

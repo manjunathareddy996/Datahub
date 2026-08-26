@@ -15,7 +15,7 @@ hashed_columns:
       - 'PRODUCTNAME'
 derived_columns:
   PRODUCT_NK: "'HUB_PRODUCT|' || PARENT_BK"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

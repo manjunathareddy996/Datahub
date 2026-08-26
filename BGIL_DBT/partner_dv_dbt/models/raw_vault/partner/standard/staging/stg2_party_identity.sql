@@ -29,7 +29,7 @@ hashed_columns:
       - 'SALUTATION'
 derived_columns:
   PARTY_NK: "'HUB_PARTY|' || PARENT_BK"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
