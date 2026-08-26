@@ -2,7 +2,7 @@
     config(
         materialized='incremental',
         incremental_strategy='merge',
-        unique_key='HASHDIFF'
+        unique_key=['PARTY_LOCATION_HKEY', 'HASHDIFF']
     )
 }}
 
