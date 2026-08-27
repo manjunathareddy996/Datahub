@@ -38,4 +38,7 @@ src_source: 'RECORD_SOURCE'
                         'stg2_rolesat_bjaz_hm_hospital_master__lnk_role_provider': ['EMPANELMENT_DATE', 'SPECIALISATION', 'PROVIDER_TYPE', 'NETWORK_INDICATOR', 'PREFERRED_PROVIDER_INDICATOR'],
                         'stg2_rolesat_clm_suppliers__lnk_role_provider': ['EMPANELMENT_DATE', 'RE_EMPANELMENT_DUE_DATE', 'EMPANELMENT_STATUS', 'PROVIDER_TYPE']
                     }) }}
+<<<<<<< HEAD
  
+=======
+>>>>>>> 1395f1c (sat_partner_lnk_role_provider.sql updated with src_cl_map)
