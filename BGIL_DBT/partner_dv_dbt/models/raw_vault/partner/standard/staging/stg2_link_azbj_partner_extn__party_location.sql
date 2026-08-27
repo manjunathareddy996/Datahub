@@ -12,7 +12,7 @@ derived_columns:
   PARTY_HKEY_NK: "'HUB_PARTY|' || part_id"
   LOCATION_HKEY_NK: "'HUB_LOCATION|' || mail_add_id"
   PARTY_LOCATION_HKEY_NK: "'LNK_PARTY_LOCATION|' || part_id || '|' || mail_add_id"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!AZBJ_PARTNER_EXTN'
 {%- endset -%}
 

@@ -16,7 +16,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
   EMAILADDRESS: 'email_id'
   LANDLINENUMBER: 'phone_no'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_HM_MEMBER_DTLS'
 {%- endset -%}
 

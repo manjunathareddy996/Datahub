@@ -12,7 +12,7 @@ derived_columns:
   PARTY_HKEY_NK: "'HUB_PARTY|' || part_id"
   POLICY_HKEY_NK: "'HUB_POLICY|' || existing_policy_pid"
   POLICY_PARTY_HKEY_NK: "'LNK_POLICY_PARTY|' || part_id || '|' || existing_policy_pid"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!AZBJ_PARTNER_EXTN'
 {%- endset -%}
 

@@ -20,7 +20,7 @@ derived_columns:
   PREVIOUSINSURERNAME: 'prev_company_name'
   PREVIOUSPOLICYNUMBER: 'prev_policy_dtls'
   PREVIOUSSUMINSURED: 'prev_sum_insured'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_EC_MEM_DTLS_EXTN'
 {%- endset -%}
 

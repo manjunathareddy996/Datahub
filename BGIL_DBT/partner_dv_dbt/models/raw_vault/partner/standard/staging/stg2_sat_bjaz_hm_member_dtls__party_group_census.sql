@@ -20,7 +20,7 @@ derived_columns:
   EMPLOYEEID: 'hat_empcode'
   LOCATIONREFERENCE: 'employee_location'
   MEMBERREFERENCE: 'member_id'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_HM_MEMBER_DTLS'
 {%- endset -%}
 

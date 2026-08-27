@@ -20,7 +20,7 @@ derived_columns:
   EFFECTIVEDATE: 'imps_tarif_frm'
   EXPIRYDATE: 'imps_tarif_to'
   TARIFFRATE: 'imps_payment_lmt'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_HM_HOSPITAL_MASTER'
 {%- endset -%}
 

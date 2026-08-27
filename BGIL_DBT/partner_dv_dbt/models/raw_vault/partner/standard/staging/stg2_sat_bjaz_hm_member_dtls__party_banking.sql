@@ -18,7 +18,7 @@ derived_columns:
   ACCOUNTNUMBERMASKED: 'bank_ac_no'
   BANKNAME: 'bank_name'
   MICRCODE: 'micr_code'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_HM_MEMBER_DTLS'
 {%- endset -%}
 

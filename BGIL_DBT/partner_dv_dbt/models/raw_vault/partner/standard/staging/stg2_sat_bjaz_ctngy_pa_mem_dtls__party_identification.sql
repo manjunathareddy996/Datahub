@@ -22,7 +22,7 @@ derived_columns:
   PANNUMBER: 'pan_card_no'
   PASSPORTNUMBER: 'passport_number'
   EIANUMBER: 'eia_no'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_CTNGY_PA_MEM_DTLS'
 {%- endset -%}
 

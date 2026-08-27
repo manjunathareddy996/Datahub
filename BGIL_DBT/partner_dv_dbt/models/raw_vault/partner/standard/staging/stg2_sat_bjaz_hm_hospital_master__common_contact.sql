@@ -20,7 +20,7 @@ derived_columns:
   FAXNUMBER: 'fax_no'
   LANDLINENUMBER: 'phone_no'
   STDCODE: 'std_code'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_HM_HOSPITAL_MASTER'
 {%- endset -%}
 

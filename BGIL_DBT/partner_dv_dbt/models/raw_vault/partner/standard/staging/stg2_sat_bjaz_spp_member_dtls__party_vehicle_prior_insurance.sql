@@ -18,7 +18,7 @@ derived_columns:
   CONTINUITYINDICATOR: 'prev_policy_since'
   PREVIOUSPOLICYNUMBER: 'concurrent_policy_details'
   PREVIOUSSUMINSURED: 'previous_si'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_SPP_MEMBER_DTLS'
 {%- endset -%}
 

@@ -14,7 +14,7 @@ derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
   LANDLINENUMBER: 'contact'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!CLM_SUPPLIERS'
 {%- endset -%}
 

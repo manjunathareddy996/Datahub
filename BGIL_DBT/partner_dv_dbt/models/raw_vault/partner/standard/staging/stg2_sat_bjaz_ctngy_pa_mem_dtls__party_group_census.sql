@@ -14,7 +14,7 @@ derived_columns:
   PARENT_BK: 'partner_id'
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
   ACTIVEINDICATOR: 'family_flagging'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_CTNGY_PA_MEM_DTLS'
 {%- endset -%}
 

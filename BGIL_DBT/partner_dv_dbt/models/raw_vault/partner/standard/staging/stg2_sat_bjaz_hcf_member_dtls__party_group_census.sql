@@ -14,7 +14,7 @@ derived_columns:
   PARENT_BK: 'partner_id'
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
   MEMBERREFERENCE: 'member_no'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_HCF_MEMBER_DTLS'
 {%- endset -%}
 

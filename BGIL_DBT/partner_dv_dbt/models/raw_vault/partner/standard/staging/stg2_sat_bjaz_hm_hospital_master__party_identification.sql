@@ -14,7 +14,7 @@ derived_columns:
   PARENT_BK: 'hosid'
   PARENT_NK: "'HUB_PARTY|' || (hosid)"
   IDENTIFICATIONNUMBER: 'hospital_no'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_HM_HOSPITAL_MASTER'
 {%- endset -%}
 

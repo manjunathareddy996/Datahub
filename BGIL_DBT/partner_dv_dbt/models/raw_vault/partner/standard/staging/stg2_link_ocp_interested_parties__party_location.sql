@@ -12,7 +12,7 @@ derived_columns:
   PARTY_HKEY_NK: "'HUB_PARTY|' || partner_id"
   LOCATION_HKEY_NK: "'HUB_LOCATION|' || mailing_address_id"
   PARTY_LOCATION_HKEY_NK: "'LNK_PARTY_LOCATION|' || partner_id || '|' || mailing_address_id"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OCP_INTERESTED_PARTIES'
 {%- endset -%}
 

@@ -16,7 +16,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
   ACCOUNTNUMBERMASKED: 'loan_account_no'
   BANKCODE: 'bank_rm_code'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_CTNGY_PA_MEM_DTLS'
 {%- endset -%}
 

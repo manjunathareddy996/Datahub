@@ -26,7 +26,7 @@ derived_columns:
   LICENCE_EXPIRY_DATE: 'license_expiry_date'
   LICENCE_ISSUE_DATE: 'license_issue_date'
   LICENCE_CATEGORY: 'license_type'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_INTERMEDIARY_HIST'
 {%- endset -%}
 

@@ -10,7 +10,7 @@ hashed_columns:
 derived_columns:
   PARENT_BK: 'policy_number'
   PARENT_NK: "'HUB_POLICY|' || (policy_number)"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_HCF_MEMBER_DTLS'
 {%- endset -%}
 

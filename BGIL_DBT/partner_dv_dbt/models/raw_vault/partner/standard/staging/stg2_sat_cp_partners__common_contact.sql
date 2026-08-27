@@ -18,7 +18,7 @@ derived_columns:
   EMAILADDRESS: 'email'
   FAXNUMBER: 'fax'
   LANDLINENUMBER: 'telephone2'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!CP_PARTNERS'
 {%- endset -%}
 

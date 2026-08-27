@@ -18,7 +18,7 @@ derived_columns:
   PARTY_HKEY_NK: "'HUB_PARTY|' || part_id"
   CLAIM_HKEY_NK: "'HUB_CLAIM|' || claim_id"
   CLAIM_PARTY_HKEY_NK: "'LNK_CLAIM_PARTY|' || part_id || '|' || claim_id"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!CLM_INTERESTED_PARTIES'
 {%- endset -%}
 

@@ -20,7 +20,7 @@ derived_columns:
   FAXNUMBER: 'fax'
   LANDLINENUMBER: 'telephone_no'
   MOBILENUMBER: 'mobile_no'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_CTNGY_PA_MEM_DTLS'
 {%- endset -%}
 

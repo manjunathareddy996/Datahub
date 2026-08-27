@@ -24,7 +24,7 @@ derived_columns:
   ROLE_TYPE_CK: '!surveyor'
   IRDAI_SURVEYOR_LICENCE_NUMBER: 'surveyor_license_no'
   LICENCE_CATEGORY: 'surveyor_category'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_CLM_SUPP_EXTN'
 {%- endset -%}
 

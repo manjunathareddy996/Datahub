@@ -16,7 +16,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
   IDENTIFICATIONNUMBER: 'tax_id'
   VATREGISTRATIONNUMBER: 'vat_number'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!CP_PARTNERS'
 {%- endset -%}
 

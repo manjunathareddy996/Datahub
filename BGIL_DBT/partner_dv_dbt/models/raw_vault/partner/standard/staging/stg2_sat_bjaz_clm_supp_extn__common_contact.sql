@@ -20,7 +20,7 @@ derived_columns:
   LANDLINENUMBER: 'phone_details'
   MOBILENUMBER: 'supp_mobile'
   STDCODE: 'std_code'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_CLM_SUPP_EXTN'
 {%- endset -%}
 

@@ -18,7 +18,7 @@ hashed_columns:
 derived_columns:
   POLICY_PARTY_HKEY_NK: "'LNK_POLICY_PARTY|' || partner_id || '|' || contract_id"
   ROLE_SEQUENCE: 'ip_no'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OCP_INTERESTED_PARTIES'
 {%- endset -%}
 

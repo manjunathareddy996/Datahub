@@ -20,7 +20,7 @@ derived_columns:
   ROLE_TYPE_CK: '!nominee_beneficiary'
   APPOINTEE_NAME: 'assignee'
   RELATIONSHIP_TO_INSURED: 'relation'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_PA_DETL_EXTN'
 {%- endset -%}
 

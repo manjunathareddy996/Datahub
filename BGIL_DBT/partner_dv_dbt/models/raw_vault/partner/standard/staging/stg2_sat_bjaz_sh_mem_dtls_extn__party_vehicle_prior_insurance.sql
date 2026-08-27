@@ -16,7 +16,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
   PREVIOUSPOLICYNUMBER: 'prev_policy_dtls'
   PREVIOUSSUMINSURED: 'prev_sum_insured'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_SH_MEM_DTLS_EXTN'
 {%- endset -%}
 

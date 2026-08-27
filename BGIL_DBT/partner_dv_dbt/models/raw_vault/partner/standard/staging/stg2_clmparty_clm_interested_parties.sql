@@ -18,7 +18,7 @@ derived_columns:
   CLAIM_PARTY_HKEY_NK: "'LNK_CLAIM_PARTY|' || part_id || '|' || claim_id"
   PARTY_ROLE_TYPE: 'ip_type'
   ROLE_SEQUENCE: 'ip_no'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!CLM_INTERESTED_PARTIES'
 {%- endset -%}
 

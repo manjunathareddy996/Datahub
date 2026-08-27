@@ -18,7 +18,7 @@ derived_columns:
   GSTREGISTRATIONSTATUS: 'gst_status'
   GSTIN: 'gst_no'
   PANNUMBER: 'pan_number'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_INTERMEDIARY_HIST'
 {%- endset -%}
 

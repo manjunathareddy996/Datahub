@@ -10,7 +10,7 @@ hashed_columns:
 derived_columns:
   PARENT_BK: 'ins_obj_uid'
   PARENT_NK: "'HUB_RISK_OBJECT|' || (ins_obj_uid)"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!CLM_INTERESTED_PARTIES'
 {%- endset -%}
 

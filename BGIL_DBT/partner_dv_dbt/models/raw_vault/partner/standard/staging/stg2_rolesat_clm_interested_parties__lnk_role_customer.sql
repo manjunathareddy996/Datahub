@@ -18,7 +18,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (claimant)"
   ROLE_TYPE_CK: '!customer'
   CUSTOMER_CATEGORY: 'object_type'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!CLM_INTERESTED_PARTIES'
 {%- endset -%}
 

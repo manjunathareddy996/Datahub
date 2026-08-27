@@ -24,7 +24,7 @@ derived_columns:
   RE_EMPANELMENT_DUE_DATE: 'exp_date'
   EMPANELMENT_STATUS: 'supp_status'
   PROVIDER_TYPE: 'supp_type'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!CLM_SUPPLIERS'
 {%- endset -%}
 

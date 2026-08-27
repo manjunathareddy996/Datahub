@@ -18,7 +18,7 @@ derived_columns:
   ACCOUNTNUMBERMASKED: 'account_no'
   IFSCCODE: 'ifsc_code'
   MICRCODE: 'micr_code'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!AZBJ_PARTNER_EXTN'
 {%- endset -%}
 

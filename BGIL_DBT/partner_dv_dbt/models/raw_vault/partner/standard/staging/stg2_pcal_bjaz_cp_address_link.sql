@@ -19,7 +19,7 @@ derived_columns:
   PARTY_LOCATION_HKEY_NK: "'LNK_PARTY_LOCATION|' || part_id || '|' || add_id"
   ADDRESS_USAGE_TYPE: 'add_type'
   PRIMARY_ADDRESS_INDICATOR: 'primary_yn'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_CP_ADDRESS_LINK'
 {%- endset -%}
 

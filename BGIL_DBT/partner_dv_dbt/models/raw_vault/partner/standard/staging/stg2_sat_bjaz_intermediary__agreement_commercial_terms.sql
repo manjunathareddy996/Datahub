@@ -14,7 +14,7 @@ derived_columns:
   PARENT_BK: 'intermediary_id'
   PARENT_NK: "'HUB_AGREEMENT|' || (intermediary_id)"
   COMMISSIONSTRUCTURE: 'type_of_comm_arr'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_INTERMEDIARY'
 {%- endset -%}
 

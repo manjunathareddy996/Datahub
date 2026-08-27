@@ -16,7 +16,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
   IDENTIFICATIONNUMBER: 'unique_id'
   EIANUMBER: 'eia_no'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!AZBJ_PARTNER_EXTN'
 {%- endset -%}
 

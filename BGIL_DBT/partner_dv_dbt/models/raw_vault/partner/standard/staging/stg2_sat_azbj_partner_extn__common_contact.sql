@@ -20,7 +20,7 @@ derived_columns:
   ALTERNATEMOBILENUMBER: 'alt_mobile_no'
   LANDLINENUMBER: 'telephone3'
   PREFERREDCONTACTTIME: 'preferred_contact_opt'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!AZBJ_PARTNER_EXTN'
 {%- endset -%}
 
