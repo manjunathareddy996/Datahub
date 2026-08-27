@@ -16,6 +16,16 @@
         'source_tag': 'AZBJ_PARTNER_EXTN'
     },
     {
+        'model': 'stg_partner__bjaz_ctngy_gc_mem_data',
+        'alias': 't0b',
+        'key_column': 'policy_ref',
+        'ldts_column': 'inc_job_updated_at',
+        'columns': [
+            {'src': 'master_policy_ref', 'tgt': 'masterpolicyreference'}
+        ],
+        'source_tag': 'BJAZ_CTNGY_GC_MEM_DATA'
+    },
+    {
         'model': 'stg_partner__bjaz_ctngy_pa_mem_dtls',
         'alias': 't1',
         'key_column': 'contract_id',
@@ -110,7 +120,7 @@
 {%- set output_columns = ['masterpolicyreference', 'policyreferencenumber', 'policyterm', 'riskexpirydate', 'riskinceptiondate'] -%}
 
 {%- set coalesce_rules = {
-    'masterpolicyreference':  ['t0'],
+    'masterpolicyreference':  ['t0b'],
     'policyreferencenumber':  ['t0', 't2', 't5', 't7'],
     'policyterm':             ['t7'],
     'riskexpirydate':         ['t1', 't2', 't3', 't5', 't7', 't8'],

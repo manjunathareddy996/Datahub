@@ -12,7 +12,8 @@
         'ldts_column': 'inc_job_updated_at',
         'columns': [
             {'src': 'language', 'tgt': 'correspondencelanguage'},
-            {'src': 'literature', 'tgt': 'marketingoptinindicator'}
+            {'src': 'literature', 'tgt': 'marketingoptinindicator'},
+            {'src': 'employment_status', 'tgt': 'employmentstatus'}
         ],
         'source_tag': 'BJAZ_CP_PART_HIST'
     },
