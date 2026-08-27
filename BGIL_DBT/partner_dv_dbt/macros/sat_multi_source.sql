@@ -69,11 +69,19 @@
         {%- for model_name in source_model -%}
             {%- set rel = adapter.get_relation(database=ref(model_name).database, schema=ref(model_name).schema, identifier=ref(model_name).identifier) -%}
             {%- if rel is none -%}
-                {{ exceptions.raise_compiler_error("Source model '" ~ model_name ~ "' does not resolve to a valid relation") }}
+                {#-- Relation not yet materialised (first run / fresh schema): assume
+                     source provides all payload columns.  Snowflake will raise a clear
+                     error at execution time if a column is genuinely absent. --#}
+                {%- if src_payload is not none and src_payload | length > 0 -%}
+                    {%- do ns.source_columns.update({model_name: src_payload | list}) -%}
+                {%- else -%}
+                    {{ exceptions.raise_compiler_error("Source model '" ~ model_name ~ "' does not resolve to a valid relation and no src_payload was provided to fall back on") }}
+                {%- endif -%}
+            {%- else -%}
+                {%- set columns = adapter.get_columns_in_relation(ref(model_name)) -%}
+                {%- set col_names = columns | map(attribute='name') | list -%}
+                {%- do ns.source_columns.update({model_name: col_names}) -%}
             {%- endif -%}
-            {%- set columns = adapter.get_columns_in_relation(ref(model_name)) -%}
-            {%- set col_names = columns | map(attribute='name') | list -%}
-            {%- do ns.source_columns.update({model_name: col_names}) -%}
         {%- endfor -%}
     {%- endif -%}
 
