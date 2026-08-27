@@ -48,3 +48,4 @@ sources:
     schema: "{{ var('partner_test_raw_schema', 'INTERMEDIATE') }}"
     tables:
       - name: AZBJ_ADDRESS_EXTN
+      - name: BJAZ_CTNGY_PA_MEM_DTLS
