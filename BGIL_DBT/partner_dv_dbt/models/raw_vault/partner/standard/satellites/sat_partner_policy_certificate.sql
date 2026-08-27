@@ -29,4 +29,9 @@ src_source: 'RECORD_SOURCE'
                     src_hashdiff=metadata_dict['src_hashdiff'],
                     src_ldts=metadata_dict['src_ldts'],
                     src_source=metadata_dict['src_source'],
-                    source_model=metadata_dict['source_model']) }}
+                    source_model=metadata_dict['source_model'],
+                    src_column_map={
+                        'stg2_sat_ba_hcp_dt_mem__policy_certificate': ['MEMBERSTATUS'],
+                        'stg2_sat_bjaz_ctngy_pa_mem_dtls__policy_certificate': ['ENROLMENTDATE'],
+                        'stg2_sat_bjaz_hm_member_dtls__policy_certificate': ['MEMBERSTATUS']
+                    }) }}

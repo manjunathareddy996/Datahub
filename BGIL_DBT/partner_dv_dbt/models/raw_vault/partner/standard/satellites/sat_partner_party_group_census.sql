@@ -40,4 +40,17 @@ src_source: 'RECORD_SOURCE'
                     src_hashdiff=metadata_dict['src_hashdiff'],
                     src_ldts=metadata_dict['src_ldts'],
                     src_source=metadata_dict['src_source'],
-                    source_model=metadata_dict['source_model']) }}
+                    source_model=metadata_dict['source_model'],
+                    src_column_map={
+                        'stg2_sat_azbj_partner_extn__party_group_census': ['EMPLOYEEID'],
+                        'stg2_sat_bjaz_azbj_part_ext_hist__party_group_census': ['EMPLOYEEID'],
+                        'stg2_sat_bjaz_clm_supp_extn__party_group_census': ['EMPLOYEEID'],
+                        'stg2_sat_bjaz_ctngy_pa_mem_dtls__party_group_census': ['ACTIVEINDICATOR'],
+                        'stg2_sat_bjaz_ec_mem_dtls_extn__party_group_census': ['MEMBERREFERENCE'],
+                        'stg2_sat_bjaz_hcf_member_dtls__party_group_census': ['MEMBERREFERENCE'],
+                        'stg2_sat_bjaz_hlt_ensure_mem_dtls__party_group_census': ['MEMBERREFERENCE'],
+                        'stg2_sat_bjaz_hm_member_dtls__party_group_census': ['DESIGNATIONBAND', 'EMPLOYEEID', 'LOCATIONREFERENCE', 'MEMBERREFERENCE'],
+                        'stg2_sat_bjaz_pa_detl_extn__party_group_census': ['MEMBERREFERENCE'],
+                        'stg2_sat_bjaz_sh_mem_dtls_extn__party_group_census': ['MEMBERREFERENCE'],
+                        'stg2_sat_bjaz_spp_member_dtls__party_group_census': ['MEMBERREFERENCE']
+                    }) }}

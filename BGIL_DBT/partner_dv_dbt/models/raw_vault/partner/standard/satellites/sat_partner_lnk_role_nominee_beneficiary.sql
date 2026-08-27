@@ -38,4 +38,18 @@ src_source: 'RECORD_SOURCE'
                     src_hashdiff=metadata_dict['src_hashdiff'],
                     src_ldts=metadata_dict['src_ldts'],
                     src_source=metadata_dict['src_source'],
-                    source_model=metadata_dict['source_model']) }}
+                    source_model=metadata_dict['source_model'],
+                    src_column_map={
+                        'stg2_rolesat_bjaz_ctngy_ff_dtls_extn__lnk_role_nominee_beneficiary': ['APPOINTEE_NAME', 'RELATIONSHIP_TO_INSURED'],
+                        'stg2_rolesat_bjaz_ctngy_gc_mem_data__lnk_role_nominee_beneficiary': ['RELATIONSHIP_TO_INSURED'],
+                        'stg2_rolesat_bjaz_ctngy_pa_mem_dtls__lnk_role_nominee_beneficiary': ['APPOINTEE_NAME', 'RELATIONSHIP_TO_INSURED'],
+                        'stg2_rolesat_bjaz_ec_mem_dtls_extn__lnk_role_nominee_beneficiary': ['APPOINTEE_NAME', 'RELATIONSHIP_TO_INSURED'],
+                        'stg2_rolesat_bjaz_hcf_member_dtls__lnk_role_nominee_beneficiary': ['APPOINTEE_NAME', 'RELATIONSHIP_TO_INSURED'],
+                        'stg2_rolesat_bjaz_hc_part_extn__lnk_role_nominee_beneficiary': ['APPOINTEE_NAME', 'RELATIONSHIP_TO_INSURED'],
+                        'stg2_rolesat_bjaz_hlt_ensure_mem_dtls__lnk_role_nominee_beneficiary': ['APPOINTEE_NAME', 'RELATIONSHIP_TO_INSURED'],
+                        'stg2_rolesat_bjaz_hm_member_dtls__lnk_role_nominee_beneficiary': ['APPOINTEE_NAME', 'RELATIONSHIP_TO_INSURED'],
+                        'stg2_rolesat_bjaz_pa_detl_extn__lnk_role_nominee_beneficiary': ['APPOINTEE_NAME', 'RELATIONSHIP_TO_INSURED'],
+                        'stg2_rolesat_bjaz_sh_mem_dtls_extn__lnk_role_nominee_beneficiary': ['APPOINTEE_NAME', 'RELATIONSHIP_TO_INSURED'],
+                        'stg2_rolesat_bjaz_spp_member_dtls__lnk_role_nominee_beneficiary': ['APPOINTEE_NAME', 'RELATIONSHIP_TO_INSURED'],
+                        'stg2_rolesat_bjaz_starpkg_ff_dtls__lnk_role_nominee_beneficiary': ['APPOINTEE_NAME', 'RELATIONSHIP_TO_INSURED']
+                    }) }}
