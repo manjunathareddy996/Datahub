@@ -175,9 +175,15 @@ WITH source_data AS (
         a.{{ src_pk }},
         a.{{ src_hashdiff }},
         {%- set src_cols_upper = ns.source_columns[model_name] | map('upper') | list %}
+        {#-- Payload is cast to VARCHAR so every UNION ALL branch agrees on type. The same
+             logical column can be NUMBER in one source and VARCHAR in another (e.g. a
+             numeric id in one table vs a masked 'XXXXXXXX4337' in the next). Snowflake
+             resolves NUMBER vs VARCHAR by coercing the string to a number, which fails
+             with "Numeric value ... is not recognized". Mirrors the TO_VARCHAR approach
+             already used in stitch_incremental. --#}
         {%- for col in superset %}
         {%- if col | upper in src_cols_upper %}
-        a.{{ col }},
+        CAST(a.{{ col }} AS VARCHAR) AS {{ col }},
         {%- else %}
         CAST(NULL AS VARCHAR) AS {{ col }},
         {%- endif %}
