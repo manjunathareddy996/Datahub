@@ -1,4 +1,4 @@
-{%- macro sat_multi_source(src_pk, src_hashdiff, src_payload, src_ldts, src_source, source_model, src_extra_columns=none, src_eff=none, src_column_map=none) -%}
+{%- macro sat_multi_source(src_pk, src_hashdiff, src_payload, src_ldts, src_source, source_model, src_extra_columns=none, src_eff=none, src_column_map=none, src_run_ts='DBT_RUN_TS') -%}
 
 {#-- Required parameter validation --#}
 {%- if src_pk is none -%}
@@ -86,7 +86,7 @@
     {%- endif -%}
 
     {#-- Superset computation --#}
-    {%- set system_cols = [src_pk | upper, src_hashdiff | upper, src_ldts | upper, src_source | upper] -%}
+    {%- set system_cols = [src_pk | upper, src_hashdiff | upper, src_ldts | upper, src_source | upper, src_run_ts | upper] -%}
     {%- if src_eff is not none -%}
         {%- do system_cols.append(src_eff | upper) -%}
     {%- endif -%}
@@ -121,9 +121,50 @@
         {%- set superset = ns_extra.merged | sort -%}
     {%- endif -%}
 
+    {#-- src_run_ts is stamped as a system column below, so it must never sit in the
+         payload superset. If it did, the padding loop would emit
+         CAST(NULL AS VARCHAR) AS DBT_RUN_TS for every source (it is in no
+         src_column_map entry) and also duplicate the column name. --#}
+    {%- set superset = superset | reject('equalto', src_run_ts) | reject('equalto', src_run_ts | upper) | list -%}
+
     {#-- Validate we have payload columns --#}
     {%- if superset | length == 0 -%}
         {{ exceptions.raise_compiler_error("No payload columns found across source models") }}
+    {%- endif -%}
+
+    {#-- Watermark window, mirroring stitch_incremental:
+         to_date   = var('to_date') override, else run_started_at (UTC) converted to IST.
+         from_date = var('from_date') override, else MAX(DBT_RUN_TS) from this sat, else sentinel.
+         The sat is read via {{ this }} (it IS the target), so there is no DAG cycle.
+         Sources are filtered on their own src_ldts against this window; they never need
+         a DBT_RUN_TS column of their own. --#}
+    {%- set sentinel = '1900-01-01' -%}
+
+    {%- if var('to_date', none) is not none -%}
+        {%- set to_date_expr = "CAST('" ~ var('to_date') ~ "' AS TIMESTAMP_NTZ)" -%}
+    {%- else -%}
+        {%- set to_date_expr = "CAST(CONVERT_TIMEZONE('UTC','Asia/Kolkata', '" ~ run_started_at.strftime('%Y-%m-%d %H:%M:%S') ~ "'::timestamp_ntz) AS TIMESTAMP_NTZ)" -%}
+    {%- endif -%}
+
+    {%- if var('from_date', none) is not none -%}
+        {%- set from_date = "'" ~ var('from_date') ~ "'" -%}
+    {%- elif not execute -%}
+        {%- set from_date = "'" ~ sentinel ~ "'" -%}
+    {%- else -%}
+        {%- set sat_rel = adapter.get_relation(database=this.database, schema=this.schema, identifier=this.identifier) -%}
+        {%- if sat_rel is none -%}
+            {%- set from_date = "'" ~ sentinel ~ "'" -%}
+        {%- else -%}
+            {%- set wm_query -%}
+                SELECT COALESCE(MAX({{ src_run_ts }}), TO_TIMESTAMP_NTZ('{{ sentinel }}')) AS mx FROM {{ sat_rel }}
+            {%- endset -%}
+            {%- set results = run_query(wm_query) -%}
+            {%- if results and (results.rows | length) > 0 and results.rows[0][0] is not none -%}
+                {%- set from_date = "'" ~ results.rows[0][0] ~ "'" -%}
+            {%- else -%}
+                {%- set from_date = "'" ~ sentinel ~ "'" -%}
+            {%- endif -%}
+        {%- endif -%}
     {%- endif -%}
 
     {#-- Generate source_data CTE with UNION ALL --#}
@@ -145,9 +186,12 @@ WITH source_data AS (
         a.{{ src_eff }},
         {%- endif %}
         a.{{ src_ldts }},
-        a.{{ src_source }}
+        a.{{ src_source }},
+        {{ to_date_expr }} AS {{ src_run_ts }}
     FROM {{ ref(model_name) }} AS a
     WHERE a.{{ src_pk }} IS NOT NULL
+      AND a.{{ src_ldts }} >  CAST({{ from_date }} AS TIMESTAMP_NTZ)
+      AND a.{{ src_ldts }} <= {{ to_date_expr }}
     {%- if not loop.last %}
 
     UNION ALL
@@ -186,7 +230,8 @@ unique_source_records AS (
         sd.{{ src_eff }},
         {%- endif %}
         sd.{{ src_ldts }},
-        sd.{{ src_source }}
+        sd.{{ src_source }},
+        sd.{{ src_run_ts }}
     FROM source_data AS sd
     {%- if automate_dv.is_any_incremental() %}
     LEFT OUTER JOIN latest_records AS lr
