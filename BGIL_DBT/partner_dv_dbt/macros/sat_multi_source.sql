@@ -211,15 +211,17 @@ latest_records AS (
     SELECT
         current_records.{{ src_pk }},
         current_records.{{ src_hashdiff }},
+        current_records.{{ src_source }},
         current_records.{{ src_ldts }}
     FROM {{ this }} AS current_records
     INNER JOIN (
-        SELECT DISTINCT source_data.{{ src_pk }}
+        SELECT DISTINCT source_data.{{ src_pk }}, source_data.{{ src_source }}
         FROM source_data
     ) AS source_records
         ON source_records.{{ src_pk }} = current_records.{{ src_pk }}
+        AND source_records.{{ src_source }} = current_records.{{ src_source }}
     QUALIFY ROW_NUMBER() OVER (
-        PARTITION BY current_records.{{ src_pk }}
+        PARTITION BY current_records.{{ src_pk }}, current_records.{{ src_source }}
         ORDER BY current_records.{{ src_ldts }} DESC
     ) = 1
 ),
@@ -242,6 +244,7 @@ unique_source_records AS (
     {%- if automate_dv.is_any_incremental() %}
     LEFT OUTER JOIN latest_records AS lr
         ON sd.{{ src_pk }} = lr.{{ src_pk }}
+        AND sd.{{ src_source }} = lr.{{ src_source }}
     {%- endif %}
     QUALIFY sd.{{ src_hashdiff }} !=
         LAG(sd.{{ src_hashdiff }}, 1,
@@ -251,7 +254,7 @@ unique_source_records AS (
             CAST('FFFFFFFF' AS BINARY(4))
             {%- endif %}
         ) OVER (
-            PARTITION BY sd.{{ src_pk }}
+            PARTITION BY sd.{{ src_pk }}, sd.{{ src_source }}
             ORDER BY sd.{{ src_ldts }} ASC{%- if src_eff is not none %}, sd.{{ src_eff }} ASC{%- endif %}
         )
 ),
