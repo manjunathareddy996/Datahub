@@ -85,7 +85,7 @@ final AS (
             CASE WHEN {{ src.alias }}.{{ unique_key }} IS NOT NULL THEN '{{ src.source_tag }}' END{% if not loop.last %},{% endif %}
             {%- endfor %}
         ), ', ') AS record_source,
-        GREATEST({% for src in sources %}{{ src.alias }}.{{ src.ldts_column }}{% if not loop.last %}, {% endif %}{% endfor %}) AS inc_job_updated_at
+        GREATEST_IGNORE_NULLS({% for src in sources %}{{ src.alias }}.{{ src.ldts_column }}{% if not loop.last %}, {% endif %}{% endfor %}) AS inc_job_updated_at
     FROM affected_keys ak
     {%- for src in sources %}
     LEFT JOIN {{ src.alias }} ON {{ src.alias }}.{{ unique_key }} = ak.{{ unique_key }}
