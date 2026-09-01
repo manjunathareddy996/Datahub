@@ -26,7 +26,7 @@ derived_columns:
   IIISLA_MEM_NO: 'iiisla_mem_no'
   IIISLA_MEM_STATUS: 'iiisla_mem_status'
   HAS_IRDA_LICENCE_INDICATOR: 'irda_license'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_CLM_SUPP_EXTN'
 {%- endset -%}
 

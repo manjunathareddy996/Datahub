@@ -18,7 +18,7 @@ derived_columns:
   PARENT_BK: 'add_id'
   PARENT_NK: "'HUB_LOCATION|' || (add_id)"
   CARE_OF_NAME: 'addressee'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!CP_PARTNERS'
 {%- endset -%}
 

@@ -28,7 +28,7 @@ derived_columns:
   PAN_APP_NO: 'pan_app_no'
   TWO_YR_ITR_FLAG: 'two_yr_itr_flag'
   ADHAAR_PAN_LINK_FLAG: 'adhaar_pan_link_flag'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_CLM_SUPP_EXTN'
 {%- endset -%}
 

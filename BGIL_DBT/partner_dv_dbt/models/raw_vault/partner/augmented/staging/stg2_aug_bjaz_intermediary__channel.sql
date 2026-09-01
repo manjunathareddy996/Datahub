@@ -31,7 +31,7 @@ derived_columns:
   GREEN_CHANNEL_INDICATOR: 'green_channel_imd'
   IMDFLAG: 'imdflag'
   FINANCE_SUB_CHANNEL_CODE: 'fin_sub_channel_code'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_INTERMEDIARY'
 {%- endset -%}
 

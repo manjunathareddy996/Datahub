@@ -24,7 +24,7 @@ derived_columns:
   HEIGHT_INCHES: 'height_inches'
   BMI: 'bmi'
   OTHER_OCC: 'other_occ'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_SPP_MEMBER_DTLS'
 {%- endset -%}
 

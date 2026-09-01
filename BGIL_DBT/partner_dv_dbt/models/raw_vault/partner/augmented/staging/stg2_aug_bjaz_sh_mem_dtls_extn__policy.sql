@@ -22,7 +22,7 @@ derived_columns:
   PARENT_NK: "'HUB_POLICY|' || (contract_id)"
   MEMBER_SEQUENCE: 'member_no'
   INCEPTION_DATE: 'inception_date'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_SH_MEM_DTLS_EXTN'
 {%- endset -%}
 

@@ -18,7 +18,7 @@ derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
   DATE_OF_BIRTH_M: 'date_of_birth_m'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_HC_PART_EXTN'
 {%- endset -%}
 

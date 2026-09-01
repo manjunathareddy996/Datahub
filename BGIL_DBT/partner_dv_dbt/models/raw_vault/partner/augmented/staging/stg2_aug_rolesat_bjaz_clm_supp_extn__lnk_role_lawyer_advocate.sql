@@ -44,7 +44,7 @@ derived_columns:
   NO_OF_MACT: 'no_of_mact'
   NO_OF_COMPANIES: 'no_of_companies'
   ACD_QUALIFICATION: 'acd_qualification'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_CLM_SUPP_EXTN'
 {%- endset -%}
 

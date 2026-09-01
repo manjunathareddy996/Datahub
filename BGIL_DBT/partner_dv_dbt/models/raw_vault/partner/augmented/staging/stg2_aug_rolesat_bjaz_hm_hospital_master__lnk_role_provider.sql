@@ -29,7 +29,7 @@ derived_columns:
   DIAGNO_YN: 'diagno_yn'
   PRIORITY_FLG: 'priority_flg'
   HOSP_SPEC_TYPE: 'hosp_spec_type'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_HM_HOSPITAL_MASTER'
 {%- endset -%}
 

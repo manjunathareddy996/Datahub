@@ -22,7 +22,7 @@ derived_columns:
   PRIOR_CLAIM_REASON: 'claimed_for'
   SMOKE_CONSUMP: 'smoke_consump'
   PREGNANT_MONTHS: 'pregnant_months'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_EC_MEM_DTLS_EXTN'
 {%- endset -%}
 

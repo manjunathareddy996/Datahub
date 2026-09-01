@@ -17,7 +17,7 @@ derived_columns:
   PARENT_BK: 'intermediary_id'
   PARENT_NK: "'HUB_PARTY|' || (intermediary_id)"
   INTERMEDIARY_LICENCE_NUMBER: 'license_no'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_INTERMEDIARY_HIST'
 {%- endset -%}
 

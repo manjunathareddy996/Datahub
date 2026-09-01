@@ -32,7 +32,7 @@ derived_columns:
   IT_STATUS: 'it_status'
   PARENT_ENTITY_REFERENCE: 'parent_id'
   EXISTING_CUSTOMER_INDICATOR: 'existing_cust'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!AZBJ_PARTNER_EXTN'
 {%- endset -%}
 

@@ -30,7 +30,7 @@ derived_columns:
   CUMM_BONUS_WIDER: 'cumm_bonus_wider'
   CUMM_BONUS_AMT_WIDER: 'cumm_bonus_amt_wider'
   CUMM_BONUS_AMT_COMP: 'cumm_bonus_amt_comp'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_PA_DETL_EXTN'
 {%- endset -%}
 

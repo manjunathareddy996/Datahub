@@ -20,7 +20,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
   CAUSE_OF_DEATH: 'cause_of_death'
   PROOF_OF_DEATH_TYPE: 'proof_of_death'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!CP_PARTNERS'
 {%- endset -%}
 

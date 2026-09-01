@@ -22,7 +22,7 @@ derived_columns:
   PAYMENT_MODE: 'payment_mode'
   IMPS_ACTIVE_DATE: 'imps_active_date'
   IMPS_END_DATE: 'imps_end_date'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_HM_HOSPITAL_MASTER'
 {%- endset -%}
 

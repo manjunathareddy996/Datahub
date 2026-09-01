@@ -95,7 +95,7 @@ derived_columns:
   CLAIM_NEAR_ME_FLAG: 'claim_near_me_flag'
   JW_ID: 'jw_id'
   JW_FLAG: 'jw_flag'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_CLM_SUPP_EXTN'
 {%- endset -%}
 

@@ -19,7 +19,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
   AA_MEMBERSHIP_NUMBER: 'aa_membership_number'
   AA_MEMBERSHIP_EXPIRY_DATE: 'aa_membership_expiry_date'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_AZBJ_PART_EXT_HIST'
 {%- endset -%}
 

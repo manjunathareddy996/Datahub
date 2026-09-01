@@ -22,7 +22,7 @@ derived_columns:
   ECS_MANDATE_STATUS: 'ecs_status'
   IT_STATUS: 'it_status'
   PARENT_ENTITY_REFERENCE: 'parent_id'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_AZBJ_PART_EXT_HIST'
 {%- endset -%}
 

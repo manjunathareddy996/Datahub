@@ -22,7 +22,7 @@ derived_columns:
   WEBSITE_URL: 'website_link'
   PAN_AADHAR_LINKED: 'pan_aadhar_linked'
   IT_RETURN_2YR: 'it_return_2yr'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_INTERMEDIARY'
 {%- endset -%}
 

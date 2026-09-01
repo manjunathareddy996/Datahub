@@ -20,7 +20,7 @@ derived_columns:
   PARENT_NK: "'HUB_LOCATION|' || (add_id)"
   ADDRESS_LINE4: 'address_line4'
   ADDRESS_LINE5: 'address_line5'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!CP_ADDRESSES'
 {%- endset -%}
 
