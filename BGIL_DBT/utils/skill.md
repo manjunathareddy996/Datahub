@@ -40,6 +40,15 @@ star-schema/mart work (that's a different skill).
 `dbt_project.yml` + `packages.yml` (dbt_utils, automate_dv) → per-table staging casts
 (`models/staging/<lob>/stg_<lob>__<table>.sql`, 1:1 trimmed/typed casts, key columns always
 cast to canonical trimmed varchar for stable hashing regardless of native type).
+
+**`inc_job_updated_at` is a mandatory column in every `stg_` model.** Every source table carries
+an `inc_job_updated_at` column, so pull it through in every per-table staging cast without
+exception — it is the load/CDC watermark the incremental layer downstream depends on (the
+`ldts_column` for `stitch_incremental`, and the `src_ldts` the multi-source satellite macros
+filter their T-1 window on). A staging model missing it is a defect, not an optional omission:
+there is no fallback business date to substitute, so any downstream incremental filter silently
+degrades. Treat its presence as a build-gate check in `verify_<lob>.py` — every `stg_` model must
+select `inc_job_updated_at`.
  
 ### 2. Resolve hub/link/satellite keys from the mapping
 For every hub/link, find its business key: an explicit `KEY:` row in the mapping, else the
@@ -128,6 +137,20 @@ union and stitch families in the project.
   the chained join (see "Incremental stitch via macro" below).
 - `hub_<name>.sql` / `link_<name>.sql` / `sat_<name>.sql` / union of per-branch stage models
   via `automate_dv.hub()`/`link()`/`sat()`/`ma_sat()`.
+- **Satellite file naming: `sat_<lob>_<name>.sql`** — every satellite model name is prefixed with
+  the LOB (e.g. `sat_partner_party`, `sat_partner_aug_location`). Keeps satellites namespaced per
+  LOB when projects share a tree and matches the existing build's convention — don't drop the LOB
+  segment.
+- **Multi-source satellites — prefer the custom `sat_multi_source` / `ma_sat_multi_source`
+  macros over a hand-written union feeding `automate_dv.sat()`/`ma_sat()`.** When a satellite is
+  fed by more than one per-table stg2 model, do **not** build a separate `stg2_union__<sat>` view
+  and point `automate_dv.sat()` at it — call `sat_multi_source` (single-active) or
+  `ma_sat_multi_source` (multi-active, non-empty child key) instead. These macros union the
+  per-table sources *inside* the macro, align columns into a payload superset, cast every payload
+  column to `VARCHAR` so mismatched source types don't break the `UNION ALL`, apply the T-1
+  watermark window, and run the standard change detection. A single-string `source_model`
+  delegates straight to `automate_dv.sat()`, so the macro is a safe drop-in even for the 1-source
+  case. See "Custom multi-source satellite macros" below for call shape.
 - A hub *can* have multiple contributing branches with entirely different key formulas from
   different source systems — that's normal (`HUB_PARTY` fed by demographics, intermediaries,
   claim-suppliers, etc. all differently). What's *not* fine is one satellite silently
@@ -135,6 +158,13 @@ union and stitch families in the project.
   always check for a real key before falling back (see Known Defect Classes #4).
  
 ### 4. Multi-active satellites: get the child key right
+When a multi-active satellite is fed by more than one source, build it with the custom
+`ma_sat_multi_source` macro (see "Custom multi-source satellite macros" below) — pass the child
+key as `src_cdk`. The macro groups by `(src_pk, src_cdk, record_source)` so a late-arriving
+source cannot create phantom versions in another source's group. Everything below about deriving
+the child-key value still applies; the macro only handles the union + change detection, not the
+choice of child key.
+
 For every satellite with a non-empty `childkey`:
 - If the workbook gives an explicit `[ck:...]` bracket or `Instance/Child` column value, use
   that literal verbatim.
@@ -241,6 +271,108 @@ and that at least one of those rows has `ldts_column >= T-1` (proving it was pic
 delta, not by accident). Expect the `_incr` view to have *fewer* keys than the original — keys
 whose every contributing row landed today only appear once today becomes T-1.
 
+### 4d. Custom multi-source satellite macros (`sat_multi_source` / `ma_sat_multi_source`)
+
+`macros/sat_multi_source.sql` and `macros/ma_sat_multi_source.sql` are project-local macros that
+replace the "hand-written union view → `automate_dv.sat()`/`ma_sat()`" pattern for any satellite
+fed by more than one source table. They exist because a satellite that unions N per-table stg2
+models otherwise needs a separate `stg2_union__<sat>` (or stitch) artifact just to align columns
+before the standard `sat()` call — that extra file is one more generated artifact to keep in sync
+and one more place for the fan-in / dropped-column defects (§2b, defect classes #9/#10) to hide.
+These macros fold the union in.
+
+**When to use which:**
+- `sat_multi_source` — single-active satellite (empty canonical `childkey`), one or many sources.
+  A single-string `source_model` delegates verbatim to `automate_dv.sat()`, so it's a safe
+  drop-in even at 1 source; a list triggers the union path.
+- `ma_sat_multi_source` — multi-active satellite (non-empty `childkey`). Pass the child key as
+  `src_cdk` (string or list). Grouping is by `(src_pk, src_cdk, record_source)`.
+- Neither replaces `automate_dv.hub()`/`link()` — hubs and links keep the per-branch stage union.
+
+**What the macro does for you (so you don't hand-build it):**
+- Unions every `source_model` with `UNION ALL`, casting each payload column to `VARCHAR` so a
+  column that is `NUMBER` in one source and masked `VARCHAR` in another does not fail the union.
+- Builds a payload **superset** from `src_payload` (authoritative when given) and pads any column
+  a given source lacks with `CAST(NULL AS VARCHAR)`, so every branch is column-aligned.
+- Applies the same T-1 watermark window as `stitch_incremental` (`var('to_date')`/`var('from_date')`
+  overrides, else `MAX(DBT_RUN_TS)` from the target sat via `{{ this }}`, else `1900-01-01`
+  sentinel) and stamps `DBT_RUN_TS`.
+- Runs change detection: per-row hashdiff for `sat_multi_source`, per-**group**
+  (member-set + count) for `ma_sat_multi_source`.
+
+**`src_column_map` is how you avoid the fan-in / dropped-column defects.** When sources expose
+different subsets of the payload, pass an explicit `src_column_map` (`model → [columns it
+provides]`). Without it the macro introspects each relation and assumes any not-yet-materialised
+source provides the full `src_payload`. Deriving the map from the mapping workbook (not from
+whatever columns happen to exist) is what keeps the §2b reconciliation gate honest.
+
+**Config shape (single-active):**
+```sql
+{{
+    config(materialized='incremental', incremental_strategy='merge',
+           unique_key=['<HUB>_HKEY', 'HASHDIFF', 'RECORD_SOURCE'])
+}}
+{%- set yaml_metadata -%}
+source_model:
+  - 'stg2_..._a'
+  - 'stg2_..._b'
+src_pk: '<HUB>_HKEY'
+src_payload: ['ATTR_A', 'ATTR_B']
+src_hashdiff: 'HASHDIFF'
+src_ldts: 'LOAD_DATETIME'
+src_source: 'RECORD_SOURCE'
+{%- endset -%}
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+{{ sat_multi_source(src_pk=metadata_dict['src_pk'],
+                    src_payload=metadata_dict['src_payload'],
+                    src_hashdiff=metadata_dict['src_hashdiff'],
+                    src_ldts=metadata_dict['src_ldts'],
+                    src_source=metadata_dict['src_source'],
+                    source_model=metadata_dict['source_model'],
+                    src_column_map={
+                        'stg2_..._a': ['ATTR_A'],
+                        'stg2_..._b': ['ATTR_B']
+                    }) }}
+```
+
+**Multi-active** is identical plus `src_cdk` in both the metadata and the call, and the child key
+in `unique_key`:
+```sql
+config(... unique_key=['<HUB>_HKEY', 'MEMBER_SEQUENCE', 'HASHDIFF', 'RECORD_SOURCE'])
+...
+src_cdk: ['MEMBER_SEQUENCE']
+...
+{{ ma_sat_multi_source(src_pk=..., src_cdk=metadata_dict['src_cdk'], src_payload=...,
+                       src_hashdiff=..., src_ldts=..., src_source=...,
+                       source_model=..., src_column_map={...}) }}
+```
+
+**Parameters:**
+
+| Param | Required | Purpose |
+|-------|----------|---------|
+| `src_pk` | yes | Parent hub/link hash key column (`unique_key`'s grain key) |
+| `src_cdk` | `ma_` only | Child key (string or list) — the multi-active grain |
+| `src_payload` | yes | Authoritative payload superset (the columns the satellite carries) |
+| `src_hashdiff` | yes | Hashdiff column, usually `'HASHDIFF'` |
+| `src_ldts` | yes | Load-datetime / watermark column on each source, usually `'LOAD_DATETIME'` |
+| `src_source` | yes | Record-source column, usually `'RECORD_SOURCE'` |
+| `source_model` | yes | String (→ delegates to `automate_dv.sat()`) or list of stg2 model names |
+| `src_column_map` | recommended | `model → [columns it provides]`; skips per-source introspection and is how §2b fan-in is made explicit |
+| `src_extra_columns` | no | Extra non-payload columns to carry through |
+| `src_eff` | `sat_` only | Effective-from column if the satellite is effectivity-tracked |
+| `src_run_ts` | no | Watermark/stamp column name, default `'DBT_RUN_TS'` |
+
+**Pitfalls:**
+- The macro reads its own watermark from `{{ this }}`; the target must be materialized
+  `incremental` with `merge` (as in the config blocks above) or the `MAX(DBT_RUN_TS)` lookup has
+  nothing to read on re-runs.
+- `unique_key` must include `RECORD_SOURCE` for the multi-source path (change detection is
+  per-source-group), unlike a plain single-source `automate_dv.sat()`.
+- Keep `src_payload` the authoritative superset and let `src_column_map` say who provides what —
+  don't rely on relation introspection for the source-of-truth column set, or a mapped column that
+  simply isn't in the current relation gets silently dropped (defect class #9).
+
 ### 5. Augmented (build-side) track
 Columns flagged by the modeler's own Augmentation sheet, where the source table already
 carries a verified key to the target hub — build directly, kept in a structurally separate
@@ -265,6 +397,10 @@ A small script per project (`verify_<lob>.py`), re-run after every batch of chan
    and every satellite branch that's supposed to key on it. Structural checks #1/#2 don't catch
    a hub and satellite computing *different* formulas that both happen to reference real
    columns — that only shows up as silently orphaned rows at query time.
+5. **Staging watermark presence** — every `stg_<lob>__<table>.sql` selects `inc_job_updated_at`
+   (§1). Every source table carries it, so a `stg_` model without it is a defect that silently
+   breaks the T-1 incremental window downstream. Fail the build naming any staging model missing
+   it.
  
 Cross-LOB work: if multiple LOB projects share a directory tree, verify the untouched ones are
 still untouched (`find <other_lob>_dv_dbt -newer <marker-file> -type f`) after every round —
@@ -342,11 +478,18 @@ each remaining table individually (see Known Defect Classes #4).
  
 - Hash-key suffix: `_HK` vs `_HKEY` — check the project's existing hubs, don't assume.
 - Parent business-key column naming: `PARENT_BK`/`PARENT_NK` vs project-specific naming.
+- Satellite file naming: `sat_<lob>_<name>.sql` (LOB-prefixed, e.g. `sat_partner_party`).
 - Namespaced hashing formula: `hash('{CODE}|' || raw_key)`.
 - Materializations: staging/stitched/stage views, hub/link/satellite incremental tables (or
   whatever the project's `dbt_project.yml` already establishes).
 - Null-placeholder convention for absent payload columns in a branch: `cast(null as <type>)`,
-  type-matched to the populated branches.
+  type-matched to the populated branches (hand-written unions only — `sat_multi_source` /
+  `ma_sat_multi_source` pad absent columns with `CAST(NULL AS VARCHAR)` automatically).
+- Multi-source satellites: use the custom `sat_multi_source` / `ma_sat_multi_source` macros with
+  an explicit `src_column_map`, not a hand-written union view feeding `automate_dv.sat()`/`ma_sat()`.
+- Mandatory staging column: `inc_job_updated_at` is present on every source table and must be
+  pulled through in every `stg_` model — it is the load/CDC watermark the incremental layer and
+  the multi-source satellite macros filter on. No fallback; a `stg_` model without it is a defect.
 - Stitch watermark column: `gg_change_date` here (a CDC timestamp from the replication tool, not
   a business date). Confirm the project's column name and that *every* intended source exposes
   it before configuring `stitch_incremental`.
