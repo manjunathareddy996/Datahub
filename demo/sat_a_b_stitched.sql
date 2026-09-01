@@ -1,4 +1,10 @@
-{{ config(materialized='incremental', incremental_strategy='append') }}
+{{
+    config(
+        materialized='incremental',
+        incremental_strategy='merge',
+        unique_key=['PARTY_HKEY','HASHDIFF']
+    )
+}}
 
 -- DEMO: Satellite fed by stitched source (Pattern 2).
 -- Single stg2 feed (stg2_a_b) — ONE hashdiff timeline, no interleaving, no duplicates.
@@ -10,6 +16,8 @@ src_pk: 'PARTY_HKEY'
 src_payload:
   - 'PHONE_1'
   - 'PHONE_2'
+src_extra_columns:
+  - 'DBT_RUN_TS'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -19,6 +27,7 @@ src_source: 'RECORD_SOURCE'
 
 {{ automate_dv.sat(src_pk=metadata_dict['src_pk'],
                     src_payload=metadata_dict['src_payload'],
+                    src_extra_columns=metadata_dict['src_extra_columns'],
                     src_hashdiff=metadata_dict['src_hashdiff'],
                     src_ldts=metadata_dict['src_ldts'],
                     src_source=metadata_dict['src_source'],
