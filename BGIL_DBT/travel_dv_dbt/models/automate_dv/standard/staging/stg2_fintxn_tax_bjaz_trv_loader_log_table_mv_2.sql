@@ -1,0 +1,31 @@
+{{ config(materialized='view') }}
+
+-- TRAVEL STANDARD-MODEL per-table stage() for SAT_FINTXN_TAX, table
+-- 'BJAZ_TRV_LOADER_LOG_TABLE_MV', column 'SERVICETAX' -> Service Tax Amount [TAX_TYPE=service_tax].
+-- Round-2 fix: reuses the degenerate HUB_FINANCIAL_TRANSACTION key (POLICYNUMBER) --
+-- previously unbuildable, no transaction key at all on this table.
+
+{%- set yaml_metadata -%}
+source_model: 'stg_travel__bjaz_trv_loader_log_table_mv'
+hashed_columns:
+  FINANCIAL_TRANSACTION_HKEY: 'PARENT_NK'
+  HASHDIFF:
+    is_hashdiff: true
+    columns:
+      - 'SERVICE_TAX_AMOUNT'
+      - 'TAX_TYPE'
+derived_columns:
+  PARENT_BK: 'policynumber'
+  PARENT_NK: "'HUB_FINANCIAL_TRANSACTION|' || (policynumber)"
+  TAX_TYPE: '!service_tax'
+  SERVICE_TAX_AMOUNT: 'servicetax'
+  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  RECORD_SOURCE: '!BJAZ_TRV_LOADER_LOG_TABLE_MV'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

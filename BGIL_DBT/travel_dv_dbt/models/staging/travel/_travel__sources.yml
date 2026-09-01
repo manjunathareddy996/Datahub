@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: travel_raw
+    description: >
+      Travel LOB source tables, landed into Snowflake as-is from the upstream OPUS
+      GG_DWHSTAGE extract. Database/schema below are placeholders -- point them at
+      wherever this project's raw ingestion actually lands these tables before running.
+    database: "{{ var('travel_raw_database', 'RAW') }}"
+    schema: "{{ var('travel_raw_schema', 'GG_DWHSTAGE') }}"
+    tables:
+      - name: BA_TRV_DATA_POLICY_DTLS_MV
+      - name: BA_TRV_PLAN_MST_MV
+      - name: BJAZ_TRV_DETLS_EXTN
+      - name: BJAZ_TRV_LOADER_DATA_MV
+      - name: BJAZ_TRV_LOADER_LOG_TABLE_MV
+      - name: BJAZ_TRV_PLAN_MV
+      - name: BJAZ_TRV_RATE_MASTER_MV
+      - name: BJAZ_TRV_RIDER_DTLS_MV
+      - name: BJAZ_TRV_RIDER_RATE_MAST_MV

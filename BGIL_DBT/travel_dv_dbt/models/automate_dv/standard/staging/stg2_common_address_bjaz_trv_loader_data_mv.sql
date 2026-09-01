@@ -1,0 +1,37 @@
+{{ config(materialized='view') }}
+
+-- TRAVEL STANDARD-MODEL per-table stage() for SAT_COMMON_ADDRESS, table
+-- 'BJAZ_TRV_LOADER_DATA_MV' (proposer). Reuses the exact address-point content-hash key
+-- formula from stg2_hub_bjaz_trv_loader_data_mv__location_addr.sql (round-2 mapper
+-- correction -- see that file's header for why PINCODE alone is wrong here).
+
+{%- set yaml_metadata -%}
+source_model: 'stg_travel__bjaz_trv_loader_data_mv'
+hashed_columns:
+  LOCATION_HKEY: 'PARENT_NK'
+  HASHDIFF:
+    is_hashdiff: true
+    columns:
+      - 'BUILDING_NAME'
+      - 'CITY'
+      - 'POSTAL_CODE'
+      - 'STATE_NAME'
+      - 'STREET_NAME'
+derived_columns:
+  PARENT_BK: "coalesce(building, '') || '|' || coalesce(streetname, '') || '|' || coalesce(subareacity, '') || '|' || coalesce(state, '') || '|' || coalesce(pincode, '')"
+  PARENT_NK: "'HUB_LOCATION|' || (coalesce(building, '') || '|' || coalesce(streetname, '') || '|' || coalesce(subareacity, '') || '|' || coalesce(state, '') || '|' || coalesce(pincode, ''))"
+  BUILDING_NAME: 'building'
+  CITY: 'subareacity'
+  POSTAL_CODE: 'pincode'
+  STATE_NAME: 'state'
+  STREET_NAME: 'streetname'
+  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  RECORD_SOURCE: '!BJAZ_TRV_LOADER_DATA_MV'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

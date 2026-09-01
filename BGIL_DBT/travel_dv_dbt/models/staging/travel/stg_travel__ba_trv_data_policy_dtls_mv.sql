@@ -1,0 +1,81 @@
+-- Staging model for source table BA_TRV_DATA_POLICY_DTLS_MV (Travel LOB).
+-- Casting: TEXT/VARCHAR2/CHAR -> trimmed VARCHAR, NUMBER -> NUMBER, TIMESTAMP/DATE -> TIMESTAMP_NTZ.
+-- Key columns (hub-key components) -> canonical trimmed VARCHAR regardless of native type,
+-- for stable hashing -- same convention as the Health/Partner LOB builds.
+-- Types read from OPUS_TRAVEL_SCHEMA_with_DATA_TYPE.csv (real Snowflake DESCRIBE-style
+-- metadata, supplied by the mapper) -- not inferred.
+
+with source as (
+
+    select
+    nullif(trim(to_varchar("AGE_ARRAY_COMMA_SEPARATED")), '') as age_array_comma_separated,
+    nullif(trim(to_varchar("ASSIGNEE_NAME")), '') as assignee_name,
+    nullif(trim(to_varchar("CFT_EMP_NO")), '') as cft_emp_no,
+    nullif(trim(to_varchar("CFT_FLAG")), '') as cft_flag,
+    nullif(trim(to_varchar("CFT_MST_COMP_REF")), '') as cft_mst_comp_ref,
+    nullif(trim(to_varchar("CFT_MST_CONTRACT_ID")), '') as cft_mst_contract_id,
+    nullif(trim(to_varchar("CFT_MST_POLICY_REF")), '') as cft_mst_policy_ref,
+    nullif(trim(to_varchar("COMMISSION_AMT")), '') as commission_amt,
+    "COMMISSION_RATE"::number as commission_rate,
+    nullif(trim(to_varchar("COST_CENTER")), '') as cost_center,
+    "COVER_NOTE_DATE"::timestamp_ntz as cover_note_date,
+    "COVER_NOTE_NO"::number as cover_note_no,
+    nullif(trim(to_varchar("CO_ORG_UNIT")), '') as co_org_unit,
+    "DATE_OF_BIRTH"::timestamp_ntz as date_of_birth,
+    nullif(trim(to_varchar("DESTINATION")), '') as destination,
+    nullif(trim(to_varchar("DISCOUNT_AMT")), '') as discount_amt,
+    "DISCOUNT_PER"::number as discount_per,
+    nullif(trim(to_varchar("DISEASE_CODES")), '') as disease_codes,
+    "EDU_CESS_AMT"::number as edu_cess_amt,
+    nullif(trim(to_varchar("FAMILY_FLAG")), '') as family_flag,
+    "FINAL_PREMIUM"::number as final_premium,
+    nullif(trim(to_varchar("INTERMEDIARY_CODE")), '') as intermediary_code,
+    nullif(trim(to_varchar("LOADING_AMT")), '') as loading_amt,
+    "LOADING_PER"::number as loading_per,
+    nullif(trim(to_varchar("LOCATION_CODE")), '') as location_code,
+    "NET_PREMIUM"::number as net_premium,
+    "NO_OF_DAYS"::number as no_of_days,
+    "NO_OF_FAMILY_MEMBERS"::number as no_of_family_members,
+    nullif(trim(to_varchar("ONLINE_TRANS_NO")), '') as online_trans_no,
+    nullif(trim(to_varchar("PARTNER_ID")), '') as partner_id,
+    nullif(trim(to_varchar("PASSPORT_NO")), '') as passport_no,
+    nullif(trim(to_varchar("PAYER_PART_ID")), '') as payer_part_id,
+    nullif(trim(to_varchar("PAYMENT_MODE")), '') as payment_mode,
+    "POLICY_DATE"::timestamp_ntz as policy_date,
+    nullif(trim(to_varchar("POLICY_REF")), '') as policy_ref,
+    nullif(trim(to_varchar("PRODUCT_CODE")), '') as product_code,
+    nullif(trim(to_varchar("PROPASTRAVELLER")), '') as propastraveller,
+    "QUOTE_DATE"::timestamp_ntz as quote_date,
+    nullif(trim(to_varchar("QUOTE_NO")), '') as quote_no,
+    nullif(trim(to_varchar("RECEIPT_NOS_LIST")), '') as receipt_nos_list,
+    "REFER_DATE"::timestamp_ntz as refer_date,
+    nullif(trim(to_varchar("REFER_FLAG")), '') as refer_flag,
+    nullif(trim(to_varchar("RURAL_FLAG")), '') as rural_flag,
+    nullif(trim(to_varchar("SCRUTINY_NO")), '') as scrutiny_no,
+    nullif(trim(to_varchar("SERVICE_CHARGE")), '') as service_charge,
+    "SERVICE_TAX_AMT"::number as service_tax_amt,
+    nullif(trim(to_varchar("SPONSOR_NAME")), '') as sponsor_name,
+    nullif(trim(to_varchar("SP_CONDITION")), '') as sp_condition,
+    nullif(trim(to_varchar("SP_DISCOUNT_AMT")), '') as sp_discount_amt,
+    "SP_DISCOUNT_PER"::number as sp_discount_per,
+    nullif(trim(to_varchar("SUBAGENT_CODE")), '') as subagent_code,
+    "TERM_END_DATE"::timestamp_ntz as term_end_date,
+    "TERM_START_DATE"::timestamp_ntz as term_start_date,
+    nullif(trim(to_varchar("TRANSACTION_ID")), '') as transaction_id,
+    nullif(trim(to_varchar("TRAVEL_AGENT_NAME")), '') as travel_agent_name,
+    nullif(trim(to_varchar("TRAVEL_AREA_PLAN_NM")), '') as travel_area_plan_nm,
+    "TRAVEL_AREA_PLAN_NO"::number as travel_area_plan_no,
+    nullif(trim(to_varchar("TRAVEL_CATEGORY_NM")), '') as travel_category_nm,
+    "TRAVEL_CATEGORY_NO"::number as travel_category_no,
+    nullif(trim(to_varchar("TRAVEL_PLAN_NM")), '') as travel_plan_nm,
+    nullif(trim(to_varchar("TRAVEL_PLAN_NO")), '') as travel_plan_no,
+    nullif(trim(to_varchar("TRAVEL_REQ_NO")), '') as travel_req_no,
+    nullif(trim(to_varchar("TRV_DATA_NO")), '') as trv_data_no,
+    nullif(trim(to_varchar("TYPE_OF_BUSINESS")), '') as type_of_business,
+    nullif(trim(to_varchar("TYPE_OF_VISA")), '') as type_of_visa,
+    nullif(trim(to_varchar("USER_TYPE")), '') as user_type
+    from {{ source('travel_raw', 'BA_TRV_DATA_POLICY_DTLS_MV') }}
+
+)
+
+select * from source
