@@ -1,7 +1,13 @@
-{{ config(materialized='incremental') }}
+{{
+    config(
+        materialized='incremental',
+        incremental_strategy='merge',
+        unique_key=['DISTRIBUTION_CHANNEL_HKEY', 'HASHDIFF', 'RECORD_SOURCE']
+    )
+}}
 
--- PARTNER AUGMENTED (unconfirmed) sat() for SAT_AUG_CHANNEL (HUB_DISTRIBUTION_CHANNEL grain).
--- 3 contributing table(s), union. NOT part of the canonical data_5a.js model.
+-- PARTNER AUGMENTED (unconfirmed) sat_multi_source() for SAT_AUG_CHANNEL (HUB_DISTRIBUTION_CHANNEL grain).
+-- 3 contributing table(s). NOT part of the canonical data_5a.js model.
 -- Unblocked by mapper feedback round 2: HUB_DISTRIBUTION_CHANNEL previously had zero
 -- verified Partner keys -- now keyed by INTERMEDIARY_ID (BJAZ_INTERMEDIARY/_HIST, a
 -- fallback since IRDA_INTERMEDIARY_CODE is too sparse in sample data) or IMD_CODE
@@ -10,7 +16,10 @@
 -- channel key by the mapper.
 
 {%- set yaml_metadata -%}
-source_model: 'stg2_aug_union__channel'
+source_model:
+  - 'stg2_aug_bjaz_intermediary__channel'
+  - 'stg2_aug_bjaz_intermediary_hist__channel'
+  - 'stg2_aug_bjaz_clm_supp_extn__channel'
 src_pk: 'DISTRIBUTION_CHANNEL_HKEY'
 src_payload:
   - 'BLOCKED_FOR_RECEIPT_INDICATOR'
@@ -29,9 +38,14 @@ src_source: 'RECORD_SOURCE'
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 
-{{ automate_dv.sat(src_pk=metadata_dict['src_pk'],
+{{ sat_multi_source(src_pk=metadata_dict['src_pk'],
                     src_payload=metadata_dict['src_payload'],
                     src_hashdiff=metadata_dict['src_hashdiff'],
                     src_ldts=metadata_dict['src_ldts'],
                     src_source=metadata_dict['src_source'],
-                    source_model=metadata_dict['source_model']) }}
+                    source_model=metadata_dict['source_model'],
+                    src_column_map={
+                        'stg2_aug_bjaz_intermediary__channel': ['BLOCKED_FOR_RECEIPT_INDICATOR', 'FINANCE_SUB_CHANNEL_CODE', 'GREEN_CHANNEL_INDICATOR', 'IMDFLAG', 'NEW_IMD_TYPE', 'REVISED_CHANNEL_CODE', 'SPECIAL_INTERMEDIARY_CODE', 'SUBIMD_YN'],
+                        'stg2_aug_bjaz_intermediary_hist__channel': ['BLOCKED_FOR_RECEIPT_INDICATOR', 'FINANCE_SUB_CHANNEL_CODE', 'GREEN_CHANNEL_INDICATOR', 'IMDFLAG', 'NEW_IMD_TYPE', 'REVISED_CHANNEL_CODE', 'SPECIAL_INTERMEDIARY_CODE', 'SUBIMD_YN'],
+                        'stg2_aug_bjaz_clm_supp_extn__channel': ['SUB_IMD_CODE']
+                    }) }}
