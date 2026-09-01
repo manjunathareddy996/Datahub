@@ -4,7 +4,7 @@
 -- Added by mapper feedback round 2 (see docs/MAPPER_REPLIES_PARTNER.md item 3) -- this hub
 -- had zero verified Partner keys until this round. No canonical SAT_CHANNEL_DEFINITION
 -- attribute (Channel Name, Code, Type, Category, etc.) has real Partner source data --
--- only augmented/satellites/sat_aug_channel.sql attaches real attributes to this hub.
+-- only augmented/satellites/sat_partner_aug_channel.sql attaches real attributes to this hub.
 
 {%- set yaml_metadata -%}
 source_model:
