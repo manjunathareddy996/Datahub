@@ -1,4 +1,10 @@
-{{ config(materialized='incremental') }}
+{{
+    config(
+        materialized='incremental',
+        incremental_strategy='merge',
+        unique_key=['PARTY_HKEY', 'HASHDIFF']
+    )
+}}
 
 -- PARTNER AUGMENTED (unconfirmed) sat() for SAT_AUG_LAWYER_ADVOCATE_ROLE (HUB_PARTY grain,
 -- role-special: 'lawyer-advocate'). Mapper-approved LOB-local new satellite (P1) -- NOT in

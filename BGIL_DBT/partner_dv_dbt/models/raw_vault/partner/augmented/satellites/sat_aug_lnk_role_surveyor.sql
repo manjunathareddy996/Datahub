@@ -1,4 +1,10 @@
-{{ config(materialized='incremental') }}
+{{
+    config(
+        materialized='incremental',
+        incremental_strategy='merge',
+        unique_key=['PARTY_HKEY', 'HASHDIFF']
+    )
+}}
 
 -- PARTNER AUGMENTED (unconfirmed) sat() for SAT_AUG_LNK_ROLE_SURVEYOR
 -- (HUB_PARTY grain, role-special: 'surveyor'). NOT part of the canonical data_5a.js

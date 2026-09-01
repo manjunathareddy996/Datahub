@@ -1,4 +1,10 @@
-{{ config(materialized='incremental') }}
+{{
+    config(
+        materialized='incremental',
+        incremental_strategy='merge',
+        unique_key=['AGREEMENT_HKEY', 'HASHDIFF']
+    )
+}}
 
 -- PARTNER AUGMENTED (unconfirmed) sat() for SAT_AUG_AGREEMENT (HUB_AGREEMENT grain).
 -- 1 contributing table(s), union. NOT part of the canonical
