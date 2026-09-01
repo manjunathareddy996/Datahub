@@ -9,7 +9,7 @@ hashed_columns:
 derived_columns:
   PARENT_BK: 'co_org_unit'
   PARENT_NK: "'HUB_ORG_UNIT|' || (co_org_unit)"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BA_TRV_DATA_POLICY_DTLS_MV'
 {%- endset -%}
 

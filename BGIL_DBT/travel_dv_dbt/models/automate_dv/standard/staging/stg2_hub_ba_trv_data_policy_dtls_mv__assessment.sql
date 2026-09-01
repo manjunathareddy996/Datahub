@@ -9,7 +9,7 @@ hashed_columns:
 derived_columns:
   PARENT_BK: 'scrutiny_no'
   PARENT_NK: "'HUB_ASSESSMENT|' || (scrutiny_no)"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BA_TRV_DATA_POLICY_DTLS_MV'
 {%- endset -%}
 

@@ -12,7 +12,7 @@ hashed_columns:
 derived_columns:
   PARENT_BK: "policy_ref || '|MEMBER3'"
   PARENT_NK: "'HUB_RISK_OBJECT|' || (policy_ref || '|MEMBER3')"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_LOADER_DATA_MV'
 {%- endset -%}
 

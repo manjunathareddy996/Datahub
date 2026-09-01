@@ -16,7 +16,7 @@ derived_columns:
   PARENT_NK: "'HUB_POLICY|' || (trv_data_no)"
   NUMBER_OF_LIVES_COVERED: 'no_members'
   POLICY_TYPE: 'p_policy_type'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_RIDER_DTLS_MV'
 {%- endset -%}
 

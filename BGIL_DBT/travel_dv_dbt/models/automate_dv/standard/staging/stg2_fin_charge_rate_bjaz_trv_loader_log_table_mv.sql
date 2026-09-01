@@ -21,7 +21,7 @@ derived_columns:
   PARENT_NK: "'HUB_FINANCIAL_TRANSACTION|' || (policynumber)"
   CHARGE_TYPE_CK: '!Service Charge'
   CHARGE_AMOUNT: 'servicecharge'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_LOADER_LOG_TABLE_MV'
 {%- endset -%}
 

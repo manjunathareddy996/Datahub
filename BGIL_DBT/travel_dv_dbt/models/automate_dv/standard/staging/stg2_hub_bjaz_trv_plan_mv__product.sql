@@ -9,7 +9,7 @@ hashed_columns:
 derived_columns:
   PARENT_BK: 'plan_id'
   PARENT_NK: "'HUB_PRODUCT|' || (plan_id)"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_PLAN_MV'
 {%- endset -%}
 

@@ -24,7 +24,7 @@ derived_columns:
   MAXIMUM_POLICY_TERM: 'plan_max_days'
   MINIMUM_ENTRY_AGE: 'plan_min_age_from'
   MINIMUM_POLICY_TERM: 'plan_min_days'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BA_TRV_PLAN_MST_MV'
 {%- endset -%}
 

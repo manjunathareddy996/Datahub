@@ -14,7 +14,7 @@ derived_columns:
   PARENT_BK: 'plan_no'
   PARENT_NK: "'HUB_PRODUCT|' || (plan_no)"
   AGE_ELIGIBILITY_BYPASS_INDICATOR: 'age_bypass_yn'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BA_TRV_PLAN_MST_MV'
 {%- endset -%}
 

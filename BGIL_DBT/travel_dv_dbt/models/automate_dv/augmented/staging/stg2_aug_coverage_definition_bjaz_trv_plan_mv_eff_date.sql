@@ -14,7 +14,7 @@ derived_columns:
   PARENT_BK: 'cover_code'
   PARENT_NK: "'HUB_COVERAGE|' || (cover_code)"
   EFFECTIVE_DATE: 'eff_date'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_PLAN_MV'
 {%- endset -%}
 

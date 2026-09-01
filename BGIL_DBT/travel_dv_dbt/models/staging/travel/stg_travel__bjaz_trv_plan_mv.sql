@@ -22,7 +22,8 @@ with source as (
     "MAX_DAYS"::number as max_days,
     nullif(trim(to_varchar("PLAN_ID")), '') as plan_id,
     "SEQUENCE_COVERS"::number as sequence_covers,
-    nullif(trim(to_varchar("TYPE_OF_CLAIM")), '') as type_of_claim
+    nullif(trim(to_varchar("TYPE_OF_CLAIM")), '') as type_of_claim,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('travel_raw', 'BJAZ_TRV_PLAN_MV') }}
 
 )

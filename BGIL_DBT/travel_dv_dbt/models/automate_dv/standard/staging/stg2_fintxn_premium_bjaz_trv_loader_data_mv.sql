@@ -22,7 +22,7 @@ derived_columns:
   COLLECTION_MODE: 'paymentmode'
   BASE_PREMIUM: 'policy_premium'
   GROSS_PREMIUM: 'totalpremium'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_LOADER_DATA_MV'
 {%- endset -%}
 

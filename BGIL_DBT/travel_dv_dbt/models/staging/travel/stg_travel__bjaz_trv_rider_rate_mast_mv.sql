@@ -13,7 +13,8 @@ with source as (
     "MIN_NB_PRM"::number as min_nb_prm,
     "NB_PRM_EXCLUDING_ST"::number as nb_prm_excluding_st,
     nullif(trim(to_varchar("RIDER_SEQ_NO")), '') as rider_seq_no,
-    "RIDER_SI"::number as rider_si
+    "RIDER_SI"::number as rider_si,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('travel_raw', 'BJAZ_TRV_RIDER_RATE_MAST_MV') }}
 
 )

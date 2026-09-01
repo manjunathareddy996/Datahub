@@ -16,7 +16,7 @@ derived_columns:
   PARENT_NK: "'HUB_COVERAGE|' || (cover_code)"
   DEDUCTIBLE_AMOUNT: 'deductable_amt'
   LIMIT_AMOUNT: 'limit'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_PLAN_MV'
 {%- endset -%}
 

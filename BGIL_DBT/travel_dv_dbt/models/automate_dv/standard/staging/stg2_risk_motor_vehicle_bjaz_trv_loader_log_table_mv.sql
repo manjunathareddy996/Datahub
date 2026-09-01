@@ -30,7 +30,7 @@ derived_columns:
   SEATING_CAPACITY: 'seatingcapacity'
   VEHICLE_SUB_CLASS: 'subtype'
   MANUFACTURING_YEAR: 'yearofmfg'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_LOADER_LOG_TABLE_MV'
 {%- endset -%}
 

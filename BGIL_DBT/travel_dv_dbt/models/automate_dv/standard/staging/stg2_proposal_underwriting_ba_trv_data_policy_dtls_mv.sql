@@ -16,7 +16,7 @@ derived_columns:
   PARENT_NK: "'HUB_PROPOSAL|' || (travel_req_no)"
   REFERRAL_DATE: 'refer_date'
   REFERRAL_INDICATOR: 'refer_flag'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BA_TRV_DATA_POLICY_DTLS_MV'
 {%- endset -%}
 

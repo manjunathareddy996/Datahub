@@ -14,7 +14,7 @@ derived_columns:
   PARENT_BK: 'transaction_id'
   PARENT_NK: "'HUB_FINANCIAL_TRANSACTION|' || (transaction_id)"
   SPECIAL_DISCOUNT_AMOUNT: 'sp_discount_amt'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BA_TRV_DATA_POLICY_DTLS_MV'
 {%- endset -%}
 

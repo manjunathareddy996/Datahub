@@ -16,7 +16,7 @@ derived_columns:
   PARENT_NK: "'HUB_POLICY|' || (policy_ref)"
   NUMBER_OF_LIVES_COVERED: 'nooffamilymembers'
   RURAL_SECTOR_POLICY_INDICATOR: 'ruralflag'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_LOADER_DATA_MV'
 {%- endset -%}
 

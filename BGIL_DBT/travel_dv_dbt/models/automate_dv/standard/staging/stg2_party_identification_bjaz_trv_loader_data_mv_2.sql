@@ -16,7 +16,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (premiumpayerid)"
   IDENTIFICATION_TYPE_CODE: '!eia'
   EIA_NUMBER: 'eiano'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_LOADER_DATA_MV'
 {%- endset -%}
 

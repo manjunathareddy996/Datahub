@@ -16,7 +16,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (payer_part_id)"
   AGE: 'age_array_comma_separated'
   DATE_OF_BIRTH: 'date_of_birth'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BA_TRV_DATA_POLICY_DTLS_MV'
 {%- endset -%}
 

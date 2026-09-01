@@ -9,7 +9,7 @@ hashed_columns:
 derived_columns:
   PARENT_BK: 'cft_mst_contract_id'
   PARENT_NK: "'HUB_AGREEMENT|' || (cft_mst_contract_id)"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_RATE_MASTER_MV'
 {%- endset -%}
 

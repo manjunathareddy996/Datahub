@@ -73,7 +73,8 @@ with source as (
     nullif(trim(to_varchar("TRV_DATA_NO")), '') as trv_data_no,
     nullif(trim(to_varchar("TYPE_OF_BUSINESS")), '') as type_of_business,
     nullif(trim(to_varchar("TYPE_OF_VISA")), '') as type_of_visa,
-    nullif(trim(to_varchar("USER_TYPE")), '') as user_type
+    nullif(trim(to_varchar("USER_TYPE")), '') as user_type,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('travel_raw', 'BA_TRV_DATA_POLICY_DTLS_MV') }}
 
 )

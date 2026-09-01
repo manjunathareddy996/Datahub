@@ -16,7 +16,7 @@ derived_columns:
   PARENT_NK: "'HUB_PRODUCT|' || (plan)"
   ACTIVE_SEQUENCE_NUMBER: '!days_band'
   VALUE_RANGE_TO: 'days_to'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_RATE_MASTER_MV'
 {%- endset -%}
 

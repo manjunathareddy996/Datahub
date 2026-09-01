@@ -14,7 +14,7 @@ derived_columns:
   PARENT_BK: 'trv_data_no'
   PARENT_NK: "'HUB_POLICY|' || (trv_data_no)"
   SPECIAL_CONDITIONS: 'sp_condition'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BA_TRV_DATA_POLICY_DTLS_MV'
 {%- endset -%}
 

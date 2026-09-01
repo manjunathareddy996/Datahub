@@ -30,7 +30,7 @@ derived_columns:
   LOADING_AMOUNT: 'loading_amt'
   NET_PREMIUM: 'net_premium'
   COLLECTION_MODE: 'payment_mode'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BA_TRV_DATA_POLICY_DTLS_MV'
 {%- endset -%}
 

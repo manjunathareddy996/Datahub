@@ -18,7 +18,7 @@ derived_columns:
   PARENT_BK: "policy_ref || '|' || 'TRV_COMPASSIONATE_VISIT'"
   PARENT_NK: "'HUB_COVERAGE|' || (policy_ref || '|' || 'TRV_COMPASSIONATE_VISIT')"
   FREE_COVER_LIMIT: 'compvisitfamilymember'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_LOADER_DATA_MV'
 {%- endset -%}
 

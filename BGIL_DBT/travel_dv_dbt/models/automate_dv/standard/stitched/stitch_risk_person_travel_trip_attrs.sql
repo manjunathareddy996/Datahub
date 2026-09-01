@@ -1,72 +1,101 @@
 {{ config(materialized='view') }}
 
--- TRAVEL STANDARD-MODEL stitch: the ONE genuine join needed anywhere in this LOB build
--- (every other satellite here is a plain per-table union -- see README Architecture
--- section for why). Full passthrough of BJAZ_TRV_LOADER_DATA_MV's own traveller
--- columns (policy_ref, each MEMBERn's passport number, and the 5 non-MemberN-prefixed
--- trip columns -- see Fix A note below) PLUS BA_TRV_DATA_POLICY_DTLS_MV's trip
--- attributes joined on POLICY_REF (round 3, mapper-confirmed: both tables carry the
--- same POLICY_REF, same value space -- 'BUILDABLE (same-named policy key on both)').
--- LEFT JOIN from the loader-data side so every traveller-bearing policy is preserved
--- even where no matching BA_TRV_DATA_POLICY_DTLS_MV row exists. Attribute-level
--- COALESCE between the two sources happens downstream, per-attribute, in each member's
--- stage() (see stg2_risk_person_travel_bjaz_trv_loader_data_mv_memberN.sql) -- kept out
--- of this stitch since AutomateDV's hashing/derivation happens at the stage() layer,
--- not here (this view stays raw, zero hashing, matching the Health/Partner convention).
+-- TRAVEL STANDARD-MODEL stitch for SAT_RISK_PERSON_TRAVEL (HUB_RISK_OBJECT grain, via
+-- POLICY_REF). The ONE genuine join in this LOB build: BJAZ_TRV_LOADER_DATA_MV's own
+-- traveller columns (policy_ref, each MEMBERn passport, and the 5 non-MemberN-prefixed
+-- trip columns) PLUS BA_TRV_DATA_POLICY_DTLS_MV's trip attributes, joined on the shared
+-- POLICY_REF (round 3, mapper-confirmed same key/value space on both).
 --
--- Fix A (self-caught, not from the mapper): AREAPLAN/DEPARTUREDATE/NOOFJOURNEYDAYS/
--- PRJOURNEY/RETURNDATE are valid mapped columns with no MemberN prefix -- the original
--- per-member generator only matched columns literally containing 'MEMBERn', so these 5
--- were silently never built at all (not even flagged as a gap). Passed through here so
--- every member's stage can fan them out identically.
+-- Converted to the stitch_incremental macro (task 4). The unique_key is kept as
+-- 'policy_ref' -- NOT the macro default 'parent_bk' -- because the downstream member
+-- stages (stg2_risk_person_travel_bjaz_trv_loader_data_mv_memberN.sql) derive their
+-- PARENT_BK/PARENT_NK from a raw 'policy_ref' column and read the passthrough columns by
+-- their original lowercase names. The macro's LEFT JOINs over the affected_keys union
+-- preserve every loader-side policy (matching the original LEFT JOIN from the loader).
+-- No attribute is fed by more than one source, so every coalesce_rule is single-source
+-- (macro emits a bare column, no 1-arg COALESCE). Attribute-level COALESCE between the
+-- two sources still happens per-member downstream in each stage()'s derived_columns.
+--
+-- Fix A (self-caught, round 3): AREAPLAN/DEPARTUREDATE/NOOFJOURNEYDAYS/PRJOURNEY/
+-- RETURNDATE are valid mapped columns with no MemberN prefix that the original per-member
+-- generator silently never built. Passed through here so every member stage fans them out.
 
-with loader as (
+{%- set sources = [
+    {
+        'model': 'stg_travel__bjaz_trv_loader_data_mv',
+        'alias': 't0',
+        'key_column': 'policy_ref',
+        'ldts_column': 'inc_job_updated_at',
+        'columns': [
+            {'src': 'member1passportno', 'tgt': 'member1passportno'},
+            {'src': 'member2passportno', 'tgt': 'member2passportno'},
+            {'src': 'member3passportno', 'tgt': 'member3passportno'},
+            {'src': 'member4passportno', 'tgt': 'member4passportno'},
+            {'src': 'member5passportno', 'tgt': 'member5passportno'},
+            {'src': 'areaplan', 'tgt': 'areaplan'},
+            {'src': 'departuredate', 'tgt': 'departuredate'},
+            {'src': 'noofjourneydays', 'tgt': 'noofjourneydays'},
+            {'src': 'prjourney', 'tgt': 'prjourney'},
+            {'src': 'returndate', 'tgt': 'returndate'}
+        ],
+        'source_tag': 'BJAZ_TRV_LOADER_DATA_MV'
+    },
+    {
+        'model': 'stg_travel__ba_trv_data_policy_dtls_mv',
+        'alias': 't1',
+        'key_column': 'policy_ref',
+        'ldts_column': 'inc_job_updated_at',
+        'columns': [
+            {'src': 'destination', 'tgt': 'destination'},
+            {'src': 'no_of_days', 'tgt': 'no_of_days'},
+            {'src': 'travel_area_plan_nm', 'tgt': 'travel_area_plan_nm'},
+            {'src': 'travel_area_plan_no', 'tgt': 'travel_area_plan_no'},
+            {'src': 'type_of_visa', 'tgt': 'type_of_visa'}
+        ],
+        'source_tag': 'BA_TRV_DATA_POLICY_DTLS_MV'
+    }
+] -%}
 
-    select
-        policy_ref,
-        member1passportno,
-        member2passportno,
-        member3passportno,
-        member4passportno,
-        member5passportno,
-        areaplan,
-        departuredate,
-        noofjourneydays,
-        prjourney,
-        returndate
-    from {{ ref('stg_travel__bjaz_trv_loader_data_mv') }}
+{%- set output_columns = [
+    'member1passportno',
+    'member2passportno',
+    'member3passportno',
+    'member4passportno',
+    'member5passportno',
+    'areaplan',
+    'departuredate',
+    'noofjourneydays',
+    'prjourney',
+    'returndate',
+    'destination',
+    'no_of_days',
+    'travel_area_plan_nm',
+    'travel_area_plan_no',
+    'type_of_visa'
+] -%}
 
-),
+{%- set coalesce_rules = {
+    'member1passportno':   ['t0'],
+    'member2passportno':   ['t0'],
+    'member3passportno':   ['t0'],
+    'member4passportno':   ['t0'],
+    'member5passportno':   ['t0'],
+    'areaplan':            ['t0'],
+    'departuredate':       ['t0'],
+    'noofjourneydays':     ['t0'],
+    'prjourney':           ['t0'],
+    'returndate':          ['t0'],
+    'destination':         ['t1'],
+    'no_of_days':          ['t1'],
+    'travel_area_plan_nm': ['t1'],
+    'travel_area_plan_no': ['t1'],
+    'type_of_visa':        ['t1']
+} %}
 
-trip_attrs as (
-
-    select
-        policy_ref,
-        destination,
-        no_of_days,
-        travel_area_plan_nm,
-        travel_area_plan_no,
-        type_of_visa
-    from {{ ref('stg_travel__ba_trv_data_policy_dtls_mv') }}
-
-)
-
-select
-    loader.policy_ref,
-    loader.member1passportno,
-    loader.member2passportno,
-    loader.member3passportno,
-    loader.member4passportno,
-    loader.member5passportno,
-    loader.areaplan,
-    loader.departuredate,
-    loader.noofjourneydays,
-    loader.prjourney,
-    loader.returndate,
-    trip_attrs.destination,
-    trip_attrs.no_of_days,
-    trip_attrs.travel_area_plan_nm,
-    trip_attrs.travel_area_plan_no,
-    trip_attrs.type_of_visa
-from loader
-left join trip_attrs on loader.policy_ref = trip_attrs.policy_ref
+{{ stitch_incremental(
+    sources=sources,
+    output_columns=output_columns,
+    coalesce_rules=coalesce_rules,
+    unique_key='policy_ref',
+    target_sat='sat_travel_risk_person_travel'
+) }}

@@ -18,7 +18,7 @@ derived_columns:
   PARENT_BK: "policy_ref || '|' || 'TRV_BAGGAGE_DELAY'"
   PARENT_NK: "'HUB_COVERAGE|' || (policy_ref || '|' || 'TRV_BAGGAGE_DELAY')"
   FREE_COVER_LIMIT: 'delayofcheckedbaggage'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_LOADER_DATA_MV'
 {%- endset -%}
 

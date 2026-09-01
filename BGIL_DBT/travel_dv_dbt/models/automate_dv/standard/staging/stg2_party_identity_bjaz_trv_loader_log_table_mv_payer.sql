@@ -28,7 +28,7 @@ derived_columns:
   GENDER_CODE: 'sex'
   LAST_NAME: 'surname'
   TITLE_CODE: 'title'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_LOADER_LOG_TABLE_MV'
 {%- endset -%}
 

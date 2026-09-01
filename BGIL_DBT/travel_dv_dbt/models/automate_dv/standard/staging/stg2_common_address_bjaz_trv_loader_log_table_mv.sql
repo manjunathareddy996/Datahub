@@ -28,7 +28,7 @@ derived_columns:
   POSTAL_CODE: 'pincode'
   STATE_NAME: 'state'
   STREET_NAME: 'streetname'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_LOADER_LOG_TABLE_MV'
 {%- endset -%}
 

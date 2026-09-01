@@ -9,7 +9,7 @@ hashed_columns:
 derived_columns:
   PARENT_BK: 'marketing_agent'
   PARENT_NK: "'HUB_DISTRIBUTION_CHANNEL|' || (marketing_agent)"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_DETLS_EXTN'
 {%- endset -%}
 

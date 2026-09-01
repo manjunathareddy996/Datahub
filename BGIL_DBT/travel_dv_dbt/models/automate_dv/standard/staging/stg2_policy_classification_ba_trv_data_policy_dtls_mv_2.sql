@@ -16,7 +16,7 @@ derived_columns:
   PARENT_NK: "'HUB_POLICY|' || (trv_data_no)"
   CLASSIFICATION_TYPE: '!business_type'
   CLASSIFICATION_VALUE: 'type_of_business'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BA_TRV_DATA_POLICY_DTLS_MV'
 {%- endset -%}
 

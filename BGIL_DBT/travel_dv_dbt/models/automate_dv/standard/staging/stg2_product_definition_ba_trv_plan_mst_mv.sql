@@ -22,7 +22,7 @@ derived_columns:
   PRODUCT_DISPLAY_NAME: 'plan_disp_name'
   PRODUCT_NAME: 'plan_name'
   PRODUCT_CODE: 'product_4digit_code'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BA_TRV_PLAN_MST_MV'
 {%- endset -%}
 

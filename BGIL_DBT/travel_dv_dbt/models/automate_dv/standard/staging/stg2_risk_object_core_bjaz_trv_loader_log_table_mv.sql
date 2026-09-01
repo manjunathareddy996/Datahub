@@ -14,7 +14,7 @@ derived_columns:
   PARENT_BK: 'policynumber'
   PARENT_NK: "'HUB_RISK_OBJECT|' || (policynumber)"
   EXPOSURE_QUANTITY: 'distance'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_LOADER_LOG_TABLE_MV'
 {%- endset -%}
 

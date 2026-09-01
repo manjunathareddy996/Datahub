@@ -16,7 +16,8 @@ with source as (
     "RIDER_PREMIUM"::number as rider_premium,
     "RIDER_SI"::number as rider_si,
     nullif(trim(to_varchar("STUDENT_PLAN_YN")), '') as student_plan_yn,
-    nullif(trim(to_varchar("TRV_DATA_NO")), '') as trv_data_no
+    nullif(trim(to_varchar("TRV_DATA_NO")), '') as trv_data_no,
+    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('travel_raw', 'BJAZ_TRV_RIDER_DTLS_MV') }}
 
 )

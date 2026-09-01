@@ -20,7 +20,7 @@ derived_columns:
   GENDER: 'member1gender'
   INSURED_MEMBER_NAME: 'member1name'
   RELATIONSHIP_TO_PROPOSER: 'member1relation'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_LOADER_DATA_MV'
 {%- endset -%}
 

@@ -30,7 +30,7 @@ derived_columns:
   RURAL_SECTOR_POLICY_INDICATOR: 'rural_flag'
   RISK_EXPIRY_DATE: 'term_end_date'
   RISK_INCEPTION_DATE: 'term_start_date'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BA_TRV_DATA_POLICY_DTLS_MV'
 {%- endset -%}
 

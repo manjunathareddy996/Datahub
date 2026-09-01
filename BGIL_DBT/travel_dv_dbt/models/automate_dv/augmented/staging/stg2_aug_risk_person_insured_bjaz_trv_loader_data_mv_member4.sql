@@ -16,7 +16,7 @@ derived_columns:
   PARENT_BK: 'policy_ref || '|member4''
   PARENT_NK: "'HUB_RISK_OBJECT|' || (policy_ref || '|member4')"
   DATE_OF_BIRTH: 'member4dob'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_LOADER_DATA_MV'
 {%- endset -%}
 

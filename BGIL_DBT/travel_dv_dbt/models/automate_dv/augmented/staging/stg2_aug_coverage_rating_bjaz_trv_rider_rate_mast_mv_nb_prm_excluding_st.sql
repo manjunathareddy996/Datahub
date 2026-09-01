@@ -14,7 +14,7 @@ derived_columns:
   PARENT_BK: 'rider_seq_no'
   PARENT_NK: "'HUB_COVERAGE|' || (rider_seq_no)"
   NEW_BUSINESS_PREMIUM_EXCLUDING_ST: 'nb_prm_excluding_st'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_RIDER_RATE_MAST_MV'
 {%- endset -%}
 

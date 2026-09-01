@@ -35,7 +35,7 @@ derived_columns:
   TRIP_END_DATE: 'returndate'
   DESTINATION_COUNTRY: 'destination'
   VISA_TYPE: 'type_of_visa'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_LOADER_DATA_MV'
 {%- endset -%}
 

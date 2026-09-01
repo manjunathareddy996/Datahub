@@ -14,7 +14,7 @@ derived_columns:
   PARENT_BK: 'rider_no'
   PARENT_NK: "'HUB_COVERAGE|' || (rider_no)"
   RIDER_PREMIUM: 'rider_premium'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BJAZ_TRV_RIDER_DTLS_MV'
 {%- endset -%}
 

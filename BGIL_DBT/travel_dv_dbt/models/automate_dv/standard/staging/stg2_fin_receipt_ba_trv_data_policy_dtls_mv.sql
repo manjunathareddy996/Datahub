@@ -16,7 +16,7 @@ derived_columns:
   PARENT_NK: "'HUB_FINANCIAL_TRANSACTION|' || (transaction_id)"
   PAYMENT_GATEWAY_REFERENCE: 'online_trans_no'
   RECEIPT_NUMBER: 'receipt_nos_list'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!BA_TRV_DATA_POLICY_DTLS_MV'
 {%- endset -%}
 
