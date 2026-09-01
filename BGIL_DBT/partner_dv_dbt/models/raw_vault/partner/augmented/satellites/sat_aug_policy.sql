@@ -1,17 +1,28 @@
-{{ config(materialized='incremental') }}
+{{
+    config(
+        materialized='incremental',
+        incremental_strategy='merge',
+        unique_key=['POLICY_HKEY', 'MEMBER_SEQUENCE', 'HASHDIFF', 'RECORD_SOURCE']
+    )
+}}
 
--- PARTNER AUGMENTED (unconfirmed) ma_sat() for SAT_AUG_POLICY (HUB_POLICY grain).
--- 5 contributing table(s), union. NOT part of the canonical
--- data_5a.js model -- needs mapper review before being treated as equivalent to a
--- standard-model satellite.
--- MULTI-ACTIVE FIX (mapper feedback round 2): rebuilt from sat() to ma_sat() with
--- MEMBER_SEQUENCE as child key -- a policy can have multiple members, each with their own
--- bonus/cumulative values; a single-active sat() would have collapsed them into one row per
--- policy. Tables with no real member column (BJAZ_HM_MEMBER_DTLS, BJAZ_PA_DETL_EXTN) carry a
--- literal '0' placeholder so they still union cleanly.
+-- PARTNER AUGMENTED (unconfirmed) ma_sat_multi_source() for SAT_AUG_POLICY (HUB_POLICY grain).
+-- 5 contributing table(s). NOT part of the canonical data_5a.js model -- needs mapper
+-- review before being treated as equivalent to a standard-model satellite.
+-- MULTI-ACTIVE: MEMBER_SEQUENCE is the child key -- a policy can have multiple members,
+-- each with their own bonus/cumulative values. Uses ma_sat_multi_source so the per-table
+-- stg2 models are unioned inside the macro (no separate stg2_aug_union__policy view) while
+-- preserving the multi-active grain. Grouping is by (POLICY_HKEY, MEMBER_SEQUENCE,
+-- RECORD_SOURCE) so a late-arriving source does not create phantom versions in another
+-- source's group.
 
 {%- set yaml_metadata -%}
-source_model: 'stg2_aug_union__policy'
+source_model:
+  - 'stg2_aug_bjaz_hlt_ensure_mem_dtls__policy'
+  - 'stg2_aug_bjaz_hm_member_dtls__policy'
+  - 'stg2_aug_bjaz_pa_detl_extn__policy'
+  - 'stg2_aug_bjaz_ec_mem_dtls_extn__policy'
+  - 'stg2_aug_bjaz_sh_mem_dtls_extn__policy'
 src_pk: 'POLICY_HKEY'
 src_cdk:
   - 'MEMBER_SEQUENCE'
@@ -31,10 +42,17 @@ src_source: 'RECORD_SOURCE'
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 
-{{ automate_dv.ma_sat(src_pk=metadata_dict['src_pk'],
+{{ ma_sat_multi_source(src_pk=metadata_dict['src_pk'],
                        src_cdk=metadata_dict['src_cdk'],
                        src_payload=metadata_dict['src_payload'],
                        src_hashdiff=metadata_dict['src_hashdiff'],
                        src_ldts=metadata_dict['src_ldts'],
                        src_source=metadata_dict['src_source'],
-                       source_model=metadata_dict['source_model']) }}
+                       source_model=metadata_dict['source_model'],
+                       src_column_map={
+                           'stg2_aug_bjaz_hlt_ensure_mem_dtls__policy': ['PREVIOUS_CUM_AMOUNT'],
+                           'stg2_aug_bjaz_hm_member_dtls__policy': ['CUMM_BONUS'],
+                           'stg2_aug_bjaz_pa_detl_extn__policy': ['CUMMULATIVE_AMT', 'CUMM_BONUS_AMT_COMP', 'CUMM_BONUS_AMT_WIDER', 'CUMM_BONUS_COMP', 'CUMM_BONUS_WIDER'],
+                           'stg2_aug_bjaz_ec_mem_dtls_extn__policy': ['INCEPTION_DATE'],
+                           'stg2_aug_bjaz_sh_mem_dtls_extn__policy': ['INCEPTION_DATE']
+                       }) }}
