@@ -20,7 +20,7 @@ source_model:
   - 'stg2_a'
   - 'stg2_b'
 src_pk: 'PARTY_HKEY'
-zsrc_payload:
+src_payload:
   - 'PHONE_1'
   - 'PHONE_2'
 src_hashdiff: 'HASHDIFF'

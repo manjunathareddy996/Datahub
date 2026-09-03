@@ -1,0 +1,60 @@
+name: 'maximus_partner_dv'
+version: '1.0.0'
+config-version: 2
+
+profile: 'maximus_partner_dv'
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+vars:
+  maximus_partner_raw_database: RAW
+  maximus_partner_raw_schema: GG_DWHSTAGE
+
+# Schemas MATCH partner_dv_dbt exactly -- this project writes the SAME physical vault tables from a
+# different source system, on its own ingestion schedule. Two projects, one vault.
+#
+# Consequences, learned the hard way on maximus_health:
+#   * every vault model is incremental and append-only. NEVER --full-refresh a shared vault table:
+#     it drops the other project's rows, and only its own pipeline will put them back.
+#   * +on_schema_change: append_new_columns is required. Each project declares only the payload it
+#     populates, so the other's columns must survive a run rather than be dropped.
+#   * a hub's src_nk column name must match what partner_dv_dbt already writes (PARENT_BK), or both
+#     projects populate different columns of the same table. See models/.../hubfeed/.
+models:
+  maximus_partner_dv:
+    staging:
+      maximus:
+        +materialized: view
+        +schema: stg_maximus_partner
+    automate_dv:
+      standard:
+        +schema: std_automate_dv_partner
+        staging:
+          +materialized: view
+        unpivot:
+          +materialized: view
+        resolvers:
+          +materialized: view
+        hubfeed:
+          +materialized: view
+        hubs:
+          +materialized: incremental
+          +on_schema_change: append_new_columns
+        links:
+          +materialized: incremental
+          +on_schema_change: append_new_columns
+        satellites:
+          +materialized: incremental
+          +on_schema_change: append_new_columns
+      augmented:
+        +schema: aug_automate_dv_partner
+        staging:
+          +materialized: view
+        satellites:
+          +materialized: incremental
+          +on_schema_change: append_new_columns

@@ -191,16 +191,77 @@ WITH source_data AS (
 {%- if automate_dv.is_any_incremental() %}
 ,
 
-{#-- Count of distinct (cdk, hashdiff) members in each incoming group. --#}
+{#-- (parent, source) groups with at least one member inside the watermark window.
+     source_data is used ONLY to discover WHICH groups changed. A member-level
+     watermark cannot rebuild a full group on its own (an unchanged sibling keeps
+     its old ldts and is filtered out), so the full set is re-fetched below. --#}
+changed_groups AS (
+    SELECT DISTINCT {{ src_pk }}, {{ src_source }}
+    FROM source_data
+),
+
+{#-- FULL current set of members for each changed group, WITHOUT the watermark
+     lower bound. This is how AutomateDV's ma_sat behaves: it re-inserts the whole
+     group when any member changes, so every current member (including unchanged
+     siblings) must be present. --#}
+full_group_data AS (
+    {%- for model_name in source_model %}
+    -- Source {{ loop.index }} (full group): {{ model_name }}
+    SELECT
+        a.{{ src_pk }},
+        {%- for c in cdk_cols %}
+        a.{{ c }},
+        {%- endfor %}
+        a.{{ src_hashdiff }},
+        {%- set src_cols_upper = ns.source_columns[model_name] | map('upper') | list %}
+        {%- for col in superset %}
+        {%- if col | upper in src_cols_upper %}
+        CAST(a.{{ col }} AS VARCHAR) AS {{ col }},
+        {%- else %}
+        CAST(NULL AS VARCHAR) AS {{ col }},
+        {%- endif %}
+        {%- endfor %}
+        a.{{ src_ldts }},
+        a.{{ src_source }},
+        {{ to_date_expr }} AS {{ src_run_ts }}
+    FROM {{ ref(model_name) }} AS a
+    INNER JOIN changed_groups AS cg
+        ON a.{{ src_pk }} = cg.{{ src_pk }}
+        AND a.{{ src_source }} = cg.{{ src_source }}
+    WHERE a.{{ src_pk }} IS NOT NULL
+        {%- for c in cdk_cols %}
+      AND a.{{ c }} IS NOT NULL
+        {%- endfor %}
+      AND a.{{ src_ldts }} <= {{ to_date_expr }}
+    {%- if not loop.last %}
+
+    UNION ALL
+    {%- endif %}
+    {%- endfor %}
+),
+
+{#-- Collapse to one row per (parent, source, cdk): the current state of each
+     member. If a member was edited more than once in the window we keep its
+     latest src_ldts / hashdiff / payload. --#}
+full_group_current AS (
+    SELECT *
+    FROM full_group_data
+    QUALIFY ROW_NUMBER() OVER (
+        PARTITION BY {{ src_pk }}, {{ src_source }}{%- for c in cdk_cols %}, {{ c }}{%- endfor %}
+        ORDER BY {{ src_ldts }} DESC
+    ) = 1
+),
+
+{#-- Incoming group member count (distinct cdk+hashdiff members per parent+source). --#}
 source_data_with_count AS (
     SELECT a.*, b.source_count
-    FROM source_data AS a
+    FROM full_group_current AS a
     INNER JOIN (
         SELECT {{ src_pk }}, {{ src_source }}, COUNT(*) AS source_count
         FROM (
             SELECT DISTINCT {{ src_pk }}, {{ src_source }}, {{ src_hashdiff }}
                 {%- for c in cdk_cols -%}, {{ c }}{%- endfor %}
-            FROM source_data
+            FROM full_group_current
         ) AS d
         GROUP BY {{ src_pk }}, {{ src_source }}
     ) AS b
@@ -208,7 +269,17 @@ source_data_with_count AS (
         AND a.{{ src_source }} = b.{{ src_source }}
 ),
 
-{#-- Latest stored group per (parent, source), plus its member count. --#}
+{#-- Latest stored VERSION per (parent, source). A version shares one src_ldts, so
+     it is identified by MAX(src_ldts). Its members are the rows carrying that ldts. --#}
+latest_version AS (
+    SELECT mas.{{ src_pk }}, mas.{{ src_source }}, MAX(mas.{{ src_ldts }}) AS version_ldts
+    FROM {{ this }} AS mas
+    INNER JOIN changed_groups AS cg
+        ON mas.{{ src_pk }} = cg.{{ src_pk }}
+        AND mas.{{ src_source }} = cg.{{ src_source }}
+    GROUP BY mas.{{ src_pk }}, mas.{{ src_source }}
+),
+
 latest_records AS (
     SELECT
         mas.{{ src_pk }},
@@ -219,25 +290,19 @@ latest_records AS (
         {%- endfor %}
         mas.{{ src_ldts }}
     FROM {{ this }} AS mas
-    INNER JOIN (
-        SELECT DISTINCT {{ src_pk }}, {{ src_source }} FROM source_data
-    ) AS spk
-        ON mas.{{ src_pk }} = spk.{{ src_pk }}
-        AND mas.{{ src_source }} = spk.{{ src_source }}
-    QUALIFY RANK() OVER (
-        PARTITION BY mas.{{ src_pk }}, mas.{{ src_source }}
-        ORDER BY mas.{{ src_ldts }} DESC
-    ) = 1
+    INNER JOIN latest_version AS lv
+        ON mas.{{ src_pk }} = lv.{{ src_pk }}
+        AND mas.{{ src_source }} = lv.{{ src_source }}
+        AND mas.{{ src_ldts }} = lv.version_ldts
 ),
 
 latest_group_details AS (
     SELECT
         {{ src_pk }},
         {{ src_source }},
-        {{ src_ldts }},
         COUNT(*) AS latest_count
     FROM latest_records
-    GROUP BY {{ src_pk }}, {{ src_source }}, {{ src_ldts }}
+    GROUP BY {{ src_pk }}, {{ src_source }}
 )
 {%- endif %}
 
@@ -247,6 +312,12 @@ records_to_insert AS (
 {%- if not automate_dv.is_any_incremental() %}
     SELECT * FROM source_data
 {%- else %}
+    {#-- Emit the WHOLE current group, stamped with a single shared version
+         timestamp ({{ src_run_ts }} value = the batch to_date), when the group
+         differs from the latest stored version. This mirrors AutomateDV ma_sat:
+         a new version re-inserts every member (changed and unchanged) sharing one
+         LOAD_DATETIME. The trigger is group-level (any member new/changed OR the
+         member count changed), correlated only on (parent, source). --#}
     SELECT
         sdc.{{ src_pk }},
         {%- for c in cdk_cols %}
@@ -256,29 +327,33 @@ records_to_insert AS (
         {%- for col in superset %}
         sdc.{{ col }},
         {%- endfor %}
-        sdc.{{ src_ldts }},
+        sdc.{{ src_run_ts }} AS {{ src_ldts }},
         sdc.{{ src_source }},
         sdc.{{ src_run_ts }}
     FROM source_data_with_count AS sdc
     WHERE EXISTS (
         SELECT 1
         FROM source_data_with_count AS stage
+        LEFT JOIN latest_group_details AS lg
+            ON stage.{{ src_pk }} = lg.{{ src_pk }}
+            AND stage.{{ src_source }} = lg.{{ src_source }}
         WHERE stage.{{ src_pk }} = sdc.{{ src_pk }}
           AND stage.{{ src_source }} = sdc.{{ src_source }}
-          AND NOT EXISTS (
-            SELECT 1
-            FROM latest_records AS lr
-            INNER JOIN latest_group_details AS lg
-                ON lr.{{ src_pk }} = lg.{{ src_pk }}
-                AND lr.{{ src_source }} = lg.{{ src_source }}
-                AND lr.{{ src_ldts }} = lg.{{ src_ldts }}
-            WHERE stage.{{ src_pk }} = lr.{{ src_pk }}
-              AND stage.{{ src_source }} = lr.{{ src_source }}
-              AND stage.{{ src_hashdiff }} = lr.{{ src_hashdiff }}
-              {%- for c in cdk_cols %}
-              AND stage.{{ c }} = lr.{{ c }}
-              {%- endfor %}
-              AND stage.source_count = lg.latest_count
+          AND (
+            {#-- new group, or member count changed (member added/removed) --#}
+            lg.latest_count IS NULL
+            OR stage.source_count != lg.latest_count
+            {#-- or this member is absent from the stored version (payload changed) --#}
+            OR NOT EXISTS (
+                SELECT 1
+                FROM latest_records AS lr
+                WHERE lr.{{ src_pk }} = stage.{{ src_pk }}
+                  AND lr.{{ src_source }} = stage.{{ src_source }}
+                  AND lr.{{ src_hashdiff }} = stage.{{ src_hashdiff }}
+                  {%- for c in cdk_cols %}
+                  AND lr.{{ c }} = stage.{{ c }}
+                  {%- endfor %}
+            )
           )
     )
 {%- endif %}
