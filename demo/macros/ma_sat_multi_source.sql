@@ -340,10 +340,10 @@ records_to_insert AS (
         WHERE stage.{{ src_pk }} = sdc.{{ src_pk }}
           AND stage.{{ src_source }} = sdc.{{ src_source }}
           AND (
-            {#-- new group, or member count changed (member added/removed) --#}
+            {# new group, or member count changed (member added/removed) #}
             lg.latest_count IS NULL
             OR stage.source_count != lg.latest_count
-            {#-- or this member is absent from the stored version (payload changed) --#}
+            {# or this member is absent from the stored version (payload changed) #}
             OR NOT EXISTS (
                 SELECT 1
                 FROM latest_records AS lr
