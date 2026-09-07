@@ -19,7 +19,7 @@ derived_columns:
   ROLE_TYPE_CK: '!nominee_beneficiary'
   RELATIONSHIP_TO_INSURED: 'relation'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_CTNGY_GC_MEM_DATA'
+  RECORD_SOURCE: '!OPUS_BJAZ_CTNGY_GC_MEM_DATA'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

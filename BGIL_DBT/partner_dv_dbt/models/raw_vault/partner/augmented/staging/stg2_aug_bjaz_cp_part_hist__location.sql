@@ -19,7 +19,7 @@ derived_columns:
   PARENT_NK: "'HUB_LOCATION|' || (add_id)"
   CARE_OF_NAME: 'addressee'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_CP_PART_HIST'
+  RECORD_SOURCE: '!OPUS_BJAZ_CP_PART_HIST'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

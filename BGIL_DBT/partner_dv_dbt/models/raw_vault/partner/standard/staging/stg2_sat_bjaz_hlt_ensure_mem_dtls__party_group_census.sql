@@ -15,7 +15,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
   MEMBERREFERENCE: 'member_no'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_HLT_ENSURE_MEM_DTLS'
+  RECORD_SOURCE: '!OPUS_BJAZ_HLT_ENSURE_MEM_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

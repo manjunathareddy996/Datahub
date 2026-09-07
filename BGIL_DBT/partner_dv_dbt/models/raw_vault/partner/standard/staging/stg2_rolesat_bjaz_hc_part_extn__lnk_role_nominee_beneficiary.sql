@@ -21,7 +21,7 @@ derived_columns:
   APPOINTEE_NAME: 'assignee_name'
   RELATIONSHIP_TO_INSURED: 'relation'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_HC_PART_EXTN'
+  RECORD_SOURCE: '!OPUS_BJAZ_HC_PART_EXTN'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

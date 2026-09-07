@@ -15,7 +15,7 @@ derived_columns:
   PARENT_NK: "'HUB_AGREEMENT|' || (intermediary_id)"
   COMMISSIONSTRUCTURE: 'type_of_comm_arr'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_INTERMEDIARY'
+  RECORD_SOURCE: '!OPUS_BJAZ_INTERMEDIARY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

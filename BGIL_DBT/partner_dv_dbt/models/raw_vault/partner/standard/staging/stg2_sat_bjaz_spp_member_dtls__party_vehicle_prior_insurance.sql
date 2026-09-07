@@ -19,7 +19,7 @@ derived_columns:
   PREVIOUSPOLICYNUMBER: 'concurrent_policy_details'
   PREVIOUSSUMINSURED: 'previous_si'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_SPP_MEMBER_DTLS'
+  RECORD_SOURCE: '!OPUS_BJAZ_SPP_MEMBER_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

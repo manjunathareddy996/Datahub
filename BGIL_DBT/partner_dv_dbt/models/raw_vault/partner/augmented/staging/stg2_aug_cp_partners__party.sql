@@ -21,7 +21,7 @@ derived_columns:
   CAUSE_OF_DEATH: 'cause_of_death'
   PROOF_OF_DEATH_TYPE: 'proof_of_death'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!CP_PARTNERS'
+  RECORD_SOURCE: '!OPUS_CP_PARTNERS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

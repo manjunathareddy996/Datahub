@@ -23,7 +23,7 @@ derived_columns:
   SMOKE_CONSUMP: 'smoke_consump'
   PREGNANT_MONTHS: 'pregnant_months'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_EC_MEM_DTLS_EXTN'
+  RECORD_SOURCE: '!OPUS_BJAZ_EC_MEM_DTLS_EXTN'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

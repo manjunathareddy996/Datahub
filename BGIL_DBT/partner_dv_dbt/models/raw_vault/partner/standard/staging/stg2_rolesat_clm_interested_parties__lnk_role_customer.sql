@@ -19,7 +19,7 @@ derived_columns:
   ROLE_TYPE_CK: '!customer'
   CUSTOMER_CATEGORY: 'object_type'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!CLM_INTERESTED_PARTIES'
+  RECORD_SOURCE: '!OPUS_CLM_INTERESTED_PARTIES'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

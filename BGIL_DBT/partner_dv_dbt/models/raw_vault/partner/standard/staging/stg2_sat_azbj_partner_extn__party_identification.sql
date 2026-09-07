@@ -17,7 +17,7 @@ derived_columns:
   IDENTIFICATIONNUMBER: 'unique_id'
   EIANUMBER: 'eia_no'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!AZBJ_PARTNER_EXTN'
+  RECORD_SOURCE: '!OPUS_AZBJ_PARTNER_EXTN'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

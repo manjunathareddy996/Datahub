@@ -13,7 +13,7 @@
         'columns': [
             {'src': 'claim_received', 'tgt': 'totalclaimcount'}
         ],
-        'source_tag': 'BJAZ_EC_MEM_DTLS_EXTN'
+        'source_tag': 'OPUS_BJAZ_EC_MEM_DTLS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_hcf_member_dtls',
@@ -23,7 +23,7 @@
         'columns': [
             {'src': 'claim_dtls', 'tgt': 'totalclaimcount'}
         ],
-        'source_tag': 'BJAZ_HCF_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_HCF_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_hc_part_extn',
@@ -34,7 +34,7 @@
             {'src': 'amount_claimed', 'tgt': 'totalclaimamount'},
             {'src': 'claim_history', 'tgt': 'totalclaimcount'}
         ],
-        'source_tag': 'BJAZ_HC_PART_EXTN'
+        'source_tag': 'OPUS_BJAZ_HC_PART_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_hm_member_dtls',
@@ -44,7 +44,7 @@
         'columns': [
             {'src': 'claim_count', 'tgt': 'totalclaimcount'}
         ],
-        'source_tag': 'BJAZ_HM_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_HM_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_sh_mem_dtls_extn',
@@ -55,7 +55,7 @@
             {'src': 'amount_claimed', 'tgt': 'totalclaimamount'},
             {'src': 'claim_history', 'tgt': 'totalclaimcount'}
         ],
-        'source_tag': 'BJAZ_SH_MEM_DTLS_EXTN'
+        'source_tag': 'OPUS_BJAZ_SH_MEM_DTLS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_spp_member_dtls',
@@ -65,7 +65,7 @@
         'columns': [
             {'src': 'claim_dtls', 'tgt': 'totalclaimcount'}
         ],
-        'source_tag': 'BJAZ_SPP_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_SPP_MEMBER_DTLS'
     }
 ] -%}
 

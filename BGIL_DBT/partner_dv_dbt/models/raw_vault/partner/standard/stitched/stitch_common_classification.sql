@@ -14,7 +14,7 @@
             {'src': 'vip_cust', 'tgt': 'prioritycode'},
             {'src': 'ucic_flag', 'tgt': 'segmentcode'}
         ],
-        'source_tag': 'AZBJ_PARTNER_EXTN'
+        'source_tag': 'OPUS_AZBJ_PARTNER_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_azbj_part_ext_hist',
@@ -24,7 +24,7 @@
         'columns': [
             {'src': 'vip_cust', 'tgt': 'prioritycode'}
         ],
-        'source_tag': 'BJAZ_AZBJ_PART_EXT_HIST'
+        'source_tag': 'OPUS_BJAZ_AZBJ_PART_EXT_HIST'
     },
     {
         'model': 'stg_partner__bjaz_hm_member_dtls',
@@ -34,7 +34,7 @@
         'columns': [
             {'src': 'vip_flg', 'tgt': 'prioritycode'}
         ],
-        'source_tag': 'BJAZ_HM_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_HM_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_intermediary',
@@ -44,7 +44,7 @@
         'columns': [
             {'src': 'flagging', 'tgt': 'segmentcode'}
         ],
-        'source_tag': 'BJAZ_INTERMEDIARY'
+        'source_tag': 'OPUS_BJAZ_INTERMEDIARY'
     },
     {
         'model': 'stg_partner__bjaz_intermediary_hist',
@@ -54,7 +54,7 @@
         'columns': [
             {'src': 'flagging', 'tgt': 'segmentcode'}
         ],
-        'source_tag': 'BJAZ_INTERMEDIARY_HIST'
+        'source_tag': 'OPUS_BJAZ_INTERMEDIARY_HIST'
     }
 ] -%}
 

@@ -19,7 +19,7 @@ derived_columns:
   GSTIN: 'gst_no'
   PANNUMBER: 'pan_number'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_INTERMEDIARY_HIST'
+  RECORD_SOURCE: '!OPUS_BJAZ_INTERMEDIARY_HIST'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

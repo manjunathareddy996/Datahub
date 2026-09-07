@@ -19,7 +19,7 @@ derived_columns:
   FAXNUMBER: 'fax'
   LANDLINENUMBER: 'telephone2'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!CP_PARTNERS'
+  RECORD_SOURCE: '!OPUS_CP_PARTNERS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

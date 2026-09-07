@@ -13,7 +13,7 @@
         'columns': [
             {'src': 'policy_ref', 'tgt': 'policyreferencenumber'}
         ],
-        'source_tag': 'AZBJ_PARTNER_EXTN'
+        'source_tag': 'OPUS_AZBJ_PARTNER_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_ctngy_gc_mem_data',
@@ -23,7 +23,7 @@
         'columns': [
             {'src': 'master_policy_ref', 'tgt': 'masterpolicyreference'}
         ],
-        'source_tag': 'BJAZ_CTNGY_GC_MEM_DATA'
+        'source_tag': 'OPUS_BJAZ_CTNGY_GC_MEM_DATA'
     },
     {
         'model': 'stg_partner__bjaz_ctngy_pa_mem_dtls',
@@ -34,7 +34,7 @@
             {'src': 'member_risk_expiry_date', 'tgt': 'riskexpirydate'},
             {'src': 'member_risk_inception_date', 'tgt': 'riskinceptiondate'}
         ],
-        'source_tag': 'BJAZ_CTNGY_PA_MEM_DTLS'
+        'source_tag': 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_ec_mem_dtls_extn',
@@ -46,7 +46,7 @@
             {'src': 'expiry_date', 'tgt': 'riskexpirydate'},
             {'src': 'effetive_date', 'tgt': 'riskinceptiondate'}
         ],
-        'source_tag': 'BJAZ_EC_MEM_DTLS_EXTN'
+        'source_tag': 'OPUS_BJAZ_EC_MEM_DTLS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_hcf_member_dtls',
@@ -57,7 +57,7 @@
             {'src': 'to_date', 'tgt': 'riskexpirydate'},
             {'src': 'from_date', 'tgt': 'riskinceptiondate'}
         ],
-        'source_tag': 'BJAZ_HCF_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_HCF_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_hc_part_extn',
@@ -67,7 +67,7 @@
         'columns': [
             {'src': 'inception_date', 'tgt': 'riskinceptiondate'}
         ],
-        'source_tag': 'BJAZ_HC_PART_EXTN'
+        'source_tag': 'OPUS_BJAZ_HC_PART_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_hm_member_dtls',
@@ -79,7 +79,7 @@
             {'src': 'term_end_date', 'tgt': 'riskexpirydate'},
             {'src': 'term_start_date', 'tgt': 'riskinceptiondate'}
         ],
-        'source_tag': 'BJAZ_HM_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_HM_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_pa_detl_extn',
@@ -89,7 +89,7 @@
         'columns': [
             {'src': 'inception_date', 'tgt': 'riskinceptiondate'}
         ],
-        'source_tag': 'BJAZ_PA_DETL_EXTN'
+        'source_tag': 'OPUS_BJAZ_PA_DETL_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_sh_mem_dtls_extn',
@@ -102,7 +102,7 @@
             {'src': 'expiry_date', 'tgt': 'riskexpirydate'},
             {'src': 'effetive_date', 'tgt': 'riskinceptiondate'}
         ],
-        'source_tag': 'BJAZ_SH_MEM_DTLS_EXTN'
+        'source_tag': 'OPUS_BJAZ_SH_MEM_DTLS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_spp_member_dtls',
@@ -113,7 +113,7 @@
             {'src': 'to_date', 'tgt': 'riskexpirydate'},
             {'src': 'from_date', 'tgt': 'riskinceptiondate'}
         ],
-        'source_tag': 'BJAZ_SPP_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_SPP_MEMBER_DTLS'
     }
 ] -%}
 

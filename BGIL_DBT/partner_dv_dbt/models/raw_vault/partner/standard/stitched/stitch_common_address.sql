@@ -18,7 +18,7 @@
             {'src': 'door_no', 'tgt': 'doornumber'},
             {'src': 'plot_street_no', 'tgt': 'streetname'}
         ],
-        'source_tag': 'AZBJ_ADDRESS_EXTN'
+        'source_tag': 'OPUS_AZBJ_ADDRESS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_clm_supp_extn',
@@ -33,7 +33,7 @@
             {'src': 'country', 'tgt': 'countryname'},
             {'src': 'billing_state', 'tgt': 'statename'}
         ],
-        'source_tag': 'BJAZ_CLM_SUPP_EXTN'
+        'source_tag': 'OPUS_BJAZ_CLM_SUPP_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_cp_add_hist',
@@ -47,7 +47,7 @@
             {'src': 'country_code', 'tgt': 'countrycode'},
             {'src': 'postcode', 'tgt': 'postalcode'}
         ],
-        'source_tag': 'BJAZ_CP_ADD_HIST'
+        'source_tag': 'OPUS_BJAZ_CP_ADD_HIST'
     },
     {
         'model': 'stg_partner__bjaz_pincode',
@@ -59,7 +59,7 @@
             {'src': 'status', 'tgt': 'postalcode'},
             {'src': 'state', 'tgt': 'statename'}
         ],
-        'source_tag': 'BJAZ_PINCODE'
+        'source_tag': 'OPUS_BJAZ_PINCODE'
     },
     {
         'model': 'stg_partner__bjaz_pincode_master',
@@ -70,7 +70,7 @@
             {'src': 'city', 'tgt': 'city'},
             {'src': 'state', 'tgt': 'statename'}
         ],
-        'source_tag': 'BJAZ_PINCODE_MASTER'
+        'source_tag': 'OPUS_BJAZ_PINCODE_MASTER'
     },
     {
         'model': 'stg_partner__cp_addresses',
@@ -84,7 +84,7 @@
             {'src': 'country_code', 'tgt': 'countrycode'},
             {'src': 'postcode', 'tgt': 'postalcode'}
         ],
-        'source_tag': 'CP_ADDRESSES'
+        'source_tag': 'OPUS_CP_ADDRESSES'
     }
 ] -%}
 

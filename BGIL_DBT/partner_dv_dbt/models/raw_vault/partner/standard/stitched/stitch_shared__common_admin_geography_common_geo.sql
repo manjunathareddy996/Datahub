@@ -17,7 +17,7 @@
             {'src': 'zone2', 'tgt': 'subzonecode'},
             {'src': 'zone', 'tgt': 'zonecode'}
         ],
-        'source_tag': 'BJAZ_PINCODE'
+        'source_tag': 'OPUS_BJAZ_PINCODE'
     },
     {
         'model': 'stg_partner__bjaz_pincode_master',
@@ -31,7 +31,7 @@
             {'src': 'zone2', 'tgt': 'subzonecode'},
             {'src': 'zone_pin', 'tgt': 'zonecode'}
         ],
-        'source_tag': 'BJAZ_PINCODE_MASTER'
+        'source_tag': 'OPUS_BJAZ_PINCODE_MASTER'
     }
 ] -%}
 

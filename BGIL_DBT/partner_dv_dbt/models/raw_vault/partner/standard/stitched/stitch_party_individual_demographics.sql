@@ -18,7 +18,7 @@
             {'src': 'occupation_desc_gen', 'tgt': 'occupationdescription'},
             {'src': 'spouse_name', 'tgt': 'spousename'}
         ],
-        'source_tag': 'AZBJ_PARTNER_EXTN'
+        'source_tag': 'OPUS_AZBJ_PARTNER_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_azbj_part_ext_hist',
@@ -30,7 +30,7 @@
             {'src': 'father_name', 'tgt': 'fathername'},
             {'src': 'occupation_desc_gen', 'tgt': 'occupationdescription'}
         ],
-        'source_tag': 'BJAZ_AZBJ_PART_EXT_HIST'
+        'source_tag': 'OPUS_BJAZ_AZBJ_PART_EXT_HIST'
     },
     {
         'model': 'stg_partner__bjaz_cp_part_hist',
@@ -41,7 +41,7 @@
             {'src': 'marital_status', 'tgt': 'maritalstatus'},
             {'src': 'occupation', 'tgt': 'occupationcode'}
         ],
-        'source_tag': 'BJAZ_CP_PART_HIST'
+        'source_tag': 'OPUS_BJAZ_CP_PART_HIST'
     },
     {
         'model': 'stg_partner__bjaz_ec_mem_dtls_extn',
@@ -52,7 +52,7 @@
             {'src': 'gross_income', 'tgt': 'annualincome'},
             {'src': 'occupation', 'tgt': 'occupationcode'}
         ],
-        'source_tag': 'BJAZ_EC_MEM_DTLS_EXTN'
+        'source_tag': 'OPUS_BJAZ_EC_MEM_DTLS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_hcf_member_dtls',
@@ -63,7 +63,7 @@
             {'src': 'monthly_income', 'tgt': 'annualincome'},
             {'src': 'member_occupation', 'tgt': 'occupationcode'}
         ],
-        'source_tag': 'BJAZ_HCF_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_HCF_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_hc_part_extn',
@@ -73,7 +73,7 @@
         'columns': [
             {'src': 'occupation', 'tgt': 'occupationcode'}
         ],
-        'source_tag': 'BJAZ_HC_PART_EXTN'
+        'source_tag': 'OPUS_BJAZ_HC_PART_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_hm_member_dtls',
@@ -85,7 +85,7 @@
             {'src': 'designation', 'tgt': 'designation'},
             {'src': 'occupation', 'tgt': 'occupationcode'}
         ],
-        'source_tag': 'BJAZ_HM_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_HM_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_sh_mem_dtls_extn',
@@ -96,7 +96,7 @@
             {'src': 'gross_income', 'tgt': 'annualincome'},
             {'src': 'occupation', 'tgt': 'occupationcode'}
         ],
-        'source_tag': 'BJAZ_SH_MEM_DTLS_EXTN'
+        'source_tag': 'OPUS_BJAZ_SH_MEM_DTLS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_spp_member_dtls',
@@ -106,7 +106,7 @@
         'columns': [
             {'src': 'member_occupation', 'tgt': 'occupationcode'}
         ],
-        'source_tag': 'BJAZ_SPP_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_SPP_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__cp_partners',
@@ -117,7 +117,7 @@
             {'src': 'marital_status', 'tgt': 'maritalstatus'},
             {'src': 'occupation', 'tgt': 'occupationcode'}
         ],
-        'source_tag': 'CP_PARTNERS'
+        'source_tag': 'OPUS_CP_PARTNERS'
     }
 ] -%}
 

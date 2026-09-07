@@ -12,7 +12,7 @@
         'columns': [
             {'src': 'tcs_status', 'tgt': 'tcsstatus'}
         ],
-        'source_tag': 'BJAZ_CLM_SUPP_EXTN'
+        'source_tag': 'OPUS_BJAZ_CLM_SUPP_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_hm_hospital_master',
@@ -22,7 +22,7 @@
         'columns': [
             {'src': 'stax_reg_no', 'tgt': 'gstregistrationnumber'}
         ],
-        'source_tag': 'BJAZ_HM_HOSPITAL_MASTER'
+        'source_tag': 'OPUS_BJAZ_HM_HOSPITAL_MASTER'
     }
 ] -%}
 

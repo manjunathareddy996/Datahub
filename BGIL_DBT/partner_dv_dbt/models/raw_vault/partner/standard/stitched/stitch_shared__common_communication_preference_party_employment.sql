@@ -15,7 +15,7 @@
             {'src': 'literature', 'tgt': 'marketingoptinindicator'},
             {'src': 'employment_status', 'tgt': 'employmentstatus'}
         ],
-        'source_tag': 'BJAZ_CP_PART_HIST'
+        'source_tag': 'OPUS_BJAZ_CP_PART_HIST'
     },
     {
         'model': 'stg_partner__cp_partners',
@@ -26,7 +26,7 @@
             {'src': 'language', 'tgt': 'correspondencelanguage'},
             {'src': 'literature', 'tgt': 'marketingoptinindicator'}
         ],
-        'source_tag': 'CP_PARTNERS'
+        'source_tag': 'OPUS_CP_PARTNERS'
     }
 ] -%}
 

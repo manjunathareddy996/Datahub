@@ -21,7 +21,7 @@ derived_columns:
   PREVIOUSPOLICYNUMBER: 'prev_policy_dtls'
   PREVIOUSSUMINSURED: 'prev_sum_insured'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_EC_MEM_DTLS_EXTN'
+  RECORD_SOURCE: '!OPUS_BJAZ_EC_MEM_DTLS_EXTN'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

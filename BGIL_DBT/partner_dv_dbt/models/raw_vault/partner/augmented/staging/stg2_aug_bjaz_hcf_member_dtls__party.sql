@@ -19,7 +19,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
   BMI_FLAG: 'bmi_flag'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_HCF_MEMBER_DTLS'
+  RECORD_SOURCE: '!OPUS_BJAZ_HCF_MEMBER_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

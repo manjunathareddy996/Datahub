@@ -20,7 +20,7 @@ derived_columns:
   AA_MEMBERSHIP_NUMBER: 'aa_membership_number'
   AA_MEMBERSHIP_EXPIRY_DATE: 'aa_membership_expiry_date'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!AZBJ_PARTNER_EXTN'
+  RECORD_SOURCE: '!OPUS_AZBJ_PARTNER_EXTN'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -25,7 +25,7 @@ derived_columns:
   EMPANELMENT_STATUS: 'supp_status'
   PROVIDER_TYPE: 'supp_type'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!CLM_SUPPLIERS'
+  RECORD_SOURCE: '!OPUS_CLM_SUPPLIERS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

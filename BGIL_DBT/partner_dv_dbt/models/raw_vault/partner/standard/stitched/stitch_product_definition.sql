@@ -14,7 +14,7 @@
             {'src': 'section_code', 'tgt': 'productcategory'},
             {'src': 'scheme_version', 'tgt': 'productgeneration'}
         ],
-        'source_tag': 'BJAZ_CTNGY_FF_DTLS_EXTN'
+        'source_tag': 'OPUS_BJAZ_CTNGY_FF_DTLS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_ctngy_pa_mem_dtls',
@@ -26,7 +26,7 @@
             {'src': 'scheme_version', 'tgt': 'productgeneration'},
             {'src': 'plan', 'tgt': 'productname'}
         ],
-        'source_tag': 'BJAZ_CTNGY_PA_MEM_DTLS'
+        'source_tag': 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_hm_member_dtls',
@@ -36,7 +36,7 @@
         'columns': [
             {'src': 'plan_name', 'tgt': 'productname'}
         ],
-        'source_tag': 'BJAZ_HM_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_HM_MEMBER_DTLS'
     }
 ] -%}
 

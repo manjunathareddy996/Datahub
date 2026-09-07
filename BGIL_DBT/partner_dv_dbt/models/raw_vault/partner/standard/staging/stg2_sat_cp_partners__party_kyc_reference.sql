@@ -15,7 +15,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
   KYCREFERENCETYPE: 'evid_type'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!CP_PARTNERS'
+  RECORD_SOURCE: '!OPUS_CP_PARTNERS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

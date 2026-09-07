@@ -16,7 +16,7 @@
             {'src': 'status', 'tgt': 'partystatus'},
             {'src': 'place_of_birth', 'tgt': 'placeofbirth'}
         ],
-        'source_tag': 'AZBJ_PARTNER_EXTN'
+        'source_tag': 'OPUS_AZBJ_PARTNER_EXTN'
     },
     {
         'model': 'stg_partner__ba_hcp_dt_mem',
@@ -26,7 +26,7 @@
         'columns': [
             {'src': 'member_name', 'tgt': 'partyfullname'}
         ],
-        'source_tag': 'BA_HCP_DT_MEM'
+        'source_tag': 'OPUS_BA_HCP_DT_MEM'
     },
     {
         'model': 'stg_partner__bjaz_clm_supp_extn',
@@ -40,7 +40,7 @@
             {'src': 'owners_full_name', 'tgt': 'partyfullname'},
             {'src': 'mfg_co_name', 'tgt': 'partylegalname'}
         ],
-        'source_tag': 'BJAZ_CLM_SUPP_EXTN'
+        'source_tag': 'OPUS_BJAZ_CLM_SUPP_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_ctngy_ff_dtls_extn',
@@ -52,7 +52,7 @@
             {'src': 'gender', 'tgt': 'gendercode'},
             {'src': 'member_name', 'tgt': 'partyfullname'}
         ],
-        'source_tag': 'BJAZ_CTNGY_FF_DTLS_EXTN'
+        'source_tag': 'OPUS_BJAZ_CTNGY_FF_DTLS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_ctngy_gc_mem_data',
@@ -65,7 +65,7 @@
             {'src': 'gender', 'tgt': 'gendercode'},
             {'src': 'member_name', 'tgt': 'partyfullname'}
         ],
-        'source_tag': 'BJAZ_CTNGY_GC_MEM_DATA'
+        'source_tag': 'OPUS_BJAZ_CTNGY_GC_MEM_DATA'
     },
     {
         'model': 'stg_partner__bjaz_ctngy_pa_mem_dtls',
@@ -80,7 +80,7 @@
             {'src': 'middle_name', 'tgt': 'middlename'},
             {'src': 'member_name', 'tgt': 'partyfullname'}
         ],
-        'source_tag': 'BJAZ_CTNGY_PA_MEM_DTLS'
+        'source_tag': 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_ec_mem_dtls_extn',
@@ -94,7 +94,7 @@
             {'src': 'name', 'tgt': 'partyfullname'},
             {'src': 'status', 'tgt': 'partystatus'}
         ],
-        'source_tag': 'BJAZ_EC_MEM_DTLS_EXTN'
+        'source_tag': 'OPUS_BJAZ_EC_MEM_DTLS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_hcf_member_dtls',
@@ -108,7 +108,7 @@
             {'src': 'insured_name', 'tgt': 'partyfullname'},
             {'src': 'company_name', 'tgt': 'partylegalname'}
         ],
-        'source_tag': 'BJAZ_HCF_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_HCF_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_hc_part_extn',
@@ -122,7 +122,7 @@
             {'src': 'member_name', 'tgt': 'partyfullname'},
             {'src': 'status', 'tgt': 'partystatus'}
         ],
-        'source_tag': 'BJAZ_HC_PART_EXTN'
+        'source_tag': 'OPUS_BJAZ_HC_PART_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_hlt_ensure_mem_dtls',
@@ -135,7 +135,7 @@
             {'src': 'gender', 'tgt': 'gendercode'},
             {'src': 'name', 'tgt': 'partyfullname'}
         ],
-        'source_tag': 'BJAZ_HLT_ENSURE_MEM_DTLS'
+        'source_tag': 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_hm_hospital_master',
@@ -146,7 +146,7 @@
             {'src': 'benname', 'tgt': 'partydisplayname'},
             {'src': 'hospital_name', 'tgt': 'partyfullname'}
         ],
-        'source_tag': 'BJAZ_HM_HOSPITAL_MASTER'
+        'source_tag': 'OPUS_BJAZ_HM_HOSPITAL_MASTER'
     },
     {
         'model': 'stg_partner__bjaz_hm_member_dtls',
@@ -159,7 +159,7 @@
             {'src': 'gender', 'tgt': 'gendercode'},
             {'src': 'member_name', 'tgt': 'partyfullname'}
         ],
-        'source_tag': 'BJAZ_HM_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_HM_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_intermediary',
@@ -169,7 +169,7 @@
         'columns': [
             {'src': 'intermediary_name', 'tgt': 'partyfullname'}
         ],
-        'source_tag': 'BJAZ_INTERMEDIARY'
+        'source_tag': 'OPUS_BJAZ_INTERMEDIARY'
     },
     {
         'model': 'stg_partner__bjaz_pa_detl_extn',
@@ -181,7 +181,7 @@
             {'src': 'dob', 'tgt': 'dateofbirth'},
             {'src': 'member_name', 'tgt': 'partyfullname'}
         ],
-        'source_tag': 'BJAZ_PA_DETL_EXTN'
+        'source_tag': 'OPUS_BJAZ_PA_DETL_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_sh_mem_dtls_extn',
@@ -196,7 +196,7 @@
             {'src': 'company_name', 'tgt': 'partylegalname'},
             {'src': 'status', 'tgt': 'partystatus'}
         ],
-        'source_tag': 'BJAZ_SH_MEM_DTLS_EXTN'
+        'source_tag': 'OPUS_BJAZ_SH_MEM_DTLS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_spp_member_dtls',
@@ -210,7 +210,7 @@
             {'src': 'insured_name', 'tgt': 'partyfullname'},
             {'src': 'company_name', 'tgt': 'partylegalname'}
         ],
-        'source_tag': 'BJAZ_SPP_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_SPP_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_starpkg_ff_dtls',
@@ -223,7 +223,7 @@
             {'src': 'gender', 'tgt': 'gendercode'},
             {'src': 'member_name', 'tgt': 'partyfullname'}
         ],
-        'source_tag': 'BJAZ_STARPKG_FF_DTLS'
+        'source_tag': 'OPUS_BJAZ_STARPKG_FF_DTLS'
     },
     {
         'model': 'stg_partner__cp_partners',
@@ -245,7 +245,7 @@
             {'src': 'partner_type', 'tgt': 'partytypecode'},
             {'src': 'before_title', 'tgt': 'salutation'}
         ],
-        'source_tag': 'CP_PARTNERS'
+        'source_tag': 'OPUS_CP_PARTNERS'
     },
     {
         'model': 'stg_partner__ocp_interested_parties',
@@ -255,7 +255,7 @@
         'columns': [
             {'src': 'customer_name_text', 'tgt': 'partyfullname'}
         ],
-        'source_tag': 'OCP_INTERESTED_PARTIES'
+        'source_tag': 'OPUS_OCP_INTERESTED_PARTIES'
     }
 ] -%}
 

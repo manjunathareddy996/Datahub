@@ -17,7 +17,7 @@ derived_columns:
   EMAILADDRESS: 'email_id'
   LANDLINENUMBER: 'phone_no'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_HM_MEMBER_DTLS'
+  RECORD_SOURCE: '!OPUS_BJAZ_HM_MEMBER_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

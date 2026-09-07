@@ -15,7 +15,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
   PREVIOUSPOLICYNUMBER: 'first_policy_ref'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_PA_DETL_EXTN'
+  RECORD_SOURCE: '!OPUS_BJAZ_PA_DETL_EXTN'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

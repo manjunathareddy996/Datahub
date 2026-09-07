@@ -25,7 +25,7 @@ derived_columns:
   BMI: 'bmi'
   OTHER_OCC: 'other_occ'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_SPP_MEMBER_DTLS'
+  RECORD_SOURCE: '!OPUS_BJAZ_SPP_MEMBER_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -19,7 +19,7 @@ derived_columns:
   PARENT_NK: "'HUB_AGREEMENT|' || (intermediary_id)"
   AGREEMENT_NATURE_OTHER_DETAIL: 'nature_of_agreement_other'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_INTERMEDIARY'
+  RECORD_SOURCE: '!OPUS_BJAZ_INTERMEDIARY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

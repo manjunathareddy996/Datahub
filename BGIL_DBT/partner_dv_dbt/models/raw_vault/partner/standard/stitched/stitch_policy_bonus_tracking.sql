@@ -13,7 +13,7 @@
         'columns': [
             {'src': 'pre_pol_ncb_per', 'tgt': 'cumulativebonuspercentage'}
         ],
-        'source_tag': 'BJAZ_EC_MEM_DTLS_EXTN'
+        'source_tag': 'OPUS_BJAZ_EC_MEM_DTLS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_hcf_member_dtls',
@@ -24,7 +24,7 @@
             {'src': 'cumulative_amt', 'tgt': 'bonusamount'},
             {'src': 'cumulative_bnouz_per', 'tgt': 'cumulativebonuspercentage'}
         ],
-        'source_tag': 'BJAZ_HCF_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_HCF_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_hlt_ensure_mem_dtls',
@@ -34,7 +34,7 @@
         'columns': [
             {'src': 'previous_cum_bonus', 'tgt': 'bonusamount'}
         ],
-        'source_tag': 'BJAZ_HLT_ENSURE_MEM_DTLS'
+        'source_tag': 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_hm_member_dtls',
@@ -45,7 +45,7 @@
             {'src': 'bonus_si', 'tgt': 'bonusamount'},
             {'src': 'cumm_bonus_per', 'tgt': 'cumulativebonuspercentage'}
         ],
-        'source_tag': 'BJAZ_HM_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_HM_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_pa_detl_extn',
@@ -55,7 +55,7 @@
         'columns': [
             {'src': 'cummulative_bonus', 'tgt': 'bonusamount'}
         ],
-        'source_tag': 'BJAZ_PA_DETL_EXTN'
+        'source_tag': 'OPUS_BJAZ_PA_DETL_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_sh_mem_dtls_extn',
@@ -66,7 +66,7 @@
             {'src': 'cumm_bonus', 'tgt': 'bonusamount'},
             {'src': 'cumm_bonus_per', 'tgt': 'cumulativebonuspercentage'}
         ],
-        'source_tag': 'BJAZ_SH_MEM_DTLS_EXTN'
+        'source_tag': 'OPUS_BJAZ_SH_MEM_DTLS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_spp_member_dtls',
@@ -77,7 +77,7 @@
             {'src': 'cumulative_amt', 'tgt': 'bonusamount'},
             {'src': 'cumulative_bnouz_per', 'tgt': 'cumulativebonuspercentage'}
         ],
-        'source_tag': 'BJAZ_SPP_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_SPP_MEMBER_DTLS'
     }
 ] -%}
 

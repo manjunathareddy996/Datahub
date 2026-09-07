@@ -13,7 +13,7 @@ derived_columns:
   POLICY_HKEY_NK: "'HUB_POLICY|' || contract_id"
   POLICY_PARTY_HKEY_NK: "'LNK_POLICY_PARTY|' || part_id || '|' || contract_id"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BA_HCP_DT_MEM'
+  RECORD_SOURCE: '!OPUS_BA_HCP_DT_MEM'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

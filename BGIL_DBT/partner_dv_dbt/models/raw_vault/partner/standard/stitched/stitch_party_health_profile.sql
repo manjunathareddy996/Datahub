@@ -15,7 +15,7 @@
             {'src': 'smoker_yn', 'tgt': 'smokerindicator'},
             {'src': 'weight_kg', 'tgt': 'weight'}
         ],
-        'source_tag': 'BJAZ_EC_MEM_DTLS_EXTN'
+        'source_tag': 'OPUS_BJAZ_EC_MEM_DTLS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_hcf_member_dtls',
@@ -28,7 +28,7 @@
             {'src': 'smoker_flag', 'tgt': 'smokerindicator'},
             {'src': 'weight_flag', 'tgt': 'weight'}
         ],
-        'source_tag': 'BJAZ_HCF_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_HCF_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_sh_mem_dtls_extn',
@@ -38,7 +38,7 @@
         'columns': [
             {'src': 'smoker_yn', 'tgt': 'smokerindicator'}
         ],
-        'source_tag': 'BJAZ_SH_MEM_DTLS_EXTN'
+        'source_tag': 'OPUS_BJAZ_SH_MEM_DTLS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_spp_member_dtls',
@@ -49,7 +49,7 @@
             {'src': 'obesity', 'tgt': 'bodymassindex'},
             {'src': 'weight', 'tgt': 'weight'}
         ],
-        'source_tag': 'BJAZ_SPP_MEMBER_DTLS'
+        'source_tag': 'OPUS_BJAZ_SPP_MEMBER_DTLS'
     }
 ] -%}
 

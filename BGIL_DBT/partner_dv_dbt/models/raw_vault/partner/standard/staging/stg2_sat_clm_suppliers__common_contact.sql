@@ -15,7 +15,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
   LANDLINENUMBER: 'contact'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!CLM_SUPPLIERS'
+  RECORD_SOURCE: '!OPUS_CLM_SUPPLIERS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

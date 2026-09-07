@@ -18,7 +18,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (intermediary_id)"
   INTERMEDIARY_LICENCE_NUMBER: 'license_no'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_INTERMEDIARY_HIST'
+  RECORD_SOURCE: '!OPUS_BJAZ_INTERMEDIARY_HIST'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

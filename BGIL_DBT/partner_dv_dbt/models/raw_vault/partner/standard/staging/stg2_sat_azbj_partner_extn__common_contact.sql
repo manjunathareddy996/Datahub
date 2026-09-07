@@ -21,7 +21,7 @@ derived_columns:
   LANDLINENUMBER: 'telephone3'
   PREFERREDCONTACTTIME: 'preferred_contact_opt'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!AZBJ_PARTNER_EXTN'
+  RECORD_SOURCE: '!OPUS_AZBJ_PARTNER_EXTN'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

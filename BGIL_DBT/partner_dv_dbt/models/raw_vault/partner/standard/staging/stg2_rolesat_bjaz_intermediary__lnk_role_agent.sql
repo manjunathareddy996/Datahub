@@ -27,7 +27,7 @@ derived_columns:
   LICENCE_ISSUE_DATE: 'license_issue_date'
   LICENCE_CATEGORY: 'license_type'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_INTERMEDIARY'
+  RECORD_SOURCE: '!OPUS_BJAZ_INTERMEDIARY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

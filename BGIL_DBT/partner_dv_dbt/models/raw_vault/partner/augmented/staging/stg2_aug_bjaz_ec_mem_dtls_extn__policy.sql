@@ -23,7 +23,7 @@ derived_columns:
   MEMBER_SEQUENCE: 'member_no'
   INCEPTION_DATE: 'inception_date'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_EC_MEM_DTLS_EXTN'
+  RECORD_SOURCE: '!OPUS_BJAZ_EC_MEM_DTLS_EXTN'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

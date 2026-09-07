@@ -23,7 +23,7 @@ derived_columns:
   PAN_AADHAR_LINKED: 'pan_aadhar_linked'
   IT_RETURN_2YR: 'it_return_2yr'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_INTERMEDIARY'
+  RECORD_SOURCE: '!OPUS_BJAZ_INTERMEDIARY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

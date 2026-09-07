@@ -17,7 +17,7 @@
             {'src': 'paidup_capital', 'tgt': 'paidupcapital'},
             {'src': 'parent_co', 'tgt': 'parententityname'}
         ],
-        'source_tag': 'AZBJ_PARTNER_EXTN'
+        'source_tag': 'OPUS_AZBJ_PARTNER_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_azbj_part_ext_hist',
@@ -30,7 +30,7 @@
             {'src': 'paidup_capital', 'tgt': 'paidupcapital'},
             {'src': 'parent_co', 'tgt': 'parententityname'}
         ],
-        'source_tag': 'BJAZ_AZBJ_PART_EXT_HIST'
+        'source_tag': 'OPUS_BJAZ_AZBJ_PART_EXT_HIST'
     },
     {
         'model': 'stg_partner__bjaz_clm_supp_extn',
@@ -43,7 +43,7 @@
             {'src': 'msme_class', 'tgt': 'msmeindicator'},
             {'src': 'parent_co_name', 'tgt': 'parententityname'}
         ],
-        'source_tag': 'BJAZ_CLM_SUPP_EXTN'
+        'source_tag': 'OPUS_BJAZ_CLM_SUPP_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_cp_part_hist',
@@ -53,7 +53,7 @@
         'columns': [
             {'src': 'legal_form', 'tgt': 'legalconstitutiontype'}
         ],
-        'source_tag': 'BJAZ_CP_PART_HIST'
+        'source_tag': 'OPUS_BJAZ_CP_PART_HIST'
     },
     {
         'model': 'stg_partner__cp_partners',
@@ -63,7 +63,7 @@
         'columns': [
             {'src': 'legal_form', 'tgt': 'legalconstitutiontype'}
         ],
-        'source_tag': 'CP_PARTNERS'
+        'source_tag': 'OPUS_CP_PARTNERS'
     }
 ] -%}
 

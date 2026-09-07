@@ -15,7 +15,7 @@ derived_columns:
   PARENT_NK: "'HUB_POLICY|' || (contract_id)"
   ENROLMENTDATE: 'pm_pol_enrolment_date'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_CTNGY_PA_MEM_DTLS'
+  RECORD_SOURCE: '!OPUS_BJAZ_CTNGY_PA_MEM_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

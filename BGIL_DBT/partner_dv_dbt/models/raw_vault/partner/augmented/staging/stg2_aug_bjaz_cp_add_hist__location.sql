@@ -21,7 +21,7 @@ derived_columns:
   ADDRESS_LINE4: 'address_line4'
   ADDRESS_LINE5: 'address_line5'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_CP_ADD_HIST'
+  RECORD_SOURCE: '!OPUS_BJAZ_CP_ADD_HIST'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

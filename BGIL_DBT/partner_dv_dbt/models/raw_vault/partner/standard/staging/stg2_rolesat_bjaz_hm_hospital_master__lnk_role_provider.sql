@@ -27,7 +27,7 @@ derived_columns:
   NETWORK_INDICATOR: 'hos_status'
   PREFERRED_PROVIDER_INDICATOR: 'preferred_flag'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_HM_HOSPITAL_MASTER'
+  RECORD_SOURCE: '!OPUS_BJAZ_HM_HOSPITAL_MASTER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

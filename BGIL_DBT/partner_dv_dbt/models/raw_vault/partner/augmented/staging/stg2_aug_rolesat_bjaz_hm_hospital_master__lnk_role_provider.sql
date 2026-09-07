@@ -30,7 +30,7 @@ derived_columns:
   PRIORITY_FLG: 'priority_flg'
   HOSP_SPEC_TYPE: 'hosp_spec_type'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_HM_HOSPITAL_MASTER'
+  RECORD_SOURCE: '!OPUS_BJAZ_HM_HOSPITAL_MASTER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

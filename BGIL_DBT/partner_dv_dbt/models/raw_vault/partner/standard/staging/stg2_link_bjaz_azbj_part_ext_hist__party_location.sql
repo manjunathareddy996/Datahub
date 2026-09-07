@@ -13,7 +13,7 @@ derived_columns:
   LOCATION_HKEY_NK: "'HUB_LOCATION|' || mail_add_id"
   PARTY_LOCATION_HKEY_NK: "'LNK_PARTY_LOCATION|' || part_id || '|' || mail_add_id"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_AZBJ_PART_EXT_HIST'
+  RECORD_SOURCE: '!OPUS_BJAZ_AZBJ_PART_EXT_HIST'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

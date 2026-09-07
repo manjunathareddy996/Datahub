@@ -19,7 +19,7 @@ derived_columns:
   CLAIM_HKEY_NK: "'HUB_CLAIM|' || claim_id"
   CLAIM_PARTY_HKEY_NK: "'LNK_CLAIM_PARTY|' || part_id || '|' || claim_id"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!CLM_INTERESTED_PARTIES'
+  RECORD_SOURCE: '!OPUS_CLM_INTERESTED_PARTIES'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

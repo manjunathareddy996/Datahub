@@ -17,7 +17,7 @@ derived_columns:
   IDENTIFICATIONNUMBER: 'tax_id'
   VATREGISTRATIONNUMBER: 'vat_number'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_CP_PART_HIST'
+  RECORD_SOURCE: '!OPUS_BJAZ_CP_PART_HIST'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -19,7 +19,7 @@ derived_columns:
   PARTY_ROLE_TYPE: 'ip_type'
   ROLE_SEQUENCE: 'ip_no'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!CLM_INTERESTED_PARTIES'
+  RECORD_SOURCE: '!OPUS_CLM_INTERESTED_PARTIES'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

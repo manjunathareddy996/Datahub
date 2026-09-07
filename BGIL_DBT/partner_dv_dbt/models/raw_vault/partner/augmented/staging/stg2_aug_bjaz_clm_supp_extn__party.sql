@@ -29,7 +29,7 @@ derived_columns:
   TWO_YR_ITR_FLAG: 'two_yr_itr_flag'
   ADHAAR_PAN_LINK_FLAG: 'adhaar_pan_link_flag'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!BJAZ_CLM_SUPP_EXTN'
+  RECORD_SOURCE: '!OPUS_BJAZ_CLM_SUPP_EXTN'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
