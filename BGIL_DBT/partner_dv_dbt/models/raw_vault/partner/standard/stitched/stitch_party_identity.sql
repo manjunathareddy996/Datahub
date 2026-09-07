@@ -1,7 +1,9 @@
 {{ config(materialized='view') }}
 
 -- PARTNER STANDARD-MODEL stitch view for SAT_PARTY_IDENTITY (HUB_PARTY grain).
--- 21 table(s) contributing at this grain. (BJAZ_CP_PART_HIST removed -- redundant with CP_PARTNERS.)
+-- 19 table(s) contributing at this grain.
+-- (Removed hist tables BJAZ_CP_PART_HIST, BJAZ_AZBJ_PART_EXT_HIST, BJAZ_INTERMEDIARY_HIST --
+--  each was redundant with its current counterpart: CP_PARTNERS, AZBJ_PARTNER_EXTN, BJAZ_INTERMEDIARY.)
 -- Uses the stitch_incremental macro.
 
 {%- set sources = [
@@ -25,16 +27,6 @@
             {'src': 'member_name', 'tgt': 'partyfullname'}
         ],
         'source_tag': 'BA_HCP_DT_MEM'
-    },
-    {
-        'model': 'stg_partner__bjaz_azbj_part_ext_hist',
-        'alias': 't2',
-        'key_column': 'part_id',
-        'ldts_column': 'inc_job_updated_at',
-        'columns': [
-            {'src': 'place_of_birth', 'tgt': 'placeofbirth'}
-        ],
-        'source_tag': 'BJAZ_AZBJ_PART_EXT_HIST'
     },
     {
         'model': 'stg_partner__bjaz_clm_supp_extn',
@@ -180,16 +172,6 @@
         'source_tag': 'BJAZ_INTERMEDIARY'
     },
     {
-        'model': 'stg_partner__bjaz_intermediary_hist',
-        'alias': 't15',
-        'key_column': 'intermediary_id',
-        'ldts_column': 'inc_job_updated_at',
-        'columns': [
-            {'src': 'intermediary_name', 'tgt': 'partyfullname'}
-        ],
-        'source_tag': 'BJAZ_INTERMEDIARY_HIST'
-    },
-    {
         'model': 'stg_partner__bjaz_pa_detl_extn',
         'alias': 't16',
         'key_column': 'partner_id',
@@ -290,12 +272,12 @@
     'namesuffix':       ['t20'],
     'nationality':      ['t20'],
     'partydisplayname': ['t12'],
-    'partyfullname':    ['t1', 't3', 't5', 't6', 't7', 't8', 't9', 't10', 't11', 't12', 't13', 't14', 't15', 't16', 't17', 't18', 't19', 't20', 't21'],
+    'partyfullname':    ['t1', 't3', 't5', 't6', 't7', 't8', 't9', 't10', 't11', 't12', 't13', 't14', 't16', 't17', 't18', 't19', 't20', 't21'],
     'partylegalname':   ['t3', 't9', 't17', 't18', 't20'],
     'partyshortname':   ['t20'],
     'partystatus':      ['t0', 't8', 't10', 't17'],
     'partytypecode':    ['t20'],
-    'placeofbirth':     ['t0', 't2'],
+    'placeofbirth':     ['t0'],
     'salutation':       ['t20']
 } %}
 
