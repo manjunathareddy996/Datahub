@@ -1,7 +1,7 @@
 {{ config(materialized='view') }}
 
 -- PARTNER STANDARD-MODEL stitch view for SAT_PARTY_IDENTITY (HUB_PARTY grain).
--- 22 table(s) contributing at this grain.
+-- 21 table(s) contributing at this grain. (BJAZ_CP_PART_HIST removed -- redundant with CP_PARTNERS.)
 -- Uses the stitch_incremental macro.
 
 {%- set sources = [
@@ -49,28 +49,6 @@
             {'src': 'mfg_co_name', 'tgt': 'partylegalname'}
         ],
         'source_tag': 'BJAZ_CLM_SUPP_EXTN'
-    },
-    {
-        'model': 'stg_partner__bjaz_cp_part_hist',
-        'alias': 't4',
-        'key_column': 'part_id',
-        'ldts_column': 'inc_job_updated_at',
-        'columns': [
-            {'src': 'date_of_birth', 'tgt': 'dateofbirth'},
-            {'src': 'date_of_death', 'tgt': 'dateofdeath'},
-            {'src': 'first_name', 'tgt': 'firstname'},
-            {'src': 'sex', 'tgt': 'gendercode'},
-            {'src': 'surname', 'tgt': 'lastname'},
-            {'src': 'middle_name', 'tgt': 'middlename'},
-            {'src': 'after_title', 'tgt': 'namesuffix'},
-            {'src': 'nationality', 'tgt': 'nationality'},
-            {'src': 'name', 'tgt': 'partyfullname'},
-            {'src': 'institution_name', 'tgt': 'partylegalname'},
-            {'src': 'short_name', 'tgt': 'partyshortname'},
-            {'src': 'partner_type', 'tgt': 'partytypecode'},
-            {'src': 'before_title', 'tgt': 'salutation'}
-        ],
-        'source_tag': 'BJAZ_CP_PART_HIST'
     },
     {
         'model': 'stg_partner__bjaz_ctngy_ff_dtls_extn',
@@ -303,22 +281,22 @@
 
 {%- set coalesce_rules = {
     'age':              ['t6', 't7', 't8', 't9', 't10', 't11', 't13', 't16', 't17', 't18', 't19'],
-    'dateofbirth':      ['t4', 't5', 't6', 't7', 't8', 't9', 't10', 't11', 't13', 't16', 't17', 't18', 't19', 't20'],
-    'dateofdeath':      ['t4', 't20'],
-    'firstname':        ['t3', 't4', 't20'],
-    'gendercode':       ['t4', 't5', 't6', 't7', 't8', 't9', 't10', 't11', 't13', 't17', 't18', 't19', 't20'],
-    'lastname':         ['t3', 't4', 't7', 't20'],
-    'middlename':       ['t3', 't4', 't7', 't20'],
-    'namesuffix':       ['t4', 't20'],
-    'nationality':      ['t4', 't20'],
+    'dateofbirth':      ['t5', 't6', 't7', 't8', 't9', 't10', 't11', 't13', 't16', 't17', 't18', 't19', 't20'],
+    'dateofdeath':      ['t20'],
+    'firstname':        ['t3', 't20'],
+    'gendercode':       ['t5', 't6', 't7', 't8', 't9', 't10', 't11', 't13', 't17', 't18', 't19', 't20'],
+    'lastname':         ['t3', 't7', 't20'],
+    'middlename':       ['t3', 't7', 't20'],
+    'namesuffix':       ['t20'],
+    'nationality':      ['t20'],
     'partydisplayname': ['t12'],
-    'partyfullname':    ['t1', 't3', 't4', 't5', 't6', 't7', 't8', 't9', 't10', 't11', 't12', 't13', 't14', 't15', 't16', 't17', 't18', 't19', 't20', 't21'],
-    'partylegalname':   ['t3', 't4', 't9', 't17', 't18', 't20'],
-    'partyshortname':   ['t4', 't20'],
+    'partyfullname':    ['t1', 't3', 't5', 't6', 't7', 't8', 't9', 't10', 't11', 't12', 't13', 't14', 't15', 't16', 't17', 't18', 't19', 't20', 't21'],
+    'partylegalname':   ['t3', 't9', 't17', 't18', 't20'],
+    'partyshortname':   ['t20'],
     'partystatus':      ['t0', 't8', 't10', 't17'],
-    'partytypecode':    ['t4', 't20'],
+    'partytypecode':    ['t20'],
     'placeofbirth':     ['t0', 't2'],
-    'salutation':       ['t4', 't20']
+    'salutation':       ['t20']
 } %}
 
 {{ stitch_incremental(
