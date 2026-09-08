@@ -1,20 +1,13 @@
 {{ config(materialized='incremental') }}
 
--- PARTNER STANDARD-MODEL hub() for HUB_PARTY, 31 contributing table(s)
--- across 10 source_model entries.
+-- PARTNER STANDARD-MODEL hub() for HUB_PARTY.
+-- CP_PARTNERS holds every partner_id, so a single cp_partners branch is the
+-- authoritative source for the full HUB_PARTY key set. The previous per-table
+-- hub stages were redundant against this and have been removed.
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_party_individual_demographics'
-  - 'stg2_party_identity'
-  - 'stg2_party_organisation_profile'
-  - 'stg2_hub_bjaz_clm_supp_extn__party'
-  - 'stg2_hub_bjaz_cp_address_link__party'
-  - 'stg2_hub_bjaz_hm_hospital_master__party'
-  - 'stg2_hub_bjaz_intermediary__party'
-  - 'stg2_hub_bjaz_intermediary_hist__party'
-  - 'stg2_hub_clm_interested_parties__party'
-  - 'stg2_hub_clm_suppliers__party'
+  - 'stg2_hub_cp_partners__party'
 src_pk: 'PARTY_HKEY'
 src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'

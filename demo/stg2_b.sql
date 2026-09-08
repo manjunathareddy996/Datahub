@@ -17,6 +17,7 @@ hashed_columns:
 derived_columns:
   PARENT_BK: 'id'
   PARTY_NK: "'HUB_PARTY|' || id"
+  PHONE_2: 'PHONE_2'
   LOAD_DATETIME: 'updated_at'
   RECORD_SOURCE: '!TABLE_B'
 {%- endset -%}
