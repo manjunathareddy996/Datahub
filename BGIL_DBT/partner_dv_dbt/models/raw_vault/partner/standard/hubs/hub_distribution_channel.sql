@@ -9,7 +9,6 @@
 {%- set yaml_metadata -%}
 source_model:
   - 'stg2_hub_bjaz_intermediary__distribution_channel'
-  - 'stg2_hub_bjaz_intermediary_hist__distribution_channel'
   - 'stg2_hub_bjaz_clm_supp_extn__distribution_channel'
 src_pk: 'DISTRIBUTION_CHANNEL_HKEY'
 src_nk: 'PARENT_BK'

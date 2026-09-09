@@ -6,12 +6,11 @@
     )
 }}
 
--- PARTNER STANDARD-MODEL sat_multi_source() for SAT_PARTY_BANKING (HUB_PARTY grain) -- 5 source table(s).
+-- PARTNER STANDARD-MODEL sat_multi_source() for SAT_PARTY_BANKING (HUB_PARTY grain) -- 4 source table(s).
 
 {%- set yaml_metadata -%}
 source_model:
   - 'stg2_sat_azbj_partner_extn__party_banking'
-  - 'stg2_sat_bjaz_azbj_part_ext_hist__party_banking'
   - 'stg2_sat_bjaz_clm_supp_extn__party_banking'
   - 'stg2_sat_bjaz_ctngy_pa_mem_dtls__party_banking'
   - 'stg2_sat_bjaz_hm_member_dtls__party_banking'
@@ -37,7 +36,6 @@ src_source: 'RECORD_SOURCE'
                     source_model=metadata_dict['source_model'],
                     src_column_map={
                         'stg2_sat_azbj_partner_extn__party_banking': ['ACCOUNTNUMBERMASKED', 'IFSCCODE', 'MICRCODE'],
-                        'stg2_sat_bjaz_azbj_part_ext_hist__party_banking': ['ACCOUNTNUMBERMASKED', 'IFSCCODE', 'MICRCODE'],
                         'stg2_sat_bjaz_clm_supp_extn__party_banking': ['ACCOUNTNUMBERMASKED', 'BANKNAME'],
                         'stg2_sat_bjaz_ctngy_pa_mem_dtls__party_banking': ['ACCOUNTNUMBERMASKED', 'BANKCODE'],
                         'stg2_sat_bjaz_hm_member_dtls__party_banking': ['ACCOUNTNUMBERMASKED', 'BANKNAME', 'MICRCODE']

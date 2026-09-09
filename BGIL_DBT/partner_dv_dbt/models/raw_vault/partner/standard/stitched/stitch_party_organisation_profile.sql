@@ -1,7 +1,7 @@
 {{ config(materialized='view') }}
 
 -- PARTNER STANDARD-MODEL stitch view for SAT_PARTY_ORGANISATION_PROFILE (HUB_PARTY grain).
--- 5 table(s) contributing at this grain.
+-- 3 table(s) contributing at this grain.
 -- Uses the stitch_incremental macro.
 
 {%- set sources = [
@@ -20,19 +20,6 @@
         'source_tag': 'OPUS_AZBJ_PARTNER_EXTN'
     },
     {
-        'model': 'stg_partner__bjaz_azbj_part_ext_hist',
-        'alias': 't1',
-        'key_column': 'part_id',
-        'ldts_column': 'inc_job_updated_at',
-        'columns': [
-            {'src': 'global_co_name', 'tgt': 'groupname'},
-            {'src': 'industry', 'tgt': 'industrydescription'},
-            {'src': 'paidup_capital', 'tgt': 'paidupcapital'},
-            {'src': 'parent_co', 'tgt': 'parententityname'}
-        ],
-        'source_tag': 'OPUS_BJAZ_AZBJ_PART_EXT_HIST'
-    },
-    {
         'model': 'stg_partner__bjaz_clm_supp_extn',
         'alias': 't2',
         'key_column': 'partner_id',
@@ -44,16 +31,6 @@
             {'src': 'parent_co_name', 'tgt': 'parententityname'}
         ],
         'source_tag': 'OPUS_BJAZ_CLM_SUPP_EXTN'
-    },
-    {
-        'model': 'stg_partner__bjaz_cp_part_hist',
-        'alias': 't3',
-        'key_column': 'part_id',
-        'ldts_column': 'inc_job_updated_at',
-        'columns': [
-            {'src': 'legal_form', 'tgt': 'legalconstitutiontype'}
-        ],
-        'source_tag': 'OPUS_BJAZ_CP_PART_HIST'
     },
     {
         'model': 'stg_partner__cp_partners',
@@ -72,12 +49,12 @@
 {%- set coalesce_rules = {
     'annualturnover':        ['t2'],
     'dateofincorporation':   ['t2'],
-    'groupname':             ['t0', 't1'],
-    'industrydescription':   ['t0', 't1'],
-    'legalconstitutiontype': ['t3', 't4'],
+    'groupname':             ['t0'],
+    'industrydescription':   ['t0'],
+    'legalconstitutiontype': ['t4'],
     'msmeindicator':         ['t0', 't2'],
-    'paidupcapital':         ['t0', 't1'],
-    'parententityname':      ['t0', 't1', 't2']
+    'paidupcapital':         ['t0'],
+    'parententityname':      ['t0', 't2']
 } %}
 
 {{ stitch_incremental(

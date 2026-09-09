@@ -6,12 +6,10 @@
     )
 }}
 
--- PARTNER STANDARD-MODEL sat_multi_source() for SAT_LNK_ROLE_AGENT (HUB_PARTY grain, role-special: 'agent').
+-- PARTNER STANDARD-MODEL sat() for SAT_LNK_ROLE_AGENT (HUB_PARTY grain, role-special: 'agent') -- single source.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_rolesat_bjaz_intermediary__lnk_role_agent'
-  - 'stg2_rolesat_bjaz_intermediary_hist__lnk_role_agent'
+source_model: 'stg2_rolesat_bjaz_intermediary__lnk_role_agent'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'AGENT_CODE'
@@ -26,9 +24,9 @@ src_source: 'RECORD_SOURCE'
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 
-{{ sat_multi_source(src_pk=metadata_dict['src_pk'],
-                    src_payload=metadata_dict['src_payload'],
-                    src_hashdiff=metadata_dict['src_hashdiff'],
-                    src_ldts=metadata_dict['src_ldts'],
-                    src_source=metadata_dict['src_source'],
-                    source_model=metadata_dict['source_model']) }}
+{{ automate_dv.sat(src_pk=metadata_dict['src_pk'],
+                   src_payload=metadata_dict['src_payload'],
+                   src_hashdiff=metadata_dict['src_hashdiff'],
+                   src_ldts=metadata_dict['src_ldts'],
+                   src_source=metadata_dict['src_source'],
+                   source_model=metadata_dict['source_model']) }}

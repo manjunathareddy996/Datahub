@@ -6,12 +6,11 @@
     )
 }}
 
--- PARTNER STANDARD-MODEL sat_multi_source() for SAT_PARTY_GROUP_CENSUS (HUB_PARTY grain) -- 11 source table(s).
+-- PARTNER STANDARD-MODEL sat_multi_source() for SAT_PARTY_GROUP_CENSUS (HUB_PARTY grain) -- 10 source table(s).
 
 {%- set yaml_metadata -%}
 source_model:
   - 'stg2_sat_azbj_partner_extn__party_group_census'
-  - 'stg2_sat_bjaz_azbj_part_ext_hist__party_group_census'
   - 'stg2_sat_bjaz_clm_supp_extn__party_group_census'
   - 'stg2_sat_bjaz_ctngy_pa_mem_dtls__party_group_census'
   - 'stg2_sat_bjaz_ec_mem_dtls_extn__party_group_census'
@@ -43,7 +42,6 @@ src_source: 'RECORD_SOURCE'
                     source_model=metadata_dict['source_model'],
                     src_column_map={
                         'stg2_sat_azbj_partner_extn__party_group_census': ['EMPLOYEEID'],
-                        'stg2_sat_bjaz_azbj_part_ext_hist__party_group_census': ['EMPLOYEEID'],
                         'stg2_sat_bjaz_clm_supp_extn__party_group_census': ['EMPLOYEEID'],
                         'stg2_sat_bjaz_ctngy_pa_mem_dtls__party_group_census': ['ACTIVEINDICATOR'],
                         'stg2_sat_bjaz_ec_mem_dtls_extn__party_group_census': ['MEMBERREFERENCE'],

@@ -1,7 +1,7 @@
 {{ config(materialized='view') }}
 
 -- PARTNER STANDARD-MODEL stitch view for SAT_COMMON_CLASSIFICATION (HUB_PARTY grain).
--- 5 table(s) contributing at this grain.
+-- 3 table(s) contributing at this grain.
 -- Uses the stitch_incremental macro.
 
 {%- set sources = [
@@ -15,16 +15,6 @@
             {'src': 'ucic_flag', 'tgt': 'segmentcode'}
         ],
         'source_tag': 'OPUS_AZBJ_PARTNER_EXTN'
-    },
-    {
-        'model': 'stg_partner__bjaz_azbj_part_ext_hist',
-        'alias': 't1',
-        'key_column': 'part_id',
-        'ldts_column': 'inc_job_updated_at',
-        'columns': [
-            {'src': 'vip_cust', 'tgt': 'prioritycode'}
-        ],
-        'source_tag': 'OPUS_BJAZ_AZBJ_PART_EXT_HIST'
     },
     {
         'model': 'stg_partner__bjaz_hm_member_dtls',
@@ -45,24 +35,14 @@
             {'src': 'flagging', 'tgt': 'segmentcode'}
         ],
         'source_tag': 'OPUS_BJAZ_INTERMEDIARY'
-    },
-    {
-        'model': 'stg_partner__bjaz_intermediary_hist',
-        'alias': 't4',
-        'key_column': 'intermediary_id',
-        'ldts_column': 'inc_job_updated_at',
-        'columns': [
-            {'src': 'flagging', 'tgt': 'segmentcode'}
-        ],
-        'source_tag': 'OPUS_BJAZ_INTERMEDIARY_HIST'
     }
 ] -%}
 
 {%- set output_columns = ['prioritycode', 'segmentcode'] -%}
 
 {%- set coalesce_rules = {
-    'prioritycode': ['t0', 't1', 't2'],
-    'segmentcode':  ['t0', 't3', 't4']
+    'prioritycode': ['t0', 't2'],
+    'segmentcode':  ['t0', 't3']
 } %}
 
 {{ stitch_incremental(
