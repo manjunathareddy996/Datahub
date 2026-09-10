@@ -2,6 +2,7 @@
     config(
         materialized='incremental',
         incremental_strategy='merge',
+        on_schema_change='append_new_columns',
         unique_key=['POLICY_HKEY', 'HASHDIFF', 'RECORD_SOURCE']
     )
 }}
@@ -20,6 +21,10 @@ src_payload:
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
+src_record_source_map:
+  stg2_sat_ba_hcp_dt_mem__policy_certificate: 'OPUS'
+  stg2_sat_bjaz_ctngy_pa_mem_dtls__policy_certificate: 'OPUS'
+  stg2_sat_bjaz_hm_member_dtls__policy_certificate: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
@@ -30,6 +35,7 @@ src_source: 'RECORD_SOURCE'
                     src_ldts=metadata_dict['src_ldts'],
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
+                    src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
                         'stg2_sat_ba_hcp_dt_mem__policy_certificate': ['MEMBERSTATUS'],
                         'stg2_sat_bjaz_ctngy_pa_mem_dtls__policy_certificate': ['ENROLMENTDATE'],

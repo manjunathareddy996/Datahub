@@ -2,6 +2,7 @@
     config(
         materialized='incremental',
         incremental_strategy='merge',
+        on_schema_change='append_new_columns',
         unique_key=['PARTY_HKEY', 'HASHDIFF', 'RECORD_SOURCE']
     )
 }}
@@ -67,6 +68,9 @@ src_payload:
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
+src_record_source_map:
+  stg2_aug_rolesat_bjaz_clm_supp_extn__lnk_role_provider: 'OPUS'
+  stg2_aug_rolesat_bjaz_hm_hospital_master__lnk_role_provider: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
@@ -77,6 +81,7 @@ src_source: 'RECORD_SOURCE'
                     src_ldts=metadata_dict['src_ldts'],
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
+                    src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
                         'stg2_aug_rolesat_bjaz_clm_supp_extn__lnk_role_provider': ['BAGIC_LOCATION', 'CLAIM_NEAR_ME_FLAG', 'CLASS', 'COMP_TYPE', 'CONTACT_PERSON_NAME', 'CON_EXPERTISE', 'COVERED_AREA', 'DEALER_CODE', 'DEDUCTIBLE_EXEMPT', 'EW_WHITE_GOODS_FLG', 'EXP_LOB_ENGINEERING_FLG', 'EXP_LOB_FIRE_FLG', 'EXP_LOB_LOSS_PROFIT_FLG', 'EXP_LOB_MARINE_HULL_FLG', 'EXP_LOB_MARIN_CARGO_FLG', 'EXP_LOB_MISCELL_FLG', 'EXP_LOB_MOTOR_FLG', 'EXP_LOB_WORKMAN_COMP_FLG', 'GRADE', 'INVOICE_PATTERN', 'IRN_FLAG', 'JW_FLAG', 'JW_ID', 'LVS_FLAG', 'MOU_STATUS', 'NO_TOWING_VEHICLE', 'ON_DUTY_FLAG', 'OPERATION_PLACE', 'ORIGIN_COMP', 'ORIGIN_CONT', 'OTHER_BAGIC_BUSINESS', 'OWNRSHIP_DEPT', 'PRIORITY', 'SPEC_REPAIRER', 'SUPP_OWNERSHIP', 'SUPP_SCOPE', 'TOWING_VEHICLE', 'WORKSHOP_CATEGORY', 'WORKSHOP_CLASS', 'WORKSHOP_NAME'],
                         'stg2_aug_rolesat_bjaz_hm_hospital_master__lnk_role_provider': ['CONTACT_PERSON_DESIGNATION', 'CONTACT_PERSON_NAME', 'DIAGNO_YN', 'EMPANEL_DATE', 'HOSP_SPEC_TYPE', 'NETWORK_TYPE', 'PRIORITY_FLG']

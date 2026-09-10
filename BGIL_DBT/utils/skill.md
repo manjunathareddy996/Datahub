@@ -296,7 +296,10 @@ These macros fold the union in.
   a given source lacks with `CAST(NULL AS VARCHAR)`, so every branch is column-aligned.
 - Applies the same T-1 watermark window as `stitch_incremental` (`var('to_date')`/`var('from_date')`
   overrides, else `MAX(DBT_RUN_TS)` from the target sat via `{{ this }}`, else `1900-01-01`
-  sentinel) and stamps `DBT_RUN_TS`.
+  sentinel) and stamps `DBT_RUN_TS`. The `MAX(DBT_RUN_TS)` watermark is now computed **per logical
+  source system** (the `src_record_source_map` group), not once across the whole sat — each group's
+  window is read with `WHERE RECORD_SOURCE LIKE '<GROUP>_%'`, so a lagging source re-loads from its
+  own last run rather than from another system's newer watermark.
 - Runs change detection: per-row hashdiff for `sat_multi_source`, per-**group**
   (member-set + count) for `ma_sat_multi_source`.
 
@@ -306,10 +309,24 @@ provides]`). Without it the macro introspects each relation and assumes any not-
 source provides the full `src_payload`. Deriving the map from the mapping workbook (not from
 whatever columns happen to exist) is what keeps the §2b reconciliation gate honest.
 
+**`src_record_source_map` is now REQUIRED for `sat_multi_source` whenever `source_model` is a list.**
+It maps each source model to its logical source-system group (`model → 'OPUS'` / `'MAXIMUS'` / …).
+The macro uses it to
+(a) compute the per-source-system `MAX(DBT_RUN_TS)` watermark (see above) and (b) prefix the emitted
+`RECORD_SOURCE` as `'<GROUP>_' || <source's RECORD_SOURCE>`. The map must cover every entry in
+`source_model` with a non-empty value or the macro raises a compile error. Derive the group from the
+source's `RECORD_SOURCE` literal in its stg2 model (`!OPUS_...` → `'OPUS'`, `!MAXIMUS_...` →
+`'MAXIMUS'`). A single-string `source_model` (the `automate_dv.sat()` delegation path) does not need
+it.
+
+Also set **`on_schema_change='append_new_columns'`** in the config so new payload columns added to
+the superset over time are appended to the target table rather than erroring on re-run.
+
 **Config shape (single-active):**
 ```sql
 {{
     config(materialized='incremental', incremental_strategy='merge',
+           on_schema_change='append_new_columns',
            unique_key=['<HUB>_HKEY', 'HASHDIFF', 'RECORD_SOURCE'])
 }}
 {%- set yaml_metadata -%}
@@ -321,6 +338,9 @@ src_payload: ['ATTR_A', 'ATTR_B']
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
+src_record_source_map:
+  stg2_..._a: 'OPUS'
+  stg2_..._b: 'OPUS'
 {%- endset -%}
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 {{ sat_multi_source(src_pk=metadata_dict['src_pk'],
@@ -329,6 +349,7 @@ src_source: 'RECORD_SOURCE'
                     src_ldts=metadata_dict['src_ldts'],
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
+                    src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
                         'stg2_..._a': ['ATTR_A'],
                         'stg2_..._b': ['ATTR_B']
@@ -346,6 +367,9 @@ src_cdk: ['MEMBER_SEQUENCE']
                        src_hashdiff=..., src_ldts=..., src_source=...,
                        source_model=..., src_column_map={...}) }}
 ```
+(`ma_sat_multi_source` does **not** take `src_record_source_map` / `on_schema_change` — it already
+groups change detection by `(src_pk, src_cdk, record_source)`, so its watermark is naturally
+per-source-group. Those two additions apply to `sat_multi_source` only.)
 
 **Parameters:**
 
@@ -358,6 +382,7 @@ src_cdk: ['MEMBER_SEQUENCE']
 | `src_ldts` | yes | Load-datetime / watermark column on each source, usually `'LOAD_DATETIME'` |
 | `src_source` | yes | Record-source column, usually `'RECORD_SOURCE'` |
 | `source_model` | yes | String (→ delegates to `automate_dv.sat()`) or list of stg2 model names |
+| `src_record_source_map` | `sat_` list path | `model → source-system group` (`'OPUS'`/`'MAXIMUS'`/…); drives the per-source-system watermark and the `RECORD_SOURCE` prefix. Required when `sat_multi_source`'s `source_model` is a list |
 | `src_column_map` | recommended | `model → [columns it provides]`; skips per-source introspection and is how §2b fan-in is made explicit |
 | `src_extra_columns` | no | Extra non-payload columns to carry through |
 | `src_eff` | `sat_` only | Effective-from column if the satellite is effectivity-tracked |
@@ -369,6 +394,10 @@ src_cdk: ['MEMBER_SEQUENCE']
   nothing to read on re-runs.
 - `unique_key` must include `RECORD_SOURCE` for the multi-source path (change detection is
   per-source-group), unlike a plain single-source `automate_dv.sat()`.
+- `src_record_source_map` must map **every** list entry to a non-empty group, or the macro raises a
+  compile error. The group value must match the `RECORD_SOURCE` literal prefix in the source's stg2
+  model (`!OPUS_...` → `'OPUS'`), because the watermark lookup filters `RECORD_SOURCE LIKE '<GROUP>_%'` —
+  a mismatched group silently reads a `1900-01-01` watermark and reprocesses everything each run.
 - Keep `src_payload` the authoritative superset and let `src_column_map` say who provides what —
   don't rely on relation introspection for the source-of-truth column set, or a mapped column that
   simply isn't in the current relation gets silently dropped (defect class #9).
@@ -473,6 +502,34 @@ each remaining table individually (see Known Defect Classes #4).
     every sibling target, and the file no longer matches its generator. Symptom: a file whose
     content cannot be reproduced from the mapping. Fix: change the generator or its mapping
     input, regenerate, re-verify.
+12. **Record-source prefix drift (missing source-system prefix)** — a `RECORD_SOURCE` (`!`-derived
+    column in `stg2` stages) or `source_tag` (stitch source dicts) literal built without the
+    project's standard source-system prefix, e.g. `!CP_PARTNERS` instead of `!OPUS_CP_PARTNERS`.
+    Every record-source literal in a project must carry the **same** prefix (`OPUS_` here — the
+    source system feeding the raw layer); one un-prefixed value pollutes lineage/audit and breaks
+    any downstream filter or dedupe keyed on record source. It passes every structural check
+    silently because the value is still a valid string. Fix: normalize to the project's prefix.
+    Confirm the prefix per project (it's the raw-ingestion source system, not a universal
+    constant) and add it as a build-gate: the distinct set of record-source literals across
+    `stg2_*` (`RECORD_SOURCE:`) and stitch (`'source_tag':`) files must all begin with that one
+    prefix — any literal without it fails the build, naming the file.
+13. **Redundant `_HIST` source built alongside its current counterpart** — a source table exists
+    in both a current form and a history form (`BJAZ_CP_PART_HIST` vs `CP_PARTNERS`,
+    `BJAZ_AZBJ_PART_EXT_HIST` vs `AZBJ_PARTNER_EXTN`, `BJAZ_INTERMEDIARY_HIST` vs
+    `BJAZ_INTERMEDIARY`, `BJAZ_CP_ADD_HIST` vs `CP_ADDRESSES`), and the build stages **both**. The
+    `_HIST` variant is a redundant history snapshot of the same rows the current table already
+    carries — feeding it into a hub/link/sat/stitch just double-loads the same business keys with
+    an older `RECORD_SOURCE`, inflating row counts and muddying lineage without adding a single new
+    key or attribute. Symptom: a satellite/hub with a `*_HIST`-tagged source alongside its current
+    twin, both keyed identically. Fix: **do not build `_HIST` source tables when a non-`_HIST`
+    current counterpart exists** — drop the `_HIST` source declaration, its `stg_`/`stg2_` models,
+    and strip its entries from every downstream multi-source list, stitch source dict, and
+    `src_column_map` (leaving the current-table entry in place). If removing it leaves a
+    multi-source satellite with a single remaining source, switch it back to `automate_dv.sat()`
+    with a string `source_model` rather than keeping `sat_multi_source` on one source. Before
+    dropping, confirm the current twin exists for **every** `_HIST` table (map each
+    `..._hist` model name to its de-`hist` counterpart and verify the file is present) — a `_HIST`
+    with no current counterpart is a real source and must be kept.
  
 ## Conventions checklist (per project, confirm before generating)
  
@@ -480,6 +537,17 @@ each remaining table individually (see Known Defect Classes #4).
 - Parent business-key column naming: `PARENT_BK`/`PARENT_NK` vs project-specific naming.
 - Satellite file naming: `sat_<lob>_<name>.sql` (LOB-prefixed, e.g. `sat_partner_party`).
 - Namespaced hashing formula: `hash('{CODE}|' || raw_key)`.
+- Record-source prefix: every `RECORD_SOURCE` literal (`stg2` stages) and `source_tag` (stitch
+  source dicts) must carry the project's source-system prefix (`OPUS_` here — the raw-ingestion
+  source system, `!OPUS_<TABLE>` in stages / `OPUS_<TABLE>` in stitch tags). One un-prefixed
+  literal breaks record-source lineage silently (defect class #12). Confirm the prefix from the
+  project's existing stages and gate that the distinct set of record-source literals all share it.
+- `_HIST` vs current source: when a source table exists in both a history (`*_HIST`) and a current
+  form, **do not build the `_HIST` table** — it is a redundant snapshot of the same keys the
+  current table carries (defect class #13). Map every `_HIST` source to its de-`hist` counterpart,
+  confirm the counterpart exists, then skip the `_HIST` source (declaration + `stg_`/`stg2_` models)
+  and strip its entries from every downstream multi-source list / stitch dict / `src_column_map`.
+  Keep a `_HIST` only if it has no current counterpart.
 - Materializations: staging/stitched/stage views, hub/link/satellite incremental tables (or
   whatever the project's `dbt_project.yml` already establishes).
 - Null-placeholder convention for absent payload columns in a branch: `cast(null as <type>)`,

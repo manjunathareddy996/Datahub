@@ -2,6 +2,7 @@
     config(
         materialized='incremental',
         incremental_strategy='merge',
+        on_schema_change='append_new_columns',
         unique_key=['POLICY_HKEY', 'HASHDIFF', 'RECORD_SOURCE']
     )
 }}
@@ -18,6 +19,9 @@ src_payload:
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
+src_record_source_map:
+  stg2_sat_bjaz_hcf_member_dtls__policy_premium_head: 'OPUS'
+  stg2_sat_bjaz_starpkg_ff_dtls__policy_premium_head: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
@@ -27,4 +31,5 @@ src_source: 'RECORD_SOURCE'
                     src_hashdiff=metadata_dict['src_hashdiff'],
                     src_ldts=metadata_dict['src_ldts'],
                     src_source=metadata_dict['src_source'],
-                    source_model=metadata_dict['source_model']) }}
+                    source_model=metadata_dict['source_model'],
+                    src_record_source_map=metadata_dict['src_record_source_map']) }}

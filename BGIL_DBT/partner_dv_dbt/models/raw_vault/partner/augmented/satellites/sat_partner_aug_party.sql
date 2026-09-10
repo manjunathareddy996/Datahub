@@ -2,6 +2,7 @@
     config(
         materialized='incremental',
         incremental_strategy='merge',
+        on_schema_change='append_new_columns',
         unique_key=['PARTY_HKEY', 'HASHDIFF', 'RECORD_SOURCE']
     )
 }}
@@ -59,6 +60,17 @@ src_payload:
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
+src_record_source_map:
+  stg2_aug_azbj_partner_extn__party: 'OPUS'
+  stg2_aug_bjaz_intermediary__party: 'OPUS'
+  stg2_aug_bjaz_ec_mem_dtls_extn__party: 'OPUS'
+  stg2_aug_bjaz_hcf_member_dtls__party: 'OPUS'
+  stg2_aug_bjaz_spp_member_dtls__party: 'OPUS'
+  stg2_aug_bjaz_hc_part_extn__party: 'OPUS'
+  stg2_aug_cp_partners__party: 'OPUS'
+  stg2_aug_bjaz_clm_supp_extn__party: 'OPUS'
+  stg2_aug_bjaz_hm_member_dtls__party: 'OPUS'
+  stg2_aug_bjaz_hm_hospital_master__party: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
@@ -69,6 +81,7 @@ src_source: 'RECORD_SOURCE'
                     src_ldts=metadata_dict['src_ldts'],
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
+                    src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
                         'stg2_aug_azbj_partner_extn__party': ['ECS_MANDATE_STATUS', 'EXISTING_CUSTOMER_INDICATOR', 'HNI_FLAG', 'IT_STATUS', 'NUMBER_OF_DAUGHTERS', 'NUMBER_OF_SONS', 'PARENT_ENTITY_REFERENCE', 'WEBSITE_URL'],
                         'stg2_aug_bjaz_intermediary__party': ['IT_RETURN_2YR', 'PAN_AADHAR_LINKED', 'WEBSITE_URL'],

@@ -1,4 +1,4 @@
-{%- macro sat_multi_source(src_pk, src_hashdiff, src_payload, src_ldts, src_source, source_model, src_extra_columns=none, src_eff=none, src_column_map=none, src_run_ts='DBT_RUN_TS') -%}
+{%- macro sat_multi_source(src_pk, src_hashdiff, src_payload, src_ldts, src_source, source_model, src_extra_columns=none, src_eff=none, src_column_map=none, src_run_ts='DBT_RUN_TS', src_record_source_map=none) -%}
 
 {#-- Required parameter validation --#}
 {%- if src_pk is none -%}
@@ -42,6 +42,20 @@
     {%- for m in source_model -%}
         {%- if m is not string or m | trim | length == 0 -%}
             {{ exceptions.raise_compiler_error("source_model entry at position " ~ loop.index ~ " must be a non-empty string") }}
+        {%- endif -%}
+    {%- endfor -%}
+
+    {#-- RECORD_SOURCE mapping validation --#}
+    {%- if src_record_source_map is none or src_record_source_map is not mapping -%}
+        {{ exceptions.raise_compiler_error("src_record_source_map is required and must be a mapping when source_model is a list") }}
+    {%- endif -%}
+
+    {%- for model_name in source_model -%}
+        {%- if model_name not in src_record_source_map -%}
+            {{ exceptions.raise_compiler_error("No RECORD_SOURCE mapping found for source model '" ~ model_name ~ "'") }}
+        {%- endif -%}
+        {%- if src_record_source_map[model_name] is none or src_record_source_map[model_name] | trim | length == 0 -%}
+            {{ exceptions.raise_compiler_error("RECORD_SOURCE mapping for source model '" ~ model_name ~ "' cannot be empty") }}
         {%- endif -%}
     {%- endfor -%}
 
@@ -132,12 +146,6 @@
         {{ exceptions.raise_compiler_error("No payload columns found across source models") }}
     {%- endif -%}
 
-    {#-- Watermark window, mirroring stitch_incremental:
-         to_date   = var('to_date') override, else run_started_at (UTC) converted to IST.
-         from_date = var('from_date') override, else MAX(DBT_RUN_TS) from this sat, else sentinel.
-         The sat is read via {{ this }} (it IS the target), so there is no DAG cycle.
-         Sources are filtered on their own src_ldts against this window; they never need
-         a DBT_RUN_TS column of their own. --#}
     {%- set sentinel = '1900-01-01' -%}
 
     {%- if var('to_date', none) is not none -%}
@@ -146,41 +154,92 @@
         {%- set to_date_expr = "CAST(CONVERT_TIMEZONE('UTC','Asia/Kolkata', '" ~ run_started_at.strftime('%Y-%m-%d %H:%M:%S') ~ "'::timestamp_ntz) AS TIMESTAMP_NTZ)" -%}
     {%- endif -%}
 
+    {%- set source_watermarks = {} -%}
+
+    {#-- Calculate one watermark per distinct logical source group. --#}
     {%- if var('from_date', none) is not none -%}
-        {%- set from_date = "'" ~ var('from_date') ~ "'" -%}
+
+        {%- for model_name in source_model -%}
+            {%- set source_group = src_record_source_map[model_name] -%}
+            {%- do source_watermarks.update({source_group: "'" ~ var('from_date') ~ "'"}) -%}
+        {%- endfor -%}
+
     {%- elif not execute -%}
-        {%- set from_date = "'" ~ sentinel ~ "'" -%}
+
+        {%- for model_name in source_model -%}
+            {%- set source_group = src_record_source_map[model_name] -%}
+            {%- do source_watermarks.update({source_group: "'" ~ sentinel ~ "'"}) -%}
+        {%- endfor -%}
+
     {%- else -%}
-        {%- set sat_rel = adapter.get_relation(database=this.database, schema=this.schema, identifier=this.identifier) -%}
-        {%- if sat_rel is none -%}
-            {%- set from_date = "'" ~ sentinel ~ "'" -%}
-        {%- else -%}
-            {%- set wm_query -%}
-                SELECT COALESCE(MAX({{ src_run_ts }}), TO_TIMESTAMP_NTZ('{{ sentinel }}')) AS mx FROM {{ sat_rel }}
-            {%- endset -%}
-            {%- set results = run_query(wm_query) -%}
-            {%- if results and (results.rows | length) > 0 and results.rows[0][0] is not none -%}
-                {%- set from_date = "'" ~ results.rows[0][0] ~ "'" -%}
-            {%- else -%}
-                {%- set from_date = "'" ~ sentinel ~ "'" -%}
+
+        {%- set sat_rel = adapter.get_relation(
+            database=this.database,
+            schema=this.schema,
+            identifier=this.identifier
+        ) -%}
+
+        {%- for model_name in source_model -%}
+
+            {%- set source_group = src_record_source_map[model_name] -%}
+
+            {#-- Only calculate MAX(DBT_RUN_TS) once for each distinct group. --#}
+            {%- if source_group not in source_watermarks -%}
+
+                {%- if sat_rel is none -%}
+
+                    {%- do source_watermarks.update({
+                        source_group: "'" ~ sentinel ~ "'"
+                    }) -%}
+
+                {%- else -%}
+
+                    {%- set wm_query -%}
+                        SELECT COALESCE(
+                            MAX({{ src_run_ts }}),
+                            TO_TIMESTAMP_NTZ('{{ sentinel }}')
+                        ) AS mx
+                        FROM {{ sat_rel }}
+                        WHERE {{ src_source }} LIKE '{{ source_group }}_%'
+                    {%- endset -%}
+
+                    {%- set results = run_query(wm_query) -%}
+
+                    {%- if results and (results.rows | length) > 0 and results.rows[0][0] is not none -%}
+
+                        {%- do source_watermarks.update({
+                            source_group: "'" ~ results.rows[0][0] ~ "'"
+                        }) -%}
+
+                    {%- else -%}
+
+                        {%- do source_watermarks.update({
+                            source_group: "'" ~ sentinel ~ "'"
+                        }) -%}
+
+                    {%- endif -%}
+
+                {%- endif -%}
+
             {%- endif -%}
-        {%- endif -%}
+
+        {%- endfor -%}
+
     {%- endif -%}
 
     {#-- Generate source_data CTE with UNION ALL --#}
 WITH source_data AS (
     {%- for model_name in source_model %}
+
+    {%- set current_source_group = src_record_source_map[model_name] -%}
+    {%- set current_from_date = source_watermarks[current_source_group] -%}
+
     -- Source {{ loop.index }}: {{ model_name }}
     SELECT
         a.{{ src_pk }},
         a.{{ src_hashdiff }},
         {%- set src_cols_upper = ns.source_columns[model_name] | map('upper') | list %}
-        {#-- Payload is cast to VARCHAR so every UNION ALL branch agrees on type. The same
-             logical column can be NUMBER in one source and VARCHAR in another (e.g. a
-             numeric id in one table vs a masked 'XXXXXXXX4337' in the next). Snowflake
-             resolves NUMBER vs VARCHAR by coercing the string to a number, which fails
-             with "Numeric value ... is not recognized". Mirrors the TO_VARCHAR approach
-             already used in stitch_incremental. --#}
+        {#-- Payload is cast to VARCHAR so every UNION ALL branch agrees on type. --#}
         {%- for col in superset %}
         {%- if col | upper in src_cols_upper %}
         CAST(a.{{ col }} AS VARCHAR) AS {{ col }},
@@ -192,16 +251,20 @@ WITH source_data AS (
         a.{{ src_eff }},
         {%- endif %}
         a.{{ src_ldts }},
-        a.{{ src_source }},
+        '{{ current_source_group }}_' || a.{{ src_source }} AS {{ src_source }},
+
         {{ to_date_expr }} AS {{ src_run_ts }}
+
     FROM {{ ref(model_name) }} AS a
     WHERE a.{{ src_pk }} IS NOT NULL
-      AND a.{{ src_ldts }} >  CAST({{ from_date }} AS TIMESTAMP_NTZ)
+      AND a.{{ src_ldts }} > CAST({{ current_from_date }} AS TIMESTAMP_NTZ)
       AND a.{{ src_ldts }} <= {{ to_date_expr }}
+
     {%- if not loop.last %}
 
     UNION ALL
     {%- endif %}
+
     {%- endfor %}
 ),
 

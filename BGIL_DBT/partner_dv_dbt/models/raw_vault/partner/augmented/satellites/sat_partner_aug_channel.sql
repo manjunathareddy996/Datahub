@@ -2,6 +2,7 @@
     config(
         materialized='incremental',
         incremental_strategy='merge',
+        on_schema_change='append_new_columns',
         unique_key=['DISTRIBUTION_CHANNEL_HKEY', 'HASHDIFF', 'RECORD_SOURCE']
     )
 }}
@@ -32,6 +33,9 @@ src_payload:
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
+src_record_source_map:
+  stg2_aug_bjaz_intermediary__channel: 'OPUS'
+  stg2_aug_bjaz_clm_supp_extn__channel: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
@@ -42,6 +46,7 @@ src_source: 'RECORD_SOURCE'
                     src_ldts=metadata_dict['src_ldts'],
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
+                    src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
                         'stg2_aug_bjaz_intermediary__channel': ['BLOCKED_FOR_RECEIPT_INDICATOR', 'FINANCE_SUB_CHANNEL_CODE', 'GREEN_CHANNEL_INDICATOR', 'IMDFLAG', 'NEW_IMD_TYPE', 'REVISED_CHANNEL_CODE', 'SPECIAL_INTERMEDIARY_CODE', 'SUBIMD_YN'],
                         'stg2_aug_bjaz_clm_supp_extn__channel': ['SUB_IMD_CODE']
