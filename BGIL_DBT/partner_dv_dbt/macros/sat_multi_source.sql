@@ -251,7 +251,7 @@ WITH source_data AS (
         a.{{ src_eff }},
         {%- endif %}
         a.{{ src_ldts }},
-        '{{ current_source_group }}_' || a.{{ src_source }} AS {{ src_source }},
+        a.{{ src_source }} AS {{ src_source }},
 
         {{ to_date_expr }} AS {{ src_run_ts }}
 
