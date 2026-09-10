@@ -63,7 +63,7 @@ derived_columns:
   SOCIALMEDIAHANDLE: "cast(null as varchar)"
   ALTERNATEMOBILENUMBER: "cast(null as varchar)"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS'
+  RECORD_SOURCE: '!MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

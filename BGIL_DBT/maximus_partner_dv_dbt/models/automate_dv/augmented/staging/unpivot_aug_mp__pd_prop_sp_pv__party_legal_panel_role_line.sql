@@ -23,7 +23,7 @@
         no_of_wcdfadvocate as noofwc,
         bagic_office_addressdfadvocate as servicinginsurerofficeaddress,
         yr_experiencedfadvocate as yearsofpractice,
-        'pd_prop_sp_pv' as record_source
+        'MAXIMUS_pd_prop_sp_pv' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(acd_qualificationdfadvocate)), '') is not null or nullif(trim(to_varchar(bagic_office_addressdfadvocate)), '') is not null or nullif(trim(to_varchar(bar_association_namedfadvocate)), '') is not null or nullif(trim(to_varchar(covered_court_locdfadvocate)), '') is not null or nullif(trim(to_varchar(enrolment_nodfadvocate)), '') is not null or nullif(trim(to_varchar(lawyer_typedfadvocate)), '') is not null or nullif(trim(to_varchar(mou_statusdfadvocate)), '') is not null or nullif(trim(to_varchar(mrg_anniversarydfadvocate)), '') is not null or nullif(trim(to_varchar(no_of_briefsdfadvocate)), '') is not null or nullif(trim(to_varchar(no_of_companiesdfadvocate)), '') is not null or nullif(trim(to_varchar(no_of_consumerdfadvocate)), '') is not null or nullif(trim(to_varchar(no_of_juniorsdfadvocate)), '') is not null or nullif(trim(to_varchar(no_of_mactdfadvocate)), '') is not null or nullif(trim(to_varchar(no_of_wcdfadvocate)), '') is not null or nullif(trim(to_varchar(yr_experiencedfadvocate)), '') is not null
     union all
@@ -45,7 +45,7 @@
         no_of_wchcadvocate as noofwc,
         bagic_office_addresshcadvocate as servicinginsurerofficeaddress,
         yr_experiencehcadvocate as yearsofpractice,
-        'pd_prop_sp_pv' as record_source
+        'MAXIMUS_pd_prop_sp_pv' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(acd_qualificationhcadvocate)), '') is not null or nullif(trim(to_varchar(bagic_office_addresshcadvocate)), '') is not null or nullif(trim(to_varchar(bar_association_namehcadvocate)), '') is not null or nullif(trim(to_varchar(covered_court_lochcadvocate)), '') is not null or nullif(trim(to_varchar(enrolment_nohcadvocate)), '') is not null or nullif(trim(to_varchar(lawyer_typehcadvocate)), '') is not null or nullif(trim(to_varchar(mou_statushcadvocate)), '') is not null or nullif(trim(to_varchar(mrg_anniversaryhcadvocate)), '') is not null or nullif(trim(to_varchar(no_of_briefshcadvocate)), '') is not null or nullif(trim(to_varchar(no_of_companieshcadvocate)), '') is not null or nullif(trim(to_varchar(no_of_consumerhcadvocate)), '') is not null or nullif(trim(to_varchar(no_of_juniorshcadvocate)), '') is not null or nullif(trim(to_varchar(no_of_macthcadvocate)), '') is not null or nullif(trim(to_varchar(no_of_wchcadvocate)), '') is not null or nullif(trim(to_varchar(yr_experiencehcadvocate)), '') is not null
     union all
@@ -67,7 +67,7 @@
         no_of_wclawyer as noofwc,
         bagic_office_addresslawyer as servicinginsurerofficeaddress,
         yr_experiencelawyer as yearsofpractice,
-        'pd_prop_sp_pv' as record_source
+        'MAXIMUS_pd_prop_sp_pv' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(acd_qualificationlawyer)), '') is not null or nullif(trim(to_varchar(bagic_office_addresslawyer)), '') is not null or nullif(trim(to_varchar(bar_association_namelawyer)), '') is not null or nullif(trim(to_varchar(covered_court_loclawyer)), '') is not null or nullif(trim(to_varchar(enrolment_nolawyer)), '') is not null or nullif(trim(to_varchar(lawyer_typelawyer)), '') is not null or nullif(trim(to_varchar(mou_statuslawyer)), '') is not null or nullif(trim(to_varchar(mrg_anniversarylawyer)), '') is not null or nullif(trim(to_varchar(no_of_briefslawyer)), '') is not null or nullif(trim(to_varchar(no_of_companieslawyer)), '') is not null or nullif(trim(to_varchar(no_of_consumerlawyer)), '') is not null or nullif(trim(to_varchar(no_of_juniorslawyer)), '') is not null or nullif(trim(to_varchar(no_of_mactlawyer)), '') is not null or nullif(trim(to_varchar(no_of_wclawyer)), '') is not null or nullif(trim(to_varchar(yr_experiencelawyer)), '') is not null
     union all
@@ -89,7 +89,7 @@
         no_of_wcretainer as noofwc,
         bagic_office_addressretainer as servicinginsurerofficeaddress,
         yr_experienceretainer as yearsofpractice,
-        'pd_prop_sp_pv' as record_source
+        'MAXIMUS_pd_prop_sp_pv' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(acd_qualificationretainer)), '') is not null or nullif(trim(to_varchar(bagic_office_addressretainer)), '') is not null or nullif(trim(to_varchar(bar_association_nameretainer)), '') is not null or nullif(trim(to_varchar(covered_court_locretainer)), '') is not null or nullif(trim(to_varchar(enrolment_noretainer)), '') is not null or nullif(trim(to_varchar(lawyer_typeretainer)), '') is not null or nullif(trim(to_varchar(mou_statusretainer)), '') is not null or nullif(trim(to_varchar(mrg_anniversaryretainer)), '') is not null or nullif(trim(to_varchar(no_of_briefsretainer)), '') is not null or nullif(trim(to_varchar(no_of_companiesretainer)), '') is not null or nullif(trim(to_varchar(no_of_consumerretainer)), '') is not null or nullif(trim(to_varchar(no_of_juniorsretainer)), '') is not null or nullif(trim(to_varchar(no_of_mactretainer)), '') is not null or nullif(trim(to_varchar(no_of_wcretainer)), '') is not null or nullif(trim(to_varchar(yr_experienceretainer)), '') is not null
     union all
@@ -111,7 +111,7 @@
         no_of_wcstadvocate as noofwc,
         bagic_office_addressstadvocate as servicinginsurerofficeaddress,
         yr_experiencestadvocate as yearsofpractice,
-        'pd_prop_sp_pv' as record_source
+        'MAXIMUS_pd_prop_sp_pv' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(acd_qualificationstadvocate)), '') is not null or nullif(trim(to_varchar(bagic_office_addressstadvocate)), '') is not null or nullif(trim(to_varchar(bar_association_namestadvocate)), '') is not null or nullif(trim(to_varchar(covered_court_locstadvocate)), '') is not null or nullif(trim(to_varchar(enrolment_nostadvocate)), '') is not null or nullif(trim(to_varchar(lawyer_typestadvocate)), '') is not null or nullif(trim(to_varchar(mou_statusstadvocate)), '') is not null or nullif(trim(to_varchar(mrg_anniversarystadvocate)), '') is not null or nullif(trim(to_varchar(no_of_briefsstadvocate)), '') is not null or nullif(trim(to_varchar(no_of_companiesstadvocate)), '') is not null or nullif(trim(to_varchar(no_of_consumerstadvocate)), '') is not null or nullif(trim(to_varchar(no_of_juniorsstadvocate)), '') is not null or nullif(trim(to_varchar(no_of_mactstadvocate)), '') is not null or nullif(trim(to_varchar(no_of_wcstadvocate)), '') is not null or nullif(trim(to_varchar(yr_experiencestadvocate)), '') is not null
     union all
@@ -133,6 +133,6 @@
         no_of_wctradvocate as noofwc,
         bagic_office_addresstradvocate as servicinginsurerofficeaddress,
         yr_experiencetradvocate as yearsofpractice,
-        'pd_prop_sp_pv' as record_source
+        'MAXIMUS_pd_prop_sp_pv' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(acd_qualificationtradvocate)), '') is not null or nullif(trim(to_varchar(bagic_office_addresstradvocate)), '') is not null or nullif(trim(to_varchar(bar_association_nametradvocate)), '') is not null or nullif(trim(to_varchar(covered_court_loctradvocate)), '') is not null or nullif(trim(to_varchar(enrolment_notradvocate)), '') is not null or nullif(trim(to_varchar(lawyer_typetradvocate)), '') is not null or nullif(trim(to_varchar(mou_statustradvocate)), '') is not null or nullif(trim(to_varchar(mrg_anniversarytradvocate)), '') is not null or nullif(trim(to_varchar(no_of_briefstradvocate)), '') is not null or nullif(trim(to_varchar(no_of_companiestradvocate)), '') is not null or nullif(trim(to_varchar(no_of_consumertradvocate)), '') is not null or nullif(trim(to_varchar(no_of_juniorstradvocate)), '') is not null or nullif(trim(to_varchar(no_of_macttradvocate)), '') is not null or nullif(trim(to_varchar(no_of_wctradvocate)), '') is not null or nullif(trim(to_varchar(yr_experiencetradvocate)), '') is not null

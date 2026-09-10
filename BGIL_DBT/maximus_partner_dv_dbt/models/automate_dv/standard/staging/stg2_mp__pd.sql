@@ -109,7 +109,7 @@ derived_columns:
   GROUPNAME: "cast(null as varchar)"
   PARENTENTITYNAME: "cast(null as varchar)"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL'
+  RECORD_SOURCE: '!MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

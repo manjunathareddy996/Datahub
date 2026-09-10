@@ -191,8 +191,10 @@ stitch for the affected keys — the coalesce priority ladder is unchanged, only
 population shrinks.
 
 **Two-phase logic the macro emits:**
-1. `affected_keys` — `UNION` of `DISTINCT key_column` from every source where
-   `ldts_column >= DATEADD(DAY, -1, CURRENT_DATE())`. Small, partition-pruned scans.
+1. `affected_keys` — `UNION` of `DISTINCT key_column` from every source. Without `target_sat` the
+   filter is the legacy T-1 `ldts_column >= DATEADD(DAY, -1, CURRENT_DATE())`; with `target_sat` it
+   is the parameterized window `from_date < ldts_column <= to_date` (see "Watermark is scoped per
+   source system" below). Small, partition-pruned scans.
 2. Per-table CTEs (`t0`, `t1`, …) — each source read **at full history** but constrained by
    `key_column IN (SELECT <unique_key> FROM affected_keys)`. Full history matters: a key that
    changed only in `t0` today may hold its `segmentcode` in a `t3` row loaded weeks ago, so
@@ -206,6 +208,32 @@ That was tried and is *slower* than the original full outer join — each pass r
 full CTEs, and Snowflake re-materializes them per reference, so a 5-table stitch scans each
 source ~6 times. Collapse all deltas into a single `affected_keys` set and do exactly one join
 pass.
+
+**Watermark is scoped per source system (when `target_sat` is passed).** A stitch is
+single-system by design — every `source_tag` in one stitch shares the same `<SYSTEM>_` prefix
+(`OPUS_AZBJ_...`, `OPUS_BJAZ_...` → system `OPUS`). The macro derives that group as the text
+before the first `_` in `source_tag`, **validates every source shares it** (mixed prefixes or a
+malformed `source_tag` raise a compile error), and scopes the `from_date` watermark query to that
+system's rows in the shared target sat:
+```sql
+SELECT COALESCE(MAX(DBT_RUN_TS), TO_TIMESTAMP_NTZ('1900-01-01')) AS mx
+FROM {{ target_sat }}
+WHERE RECORD_SOURCE LIKE '<GROUP>_%'
+```
+This matters because the target sat is written by **multiple** stitches (one per system) through
+`sat_multi_source`. Without the `LIKE '<GROUP>_%'` filter, an OPUS stitch's `MAX(DBT_RUN_TS)` would
+pick up a more-recent MAXIMUS load into the same sat and wrongly conclude OPUS is caught up,
+skipping its own new source rows. The filter keeps each stitch reading only its own system's
+high-water mark. No new parameter is needed — the group comes from the `source_tag` you already
+pass. This pairs with the `sat_multi_source` change that **stopped re-prepending** the group to
+`RECORD_SOURCE` (the value already carries the system prefix, so stored values are `OPUS_<TABLE>`,
+not `OPUS_OPUS_<TABLE>`), so both layers' `LIKE '<GROUP>_%'` filters match the stored values.
+
+> Open item (deferred): `sat_multi_source` re-applies a `LOAD_DATETIME` window on top of the one
+> the stitch already applied. For a steady-state stitch input that time window is largely
+> redundant, but it is still needed generically for direct (non-stitched) sources, mixed inputs,
+> and first-run sources; the sat-level **hashdiff change detection** is always required regardless.
+> `ma_sat_multi_source` does not yet carry this per-source-system watermark scoping — next phase.
 
 **Config shape (per calling model):**
 ```

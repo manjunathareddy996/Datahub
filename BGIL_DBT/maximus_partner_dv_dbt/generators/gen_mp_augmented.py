@@ -194,7 +194,7 @@ for (model, sat), rows in sorted(ma_rows.items()):
                f"        {N.sql_str(inst)} as {ck.lower()}"]
         sel += [f"        {N.ident(byinst[inst][a])} as {a.lower()}" if a in byinst[inst]
                 else f"        cast(null as varchar) as {a.lower()}" for a in attrs]
-        sel.append(f"        {N.sql_str(model)} as record_source")
+        sel.append(f"        {N.sql_str('MAXIMUS_' + model)} as record_source")
         guard = " or ".join(f"nullif(trim(to_varchar({N.ident(c)})), '') is not null"
                             for c in byinst[inst].values())
         branches.append("    select\n" + ",\n".join(sel) +
@@ -256,7 +256,7 @@ for (model, base), sats in sorted(groups.items()):
     L += ["derived_columns:", f'  {base}_BK: "{bks[f"{base}_BK"]}"',
           f'  {base}_NK: "\'HUB_{base}|\' || ({bks[f"{base}_BK"]})"']
     L += [f'  {p}: "{here[p]}"' if p in here else f'  {p}: "cast(null as varchar)"' for p in full]
-    L += ["  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'", f"  RECORD_SOURCE: '!{model}'",
+    L += ["  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'", f"  RECORD_SOURCE: '!MAXIMUS_{model}'",
           "{%- endset -%}", "", "{% set metadata_dict = fromyaml(yaml_metadata) %}", "",
           "{{ automate_dv.stage(include_source_columns=false,",
           "                     source_model=metadata_dict['source_model'],",

@@ -20,7 +20,7 @@ derived_columns:
   DOCUMENTNAME: "document_name"
   DOCUMENTTYPE: "document_type"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_DOCUMENT_DETAIL'
+  RECORD_SOURCE: '!MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_DOCUMENT_DETAIL'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
