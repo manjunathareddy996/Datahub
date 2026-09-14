@@ -12,6 +12,6 @@
         cast(null as varchar) as roleenddate,
         cast(null as varchar) as rolestartdate,
         cast(null as varchar) as roletype,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_RELATED_PARTY' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_RELATED_PARTY' as record_source
     from {{ ref('stg_maximus__pd_relparty') }}
     where nullif(trim(to_varchar(stake_code)), '') is not null

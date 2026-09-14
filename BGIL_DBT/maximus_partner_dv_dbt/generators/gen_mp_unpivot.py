@@ -107,7 +107,7 @@ for tbl, v in sorted(spec.items()):
                 y = members.get(a) if a else None
                 sel.append(f"        {N.ident(y['col'])} as {p.lower()}" if y
                            else f"        cast(null as varchar) as {p.lower()}")
-            sel.append(f"        {N.sql_str(tbl)} as record_source")
+            sel.append(f"        {N.sql_str('MAXIMUS_' + tbl)} as record_source")
             guard = " or ".join(
                 f"nullif(trim(to_varchar({N.ident(y['col'])})), '') is not null"
                 for y in members.values())

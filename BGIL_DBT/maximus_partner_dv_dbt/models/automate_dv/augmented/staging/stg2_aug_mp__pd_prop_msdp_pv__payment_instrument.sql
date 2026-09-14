@@ -19,7 +19,7 @@ derived_columns:
   PAYMENT_INSTRUMENT_NK: "'HUB_PAYMENT_INSTRUMENT|' || ('HUB_PAYMENT_INSTRUMENT|' || foreign_key)"
   PAYMENTGATEWAYNAME: "gateway_name"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!pd_prop_msdp_pv'
+  RECORD_SOURCE: '!MAXIMUS_pd_prop_msdp_pv'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

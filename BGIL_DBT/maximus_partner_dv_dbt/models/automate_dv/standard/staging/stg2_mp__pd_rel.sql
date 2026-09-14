@@ -11,7 +11,7 @@ derived_columns:
   PARTY_BK: "foreign_key"
   PARTY_NK: "'HUB_PARTY|' || (foreign_key)"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_RELATION'
+  RECORD_SOURCE: '!MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_RELATION'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

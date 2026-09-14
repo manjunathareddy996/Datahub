@@ -1,7 +1,7 @@
 {{ config(materialized='view') }}
 
 -- Incremental stitch for SAT_COMMON_ADDRESS (HUB_LOCATION grain).
--- 6 code_branch sources using the stitch_incremental macro.
+-- 5 code_branch sources using the stitch_incremental macro.
 -- Composite-branch sources (content-hash keyed) are excluded from this macro-driven pattern.
 
 {%- set sources = [
@@ -34,20 +34,6 @@
             {'src': 'billing_state', 'tgt': 'statename'}
         ],
         'source_tag': 'OPUS_BJAZ_CLM_SUPP_EXTN'
-    },
-    {
-        'model': 'stg_partner__bjaz_cp_add_hist',
-        'alias': 't2',
-        'key_column': 'add_id',
-        'ldts_column': 'inc_job_updated_at',
-        'columns': [
-            {'src': 'address_line1', 'tgt': 'addressline1'},
-            {'src': 'address_line2', 'tgt': 'addressline2'},
-            {'src': 'address_line3', 'tgt': 'addressline3'},
-            {'src': 'country_code', 'tgt': 'countrycode'},
-            {'src': 'postcode', 'tgt': 'postalcode'}
-        ],
-        'source_tag': 'OPUS_BJAZ_CP_ADD_HIST'
     },
     {
         'model': 'stg_partner__bjaz_pincode',
@@ -91,15 +77,15 @@
 {%- set output_columns = ['addressline1', 'addressline2', 'addressline3', 'buildingname', 'city', 'countrycode', 'countryname', 'doornumber', 'postalcode', 'statename', 'streetname'] -%}
 
 {%- set coalesce_rules = {
-    'addressline1': ['t1', 't2', 't5'],
-    'addressline2': ['t0', 't1', 't2', 't5'],
-    'addressline3': ['t0', 't1', 't2', 't5'],
+    'addressline1': ['t1', 't5'],
+    'addressline2': ['t0', 't1', 't5'],
+    'addressline3': ['t0', 't1', 't5'],
     'buildingname': ['t0'],
     'city': ['t3', 't4'],
-    'countrycode': ['t1', 't2', 't5'],
+    'countrycode': ['t1', 't5'],
     'countryname': ['t0', 't1'],
     'doornumber': ['t0'],
-    'postalcode': ['t2', 't3', 't5'],
+    'postalcode': ['t3', 't5'],
     'statename': ['t1', 't3', 't4'],
     'streetname': ['t0']
 } %}

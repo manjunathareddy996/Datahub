@@ -2,6 +2,7 @@
     config(
         materialized='incremental',
         incremental_strategy='merge',
+        on_schema_change='append_new_columns',
         unique_key=['PARTY_HKEY', 'HASHDIFF', 'RECORD_SOURCE']
     )
 }}
@@ -29,6 +30,19 @@ src_payload:
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
+src_record_source_map:
+  stg2_rolesat_bjaz_ctngy_ff_dtls_extn__lnk_role_nominee_beneficiary: 'OPUS'
+  stg2_rolesat_bjaz_ctngy_gc_mem_data__lnk_role_nominee_beneficiary: 'OPUS'
+  stg2_rolesat_bjaz_ctngy_pa_mem_dtls__lnk_role_nominee_beneficiary: 'OPUS'
+  stg2_rolesat_bjaz_ec_mem_dtls_extn__lnk_role_nominee_beneficiary: 'OPUS'
+  stg2_rolesat_bjaz_hcf_member_dtls__lnk_role_nominee_beneficiary: 'OPUS'
+  stg2_rolesat_bjaz_hc_part_extn__lnk_role_nominee_beneficiary: 'OPUS'
+  stg2_rolesat_bjaz_hlt_ensure_mem_dtls__lnk_role_nominee_beneficiary: 'OPUS'
+  stg2_rolesat_bjaz_hm_member_dtls__lnk_role_nominee_beneficiary: 'OPUS'
+  stg2_rolesat_bjaz_pa_detl_extn__lnk_role_nominee_beneficiary: 'OPUS'
+  stg2_rolesat_bjaz_sh_mem_dtls_extn__lnk_role_nominee_beneficiary: 'OPUS'
+  stg2_rolesat_bjaz_spp_member_dtls__lnk_role_nominee_beneficiary: 'OPUS'
+  stg2_rolesat_bjaz_starpkg_ff_dtls__lnk_role_nominee_beneficiary: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
@@ -39,6 +53,7 @@ src_source: 'RECORD_SOURCE'
                     src_ldts=metadata_dict['src_ldts'],
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
+                    src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
                         'stg2_rolesat_bjaz_ctngy_ff_dtls_extn__lnk_role_nominee_beneficiary': ['APPOINTEE_NAME', 'RELATIONSHIP_TO_INSURED'],
                         'stg2_rolesat_bjaz_ctngy_gc_mem_data__lnk_role_nominee_beneficiary': ['RELATIONSHIP_TO_INSURED'],

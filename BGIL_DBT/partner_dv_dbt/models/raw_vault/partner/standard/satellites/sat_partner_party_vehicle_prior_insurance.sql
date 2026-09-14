@@ -2,6 +2,7 @@
     config(
         materialized='incremental',
         incremental_strategy='merge',
+        on_schema_change='append_new_columns',
         unique_key=['PARTY_HKEY', 'HASHDIFF', 'RECORD_SOURCE']
     )
 }}
@@ -28,6 +29,15 @@ src_payload:
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
+src_record_source_map:
+  stg2_sat_bjaz_ctngy_pa_mem_dtls__party_vehicle_prior_insurance: 'OPUS'
+  stg2_sat_bjaz_ec_mem_dtls_extn__party_vehicle_prior_insurance: 'OPUS'
+  stg2_sat_bjaz_hcf_member_dtls__party_vehicle_prior_insurance: 'OPUS'
+  stg2_sat_bjaz_hc_part_extn__party_vehicle_prior_insurance: 'OPUS'
+  stg2_sat_bjaz_hlt_ensure_mem_dtls__party_vehicle_prior_insurance: 'OPUS'
+  stg2_sat_bjaz_pa_detl_extn__party_vehicle_prior_insurance: 'OPUS'
+  stg2_sat_bjaz_sh_mem_dtls_extn__party_vehicle_prior_insurance: 'OPUS'
+  stg2_sat_bjaz_spp_member_dtls__party_vehicle_prior_insurance: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
@@ -38,6 +48,7 @@ src_source: 'RECORD_SOURCE'
                     src_ldts=metadata_dict['src_ldts'],
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
+                    src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
                         'stg2_sat_bjaz_ctngy_pa_mem_dtls__party_vehicle_prior_insurance': ['PREVIOUSPOLICYNUMBER'],
                         'stg2_sat_bjaz_ec_mem_dtls_extn__party_vehicle_prior_insurance': ['PREVIOUSEXPIRYDATE', 'PREVIOUSINSURERNAME', 'PREVIOUSPOLICYNUMBER', 'PREVIOUSSUMINSURED'],

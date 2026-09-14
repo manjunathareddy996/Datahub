@@ -2,6 +2,7 @@
     config(
         materialized='incremental',
         incremental_strategy='merge',
+        on_schema_change='append_new_columns',
         unique_key=['PARTY_HKEY', 'HASHDIFF', 'RECORD_SOURCE']
     )
 }}
@@ -24,6 +25,9 @@ src_payload:
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
+src_record_source_map:
+  stg2_rolesat_bjaz_hm_hospital_master__lnk_role_provider: 'OPUS'
+  stg2_rolesat_clm_suppliers__lnk_role_provider: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
@@ -34,6 +38,7 @@ src_source: 'RECORD_SOURCE'
                     src_ldts=metadata_dict['src_ldts'],
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
+                    src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
                         'stg2_rolesat_bjaz_hm_hospital_master__lnk_role_provider': ['EMPANELMENT_DATE', 'SPECIALISATION', 'PROVIDER_TYPE', 'NETWORK_INDICATOR', 'PREFERRED_PROVIDER_INDICATOR'],
                         'stg2_rolesat_clm_suppliers__lnk_role_provider': ['EMPANELMENT_DATE', 'RE_EMPANELMENT_DUE_DATE', 'EMPANELMENT_STATUS', 'PROVIDER_TYPE']

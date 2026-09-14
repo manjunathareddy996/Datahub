@@ -19,7 +19,7 @@ derived_columns:
   LOCATION_NK: "'HUB_LOCATION|' || (md5(concat_ws('|', upper(trim(to_varchar(land_mark))), upper(trim(to_varchar(area))), upper(trim(to_varchar(post_office))), upper(trim(to_varchar(city))), upper(trim(to_varchar(state))), upper(trim(to_varchar(pincode))))))"
   ALTITUDE: "geo_coordinate_altitude"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!pd_party_addr_prop_pv'
+  RECORD_SOURCE: '!MAXIMUS_pd_party_addr_prop_pv'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

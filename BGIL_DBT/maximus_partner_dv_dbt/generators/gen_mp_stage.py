@@ -116,7 +116,7 @@ for tbl, v in sorted(spec.items()):
             L.append(f"  {h}: '{val}'")
     L.append("derived_columns:")
     L += [f'  {k}: "{e}"' for k, e in derived.items()]
-    L += ["  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'", f"  RECORD_SOURCE: '!{tbl}'",
+    L += ["  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'", f"  RECORD_SOURCE: '!MAXIMUS_{tbl}'",
           "{%- endset -%}", "", "{% set metadata_dict = fromyaml(yaml_metadata) %}", "",
           "{{ automate_dv.stage(include_source_columns=false,",
           "                     source_model=metadata_dict['source_model'],",

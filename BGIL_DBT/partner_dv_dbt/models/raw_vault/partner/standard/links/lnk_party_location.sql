@@ -5,10 +5,8 @@
 {%- set yaml_metadata -%}
 source_model:
   - 'stg2_link_azbj_partner_extn__party_location'
-  - 'stg2_link_bjaz_azbj_part_ext_hist__party_location'
   - 'stg2_link_bjaz_clm_supp_extn__party_location'
   - 'stg2_link_bjaz_cp_address_link__party_location'
-  - 'stg2_link_bjaz_cp_part_hist__party_location'
   - 'stg2_link_clm_suppliers__party_location'
   - 'stg2_link_cp_partners__party_location'
   - 'stg2_link_ocp_interested_parties__party_location'

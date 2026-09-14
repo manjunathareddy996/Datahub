@@ -7,10 +7,8 @@
 source_model:
   - 'stg2_common_address'
   - 'stg2_hub_azbj_partner_extn__location'
-  - 'stg2_hub_bjaz_azbj_part_ext_hist__location'
   - 'stg2_hub_bjaz_clm_supp_extn__location'
   - 'stg2_hub_bjaz_cp_address_link__location'
-  - 'stg2_hub_bjaz_cp_part_hist__location'
   - 'stg2_hub_clm_suppliers__location'
   - 'stg2_hub_cp_partners__location'
   - 'stg2_hub_ocp_interested_parties__location'

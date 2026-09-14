@@ -1,7 +1,7 @@
 {{ config(materialized='view') }}
 
 -- PARTNER STANDARD-MODEL stitch view for SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS (HUB_PARTY grain).
--- 10 table(s) contributing at this grain.
+-- 8 table(s) contributing at this grain.
 -- Uses the stitch_incremental macro.
 
 {%- set sources = [
@@ -19,29 +19,6 @@
             {'src': 'spouse_name', 'tgt': 'spousename'}
         ],
         'source_tag': 'OPUS_AZBJ_PARTNER_EXTN'
-    },
-    {
-        'model': 'stg_partner__bjaz_azbj_part_ext_hist',
-        'alias': 't1',
-        'key_column': 'part_id',
-        'ldts_column': 'inc_job_updated_at',
-        'columns': [
-            {'src': 'education', 'tgt': 'educationalqualification'},
-            {'src': 'father_name', 'tgt': 'fathername'},
-            {'src': 'occupation_desc_gen', 'tgt': 'occupationdescription'}
-        ],
-        'source_tag': 'OPUS_BJAZ_AZBJ_PART_EXT_HIST'
-    },
-    {
-        'model': 'stg_partner__bjaz_cp_part_hist',
-        'alias': 't2',
-        'key_column': 'part_id',
-        'ldts_column': 'inc_job_updated_at',
-        'columns': [
-            {'src': 'marital_status', 'tgt': 'maritalstatus'},
-            {'src': 'occupation', 'tgt': 'occupationcode'}
-        ],
-        'source_tag': 'OPUS_BJAZ_CP_PART_HIST'
     },
     {
         'model': 'stg_partner__bjaz_ec_mem_dtls_extn',
@@ -127,12 +104,12 @@
     'annualhouseholdincome':    ['t0'],
     'annualincome':             ['t3', 't4', 't6', 't7'],
     'designation':              ['t6'],
-    'educationalqualification': ['t0', 't1'],
-    'fathername':               ['t0', 't1'],
-    'maritalstatus':            ['t2', 't9'],
+    'educationalqualification': ['t0'],
+    'fathername':               ['t0'],
+    'maritalstatus':            ['t9'],
     'numberofchildren':         ['t0'],
-    'occupationcode':           ['t2', 't3', 't4', 't5', 't6', 't7', 't8', 't9'],
-    'occupationdescription':    ['t0', 't1'],
+    'occupationcode':           ['t3', 't4', 't5', 't6', 't7', 't8', 't9'],
+    'occupationdescription':    ['t0'],
     'spousename':               ['t0']
 } %}
 

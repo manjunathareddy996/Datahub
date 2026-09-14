@@ -14,7 +14,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(ambulance)), '') is not null
     union all
@@ -27,7 +27,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(bio_chemistry)), '') is not null
     union all
@@ -40,7 +40,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(biomedical_waste_facility)), '') is not null
     union all
@@ -53,7 +53,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(blood_bank_24_hrs)), '') is not null
     union all
@@ -66,7 +66,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(boyles_apparatus)), '') is not null
     union all
@@ -79,7 +79,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(bronchoscopy_lab)), '') is not null
     union all
@@ -92,7 +92,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(burn)), '') is not null
     union all
@@ -105,7 +105,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(burn_ward)), '') is not null
     union all
@@ -118,7 +118,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(cardiology)), '') is not null
     union all
@@ -131,7 +131,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(ability_to_give_opinion_on_cases)), '') is not null
     union all
@@ -144,7 +144,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(cath_lab)), '') is not null
     union all
@@ -157,7 +157,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(centralized_oxygen_connections)), '') is not null
     union all
@@ -170,7 +170,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(chemotherapy_unit)), '') is not null
     union all
@@ -183,7 +183,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(clinical_pathology)), '') is not null
     union all
@@ -196,7 +196,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(cobalt_unit)), '') is not null
     union all
@@ -209,7 +209,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         no_of_computerstotal as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(no_of_computerstotal)), '') is not null
     union all
@@ -222,7 +222,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(critical_care)), '') is not null
     union all
@@ -235,7 +235,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(centralize_sterile_supply_department)), '') is not null
     union all
@@ -248,7 +248,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(ct_scan)), '') is not null
     union all
@@ -261,7 +261,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         no_of_computersfor_bagic as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(no_of_computersfor_bagic)), '') is not null
     union all
@@ -274,7 +274,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(day_care)), '') is not null
     union all
@@ -287,7 +287,7 @@
         cast(null as varchar) as capabilityremarks,
         day_care_bed as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(day_care_bed)), '') is not null
     union all
@@ -300,7 +300,7 @@
         cast(null as varchar) as capabilityremarks,
         deluxe_beds as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(deluxe_beds)), '') is not null
     union all
@@ -313,7 +313,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(dental)), '') is not null
     union all
@@ -326,7 +326,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(dermatology)), '') is not null
     union all
@@ -339,7 +339,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(dialysis_unit)), '') is not null
     union all
@@ -352,7 +352,7 @@
         disaster_or_crisis_management as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(disaster_or_crisis_management)), '') is not null
     union all
@@ -365,7 +365,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(ecg)), '') is not null
     union all
@@ -378,7 +378,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(echo)), '') is not null
     union all
@@ -391,7 +391,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(eeg)), '') is not null
     union all
@@ -404,7 +404,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         electronic_gadgetsspy_cam_recorderfor_bagic as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(electronic_gadgetsspy_cam_recorderfor_bagic)), '') is not null
     union all
@@ -417,7 +417,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         electronic_gadgetsspy_cam_recordertotal as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(electronic_gadgetsspy_cam_recordertotal)), '') is not null
     union all
@@ -430,7 +430,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         emergencycasuality_bed as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(emergencycasuality_bed)), '') is not null
     union all
@@ -443,7 +443,7 @@
         emergency_value as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(emergency)), '') is not null or nullif(trim(to_varchar(emergency_value)), '') is not null
     union all
@@ -456,7 +456,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(emg)), '') is not null
     union all
@@ -469,7 +469,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(endocrinology)), '') is not null
     union all
@@ -482,7 +482,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(ent)), '') is not null
     union all
@@ -495,7 +495,7 @@
         fire_safety_equipment as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(fire_safety_equipment)), '') is not null
     union all
@@ -508,7 +508,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         fosfeet_on_street as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(fosfeet_on_street)), '') is not null
     union all
@@ -521,7 +521,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         fosfeet_on_street_for_bagic as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(fosfeet_on_street_for_bagic)), '') is not null
     union all
@@ -534,7 +534,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         fosfeet_on_street_total as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(fosfeet_on_street_total)), '') is not null
     union all
@@ -547,7 +547,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         total_no_of_full_time_doctors_with_qualification_approved_by_mci_in_the_rolls_of_the_hospital as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(total_no_of_full_time_doctors_with_qualification_approved_by_mci_in_the_rolls_of_the_hospital)), '') is not null
     union all
@@ -560,7 +560,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(gamma_knife)), '') is not null
     union all
@@ -573,7 +573,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(gastroenterology)), '') is not null
     union all
@@ -586,7 +586,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(general_medicine)), '') is not null
     union all
@@ -599,7 +599,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(general_surgery)), '') is not null
     union all
@@ -612,7 +612,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         general_ward_ac as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(general_ward_ac)), '') is not null
     union all
@@ -625,7 +625,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         general_ward_non_ac as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(general_ward_non_ac)), '') is not null
     union all
@@ -638,7 +638,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(genitourinary)), '') is not null
     union all
@@ -651,7 +651,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(hematology)), '') is not null
     union all
@@ -664,7 +664,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(hdu)), '') is not null
     union all
@@ -677,7 +677,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(health_video)), '') is not null
     union all
@@ -690,7 +690,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(help_desk)), '') is not null
     union all
@@ -703,7 +703,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(holter)), '') is not null
     union all
@@ -716,7 +716,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(use_of_icd_10)), '') is not null
     union all
@@ -729,7 +729,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(icd)), '') is not null
     union all
@@ -742,7 +742,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         icu_beds as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(icu_beds)), '') is not null
     union all
@@ -755,7 +755,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         incubators as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(incubators)), '') is not null
     union all
@@ -768,7 +768,7 @@
         hospital_infection_control_measures as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(hospital_infection_control_measures)), '') is not null
     union all
@@ -781,7 +781,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(infectious_disease)), '') is not null
     union all
@@ -794,7 +794,7 @@
         infrastructure as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(infrastructure)), '') is not null
     union all
@@ -807,7 +807,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(internet_access)), '') is not null
     union all
@@ -820,7 +820,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(internet_accessdfadvocate)), '') is not null
     union all
@@ -833,7 +833,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(internet_accesshcadvocate)), '') is not null
     union all
@@ -846,7 +846,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(internet_accesslawyer)), '') is not null
     union all
@@ -859,7 +859,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(internet_accessretainer)), '') is not null
     union all
@@ -872,7 +872,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(internet_accessstadvocate)), '') is not null
     union all
@@ -885,7 +885,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(internet_accesstradvocate)), '') is not null
     union all
@@ -898,7 +898,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(availability_of_in_house_doctors)), '') is not null
     union all
@@ -911,7 +911,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(in_house_pharmacy)), '') is not null
     union all
@@ -924,7 +924,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         isolation_wards as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(isolation_wards)), '') is not null
     union all
@@ -937,7 +937,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(jci_accreditation)), '') is not null
     union all
@@ -950,7 +950,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(laparoscopic_surgery)), '') is not null
     union all
@@ -963,7 +963,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(lasers)), '') is not null
     union all
@@ -976,7 +976,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(availability_of_library)), '') is not null
     union all
@@ -989,7 +989,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(availability_librarydfadvocate)), '') is not null
     union all
@@ -1002,7 +1002,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(availability_libraryhcadvocate)), '') is not null
     union all
@@ -1015,7 +1015,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(availability_librarylawyer)), '') is not null
     union all
@@ -1028,7 +1028,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(availability_libraryretainer)), '') is not null
     union all
@@ -1041,7 +1041,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(availability_librarystadvocate)), '') is not null
     union all
@@ -1054,7 +1054,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(availability_librarytradvocate)), '') is not null
     union all
@@ -1067,7 +1067,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(linear_accelerator)), '') is not null
     union all
@@ -1080,7 +1080,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         no_of_doctors_with_the_qualification_of_mbbs_available_for_icu_exclusively_taking_all_the_shifts_together as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(no_of_doctors_with_the_qualification_of_mbbs_available_for_icu_exclusively_taking_all_the_shifts_together)), '') is not null
     union all
@@ -1093,7 +1093,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(medical_records_dept)), '') is not null
     union all
@@ -1106,7 +1106,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(mri)), '') is not null
     union all
@@ -1119,7 +1119,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(nephrology)), '') is not null
     union all
@@ -1132,7 +1132,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(neurology)), '') is not null
     union all
@@ -1145,7 +1145,7 @@
         cast(null as varchar) as capabilityremarks,
         nicu_beds as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(nicu_beds)), '') is not null
     union all
@@ -1158,7 +1158,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(availability_of_nurses)), '') is not null
     union all
@@ -1171,7 +1171,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(obs_and_gynecology)), '') is not null
     union all
@@ -1184,7 +1184,7 @@
         cast(null as varchar) as capabilityremarks,
         office_yard_space_in_sq_ft_total as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(office_yard_space_in_sq_ft_total)), '') is not null
     union all
@@ -1197,7 +1197,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(oncology)), '') is not null
     union all
@@ -1210,7 +1210,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(access_to_online_journal)), '') is not null
     union all
@@ -1223,7 +1223,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(access_online_journaldfadvocate)), '') is not null
     union all
@@ -1236,7 +1236,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(access_online_journalhcadvocate)), '') is not null
     union all
@@ -1249,7 +1249,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(access_online_journallawyer)), '') is not null
     union all
@@ -1262,7 +1262,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(access_online_journalretainer)), '') is not null
     union all
@@ -1275,7 +1275,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(access_online_journalstadvocate)), '') is not null
     union all
@@ -1288,7 +1288,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(access_online_journaltradvocate)), '') is not null
     union all
@@ -1301,7 +1301,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         no_of_operation_theatre as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(no_of_operation_theatre)), '') is not null
     union all
@@ -1314,7 +1314,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         no_of_operation_theatre_major as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(no_of_operation_theatre_major)), '') is not null
     union all
@@ -1327,7 +1327,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         no_of_operation_theatre_minor as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(no_of_operation_theatre_minor)), '') is not null
     union all
@@ -1340,7 +1340,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(ophthalmology)), '') is not null
     union all
@@ -1353,7 +1353,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(orthopedics)), '') is not null
     union all
@@ -1366,7 +1366,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(ot_laminar_air_flow)), '') is not null
     union all
@@ -1379,7 +1379,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(pediatric)), '') is not null
     union all
@@ -1392,7 +1392,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(pediatricneonatal)), '') is not null
     union all
@@ -1405,7 +1405,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(pft_spirometry)), '') is not null
     union all
@@ -1418,7 +1418,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(phototherapy)), '') is not null
     union all
@@ -1431,7 +1431,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(physiotherapy)), '') is not null
     union all
@@ -1444,7 +1444,7 @@
         cast(null as varchar) as capabilityremarks,
         picu_bed as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(picu_bed)), '') is not null
     union all
@@ -1457,7 +1457,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(plastic_surgery)), '') is not null
     union all
@@ -1470,7 +1470,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(portable_ecg_cardiac_monitor)), '') is not null
     union all
@@ -1483,7 +1483,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(portable_x_ray_within_ot)), '') is not null
     union all
@@ -1496,7 +1496,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         total_no_of_post_graduate_md_anesthesia_gen_med_etc_qualified_doctors_exclusively_available_for_icu as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(total_no_of_post_graduate_md_anesthesia_gen_med_etc_qualified_doctors_exclusively_available_for_icu)), '') is not null
     union all
@@ -1509,7 +1509,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar("24_HR_POWER_BACKUP")), '') is not null
     union all
@@ -1522,7 +1522,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         no_of_printerstotal as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(no_of_printerstotal)), '') is not null
     union all
@@ -1535,7 +1535,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(accreditation)), '') is not null
     union all
@@ -1548,7 +1548,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(pulmonology)), '') is not null
     union all
@@ -1561,7 +1561,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         no_of_printersfor_bagic as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(no_of_printersfor_bagic)), '') is not null
     union all
@@ -1574,7 +1574,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         total_no_of_qualified_nurses_bsc_nursing_gnm_in_the_hospital as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(total_no_of_qualified_nurses_bsc_nursing_gnm_in_the_hospital)), '') is not null
     union all
@@ -1587,7 +1587,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(radio_immuno_assay)), '') is not null
     union all
@@ -1600,7 +1600,7 @@
         cast(null as varchar) as capabilityremarks,
         recovery_rooms as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(recovery_rooms)), '') is not null
     union all
@@ -1613,7 +1613,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(rheumatology)), '') is not null
     union all
@@ -1626,7 +1626,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         no_of_scannerstotal as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(no_of_scannerstotal)), '') is not null
     union all
@@ -1639,7 +1639,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(separate_sterilization_area)), '') is not null
     union all
@@ -1652,7 +1652,7 @@
         surgery_details as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(surgery_details)), '') is not null
     union all
@@ -1665,7 +1665,7 @@
         cast(null as varchar) as capabilityremarks,
         sicu_bed as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(surgical_icu)), '') is not null or nullif(trim(to_varchar(sicu_bed)), '') is not null
     union all
@@ -1678,7 +1678,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         no_of_scannersfor_bagic as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(no_of_scannersfor_bagic)), '') is not null
     union all
@@ -1691,7 +1691,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         total_beds as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(total_beds)), '') is not null
     union all
@@ -1704,7 +1704,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(trauma)), '') is not null
     union all
@@ -1717,7 +1717,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(treadmill_test)), '') is not null
     union all
@@ -1730,7 +1730,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(ultra_sound)), '') is not null or nullif(trim(to_varchar(ultrasoundscanning_facility_register_with_district_health_and_family_welfare_officer)), '') is not null
     union all
@@ -1743,7 +1743,7 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(x_knife)), '') is not null
     union all
@@ -1756,6 +1756,6 @@
         cast(null as varchar) as capabilityremarks,
         cast(null as varchar) as capacity,
         cast(null as varchar) as facilitycount,
-        'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(x_ray)), '') is not null

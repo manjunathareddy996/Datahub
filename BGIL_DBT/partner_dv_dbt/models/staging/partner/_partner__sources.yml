@@ -13,11 +13,8 @@ sources:
       - name: AZBJ_ADDRESS_EXTN
       - name: AZBJ_PARTNER_EXTN
       - name: BA_HCP_DT_MEM
-      - name: BJAZ_AZBJ_PART_EXT_HIST
       - name: BJAZ_CLM_SUPP_EXTN
       - name: BJAZ_CP_ADDRESS_LINK
-      - name: BJAZ_CP_ADD_HIST
-      - name: BJAZ_CP_PART_HIST
       - name: BJAZ_CTNGY_FF_DTLS_EXTN
       - name: BJAZ_CTNGY_GC_MEM_DATA
       - name: BJAZ_CTNGY_PA_MEM_DTLS
@@ -28,7 +25,6 @@ sources:
       - name: BJAZ_HM_HOSPITAL_MASTER
       - name: BJAZ_HM_MEMBER_DTLS
       - name: BJAZ_INTERMEDIARY
-      - name: BJAZ_INTERMEDIARY_HIST
       - name: BJAZ_PA_DETL_EXTN
       - name: BJAZ_PINCODE
       - name: BJAZ_PINCODE_MASTER
