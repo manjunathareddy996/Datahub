@@ -19,7 +19,7 @@ derived_columns:
   ISSUEDATE: "document_generation_date"
   DOCUMENTNAME: "document_name"
   DOCUMENTTYPE: "document_type"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_DOCUMENT_DETAIL'
 {%- endset -%}
 

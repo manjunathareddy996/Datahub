@@ -14,7 +14,7 @@ hashed_columns:
 derived_columns:
   PARTY_LOCATION_BK: "parent_bk"
   PARTY_LOCATION_NK: "'LNK_PARTY_LOCATION|' || (parent_bk)"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

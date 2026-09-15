@@ -12,6 +12,7 @@
         cast(null as varchar) as roleenddate,
         date_of_joiningdfadvocate as rolestartdate,
         cast(null as varchar) as roletype,
+        rec_refresh_at as rec_refresh_at,
         'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(date_of_joiningdfadvocate)), '') is not null
@@ -23,6 +24,7 @@
         cast(null as varchar) as roleenddate,
         date_of_joininghcadvocate as rolestartdate,
         cast(null as varchar) as roletype,
+        rec_refresh_at as rec_refresh_at,
         'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(date_of_joininghcadvocate)), '') is not null
@@ -34,6 +36,7 @@
         cast(null as varchar) as roleenddate,
         date_of_joininglawyer as rolestartdate,
         cast(null as varchar) as roletype,
+        rec_refresh_at as rec_refresh_at,
         'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(date_of_joininglawyer)), '') is not null
@@ -45,6 +48,7 @@
         cast(null as varchar) as roleenddate,
         date_of_joiningretainer as rolestartdate,
         cast(null as varchar) as roletype,
+        rec_refresh_at as rec_refresh_at,
         'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(date_of_joiningretainer)), '') is not null
@@ -56,6 +60,7 @@
         cast(null as varchar) as roleenddate,
         date_of_joiningstadvocate as rolestartdate,
         cast(null as varchar) as roletype,
+        rec_refresh_at as rec_refresh_at,
         'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(date_of_joiningstadvocate)), '') is not null
@@ -67,6 +72,7 @@
         cast(null as varchar) as roleenddate,
         date_of_joiningtradvocate as rolestartdate,
         cast(null as varchar) as roletype,
+        rec_refresh_at as rec_refresh_at,
         'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(date_of_joiningtradvocate)), '') is not null
@@ -78,6 +84,7 @@
         cancel_on as roleenddate,
         date_of_start as rolestartdate,
         intermediary_type as roletype,
+        rec_refresh_at as rec_refresh_at,
         'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(date_of_start)), '') is not null or nullif(trim(to_varchar(cancel_on)), '') is not null or nullif(trim(to_varchar(intermediary_type)), '') is not null
@@ -89,6 +96,7 @@
         cast(null as varchar) as roleenddate,
         cast(null as varchar) as rolestartdate,
         cast(null as varchar) as roletype,
+        rec_refresh_at as rec_refresh_at,
         'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(default_role)), '') is not null
@@ -100,6 +108,7 @@
         cast(null as varchar) as roleenddate,
         cast(null as varchar) as rolestartdate,
         cast(null as varchar) as roletype,
+        rec_refresh_at as rec_refresh_at,
         'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(party_function)), '') is not null

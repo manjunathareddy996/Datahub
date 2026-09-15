@@ -10,7 +10,7 @@ hashed_columns:
 derived_columns:
   PARTY_BK: "foreign_key"
   PARTY_NK: "'HUB_PARTY|' || (foreign_key)"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_RELATION'
 {%- endset -%}
 

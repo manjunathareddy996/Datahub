@@ -40,7 +40,7 @@ derived_columns:
   RECORDENDDATE: "cast(null as varchar)"
   SOURCELASTMODIFIEDDATE: "party_last_modification_date"
   STATUSREASONOTHERDETAIL: "cast(null as varchar)"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_pd'
 {%- endset -%}
 

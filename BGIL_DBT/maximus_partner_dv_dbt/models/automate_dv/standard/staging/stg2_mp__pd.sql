@@ -108,7 +108,7 @@ derived_columns:
   INDUSTRYCODE: "cast(null as varchar)"
   GROUPNAME: "cast(null as varchar)"
   PARENTENTITYNAME: "cast(null as varchar)"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL'
 {%- endset -%}
 

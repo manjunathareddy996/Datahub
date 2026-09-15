@@ -87,7 +87,9 @@ with source as (
     nullif(trim(to_varchar("WORKMENS_COMPENSATION")), '') as workmens_compensation,
     nullif(trim(to_varchar("FOREIGN_KEY")), '') as foreign_key,
     nullif(trim(to_varchar("KEY_HASH")), '') as key_hash,
-    nullif(trim(to_varchar("PARENT_KEY_HASH")), '') as parent_key_hash
+    nullif(trim(to_varchar("PARENT_KEY_HASH")), '') as parent_key_hash,
+    cast(null as timestamp_ntz) as file_timestamp,
+    current_timestamp() as rec_refresh_at
     from {{ source('maximus_partner', 'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW_2_1') }}
 
 )

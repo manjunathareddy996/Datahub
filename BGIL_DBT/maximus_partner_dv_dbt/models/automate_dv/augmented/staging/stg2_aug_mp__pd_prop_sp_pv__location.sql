@@ -23,7 +23,7 @@ derived_columns:
   LOCATION_NK: "'HUB_LOCATION|' || (md5(concat_ws('|', upper(trim(to_varchar(our_office_address))), upper(trim(to_varchar(current_permanent_overseas_address_line_2))), upper(trim(to_varchar(current_permanent_overseas_address_line_3))), upper(trim(to_varchar(current_permanent_overseas_address_city_town_village))), upper(trim(to_varchar(correspondence_local_address_district))), upper(trim(to_varchar(current_permanent_overseas_address_state_ut))), upper(trim(to_varchar(local_address_pin_code))), upper(trim(to_varchar(current_permanent_overseas_address_country))))))"
   FULLADDRESSTEXT: "current_permanent_overseas_address_"
   UNIONTERRITORYINDICATOR: "ut_flag"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_pd_prop_sp_pv'
 {%- endset -%}
 

@@ -548,7 +548,7 @@ derived_columns:
   ROOMCATEGORY: "coalesce(hospital_room_master, other_room, rooms_allowed_for_step_down, type_of_room_applicable)"
   SERVICEDESCRIPTION: "coalesce(medicine_name, service_name)"
   PACKAGERATE: "package_rate"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1'
 {%- endset -%}
 

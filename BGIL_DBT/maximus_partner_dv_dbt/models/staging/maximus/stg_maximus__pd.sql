@@ -26,7 +26,9 @@ with source as (
     nullif(trim(to_varchar("TYPE_OF_PARTY")), '') as type_of_party,
     nullif(trim(to_varchar("FOREIGN_KEY")), '') as foreign_key,
     nullif(trim(to_varchar("KEY_HASH")), '') as key_hash,
-    nullif(trim(to_varchar("PARENT_KEY_HASH")), '') as parent_key_hash
+    nullif(trim(to_varchar("PARENT_KEY_HASH")), '') as parent_key_hash,
+    cast(null as timestamp_ntz) as file_timestamp,
+    current_timestamp() as rec_refresh_at
     from {{ source('maximus_partner', 'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL') }}
 
 )

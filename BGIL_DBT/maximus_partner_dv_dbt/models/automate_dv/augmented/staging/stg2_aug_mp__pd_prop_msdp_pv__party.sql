@@ -183,7 +183,7 @@ derived_columns:
   TEMPORARYCREDITLIMITSTARTDATE: "temp_cr_limit_start_date"
   UNDERGRADUATEQUALIFICATION: "cast(null as varchar)"
   YEAROFPASSINGQUALIFICATION: "cast(null as varchar)"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_pd_prop_msdp_pv'
 {%- endset -%}
 

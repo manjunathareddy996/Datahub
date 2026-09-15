@@ -10,6 +10,7 @@
         'COMMUNICATION' as address_usage_type,
         cast(null as varchar) as addressusagetype,
         is_the_mailingcommunication_address_same_as_the_primary_address as primaryaddressindicator,
+        rec_refresh_at as rec_refresh_at,
         'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(is_the_mailingcommunication_address_same_as_the_primary_address)), '') is not null
@@ -19,6 +20,7 @@
         '{CURRENT_PERMANENT_OVERSEAS_ADDRESS_TYPE}' as address_usage_type,
         current_permanent_overseas_address_type as addressusagetype,
         cast(null as varchar) as primaryaddressindicator,
+        rec_refresh_at as rec_refresh_at,
         'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(current_permanent_overseas_address_type)), '') is not null

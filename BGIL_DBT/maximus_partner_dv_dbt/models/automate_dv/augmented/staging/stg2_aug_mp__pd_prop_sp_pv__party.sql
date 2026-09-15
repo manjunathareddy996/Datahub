@@ -912,7 +912,7 @@ derived_columns:
   YEAROFPURCHASE: "year_of_purchase"
   ZEROCHARGEBACKPROGRAMMEENROLLEDINDICATOR: "enrolled_in_zero_chargeback_pgrm"
   ZONECODE: "zone"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_pd_prop_sp_pv'
 {%- endset -%}
 

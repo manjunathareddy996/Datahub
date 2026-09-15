@@ -9,6 +9,7 @@
         foreign_key as parent_bk,
         '{USER_ID}' as activesequencenumber,
         user_id as loginidentifier,
+        rec_refresh_at as rec_refresh_at,
         'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW_2_1' as record_source
     from {{ ref('stg_maximus__pd_prop_msdp_pv') }}
     where nullif(trim(to_varchar(user_id)), '') is not null

@@ -23,7 +23,9 @@ with source as (
     nullif(trim(to_varchar("WHATSAPP_NO")), '') as whatsapp_no,
     nullif(trim(to_varchar("FOREIGN_KEY")), '') as foreign_key,
     nullif(trim(to_varchar("KEY_HASH")), '') as key_hash,
-    nullif(trim(to_varchar("PARENT_KEY_HASH")), '') as parent_key_hash
+    nullif(trim(to_varchar("PARENT_KEY_HASH")), '') as parent_key_hash,
+    cast(null as timestamp_ntz) as file_timestamp,
+    current_timestamp() as rec_refresh_at
     from {{ source('maximus_partner', 'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW_2_1') }}
 
 )

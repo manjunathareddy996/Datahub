@@ -18,7 +18,7 @@ derived_columns:
   LOCATION_BK: "md5(concat_ws('|', upper(trim(to_varchar(land_mark))), upper(trim(to_varchar(area))), upper(trim(to_varchar(post_office))), upper(trim(to_varchar(city))), upper(trim(to_varchar(state))), upper(trim(to_varchar(pincode)))))"
   LOCATION_NK: "'HUB_LOCATION|' || (md5(concat_ws('|', upper(trim(to_varchar(land_mark))), upper(trim(to_varchar(area))), upper(trim(to_varchar(post_office))), upper(trim(to_varchar(city))), upper(trim(to_varchar(state))), upper(trim(to_varchar(pincode))))))"
   ALTITUDE: "geo_coordinate_altitude"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_pd_party_addr_prop_pv'
 {%- endset -%}
 
