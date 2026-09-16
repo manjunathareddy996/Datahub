@@ -22,6 +22,7 @@ src_payload:
   - 'PROVIDER_TYPE'
   - 'RE_EMPANELMENT_DUE_DATE'
   - 'SPECIALISATION'
+  - 'SUPPLIER_ID'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -41,5 +42,5 @@ src_record_source_map:
                     src_record_source_map=metadata_dict['src_record_source_map'],
                     src_column_map={
                         'stg2_rolesat_bjaz_hm_hospital_master__lnk_role_provider': ['EMPANELMENT_DATE', 'SPECIALISATION', 'PROVIDER_TYPE', 'NETWORK_INDICATOR', 'PREFERRED_PROVIDER_INDICATOR'],
-                        'stg2_rolesat_clm_suppliers__lnk_role_provider': ['EMPANELMENT_DATE', 'RE_EMPANELMENT_DUE_DATE', 'EMPANELMENT_STATUS', 'PROVIDER_TYPE']
+                        'stg2_rolesat_clm_suppliers__lnk_role_provider': ['EMPANELMENT_DATE', 'RE_EMPANELMENT_DUE_DATE', 'EMPANELMENT_STATUS', 'PROVIDER_TYPE', 'SUPPLIER_ID']
                     }) }}

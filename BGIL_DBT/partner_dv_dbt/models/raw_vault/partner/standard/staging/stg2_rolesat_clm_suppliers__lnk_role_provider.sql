@@ -16,6 +16,7 @@ hashed_columns:
       - 'RE_EMPANELMENT_DUE_DATE'
       - 'EMPANELMENT_STATUS'
       - 'PROVIDER_TYPE'
+      - 'SUPPLIER_ID'
 derived_columns:
   PARENT_BK: 'part_id'
   PARENT_NK: "'HUB_PARTY|' || (part_id)"
@@ -24,6 +25,7 @@ derived_columns:
   RE_EMPANELMENT_DUE_DATE: 'exp_date'
   EMPANELMENT_STATUS: 'supp_status'
   PROVIDER_TYPE: 'supp_type'
+  SUPPLIER_ID: 'supp_id'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_CLM_SUPPLIERS'
 {%- endset -%}
