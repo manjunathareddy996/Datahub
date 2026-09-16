@@ -1,4 +1,4 @@
-{%- macro ma_sat_multi_source(src_pk, src_cdk, src_hashdiff, src_payload, src_ldts, src_source, source_model, src_extra_columns=none, src_column_map=none, src_run_ts='DBT_RUN_TS') -%}
+{%- macro ma_sat_multi_source(src_pk, src_cdk, src_hashdiff, src_payload, src_ldts, src_source, source_model, src_extra_columns=none, src_column_map=none, src_record_source_map=none, src_run_ts='DBT_RUN_TS') -%}
 
 {#--
     Multi-active, multi-source satellite.
@@ -56,6 +56,16 @@
 {%- for m in source_model -%}
     {%- if m is not string or m | trim | length == 0 -%}
         {{ exceptions.raise_compiler_error("source_model entry at position " ~ loop.index ~ " must be a non-empty string") }}
+    {%- endif -%}
+{%- endfor -%}
+
+{#-- Logical source-group mapping validation. --#}
+{%- if src_record_source_map is none or src_record_source_map is not mapping -%}
+    {{ exceptions.raise_compiler_error("src_record_source_map must be a mapping of model name to logical source group for ma_sat_multi_source") }}
+{%- endif -%}
+{%- for model_name in source_model -%}
+    {%- if model_name not in src_record_source_map -%}
+        {{ exceptions.raise_compiler_error("src_record_source_map is missing an entry for source model '" ~ model_name ~ "'") }}
     {%- endif -%}
 {%- endfor -%}
 
@@ -121,8 +131,9 @@
     {{ exceptions.raise_compiler_error("No payload columns found across source models") }}
 {%- endif -%}
 
-{#-- Watermark window (identical resolution to sat_multi_source). --#}
+{#-- Watermark window: one watermark per distinct logical source group. --#}
 {%- set sentinel = '1900-01-01' -%}
+{%- set source_watermarks = {} -%}
 
 {%- if var('to_date', none) is not none -%}
     {%- set to_date_expr = "CAST('" ~ var('to_date') ~ "' AS TIMESTAMP_NTZ)" -%}
@@ -130,32 +141,39 @@
     {%- set to_date_expr = "CAST(CONVERT_TIMEZONE('UTC','Asia/Kolkata', '" ~ run_started_at.strftime('%Y-%m-%d %H:%M:%S') ~ "'::timestamp_ntz) AS TIMESTAMP_NTZ)" -%}
 {%- endif -%}
 
-{%- if var('from_date', none) is not none -%}
-    {%- set from_date = "'" ~ var('from_date') ~ "'" -%}
-{%- elif not execute -%}
-    {%- set from_date = "'" ~ sentinel ~ "'" -%}
-{%- else -%}
-    {%- set sat_rel = adapter.get_relation(database=this.database, schema=this.schema, identifier=this.identifier) -%}
-    {%- if sat_rel is none -%}
-        {%- set from_date = "'" ~ sentinel ~ "'" -%}
-    {%- else -%}
-        {%- set wm_query -%}
-            SELECT COALESCE(MAX({{ src_run_ts }}), TO_TIMESTAMP_NTZ('{{ sentinel }}')) AS mx FROM {{ sat_rel }}
-        {%- endset -%}
-        {%- set results = run_query(wm_query) -%}
-        {%- if results and (results.rows | length) > 0 and results.rows[0][0] is not none -%}
-            {%- set from_date = "'" ~ results.rows[0][0] ~ "'" -%}
+{%- for model_name in source_model -%}
+    {%- set source_group = src_record_source_map[model_name] -%}
+    {%- if source_group not in source_watermarks -%}
+        {%- if var('from_date', none) is not none -%}
+            {%- set group_from_date = "'" ~ var('from_date') ~ "'" -%}
+        {%- elif not execute -%}
+            {%- set group_from_date = "'" ~ sentinel ~ "'" -%}
         {%- else -%}
-            {%- set from_date = "'" ~ sentinel ~ "'" -%}
+            {%- set sat_rel = adapter.get_relation(database=this.database, schema=this.schema, identifier=this.identifier) -%}
+            {%- if sat_rel is none -%}
+                {%- set group_from_date = "'" ~ sentinel ~ "'" -%}
+            {%- else -%}
+                {%- set wm_query -%}
+                    SELECT COALESCE(MAX({{ src_run_ts }}), TO_TIMESTAMP_NTZ('{{ sentinel }}')) AS mx
+                    FROM {{ sat_rel }}
+                    WHERE {{ src_source }} LIKE '{{ source_group }}_%'
+                {%- endset -%}
+                {%- set results = run_query(wm_query) -%}
+                {%- if results and (results.rows | length) > 0 and results.rows[0][0] is not none -%}
+                    {%- set group_from_date = "'" ~ results.rows[0][0] ~ "'" -%}
+                {%- else -%}
+                    {%- set group_from_date = "'" ~ sentinel ~ "'" -%}
+                {%- endif -%}
+            {%- endif -%}
         {%- endif -%}
+        {%- do source_watermarks.update({source_group: group_from_date}) -%}
     {%- endif -%}
-{%- endif -%}
+{%- endfor -%}
 
 {#-- Grouping key for Option B: parent key + record source. Each source's set of
      child rows for a parent is an independent group. --#}
 WITH source_data AS (
-    {%- for model_name in source_model %}
-    -- Source {{ loop.index }}: {{ model_name }}
+{% for model_name in source_model %}
     SELECT
         a.{{ src_pk }},
         {%- for c in cdk_cols %}
@@ -179,13 +197,12 @@ WITH source_data AS (
         {%- for c in cdk_cols %}
       AND a.{{ c }} IS NOT NULL
         {%- endfor %}
-      AND a.{{ src_ldts }} >  CAST({{ from_date }} AS TIMESTAMP_NTZ)
+      AND a.{{ src_ldts }} > CAST({{ source_watermarks[src_record_source_map[model_name]] }} AS TIMESTAMP_NTZ)
       AND a.{{ src_ldts }} <= {{ to_date_expr }}
-    {%- if not loop.last %}
-
+{% if not loop.last %}
     UNION ALL
-    {%- endif %}
-    {%- endfor %}
+{% endif %}
+{% endfor %}
 )
 
 {%- if automate_dv.is_any_incremental() %}
