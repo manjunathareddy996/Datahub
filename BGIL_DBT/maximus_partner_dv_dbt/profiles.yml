@@ -1,0 +1,25 @@
+maximus_partner_dv:
+  target: dev # default
+  outputs:
+    dev:
+      type: snowflake
+      account: "_" # overwritten by Snowflake CLI connection (env var) at deploy time
+      user: "_"    # overwritten by Snowflake CLI connection (env var) at deploy time
+      role: INGESTION_PREPROD_ROLE
+      warehouse: BAGIC_DPM_MAXI_RAW_WH
+      # Must match partner_dv_dbt's dev output. The vault models resolve their schema
+      # verbatim to BGIL_DATA_MODEL (see macros/generate_schema_name.sql), so database +
+      # schema here are what make both projects land on the same physical relation.
+      database: BAGIC_PREPROD_CURATED_DB
+      schema: BGIL_DATA_MODEL
+      threads: 7
+
+    prod:
+      type: snowflake
+      role: EMPOWER_FOUNDATION_ROLE
+      warehouse: BAGIC_DPM_MAXI_RAW_WH
+      database: BAGIC_PREPROD_CURATED_DB
+      schema: BGIL_DATA_MODEL
+      account: 'not needed'
+      user: 'not needed'
+      threads: 4
