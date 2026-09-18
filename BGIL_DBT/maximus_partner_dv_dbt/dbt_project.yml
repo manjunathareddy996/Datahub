@@ -1,4 +1,4 @@
-name: 'maximus_partner_dv'
+name: 'maximus_partner_dv_dbt'
 version: '1.0.0'
 config-version: 2
 
@@ -12,8 +12,8 @@ clean-targets:
   - "dbt_packages"
 
 vars:
-  maximus_partner_raw_database: RAW
-  maximus_partner_raw_schema: GG_DWHSTAGE
+  maximus_partner_raw_database: BAGIC_PROD_MIRROR_DB
+  maximus_partner_raw_schema: MAXI_RAW
 
 # Schemas MATCH partner_dv_dbt exactly -- this project writes the SAME physical vault tables from a
 # different source system, on its own ingestion schedule. Two projects, one vault.
@@ -26,14 +26,14 @@ vars:
 #   * a hub's src_nk column name must match what partner_dv_dbt already writes (PARENT_BK), or both
 #     projects populate different columns of the same table. See models/.../hubfeed/.
 models:
-  maximus_partner_dv:
+  maximus_partner_dv_dbt:
     staging:
       maximus:
         +materialized: view
-        +schema: stg_maximus_partner
-    automate_dv:
+        +schema: BGIL_DATA_MODEL
+    raw_vault:
       standard:
-        +schema: std_automate_dv_partner
+        +schema: BGIL_DATA_MODEL
         staging:
           +materialized: view
         unpivot:
@@ -52,7 +52,7 @@ models:
           +materialized: incremental
           +on_schema_change: append_new_columns
       augmented:
-        +schema: aug_automate_dv_partner
+        +schema: BGIL_DATA_MODEL
         staging:
           +materialized: view
         satellites:
