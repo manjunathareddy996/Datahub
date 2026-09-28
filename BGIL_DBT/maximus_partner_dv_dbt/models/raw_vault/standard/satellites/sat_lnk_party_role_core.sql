@@ -1,4 +1,10 @@
-{{ config(materialized='incremental') }}
+{{
+    config(
+        materialized='incremental',
+        incremental_strategy='merge',
+        unique_key=['PARTY_HKEY', 'ROLECODE', 'ROLESEQUENCE', 'HASHDIFF_LNK_PARTY_ROLE_CORE', 'RECORD_SOURCE']
+    )
+}}
 
 -- MAXIMUS PARTNER ma_sat() for SAT_LNK_PARTY_ROLE_CORE.
 -- Writes the SAME physical table as partner_dv_dbt's model of the same name: separate projects,
@@ -27,10 +33,16 @@ src_source: 'RECORD_SOURCE'
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 
-{{ automate_dv.ma_sat(src_pk=metadata_dict['src_pk'],
+{{ ma_sat_multi_source(src_pk=metadata_dict['src_pk'],
                        src_cdk=metadata_dict['src_cdk'],
                        src_payload=metadata_dict['src_payload'],
                        src_hashdiff=metadata_dict['src_hashdiff'],
                        src_ldts=metadata_dict['src_ldts'],
                        src_source=metadata_dict['src_source'],
-                       source_model=metadata_dict['source_model']) }}
+                       source_model=metadata_dict['source_model'],
+                       src_column_map={
+                        'stg2_mp_up__pd_prop_msdp_pv__lnk_party_role_core': ['ROLECODE', 'ROLEENDDATE', 'ROLESTARTDATE', 'ROLETYPE'],
+                        'stg2_mp_up__pd_prop_sp_pv__lnk_party_role_core': ['ROLECODE', 'ROLEENDDATE', 'ROLESTARTDATE', 'ROLETYPE'],
+                        'stg2_mp_up__pd_rel__lnk_party_role_core': ['ROLECODE', 'ROLEENDDATE', 'ROLESTARTDATE', 'ROLETYPE'],
+                        'stg2_mp_up__pd_relparty__lnk_party_role_core': ['ROLECODE', 'ROLEENDDATE', 'ROLESTARTDATE', 'ROLETYPE']
+                       }) }}
