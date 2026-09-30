@@ -26,7 +26,7 @@ with source as (
     nullif(trim("INFOVIEW_FLAG"::varchar), '') as infoview_flag,
     "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('partner_raw', 'BJAZ_CTNGY_GC_MEM_DATA') }}
+    from {{ source('partner_test_raw', 'BJAZ_CTNGY_GC_MEM_DATA') }}
 
 )
 

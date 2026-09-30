@@ -58,7 +58,7 @@ with source as (
     nullif(trim("PARTNER_REF"::varchar), '') as partner_ref,
     nullif(trim("DATA_STATUS"::varchar), '') as data_status,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('partner_raw', 'CP_PARTNERS') }}
+    from {{ source('partner_test_raw', 'CP_PARTNERS') }}
 
 )
 

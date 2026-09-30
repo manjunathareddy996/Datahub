@@ -38,7 +38,7 @@ with source as (
     "CUMM_BONUS_AMT_COMP"::number as cumm_bonus_amt_comp,
     "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('partner_raw', 'BJAZ_PA_DETL_EXTN') }}
+    from {{ source('partner_test_raw', 'BJAZ_PA_DETL_EXTN') }}
 
 )
 

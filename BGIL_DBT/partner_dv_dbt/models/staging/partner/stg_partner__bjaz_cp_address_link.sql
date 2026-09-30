@@ -13,7 +13,7 @@ with source as (
     nullif(trim("PRIMARY_YN"::varchar), '') as primary_yn,
     nullif(trim("ADD_ID"::varchar), '') as add_id,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('partner_raw', 'BJAZ_CP_ADDRESS_LINK') }}
+    from {{ source('partner_test_raw', 'BJAZ_CP_ADDRESS_LINK') }}
 
 )
 

@@ -58,7 +58,7 @@ with source as (
     nullif(trim("WEIGHT"::varchar), '') as weight,
     nullif(trim("BMI"::varchar), '') as bmi,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('partner_raw', 'BJAZ_SPP_MEMBER_DTLS') }}
+    from {{ source('partner_test_raw', 'BJAZ_SPP_MEMBER_DTLS') }}
 
 )
 

@@ -17,7 +17,7 @@ with source as (
     nullif(trim("OBJECT_TYPE"::varchar), '') as object_type,
     nullif(trim("PART_ID"::varchar), '') as part_id,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('partner_raw', 'CLM_INTERESTED_PARTIES') }}
+    from {{ source('partner_test_raw', 'CLM_INTERESTED_PARTIES') }}
 
 )
 

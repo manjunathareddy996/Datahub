@@ -52,7 +52,7 @@ with source as (
     "IMPS_PAYMENT_LMT"::number as imps_payment_lmt,
     "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('partner_raw', 'BJAZ_HM_HOSPITAL_MASTER') }}
+    from {{ source('partner_test_raw', 'BJAZ_HM_HOSPITAL_MASTER') }}
 
 )
 

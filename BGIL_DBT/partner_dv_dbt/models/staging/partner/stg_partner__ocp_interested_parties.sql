@@ -19,7 +19,7 @@ with source as (
     nullif(trim("CONTRACT_ID"::varchar), '') as contract_id,
     "VERSION_NO"::number as version_no,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('partner_raw', 'OCP_INTERESTED_PARTIES') }}
+    from {{ source('partner_test_raw', 'OCP_INTERESTED_PARTIES') }}
 
 )
 

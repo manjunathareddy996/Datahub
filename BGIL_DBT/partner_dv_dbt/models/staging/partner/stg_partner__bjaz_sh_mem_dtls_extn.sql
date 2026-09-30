@@ -57,7 +57,7 @@ with source as (
     "INCEPTION_DATE"::timestamp_ntz as inception_date,
     nullif(trim("NOMINEE_RLTN"::varchar), '') as nominee_rltn,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('partner_raw', 'BJAZ_SH_MEM_DTLS_EXTN') }}
+    from {{ source('partner_test_raw', 'BJAZ_SH_MEM_DTLS_EXTN') }}
 
 )
 

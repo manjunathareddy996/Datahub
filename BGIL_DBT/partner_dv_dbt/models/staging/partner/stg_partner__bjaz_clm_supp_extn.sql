@@ -129,7 +129,7 @@ with source as (
     nullif(trim("OD_MIGRATION_YN"::varchar), '') as od_migration_yn,
     "OD_MIGRATION_DATE"::timestamp_ntz as od_migration_date,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('partner_raw', 'BJAZ_CLM_SUPP_EXTN') }}
+    from {{ source('partner_test_raw', 'BJAZ_CLM_SUPP_EXTN') }}
 
 )
 

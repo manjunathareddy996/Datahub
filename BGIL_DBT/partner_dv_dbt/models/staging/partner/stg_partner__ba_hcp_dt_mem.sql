@@ -124,7 +124,7 @@ with source as (
     nullif(trim("COL75"::varchar), '') as col75,
     nullif(trim("COL76"::varchar), '') as col76,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('partner_raw', 'BA_HCP_DT_MEM') }}
+    from {{ source('partner_test_raw', 'BA_HCP_DT_MEM') }}
 
 )
 

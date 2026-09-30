@@ -33,7 +33,7 @@ with source as (
     nullif(trim("MEMBER_NAME"::varchar), '') as member_name,
     "DOB"::timestamp_ntz as dob,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('partner_raw', 'BJAZ_CTNGY_FF_DTLS_EXTN') }}
+    from {{ source('partner_test_raw', 'BJAZ_CTNGY_FF_DTLS_EXTN') }}
 
 )
 

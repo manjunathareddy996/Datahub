@@ -62,7 +62,7 @@ with source as (
     nullif(trim("PREFERRED_CONTACT_OPT"::varchar), '') as preferred_contact_opt,
     nullif(trim("POLICY_REF"::varchar), '') as policy_ref,
     nullif(trim("EXISTING_POLICY_PID"::varchar), '') as existing_policy_pid
-    from {{ source('partner_raw', 'AZBJ_PARTNER_EXTN') }}
+    from {{ source('partner_test_raw', 'AZBJ_PARTNER_EXTN') }}
 
 )
 

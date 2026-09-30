@@ -53,7 +53,7 @@ with source as (
     nullif(trim("WEBSITE_LINK"::varchar), '') as website_link,
     nullif(trim("GST_STATUS"::varchar), '') as gst_status,
     nullif(trim("GST_NO"::varchar), '') as gst_no
-    from {{ source('partner_raw', 'BJAZ_INTERMEDIARY') }}
+    from {{ source('partner_test_raw', 'BJAZ_INTERMEDIARY') }}
 
 )
 

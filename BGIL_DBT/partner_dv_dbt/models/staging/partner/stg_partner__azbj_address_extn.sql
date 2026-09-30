@@ -32,7 +32,7 @@ with source as (
     nullif(trim("PASSPORT_NO"::varchar), '') as passport_no,
     "NO_SON"::number as no_son,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('partner_raw', 'AZBJ_ADDRESS_EXTN') }}
+    from {{ source('partner_test_raw', 'AZBJ_ADDRESS_EXTN') }}
 
 )
 
