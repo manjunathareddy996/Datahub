@@ -6,8 +6,7 @@
 -- payload Maximus populates, which is what removes any need to back-patch the other project.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_mp__pd_prop_msdp_pv'
+source_model: 'stg2_mp__pd_prop_msdp_pv'
 src_pk: 'PAYMENT_INSTRUMENT_HKEY'
 src_payload:
   - 'CARDNUMBERMASKED'

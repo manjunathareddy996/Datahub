@@ -6,8 +6,7 @@
 -- payload Maximus populates, which is what removes any need to back-patch the other project.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_mp_up__pd_prop_sp_pv__party_provider_capability'
+source_model: 'stg2_mp_up__pd_prop_sp_pv__party_provider_capability'
 src_pk: 'PARTY_HKEY'
 src_cdk:
   - 'FACILITYCODE'
