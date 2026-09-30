@@ -11,7 +11,7 @@
         cast(null as varchar) as cessationdate,
         authorized_signature as directorname,
         rec_refresh_at as rec_refresh_at,
-        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(authorized_signature)), '') is not null
     union all
@@ -21,7 +21,7 @@
         cast(null as varchar) as cessationdate,
         name_of_the_employee as directorname,
         rec_refresh_at as rec_refresh_at,
-        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(name_of_the_employee)), '') is not null
     union all
@@ -31,7 +31,7 @@
         cast(null as varchar) as cessationdate,
         name_of_the_head_fraud_prevention_and_loss_mitigation as directorname,
         rec_refresh_at as rec_refresh_at,
-        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(name_of_the_head_fraud_prevention_and_loss_mitigation)), '') is not null
     union all
@@ -41,7 +41,7 @@
         cast(null as varchar) as cessationdate,
         name_of_the_investigation_officer as directorname,
         rec_refresh_at as rec_refresh_at,
-        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(name_of_the_investigation_officer)), '') is not null
     union all
@@ -51,7 +51,7 @@
         cast(null as varchar) as cessationdate,
         marketing_head_name as directorname,
         rec_refresh_at as rec_refresh_at,
-        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(marketing_head_name)), '') is not null
     union all
@@ -61,7 +61,7 @@
         cast(null as varchar) as cessationdate,
         medical_director_name as directorname,
         rec_refresh_at as rec_refresh_at,
-        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(medical_director_name)), '') is not null
     union all
@@ -71,7 +71,7 @@
         cast(null as varchar) as cessationdate,
         medical_superintendent_name as directorname,
         rec_refresh_at as rec_refresh_at,
-        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(medical_superintendent_name)), '') is not null
     union all
@@ -81,7 +81,7 @@
         cast(null as varchar) as cessationdate,
         owners_full_name as directorname,
         rec_refresh_at as rec_refresh_at,
-        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(owners_full_name)), '') is not null
     union all
@@ -91,6 +91,6 @@
         date_of_acceptance_of_resignation as cessationdate,
         cast(null as varchar) as directorname,
         rec_refresh_at as rec_refresh_at,
-        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1' as record_source
+        'MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('stg_maximus__pd_prop_sp_pv') }}
     where nullif(trim(to_varchar(date_of_acceptance_of_resignation)), '') is not null or nullif(trim(to_varchar(type_of_principal)), '') is not null
