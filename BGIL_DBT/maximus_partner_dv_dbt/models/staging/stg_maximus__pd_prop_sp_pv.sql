@@ -1110,7 +1110,7 @@ with source as (
     nullif(trim(to_varchar("PARENT_KEY_HASH")), '') as parent_key_hash,
     cast(null as timestamp_ntz) as file_timestamp,
     current_timestamp() as rec_refresh_at
-    from {{ source('maximus_partner', 'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1') }}
+    from {{ source('maximus_partner', 'BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW') }}
 
 )
 
