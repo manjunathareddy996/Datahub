@@ -44,4 +44,28 @@ sources:
     schema: "{{ var('partner_test_raw_schema', 'INTERMEDIATE') }}"
     tables:
       - name: AZBJ_ADDRESS_EXTN
+      - name: AZBJ_PARTNER_EXTN
+      - name: BA_HCP_DT_MEM
+      - name: BJAZ_CLM_SUPP_EXTN
+      - name: BJAZ_CP_ADDRESS_LINK
+      - name: BJAZ_CTNGY_FF_DTLS_EXTN
+      - name: BJAZ_CTNGY_GC_MEM_DATA
       - name: BJAZ_CTNGY_PA_MEM_DTLS
+      - name: BJAZ_EC_MEM_DTLS_EXTN
+      - name: BJAZ_HCF_MEMBER_DTLS
+      - name: BJAZ_HC_PART_EXTN
+      - name: BJAZ_HLT_ENSURE_MEM_DTLS
+      - name: BJAZ_HM_HOSPITAL_MASTER
+      - name: BJAZ_HM_MEMBER_DTLS
+      - name: BJAZ_INTERMEDIARY
+      - name: BJAZ_PA_DETL_EXTN
+      - name: BJAZ_PINCODE
+      - name: BJAZ_PINCODE_MASTER
+      - name: BJAZ_SH_MEM_DTLS_EXTN
+      - name: BJAZ_SPP_MEMBER_DTLS
+      - name: BJAZ_STARPKG_FF_DTLS
+      - name: CLM_INTERESTED_PARTIES
+      - name: CLM_SUPPLIERS
+      - name: CP_ADDRESSES
+      - name: CP_PARTNERS
+      - name: OCP_INTERESTED_PARTIES
