@@ -7,8 +7,7 @@
 -- fact that already has one. NOT part of the canonical model.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_aug_mp__pd_prop_sp_pv__party'
+source_model: 'stg2_aug_mp__pd_prop_sp_pv__party'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'GROUPBUFFERAMOUNT'

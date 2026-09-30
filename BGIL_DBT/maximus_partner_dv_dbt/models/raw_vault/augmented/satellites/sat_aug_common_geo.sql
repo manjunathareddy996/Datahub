@@ -7,8 +7,7 @@
 -- fact that already has one. NOT part of the canonical model.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_aug_mp__pd_party_addr_prop_pv__location'
+source_model: 'stg2_aug_mp__pd_party_addr_prop_pv__location'
 src_pk: 'LOCATION_HKEY'
 src_payload:
   - 'ALTITUDE'
