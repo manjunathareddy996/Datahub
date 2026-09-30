@@ -6,6 +6,10 @@ profile: 'maximus_partner_dv'
 
 model-paths: ["models"]
 macro-paths: ["macros"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
 
 clean-targets:
   - "target"
@@ -27,10 +31,15 @@ vars:
 #     projects populate different columns of the same table. See models/.../hubfeed/.
 models:
   maximus_partner_dv_dbt:
+    +pre-hook:
+      - "{% if target.name == 'dev' %}INSERT INTO BAGIC_PREPROD_CURATED_DB.UTILS.MAXI_RAW_DBT_MODEL_RUN_LOG (model_name, status, run_id, run_start_timestamp, materialization, schema_name, target_table) SELECT '{{ this.name }}', 'RUNNING', '{{ invocation_id }}', '{{ run_started_at }}'::TIMESTAMP_NTZ, '{{ config.get(\"materialized\", \"view\") }}', '{{ this.schema }}', '{{ this.database }}.{{ this.schema }}.{{ this.name }}'{% endif %}"
+    +post-hook:
+      - "{% if target.name == 'dev' %}UPDATE BAGIC_PREPROD_CURATED_DB.UTILS.MAXI_RAW_DBT_MODEL_RUN_LOG SET status = 'SUCCESS' WHERE model_name = '{{ this.name }}' AND run_id = '{{ invocation_id }}' AND status = 'RUNNING'{% endif %}"
     staging:
-      maximus:
-        +materialized: view
-        +schema: BGIL_DATA_MODEL
+      +materialized: view
+      +schema: BGIL_DATA_MODEL
+      +tags: ["stg_1"]
+
     raw_vault:
       standard:
         +schema: BGIL_DATA_MODEL

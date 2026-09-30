@@ -31,41 +31,36 @@ models:
     staging:
       +materialized: view
       +schema: BGIL_DATA_MODEL
-      partner:
-        +materialized: view
-        +schema: BGIL_DATA_MODEL
-        +tags: ["partner", "partner_stg"]
+      +tags: ["stg1"]
 
     raw_vault:
-      partner:
-        +tags: ["partner"]
-        standard:
-          +schema: BGIL_DATA_MODEL
-          stitched:
-            +materialized: view
-            +tags: ["partner", "partner_stitch"]
-          staging:
-            +materialized: view
-            +tags: ["partner", "partner_stg2"]
-          hubs:
-            +materialized: incremental
-            +tags: ["partner", "partner_hub"]
-          links:
-            +materialized: incremental
-            +tags: ["partner", "partner_lnk"]
-          satellites:
-            +materialized: incremental
-            +tags: ["partner", "partner_sat"]
-          references:
-            +materialized: view
-            +tags: ["partner", "partner_ref"]
-        augmented:
-          +schema: BGIL_DATA_MODEL
-          +tags: ["partner", "partner_aug"]
-          staging:
-            +materialized: view
-            +tags: ["partner", "partner_aug_stg"]
-          satellites:
-            +materialized: incremental
-            +tags: ["partner", "partner_aug_sat"]
+      standard:
+        +schema: BGIL_DATA_MODEL
+        stitched:
+          +materialized: view
+          +tags: ["stitch"]
+        staging:
+          +materialized: view
+          +tags: ["standard_stg2"]
+        hubs:
+          +materialized: incremental
+          +tags: ["hub"]
+        links:
+          +materialized: incremental
+          +tags: ["lnk"]
+        satellites:
+          +materialized: incremental
+          +tags: ["standard_sat"]
+        references:
+          +materialized: view
+          +tags: ["ref"]
+      augmented:
+        +schema: BGIL_DATA_MODEL
+        +tags: ["aug"]
+        staging:
+          +materialized: view
+          +tags: ["aug_stg2"]
+        satellites:
+          +materialized: incremental
+          +tags: ["aug_sat"]
 
