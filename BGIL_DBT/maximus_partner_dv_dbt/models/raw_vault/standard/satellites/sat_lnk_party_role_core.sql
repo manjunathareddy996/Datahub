@@ -23,6 +23,11 @@ src_payload:
 src_hashdiff: 'HASHDIFF_LNK_PARTY_ROLE_CORE'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
+src_record_source_map:
+  stg2_mp_up__pd_prop_msdp_pv__lnk_party_role_core: 'MAXIMUS'
+  stg2_mp_up__pd_prop_sp_pv__lnk_party_role_core: 'MAXIMUS'
+  stg2_mp_up__pd_rel__lnk_party_role_core: 'MAXIMUS'
+  stg2_mp_up__pd_relparty__lnk_party_role_core: 'MAXIMUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
@@ -34,6 +39,7 @@ src_source: 'RECORD_SOURCE'
                        src_ldts=metadata_dict['src_ldts'],
                        src_source=metadata_dict['src_source'],
                        source_model=metadata_dict['source_model'],
+                       src_record_source_map=metadata_dict['src_record_source_map'],
                        src_column_map={
                         'stg2_mp_up__pd_prop_msdp_pv__lnk_party_role_core': ['ROLECODE', 'ROLEENDDATE', 'ROLESTARTDATE', 'ROLETYPE'],
                         'stg2_mp_up__pd_prop_sp_pv__lnk_party_role_core': ['ROLECODE', 'ROLEENDDATE', 'ROLESTARTDATE', 'ROLETYPE'],
