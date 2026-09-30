@@ -1,10 +1,4 @@
-{{
-    config(
-        materialized='incremental',
-        incremental_strategy='merge',
-        unique_key=['PARTY_HKEY', 'ROLECODE', 'ROLESEQUENCE', 'HASHDIFF_LNK_PARTY_ROLE_CORE', 'RECORD_SOURCE']
-    )
-}}
+{{ config(materialized='incremental') }}
 
 -- MAXIMUS PARTNER ma_sat() for SAT_LNK_PARTY_ROLE_CORE.
 -- Writes the SAME physical table as partner_dv_dbt's model of the same name: separate projects,

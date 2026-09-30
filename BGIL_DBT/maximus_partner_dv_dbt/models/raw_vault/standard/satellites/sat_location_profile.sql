@@ -1,11 +1,4 @@
-{{
-    config(
-        materialized='incremental',
-        incremental_strategy='merge',
-        on_schema_change='append_new_columns',
-        unique_key=['LOCATION_HKEY', 'HASHDIFF_LOCATION_PROFILE', 'RECORD_SOURCE']
-    )
-}}
+{{ config(materialized='incremental') }}
 
 -- MAXIMUS PARTNER sat() for SAT_LOCATION_PROFILE.
 -- Writes the SAME physical table as partner_dv_dbt's model of the same name: separate projects,
