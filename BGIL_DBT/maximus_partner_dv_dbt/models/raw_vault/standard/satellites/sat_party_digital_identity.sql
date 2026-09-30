@@ -17,6 +17,9 @@ src_payload:
 src_hashdiff: 'HASHDIFF_PARTY_DIGITAL_IDENTITY'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
+src_record_source_map:
+  stg2_mp_up__pd_prop_msdp_pv__party_digital_identity: 'MAXIMUS'
+  stg2_mp_up__pd_prop_sp_pv__party_digital_identity: 'MAXIMUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
@@ -28,6 +31,7 @@ src_source: 'RECORD_SOURCE'
                        src_ldts=metadata_dict['src_ldts'],
                        src_source=metadata_dict['src_source'],
                        source_model=metadata_dict['source_model'],
+                       src_record_source_map=metadata_dict['src_record_source_map'],
                        src_column_map={
                         'stg2_mp_up__pd_prop_msdp_pv__party_digital_identity': ['LOGINIDENTIFIER'],
                         'stg2_mp_up__pd_prop_sp_pv__party_digital_identity': ['LOGINIDENTIFIER']
