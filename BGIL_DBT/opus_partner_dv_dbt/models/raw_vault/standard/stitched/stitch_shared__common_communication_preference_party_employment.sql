@@ -1,0 +1,36 @@
+{{ config(materialized='view') }}
+
+-- PARTNER STANDARD-MODEL stitch view for SAT_COMMON_COMMUNICATION_PREFERENCE, SAT_PARTY_EMPLOYMENT (HUB_PARTY grain).
+-- 1 table(s) contributing at this grain.
+-- Uses the stitch_incremental macro.
+
+{%- set sources = [
+    {
+        'model': 'stg_partner__cp_partners',
+        'alias': 't1',
+        'key_column': 'part_id',
+        'ldts_column': 'inc_job_updated_at',
+        'columns': [
+            {'src': 'language', 'tgt': 'correspondencelanguage'},
+            {'src': 'literature', 'tgt': 'marketingoptinindicator'},
+            {'src': 'employment_status', 'tgt': 'employmentstatus'}
+        ],
+        'source_tag': 'OPUS_CP_PARTNERS'
+    }
+] -%}
+
+{%- set output_columns = ['correspondencelanguage', 'marketingoptinindicator', 'employmentstatus'] -%}
+
+{%- set coalesce_rules = {
+    'correspondencelanguage':  ['t1'],
+    'marketingoptinindicator': ['t1'],
+    'employmentstatus':        ['t1']
+} %}
+
+{{ stitch_incremental(
+    sources=sources,
+    output_columns=output_columns,
+    coalesce_rules=coalesce_rules,
+    unique_key='parent_bk',
+    target_sat='sat_partner_common_communication_preference'
+) }}

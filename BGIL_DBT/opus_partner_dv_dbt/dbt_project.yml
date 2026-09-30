@@ -1,0 +1,66 @@
+name: 'opus_partner_dv_dbt'
+version: '1.0.0'
+
+profile: 'opus_partner_dbt'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+vars:
+  partner_raw_database: BAGIC_PROD_MIRROR_DB
+  partner_raw_schema: OPUS_GG_DWHSTAGE
+  partner_test_raw_database: BAGIC_PREPROD_CURATED_DB
+  partner_test_raw_schema: UTILS
+
+
+models:
+  opus_partner_dv_dbt:
+    +pre-hook:
+      - "{% if target.name == 'dev' %}INSERT INTO BAGIC_PREPROD_CURATED_DB.UTILS.MAXI_RAW_DBT_MODEL_RUN_LOG (model_name, status, run_id, run_start_timestamp, materialization, schema_name, target_table) SELECT '{{ this.name }}', 'RUNNING', '{{ invocation_id }}', '{{ run_started_at }}'::TIMESTAMP_NTZ, '{{ config.get(\"materialized\", \"view\") }}', '{{ this.schema }}', '{{ this.database }}.{{ this.schema }}.{{ this.name }}'{% endif %}"
+    +post-hook:
+      - "{% if target.name == 'dev' %}UPDATE BAGIC_PREPROD_CURATED_DB.UTILS.MAXI_RAW_DBT_MODEL_RUN_LOG SET status = 'SUCCESS' WHERE model_name = '{{ this.name }}' AND run_id = '{{ invocation_id }}' AND status = 'RUNNING'{% endif %}"
+    staging:
+      +materialized: view
+      +schema: BGIL_DATA_MODEL
+      +tags: ["stg1"]
+
+    raw_vault:
+      standard:
+        +schema: BGIL_DATA_MODEL
+        stitched:
+          +materialized: view
+          +tags: ["stitch"]
+        staging:
+          +materialized: view
+          +tags: ["standard_stg2"]
+        hubs:
+          +materialized: incremental
+          +tags: ["hub"]
+        links:
+          +materialized: incremental
+          +tags: ["lnk"]
+        satellites:
+          +materialized: incremental
+          +tags: ["standard_sat"]
+        references:
+          +materialized: view
+          +tags: ["ref"]
+      augmented:
+        +schema: BGIL_DATA_MODEL
+        +tags: ["aug"]
+        staging:
+          +materialized: view
+          +tags: ["aug_stg2"]
+        satellites:
+          +materialized: incremental
+          +tags: ["aug_sat"]
+

@@ -1,0 +1,19 @@
+target/
+logs/
+.user.yml
+TESTING
+
+# dbt_packages unnecessary files (keep macros, remove bloat)
+dbt_packages/**/integration_tests/
+dbt_packages/**/.circleci/
+dbt_packages/**/.github/
+dbt_packages/**/tests/
+dbt_packages/**/docs/
+dbt_packages/**/etc/
+dbt_packages/**/*.md
+dbt_packages/**/*.txt
+dbt_packages/**/*.ini
+dbt_packages/**/*.sh
+dbt_packages/**/Makefile
+dbt_packages/**/docker-compose.yml
+dbt_packages/**/.gitignore
