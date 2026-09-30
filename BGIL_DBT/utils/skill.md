@@ -137,10 +137,12 @@ union and stitch families in the project.
   the chained join (see "Incremental stitch via macro" below).
 - `hub_<name>.sql` / `link_<name>.sql` / `sat_<name>.sql` / union of per-branch stage models
   via `automate_dv.hub()`/`link()`/`sat()`/`ma_sat()`.
-- **Satellite file naming: `sat_<lob>_<name>.sql`** — every satellite model name is prefixed with
-  the LOB (e.g. `sat_partner_party`, `sat_partner_aug_location`). Keeps satellites namespaced per
-  LOB when projects share a tree and matches the existing build's convention — don't drop the LOB
-  segment.
+- **Satellite file naming: `sat_<name>.sql`** — do **not** prefix the satellite model name with the
+  source/LOB segment (no `sat_<source>_<name>`, e.g. use `sat_party`, `sat_aug_location`, not
+  `sat_partner_party`). The source/LOB is **not** carried in the model name; it is carried only in
+  the `RECORD_SOURCE` value (see the record-source prefix rule below). When two projects share a
+  tree and write the same physical satellite, they use the same un-prefixed model name — the
+  per-source disambiguation lives entirely in `RECORD_SOURCE`, not the file name.
 - **Multi-source satellites — prefer the custom `sat_multi_source` / `ma_sat_multi_source`
   macros over a hand-written union feeding `automate_dv.sat()`/`ma_sat()`.** When a satellite is
   fed by more than one per-table stg2 model, do **not** build a separate `stg2_union__<sat>` view
@@ -563,7 +565,7 @@ each remaining table individually (see Known Defect Classes #4).
  
 - Hash-key suffix: `_HK` vs `_HKEY` — check the project's existing hubs, don't assume.
 - Parent business-key column naming: `PARENT_BK`/`PARENT_NK` vs project-specific naming.
-- Satellite file naming: `sat_<lob>_<name>.sql` (LOB-prefixed, e.g. `sat_partner_party`).
+- Satellite file naming: `sat_<name>.sql` (NO source/LOB prefix, e.g. `sat_party` not `sat_partner_party`). The source/LOB is carried only in `RECORD_SOURCE`, never in the model name.
 - Namespaced hashing formula: `hash('{CODE}|' || raw_key)`.
 - Record-source prefix: every `RECORD_SOURCE` literal (`stg2` stages) and `source_tag` (stitch
   source dicts) must carry the project's source-system prefix (`OPUS_` here — the raw-ingestion
