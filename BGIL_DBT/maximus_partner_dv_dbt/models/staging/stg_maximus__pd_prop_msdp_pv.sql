@@ -5,13 +5,13 @@
 with source as (
 
     select
-    nullif(trim(to_varchar("ACCOUNT_CODE")), '') as account_code,
+    cast(null as varchar) as account_code,
     nullif(trim(to_varchar("ADDRESS_2")), '') as address_2,
     nullif(trim(to_varchar("ACCOUNT_HOLDER_NAME")), '') as account_holder_name,
     nullif(trim(to_varchar("ACCOUNT_NUMBER")), '') as account_number,
     nullif(trim(to_varchar("ACCOUNT_TYPE")), '') as account_type,
-    nullif(trim(to_varchar("ACC_CODE_CR")), '') as acc_code_cr,
-    nullif(trim(to_varchar("ACC_CODE_DR")), '') as acc_code_dr,
+    cast(null as varchar) as acc_code_cr,
+    cast(null as varchar as acc_code_dr,
     nullif(trim(to_varchar("APPROVEDREJECTED_BY")), '') as approvedrejected_by,
     nullif(trim(to_varchar("APPROVEDREJECTED_DATE")), '') as approvedrejected_date,
     try_to_number(to_varchar("APP_EXPENSE_LIMIT")) as app_expense_limit,

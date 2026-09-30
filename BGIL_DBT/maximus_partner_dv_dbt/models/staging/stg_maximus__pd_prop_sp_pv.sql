@@ -948,7 +948,7 @@ with source as (
     cast(null as varchar) as single_speciality,
     nullif(trim(to_varchar("SKILLS")), '') as skills,
     nullif(trim(to_varchar("SLA_NUMBER")), '') as sla_number,
-    nullif(trim(to_varchar("SLA_NUMBER_BAP_FORMAT_SURVEYOR_LICENSE")), '') as sla_number_bap_format_surveyor_license,
+    cast(null as varchar) as sla_number_bap_format_surveyor_license,
     nullif(trim(to_varchar("SLA_TYPE")), '') as sla_type,
     nullif(trim(to_varchar("SMART_PHONE_COMPANY_NAMEMODEL_NAME")), '') as smart_phone_company_namemodel_name,
     nullif(trim(to_varchar("SPAN_OF_CONTROL_DOCTOR_TO_PATIENT")), '') as span_of_control_doctor_to_patient,
