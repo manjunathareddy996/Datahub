@@ -19,8 +19,11 @@
 #}
 
 {% macro get_to_date() %}
-    {%- set td = var('to_date', run_started_at.strftime('%Y-%m-%d %H:%M:%S')) -%}
-    {{ return("'" ~ td ~ "'") }}
+    {%- if var('to_date', none) is not none -%}
+        {{ return("'" ~ var('to_date') ~ "'") }}
+    {%- else -%}
+        {{ return("CONVERT_TIMEZONE('UTC', 'Asia/Kolkata', CURRENT_TIMESTAMP())::TIMESTAMP_NTZ") }}
+    {%- endif -%}
 {% endmacro %}
 
 

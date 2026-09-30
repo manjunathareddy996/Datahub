@@ -1,25 +1,25 @@
 {%- macro ma_sat_multi_source(src_pk, src_cdk, src_hashdiff, src_payload, src_ldts, src_source, source_model, src_extra_columns=none, src_column_map=none, src_record_source_map=none, src_run_ts='DBT_RUN_TS') -%}
-
+ 
 {#--
     Multi-active, multi-source satellite.
-
+ 
     Combines the UNION-ALL / column-alignment / watermark front half of
     sat_multi_source with the GROUP-BASED change detection of automate_dv.ma_sat.
-
+ 
     Grain: one row per (src_pk, src_cdk, record_source). A parent key (src_pk) has
     many concurrently-active child rows (one per src_cdk value), and each source
     contributes its own group (Option B: group by src_pk + record_source).
-
+ 
     Change detection is by GROUP, not by row: for a given (src_pk, record_source)
     the incoming set of child rows is compared against the stored set. The group is
     re-inserted if any member's hashdiff differs OR the member count changed. Because
     each source is its own group, a late-arriving source does not make another
     source's group look like it shrank (no phantom versions).
-
+ 
     Required: src_pk, src_cdk, src_hashdiff, src_payload, src_ldts, src_source, source_model
     Optional: src_extra_columns, src_column_map, src_run_ts (default 'DBT_RUN_TS')
 --#}
-
+ 
 {#-- Required parameter validation --#}
 {%- if src_pk is none -%}
     {{ exceptions.raise_compiler_error("src_pk is a required parameter for ma_sat_multi_source") }}
@@ -42,10 +42,10 @@
 {%- if source_model is none -%}
     {{ exceptions.raise_compiler_error("source_model is a required parameter for ma_sat_multi_source") }}
 {%- endif -%}
-
+ 
 {#-- Normalise src_cdk to a list (it may be a single string) --#}
 {%- set cdk_cols = [src_cdk] if src_cdk is string else src_cdk -%}
-
+ 
 {#-- source_model must be a non-empty list of strings --#}
 {%- if source_model is string or source_model is mapping or source_model is not iterable -%}
     {{ exceptions.raise_compiler_error("source_model must be a list of model names for ma_sat_multi_source") }}
@@ -58,7 +58,7 @@
         {{ exceptions.raise_compiler_error("source_model entry at position " ~ loop.index ~ " must be a non-empty string") }}
     {%- endif -%}
 {%- endfor -%}
-
+ 
 {#-- Logical source-group mapping validation. --#}
 {%- if src_record_source_map is none or src_record_source_map is not mapping -%}
     {{ exceptions.raise_compiler_error("src_record_source_map must be a mapping of model name to logical source group for ma_sat_multi_source") }}
@@ -68,10 +68,10 @@
         {{ exceptions.raise_compiler_error("src_record_source_map is missing an entry for source model '" ~ model_name ~ "'") }}
     {%- endif -%}
 {%- endfor -%}
-
+ 
 {#-- Column resolution: determine payload columns per source model --#}
 {%- set ns = namespace(source_columns={}) -%}
-
+ 
 {%- if src_column_map is not none and src_column_map is mapping -%}
     {%- for map_key in src_column_map.keys() -%}
         {%- if map_key not in source_model -%}
@@ -96,15 +96,15 @@
         {%- endif -%}
     {%- endfor -%}
 {%- endif -%}
-
+ 
 {#-- Superset of payload columns. src_payload is authoritative when provided. --#}
 {%- set system_cols = [src_pk | upper, src_hashdiff | upper, src_ldts | upper, src_source | upper, src_run_ts | upper] -%}
 {%- for c in cdk_cols -%}
     {%- do system_cols.append(c | upper) -%}
 {%- endfor -%}
-
+ 
 {%- set superset = src_payload | sort -%}
-
+ 
 {%- if src_extra_columns is not none -%}
     {%- set extra_list = [src_extra_columns] if src_extra_columns is string else src_extra_columns -%}
     {%- set ns_extra = namespace(merged=superset | list) -%}
@@ -116,7 +116,7 @@
     {%- endfor -%}
     {%- set superset = ns_extra.merged | sort -%}
 {%- endif -%}
-
+ 
 {#-- Keep system columns (run_ts, cdk) out of the payload superset so the padding
      loop never nulls or duplicates them. --#}
 {%- set ns_clean = namespace(cols=[]) -%}
@@ -126,21 +126,21 @@
     {%- endif -%}
 {%- endfor -%}
 {%- set superset = ns_clean.cols -%}
-
+ 
 {%- if superset | length == 0 -%}
     {{ exceptions.raise_compiler_error("No payload columns found across source models") }}
 {%- endif -%}
-
+ 
 {#-- Watermark window: one watermark per distinct logical source group. --#}
 {%- set sentinel = '1900-01-01' -%}
 {%- set source_watermarks = {} -%}
-
+ 
 {%- if var('to_date', none) is not none -%}
     {%- set to_date_expr = "CAST('" ~ var('to_date') ~ "' AS TIMESTAMP_NTZ)" -%}
 {%- else -%}
     {%- set to_date_expr = "CAST(CONVERT_TIMEZONE('UTC','Asia/Kolkata', '" ~ run_started_at.strftime('%Y-%m-%d %H:%M:%S') ~ "'::timestamp_ntz) AS TIMESTAMP_NTZ)" -%}
 {%- endif -%}
-
+ 
 {%- for model_name in source_model -%}
     {%- set source_group = src_record_source_map[model_name] -%}
     {%- if source_group not in source_watermarks -%}
@@ -169,7 +169,7 @@
         {%- do source_watermarks.update({source_group: group_from_date}) -%}
     {%- endif -%}
 {%- endfor -%}
-
+ 
 {#-- Grouping key for Option B: parent key + record source. Each source's set of
      child rows for a parent is an independent group. --#}
 WITH source_data AS (
@@ -204,10 +204,10 @@ WITH source_data AS (
 {% endif %}
 {% endfor %}
 )
-
+ 
 {%- if automate_dv.is_any_incremental() %}
 ,
-
+ 
 {#-- Count of distinct (cdk, hashdiff) members in each incoming group. --#}
 source_data_with_count AS (
     SELECT a.*, b.source_count
@@ -224,7 +224,7 @@ source_data_with_count AS (
         ON a.{{ src_pk }} = b.{{ src_pk }}
         AND a.{{ src_source }} = b.{{ src_source }}
 ),
-
+ 
 {#-- Latest stored group per (parent, source), plus its member count. --#}
 latest_records AS (
     SELECT
@@ -246,7 +246,7 @@ latest_records AS (
         ORDER BY mas.{{ src_ldts }} DESC
     ) = 1
 ),
-
+ 
 latest_group_details AS (
     SELECT
         {{ src_pk }},
@@ -257,9 +257,9 @@ latest_group_details AS (
     GROUP BY {{ src_pk }}, {{ src_source }}, {{ src_ldts }}
 )
 {%- endif %}
-
+ 
 ,
-
+ 
 records_to_insert AS (
 {%- if not automate_dv.is_any_incremental() %}
     SELECT * FROM source_data
@@ -300,7 +300,7 @@ records_to_insert AS (
     )
 {%- endif %}
 )
-
+ 
 SELECT * FROM records_to_insert
-
+ 
 {%- endmacro -%}
