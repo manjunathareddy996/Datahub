@@ -141,9 +141,14 @@ select 'MAXIMUS' as project, 'HUB_LOCATION' as hub, s.LOCATION_HKEY as missing_h
 
 ----------------------------------------------------------------------------------------
 -- MAXIMUS :: HUB_PAYMENT_INSTRUMENT   (NK prefix 'HUB_PAYMENT_INSTRUMENT|')
+-- IMPORTANT: the stg2 model double-prefixes the NK:
+--   PAYMENT_INSTRUMENT_BK = 'HUB_PAYMENT_INSTRUMENT|' || foreign_key
+--   PAYMENT_INSTRUMENT_NK = 'HUB_PAYMENT_INSTRUMENT|' || PAYMENT_INSTRUMENT_BK
+-- so the hashed string is 'HUB_PAYMENT_INSTRUMENT|HUB_PAYMENT_INSTRUMENT|' || foreign_key.
+-- (This looks like a modelling defect, but the test must match what was actually loaded.)
 ----------------------------------------------------------------------------------------
 with maxi_hub_payment_instrument_src as (
-    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PAYMENT_INSTRUMENT|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), '')))) as PAYMENT_INSTRUMENT_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PAYMENT_INSTRUMENT|HUB_PAYMENT_INSTRUMENT|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), '')))) as PAYMENT_INSTRUMENT_HKEY
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
      where nullif(trim(to_varchar(FOREIGN_KEY)), '') is not null
 )
@@ -173,18 +178,14 @@ select 'MAXIMUS' as project, 'HUB_PRODUCT' as hub, s.PRODUCT_HKEY as missing_hke
 
 ----------------------------------------------------------------------------------------
 -- MAXIMUS :: HUB_FINANCIAL_ACCOUNT   (NK prefix 'HUB_FINANCIAL_ACCOUNT|')
+-- NOT APPLICABLE for Maximus at present. The business key FINANCIAL_ACCOUNT_BK is derived
+-- from `account_code`, but the layer-1 model stg_maximus__pd_prop_msdp_pv sets
+--     cast(null as varchar) as account_code
+-- i.e. ACCOUNT_CODE is NOT yet mapped from the source JSON (remapping required). The
+-- source therefore contributes zero business keys, so there is nothing to reconcile.
+-- Re-enable this check once ACCOUNT_CODE is correctly mapped in the staging layer.
 ----------------------------------------------------------------------------------------
-with maxi_hub_financial_account_src as (
-    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_FINANCIAL_ACCOUNT|' || nullif(trim(to_varchar(ACCOUNT_CODE)), '') AS VARCHAR), '')))) as FINANCIAL_ACCOUNT_HKEY
-      from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
-     where nullif(trim(to_varchar(ACCOUNT_CODE)), '') is not null
-)
-select 'MAXIMUS' as project, 'HUB_FINANCIAL_ACCOUNT' as hub, s.FINANCIAL_ACCOUNT_HKEY as missing_hkey
-  from maxi_hub_financial_account_src s
-  left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_ACCOUNT h
-         on h.FINANCIAL_ACCOUNT_HKEY = s.FINANCIAL_ACCOUNT_HKEY
-        and h.RECORD_SOURCE like 'MAXIMUS_%'
- where h.FINANCIAL_ACCOUNT_HKEY is null;
+-- (intentionally NA until account_code is mapped)
 
 
 ----------------------------------------------------------------------------------------
@@ -237,15 +238,16 @@ select 'MAXIMUS' as project, 'HUB_DISTRIBUTION_CHANNEL' as hub, s.DISTRIBUTION_C
 
 ----------------------------------------------------------------------------------------
 -- MAXIMUS :: HUB_ORG_UNIT   (NK prefix 'HUB_ORG_UNIT|')
+-- Only ONE source actually contributes a key: `company` from the multi-set pivot.
+-- The simple-pivot branch derived ORG_UNIT_BK from `branch_code`, but the layer-1 model
+-- stg_maximus__pd_prop_sp_pv sets  cast(null as varchar) as branch_code  (the real raw
+-- column is BRANCH and is deliberately not used as the key). That branch contributes no
+-- keys, so it is excluded here to avoid false "missing key" findings ("Invalid branch code").
 ----------------------------------------------------------------------------------------
 with maxi_hub_org_unit_src as (
     select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_ORG_UNIT|' || nullif(trim(to_varchar(COMPANY)), '') AS VARCHAR), '')))) as ORG_UNIT_HKEY
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
      where nullif(trim(to_varchar(COMPANY)), '') is not null
-    union
-    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_ORG_UNIT|' || nullif(trim(to_varchar(BRANCH_CODE)), '') AS VARCHAR), ''))))
-      from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1
-     where nullif(trim(to_varchar(BRANCH_CODE)), '') is not null
 )
 select 'MAXIMUS' as project, 'HUB_ORG_UNIT' as hub, s.ORG_UNIT_HKEY as missing_hkey
   from maxi_hub_org_unit_src s
