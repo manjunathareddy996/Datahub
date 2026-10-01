@@ -15,8 +15,8 @@ hashed_columns:
     columns:
       - 'ALTITUDE'
 derived_columns:
-  LOCATION_BK: "md5(concat_ws('|', upper(trim(to_varchar(land_mark))), upper(trim(to_varchar(area))), upper(trim(to_varchar(post_office))), upper(trim(to_varchar(city))), upper(trim(to_varchar(state))), upper(trim(to_varchar(pincode)))))"
-  LOCATION_NK: "'HUB_LOCATION|' || (md5(concat_ws('|', upper(trim(to_varchar(land_mark))), upper(trim(to_varchar(area))), upper(trim(to_varchar(post_office))), upper(trim(to_varchar(city))), upper(trim(to_varchar(state))), upper(trim(to_varchar(pincode))))))"
+  LOCATION_BK: "case when coalesce(upper(trim(to_varchar(land_mark))), upper(trim(to_varchar(area))), upper(trim(to_varchar(post_office))), upper(trim(to_varchar(city))), upper(trim(to_varchar(state))), upper(trim(to_varchar(pincode)))) is null then null else md5(concat_ws('|', coalesce(upper(trim(to_varchar(land_mark))), ''), coalesce(upper(trim(to_varchar(area))), ''), coalesce(upper(trim(to_varchar(post_office))), ''), coalesce(upper(trim(to_varchar(city))), ''), coalesce(upper(trim(to_varchar(state))), ''), coalesce(upper(trim(to_varchar(pincode))), ''))) end"
+  LOCATION_NK: "'HUB_LOCATION|' || (case when coalesce(upper(trim(to_varchar(land_mark))), upper(trim(to_varchar(area))), upper(trim(to_varchar(post_office))), upper(trim(to_varchar(city))), upper(trim(to_varchar(state))), upper(trim(to_varchar(pincode)))) is null then null else md5(concat_ws('|', coalesce(upper(trim(to_varchar(land_mark))), ''), coalesce(upper(trim(to_varchar(area))), ''), coalesce(upper(trim(to_varchar(post_office))), ''), coalesce(upper(trim(to_varchar(city))), ''), coalesce(upper(trim(to_varchar(state))), ''), coalesce(upper(trim(to_varchar(pincode))), ''))) end)"
   ALTITUDE: "geo_coordinate_altitude"
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_pd_party_addr_prop_pv'
