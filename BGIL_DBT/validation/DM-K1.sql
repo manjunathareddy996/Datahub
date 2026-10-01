@@ -497,3 +497,53 @@ select s.src_tag,
         and h.RECORD_SOURCE like 'MAXIMUS_%'
  group by s.src_tag
  order by missing_keys desc;
+
+
+/* =====================================================================================
+   DM-K1 DRILL-DOWN :: MAXIMUS HUB_PARTY  --  inspect the actual 5,771 missing keys.
+   The per-source diagnostic shows the SAME ~5,771 keys missing across every foreign_key/
+   party_code source (shared universe), sample BK = '1'. This lists them so we can see
+   whether they are degenerate values (e.g. '0','1'), different formatting, or real codes.
+   ===================================================================================== */
+
+-- (A) The missing business keys themselves (from the base pd table), with length/format.
+with pd_keys as (
+    select distinct
+        nullif(trim(to_varchar(PARTY_CODE)), '')                                       as bk,
+        MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(PARTY_CODE)), '') AS VARCHAR), '')))) as PARTY_HKEY
+      from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL
+     where nullif(trim(to_varchar(PARTY_CODE)), '') is not null
+)
+select s.bk                               as missing_business_key,
+       length(s.bk)                       as bk_length,
+       s.bk regexp '^[0-9]+$'             as is_numeric_only
+  from pd_keys s
+  left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY h
+         on h.PARTY_HKEY = s.PARTY_HKEY
+        and h.RECORD_SOURCE like 'MAXIMUS_%'
+ where h.PARTY_HKEY is null
+ order by bk_length, missing_business_key
+ limit 100;
+
+-- (B) Do these keys exist in the hub at all (ANY record_source, incl. OPUS / partner_dv)?
+-- If they exist only under a NON-MAXIMUS record_source, the gap is a record_source-scoping
+-- artefact (the key is in the shared hub, just loaded by another project), NOT a real miss.
+with pd_keys as (
+    select distinct
+        MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(PARTY_CODE)), '') AS VARCHAR), '')))) as PARTY_HKEY
+      from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL
+     where nullif(trim(to_varchar(PARTY_CODE)), '') is not null
+),
+missing_maxi as (
+    select s.PARTY_HKEY
+      from pd_keys s
+      left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY h
+             on h.PARTY_HKEY = s.PARTY_HKEY and h.RECORD_SOURCE like 'MAXIMUS_%'
+     where h.PARTY_HKEY is null
+)
+select count(*)                                                           as missing_from_maxi_scope,
+       count(h2.PARTY_HKEY)                                               as of_which_present_under_any_source,
+       count(*) - count(h2.PARTY_HKEY)                                    as truly_absent_from_hub
+  from missing_maxi m
+  left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY h2
+         on h2.PARTY_HKEY = m.PARTY_HKEY;
