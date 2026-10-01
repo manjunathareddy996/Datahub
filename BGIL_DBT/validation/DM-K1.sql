@@ -443,3 +443,57 @@ select 'OPUS' as project, 'HUB_RISK_OBJECT' as hub, s.RISK_OBJECT_HKEY as missin
          on h.RISK_OBJECT_HKEY = s.RISK_OBJECT_HKEY
         and h.RECORD_SOURCE like 'OPUS_%'
  where h.RISK_OBJECT_HKEY is null;
+
+
+/* =====================================================================================
+   DM-K1 DIAGNOSTIC :: MAXIMUS HUB_PARTY  --  break the missing keys down BY SOURCE.
+   Run this to see which contributing source produces the missing PARTY_HKEYs.
+   Each branch tags its source so the result groups the gap by origin table.
+   ===================================================================================== */
+with maxi_party_src_tagged as (
+    select 'pd (PARTY_CODE)'                   as src_tag,
+           nullif(trim(to_varchar(PARTY_CODE)), '')      as bk,
+           MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(PARTY_CODE)), '') AS VARCHAR), '')))) as PARTY_HKEY
+      from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL
+     where nullif(trim(to_varchar(PARTY_CODE)), '') is not null
+    union all
+    select 'pd_addr (FOREIGN_KEY)', nullif(trim(to_varchar(FOREIGN_KEY)), ''),
+           MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), ''))))
+      from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS
+     where nullif(trim(to_varchar(FOREIGN_KEY)), '') is not null
+    union all
+    select 'pd_party_addr_prop_pv (FOREIGN_KEY)', nullif(trim(to_varchar(FOREIGN_KEY)), ''),
+           MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), ''))))
+      from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+     where nullif(trim(to_varchar(FOREIGN_KEY)), '') is not null
+    union all
+    select 'pd_prop_msdp_pv (FOREIGN_KEY)', nullif(trim(to_varchar(FOREIGN_KEY)), ''),
+           MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), ''))))
+      from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+     where nullif(trim(to_varchar(FOREIGN_KEY)), '') is not null
+    union all
+    select 'pd_prop_sp_pv (BAGIC_EMPLOYEE_CODE)', nullif(trim(to_varchar(BAGIC_EMPLOYEE_CODE)), ''),
+           MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(BAGIC_EMPLOYEE_CODE)), '') AS VARCHAR), ''))))
+      from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1
+     where nullif(trim(to_varchar(BAGIC_EMPLOYEE_CODE)), '') is not null
+    union all
+    select 'pd_rel (FOREIGN_KEY)', nullif(trim(to_varchar(FOREIGN_KEY)), ''),
+           MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), ''))))
+      from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_RELATION
+     where nullif(trim(to_varchar(FOREIGN_KEY)), '') is not null
+    union all
+    select 'pd_relparty (FOREIGN_KEY)', nullif(trim(to_varchar(FOREIGN_KEY)), ''),
+           MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), ''))))
+      from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_RELATED_PARTY
+     where nullif(trim(to_varchar(FOREIGN_KEY)), '') is not null
+)
+select s.src_tag,
+       count(distinct s.PARTY_HKEY)                                             as source_distinct_keys,
+       count(distinct case when h.PARTY_HKEY is null then s.PARTY_HKEY end)      as missing_keys,
+       min(case when h.PARTY_HKEY is null then s.bk end)                         as sample_missing_bk
+  from maxi_party_src_tagged s
+  left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY h
+         on h.PARTY_HKEY = s.PARTY_HKEY
+        and h.RECORD_SOURCE like 'MAXIMUS_%'
+ group by s.src_tag
+ order by missing_keys desc;
