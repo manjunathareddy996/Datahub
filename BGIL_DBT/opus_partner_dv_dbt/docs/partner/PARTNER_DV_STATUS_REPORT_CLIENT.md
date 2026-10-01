@@ -33,7 +33,7 @@ Validation — In Progress (DEV)
 |------|--------|
 | Key & hashdiff integrity, history, completeness checks | Ongoing |
 | hub_party | Full load not yet completed |
-| sat_partner_party_identity | Not yet loaded |
+| sat_party_identity | Not yet loaded |
 
 Next Steps
 
