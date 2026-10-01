@@ -5,9 +5,11 @@
              so a defect in the stg/stitch/unpivot view layer cannot mask a real gap).
    Pass:     0 rows returned (0 missing keys, or documented exceptions).
 
-   HKEY reproduction (identical macro in both projects):
-       HKEY = MD5(UPPER(TRIM(COALESCE(CAST( <NK> AS VARCHAR), ''))))
+   HKEY reproduction (AutomateDV default MD5 on Snowflake -> stored as BINARY(16)):
+       HKEY = MD5_BINARY(UPPER(TRIM(COALESCE(CAST( <NK> AS VARCHAR), ''))))
        <NK> = 'HUB_<ENTITY>|' || <trimmed raw key>
+       NOTE: use MD5_BINARY (not MD5). The hub HKEY column is BINARY(16); MD5() returns
+       a VARCHAR(32) hex string and the join fails with a type-conversion error.
        trimmed raw key = nullif(trim(to_varchar(<RAW_COL>)), '')
 
    Fully-qualified names:
@@ -29,31 +31,31 @@
 -- MAXIMUS :: HUB_PARTY   (NK prefix 'HUB_PARTY|')
 ----------------------------------------------------------------------------------------
 with maxi_hub_party_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(PARTY_CODE)), '') AS VARCHAR), '')))) as PARTY_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(PARTY_CODE)), '') AS VARCHAR), '')))) as PARTY_HKEY
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL
      where nullif(trim(to_varchar(PARTY_CODE)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), ''))))
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS
      where nullif(trim(to_varchar(FOREIGN_KEY)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), ''))))
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
      where nullif(trim(to_varchar(FOREIGN_KEY)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), ''))))
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
      where nullif(trim(to_varchar(FOREIGN_KEY)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(BAGIC_EMPLOYEE_CODE)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(BAGIC_EMPLOYEE_CODE)), '') AS VARCHAR), ''))))
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1
      where nullif(trim(to_varchar(BAGIC_EMPLOYEE_CODE)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), ''))))
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_RELATION
      where nullif(trim(to_varchar(FOREIGN_KEY)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), ''))))
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_RELATED_PARTY
      where nullif(trim(to_varchar(FOREIGN_KEY)), '') is not null
 )
@@ -69,7 +71,7 @@ select 'MAXIMUS' as project, 'HUB_PARTY' as hub, s.PARTY_HKEY as missing_hkey
 -- MAXIMUS :: HUB_STAKE_CODE   (NK prefix 'HUB_STAKE_CODE|')
 ----------------------------------------------------------------------------------------
 with maxi_hub_stake_code_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_STAKE_CODE|' || nullif(trim(to_varchar(STAKE_CODE)), '') AS VARCHAR), '')))) as STAKE_CODE_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_STAKE_CODE|' || nullif(trim(to_varchar(STAKE_CODE)), '') AS VARCHAR), '')))) as STAKE_CODE_HKEY
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_RELATED_PARTY
      where nullif(trim(to_varchar(STAKE_CODE)), '') is not null
 )
@@ -95,7 +97,7 @@ select 'MAXIMUS' as project, 'HUB_STAKE_CODE' as hub, s.STAKE_CODE_HKEY as missi
 -- MAXIMUS :: HUB_PAYMENT_INSTRUMENT   (NK prefix 'HUB_PAYMENT_INSTRUMENT|')
 ----------------------------------------------------------------------------------------
 with maxi_hub_payment_instrument_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_PAYMENT_INSTRUMENT|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), '')))) as PAYMENT_INSTRUMENT_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PAYMENT_INSTRUMENT|' || nullif(trim(to_varchar(FOREIGN_KEY)), '') AS VARCHAR), '')))) as PAYMENT_INSTRUMENT_HKEY
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
      where nullif(trim(to_varchar(FOREIGN_KEY)), '') is not null
 )
@@ -111,7 +113,7 @@ select 'MAXIMUS' as project, 'HUB_PAYMENT_INSTRUMENT' as hub, s.PAYMENT_INSTRUME
 -- MAXIMUS :: HUB_PRODUCT   (NK prefix 'HUB_PRODUCT|')
 ----------------------------------------------------------------------------------------
 with maxi_hub_product_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_PRODUCT|' || nullif(trim(to_varchar(PRODUCT_CODE)), '') AS VARCHAR), '')))) as PRODUCT_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PRODUCT|' || nullif(trim(to_varchar(PRODUCT_CODE)), '') AS VARCHAR), '')))) as PRODUCT_HKEY
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1
      where nullif(trim(to_varchar(PRODUCT_CODE)), '') is not null
 )
@@ -127,7 +129,7 @@ select 'MAXIMUS' as project, 'HUB_PRODUCT' as hub, s.PRODUCT_HKEY as missing_hke
 -- MAXIMUS :: HUB_FINANCIAL_ACCOUNT   (NK prefix 'HUB_FINANCIAL_ACCOUNT|')
 ----------------------------------------------------------------------------------------
 with maxi_hub_financial_account_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_FINANCIAL_ACCOUNT|' || nullif(trim(to_varchar(ACCOUNT_CODE)), '') AS VARCHAR), '')))) as FINANCIAL_ACCOUNT_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_FINANCIAL_ACCOUNT|' || nullif(trim(to_varchar(ACCOUNT_CODE)), '') AS VARCHAR), '')))) as FINANCIAL_ACCOUNT_HKEY
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
      where nullif(trim(to_varchar(ACCOUNT_CODE)), '') is not null
 )
@@ -143,7 +145,7 @@ select 'MAXIMUS' as project, 'HUB_FINANCIAL_ACCOUNT' as hub, s.FINANCIAL_ACCOUNT
 -- MAXIMUS :: HUB_DOCUMENT   (NK prefix 'HUB_DOCUMENT|')
 ----------------------------------------------------------------------------------------
 with maxi_hub_document_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_DOCUMENT|' || nullif(trim(to_varchar(DOCUMENT_ID)), '') AS VARCHAR), '')))) as DOCUMENT_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_DOCUMENT|' || nullif(trim(to_varchar(DOCUMENT_ID)), '') AS VARCHAR), '')))) as DOCUMENT_HKEY
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_DOCUMENT_DETAIL
      where nullif(trim(to_varchar(DOCUMENT_ID)), '') is not null
 )
@@ -159,7 +161,7 @@ select 'MAXIMUS' as project, 'HUB_DOCUMENT' as hub, s.DOCUMENT_HKEY as missing_h
 -- MAXIMUS :: HUB_POLICY   (NK prefix 'HUB_POLICY|')
 ----------------------------------------------------------------------------------------
 with maxi_hub_policy_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_POLICY|' || nullif(trim(to_varchar(PA_POLICY)), '') AS VARCHAR), '')))) as POLICY_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_POLICY|' || nullif(trim(to_varchar(PA_POLICY)), '') AS VARCHAR), '')))) as POLICY_HKEY
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1
      where nullif(trim(to_varchar(PA_POLICY)), '') is not null
 )
@@ -175,7 +177,7 @@ select 'MAXIMUS' as project, 'HUB_POLICY' as hub, s.POLICY_HKEY as missing_hkey
 -- MAXIMUS :: HUB_DISTRIBUTION_CHANNEL   (NK prefix 'HUB_DISTRIBUTION_CHANNEL|')
 ----------------------------------------------------------------------------------------
 with maxi_hub_distribution_channel_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_DISTRIBUTION_CHANNEL|' || nullif(trim(to_varchar(AGENT_CHANNEL)), '') AS VARCHAR), '')))) as DISTRIBUTION_CHANNEL_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_DISTRIBUTION_CHANNEL|' || nullif(trim(to_varchar(AGENT_CHANNEL)), '') AS VARCHAR), '')))) as DISTRIBUTION_CHANNEL_HKEY
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1
      where nullif(trim(to_varchar(AGENT_CHANNEL)), '') is not null
 )
@@ -191,11 +193,11 @@ select 'MAXIMUS' as project, 'HUB_DISTRIBUTION_CHANNEL' as hub, s.DISTRIBUTION_C
 -- MAXIMUS :: HUB_ORG_UNIT   (NK prefix 'HUB_ORG_UNIT|')
 ----------------------------------------------------------------------------------------
 with maxi_hub_org_unit_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_ORG_UNIT|' || nullif(trim(to_varchar(COMPANY)), '') AS VARCHAR), '')))) as ORG_UNIT_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_ORG_UNIT|' || nullif(trim(to_varchar(COMPANY)), '') AS VARCHAR), '')))) as ORG_UNIT_HKEY
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
      where nullif(trim(to_varchar(COMPANY)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_ORG_UNIT|' || nullif(trim(to_varchar(BRANCH_CODE)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_ORG_UNIT|' || nullif(trim(to_varchar(BRANCH_CODE)), '') AS VARCHAR), ''))))
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1
      where nullif(trim(to_varchar(BRANCH_CODE)), '') is not null
 )
@@ -215,7 +217,7 @@ select 'MAXIMUS' as project, 'HUB_ORG_UNIT' as hub, s.ORG_UNIT_HKEY as missing_h
 -- OPUS :: HUB_PARTY   (NK prefix 'HUB_PARTY|')
 ----------------------------------------------------------------------------------------
 with opus_hub_party_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(PART_ID)), '') AS VARCHAR), '')))) as PARTY_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_PARTY|' || nullif(trim(to_varchar(PART_ID)), '') AS VARCHAR), '')))) as PARTY_HKEY
       from BAGIC_PREPROD_CURATED_DB.UTILS.CP_PARTNERS
      where nullif(trim(to_varchar(PART_ID)), '') is not null
 )
@@ -231,7 +233,7 @@ select 'OPUS' as project, 'HUB_PARTY' as hub, s.PARTY_HKEY as missing_hkey
 -- OPUS :: HUB_AGENT   (NK prefix 'HUB_AGENT|')
 ----------------------------------------------------------------------------------------
 with opus_hub_agent_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_AGENT|' || nullif(trim(to_varchar(INTERMEDIARY_ID)), '') AS VARCHAR), '')))) as AGENT_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_AGENT|' || nullif(trim(to_varchar(INTERMEDIARY_ID)), '') AS VARCHAR), '')))) as AGENT_HKEY
       from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_INTERMEDIARY
      where nullif(trim(to_varchar(INTERMEDIARY_ID)), '') is not null
 )
@@ -247,7 +249,7 @@ select 'OPUS' as project, 'HUB_AGENT' as hub, s.AGENT_HKEY as missing_hkey
 -- OPUS :: HUB_AGREEMENT   (NK prefix 'HUB_AGREEMENT|')
 ----------------------------------------------------------------------------------------
 with opus_hub_agreement_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_AGREEMENT|' || nullif(trim(to_varchar(INTERMEDIARY_ID)), '') AS VARCHAR), '')))) as AGREEMENT_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_AGREEMENT|' || nullif(trim(to_varchar(INTERMEDIARY_ID)), '') AS VARCHAR), '')))) as AGREEMENT_HKEY
       from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_INTERMEDIARY
      where nullif(trim(to_varchar(INTERMEDIARY_ID)), '') is not null
 )
@@ -263,7 +265,7 @@ select 'OPUS' as project, 'HUB_AGREEMENT' as hub, s.AGREEMENT_HKEY as missing_hk
 -- OPUS :: HUB_CLAIM   (NK prefix 'HUB_CLAIM|')
 ----------------------------------------------------------------------------------------
 with opus_hub_claim_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_CLAIM|' || nullif(trim(to_varchar(CLAIM_ID)), '') AS VARCHAR), '')))) as CLAIM_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_CLAIM|' || nullif(trim(to_varchar(CLAIM_ID)), '') AS VARCHAR), '')))) as CLAIM_HKEY
       from BAGIC_PREPROD_CURATED_DB.UTILS.CLM_INTERESTED_PARTIES
      where nullif(trim(to_varchar(CLAIM_ID)), '') is not null
 )
@@ -280,7 +282,7 @@ select 'OPUS' as project, 'HUB_CLAIM' as hub, s.CLAIM_HKEY as missing_hkey
 -- (Second branch BJAZ_CLM_SUPP_EXTN does not contribute the channel key -> omitted.)
 ----------------------------------------------------------------------------------------
 with opus_hub_distribution_channel_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_DISTRIBUTION_CHANNEL|' || nullif(trim(to_varchar(INTERMEDIARY_ID)), '') AS VARCHAR), '')))) as DISTRIBUTION_CHANNEL_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_DISTRIBUTION_CHANNEL|' || nullif(trim(to_varchar(INTERMEDIARY_ID)), '') AS VARCHAR), '')))) as DISTRIBUTION_CHANNEL_HKEY
       from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_INTERMEDIARY
      where nullif(trim(to_varchar(INTERMEDIARY_ID)), '') is not null
 )
@@ -299,27 +301,27 @@ select 'OPUS' as project, 'HUB_DISTRIBUTION_CHANNEL' as hub, s.DISTRIBUTION_CHAN
 -- >>> TODO: add that composite-key branch once its concat_ws(...) column list is confirmed.
 ----------------------------------------------------------------------------------------
 with opus_hub_location_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || nullif(trim(to_varchar(MAIL_ADD_ID)), '') AS VARCHAR), '')))) as LOCATION_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || nullif(trim(to_varchar(MAIL_ADD_ID)), '') AS VARCHAR), '')))) as LOCATION_HKEY
       from BAGIC_PREPROD_CURATED_DB.UTILS.AZBJ_PARTNER_EXTN
      where nullif(trim(to_varchar(MAIL_ADD_ID)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || nullif(trim(to_varchar(LOCATION_CODE)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || nullif(trim(to_varchar(LOCATION_CODE)), '') AS VARCHAR), ''))))
       from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
      where nullif(trim(to_varchar(LOCATION_CODE)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || nullif(trim(to_varchar(ADD_ID)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || nullif(trim(to_varchar(ADD_ID)), '') AS VARCHAR), ''))))
       from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CP_ADDRESS_LINK
      where nullif(trim(to_varchar(ADD_ID)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || nullif(trim(to_varchar(LOC_CODE)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || nullif(trim(to_varchar(LOC_CODE)), '') AS VARCHAR), ''))))
       from BAGIC_PREPROD_CURATED_DB.UTILS.CLM_SUPPLIERS
      where nullif(trim(to_varchar(LOC_CODE)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || nullif(trim(to_varchar(ADD_ID)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || nullif(trim(to_varchar(ADD_ID)), '') AS VARCHAR), ''))))
       from BAGIC_PREPROD_CURATED_DB.UTILS.CP_PARTNERS
      where nullif(trim(to_varchar(ADD_ID)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || nullif(trim(to_varchar(MAILING_ADDRESS_ID)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || nullif(trim(to_varchar(MAILING_ADDRESS_ID)), '') AS VARCHAR), ''))))
       from BAGIC_PREPROD_CURATED_DB.UTILS.OCP_INTERESTED_PARTIES
      where nullif(trim(to_varchar(MAILING_ADDRESS_ID)), '') is not null
 )
@@ -338,27 +340,27 @@ select 'OPUS' as project, 'HUB_LOCATION' as hub, s.LOCATION_HKEY as missing_hkey
 -- >>> TODO: add stitched branches once their raw key resolution is confirmed.
 ----------------------------------------------------------------------------------------
 with opus_hub_policy_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_POLICY|' || nullif(trim(to_varchar(CONTRACT_ID)), '') AS VARCHAR), '')))) as POLICY_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_POLICY|' || nullif(trim(to_varchar(CONTRACT_ID)), '') AS VARCHAR), '')))) as POLICY_HKEY
       from BAGIC_PREPROD_CURATED_DB.UTILS.BA_HCP_DT_MEM
      where nullif(trim(to_varchar(CONTRACT_ID)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_POLICY|' || nullif(trim(to_varchar(CONTRACT_ID)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_POLICY|' || nullif(trim(to_varchar(CONTRACT_ID)), '') AS VARCHAR), ''))))
       from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_FF_DTLS_EXTN
      where nullif(trim(to_varchar(CONTRACT_ID)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_POLICY|' || nullif(trim(to_varchar(POLICY_NUMBER)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_POLICY|' || nullif(trim(to_varchar(POLICY_NUMBER)), '') AS VARCHAR), ''))))
       from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HCF_MEMBER_DTLS
      where nullif(trim(to_varchar(POLICY_NUMBER)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_POLICY|' || nullif(trim(to_varchar(POLICY_NUMBER)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_POLICY|' || nullif(trim(to_varchar(POLICY_NUMBER)), '') AS VARCHAR), ''))))
       from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SPP_MEMBER_DTLS
      where nullif(trim(to_varchar(POLICY_NUMBER)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_POLICY|' || nullif(trim(to_varchar(CONTRACT_ID)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_POLICY|' || nullif(trim(to_varchar(CONTRACT_ID)), '') AS VARCHAR), ''))))
       from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_STARPKG_FF_DTLS
      where nullif(trim(to_varchar(CONTRACT_ID)), '') is not null
     union
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_POLICY|' || nullif(trim(to_varchar(CONTRACT_ID)), '') AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_POLICY|' || nullif(trim(to_varchar(CONTRACT_ID)), '') AS VARCHAR), ''))))
       from BAGIC_PREPROD_CURATED_DB.UTILS.OCP_INTERESTED_PARTIES
      where nullif(trim(to_varchar(CONTRACT_ID)), '') is not null
 )
@@ -383,7 +385,7 @@ select 'OPUS' as project, 'HUB_POLICY' as hub, s.POLICY_HKEY as missing_hkey
 -- OPUS :: HUB_RISK_OBJECT   (NK prefix 'HUB_RISK_OBJECT|')
 ----------------------------------------------------------------------------------------
 with opus_hub_risk_object_src as (
-    select distinct MD5(UPPER(TRIM(COALESCE(CAST('HUB_RISK_OBJECT|' || nullif(trim(to_varchar(INS_OBJ_UID)), '') AS VARCHAR), '')))) as RISK_OBJECT_HKEY
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_RISK_OBJECT|' || nullif(trim(to_varchar(INS_OBJ_UID)), '') AS VARCHAR), '')))) as RISK_OBJECT_HKEY
       from BAGIC_PREPROD_CURATED_DB.UTILS.CLM_INTERESTED_PARTIES
      where nullif(trim(to_varchar(INS_OBJ_UID)), '') is not null
 )
