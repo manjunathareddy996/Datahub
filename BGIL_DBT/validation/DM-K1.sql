@@ -85,12 +85,58 @@ select 'MAXIMUS' as project, 'HUB_STAKE_CODE' as hub, s.STAKE_CODE_HKEY as missi
 
 ----------------------------------------------------------------------------------------
 -- MAXIMUS :: HUB_LOCATION   (NK prefix 'HUB_LOCATION|')
--- COMPOSITE KEY: LOCATION_BK is an MD5 over several concatenated address columns, built
--- in each stg2 derived_columns. The exact column list / order differs per source and
--- MUST match the model exactly or this test will false-flag.
--- >>> TODO: paste the exact LOCATION_BK concat_ws(...) expression from each stg2 model
---     (stg2_mp__pd_addr, stg2_mp__pd_party_addr_prop_pv, stg2_mp__pd_prop_sp_pv).
--- Left intentionally unimplemented to avoid a silently-wrong composite-key check.
+-- COMPOSITE KEY: LOCATION_BK = md5(concat_ws('|', upper(trim(<addr cols>)))). The column
+-- list differs per source; each branch below mirrors that source's exact stg2 expression,
+-- with raw columns wrapped as the layer-1 model does: nullif(trim(to_varchar("COL")),'').
+--   Source 1  stg2_mp__pd_addr                (BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS)
+--   Source 2  stg2_mp__pd_party_addr_prop_pv  (..._PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW)
+--   Source 3  stg2_mp__pd_prop_sp_pv          (..._SIMPLE_PROPERTY_PIVOT_VW_2_1)
+----------------------------------------------------------------------------------------
+with maxi_hub_location_src as (
+    -- Source 1: PARTY_ADDRESS  (address1, address2, address3, city, district, state, pincode, country)
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || md5(concat_ws('|',
+               upper(trim(to_varchar(nullif(trim(to_varchar("ADDRESS1")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("ADDRESS2")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("ADDRESS3")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("CITY")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("DISTRICT")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("STATE")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("PINCODE")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("COUNTRY")), ''))))
+           )) AS VARCHAR), '')))) as LOCATION_HKEY
+      from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS
+    union
+    -- Source 2: ADDRESS_PROPERTY_PIVOT  (land_mark, area, post_office, city, state, pincode)
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || md5(concat_ws('|',
+               upper(trim(to_varchar(nullif(trim(to_varchar("LAND_MARK")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("AREA")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("POST_OFFICE")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("CITY")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("STATE")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("PINCODE")), ''))))
+           )) AS VARCHAR), ''))))
+      from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+    union
+    -- Source 3: SIMPLE_PROPERTY_PIVOT  (our_office_address, overseas line_2, line_3, city_town_village,
+    --                                   local district, overseas state_ut, local pin_code, overseas country)
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || md5(concat_ws('|',
+               upper(trim(to_varchar(nullif(trim(to_varchar("OUR_OFFICE_ADDRESS")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_2")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_3")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_CITY_TOWN_VILLAGE")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_STATE_UT")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE")), '')))),
+               upper(trim(to_varchar(nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_COUNTRY")), ''))))
+           )) AS VARCHAR), ''))))
+      from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1
+)
+select 'MAXIMUS' as project, 'HUB_LOCATION' as hub, s.LOCATION_HKEY as missing_hkey
+  from maxi_hub_location_src s
+  left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION h
+         on h.LOCATION_HKEY = s.LOCATION_HKEY
+        and h.RECORD_SOURCE like 'MAXIMUS_%'
+ where h.LOCATION_HKEY is null;
 
 
 ----------------------------------------------------------------------------------------
