@@ -101,8 +101,13 @@ def address_hash(available):
     parts = [ident(available[p]) for p in ADDRESS_PARTS if p in available]
     if not parts:
         return None
-    return ("md5(concat_ws('|', " +
-            ", ".join(f"upper(trim(to_varchar({p})))" for p in parts) + "))")
+    # NULL-safe content hash. A single NULL address part (e.g. ADDRESS3) must NOT null the
+    # whole key -- that was dropping every HUB_LOCATION / LNK_PARTY_LOCATION row for Maximus.
+    # Rule: NULL only when EVERY part is NULL; otherwise blank-fill the missing parts so an
+    # empty field contributes '' at its position (preserves ordering, no collisions).
+    cols = [f"upper(trim(to_varchar({p})))" for p in parts]
+    return (f"case when coalesce({', '.join(cols)}) is null then null "
+            f"else md5(concat_ws('|', " + ", ".join(f"coalesce({c}, '')" for c in cols) + ")) end")
 
 
 def is_child_key_tier(tier, rule=""):

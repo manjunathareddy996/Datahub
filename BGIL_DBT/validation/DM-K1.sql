@@ -97,41 +97,51 @@ select 'MAXIMUS' as project, 'HUB_STAKE_CODE' as hub, s.STAKE_CODE_HKEY as missi
 ----------------------------------------------------------------------------------------
 with maxi_hub_location_src as (
     -- Source 1: PARTY_ADDRESS  (address1, address2, address3, city, district, state, pincode, country)
-    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || md5(concat_ws('|',
-               upper(trim(to_varchar(nullif(trim(to_varchar("ADDRESS1")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("ADDRESS2")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("ADDRESS3")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("CITY")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("DISTRICT")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("STATE")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("PINCODE")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("COUNTRY")), ''))))
-           )) AS VARCHAR), '')))) as LOCATION_HKEY
+    -- NULL-safe: key is NULL only when ALL parts null; else blank-fill missing parts.
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' ||
+             case when coalesce(upper(trim(to_varchar("ADDRESS1"))), upper(trim(to_varchar("ADDRESS2"))), upper(trim(to_varchar("ADDRESS3"))), upper(trim(to_varchar("CITY"))), upper(trim(to_varchar("DISTRICT"))), upper(trim(to_varchar("STATE"))), upper(trim(to_varchar("PINCODE"))), upper(trim(to_varchar("COUNTRY")))) is null then null
+             else md5(concat_ws('|',
+               coalesce(upper(trim(to_varchar("ADDRESS1"))), ''),
+               coalesce(upper(trim(to_varchar("ADDRESS2"))), ''),
+               coalesce(upper(trim(to_varchar("ADDRESS3"))), ''),
+               coalesce(upper(trim(to_varchar("CITY"))), ''),
+               coalesce(upper(trim(to_varchar("DISTRICT"))), ''),
+               coalesce(upper(trim(to_varchar("STATE"))), ''),
+               coalesce(upper(trim(to_varchar("PINCODE"))), ''),
+               coalesce(upper(trim(to_varchar("COUNTRY"))), '')
+             )) end
+           AS VARCHAR), '')))) as LOCATION_HKEY
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS
     union
     -- Source 2: ADDRESS_PROPERTY_PIVOT  (land_mark, area, post_office, city, state, pincode)
-    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || md5(concat_ws('|',
-               upper(trim(to_varchar(nullif(trim(to_varchar("LAND_MARK")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("AREA")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("POST_OFFICE")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("CITY")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("STATE")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("PINCODE")), ''))))
-           )) AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' ||
+             case when coalesce(upper(trim(to_varchar("LAND_MARK"))), upper(trim(to_varchar("AREA"))), upper(trim(to_varchar("POST_OFFICE"))), upper(trim(to_varchar("CITY"))), upper(trim(to_varchar("STATE"))), upper(trim(to_varchar("PINCODE")))) is null then null
+             else md5(concat_ws('|',
+               coalesce(upper(trim(to_varchar("LAND_MARK"))), ''),
+               coalesce(upper(trim(to_varchar("AREA"))), ''),
+               coalesce(upper(trim(to_varchar("POST_OFFICE"))), ''),
+               coalesce(upper(trim(to_varchar("CITY"))), ''),
+               coalesce(upper(trim(to_varchar("STATE"))), ''),
+               coalesce(upper(trim(to_varchar("PINCODE"))), '')
+             )) end
+           AS VARCHAR), ''))))
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
     union
     -- Source 3: SIMPLE_PROPERTY_PIVOT  (our_office_address, overseas line_2, line_3, city_town_village,
     --                                   local district, overseas state_ut, local pin_code, overseas country)
-    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' || md5(concat_ws('|',
-               upper(trim(to_varchar(nullif(trim(to_varchar("OUR_OFFICE_ADDRESS")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_2")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_3")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_CITY_TOWN_VILLAGE")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_STATE_UT")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE")), '')))),
-               upper(trim(to_varchar(nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_COUNTRY")), ''))))
-           )) AS VARCHAR), ''))))
+    select distinct MD5_BINARY(UPPER(TRIM(COALESCE(CAST('HUB_LOCATION|' ||
+             case when coalesce(upper(trim(to_varchar("OUR_OFFICE_ADDRESS"))), upper(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_2"))), upper(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_3"))), upper(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_CITY_TOWN_VILLAGE"))), upper(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT"))), upper(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_STATE_UT"))), upper(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE"))), upper(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_COUNTRY")))) is null then null
+             else md5(concat_ws('|',
+               coalesce(upper(trim(to_varchar("OUR_OFFICE_ADDRESS"))), ''),
+               coalesce(upper(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_2"))), ''),
+               coalesce(upper(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_3"))), ''),
+               coalesce(upper(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_CITY_TOWN_VILLAGE"))), ''),
+               coalesce(upper(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT"))), ''),
+               coalesce(upper(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_STATE_UT"))), ''),
+               coalesce(upper(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE"))), ''),
+               coalesce(upper(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_COUNTRY"))), '')
+             )) end
+           AS VARCHAR), ''))))
       from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1
 )
 select 'MAXIMUS' as project, 'HUB_LOCATION' as hub, s.LOCATION_HKEY as missing_hkey
