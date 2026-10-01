@@ -17,9 +17,14 @@
      Maximus RAW           : BAGIC_PROD_MIRROR_DB.MAXI_RAW
      Opus RAW (test)       : BAGIC_PREPROD_CURATED_DB.UTILS   (source 'partner_test_raw')
 
-   Shared vault: both projects write the SAME physical hub tables. Rows are separated by
-   RECORD_SOURCE prefix (MAXIMUS_% vs OPUS_%); each query is scoped to its own project's
-   prefix so one project's keys are not checked against the other project's rows.
+   Shared vault: both projects (and the original partner_dv_dbt) write the SAME physical
+   hub tables. The hub is deduplicated by HKEY, so a given business key is stored exactly
+   ONCE under whichever RECORD_SOURCE loaded it first. DM-K1 therefore joins on the HKEY
+   ALONE and does NOT scope by RECORD_SOURCE prefix.
+   (An earlier version scoped to 'MAXIMUS_%' / 'OPUS_%'. That produced false "missing key"
+    findings -- e.g. 5,771 valid HUB_PARTY keys that were present in the hub but loaded
+    under a non-MAXIMUS record_source. Verified: those keys are 100% present in the hub,
+    truly_absent = 0. Scoping by record_source is wrong for a shared, HKEY-deduped hub.)
    ===================================================================================== */
 
 
@@ -63,7 +68,6 @@ select 'MAXIMUS' as project, 'HUB_PARTY' as hub, s.PARTY_HKEY as missing_hkey
   from maxi_hub_party_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY h
          on h.PARTY_HKEY = s.PARTY_HKEY
-        and h.RECORD_SOURCE like 'MAXIMUS_%'
  where h.PARTY_HKEY is null;
 
 
@@ -79,7 +83,6 @@ select 'MAXIMUS' as project, 'HUB_STAKE_CODE' as hub, s.STAKE_CODE_HKEY as missi
   from maxi_hub_stake_code_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_STAKE_CODE h
          on h.STAKE_CODE_HKEY = s.STAKE_CODE_HKEY
-        and h.RECORD_SOURCE like 'MAXIMUS_%'
  where h.STAKE_CODE_HKEY is null;
 
 
@@ -135,7 +138,6 @@ select 'MAXIMUS' as project, 'HUB_LOCATION' as hub, s.LOCATION_HKEY as missing_h
   from maxi_hub_location_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION h
          on h.LOCATION_HKEY = s.LOCATION_HKEY
-        and h.RECORD_SOURCE like 'MAXIMUS_%'
  where h.LOCATION_HKEY is null;
 
 
@@ -156,7 +158,6 @@ select 'MAXIMUS' as project, 'HUB_PAYMENT_INSTRUMENT' as hub, s.PAYMENT_INSTRUME
   from maxi_hub_payment_instrument_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PAYMENT_INSTRUMENT h
          on h.PAYMENT_INSTRUMENT_HKEY = s.PAYMENT_INSTRUMENT_HKEY
-        and h.RECORD_SOURCE like 'MAXIMUS_%'
  where h.PAYMENT_INSTRUMENT_HKEY is null;
 
 
@@ -172,7 +173,6 @@ select 'MAXIMUS' as project, 'HUB_PRODUCT' as hub, s.PRODUCT_HKEY as missing_hke
   from maxi_hub_product_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT h
          on h.PRODUCT_HKEY = s.PRODUCT_HKEY
-        and h.RECORD_SOURCE like 'MAXIMUS_%'
  where h.PRODUCT_HKEY is null;
 
 
@@ -200,7 +200,6 @@ select 'MAXIMUS' as project, 'HUB_DOCUMENT' as hub, s.DOCUMENT_HKEY as missing_h
   from maxi_hub_document_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DOCUMENT h
          on h.DOCUMENT_HKEY = s.DOCUMENT_HKEY
-        and h.RECORD_SOURCE like 'MAXIMUS_%'
  where h.DOCUMENT_HKEY is null;
 
 
@@ -216,7 +215,6 @@ select 'MAXIMUS' as project, 'HUB_POLICY' as hub, s.POLICY_HKEY as missing_hkey
   from maxi_hub_policy_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY h
          on h.POLICY_HKEY = s.POLICY_HKEY
-        and h.RECORD_SOURCE like 'MAXIMUS_%'
  where h.POLICY_HKEY is null;
 
 
@@ -232,7 +230,6 @@ select 'MAXIMUS' as project, 'HUB_DISTRIBUTION_CHANNEL' as hub, s.DISTRIBUTION_C
   from maxi_hub_distribution_channel_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL h
          on h.DISTRIBUTION_CHANNEL_HKEY = s.DISTRIBUTION_CHANNEL_HKEY
-        and h.RECORD_SOURCE like 'MAXIMUS_%'
  where h.DISTRIBUTION_CHANNEL_HKEY is null;
 
 
@@ -253,7 +250,6 @@ select 'MAXIMUS' as project, 'HUB_ORG_UNIT' as hub, s.ORG_UNIT_HKEY as missing_h
   from maxi_hub_org_unit_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ORG_UNIT h
          on h.ORG_UNIT_HKEY = s.ORG_UNIT_HKEY
-        and h.RECORD_SOURCE like 'MAXIMUS_%'
  where h.ORG_UNIT_HKEY is null;
 
 
@@ -273,7 +269,6 @@ select 'OPUS' as project, 'HUB_PARTY' as hub, s.PARTY_HKEY as missing_hkey
   from opus_hub_party_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY h
          on h.PARTY_HKEY = s.PARTY_HKEY
-        and h.RECORD_SOURCE like 'OPUS_%'
  where h.PARTY_HKEY is null;
 
 
@@ -289,7 +284,6 @@ select 'OPUS' as project, 'HUB_AGENT' as hub, s.AGENT_HKEY as missing_hkey
   from opus_hub_agent_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGENT h
          on h.AGENT_HKEY = s.AGENT_HKEY
-        and h.RECORD_SOURCE like 'OPUS_%'
  where h.AGENT_HKEY is null;
 
 
@@ -305,7 +299,6 @@ select 'OPUS' as project, 'HUB_AGREEMENT' as hub, s.AGREEMENT_HKEY as missing_hk
   from opus_hub_agreement_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGREEMENT h
          on h.AGREEMENT_HKEY = s.AGREEMENT_HKEY
-        and h.RECORD_SOURCE like 'OPUS_%'
  where h.AGREEMENT_HKEY is null;
 
 
@@ -321,7 +314,6 @@ select 'OPUS' as project, 'HUB_CLAIM' as hub, s.CLAIM_HKEY as missing_hkey
   from opus_hub_claim_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM h
          on h.CLAIM_HKEY = s.CLAIM_HKEY
-        and h.RECORD_SOURCE like 'OPUS_%'
  where h.CLAIM_HKEY is null;
 
 
@@ -338,7 +330,6 @@ select 'OPUS' as project, 'HUB_DISTRIBUTION_CHANNEL' as hub, s.DISTRIBUTION_CHAN
   from opus_hub_distribution_channel_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL h
          on h.DISTRIBUTION_CHANNEL_HKEY = s.DISTRIBUTION_CHANNEL_HKEY
-        and h.RECORD_SOURCE like 'OPUS_%'
  where h.DISTRIBUTION_CHANNEL_HKEY is null;
 
 
@@ -377,7 +368,6 @@ select 'OPUS' as project, 'HUB_LOCATION' as hub, s.LOCATION_HKEY as missing_hkey
   from opus_hub_location_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION h
          on h.LOCATION_HKEY = s.LOCATION_HKEY
-        and h.RECORD_SOURCE like 'OPUS_%'
  where h.LOCATION_HKEY is null;
 
 
@@ -416,7 +406,6 @@ select 'OPUS' as project, 'HUB_POLICY' as hub, s.POLICY_HKEY as missing_hkey
   from opus_hub_policy_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY h
          on h.POLICY_HKEY = s.POLICY_HKEY
-        and h.RECORD_SOURCE like 'OPUS_%'
  where h.POLICY_HKEY is null;
 
 
@@ -441,7 +430,6 @@ select 'OPUS' as project, 'HUB_RISK_OBJECT' as hub, s.RISK_OBJECT_HKEY as missin
   from opus_hub_risk_object_src s
   left join BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT h
          on h.RISK_OBJECT_HKEY = s.RISK_OBJECT_HKEY
-        and h.RECORD_SOURCE like 'OPUS_%'
  where h.RISK_OBJECT_HKEY is null;
 
 
