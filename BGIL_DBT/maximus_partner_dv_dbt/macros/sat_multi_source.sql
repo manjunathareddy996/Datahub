@@ -298,13 +298,16 @@ SELECT * FROM records_to_insert
 
 {%- else %}
 ,
-{#-- OBJECT branch (src_object_columns set): grain = one row per (src_pk, source group) --#}
-object_rows AS (
+{#-- OBJECT branch (src_object_columns set): grain = one row per (src_pk, source group).
+     First collapse to one value per (src_pk, group, source_table) so OBJECT_AGG never sees a
+     duplicate key (a source table can have many rows per party). --#}
+source_deduped AS (
     SELECT
         sd.{{ src_pk }},
-        sd.SOURCE_GROUP AS {{ src_source }},
+        sd.SOURCE_GROUP,
+        sd.SOURCE_TABLE,
         {%- for col in object_cols %}
-        OBJECT_AGG(sd.SOURCE_TABLE, TO_VARIANT(sd.{{ col }})) AS {{ col }},
+        MAX(sd.{{ col }}) AS {{ col }},
         {%- endfor %}
         {%- for col in plain_cols %}
         MAX(sd.{{ col }}) AS {{ col }},
@@ -312,7 +315,23 @@ object_rows AS (
         MAX(sd.{{ src_ldts }}) AS {{ src_ldts }},
         MAX(sd.{{ src_run_ts }}) AS {{ src_run_ts }}
     FROM source_data AS sd
-    GROUP BY sd.{{ src_pk }}, sd.SOURCE_GROUP
+    GROUP BY sd.{{ src_pk }}, sd.SOURCE_GROUP, sd.SOURCE_TABLE
+),
+
+object_rows AS (
+    SELECT
+        sdd.{{ src_pk }},
+        sdd.SOURCE_GROUP AS {{ src_source }},
+        {%- for col in object_cols %}
+        OBJECT_AGG(sdd.SOURCE_TABLE, TO_VARIANT(sdd.{{ col }})) AS {{ col }},
+        {%- endfor %}
+        {%- for col in plain_cols %}
+        MAX(sdd.{{ col }}) AS {{ col }},
+        {%- endfor %}
+        MAX(sdd.{{ src_ldts }}) AS {{ src_ldts }},
+        MAX(sdd.{{ src_run_ts }}) AS {{ src_run_ts }}
+    FROM source_deduped AS sdd
+    GROUP BY sdd.{{ src_pk }}, sdd.SOURCE_GROUP
 ),
 
 hashed AS (
