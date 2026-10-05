@@ -45,12 +45,15 @@ models:
         hubs:
           +materialized: incremental
           +tags: ["hub"]
+          +on_schema_change: append_new_columns
         links:
           +materialized: incremental
           +tags: ["lnk"]
+          +on_schema_change: append_new_columns
         satellites:
           +materialized: incremental
           +tags: ["standard_sat"]
+          +on_schema_change: append_new_columns
         references:
           +materialized: view
           +tags: ["ref"]
@@ -63,4 +66,5 @@ models:
         satellites:
           +materialized: incremental
           +tags: ["aug_sat"]
+          +on_schema_change: append_new_columns
 

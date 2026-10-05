@@ -1,9 +1,6 @@
 {{
     config(
         materialized='incremental',
-        incremental_strategy='merge',
-        on_schema_change='append_new_columns',
-        unique_key=['PARTY_HKEY', 'HASHDIFF_AUG_PARTY_PAYOUT_PROFILE', 'RECORD_SOURCE']
     )
 }}
 

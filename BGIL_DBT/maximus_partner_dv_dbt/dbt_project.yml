@@ -64,6 +64,7 @@ models:
         satellites:
           +materialized: incremental
           +tags: ["standard_sat"]
+          +incremental_strategy: append
           +on_schema_change: append_new_columns
       augmented:
         +schema: BGIL_DATA_MODEL
@@ -74,4 +75,5 @@ models:
         satellites:
           +materialized: incremental
           +tags: ["aug_sat"]
+          +incremental_strategy: append
           +on_schema_change: append_new_columns

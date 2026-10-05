@@ -1,8 +1,7 @@
 {{
     config(
         materialized='incremental',
-        incremental_strategy='merge',
-        unique_key=['PARTY_LOCATION_HKEY', 'HASHDIFF']
+        incremental_strategy='append',
     )
 }}
 
