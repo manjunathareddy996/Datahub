@@ -1,4 +1,4 @@
-{%- macro sat_multi_source(src_pk, src_hashdiff, src_payload, src_ldts, src_source, source_model, src_extra_columns=none, src_eff=none, src_column_map=none, src_run_ts='DBT_RUN_TS', src_record_source_map=none, src_object_columns=none) -%}
+{%- macro sat_multi_source(src_pk, src_hashdiff, src_payload, src_ldts, src_source, source_model, src_extra_columns=none, src_eff=none, src_column_map=none, src_run_ts='DBT_RUN_TS', src_record_source_map=none, src_object_columns=none, src_hashdiff_alias=none) -%}
 
 {#-- Required parameter validation --#}
 {%- if src_pk is none -%}
@@ -144,6 +144,13 @@
 
     {%- set sentinel = '1900-01-01' -%}
 
+    {#-- Option A: output hashdiff column name. The source stg2 may expose a suffixed hashdiff
+         (e.g. HASHDIFF_COMMON_CONTACT in a wide maximus view); src_hashdiff_alias lets the
+         satellite WRITE it into the shared table under a common name (e.g. HASHDIFF) so both
+         projects share one hashdiff column. Defaults to src_hashdiff (no rename). --#}
+    {%- set out_hashdiff = src_hashdiff_alias if src_hashdiff_alias is not none else src_hashdiff -%}
+    {%- set do_incremental = automate_dv.is_any_incremental() -%}
+
     {%- if var('to_date', none) is not none -%}
         {%- set to_date_expr = "CAST('" ~ var('to_date') ~ "' AS TIMESTAMP_NTZ)" -%}
     {%- else -%}
@@ -195,7 +202,7 @@ WITH source_data AS (
     -- Source {{ loop.index }}: {{ model_name }}
     SELECT
         a.{{ src_pk }},
-        a.{{ src_hashdiff }},
+        a.{{ src_hashdiff }} AS {{ out_hashdiff }},
         {%- set src_cols_upper = ns.source_columns[model_name] | map('upper') | list %}
         {#-- Payload is cast to VARCHAR so every UNION ALL branch agrees on type. --#}
         {%- for col in superset %}
@@ -230,11 +237,11 @@ WITH source_data AS (
 {%- if not use_object %}
 ,
     {#-- Change-detection CTEs and final SELECT --#}
-{%- if automate_dv.is_any_incremental() %}
+{%- if do_incremental %}
 latest_records AS (
     SELECT
         current_records.{{ src_pk }},
-        current_records.{{ src_hashdiff }},
+        current_records.{{ out_hashdiff }},
         current_records.{{ src_source }},
         current_records.{{ src_ldts }}
     FROM {{ this }} AS current_records
@@ -254,7 +261,7 @@ latest_records AS (
 unique_source_records AS (
     SELECT
         sd.{{ src_pk }},
-        sd.{{ src_hashdiff }},
+        sd.{{ out_hashdiff }},
         {%- for col in superset %}
         sd.{{ col }},
         {%- endfor %}
@@ -265,15 +272,15 @@ unique_source_records AS (
         sd.{{ src_source }},
         sd.{{ src_run_ts }}
     FROM source_data AS sd
-    {%- if automate_dv.is_any_incremental() %}
+    {%- if do_incremental %}
     LEFT OUTER JOIN latest_records AS lr
         ON sd.{{ src_pk }} = lr.{{ src_pk }}
         AND sd.{{ src_source }} = lr.{{ src_source }}
     {%- endif %}
-    QUALIFY sd.{{ src_hashdiff }} !=
-        LAG(sd.{{ src_hashdiff }}, 1,
-            {%- if automate_dv.is_any_incremental() %}
-            COALESCE(lr.{{ src_hashdiff }}, CAST('FFFFFFFF' AS BINARY(4)))
+    QUALIFY sd.{{ out_hashdiff }} !=
+        LAG(sd.{{ out_hashdiff }}, 1,
+            {%- if do_incremental %}
+            COALESCE(lr.{{ out_hashdiff }}, CAST('FFFFFFFF' AS BINARY(4)))
             {%- else %}
             CAST('FFFFFFFF' AS BINARY(4))
             {%- endif %}
@@ -318,7 +325,7 @@ hashed AS (
             {%- for col in plain_cols %}
             IFNULL(CAST(orw.{{ col }} AS VARCHAR), '^^'){%- if not loop.last %}, '||',{%- endif %}
             {%- endfor %}
-        )) AS BINARY(16)) AS {{ src_hashdiff }},
+        )) AS BINARY(16)) AS {{ out_hashdiff }},
         {%- for col in object_cols %}
         orw.{{ col }},
         {%- endfor %}
@@ -331,12 +338,12 @@ hashed AS (
     FROM object_rows AS orw
 )
 
-{%- if automate_dv.is_any_incremental() %}
+{%- if do_incremental %}
 ,
 latest_records AS (
     SELECT
         current_records.{{ src_pk }},
-        current_records.{{ src_hashdiff }},
+        current_records.{{ out_hashdiff }},
         current_records.{{ src_source }},
         current_records.{{ src_ldts }}
     FROM {{ this }} AS current_records
@@ -356,7 +363,7 @@ latest_records AS (
 records_to_insert AS (
     SELECT
         h.{{ src_pk }},
-        h.{{ src_hashdiff }},
+        h.{{ out_hashdiff }},
         {%- for col in object_cols %}
         h.{{ col }},
         {%- endfor %}
@@ -367,12 +374,12 @@ records_to_insert AS (
         h.{{ src_source }},
         h.{{ src_run_ts }}
     FROM hashed AS h
-    {%- if automate_dv.is_any_incremental() %}
+    {%- if do_incremental %}
     LEFT OUTER JOIN latest_records AS lr
         ON h.{{ src_pk }} = lr.{{ src_pk }}
         AND h.{{ src_source }} = lr.{{ src_source }}
-    WHERE lr.{{ src_hashdiff }} IS NULL
-       OR h.{{ src_hashdiff }} != lr.{{ src_hashdiff }}
+    WHERE lr.{{ out_hashdiff }} IS NULL
+       OR h.{{ out_hashdiff }} != lr.{{ out_hashdiff }}
     {%- endif %}
 )
 
