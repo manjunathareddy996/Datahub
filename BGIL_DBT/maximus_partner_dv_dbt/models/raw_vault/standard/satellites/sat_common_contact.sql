@@ -41,6 +41,7 @@ src_record_source_map:
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
+                    src_object_columns=['MOBILENUMBER'],
                     src_column_map={
                         'stg2_mp__pd_addr': ['ALTERNATEEMAILADDRESS', 'EMAILADDRESS', 'FAXNUMBER', 'LANDLINENUMBER', 'MOBILENUMBER', 'STDCODE'],
                         'stg2_mp__pd_party_addr_prop_pv': ['ALTERNATEMOBILENUMBER', 'MOBILENUMBER', 'SOCIALMEDIAHANDLE'],
