@@ -17,7 +17,7 @@ hashed_columns:
       - 'PRIMARY_ADDRESS_INDICATOR'
 derived_columns:
   PARTY_LOCATION_HKEY_NK: "'LNK_PARTY_LOCATION|' || part_id || '|' || add_id"
-  ADDRESS_USAGE_TYPE: 'add_type'
+  ADDRESS_USAGE_TYPE: 'to_varchar(add_type)'
   PRIMARY_ADDRESS_INDICATOR: 'primary_yn'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_BJAZ_CP_ADDRESS_LINK'
