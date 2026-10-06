@@ -41,6 +41,8 @@ src_payload:
   - 'PASSPORTNUMBER'
   - 'TANNUMBER'
   - 'VATREGISTRATIONNUMBER'
+  - 'VOTERIDNUMBER'
+  - 'CKYCNUMBER'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
@@ -75,7 +77,7 @@ src_record_source_map:
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
-                    src_object_columns=['AADHAARNUMBER', 'GSTIN', 'PANNUMBER', 'PASSPORTNUMBER'],
+                    src_object_columns=['AADHAARNUMBER', 'GSTIN', 'PANNUMBER', 'PASSPORTNUMBER', 'VOTERIDNUMBER', 'CKYCNUMBER'],
                     src_column_map={
                         'stg2_sat_azbj_partner_extn__party_identification': ['IDENTIFICATIONNUMBER', 'EIANUMBER'],
                         'stg2_sat_bjaz_clm_supp_extn__party_identification': ['GSTTAXPAYERTYPE', 'PANNUMBER', 'TANNUMBER'],
@@ -92,7 +94,7 @@ src_record_source_map:
                         'stg2_sat_bjaz_m_kyc_gstn__party_identification': ['GSTIN', 'GSTREGISTRATIONSTATUS', 'GSTTAXPAYERTYPE'],
                         'stg2_sat_bjaz_m_kyc_pan__party_identification': ['PANNUMBER'],
                         'stg2_sat_bjaz_m_kyc_passport__party_identification': ['PASSPORTNUMBER'],
-                        'stg2_sat_bjaz_m_kyc_voter__party_identification': [],
+                        'stg2_sat_bjaz_m_kyc_voter__party_identification': ['VOTERIDNUMBER'],
                         'stg2_sat_bjaz_t_ckyc_otp__party_identification': ['IDENTIFICATIONNUMBER'],
                         'stg2_sat_bjaz_t_kyc_incoming__party_identification': ['IDENTIFICATIONNUMBER'],
                         'stg2_sat_bjaz_t_kyc_name_match__party_identification': ['IDENTIFICATIONNUMBER']

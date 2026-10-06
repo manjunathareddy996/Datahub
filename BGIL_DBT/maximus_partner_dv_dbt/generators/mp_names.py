@@ -32,7 +32,7 @@ _ABBR = [
     ("_DOCUMENT_DETAIL", "_doc"),
     ("_PARTY_RELATION", "_rel"),
     ("_RELATED_PARTY", "_relparty"),
-    ("_PIVOT_VW_2_1", "_pv"), ("_PIVOT_VW", "_pv"), ("_VW_2_1", ""),
+    ("_PIVOT_VW", "_pv"),
 ]
 
 

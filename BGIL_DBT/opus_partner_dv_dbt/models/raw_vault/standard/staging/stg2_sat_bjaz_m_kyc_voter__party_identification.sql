@@ -74,6 +74,7 @@ hashed_columns:
       - 'PASSPORTNUMBER'
       - 'TANNUMBER'
       - 'VATREGISTRATIONNUMBER'
+      - 'VOTERIDNUMBER'
 derived_columns:
   PARENT_BK: "nullif('VOTER:' || upper(trim(coalesce(voter_number,''))), 'VOTER:')"
   PARENT_NK: "'HUB_PARTY|' || (nullif('VOTER:' || upper(trim(coalesce(voter_number,''))), 'VOTER:'))"
@@ -88,6 +89,7 @@ derived_columns:
   PASSPORTNUMBER: "cast(null as varchar)"
   TANNUMBER: "cast(null as varchar)"
   VATREGISTRATIONNUMBER: "cast(null as varchar)"
+  VOTERIDNUMBER: 'voter_number'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_BJAZ_M_KYC_VOTER'
 {%- endset -%}
