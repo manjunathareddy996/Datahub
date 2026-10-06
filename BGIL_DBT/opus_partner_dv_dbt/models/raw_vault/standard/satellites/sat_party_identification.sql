@@ -20,6 +20,14 @@ source_model:
   - 'stg2_sat_bjaz_intermediary__party_identification'
   - 'stg2_sat_bjaz_starpkg_ff_dtls__party_identification'
   - 'stg2_sat_cp_partners__party_identification'
+  - 'stg2_sat_bjaz_m_kyc_driving_licence__party_identification'
+  - 'stg2_sat_bjaz_m_kyc_gstn__party_identification'
+  - 'stg2_sat_bjaz_m_kyc_pan__party_identification'
+  - 'stg2_sat_bjaz_m_kyc_passport__party_identification'
+  - 'stg2_sat_bjaz_m_kyc_voter__party_identification'
+  - 'stg2_sat_bjaz_t_ckyc_otp__party_identification'
+  - 'stg2_sat_bjaz_t_kyc_incoming__party_identification'
+  - 'stg2_sat_bjaz_t_kyc_name_match__party_identification'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'AADHAARNUMBER'
@@ -48,6 +56,14 @@ src_record_source_map:
   stg2_sat_bjaz_intermediary__party_identification: 'OPUS'
   stg2_sat_bjaz_starpkg_ff_dtls__party_identification: 'OPUS'
   stg2_sat_cp_partners__party_identification: 'OPUS'
+  stg2_sat_bjaz_m_kyc_driving_licence__party_identification: 'OPUS'
+  stg2_sat_bjaz_m_kyc_gstn__party_identification: 'OPUS'
+  stg2_sat_bjaz_m_kyc_pan__party_identification: 'OPUS'
+  stg2_sat_bjaz_m_kyc_passport__party_identification: 'OPUS'
+  stg2_sat_bjaz_m_kyc_voter__party_identification: 'OPUS'
+  stg2_sat_bjaz_t_ckyc_otp__party_identification: 'OPUS'
+  stg2_sat_bjaz_t_kyc_incoming__party_identification: 'OPUS'
+  stg2_sat_bjaz_t_kyc_name_match__party_identification: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
@@ -71,5 +87,13 @@ src_record_source_map:
                         'stg2_sat_bjaz_hm_hospital_master__party_identification': ['IDENTIFICATIONNUMBER'],
                         'stg2_sat_bjaz_intermediary__party_identification': ['GSTREGISTRATIONSTATUS', 'GSTIN', 'PANNUMBER'],
                         'stg2_sat_bjaz_starpkg_ff_dtls__party_identification': ['PASSPORTNUMBER'],
-                        'stg2_sat_cp_partners__party_identification': ['IDENTIFICATIONNUMBER', 'VATREGISTRATIONNUMBER']
+                        'stg2_sat_cp_partners__party_identification': ['IDENTIFICATIONNUMBER', 'VATREGISTRATIONNUMBER'],
+                        'stg2_sat_bjaz_m_kyc_driving_licence__party_identification': [],
+                        'stg2_sat_bjaz_m_kyc_gstn__party_identification': ['GSTIN', 'GSTREGISTRATIONSTATUS', 'GSTTAXPAYERTYPE'],
+                        'stg2_sat_bjaz_m_kyc_pan__party_identification': ['PANNUMBER'],
+                        'stg2_sat_bjaz_m_kyc_passport__party_identification': ['PASSPORTNUMBER'],
+                        'stg2_sat_bjaz_m_kyc_voter__party_identification': [],
+                        'stg2_sat_bjaz_t_ckyc_otp__party_identification': ['IDENTIFICATIONNUMBER'],
+                        'stg2_sat_bjaz_t_kyc_incoming__party_identification': ['IDENTIFICATIONNUMBER'],
+                        'stg2_sat_bjaz_t_kyc_name_match__party_identification': ['IDENTIFICATIONNUMBER']
                     }) }}

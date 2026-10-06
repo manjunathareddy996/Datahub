@@ -12,6 +12,7 @@ source_model:
   - 'stg2_hub_clm_suppliers__location'
   - 'stg2_hub_cp_partners__location'
   - 'stg2_hub_ocp_interested_parties__location'
+  - 'stg2_kyc_common_address'
 src_pk: 'LOCATION_HKEY'
 src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'

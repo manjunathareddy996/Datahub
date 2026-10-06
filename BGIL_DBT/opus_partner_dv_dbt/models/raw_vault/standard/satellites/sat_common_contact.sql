@@ -18,6 +18,9 @@ source_model:
   - 'stg2_sat_bjaz_sh_mem_dtls_extn__common_contact'
   - 'stg2_sat_clm_suppliers__common_contact'
   - 'stg2_sat_cp_partners__common_contact'
+  - 'stg2_sat_bjaz_t_ckyc_otp__common_contact'
+  - 'stg2_sat_bjaz_t_ekyc__common_contact'
+  - 'stg2_sat_bjaz_t_kyc_details__common_contact'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'ALTERNATEEMAILADDRESS'
@@ -41,6 +44,9 @@ src_record_source_map:
   stg2_sat_bjaz_sh_mem_dtls_extn__common_contact: 'OPUS'
   stg2_sat_clm_suppliers__common_contact: 'OPUS'
   stg2_sat_cp_partners__common_contact: 'OPUS'
+  stg2_sat_bjaz_t_ckyc_otp__common_contact: 'OPUS'
+  stg2_sat_bjaz_t_ekyc__common_contact: 'OPUS'
+  stg2_sat_bjaz_t_kyc_details__common_contact: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
@@ -62,5 +68,8 @@ src_record_source_map:
                         'stg2_sat_bjaz_hm_member_dtls__common_contact': ['EMAILADDRESS', 'LANDLINENUMBER'],
                         'stg2_sat_bjaz_sh_mem_dtls_extn__common_contact': ['EMAILADDRESS'],
                         'stg2_sat_clm_suppliers__common_contact': ['LANDLINENUMBER'],
-                        'stg2_sat_cp_partners__common_contact': ['EMAILADDRESS', 'FAXNUMBER', 'LANDLINENUMBER']
+                        'stg2_sat_cp_partners__common_contact': ['EMAILADDRESS', 'FAXNUMBER', 'LANDLINENUMBER'],
+                        'stg2_sat_bjaz_t_ckyc_otp__common_contact': ['MOBILENUMBER'],
+                        'stg2_sat_bjaz_t_ekyc__common_contact': ['MOBILENUMBER'],
+                        'stg2_sat_bjaz_t_kyc_details__common_contact': ['MOBILENUMBER']
                     }) }}

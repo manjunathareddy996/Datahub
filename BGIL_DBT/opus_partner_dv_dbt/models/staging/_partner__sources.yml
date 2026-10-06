@@ -36,6 +36,24 @@ sources:
       - name: CP_ADDRESSES
       - name: CP_PARTNERS
       - name: OCP_INTERESTED_PARTIES
+      # KYC source tables (17 BJAZ_*KYC* tables)
+      - name: BJAZ_M_KYC_DRIVING_LICENCE
+      - name: BJAZ_M_KYC_GSTN
+      - name: BJAZ_M_KYC_PAN                  # KYC; staged in stg_partner__bjaz_m_kyc_pan
+      - name: BJAZ_M_KYC_PASSPORT             # KYC; staged in stg_partner__bjaz_m_kyc_passport
+      - name: BJAZ_M_KYC_VOTER
+      - name: BJAZ_T_CKYC_OTP
+      - name: BJAZ_T_CKYC_PERSONAL_DTLS
+      - name: BJAZ_T_CKYC_REL_PERSION_DTLS    # KYC; staged in stg_partner__bjaz_t_ckyc_rel_persion_dtls (PERSION is the source spelling)
+      - name: BJAZ_T_CKYC_SEARCH
+      - name: BJAZ_T_EKYC
+      - name: BJAZ_T_KYC_AUTH
+      - name: BJAZ_T_KYC_DETAILS
+      - name: BJAZ_T_KYC_INCOMING
+      - name: BJAZ_T_KYC_NAME_MATCH
+      - name: BJAZ_T_KYC_OCR
+      - name: BJAZ_T_KYC_POA_DOCUMENT
+      - name: BJAZ_T_KYC_POI_DOCUMENT
 
   - name: partner_test_raw
     description: >
@@ -69,3 +87,21 @@ sources:
       - name: CP_ADDRESSES
       - name: CP_PARTNERS
       - name: OCP_INTERESTED_PARTIES
+      # KYC source tables (17 BJAZ_*KYC* tables)
+      - name: BJAZ_M_KYC_DRIVING_LICENCE
+      - name: BJAZ_M_KYC_GSTN
+      - name: BJAZ_M_KYC_PAN                  # KYC; staged in stg_partner__bjaz_m_kyc_pan
+      - name: BJAZ_M_KYC_PASSPORT             # KYC; staged in stg_partner__bjaz_m_kyc_passport
+      - name: BJAZ_M_KYC_VOTER
+      - name: BJAZ_T_CKYC_OTP
+      - name: BJAZ_T_CKYC_PERSONAL_DTLS
+      - name: BJAZ_T_CKYC_REL_PERSION_DTLS    # KYC; staged in stg_partner__bjaz_t_ckyc_rel_persion_dtls (PERSION is the source spelling)
+      - name: BJAZ_T_CKYC_SEARCH
+      - name: BJAZ_T_EKYC
+      - name: BJAZ_T_KYC_AUTH
+      - name: BJAZ_T_KYC_DETAILS
+      - name: BJAZ_T_KYC_INCOMING
+      - name: BJAZ_T_KYC_NAME_MATCH
+      - name: BJAZ_T_KYC_OCR
+      - name: BJAZ_T_KYC_POA_DOCUMENT
+      - name: BJAZ_T_KYC_POI_DOCUMENT

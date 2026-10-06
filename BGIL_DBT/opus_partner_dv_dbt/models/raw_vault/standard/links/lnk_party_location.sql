@@ -10,6 +10,8 @@ source_model:
   - 'stg2_link_clm_suppliers__party_location'
   - 'stg2_link_cp_partners__party_location'
   - 'stg2_link_ocp_interested_parties__party_location'
+  - 'stg2_link_bjaz_t_ckyc_personal_dtls__party_location__correspondence'
+  - 'stg2_link_bjaz_t_ckyc_personal_dtls__party_location__permanent'
 src_pk: 'PARTY_LOCATION_HKEY'
 src_fk:
   - 'PARTY_HKEY'
