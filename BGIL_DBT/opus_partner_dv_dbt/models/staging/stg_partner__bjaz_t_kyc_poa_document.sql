@@ -45,7 +45,7 @@ with source as (
     "OCR_ID"::number as ocr_id,
     nullif(trim("BUSINESS_TYPE"::varchar), '') as business_type,
     nullif(trim("AWS_SERVICE"::varchar), '') as aws_service,
-    "AUTH_ID"::number as auth_id,
+    cast(null as number) as auth_id,  -- AUTH_ID not present in source table
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_test_raw', 'BJAZ_T_KYC_POA_DOCUMENT') }}
 

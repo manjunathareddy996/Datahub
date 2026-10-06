@@ -34,7 +34,7 @@ with source as (
     "CREATED_DATE"::timestamp_ntz as created_date,
     "MODIFY_DATE"::timestamp_ntz as modify_date,
     nullif(trim("BUSINESS_TYPE"::varchar), '') as business_type,
-    "PREMIUM_AMOUNT"::number as premium_amount,
+    cast(null as number) as premium_amount,  -- PREMIUM_AMOUNT not present in source table
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_test_raw', 'BJAZ_T_KYC_INCOMING') }}
 

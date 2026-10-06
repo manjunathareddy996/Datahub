@@ -47,7 +47,7 @@ with source as (
     "NAME_MATCH_ID"::number as name_match_id,
     nullif(trim("NAME_MATCH_STATUS"::varchar), '') as name_match_status,
     nullif(trim("KYC_GATEWAY"::varchar), '') as kyc_gateway,
-    nullif(trim("AWS_SERVICE"::varchar), '') as aws_service,
+    cast(null as varchar) as aws_service,  -- AWS_SERVICE not present in source table
     nullif(trim("POLICY_NAME_CONSENT"::varchar), '') as policy_name_consent,
     nullif(trim("CUSTOMER_KYC_CONSENT"::varchar), '') as customer_kyc_consent,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
