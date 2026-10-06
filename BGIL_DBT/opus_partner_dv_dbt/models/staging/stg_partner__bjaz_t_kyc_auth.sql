@@ -42,15 +42,15 @@ with source as (
     "AUTH_RESPONSE"::varchar as auth_response,
     case when "AUTH_RESPONSE" is not null and length("AUTH_RESPONSE") > 0 then 'Y' else 'N' end as auth_response_present,
     sha2("AUTH_RESPONSE"::varchar) as auth_response_digest,
-    "CREATED_DATE"::timestamp_ntz as created_date,
-    "MODIFY_DATE"::timestamp_ntz as modify_date,
+    try_to_timestamp_ntz(regexp_replace("CREATED_DATE"::varchar, '^Z[ ]*', '')) as created_date,
+    try_to_timestamp_ntz(regexp_replace("MODIFY_DATE"::varchar, '^Z[ ]*', '')) as modify_date,
     "NAME_MATCH_ID"::number as name_match_id,
     nullif(trim("NAME_MATCH_STATUS"::varchar), '') as name_match_status,
     nullif(trim("KYC_GATEWAY"::varchar), '') as kyc_gateway,
     cast(null as varchar) as aws_service,  -- AWS_SERVICE not present in source table
     cast(null as varchar) as policy_name_consent,  -- POLICY_NAME_CONSENT not present in source table
     cast(null as varchar) as customer_kyc_consent,  -- CUSTOMER_KYC_CONSENT not present in source table
-    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
+    to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', '')) as inc_job_updated_at
     from {{ source('partner_test_raw', 'BJAZ_T_KYC_AUTH') }}
 
 )

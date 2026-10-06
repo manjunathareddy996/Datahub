@@ -32,7 +32,7 @@ with source as (
     nullif(trim("DEC_PLACE"::varchar), '') as dec_place,
     "DIN"::number as din,
     nullif(trim("RE_TYPE_OTHERS_DESC"::varchar), '') as re_type_others_desc,
-    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
+    to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', '')) as inc_job_updated_at
     from {{ source('partner_test_raw', 'BJAZ_T_CKYC_REL_PERSION_DTLS') }}
 
 )

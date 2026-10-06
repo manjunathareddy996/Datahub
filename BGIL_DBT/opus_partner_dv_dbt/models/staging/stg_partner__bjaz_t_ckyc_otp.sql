@@ -16,13 +16,13 @@ with source as (
     nullif(trim("CKYC_REFERENCE_ID"::varchar), '') as ckyc_reference_id,
     "SEARCH_ID"::number as search_id,
     nullif(trim("OTP_STATUS"::varchar), '') as otp_status,
-    "CREATED_DATE"::timestamp_ntz as created_date,
-    "MODIFY_DATE"::timestamp_ntz as modify_date,
+    try_to_timestamp_ntz(regexp_replace("CREATED_DATE"::varchar, '^Z[ ]*', '')) as created_date,
+    try_to_timestamp_ntz(regexp_replace("MODIFY_DATE"::varchar, '^Z[ ]*', '')) as modify_date,
     nullif(trim("REQUEST_ID"::varchar), '') as request_id,
     nullif(trim("MOBILE_NUMBER"::varchar), '') as mobile_number,
     nullif(trim("CATEGORY"::varchar), '') as category,
     nullif(trim("INPUT"::varchar), '') as input,
-    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
+    to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', '')) as inc_job_updated_at
     from {{ source('partner_test_raw', 'BJAZ_T_CKYC_OTP') }}
 
 )

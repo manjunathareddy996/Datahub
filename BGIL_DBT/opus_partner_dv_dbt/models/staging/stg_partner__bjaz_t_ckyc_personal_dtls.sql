@@ -115,7 +115,7 @@ with source as (
     nullif(trim("DIS_TYPE"::varchar), '') as dis_type,
     nullif(trim("DIS_PERCENT"::varchar), '') as dis_percent,
     nullif(trim("DIS_UDID_NUMBER"::varchar), '') as dis_udid_number,
-    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
+    to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', '')) as inc_job_updated_at
     from {{ source('partner_test_raw', 'BJAZ_T_CKYC_PERSONAL_DTLS') }}
 
 )

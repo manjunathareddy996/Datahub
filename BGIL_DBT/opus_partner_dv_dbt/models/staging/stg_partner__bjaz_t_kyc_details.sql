@@ -27,8 +27,8 @@ with source as (
     "VOTER_ID"::number as voter_id,
     "LICENCE_ID"::number as licence_id,
     "GSTIN_ID"::number as gstin_id,
-    "CREATED_DATE"::timestamp_ntz as created_date,
-    "MODIFY_DATE"::timestamp_ntz as modify_date,
+    try_to_timestamp_ntz(regexp_replace("CREATED_DATE"::varchar, '^Z[ ]*', '')) as created_date,
+    try_to_timestamp_ntz(regexp_replace("MODIFY_DATE"::varchar, '^Z[ ]*', '')) as modify_date,
     nullif(trim("POI_CATEGORY"::varchar), '') as poi_category,
     nullif(trim("POI_INPUT"::varchar), '') as poi_input,
     nullif(trim("POI_RESPONSE_FULL_NAME"::varchar), '') as poi_response_full_name,
@@ -37,7 +37,7 @@ with source as (
     nullif(trim("RESPONSE_FULL_NAME"::varchar), '') as response_full_name,
     nullif(trim("RESPONSE_DOB"::varchar), '') as response_dob,
     nullif(trim("KYC_DEACTIVATE_REASON"::varchar), '') as kyc_deactivate_reason,
-    "KYC_DEACTIVATE_DATE"::timestamp_ntz as kyc_deactivate_date,
+    try_to_timestamp_ntz(regexp_replace("KYC_DEACTIVATE_DATE"::varchar, '^Z[ ]*', '')) as kyc_deactivate_date,
     nullif(trim("REMARK"::varchar), '') as remark,
     "EKYC_ID"::number as ekyc_id,
     "CKYC_NAME_MATCH_ID"::number as ckyc_name_match_id,
@@ -56,7 +56,7 @@ with source as (
     nullif(trim("BGIL_TP_VERIFYING_CONSENT"::varchar), '') as bgil_tp_verifying_consent,
     nullif(trim("BGIL_CHANGE_DATA_CONSENT"::varchar), '') as bgil_change_data_consent,
     nullif(trim("BGIL_UPDATE_GOV_CONSENT"::varchar), '') as bgil_update_gov_consent,
-    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
+    to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', '')) as inc_job_updated_at
     from {{ source('partner_test_raw', 'BJAZ_T_KYC_DETAILS') }}
 
 )

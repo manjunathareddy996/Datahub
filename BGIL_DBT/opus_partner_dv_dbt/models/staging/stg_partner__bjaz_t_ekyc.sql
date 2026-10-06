@@ -28,7 +28,7 @@ with source as (
     nullif(trim("DOB"::varchar), '') as dob,
     nullif(trim("GENDER"::varchar), '') as gender,
     nullif(trim("REQUEST_ID"::varchar), '') as request_id,
-    "CREATED_DATE"::timestamp_ntz as created_date,
+    try_to_timestamp_ntz(regexp_replace("CREATED_DATE"::varchar, '^Z[ ]*', '')) as created_date,
     nullif(trim("EKYC_STATUS"::varchar), '') as ekyc_status,
     nullif(trim("RESPONSE_ID"::varchar), '') as response_id,
     nullif(trim("MASKED_AADHAAR_NUMBER"::varchar), '') as masked_aadhaar_number,
@@ -60,14 +60,14 @@ with source as (
     case when "RESPONSE" is not null and length("RESPONSE") > 0 then 'Y' else 'N' end as response_present,
     sha2("RESPONSE"::varchar) as response_digest,
     nullif(trim("REMARK"::varchar), '') as remark,
-    "MODIFY_DATE"::timestamp_ntz as modify_date,
+    try_to_timestamp_ntz(regexp_replace("MODIFY_DATE"::varchar, '^Z[ ]*', '')) as modify_date,
     nullif(trim("UUID"::varchar), '') as uuid,
     "NAME_MATCH_ID"::number as name_match_id,
     "OTP_ID"::number as otp_id,
     nullif(trim("POLICY_NAME_CONSENT"::varchar), '') as policy_name_consent,
     nullif(trim("MOBILE_NUMBER"::varchar), '') as mobile_number,
     nullif(trim("CUSTOMER_KYC_CONSENT"::varchar), '') as customer_kyc_consent,
-    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
+    to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', '')) as inc_job_updated_at
     from {{ source('partner_test_raw', 'BJAZ_T_EKYC') }}
 
 )

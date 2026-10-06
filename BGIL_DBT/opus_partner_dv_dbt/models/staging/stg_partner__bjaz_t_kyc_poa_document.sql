@@ -34,8 +34,8 @@ with source as (
     "RESPONSE_CLOB"::varchar as response_clob,
     case when "RESPONSE_CLOB" is not null and length("RESPONSE_CLOB") > 0 then 'Y' else 'N' end as response_clob_present,
     sha2("RESPONSE_CLOB"::varchar) as response_clob_digest,
-    "CREATED_DATE"::timestamp_ntz as created_date,
-    "MODIFY_DATE"::timestamp_ntz as modify_date,
+    try_to_timestamp_ntz(regexp_replace("CREATED_DATE"::varchar, '^Z[ ]*', '')) as created_date,
+    try_to_timestamp_ntz(regexp_replace("MODIFY_DATE"::varchar, '^Z[ ]*', '')) as modify_date,
     nullif(trim("FIELD_TYPE"::varchar), '') as field_type,
     nullif(trim("FIELD_VALUE"::varchar), '') as field_value,
     nullif(trim("DOCUMENT_CATEGORY"::varchar), '') as document_category,
@@ -46,7 +46,7 @@ with source as (
     nullif(trim("BUSINESS_TYPE"::varchar), '') as business_type,
     nullif(trim("AWS_SERVICE"::varchar), '') as aws_service,
     cast(null as number) as auth_id,  -- AUTH_ID not present in source table
-    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
+    to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', '')) as inc_job_updated_at
     from {{ source('partner_test_raw', 'BJAZ_T_KYC_POA_DOCUMENT') }}
 
 )

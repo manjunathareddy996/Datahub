@@ -19,13 +19,13 @@ with source as (
     nullif(trim("RESPONSE_NAME"::varchar), '') as response_name,
     nullif(trim("STATUS"::varchar), '') as status,
     nullif(trim("SCORE"::varchar), '') as score,
-    "REQUEST_DATE"::timestamp_ntz as request_date,
-    "RESPONSE_DATE"::timestamp_ntz as response_date,
+    try_to_timestamp_ntz(regexp_replace("REQUEST_DATE"::varchar, '^Z[ ]*', '')) as request_date,
+    try_to_timestamp_ntz(regexp_replace("RESPONSE_DATE"::varchar, '^Z[ ]*', '')) as response_date,
     "REFERENCE_ID"::number as reference_id,
     nullif(trim("CONFIG_FLAG"::varchar), '') as config_flag,
     "CONFIG_SCORE"::number as config_score,
     nullif(trim("REMARK"::varchar), '') as remark,
-    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
+    to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', '')) as inc_job_updated_at
     from {{ source('partner_test_raw', 'BJAZ_T_KYC_NAME_MATCH') }}
 
 )

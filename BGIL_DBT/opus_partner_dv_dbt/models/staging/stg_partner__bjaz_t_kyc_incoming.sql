@@ -31,11 +31,11 @@ with source as (
     nullif(trim("UDF5"::varchar), '') as udf5,
     nullif(trim("RESERVED_FIELD1"::varchar), '') as reserved_field1,
     nullif(trim("RESERVED_FIELD2"::varchar), '') as reserved_field2,
-    "CREATED_DATE"::timestamp_ntz as created_date,
-    "MODIFY_DATE"::timestamp_ntz as modify_date,
+    try_to_timestamp_ntz(regexp_replace("CREATED_DATE"::varchar, '^Z[ ]*', '')) as created_date,
+    try_to_timestamp_ntz(regexp_replace("MODIFY_DATE"::varchar, '^Z[ ]*', '')) as modify_date,
     nullif(trim("BUSINESS_TYPE"::varchar), '') as business_type,
     cast(null as number) as premium_amount,  -- PREMIUM_AMOUNT not present in source table
-    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
+    to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', '')) as inc_job_updated_at
     from {{ source('partner_test_raw', 'BJAZ_T_KYC_INCOMING') }}
 
 )

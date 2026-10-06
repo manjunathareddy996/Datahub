@@ -32,8 +32,8 @@ with source as (
     nullif(trim("DISTRICT"::varchar), '') as district,
     nullif(trim("POST_OFFICE"::varchar), '') as post_office,
     nullif(trim("STATE"::varchar), '') as state,
-    "CREATED_DATE"::timestamp_ntz as created_date,
-    "MODIFY_DATE"::timestamp_ntz as modify_date,
+    try_to_timestamp_ntz(regexp_replace("CREATED_DATE"::varchar, '^Z[ ]*', '')) as created_date,
+    try_to_timestamp_ntz(regexp_replace("MODIFY_DATE"::varchar, '^Z[ ]*', '')) as modify_date,
     nullif(trim("POI_OCR_STATUS_CODE"::varchar), '') as poi_ocr_status_code,
     nullif(trim("POA_OCR_STATUS_CODE"::varchar), '') as poa_ocr_status_code,
     nullif(trim("SURNAME"::varchar), '') as surname,
@@ -59,7 +59,7 @@ with source as (
     nullif(trim("POA_POLICY_NAME_CONSENT"::varchar), '') as poa_policy_name_consent,
     "NAME_MATCH_ID"::number as name_match_id,
     nullif(trim("CUSTOMER_KYC_CONSENT"::varchar), '') as customer_kyc_consent,
-    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
+    to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', '')) as inc_job_updated_at
     from {{ source('partner_test_raw', 'BJAZ_T_KYC_OCR') }}
 
 )

@@ -48,8 +48,8 @@ with source as (
     "CKYC_RESPONSE"::varchar as ckyc_response,
     case when "CKYC_RESPONSE" is not null and length("CKYC_RESPONSE") > 0 then 'Y' else 'N' end as ckyc_response_present,
     sha2("CKYC_RESPONSE"::varchar) as ckyc_response_digest,
-    "CREATED_DATE"::timestamp_ntz as created_date,
-    "MODIFY_DATE"::timestamp_ntz as modify_date,
+    try_to_timestamp_ntz(regexp_replace("CREATED_DATE"::varchar, '^Z[ ]*', '')) as created_date,
+    try_to_timestamp_ntz(regexp_replace("MODIFY_DATE"::varchar, '^Z[ ]*', '')) as modify_date,
     nullif(trim("CONSTITUTION_TYPE"::varchar), '') as constitution_type,
     nullif(trim("POLICY_NAME_CONSENT"::varchar), '') as policy_name_consent,
     nullif(trim("CKYC_GATEWAY"::varchar), '') as ckyc_gateway,
@@ -57,7 +57,7 @@ with source as (
     nullif(trim("CKYC_REF_ID"::varchar), '') as ckyc_ref_id,
     nullif(trim("CUSTOMER_KYC_CONSENT"::varchar), '') as customer_kyc_consent,
     "NAME_MATCH_ID"::number as name_match_id,
-    "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
+    to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', '')) as inc_job_updated_at
     from {{ source('partner_test_raw', 'BJAZ_T_CKYC_SEARCH') }}
 
 )
