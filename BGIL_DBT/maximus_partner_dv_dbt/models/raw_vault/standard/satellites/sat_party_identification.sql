@@ -50,10 +50,12 @@ src_record_source_map:
 {{ sat_multi_source(src_pk=metadata_dict['src_pk'],
                     src_payload=metadata_dict['src_payload'],
                     src_hashdiff=metadata_dict['src_hashdiff'],
+                    src_hashdiff_alias='HASHDIFF',
                     src_ldts=metadata_dict['src_ldts'],
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
+                    src_object_columns=['AADHAARNUMBER', 'GSTIN', 'PANNUMBER', 'PASSPORTNUMBER'],
                     src_column_map={
                         'stg2_mp__pd_prop_msdp_pv': ['IDENTIFICATIONISSUEDATE', 'PASSPORTEXPIRYDATE', 'PASSPORTNUMBER'],
                         'stg2_mp__pd_prop_sp_pv': ['AADHAARNUMBER', 'AADHAARVERIFICATIONSTATUS', 'AGEPROOFTYPE', 'CINNUMBER', 'DRIVINGLICENCEEXPIRYDATE', 'DRIVINGLICENCENUMBER', 'EIANUMBER', 'FORM60INDICATOR', 'GSTIN', 'GSTREGISTRATIONSTATUS', 'GSTTAXPAYERTYPE', 'IDENTIFICATIONEXPIRYDATE', 'IDENTIFICATIONISSUEDATE', 'IDENTIFICATIONISSUINGAUTHORITY', 'IDENTIFICATIONNUMBER', 'IDENTIFICATIONTYPECODE', 'IDENTIFICATIONVERIFIEDINDICATOR', 'INSURANCEREPOSITORYNAME', 'NREGACARDNUMBER', 'OVDCATEGORY', 'PANNUMBER', 'PANVERIFICATIONSTATUS', 'PASSPORTEXPIRYDATE', 'PASSPORTNUMBER', 'TANNUMBER', 'VOTERIDNUMBER']

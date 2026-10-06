@@ -59,6 +59,7 @@ src_record_source_map:
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
+                    src_object_columns=['AADHAARNUMBER', 'GSTIN', 'PANNUMBER', 'PASSPORTNUMBER'],
                     src_column_map={
                         'stg2_sat_azbj_partner_extn__party_identification': ['IDENTIFICATIONNUMBER', 'EIANUMBER'],
                         'stg2_sat_bjaz_clm_supp_extn__party_identification': ['GSTTAXPAYERTYPE', 'PANNUMBER', 'TANNUMBER'],

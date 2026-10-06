@@ -52,6 +52,7 @@ src_record_source_map:
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
                     src_record_source_map=metadata_dict['src_record_source_map'],
+                    src_object_columns=['MOBILENUMBER'],
                     src_column_map={
                         'stg2_sat_azbj_partner_extn__common_contact': ['ALTERNATEEMAILADDRESS', 'ALTERNATEMOBILENUMBER', 'LANDLINENUMBER', 'PREFERREDCONTACTTIME'],
                         'stg2_sat_bjaz_clm_supp_extn__common_contact': ['EMAILADDRESS', 'LANDLINENUMBER', 'MOBILENUMBER', 'STDCODE'],
