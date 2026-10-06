@@ -1,6 +1,6 @@
 {{ config(materialized='view') }}
 
--- stage() over the SAT_PARTY_ORG_DIRECTORS unpivot for BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1: one hashing pass over all 9 rows.
+-- stage() over the SAT_PARTY_ORG_DIRECTORS unpivot for BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW: one hashing pass over all 9 rows.
 
 {%- set yaml_metadata -%}
 source_model: 'unpivot_mp__pd_prop_sp_pv__party_org_directors'

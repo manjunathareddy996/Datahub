@@ -1,6 +1,6 @@
 {{ config(materialized='view') }}
 
--- stage() over the SAT_LNK_PARTY_ROLE_CORE unpivot for BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW_2_1: one hashing pass over all 1 rows.
+-- stage() over the SAT_LNK_PARTY_ROLE_CORE unpivot for BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW: one hashing pass over all 1 rows.
 
 {%- set yaml_metadata -%}
 source_model: 'unpivot_mp__pd_prop_msdp_pv__lnk_party_role_core'

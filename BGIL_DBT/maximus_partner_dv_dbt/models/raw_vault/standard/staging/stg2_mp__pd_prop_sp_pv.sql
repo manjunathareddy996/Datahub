@@ -1,6 +1,6 @@
 {{ config(materialized='view') }}
 
--- MAXIMUS PARTNER wide stage() for BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1.
+-- MAXIMUS PARTNER wide stage() for BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
 -- 8 key(s), 40 single-active satellite(s).
 
 {%- set yaml_metadata -%}
@@ -549,7 +549,7 @@ derived_columns:
   SERVICEDESCRIPTION: "coalesce(medicine_name, service_name)"
   PACKAGERATE: "package_rate"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1'
+  RECORD_SOURCE: '!MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

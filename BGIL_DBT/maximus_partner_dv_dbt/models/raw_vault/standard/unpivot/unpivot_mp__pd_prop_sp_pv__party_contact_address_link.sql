@@ -1,6 +1,6 @@
 {{ config(materialized='view') }}
 
--- UNPIVOT for SAT_PARTY_CONTACT_ADDRESS_LINK from BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1
+-- UNPIVOT for SAT_PARTY_CONTACT_ADDRESS_LINK from BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- 2 row(s), ONE PER INSTANCE of ADDRESS_USAGE_TYPE.
 -- The instance label is the mapper's own child_key_value, which keeps this in the
 -- vocabulary partner_dv_dbt already writes.

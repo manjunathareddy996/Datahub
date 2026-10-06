@@ -1,6 +1,6 @@
 {{ config(materialized='view') }}
 
--- MAXIMUS PARTNER wide stage() for BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW_2_1.
+-- MAXIMUS PARTNER wide stage() for BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW.
 -- 2 key(s), 4 single-active satellite(s).
 
 {%- set yaml_metadata -%}
@@ -78,7 +78,7 @@ derived_columns:
   LOCATIONTYPE: "location_type"
   LOCATIONNAME: "cast(null as varchar)"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW_2_1'
+  RECORD_SOURCE: '!MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

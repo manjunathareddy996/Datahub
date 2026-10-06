@@ -1,6 +1,6 @@
 {{ config(materialized='view') }}
 
--- UNPIVOT for SAT_PARTY_PROVIDER_CAPABILITY from BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW_2_1
+-- UNPIVOT for SAT_PARTY_PROVIDER_CAPABILITY from BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- 135 row(s), ONE PER INSTANCE of FACILITYCODE.
 -- The instance label is the mapper's own child_key_value, which keeps this in the
 -- vocabulary partner_dv_dbt already writes.
