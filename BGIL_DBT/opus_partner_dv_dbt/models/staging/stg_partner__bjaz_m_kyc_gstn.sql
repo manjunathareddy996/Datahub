@@ -24,7 +24,7 @@ with source as (
     "MODIFY_DATE"::timestamp_ntz as modify_date,
     "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
     cast(null as varchar) as taxpayer_type,  -- TAXPAYER_TYPE not present in source table
-    nullif(trim("GSTIN_STATUS"::varchar), '') as gstin_status,
+    cast(null as varchar) as gstin_status,  -- GSTIN_STATUS not present in source table
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_test_raw', 'BJAZ_M_KYC_GSTN') }}
 

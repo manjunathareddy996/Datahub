@@ -48,7 +48,7 @@ with source as (
     nullif(trim("NAME_MATCH_STATUS"::varchar), '') as name_match_status,
     nullif(trim("KYC_GATEWAY"::varchar), '') as kyc_gateway,
     cast(null as varchar) as aws_service,  -- AWS_SERVICE not present in source table
-    nullif(trim("POLICY_NAME_CONSENT"::varchar), '') as policy_name_consent,
+    cast(null as varchar) as policy_name_consent,  -- POLICY_NAME_CONSENT not present in source table
     nullif(trim("CUSTOMER_KYC_CONSENT"::varchar), '') as customer_kyc_consent,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
     from {{ source('partner_test_raw', 'BJAZ_T_KYC_AUTH') }}
