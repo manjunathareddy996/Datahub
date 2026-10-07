@@ -6,11 +6,11 @@
 -- payload Maximus populates, which is what removes any need to back-patch the other project.
 
 {%- set yaml_metadata -%}
-source_model: 'stg2_mp__pd_prop_sp_pv'
+source_model: 'stg2_mp_sat__product_definition'
 src_pk: 'PRODUCT_HKEY'
 src_payload:
   - 'PRODUCTDESCRIPTION'
-src_hashdiff: 'HASHDIFF_PRODUCT_DEFINITION'
+src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

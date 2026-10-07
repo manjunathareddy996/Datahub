@@ -6,7 +6,7 @@
 -- payload Maximus populates, which is what removes any need to back-patch the other project.
 
 {%- set yaml_metadata -%}
-source_model: 'stg2_mp__pd_prop_sp_pv'
+source_model: 'stg2_mp_sat__party_health_profile'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'DISABILITYINDICATOR'
@@ -14,7 +14,7 @@ src_payload:
   - 'HEIGHT'
   - 'PREEXISTINGDISEASEDESCRIPTION'
   - 'WEIGHT'
-src_hashdiff: 'HASHDIFF_PARTY_HEALTH_PROFILE'
+src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

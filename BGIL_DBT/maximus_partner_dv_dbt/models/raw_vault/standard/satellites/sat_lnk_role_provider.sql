@@ -6,7 +6,7 @@
 -- payload Maximus populates, which is what removes any need to back-patch the other project.
 
 {%- set yaml_metadata -%}
-source_model: 'stg2_mp__pd_prop_sp_pv'
+source_model: 'stg2_mp_sat__lnk_role_provider'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'DEEMPANELMENTDATE'
@@ -25,7 +25,7 @@ src_payload:
   - 'PROVIDERTYPE'
   - 'SERVICESCOPEDESCRIPTION'
   - 'SPECIALISATION'
-src_hashdiff: 'HASHDIFF_LNK_ROLE_PROVIDER'
+src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

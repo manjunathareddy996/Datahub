@@ -7,7 +7,7 @@
 source_model: 'stg_maximus__pd_doc'
 hashed_columns:
   DOCUMENT_HKEY: 'DOCUMENT_NK'
-  HASHDIFF_DOCUMENT_DEFINITION:
+  HASHDIFF:
     is_hashdiff: true
     columns:
       - 'DOCUMENTNAME'

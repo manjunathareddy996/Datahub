@@ -12,7 +12,7 @@ src_payload:
   - 'DOCUMENTNAME'
   - 'DOCUMENTTYPE'
   - 'ISSUEDATE'
-src_hashdiff: 'HASHDIFF_DOCUMENT_DEFINITION'
+src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}
