@@ -37,6 +37,7 @@ src_record_source_map:
 {{ sat_multi_source(src_pk=metadata_dict['src_pk'],
                     src_payload=metadata_dict['src_payload'],
                     src_hashdiff=metadata_dict['src_hashdiff'],
+                    src_hashdiff_alias='HASHDIFF',
                     src_ldts=metadata_dict['src_ldts'],
                     src_source=metadata_dict['src_source'],
                     source_model=metadata_dict['source_model'],
