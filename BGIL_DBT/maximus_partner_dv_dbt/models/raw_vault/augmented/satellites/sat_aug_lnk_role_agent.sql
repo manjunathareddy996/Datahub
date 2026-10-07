@@ -7,7 +7,7 @@
 -- fact that already has one. NOT part of the canonical model.
 
 {%- set yaml_metadata -%}
-source_model: 'stg2_aug_mp__pd_prop_sp_pv__party'
+source_model: 'stg2_aug_mp_sat__lnk_role_agent'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'AFFINITYPARTNEREMPLOYEEINDICATOR'
@@ -18,7 +18,7 @@ src_payload:
   - 'IRDAIPRIMARYPROFESSION'
   - 'IRDAIUNIQUEIDENTIFIER'
   - 'LICENCEDETAIL'
-src_hashdiff: 'HASHDIFF_AUG_LNK_ROLE_AGENT'
+src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}
