@@ -6,7 +6,7 @@
 source_model: 'unpivot_mp__pd_prop_sp_pv__party_contact_address_link'
 hashed_columns:
   PARTY_LOCATION_HKEY: 'PARTY_LOCATION_NK'
-  HASHDIFF_PARTY_CONTACT_ADDRESS_LINK:
+  HASHDIFF:
     is_hashdiff: true
     columns:
       - 'ADDRESSUSAGETYPE'

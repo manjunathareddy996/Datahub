@@ -13,7 +13,7 @@ src_cdk:
 src_payload:
   - 'ADDRESSUSAGETYPE'
   - 'PRIMARYADDRESSINDICATOR'
-src_hashdiff: 'HASHDIFF_PARTY_CONTACT_ADDRESS_LINK'
+src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}
