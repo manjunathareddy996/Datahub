@@ -20,7 +20,7 @@ src_payload:
   - 'ROLEENDDATE'
   - 'ROLESTARTDATE'
   - 'ROLETYPE'
-src_hashdiff: 'HASHDIFF_LNK_PARTY_ROLE_CORE'
+src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:

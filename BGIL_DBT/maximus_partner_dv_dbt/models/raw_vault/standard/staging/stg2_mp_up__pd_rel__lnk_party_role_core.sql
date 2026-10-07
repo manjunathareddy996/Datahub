@@ -6,7 +6,7 @@
 source_model: 'unpivot_mp__pd_rel__lnk_party_role_core'
 hashed_columns:
   PARTY_HKEY: 'PARTY_NK'
-  HASHDIFF_LNK_PARTY_ROLE_CORE:
+  HASHDIFF:
     is_hashdiff: true
     columns:
       - 'ROLECODE'
