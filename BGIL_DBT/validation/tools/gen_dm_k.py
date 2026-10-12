@@ -9,7 +9,7 @@ always mirror what the models actually load. Re-run after any model change:
 
     python3 BGIL_DBT/validation/tools/gen_dm_k.py
 
-Outputs (overwritten): BGIL_DBT/validation/DM-K{1..5}.sql and DM-K{1..5}.docx
+Outputs (overwritten): BGIL_DBT/validation/DM-K/DM-K{1..5}.sql and DM-K{1..5}.docx
 The .docx is built by swapping word/document.xml inside a template package (the
 existing DM-K4.docx styles), so no python-docx dependency is needed.
 """
@@ -607,6 +607,16 @@ def wrap(text, width=86, prefix="-- ", cont=None):
     return "\n".join(lines)
 
 
+def out_dir(check_id):
+    """validation/<criteria group>/ e.g. DM-K1 -> validation/DM-K, DM-AG1 -> validation/DM-AG."""
+    d = VALIDATION / re.match(r"[A-Z]+-[A-Z]+", check_id).group(0)
+    d.mkdir(exist_ok=True)
+    return d
+
+
+TEMPLATE_DOCX = VALIDATION / "DM-K" / "DM-K4.docx"  # styles template for every generated .docx
+
+
 def write_sql(check_id, meta, sections, revision):
     bar = "=" * 85
     out = [f"/* {bar}", f"   {meta['title'].replace('—', '-')}", f"   {meta['subtitle'].replace('→', '->')}", ""]
@@ -626,7 +636,7 @@ def write_sql(check_id, meta, sections, revision):
                 out.append(f"-- {label}")
             out.append(q)
             out.append("")
-    (VALIDATION / f"{check_id}.sql").write_text("\n".join(out).rstrip() + "\n")
+    (out_dir(check_id) / f"{check_id}.sql").write_text("\n".join(out).rstrip() + "\n")
 
 
 def x(t):
@@ -710,7 +720,7 @@ def write_docx(check_id, meta, sections, revision, template_bytes):
         head = doc_xml[: doc_xml.index("<w:body>") + len("<w:body>")]
         sect = re.search(r"<w:sectPr.*?</w:sectPr>", doc_xml, re.S).group(0)
         new_doc = head + "".join(body) + sect + "</w:body></w:document>"
-        out_path = VALIDATION / f"{check_id}.docx"
+        out_path = out_dir(check_id) / f"{check_id}.docx"
         tmp = out_path.with_suffix(".docx.tmp")
         with zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED) as zo:
             for item in zt.infolist():
@@ -732,7 +742,7 @@ def write_docx(check_id, meta, sections, revision, template_bytes):
 
 # ---------------------------------------------------------------------------------------
 def main():
-    template = (VALIDATION / "DM-K4.docx").read_bytes() if len(sys.argv) < 2 else Path(sys.argv[1]).read_bytes()
+    template = TEMPLATE_DOCX.read_bytes() if len(sys.argv) < 2 else Path(sys.argv[1]).read_bytes()
     order = ["HUB_PARTY", "HUB_STAKE_CODE", "HUB_AGENT", "HUB_AGREEMENT", "HUB_CLAIM", "HUB_LOCATION",
              "HUB_PAYMENT_INSTRUMENT", "HUB_PRODUCT", "HUB_FINANCIAL_ACCOUNT", "HUB_DOCUMENT", "HUB_POLICY",
              "HUB_DISTRIBUTION_CHANNEL", "HUB_ORG_UNIT", "HUB_RISK_OBJECT"]
