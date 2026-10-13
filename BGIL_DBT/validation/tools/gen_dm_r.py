@@ -85,9 +85,16 @@ def link_feed_arms(md, feed):
     for part in re.split(r"\bunion\s+all\b", body, flags=re.I):
         if "ref(" not in part:
             continue
+        w = re.search(r"\}\}\s*where\b(.*)$", part, re.S | re.I)  # hubfeed filter on stg2 columns
+        if w:
+            part = part[:w.start()] + "}}"
         ref, rename = A.parse_wrapper(part)
         for a in A.resolve(md, ref):
-            out.append((f"{feed} <- {ref}", a.wrap(rename)))
+            wa = a.wrap(rename)
+            if w:
+                cond = A.subst(A.lower_idents(w.group(1).strip()), wa.lookup)
+                wa.where = f"({wa.where}) and ({cond})" if wa.where else cond
+            out.append((f"{feed} <- {ref}", wa))
     return out
 
 
