@@ -522,14 +522,17 @@ def a2_cols(sat, g):
     return cols
 
 
-def a2_section(sat):
+def a2_section(sat, sample=None, check="DM-A2", extra_note=""):
+    """sample: optional (sat, gi, g) -> CTE text; default = deterministic first-N-by-hash sample.
+    Reused by DM-H4 with a most-recently-loaded sample."""
+    sample = sample or sample_cte
     groups = [(gi, g, a2_cols(sat, g)) for gi, g in enumerate(sat.groups.values(), 1)]
     groups = [x for x in groups if x[2]]
     if not groups:
-        return na(sat, "DM-A2")
+        return na(sat, check)
     ctes, finals = [], []
     for gi, g, cols in groups:
-        ctes.append(sample_cte(sat, gi, g))
+        ctes.append(sample(sat, gi, g))
         ctes.append(current_cte(sat, gi, g, cols))
         if any(a.kind == "stitch" for a in g.arms):
             ctes += stitch_ctes(sat, gi, next(a for a in g.arms if a.kind == "stitch"))
@@ -552,7 +555,7 @@ def a2_section(sat):
     sql = "with " + ",\n".join(ctes) + "\n" + "\nunion all\n".join(finals) + "\norder by record_source, column_name;"
     return dict(project=sat.project, hub=sat.name, status="Implemented",
                 pass_criteria="status = PASS on every row (mismatched = 0 and no_source_row = 0)",
-                note=sat_note(sat, a2=True), queries=[("SQL query", sql)])
+                note=extra_note + sat_note(sat, a2=True), queries=[("SQL query", sql)])
 
 
 # ---------------------------------------------------------------------------------------
@@ -800,11 +803,16 @@ CHECKS = OrderedDict([
 ])
 
 
-def write_docx(check_id, meta, sections, revision, template_bytes):
+def write_docx(check_id, meta, sections, revision, template_bytes, preface=None):
+    """preface: optional [(heading, [(label, text), ...])] shown right under the title."""
     import io, shutil, zipfile
     p, kv, grid = K.p, K.kv_table, K.grid_table
-    body = [p(meta["title"], "Title"), p(meta["subtitle"], italic=True), p("Check Overview", "Heading1"),
-            kv(meta["overview"]), p(), p("Revision notes", "Heading1")]
+    body = [p(meta["title"], "Title"), p(meta["subtitle"], italic=True)]
+    for heading, items in (preface or []):
+        body.append(p(heading, "Heading1"))
+        body += [K.p_note(f"• {label}:", text) for label, text in items]
+        body.append(p())
+    body += [p("Check Overview", "Heading1"), kv(meta["overview"]), p(), p("Revision notes", "Heading1")]
     body += [p("• " + r) for r in revision]
     body += [p("Results summary", "Heading1"),
              grid(["#", "Project", "Satellite", "Status", "Result", "Failing rows"],
