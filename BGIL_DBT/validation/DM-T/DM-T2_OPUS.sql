@@ -2,6 +2,10 @@
    DM-T2  |  Load Audit - Hash Key Integrity (DV2.0)  (OPUS)
    Hash keys generated consistently; no null hash keys; no unexpected collisions. Pass criterion: 0 null; 0 unexpected collisions.
 
+   PARTNER LOB: 44 of 73 objects below carry the [Partner LOB] tag -- the same objects
+       tagged in the matching .docx (Customer / Party domain rows of the partner
+       Source-To-Model mapping). The tag is scope information only: SQL bodies, pass
+       criteria and results are unaffected.
    Check ID: DM-T2
    Category: Load audit
    Sign-off criterion: Hash key integrity (DV2.0)
@@ -96,7 +100,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_AGREEMENT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 4. OPUS — HUB  HUB_CLAIM   [Implemented]
+-- 4. OPUS — HUB  HUB_CLAIM [Partner LOB]   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || PARENT_BK AS VARCHAR))),
 -- '')) must equal CLAIM_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -142,7 +146,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_DISTRIBUTION_CHANNEL' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 6. OPUS — HUB  HUB_DOCUMENT   [Implemented]
+-- 6. OPUS — HUB  HUB_DOCUMENT [Partner LOB]   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || PARENT_BK AS
 -- VARCHAR))), '')) must equal DOCUMENT_HKEY. collisions = hash keys carrying more than
 -- one PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute
@@ -165,7 +169,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_DOCUMENT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 7. OPUS — HUB  HUB_LOCATION   [Implemented]
+-- 7. OPUS — HUB  HUB_LOCATION [Partner LOB]   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || PARENT_BK AS
 -- VARCHAR))), '')) must equal LOCATION_HKEY. collisions = hash keys carrying more than
 -- one PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute
@@ -188,7 +192,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_LOCATION' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 8. OPUS — HUB  HUB_ORG_UNIT   [Implemented]
+-- 8. OPUS — HUB  HUB_ORG_UNIT [Partner LOB]   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || PARENT_BK AS
 -- VARCHAR))), '')) must equal ORG_UNIT_HKEY. collisions = hash keys carrying more than
 -- one PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute
@@ -211,7 +215,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_ORG_UNIT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 9. OPUS — HUB  HUB_PARTY   [Implemented]
+-- 9. OPUS — HUB  HUB_PARTY [Partner LOB]   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || PARENT_BK AS VARCHAR))),
 -- '')) must equal PARTY_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -234,7 +238,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PARTY' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 10. OPUS — HUB  HUB_POLICY   [Implemented]
+-- 10. OPUS — HUB  HUB_POLICY [Partner LOB]   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || PARENT_BK AS VARCHAR))),
 -- '')) must equal POLICY_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -280,7 +284,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PRODUCT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 12. OPUS — HUB  HUB_RISK_OBJECT   [Implemented]
+-- 12. OPUS — HUB  HUB_RISK_OBJECT [Partner LOB]   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || PARENT_BK AS
 -- VARCHAR))), '')) must equal RISK_OBJECT_HKEY. collisions = hash keys carrying more
 -- than one PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the
@@ -366,7 +370,7 @@ select 'OPUS' as project, 'link' as table_type, 'LNK_POLICY_PARTY' as table_name
 
 
 ----------------------------------------------------------------------------------------
--- 16. OPUS — SATELLITE  SAT_AGREEMENT_COMMERCIAL_TERMS   [Implemented]
+-- 16. OPUS — SATELLITE  SAT_AGREEMENT_COMMERCIAL_TERMS [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -382,7 +386,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AGREEMENT_COMMERCIAL_T
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — SATELLITE  SAT_AGREEMENT_DEFINITION   [Implemented]
+-- 17. OPUS — SATELLITE  SAT_AGREEMENT_DEFINITION [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -526,7 +530,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LAWYER_ADVOCATE_RO
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_AGENT   [Implemented]
+-- 26. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -542,7 +546,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_AGENT' as
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 27. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -558,7 +562,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_CUSTOMER'
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
+-- 28. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -574,7 +578,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_PROVIDER'
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_SURVEYOR   [Implemented]
+-- 29. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -638,7 +642,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY' as table_n
 
 
 ----------------------------------------------------------------------------------------
--- 33. OPUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]
+-- 33. OPUS — SATELLITE  SAT_COMMON_ADDRESS [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -670,7 +674,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_ADMIN_GEOGRAPHY
 
 
 ----------------------------------------------------------------------------------------
--- 35. OPUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 35. OPUS — SATELLITE  SAT_COMMON_CLASSIFICATION [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -686,7 +690,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CLASSIFICATION'
 
 
 ----------------------------------------------------------------------------------------
--- 36. OPUS — SATELLITE  SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 36. OPUS — SATELLITE  SAT_COMMON_COMMUNICATION_PREFERENCE [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -702,7 +706,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_COMMUNICATION_P
 
 
 ----------------------------------------------------------------------------------------
--- 37. OPUS — SATELLITE  SAT_COMMON_CONSENT   [Implemented]
+-- 37. OPUS — SATELLITE  SAT_COMMON_CONSENT [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -718,7 +722,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONSENT' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 38. OPUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]
+-- 38. OPUS — SATELLITE  SAT_COMMON_CONTACT [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -734,7 +738,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONTACT' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 39. OPUS — SATELLITE  SAT_COMMON_GEO   [Implemented]
+-- 39. OPUS — SATELLITE  SAT_COMMON_GEO [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -750,7 +754,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_GEO' as table_n
 
 
 ----------------------------------------------------------------------------------------
--- 40. OPUS — SATELLITE  SAT_DOCUMENT_DEFINITION   [Implemented]
+-- 40. OPUS — SATELLITE  SAT_DOCUMENT_DEFINITION [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -782,7 +786,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_CLAIM_PARTY_ROLE' 
 
 
 ----------------------------------------------------------------------------------------
--- 42. OPUS — SATELLITE  SAT_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 42. OPUS — SATELLITE  SAT_LNK_PARTY_ROLE_CORE [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -798,7 +802,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_PARTY_ROLE_CORE' a
 
 
 ----------------------------------------------------------------------------------------
--- 43. OPUS — SATELLITE  SAT_LNK_POLICY_PARTY_ROLE   [Implemented]
+-- 43. OPUS — SATELLITE  SAT_LNK_POLICY_PARTY_ROLE [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -814,7 +818,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_POLICY_PARTY_ROLE'
 
 
 ----------------------------------------------------------------------------------------
--- 44. OPUS — SATELLITE  SAT_LNK_ROLE_AGENT   [Implemented]
+-- 44. OPUS — SATELLITE  SAT_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -830,7 +834,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_AGENT' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 45. OPUS — SATELLITE  SAT_LNK_ROLE_CUSTOMER   [Implemented]
+-- 45. OPUS — SATELLITE  SAT_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -862,7 +866,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_NOMINEE_BENEF
 
 
 ----------------------------------------------------------------------------------------
--- 47. OPUS — SATELLITE  SAT_LNK_ROLE_PROVIDER   [Implemented]
+-- 47. OPUS — SATELLITE  SAT_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -878,7 +882,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_PROVIDER' as 
 
 
 ----------------------------------------------------------------------------------------
--- 48. OPUS — SATELLITE  SAT_LNK_ROLE_SURVEYOR   [Implemented]
+-- 48. OPUS — SATELLITE  SAT_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -894,7 +898,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_SURVEYOR' as 
 
 
 ----------------------------------------------------------------------------------------
--- 49. OPUS — SATELLITE  SAT_PARTY_AML_SCREENING   [Implemented]
+-- 49. OPUS — SATELLITE  SAT_PARTY_AML_SCREENING [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -910,7 +914,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_AML_SCREENING' a
 
 
 ----------------------------------------------------------------------------------------
--- 50. OPUS — SATELLITE  SAT_PARTY_BANKING   [Implemented]
+-- 50. OPUS — SATELLITE  SAT_PARTY_BANKING [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -942,7 +946,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_CLAIM_HISTORY' a
 
 
 ----------------------------------------------------------------------------------------
--- 52. OPUS — SATELLITE  SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 52. OPUS — SATELLITE  SAT_PARTY_CONTACT_ADDRESS_LINK [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -958,7 +962,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_CONTACT_ADDRESS_
 
 
 ----------------------------------------------------------------------------------------
--- 53. OPUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 53. OPUS — SATELLITE  SAT_PARTY_EMPLOYMENT [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -974,7 +978,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_EMPLOYMENT' as t
 
 
 ----------------------------------------------------------------------------------------
--- 54. OPUS — SATELLITE  SAT_PARTY_GROUP_CENSUS   [Implemented]
+-- 54. OPUS — SATELLITE  SAT_PARTY_GROUP_CENSUS [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -990,7 +994,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_GROUP_CENSUS' as
 
 
 ----------------------------------------------------------------------------------------
--- 55. OPUS — SATELLITE  SAT_PARTY_GROUP_HOUSEHOLD   [Implemented]
+-- 55. OPUS — SATELLITE  SAT_PARTY_GROUP_HOUSEHOLD [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1006,7 +1010,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_GROUP_HOUSEHOLD'
 
 
 ----------------------------------------------------------------------------------------
--- 56. OPUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 56. OPUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1022,7 +1026,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_HEALTH_PROFILE' 
 
 
 ----------------------------------------------------------------------------------------
--- 57. OPUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 57. OPUS — SATELLITE  SAT_PARTY_IDENTIFICATION [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1038,7 +1042,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTIFICATION' 
 
 
 ----------------------------------------------------------------------------------------
--- 58. OPUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]
+-- 58. OPUS — SATELLITE  SAT_PARTY_IDENTITY [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1054,7 +1058,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTITY' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 59. OPUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 59. OPUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1070,7 +1074,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_INDIVIDUAL_DEMOG
 
 
 ----------------------------------------------------------------------------------------
--- 60. OPUS — SATELLITE  SAT_PARTY_KYC   [Implemented]
+-- 60. OPUS — SATELLITE  SAT_PARTY_KYC [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1086,7 +1090,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_KYC' as table_na
 
 
 ----------------------------------------------------------------------------------------
--- 61. OPUS — SATELLITE  SAT_PARTY_KYC_REFERENCE   [Implemented]
+-- 61. OPUS — SATELLITE  SAT_PARTY_KYC_REFERENCE [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1102,7 +1106,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_KYC_REFERENCE' a
 
 
 ----------------------------------------------------------------------------------------
--- 62. OPUS — SATELLITE  SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 62. OPUS — SATELLITE  SAT_PARTY_ORGANISATION_PROFILE [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1166,7 +1170,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_CERTIFICATE' as
 
 
 ----------------------------------------------------------------------------------------
--- 66. OPUS — SATELLITE  SAT_POLICY_CLASSIFICATION   [Implemented]
+-- 66. OPUS — SATELLITE  SAT_POLICY_CLASSIFICATION [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1214,7 +1218,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_ENDORSEMENT' as
 
 
 ----------------------------------------------------------------------------------------
--- 69. OPUS — SATELLITE  SAT_POLICY_HEADER   [Implemented]
+-- 69. OPUS — SATELLITE  SAT_POLICY_HEADER [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1246,7 +1250,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_PREMIUM_HEAD' a
 
 
 ----------------------------------------------------------------------------------------
--- 71. OPUS — SATELLITE  SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
+-- 71. OPUS — SATELLITE  SAT_POLICY_PREMIUM_SUMMARY [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1278,7 +1282,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_DEFINITION' as
 
 
 ----------------------------------------------------------------------------------------
--- 73. OPUS — SATELLITE  SAT_PROVIDER_BANKING   [Implemented]
+-- 73. OPUS — SATELLITE  SAT_PROVIDER_BANKING [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1294,7 +1298,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PROVIDER_BANKING' as t
 
 
 ----------------------------------------------------------------------------------------
--- 74. OPUS — SATELLITE  SAT_PROVIDER_TARIFF   [Implemented]
+-- 74. OPUS — SATELLITE  SAT_PROVIDER_TARIFF [Partner LOB]   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------

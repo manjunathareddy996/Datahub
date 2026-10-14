@@ -2,6 +2,10 @@
    DM-T1  |  Load Audit - Load Metadata Populated  (MAXIMUS)
    Load date/timestamp and record source populated and correct on every row. Pass criterion: 0 rows with missing metadata.
 
+   PARTNER LOB: 94 of 111 objects below carry the [Partner LOB] tag -- the same objects
+       tagged in the matching .docx (Customer / Party domain rows of the partner
+       Source-To-Model mapping). The tag is scope information only: SQL bodies, pass
+       criteria and results are unaffected.
    Check ID: DM-T1
    Category: Load audit
    Sign-off criterion: Load metadata populated
@@ -1823,7 +1827,7 @@ order by iff(status = 'FAIL', 0, 1), table_type, table_name;
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — HUB  HUB_DISTRIBUTION_CHANNEL   [Implemented]
+-- 2. MAXIMUS — HUB  HUB_DISTRIBUTION_CHANNEL [Partner LOB]   [Implemented]
 -- hub HUB_DISTRIBUTION_CHANNEL; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -1848,7 +1852,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_DISTRIBUTION_CHANNEL' as 
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — HUB  HUB_DOCUMENT   [Implemented]
+-- 3. MAXIMUS — HUB  HUB_DOCUMENT [Partner LOB]   [Implemented]
 -- hub HUB_DOCUMENT; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_'). Expected
 -- RECORD_SOURCE: MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_DOCUMENT_DETAIL. No
 -- DBT_RUN_TS column on this table.
@@ -1872,7 +1876,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_DOCUMENT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — HUB  HUB_FINANCIAL_ACCOUNT   [Implemented]
+-- 4. MAXIMUS — HUB  HUB_FINANCIAL_ACCOUNT [Partner LOB]   [Implemented]
 -- hub HUB_FINANCIAL_ACCOUNT; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.
@@ -1897,7 +1901,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_ACCOUNT' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — HUB  HUB_LOCATION   [Implemented]
+-- 5. MAXIMUS — HUB  HUB_LOCATION [Partner LOB]   [Implemented]
 -- hub HUB_LOCATION; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_'). Expected
 -- RECORD_SOURCE: MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS,
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW,
@@ -1923,7 +1927,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_LOCATION' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — HUB  HUB_ORG_UNIT   [Implemented]
+-- 6. MAXIMUS — HUB  HUB_ORG_UNIT [Partner LOB]   [Implemented]
 -- hub HUB_ORG_UNIT; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_'). Expected
 -- RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
@@ -1949,7 +1953,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_ORG_UNIT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — HUB  HUB_PARTY   [Implemented]
+-- 7. MAXIMUS — HUB  HUB_PARTY [Partner LOB]   [Implemented]
 -- hub HUB_PARTY; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_'). Expected
 -- RECORD_SOURCE: MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL,
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS,
@@ -1978,7 +1982,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_PARTY' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — HUB  HUB_PAYMENT_INSTRUMENT   [Implemented]
+-- 8. MAXIMUS — HUB  HUB_PAYMENT_INSTRUMENT [Partner LOB]   [Implemented]
 -- hub HUB_PAYMENT_INSTRUMENT; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.
@@ -2003,7 +2007,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_PAYMENT_INSTRUMENT' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — HUB  HUB_POLICY   [Implemented]
+-- 9. MAXIMUS — HUB  HUB_POLICY [Partner LOB]   [Implemented]
 -- hub HUB_POLICY; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_'). Expected
 -- RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -2028,7 +2032,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_POLICY' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — HUB  HUB_PRODUCT   [Implemented]
+-- 10. MAXIMUS — HUB  HUB_PRODUCT [Partner LOB]   [Implemented]
 -- hub HUB_PRODUCT; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_'). Expected
 -- RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -2077,7 +2081,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_STAKE_CODE' as table_name
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — LINK  LNK_PARTY_LOCATION   [Implemented]
+-- 12. MAXIMUS — LINK  LNK_PARTY_LOCATION [Partner LOB]   [Implemented]
 -- link LNK_PARTY_LOCATION; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE: MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS,
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -2102,7 +2106,7 @@ select 'MAXIMUS' as project, 'link' as table_type, 'LNK_PARTY_LOCATION' as table
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — LINK  LNK_PARTY_RELATIONSHIP   [Implemented]
+-- 13. MAXIMUS — LINK  LNK_PARTY_RELATIONSHIP [Partner LOB]   [Implemented]
 -- link LNK_PARTY_RELATIONSHIP; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE: MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_RELATED_PARTY.
 -- No DBT_RUN_TS column on this table.
@@ -2126,7 +2130,7 @@ select 'MAXIMUS' as project, 'link' as table_type, 'LNK_PARTY_RELATIONSHIP' as t
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — LINK  LNK_PARTY_ROLE   [Implemented]
+-- 14. MAXIMUS — LINK  LNK_PARTY_ROLE [Partner LOB]   [Implemented]
 -- link LNK_PARTY_ROLE; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_'). Expected
 -- RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -2151,7 +2155,7 @@ select 'MAXIMUS' as project, 'link' as table_type, 'LNK_PARTY_ROLE' as table_nam
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — SATELLITE  SAT_AUG_COMMON_ADDRESS   [Implemented]
+-- 15. MAXIMUS — SATELLITE  SAT_AUG_COMMON_ADDRESS [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_COMMON_ADDRESS; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2175,7 +2179,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_ADDRESS'
 
 
 ----------------------------------------------------------------------------------------
--- 16. MAXIMUS — SATELLITE  SAT_AUG_COMMON_ADMIN_GEOGRAPHY   [Implemented]
+-- 16. MAXIMUS — SATELLITE  SAT_AUG_COMMON_ADMIN_GEOGRAPHY [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_COMMON_ADMIN_GEOGRAPHY; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2199,7 +2203,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_ADMIN_GE
 
 
 ----------------------------------------------------------------------------------------
--- 17. MAXIMUS — SATELLITE  SAT_AUG_COMMON_CLASSIFICATION   [Implemented]
+-- 17. MAXIMUS — SATELLITE  SAT_AUG_COMMON_CLASSIFICATION [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_COMMON_CLASSIFICATION; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2223,7 +2227,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_CLASSIFI
 
 
 ----------------------------------------------------------------------------------------
--- 18. MAXIMUS — SATELLITE  SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 18. MAXIMUS — SATELLITE  SAT_AUG_COMMON_COMMUNICATION_PREFERENCE [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_COMMON_COMMUNICATION_PREFERENCE; rows scoped to
 -- startswith(RECORD_SOURCE, 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv.
 -- No DBT_RUN_TS column on this table.
@@ -2247,7 +2251,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_COMMUNIC
 
 
 ----------------------------------------------------------------------------------------
--- 19. MAXIMUS — SATELLITE  SAT_AUG_COMMON_CONTACT   [Implemented]
+-- 19. MAXIMUS — SATELLITE  SAT_AUG_COMMON_CONTACT [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_COMMON_CONTACT; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2271,7 +2275,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_CONTACT'
 
 
 ----------------------------------------------------------------------------------------
--- 20. MAXIMUS — SATELLITE  SAT_AUG_COMMON_GEO   [Implemented]
+-- 20. MAXIMUS — SATELLITE  SAT_AUG_COMMON_GEO [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_COMMON_GEO; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE: MAXIMUS_pd_party_addr_prop_pv. No DBT_RUN_TS column on this
 -- table.
@@ -2295,7 +2299,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_GEO' as 
 
 
 ----------------------------------------------------------------------------------------
--- 21. MAXIMUS — SATELLITE  SAT_AUG_INSTRUMENT_DEFINITION   [Implemented]
+-- 21. MAXIMUS — SATELLITE  SAT_AUG_INSTRUMENT_DEFINITION [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_INSTRUMENT_DEFINITION; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_msdp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2319,7 +2323,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_INSTRUMENT_DEFI
 
 
 ----------------------------------------------------------------------------------------
--- 22. MAXIMUS — SATELLITE  SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 22. MAXIMUS — SATELLITE  SAT_AUG_LNK_PARTY_ROLE_CORE [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_LNK_PARTY_ROLE_CORE; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2343,7 +2347,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_PARTY_ROLE_
 
 
 ----------------------------------------------------------------------------------------
--- 23. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_AGENT   [Implemented]
+-- 23. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_LNK_ROLE_AGENT; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2367,7 +2371,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_AGENT'
 
 
 ----------------------------------------------------------------------------------------
--- 24. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 24. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_LNK_ROLE_CUSTOMER; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2391,7 +2395,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_CUSTOM
 
 
 ----------------------------------------------------------------------------------------
--- 25. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 25. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_NOMINEE_BENEFICIARY [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_LNK_ROLE_NOMINEE_BENEFICIARY; rows scoped to
 -- startswith(RECORD_SOURCE, 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv.
 -- No DBT_RUN_TS column on this table.
@@ -2415,7 +2419,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_NOMINE
 
 
 ----------------------------------------------------------------------------------------
--- 26. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
+-- 26. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_LNK_ROLE_PROVIDER; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2439,7 +2443,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_PROVID
 
 
 ----------------------------------------------------------------------------------------
--- 27. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_SURVEYOR   [Implemented]
+-- 27. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_LNK_ROLE_SURVEYOR; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2511,7 +2515,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_AMENDMENT
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS — SATELLITE  SAT_AUG_PARTY_BANKING   [Implemented]
+-- 30. MAXIMUS — SATELLITE  SAT_AUG_PARTY_BANKING [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_BANKING; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE: MAXIMUS_pd_prop_msdp_pv, MAXIMUS_pd_prop_sp_pv. DBT_RUN_TS
 -- present (load_after_run_ts checked).
@@ -2559,7 +2563,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CLAIM_HIS
 
 
 ----------------------------------------------------------------------------------------
--- 32. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 32. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CONTACT_ADDRESS_LINK [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_CONTACT_ADDRESS_LINK; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2631,7 +2635,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CREDIT_CO
 
 
 ----------------------------------------------------------------------------------------
--- 35. MAXIMUS — SATELLITE  SAT_AUG_PARTY_DIGITAL_IDENTITY   [Implemented]
+-- 35. MAXIMUS — SATELLITE  SAT_AUG_PARTY_DIGITAL_IDENTITY [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_DIGITAL_IDENTITY; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2678,7 +2682,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_DRIVING' 
 
 
 ----------------------------------------------------------------------------------------
--- 37. MAXIMUS — SATELLITE  SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
+-- 37. MAXIMUS — SATELLITE  SAT_AUG_PARTY_EMPLOYMENT [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_EMPLOYMENT; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2702,7 +2706,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_EMPLOYMEN
 
 
 ----------------------------------------------------------------------------------------
--- 38. MAXIMUS — SATELLITE  SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]
+-- 38. MAXIMUS — SATELLITE  SAT_AUG_PARTY_FINANCIAL_PROFILE [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_FINANCIAL_PROFILE; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2726,7 +2730,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_FINANCIAL
 
 
 ----------------------------------------------------------------------------------------
--- 39. MAXIMUS — SATELLITE  SAT_AUG_PARTY_FRAUD_PROFILE   [Implemented]
+-- 39. MAXIMUS — SATELLITE  SAT_AUG_PARTY_FRAUD_PROFILE [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_FRAUD_PROFILE; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2774,7 +2778,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_GROUP_SCH
 
 
 ----------------------------------------------------------------------------------------
--- 41. MAXIMUS — SATELLITE  SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]
+-- 41. MAXIMUS — SATELLITE  SAT_AUG_PARTY_HEALTH_PROFILE [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_HEALTH_PROFILE; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2798,7 +2802,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_HEALTH_PR
 
 
 ----------------------------------------------------------------------------------------
--- 42. MAXIMUS — SATELLITE  SAT_AUG_PARTY_HIERARCHY   [Implemented]
+-- 42. MAXIMUS — SATELLITE  SAT_AUG_PARTY_HIERARCHY [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_HIERARCHY; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -2822,7 +2826,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_HIERARCHY
 
 
 ----------------------------------------------------------------------------------------
--- 43. MAXIMUS — SATELLITE  SAT_AUG_PARTY_IDENTIFICATION   [Implemented]
+-- 43. MAXIMUS — SATELLITE  SAT_AUG_PARTY_IDENTIFICATION [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_IDENTIFICATION; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_msdp_pv, MAXIMUS_pd_prop_sp_pv.
 -- DBT_RUN_TS present (load_after_run_ts checked).
@@ -2846,7 +2850,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_IDENTIFIC
 
 
 ----------------------------------------------------------------------------------------
--- 44. MAXIMUS — SATELLITE  SAT_AUG_PARTY_IDENTITY   [Implemented]
+-- 44. MAXIMUS — SATELLITE  SAT_AUG_PARTY_IDENTITY [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_IDENTITY; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd, MAXIMUS_pd_prop_sp_pv. DBT_RUN_TS
 -- present (load_after_run_ts checked).
@@ -2870,7 +2874,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_IDENTITY'
 
 
 ----------------------------------------------------------------------------------------
--- 45. MAXIMUS — SATELLITE  SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 45. MAXIMUS — SATELLITE  SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS; rows scoped to
 -- startswith(RECORD_SOURCE, 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_pd_prop_msdp_pv, MAXIMUS_pd_prop_sp_pv. DBT_RUN_TS present (load_after_run_ts
@@ -2919,7 +2923,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_INTERACTI
 
 
 ----------------------------------------------------------------------------------------
--- 47. MAXIMUS — SATELLITE  SAT_AUG_PARTY_KYC   [Implemented]
+-- 47. MAXIMUS — SATELLITE  SAT_AUG_PARTY_KYC [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_KYC; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
@@ -2942,7 +2946,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_KYC' as t
 
 
 ----------------------------------------------------------------------------------------
--- 48. MAXIMUS — SATELLITE  SAT_AUG_PARTY_LEGAL_PANEL   [Implemented]
+-- 48. MAXIMUS — SATELLITE  SAT_AUG_PARTY_LEGAL_PANEL [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_LEGAL_PANEL; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -3014,7 +3018,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_MARKETING
 
 
 ----------------------------------------------------------------------------------------
--- 51. MAXIMUS — SATELLITE  SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]
+-- 51. MAXIMUS — SATELLITE  SAT_AUG_PARTY_ONBOARDING_JOURNEY [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_ONBOARDING_JOURNEY; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -3038,7 +3042,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_ONBOARDIN
 
 
 ----------------------------------------------------------------------------------------
--- 52. MAXIMUS — SATELLITE  SAT_AUG_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 52. MAXIMUS — SATELLITE  SAT_AUG_PARTY_ORGANISATION_PROFILE [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_ORGANISATION_PROFILE; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -3062,7 +3066,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_ORGANISAT
 
 
 ----------------------------------------------------------------------------------------
--- 53. MAXIMUS — SATELLITE  SAT_AUG_PARTY_ORG_DIRECTORS   [Implemented]
+-- 53. MAXIMUS — SATELLITE  SAT_AUG_PARTY_ORG_DIRECTORS [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_ORG_DIRECTORS; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -3086,7 +3090,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_ORG_DIREC
 
 
 ----------------------------------------------------------------------------------------
--- 54. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]
+-- 54. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PAYOUT_PROFILE [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_PAYOUT_PROFILE; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_msdp_pv, MAXIMUS_pd_prop_sp_pv.
 -- DBT_RUN_TS present (load_after_run_ts checked).
@@ -3134,7 +3138,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_PREFERENC
 
 
 ----------------------------------------------------------------------------------------
--- 56. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PROVIDER_CAPABILITY   [Implemented]
+-- 56. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PROVIDER_CAPABILITY [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_PROVIDER_CAPABILITY; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -3182,7 +3186,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_RECORD_RE
 
 
 ----------------------------------------------------------------------------------------
--- 58. MAXIMUS — SATELLITE  SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]
+-- 58. MAXIMUS — SATELLITE  SAT_AUG_PARTY_RELATIONSHIP_PROFILE [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PARTY_RELATIONSHIP_PROFILE; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -3302,7 +3306,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_VEHICLE_O
 
 
 ----------------------------------------------------------------------------------------
--- 63. MAXIMUS — SATELLITE  SAT_AUG_PROVIDER_BANKING   [Implemented]
+-- 63. MAXIMUS — SATELLITE  SAT_AUG_PROVIDER_BANKING [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PROVIDER_BANKING; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -3326,7 +3330,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PROVIDER_BANKIN
 
 
 ----------------------------------------------------------------------------------------
--- 64. MAXIMUS — SATELLITE  SAT_AUG_PROVIDER_QUALITY   [Implemented]
+-- 64. MAXIMUS — SATELLITE  SAT_AUG_PROVIDER_QUALITY [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PROVIDER_QUALITY; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -3350,7 +3354,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PROVIDER_QUALIT
 
 
 ----------------------------------------------------------------------------------------
--- 65. MAXIMUS — SATELLITE  SAT_AUG_PROVIDER_TARIFF   [Implemented]
+-- 65. MAXIMUS — SATELLITE  SAT_AUG_PROVIDER_TARIFF [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_PROVIDER_TARIFF; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_pd_prop_sp_pv. No DBT_RUN_TS column on
 -- this table.
@@ -3374,7 +3378,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PROVIDER_TARIFF
 
 
 ----------------------------------------------------------------------------------------
--- 66. MAXIMUS — SATELLITE  SAT_CHANNEL_DEFINITION   [Implemented]
+-- 66. MAXIMUS — SATELLITE  SAT_CHANNEL_DEFINITION [Partner LOB]   [Implemented]
 -- satellite SAT_CHANNEL_DEFINITION; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -3399,7 +3403,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CHANNEL_DEFINITION'
 
 
 ----------------------------------------------------------------------------------------
--- 67. MAXIMUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]
+-- 67. MAXIMUS — SATELLITE  SAT_COMMON_ADDRESS [Partner LOB]   [Implemented]
 -- satellite SAT_COMMON_ADDRESS; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE: MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS,
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW,
@@ -3425,7 +3429,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_ADDRESS' as 
 
 
 ----------------------------------------------------------------------------------------
--- 68. MAXIMUS — SATELLITE  SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]
+-- 68. MAXIMUS — SATELLITE  SAT_COMMON_ADMIN_GEOGRAPHY [Partner LOB]   [Implemented]
 -- satellite SAT_COMMON_ADMIN_GEOGRAPHY; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -3450,7 +3454,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_ADMIN_GEOGRA
 
 
 ----------------------------------------------------------------------------------------
--- 69. MAXIMUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 69. MAXIMUS — SATELLITE  SAT_COMMON_CLASSIFICATION [Partner LOB]   [Implemented]
 -- satellite SAT_COMMON_CLASSIFICATION; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -3475,7 +3479,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_CLASSIFICATI
 
 
 ----------------------------------------------------------------------------------------
--- 70. MAXIMUS — SATELLITE  SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 70. MAXIMUS — SATELLITE  SAT_COMMON_COMMUNICATION_PREFERENCE [Partner LOB]   [Implemented]
 -- satellite SAT_COMMON_COMMUNICATION_PREFERENCE; rows scoped to
 -- startswith(RECORD_SOURCE, 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -3500,7 +3504,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_COMMUNICATIO
 
 
 ----------------------------------------------------------------------------------------
--- 71. MAXIMUS — SATELLITE  SAT_COMMON_CONSENT   [Implemented]
+-- 71. MAXIMUS — SATELLITE  SAT_COMMON_CONSENT [Partner LOB]   [Implemented]
 -- satellite SAT_COMMON_CONSENT; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -3525,7 +3529,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONSENT' as 
 
 
 ----------------------------------------------------------------------------------------
--- 72. MAXIMUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]
+-- 72. MAXIMUS — SATELLITE  SAT_COMMON_CONTACT [Partner LOB]   [Implemented]
 -- satellite SAT_COMMON_CONTACT; rows scoped to RECORD_SOURCE = 'MAXIMUS'. Expected
 -- RECORD_SOURCE: MAXIMUS. DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
@@ -3548,7 +3552,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONTACT' as 
 
 
 ----------------------------------------------------------------------------------------
--- 73. MAXIMUS — SATELLITE  SAT_COMMON_GEO   [Implemented]
+-- 73. MAXIMUS — SATELLITE  SAT_COMMON_GEO [Partner LOB]   [Implemented]
 -- satellite SAT_COMMON_GEO; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW,
@@ -3574,7 +3578,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_GEO' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 74. MAXIMUS — SATELLITE  SAT_DOCUMENT_DEFINITION   [Implemented]
+-- 74. MAXIMUS — SATELLITE  SAT_DOCUMENT_DEFINITION [Partner LOB]   [Implemented]
 -- satellite SAT_DOCUMENT_DEFINITION; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_DOCUMENT_DETAIL. No DBT_RUN_TS column
@@ -3599,7 +3603,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_DOCUMENT_DEFINITION
 
 
 ----------------------------------------------------------------------------------------
--- 75. MAXIMUS — SATELLITE  SAT_INSTRUMENT_DEFINITION   [Implemented]
+-- 75. MAXIMUS — SATELLITE  SAT_INSTRUMENT_DEFINITION [Partner LOB]   [Implemented]
 -- satellite SAT_INSTRUMENT_DEFINITION; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.
@@ -3624,7 +3628,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_INSTRUMENT_DEFINITI
 
 
 ----------------------------------------------------------------------------------------
--- 76. MAXIMUS — SATELLITE  SAT_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 76. MAXIMUS — SATELLITE  SAT_LNK_PARTY_ROLE_CORE [Partner LOB]   [Implemented]
 -- satellite SAT_LNK_PARTY_ROLE_CORE; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
@@ -3652,7 +3656,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_PARTY_ROLE_CORE
 
 
 ----------------------------------------------------------------------------------------
--- 77. MAXIMUS — SATELLITE  SAT_LNK_ROLE_AGENT   [Implemented]
+-- 77. MAXIMUS — SATELLITE  SAT_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
 -- satellite SAT_LNK_ROLE_AGENT; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -3677,7 +3681,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_AGENT' as 
 
 
 ----------------------------------------------------------------------------------------
--- 78. MAXIMUS — SATELLITE  SAT_LNK_ROLE_CUSTOMER   [Implemented]
+-- 78. MAXIMUS — SATELLITE  SAT_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
 -- satellite SAT_LNK_ROLE_CUSTOMER; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -3702,7 +3706,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_CUSTOMER' 
 
 
 ----------------------------------------------------------------------------------------
--- 79. MAXIMUS — SATELLITE  SAT_LNK_ROLE_EMPLOYEE   [Implemented]
+-- 79. MAXIMUS — SATELLITE  SAT_LNK_ROLE_EMPLOYEE [Partner LOB]   [Implemented]
 -- satellite SAT_LNK_ROLE_EMPLOYEE; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -3727,7 +3731,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_EMPLOYEE' 
 
 
 ----------------------------------------------------------------------------------------
--- 80. MAXIMUS — SATELLITE  SAT_LNK_ROLE_INVESTIGATOR   [Implemented]
+-- 80. MAXIMUS — SATELLITE  SAT_LNK_ROLE_INVESTIGATOR [Partner LOB]   [Implemented]
 -- satellite SAT_LNK_ROLE_INVESTIGATOR; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -3752,7 +3756,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_INVESTIGAT
 
 
 ----------------------------------------------------------------------------------------
--- 81. MAXIMUS — SATELLITE  SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 81. MAXIMUS — SATELLITE  SAT_LNK_ROLE_NOMINEE_BENEFICIARY [Partner LOB]   [Implemented]
 -- satellite SAT_LNK_ROLE_NOMINEE_BENEFICIARY; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -3777,7 +3781,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_NOMINEE_BE
 
 
 ----------------------------------------------------------------------------------------
--- 82. MAXIMUS — SATELLITE  SAT_LNK_ROLE_PROVIDER   [Implemented]
+-- 82. MAXIMUS — SATELLITE  SAT_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
 -- satellite SAT_LNK_ROLE_PROVIDER; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -3802,7 +3806,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_PROVIDER' 
 
 
 ----------------------------------------------------------------------------------------
--- 83. MAXIMUS — SATELLITE  SAT_LNK_ROLE_SURVEYOR   [Implemented]
+-- 83. MAXIMUS — SATELLITE  SAT_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
 -- satellite SAT_LNK_ROLE_SURVEYOR; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -3827,7 +3831,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_SURVEYOR' 
 
 
 ----------------------------------------------------------------------------------------
--- 84. MAXIMUS — SATELLITE  SAT_LOCATION_PROFILE   [Implemented]
+-- 84. MAXIMUS — SATELLITE  SAT_LOCATION_PROFILE [Partner LOB]   [Implemented]
 -- satellite SAT_LOCATION_PROFILE; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW,
@@ -3853,7 +3857,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LOCATION_PROFILE' a
 
 
 ----------------------------------------------------------------------------------------
--- 85. MAXIMUS — SATELLITE  SAT_ORG_UNIT_DEFINITION   [Implemented]
+-- 85. MAXIMUS — SATELLITE  SAT_ORG_UNIT_DEFINITION [Partner LOB]   [Implemented]
 -- satellite SAT_ORG_UNIT_DEFINITION; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -3878,7 +3882,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_ORG_UNIT_DEFINITION
 
 
 ----------------------------------------------------------------------------------------
--- 86. MAXIMUS — SATELLITE  SAT_ORG_UNIT_LICENCE   [Implemented]
+-- 86. MAXIMUS — SATELLITE  SAT_ORG_UNIT_LICENCE [Partner LOB]   [Implemented]
 -- satellite SAT_ORG_UNIT_LICENCE; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -3903,7 +3907,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_ORG_UNIT_LICENCE' a
 
 
 ----------------------------------------------------------------------------------------
--- 87. MAXIMUS — SATELLITE  SAT_PARTY_AGENT_LICENCE_LINE   [Implemented]
+-- 87. MAXIMUS — SATELLITE  SAT_PARTY_AGENT_LICENCE_LINE [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_AGENT_LICENCE_LINE; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
@@ -3929,7 +3933,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_AGENT_LICENCE
 
 
 ----------------------------------------------------------------------------------------
--- 88. MAXIMUS — SATELLITE  SAT_PARTY_AML_SCREENING   [Implemented]
+-- 88. MAXIMUS — SATELLITE  SAT_PARTY_AML_SCREENING [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_AML_SCREENING; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -3954,7 +3958,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_AML_SCREENING
 
 
 ----------------------------------------------------------------------------------------
--- 89. MAXIMUS — SATELLITE  SAT_PARTY_BANKING   [Implemented]
+-- 89. MAXIMUS — SATELLITE  SAT_PARTY_BANKING [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_BANKING; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
@@ -3980,7 +3984,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_BANKING' as t
 
 
 ----------------------------------------------------------------------------------------
--- 90. MAXIMUS — SATELLITE  SAT_PARTY_CONSENT_MANDATE   [Implemented]
+-- 90. MAXIMUS — SATELLITE  SAT_PARTY_CONSENT_MANDATE [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_CONSENT_MANDATE; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
@@ -4006,7 +4010,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_CONSENT_MANDA
 
 
 ----------------------------------------------------------------------------------------
--- 91. MAXIMUS — SATELLITE  SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 91. MAXIMUS — SATELLITE  SAT_PARTY_CONTACT_ADDRESS_LINK [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_CONTACT_ADDRESS_LINK; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4031,7 +4035,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_CONTACT_ADDRE
 
 
 ----------------------------------------------------------------------------------------
--- 92. MAXIMUS — SATELLITE  SAT_PARTY_DIGITAL_IDENTITY   [Implemented]
+-- 92. MAXIMUS — SATELLITE  SAT_PARTY_DIGITAL_IDENTITY [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_DIGITAL_IDENTITY; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
@@ -4057,7 +4061,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_DIGITAL_IDENT
 
 
 ----------------------------------------------------------------------------------------
--- 93. MAXIMUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 93. MAXIMUS — SATELLITE  SAT_PARTY_EMPLOYMENT [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_EMPLOYMENT; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4082,7 +4086,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_EMPLOYMENT' a
 
 
 ----------------------------------------------------------------------------------------
--- 94. MAXIMUS — SATELLITE  SAT_PARTY_FINANCIAL_PROFILE   [Implemented]
+-- 94. MAXIMUS — SATELLITE  SAT_PARTY_FINANCIAL_PROFILE [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_FINANCIAL_PROFILE; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4107,7 +4111,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_FINANCIAL_PRO
 
 
 ----------------------------------------------------------------------------------------
--- 95. MAXIMUS — SATELLITE  SAT_PARTY_FRAUD_PROFILE   [Implemented]
+-- 95. MAXIMUS — SATELLITE  SAT_PARTY_FRAUD_PROFILE [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_FRAUD_PROFILE; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4132,7 +4136,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_FRAUD_PROFILE
 
 
 ----------------------------------------------------------------------------------------
--- 96. MAXIMUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 96. MAXIMUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_HEALTH_PROFILE; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4157,7 +4161,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_HEALTH_PROFIL
 
 
 ----------------------------------------------------------------------------------------
--- 97. MAXIMUS — SATELLITE  SAT_PARTY_HIERARCHY   [Implemented]
+-- 97. MAXIMUS — SATELLITE  SAT_PARTY_HIERARCHY [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_HIERARCHY; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE: MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL,
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4182,7 +4186,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_HIERARCHY' as
 
 
 ----------------------------------------------------------------------------------------
--- 98. MAXIMUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 98. MAXIMUS — SATELLITE  SAT_PARTY_IDENTIFICATION [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_IDENTIFICATION; rows scoped to RECORD_SOURCE = 'MAXIMUS'. Expected
 -- RECORD_SOURCE: MAXIMUS. DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
@@ -4205,7 +4209,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTIFICATIO
 
 
 ----------------------------------------------------------------------------------------
--- 99. MAXIMUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]
+-- 99. MAXIMUS — SATELLITE  SAT_PARTY_IDENTITY [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_IDENTITY; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE: MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL,
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4230,7 +4234,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTITY' as 
 
 
 ----------------------------------------------------------------------------------------
--- 100. MAXIMUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 100. MAXIMUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL,
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4255,7 +4259,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_INDIVIDUAL_DE
 
 
 ----------------------------------------------------------------------------------------
--- 101. MAXIMUS — SATELLITE  SAT_PARTY_KYC   [Implemented]
+-- 101. MAXIMUS — SATELLITE  SAT_PARTY_KYC [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_KYC; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4280,7 +4284,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_KYC' as table
 
 
 ----------------------------------------------------------------------------------------
--- 102. MAXIMUS — SATELLITE  SAT_PARTY_LEGAL_PANEL   [Implemented]
+-- 102. MAXIMUS — SATELLITE  SAT_PARTY_LEGAL_PANEL [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_LEGAL_PANEL; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4305,7 +4309,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_LEGAL_PANEL' 
 
 
 ----------------------------------------------------------------------------------------
--- 103. MAXIMUS — SATELLITE  SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]
+-- 103. MAXIMUS — SATELLITE  SAT_PARTY_ONBOARDING_JOURNEY [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_ONBOARDING_JOURNEY; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4330,7 +4334,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_ONBOARDING_JO
 
 
 ----------------------------------------------------------------------------------------
--- 104. MAXIMUS — SATELLITE  SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 104. MAXIMUS — SATELLITE  SAT_PARTY_ORGANISATION_PROFILE [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_ORGANISATION_PROFILE; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE: MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL,
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4355,7 +4359,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_ORGANISATION_
 
 
 ----------------------------------------------------------------------------------------
--- 105. MAXIMUS — SATELLITE  SAT_PARTY_ORG_DIRECTORS   [Implemented]
+-- 105. MAXIMUS — SATELLITE  SAT_PARTY_ORG_DIRECTORS [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_ORG_DIRECTORS; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4380,7 +4384,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_ORG_DIRECTORS
 
 
 ----------------------------------------------------------------------------------------
--- 106. MAXIMUS — SATELLITE  SAT_PARTY_PAYOUT_PROFILE   [Implemented]
+-- 106. MAXIMUS — SATELLITE  SAT_PARTY_PAYOUT_PROFILE [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_PAYOUT_PROFILE; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
@@ -4406,7 +4410,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_PAYOUT_PROFIL
 
 
 ----------------------------------------------------------------------------------------
--- 107. MAXIMUS — SATELLITE  SAT_PARTY_PROVIDER_CAPABILITY   [Implemented]
+-- 107. MAXIMUS — SATELLITE  SAT_PARTY_PROVIDER_CAPABILITY [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_PROVIDER_CAPABILITY; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4431,7 +4435,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_PROVIDER_CAPA
 
 
 ----------------------------------------------------------------------------------------
--- 108. MAXIMUS — SATELLITE  SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]
+-- 108. MAXIMUS — SATELLITE  SAT_PARTY_RELATIONSHIP_PROFILE [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_RELATIONSHIP_PROFILE; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4456,7 +4460,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_RELATIONSHIP_
 
 
 ----------------------------------------------------------------------------------------
--- 109. MAXIMUS — SATELLITE  SAT_PRODUCT_DEFINITION   [Implemented]
+-- 109. MAXIMUS — SATELLITE  SAT_PRODUCT_DEFINITION [Partner LOB]   [Implemented]
 -- satellite SAT_PRODUCT_DEFINITION; rows scoped to startswith(RECORD_SOURCE,
 -- 'MAXIMUS_'). Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4481,7 +4485,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_DEFINITION'
 
 
 ----------------------------------------------------------------------------------------
--- 110. MAXIMUS — SATELLITE  SAT_PROVIDER_BANKING   [Implemented]
+-- 110. MAXIMUS — SATELLITE  SAT_PROVIDER_BANKING [Partner LOB]   [Implemented]
 -- satellite SAT_PROVIDER_BANKING; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4506,7 +4510,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PROVIDER_BANKING' a
 
 
 ----------------------------------------------------------------------------------------
--- 111. MAXIMUS — SATELLITE  SAT_PROVIDER_QUALITY   [Implemented]
+-- 111. MAXIMUS — SATELLITE  SAT_PROVIDER_QUALITY [Partner LOB]   [Implemented]
 -- satellite SAT_PROVIDER_QUALITY; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
@@ -4531,7 +4535,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PROVIDER_QUALITY' a
 
 
 ----------------------------------------------------------------------------------------
--- 112. MAXIMUS — SATELLITE  SAT_PROVIDER_TARIFF   [Implemented]
+-- 112. MAXIMUS — SATELLITE  SAT_PROVIDER_TARIFF [Partner LOB]   [Implemented]
 -- satellite SAT_PROVIDER_TARIFF; rows scoped to startswith(RECORD_SOURCE, 'MAXIMUS_').
 -- Expected RECORD_SOURCE:
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.

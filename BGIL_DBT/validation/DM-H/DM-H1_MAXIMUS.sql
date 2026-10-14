@@ -2,6 +2,10 @@
    DM-H1  |  History Checks - Change Creates a New Satellite Row  (MAXIMUS)
    A record changed in the SF Mirror source creates a new satellite row. Pass criterion: new sat row on change.
 
+   PARTNER LOB: 82 of 98 objects below carry the [Partner LOB] tag -- the same objects
+       tagged in the matching .docx (Customer / Party domain rows of the partner
+       Source-To-Model mapping). The tag is scope information only: SQL bodies, pass
+       criteria and results are unaffected.
    Check ID: DM-H1
    Category: History checks
    Sign-off criterion: Change creates a new satellite row
@@ -78,7 +82,7 @@ set DM_H_PHASE = 'AFTER';
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]
+-- 3. MAXIMUS — SAT_CHANNEL_DEFINITION [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_CHANNEL_DEFINITION. Recomputed exactly as automate_dv 0.11.5
 -- / sat_multi_source computes it, from the payload stored on the same row. A match
 -- proves every payload change changes the HASHDIFF, which is what drives a new row.
@@ -138,7 +142,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_CHANNEL_DEFINITION', 'MAXIMUS_BUS
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]
+-- 4. MAXIMUS — SAT_COMMON_ADDRESS [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -291,7 +295,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_COMMON_ADDRESS', 'MAXIMUS_BUSINES
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]
+-- 5. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -349,7 +353,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_COMMON_ADMIN_GEOGRAPHY', 'MAXIMUS
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 6. MAXIMUS — SAT_COMMON_CLASSIFICATION [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -407,7 +411,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_COMMON_CLASSIFICATION', 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 7. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -468,7 +472,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_COMMON_COMMUNICATION_PREFERENCE',
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]
+-- 8. MAXIMUS — SAT_COMMON_CONSENT [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -526,7 +530,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_COMMON_CONSENT', 'MAXIMUS_BUSINES
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]
+-- 9. MAXIMUS — SAT_COMMON_CONTACT [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -701,7 +705,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_COMMON_CONTACT', 'MAXIMUS_BUSINES
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — SAT_COMMON_GEO   [Implemented]
+-- 10. MAXIMUS — SAT_COMMON_GEO [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -800,7 +804,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_COMMON_GEO', 'MAXIMUS_BUSINESS_PA
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]
+-- 11. MAXIMUS — SAT_DOCUMENT_DEFINITION [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -859,7 +863,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_DOCUMENT_DEFINITION', 'MAXIMUS_BU
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]
+-- 12. MAXIMUS — SAT_INSTRUMENT_DEFINITION [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_INSTRUMENT_DEFINITION. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -919,7 +923,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_INSTRUMENT_DEFINITION', 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 13. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1193,7 +1197,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_LNK_PARTY_ROLE_CORE', 'MAXIMUS_BU
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]
+-- 14. MAXIMUS — SAT_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1254,7 +1258,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_LNK_ROLE_AGENT', 'MAXIMUS_BUSINES
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]
+-- 15. MAXIMUS — SAT_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1313,7 +1317,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_LNK_ROLE_CUSTOMER', 'MAXIMUS_BUSI
 
 
 ----------------------------------------------------------------------------------------
--- 16. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]
+-- 16. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_LNK_ROLE_EMPLOYEE. Recomputed exactly as automate_dv 0.11.5 /
 -- sat_multi_source computes it, from the payload stored on the same row. A match proves
 -- every payload change changes the HASHDIFF, which is what drives a new row. standard
@@ -1373,7 +1377,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_LNK_ROLE_EMPLOYEE', 'MAXIMUS_BUSI
 
 
 ----------------------------------------------------------------------------------------
--- 17. MAXIMUS — SAT_LNK_ROLE_INVESTIGATOR   [Implemented]
+-- 17. MAXIMUS — SAT_LNK_ROLE_INVESTIGATOR [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_LNK_ROLE_INVESTIGATOR. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -1432,7 +1436,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_LNK_ROLE_INVESTIGATOR', 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 18. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 18. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1452,7 +1456,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'M
 
 
 ----------------------------------------------------------------------------------------
--- 19. MAXIMUS — SAT_LNK_ROLE_PROVIDER   [Implemented]
+-- 19. MAXIMUS — SAT_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1524,7 +1528,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_LNK_ROLE_PROVIDER', 'MAXIMUS_BUSI
 
 
 ----------------------------------------------------------------------------------------
--- 20. MAXIMUS — SAT_LNK_ROLE_SURVEYOR   [Implemented]
+-- 20. MAXIMUS — SAT_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1584,7 +1588,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_LNK_ROLE_SURVEYOR', 'MAXIMUS_BUSI
 
 
 ----------------------------------------------------------------------------------------
--- 21. MAXIMUS — SAT_LOCATION_PROFILE   [Implemented]
+-- 21. MAXIMUS — SAT_LOCATION_PROFILE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_LOCATION_PROFILE. Recomputed exactly as automate_dv 0.11.5 /
 -- sat_multi_source computes it, from the payload stored on the same row. A match proves
 -- every payload change changes the HASHDIFF, which is what drives a new row. standard
@@ -1680,7 +1684,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_LOCATION_PROFILE', 'MAXIMUS_BUSIN
 
 
 ----------------------------------------------------------------------------------------
--- 22. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
+-- 22. MAXIMUS — SAT_ORG_UNIT_DEFINITION [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_ORG_UNIT_DEFINITION. Recomputed exactly as automate_dv 0.11.5
 -- / sat_multi_source computes it, from the payload stored on the same row. A match
 -- proves every payload change changes the HASHDIFF, which is what drives a new row.
@@ -1700,7 +1704,7 @@ select 'MAXIMUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite, 'MAXIMUS_BU
 
 
 ----------------------------------------------------------------------------------------
--- 23. MAXIMUS — SAT_ORG_UNIT_LICENCE   [Implemented]
+-- 23. MAXIMUS — SAT_ORG_UNIT_LICENCE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_ORG_UNIT_LICENCE. Recomputed exactly as automate_dv 0.11.5 /
 -- sat_multi_source computes it, from the payload stored on the same row. A match proves
 -- every payload change changes the HASHDIFF, which is what drives a new row. standard
@@ -1720,7 +1724,7 @@ select 'MAXIMUS' as project, 'SAT_ORG_UNIT_LICENCE' as satellite, 'MAXIMUS_BUSIN
 
 
 ----------------------------------------------------------------------------------------
--- 24. MAXIMUS — SAT_PARTY_AGENT_LICENCE_LINE   [Implemented]
+-- 24. MAXIMUS — SAT_PARTY_AGENT_LICENCE_LINE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_PARTY_AGENT_LICENCE_LINE. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -1816,7 +1820,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_AGENT_LICENCE_LINE', 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 25. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]
+-- 25. MAXIMUS — SAT_PARTY_AML_SCREENING [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1874,7 +1878,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_AML_SCREENING', 'MAXIMUS_BU
 
 
 ----------------------------------------------------------------------------------------
--- 26. MAXIMUS — SAT_PARTY_BANKING   [Implemented]
+-- 26. MAXIMUS — SAT_PARTY_BANKING [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1978,7 +1982,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_BANKING', 'MAXIMUS_BUSINESS
 
 
 ----------------------------------------------------------------------------------------
--- 27. MAXIMUS — SAT_PARTY_CONSENT_MANDATE   [Implemented]
+-- 27. MAXIMUS — SAT_PARTY_CONSENT_MANDATE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_PARTY_CONSENT_MANDATE. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -2042,7 +2046,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_CONSENT_MANDATE', 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 28. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 28. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2114,7 +2118,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_CONTACT_ADDRESS_LINK', 'MAX
 
 
 ----------------------------------------------------------------------------------------
--- 29. MAXIMUS — SAT_PARTY_DIGITAL_IDENTITY   [Implemented]
+-- 29. MAXIMUS — SAT_PARTY_DIGITAL_IDENTITY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_PARTY_DIGITAL_IDENTITY. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -2210,7 +2214,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_DIGITAL_IDENTITY', 'MAXIMUS
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 30. MAXIMUS — SAT_PARTY_EMPLOYMENT [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2269,7 +2273,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_EMPLOYMENT', 'MAXIMUS_BUSIN
 
 
 ----------------------------------------------------------------------------------------
--- 31. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]
+-- 31. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_PARTY_FINANCIAL_PROFILE. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -2327,7 +2331,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_FINANCIAL_PROFILE', 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 32. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]
+-- 32. MAXIMUS — SAT_PARTY_FRAUD_PROFILE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_PARTY_FRAUD_PROFILE. Recomputed exactly as automate_dv 0.11.5
 -- / sat_multi_source computes it, from the payload stored on the same row. A match
 -- proves every payload change changes the HASHDIFF, which is what drives a new row.
@@ -2389,7 +2393,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_FRAUD_PROFILE', 'MAXIMUS_BU
 
 
 ----------------------------------------------------------------------------------------
--- 33. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 33. MAXIMUS — SAT_PARTY_HEALTH_PROFILE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2451,7 +2455,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_HEALTH_PROFILE', 'MAXIMUS_B
 
 
 ----------------------------------------------------------------------------------------
--- 34. MAXIMUS — SAT_PARTY_HIERARCHY   [Implemented]
+-- 34. MAXIMUS — SAT_PARTY_HIERARCHY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_PARTY_HIERARCHY. Recomputed exactly as automate_dv 0.11.5 /
 -- sat_multi_source computes it, from the payload stored on the same row. A match proves
 -- every payload change changes the HASHDIFF, which is what drives a new row. standard
@@ -2547,7 +2551,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_HIERARCHY', 'MAXIMUS_BUSINE
 
 
 ----------------------------------------------------------------------------------------
--- 35. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 35. MAXIMUS — SAT_PARTY_IDENTIFICATION [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2652,7 +2656,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_IDENTIFICATION', 'MAXIMUS_B
 
 
 ----------------------------------------------------------------------------------------
--- 36. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]
+-- 36. MAXIMUS — SAT_PARTY_IDENTITY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2770,7 +2774,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_IDENTITY', 'MAXIMUS_BUSINES
 
 
 ----------------------------------------------------------------------------------------
--- 37. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 37. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2875,7 +2879,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS', '
 
 
 ----------------------------------------------------------------------------------------
--- 38. MAXIMUS — SAT_PARTY_KYC   [Implemented]
+-- 38. MAXIMUS — SAT_PARTY_KYC [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2934,7 +2938,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_KYC', 'MAXIMUS_BUSINESS_PAR
 
 
 ----------------------------------------------------------------------------------------
--- 39. MAXIMUS — SAT_PARTY_LEGAL_PANEL   [Implemented]
+-- 39. MAXIMUS — SAT_PARTY_LEGAL_PANEL [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_PARTY_LEGAL_PANEL. Recomputed exactly as automate_dv 0.11.5 /
 -- sat_multi_source computes it, from the payload stored on the same row. A match proves
 -- every payload change changes the HASHDIFF, which is what drives a new row. standard
@@ -2997,7 +3001,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_LEGAL_PANEL', 'MAXIMUS_BUSI
 
 
 ----------------------------------------------------------------------------------------
--- 40. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]
+-- 40. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_PARTY_ONBOARDING_JOURNEY. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -3057,7 +3061,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_ONBOARDING_JOURNEY', 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 41. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 41. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -3166,7 +3170,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_ORGANISATION_PROFILE', 'MAX
 
 
 ----------------------------------------------------------------------------------------
--- 42. MAXIMUS — SAT_PARTY_ORG_DIRECTORS   [Implemented]
+-- 42. MAXIMUS — SAT_PARTY_ORG_DIRECTORS [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_PARTY_ORG_DIRECTORS. Recomputed exactly as automate_dv 0.11.5
 -- / sat_multi_source computes it, from the payload stored on the same row. A match
 -- proves every payload change changes the HASHDIFF, which is what drives a new row.
@@ -3310,7 +3314,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_ORG_DIRECTORS', 'MAXIMUS_BU
 
 
 ----------------------------------------------------------------------------------------
--- 43. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]
+-- 43. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_PARTY_PAYOUT_PROFILE. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -3407,7 +3411,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_PAYOUT_PROFILE', 'MAXIMUS_B
 
 
 ----------------------------------------------------------------------------------------
--- 44. MAXIMUS — SAT_PARTY_PROVIDER_CAPABILITY   [Implemented]
+-- 44. MAXIMUS — SAT_PARTY_PROVIDER_CAPABILITY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_PARTY_PROVIDER_CAPABILITY. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -5216,7 +5220,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_PROVIDER_CAPABILITY', 'MAXI
 
 
 ----------------------------------------------------------------------------------------
--- 45. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]
+-- 45. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_PARTY_RELATIONSHIP_PROFILE. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -5274,7 +5278,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PARTY_RELATIONSHIP_PROFILE', 'MAX
 
 
 ----------------------------------------------------------------------------------------
--- 46. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]
+-- 46. MAXIMUS — SAT_PRODUCT_DEFINITION [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -5332,7 +5336,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PRODUCT_DEFINITION', 'MAXIMUS_BUS
 
 
 ----------------------------------------------------------------------------------------
--- 47. MAXIMUS — SAT_PROVIDER_BANKING   [Implemented]
+-- 47. MAXIMUS — SAT_PROVIDER_BANKING [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -5352,7 +5356,7 @@ select 'MAXIMUS' as project, 'SAT_PROVIDER_BANKING' as satellite, 'MAXIMUS_BUSIN
 
 
 ----------------------------------------------------------------------------------------
--- 48. MAXIMUS — SAT_PROVIDER_QUALITY   [Implemented]
+-- 48. MAXIMUS — SAT_PROVIDER_QUALITY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_PROVIDER_QUALITY. Recomputed exactly as automate_dv 0.11.5 /
 -- sat_multi_source computes it, from the payload stored on the same row. A match proves
 -- every payload change changes the HASHDIFF, which is what drives a new row. standard
@@ -5411,7 +5415,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PROVIDER_QUALITY', 'MAXIMUS_BUSIN
 
 
 ----------------------------------------------------------------------------------------
--- 49. MAXIMUS — SAT_PROVIDER_TARIFF   [Implemented]
+-- 49. MAXIMUS — SAT_PROVIDER_TARIFF [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -5477,7 +5481,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_PROVIDER_TARIFF', 'MAXIMUS_BUSINE
 
 
 ----------------------------------------------------------------------------------------
--- 50. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]
+-- 50. MAXIMUS — SAT_AUG_COMMON_ADDRESS [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_COMMON_ADDRESS. Recomputed exactly as automate_dv 0.11.5
 -- / sat_multi_source computes it, from the payload stored on the same row. A match
 -- proves every payload change changes the HASHDIFF, which is what drives a new row.
@@ -5534,7 +5538,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_COMMON_ADDRESS', 'MAXIMUS_pd_
 
 
 ----------------------------------------------------------------------------------------
--- 51. MAXIMUS — SAT_AUG_COMMON_ADMIN_GEOGRAPHY   [Implemented]
+-- 51. MAXIMUS — SAT_AUG_COMMON_ADMIN_GEOGRAPHY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_COMMON_ADMIN_GEOGRAPHY. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -5553,7 +5557,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_ADMIN_GEOGRAPHY' as satellite, 'MAX
 
 
 ----------------------------------------------------------------------------------------
--- 52. MAXIMUS — SAT_AUG_COMMON_CLASSIFICATION   [Implemented]
+-- 52. MAXIMUS — SAT_AUG_COMMON_CLASSIFICATION [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_COMMON_CLASSIFICATION. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -5613,7 +5617,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_COMMON_CLASSIFICATION', 'MAXI
 
 
 ----------------------------------------------------------------------------------------
--- 53. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 53. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_COMMON_COMMUNICATION_PREFERENCE. Recomputed exactly as
 -- automate_dv 0.11.5 / sat_multi_source computes it, from the payload stored on the same
 -- row. A match proves every payload change changes the HASHDIFF, which is what drives a
@@ -5670,7 +5674,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_COMMON_COMMUNICATION_PREFEREN
 
 
 ----------------------------------------------------------------------------------------
--- 54. MAXIMUS — SAT_AUG_COMMON_CONTACT   [Implemented]
+-- 54. MAXIMUS — SAT_AUG_COMMON_CONTACT [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_COMMON_CONTACT. Recomputed exactly as automate_dv 0.11.5
 -- / sat_multi_source computes it, from the payload stored on the same row. A match
 -- proves every payload change changes the HASHDIFF, which is what drives a new row.
@@ -5729,7 +5733,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_COMMON_CONTACT', 'MAXIMUS_pd_
 
 
 ----------------------------------------------------------------------------------------
--- 55. MAXIMUS — SAT_AUG_COMMON_GEO   [Implemented]
+-- 55. MAXIMUS — SAT_AUG_COMMON_GEO [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_COMMON_GEO. Recomputed exactly as automate_dv 0.11.5 /
 -- sat_multi_source computes it, from the payload stored on the same row. A match proves
 -- every payload change changes the HASHDIFF, which is what drives a new row. augmented
@@ -5786,7 +5790,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_COMMON_GEO', 'MAXIMUS_pd_part
 
 
 ----------------------------------------------------------------------------------------
--- 56. MAXIMUS — SAT_AUG_INSTRUMENT_DEFINITION   [Implemented]
+-- 56. MAXIMUS — SAT_AUG_INSTRUMENT_DEFINITION [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_INSTRUMENT_DEFINITION. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -5843,7 +5847,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_INSTRUMENT_DEFINITION', 'MAXI
 
 
 ----------------------------------------------------------------------------------------
--- 57. MAXIMUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 57. MAXIMUS — SAT_AUG_LNK_PARTY_ROLE_CORE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_LNK_PARTY_ROLE_CORE. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -5900,7 +5904,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_LNK_PARTY_ROLE_CORE', 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 58. MAXIMUS — SAT_AUG_LNK_ROLE_AGENT   [Implemented]
+-- 58. MAXIMUS — SAT_AUG_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -5963,7 +5967,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_LNK_ROLE_AGENT', 'MAXIMUS_pd_
 
 
 ----------------------------------------------------------------------------------------
--- 59. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 59. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -6022,7 +6026,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_LNK_ROLE_CUSTOMER', 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 60. MAXIMUS — SAT_AUG_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 60. MAXIMUS — SAT_AUG_LNK_ROLE_NOMINEE_BENEFICIARY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_LNK_ROLE_NOMINEE_BENEFICIARY. Recomputed exactly as
 -- automate_dv 0.11.5 / sat_multi_source computes it, from the payload stored on the same
 -- row. A match proves every payload change changes the HASHDIFF, which is what drives a
@@ -6081,7 +6085,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_LNK_ROLE_NOMINEE_BENEFICIARY'
 
 
 ----------------------------------------------------------------------------------------
--- 61. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
+-- 61. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -6209,7 +6213,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_LNK_ROLE_PROVIDER', 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 62. MAXIMUS — SAT_AUG_LNK_ROLE_SURVEYOR   [Implemented]
+-- 62. MAXIMUS — SAT_AUG_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -6346,7 +6350,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_AMENDMENT_ENDORSEMENT',
 
 
 ----------------------------------------------------------------------------------------
--- 65. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]
+-- 65. MAXIMUS — SAT_AUG_PARTY_BANKING [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_BANKING. Recomputed exactly as automate_dv 0.11.5 /
 -- sat_multi_source computes it, from the payload stored on the same row. A match proves
 -- every payload change changes the HASHDIFF, which is what drives a new row. augmented
@@ -6497,7 +6501,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_CLAIM_HISTORY', 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 67. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 67. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_CONTACT_ADDRESS_LINK. Recomputed exactly as
 -- automate_dv 0.11.5 / sat_multi_source computes it, from the payload stored on the same
 -- row. A match proves every payload change changes the HASHDIFF, which is what drives a
@@ -6636,7 +6640,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_CREDIT_CONTROL_PAYMENT_
 
 
 ----------------------------------------------------------------------------------------
--- 70. MAXIMUS — SAT_AUG_PARTY_DIGITAL_IDENTITY   [Implemented]
+-- 70. MAXIMUS — SAT_AUG_PARTY_DIGITAL_IDENTITY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_DIGITAL_IDENTITY. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -6753,7 +6757,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_DRIVING', 'MAXIMUS_pd_p
 
 
 ----------------------------------------------------------------------------------------
--- 72. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
+-- 72. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_EMPLOYMENT. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -6817,7 +6821,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_EMPLOYMENT', 'MAXIMUS_p
 
 
 ----------------------------------------------------------------------------------------
--- 73. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]
+-- 73. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_FINANCIAL_PROFILE. Recomputed exactly as
 -- automate_dv 0.11.5 / sat_multi_source computes it, from the payload stored on the same
 -- row. A match proves every payload change changes the HASHDIFF, which is what drives a
@@ -6877,7 +6881,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_FINANCIAL_PROFILE', 'MA
 
 
 ----------------------------------------------------------------------------------------
--- 74. MAXIMUS — SAT_AUG_PARTY_FRAUD_PROFILE   [Implemented]
+-- 74. MAXIMUS — SAT_AUG_PARTY_FRAUD_PROFILE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_FRAUD_PROFILE. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -6995,7 +6999,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_GROUP_SCHEME', 'MAXIMUS
 
 
 ----------------------------------------------------------------------------------------
--- 76. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]
+-- 76. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_HEALTH_PROFILE. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -7052,7 +7056,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_HEALTH_PROFILE', 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 77. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]
+-- 77. MAXIMUS — SAT_AUG_PARTY_HIERARCHY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_HIERARCHY. Recomputed exactly as automate_dv 0.11.5
 -- / sat_multi_source computes it, from the payload stored on the same row. A match
 -- proves every payload change changes the HASHDIFF, which is what drives a new row.
@@ -7114,7 +7118,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_HIERARCHY', 'MAXIMUS_pd
 
 
 ----------------------------------------------------------------------------------------
--- 78. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]
+-- 78. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_IDENTIFICATION. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -7217,7 +7221,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_IDENTIFICATION', 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 79. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]
+-- 79. MAXIMUS — SAT_AUG_PARTY_IDENTITY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_IDENTITY. Recomputed exactly as automate_dv 0.11.5
 -- / sat_multi_source computes it, from the payload stored on the same row. A match
 -- proves every payload change changes the HASHDIFF, which is what drives a new row.
@@ -7319,7 +7323,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_IDENTITY', 'MAXIMUS_pd_
 
 
 ----------------------------------------------------------------------------------------
--- 80. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 80. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS. Recomputed exactly as
 -- automate_dv 0.11.5 / sat_multi_source computes it, from the payload stored on the same
 -- row. A match proves every payload change changes the HASHDIFF, which is what drives a
@@ -7490,7 +7494,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_INTERACTION', 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 82. MAXIMUS — SAT_AUG_PARTY_KYC   [Implemented]
+-- 82. MAXIMUS — SAT_AUG_PARTY_KYC [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_KYC. Recomputed exactly as automate_dv 0.11.5 /
 -- sat_multi_source computes it, from the payload stored on the same row. A match proves
 -- every payload change changes the HASHDIFF, which is what drives a new row. augmented
@@ -7560,7 +7564,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_KYC', 'MAXIMUS_pd_prop_
 
 
 ----------------------------------------------------------------------------------------
--- 83. MAXIMUS — SAT_AUG_PARTY_LEGAL_PANEL   [Implemented]
+-- 83. MAXIMUS — SAT_AUG_PARTY_LEGAL_PANEL [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_LEGAL_PANEL. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -7865,7 +7869,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_MARKETING', 'MAXIMUS_pd
 
 
 ----------------------------------------------------------------------------------------
--- 86. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]
+-- 86. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_ONBOARDING_JOURNEY. Recomputed exactly as
 -- automate_dv 0.11.5 / sat_multi_source computes it, from the payload stored on the same
 -- row. A match proves every payload change changes the HASHDIFF, which is what drives a
@@ -7944,7 +7948,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_ONBOARDING_JOURNEY', 'M
 
 
 ----------------------------------------------------------------------------------------
--- 87. MAXIMUS — SAT_AUG_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 87. MAXIMUS — SAT_AUG_PARTY_ORGANISATION_PROFILE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_ORGANISATION_PROFILE. Recomputed exactly as
 -- automate_dv 0.11.5 / sat_multi_source computes it, from the payload stored on the same
 -- row. A match proves every payload change changes the HASHDIFF, which is what drives a
@@ -8017,7 +8021,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_ORGANISATION_PROFILE', 
 
 
 ----------------------------------------------------------------------------------------
--- 88. MAXIMUS — SAT_AUG_PARTY_ORG_DIRECTORS   [Implemented]
+-- 88. MAXIMUS — SAT_AUG_PARTY_ORG_DIRECTORS [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_ORG_DIRECTORS. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -8074,7 +8078,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_ORG_DIRECTORS', 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 89. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]
+-- 89. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_PAYOUT_PROFILE. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -8240,7 +8244,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_PREFERENCE_PROFILE', 'M
 
 
 ----------------------------------------------------------------------------------------
--- 91. MAXIMUS — SAT_AUG_PARTY_PROVIDER_CAPABILITY   [Implemented]
+-- 91. MAXIMUS — SAT_AUG_PARTY_PROVIDER_CAPABILITY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_PROVIDER_CAPABILITY. Recomputed exactly as
 -- automate_dv 0.11.5 / sat_multi_source computes it, from the payload stored on the same
 -- row. A match proves every payload change changes the HASHDIFF, which is what drives a
@@ -8358,7 +8362,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_RECORD_REMARKS', 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 93. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]
+-- 93. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PARTY_RELATIONSHIP_PROFILE. Recomputed exactly as
 -- automate_dv 0.11.5 / sat_multi_source computes it, from the payload stored on the same
 -- row. A match proves every payload change changes the HASHDIFF, which is what drives a
@@ -8667,7 +8671,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PARTY_VEHICLE_OWNER', 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 98. MAXIMUS — SAT_AUG_PROVIDER_BANKING   [Implemented]
+-- 98. MAXIMUS — SAT_AUG_PROVIDER_BANKING [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PROVIDER_BANKING. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -8731,7 +8735,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PROVIDER_BANKING', 'MAXIMUS_p
 
 
 ----------------------------------------------------------------------------------------
--- 99. MAXIMUS — SAT_AUG_PROVIDER_QUALITY   [Implemented]
+-- 99. MAXIMUS — SAT_AUG_PROVIDER_QUALITY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PROVIDER_QUALITY. Recomputed exactly as automate_dv
 -- 0.11.5 / sat_multi_source computes it, from the payload stored on the same row. A
 -- match proves every payload change changes the HASHDIFF, which is what drives a new
@@ -8825,7 +8829,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', 'SAT_AUG_PROVIDER_QUALITY', 'MAXIMUS_p
 
 
 ----------------------------------------------------------------------------------------
--- 100. MAXIMUS — SAT_AUG_PROVIDER_TARIFF   [Implemented]
+-- 100. MAXIMUS — SAT_AUG_PROVIDER_TARIFF [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF_AUG_PROVIDER_TARIFF. Recomputed exactly as automate_dv 0.11.5
 -- / sat_multi_source computes it, from the payload stored on the same row. A match
 -- proves every payload change changes the HASHDIFF, which is what drives a new row.

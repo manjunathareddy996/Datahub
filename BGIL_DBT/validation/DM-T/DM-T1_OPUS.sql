@@ -2,6 +2,10 @@
    DM-T1  |  Load Audit - Load Metadata Populated  (OPUS)
    Load date/timestamp and record source populated and correct on every row. Pass criterion: 0 rows with missing metadata.
 
+   PARTNER LOB: 44 of 73 objects below carry the [Partner LOB] tag -- the same objects
+       tagged in the matching .docx (Customer / Party domain rows of the partner
+       Source-To-Model mapping). The tag is scope information only: SQL bodies, pass
+       criteria and results are unaffected.
    Check ID: DM-T1
    Category: Load audit
    Sign-off criterion: Load metadata populated
@@ -1261,7 +1265,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_AGREEMENT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 4. OPUS — HUB  HUB_CLAIM   [Implemented]
+-- 4. OPUS — HUB  HUB_CLAIM [Partner LOB]   [Implemented]
 -- hub HUB_CLAIM; rows scoped to startswith(RECORD_SOURCE, 'OPUS_'). Expected
 -- RECORD_SOURCE: OPUS_CLM_INTERESTED_PARTIES. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
@@ -1308,7 +1312,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_DISTRIBUTION_CHANNEL' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 6. OPUS — HUB  HUB_DOCUMENT   [Implemented]
+-- 6. OPUS — HUB  HUB_DOCUMENT [Partner LOB]   [Implemented]
 -- hub HUB_DOCUMENT; rows scoped to startswith(RECORD_SOURCE, 'OPUS_'). Expected
 -- RECORD_SOURCE: OPUS_BJAZ_T_KYC_OCR, OPUS_BJAZ_T_KYC_POA_DOCUMENT,
 -- OPUS_BJAZ_T_KYC_POI_DOCUMENT. No DBT_RUN_TS column on this table.
@@ -1332,7 +1336,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_DOCUMENT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 7. OPUS — HUB  HUB_LOCATION   [Implemented]
+-- 7. OPUS — HUB  HUB_LOCATION [Partner LOB]   [Implemented]
 -- hub HUB_LOCATION; rows scoped to startswith(RECORD_SOURCE, 'OPUS_'). Expected
 -- RECORD_SOURCE: OPUS_AZBJ_PARTNER_EXTN, OPUS_BJAZ_CLM_SUPP_EXTN,
 -- OPUS_BJAZ_CP_ADDRESS_LINK, OPUS_CLM_SUPPLIERS, OPUS_CP_PARTNERS,
@@ -1358,7 +1362,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_LOCATION' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 8. OPUS — HUB  HUB_ORG_UNIT   [Implemented]
+-- 8. OPUS — HUB  HUB_ORG_UNIT [Partner LOB]   [Implemented]
 -- hub HUB_ORG_UNIT; rows scoped to startswith(RECORD_SOURCE, 'OPUS_'). Expected
 -- RECORD_SOURCE: OPUS_BJAZ_T_CKYC_OTP, OPUS_BJAZ_T_CKYC_SEARCH, OPUS_BJAZ_T_EKYC,
 -- OPUS_BJAZ_T_KYC_AUTH, OPUS_BJAZ_T_KYC_DETAILS, OPUS_BJAZ_T_KYC_INCOMING (+4 more). No
@@ -1383,7 +1387,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_ORG_UNIT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 9. OPUS — HUB  HUB_PARTY   [Implemented]
+-- 9. OPUS — HUB  HUB_PARTY [Partner LOB]   [Implemented]
 -- hub HUB_PARTY; rows scoped to startswith(RECORD_SOURCE, 'OPUS_'). Expected
 -- RECORD_SOURCE: OPUS_CP_PARTNERS, OPUS_BJAZ_M_KYC_DRIVING_LICENCE,
 -- OPUS_BJAZ_M_KYC_GSTN, OPUS_BJAZ_M_KYC_PAN, OPUS_BJAZ_M_KYC_PASSPORT,
@@ -1408,7 +1412,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PARTY' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 10. OPUS — HUB  HUB_POLICY   [Implemented]
+-- 10. OPUS — HUB  HUB_POLICY [Partner LOB]   [Implemented]
 -- hub HUB_POLICY; rows scoped to startswith(RECORD_SOURCE, 'OPUS_'). Expected
 -- RECORD_SOURCE: OPUS_BA_HCP_DT_MEM, OPUS_BJAZ_CTNGY_FF_DTLS_EXTN,
 -- OPUS_BJAZ_HCF_MEMBER_DTLS, OPUS_BJAZ_SPP_MEMBER_DTLS, OPUS_BJAZ_STARPKG_FF_DTLS,
@@ -1458,7 +1462,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PRODUCT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 12. OPUS — HUB  HUB_RISK_OBJECT   [Implemented]
+-- 12. OPUS — HUB  HUB_RISK_OBJECT [Partner LOB]   [Implemented]
 -- hub HUB_RISK_OBJECT; rows scoped to startswith(RECORD_SOURCE, 'OPUS_'). Expected
 -- RECORD_SOURCE: OPUS_CLM_INTERESTED_PARTIES. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
@@ -1554,7 +1558,7 @@ select 'OPUS' as project, 'link' as table_type, 'LNK_POLICY_PARTY' as table_name
 
 
 ----------------------------------------------------------------------------------------
--- 16. OPUS — SATELLITE  SAT_AGREEMENT_COMMERCIAL_TERMS   [Implemented]
+-- 16. OPUS — SATELLITE  SAT_AGREEMENT_COMMERCIAL_TERMS [Partner LOB]   [Implemented]
 -- satellite SAT_AGREEMENT_COMMERCIAL_TERMS; rows scoped to startswith(RECORD_SOURCE,
 -- 'OPUS_'). Expected RECORD_SOURCE: OPUS_BJAZ_INTERMEDIARY. No DBT_RUN_TS column on this
 -- table.
@@ -1578,7 +1582,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AGREEMENT_COMMERCIAL_T
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — SATELLITE  SAT_AGREEMENT_DEFINITION   [Implemented]
+-- 17. OPUS — SATELLITE  SAT_AGREEMENT_DEFINITION [Partner LOB]   [Implemented]
 -- satellite SAT_AGREEMENT_DEFINITION; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: OPUS_BJAZ_INTERMEDIARY. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
@@ -1793,7 +1797,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LAWYER_ADVOCATE_RO
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_AGENT   [Implemented]
+-- 26. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_LNK_ROLE_AGENT; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: OPUS_BJAZ_INTERMEDIARY. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
@@ -1816,7 +1820,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_AGENT' as
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 27. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_LNK_ROLE_CUSTOMER; rows scoped to startswith(RECORD_SOURCE,
 -- 'OPUS_'). Expected RECORD_SOURCE: OPUS_CLM_INTERESTED_PARTIES. No DBT_RUN_TS column on
 -- this table.
@@ -1840,7 +1844,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_CUSTOMER'
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
+-- 28. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_LNK_ROLE_PROVIDER; rows scoped to startswith(RECORD_SOURCE,
 -- 'OPUS_'). Expected RECORD_SOURCE: OPUS_BJAZ_CLM_SUPP_EXTN,
 -- OPUS_BJAZ_HM_HOSPITAL_MASTER. DBT_RUN_TS present (load_after_run_ts checked).
@@ -1864,7 +1868,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_PROVIDER'
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_SURVEYOR   [Implemented]
+-- 29. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
 -- satellite SAT_AUG_LNK_ROLE_SURVEYOR; rows scoped to startswith(RECORD_SOURCE,
 -- 'OPUS_'). Expected RECORD_SOURCE: OPUS_BJAZ_CLM_SUPP_EXTN. No DBT_RUN_TS column on
 -- this table.
@@ -1962,7 +1966,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY' as table_n
 
 
 ----------------------------------------------------------------------------------------
--- 33. OPUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]
+-- 33. OPUS — SATELLITE  SAT_COMMON_ADDRESS [Partner LOB]   [Implemented]
 -- satellite SAT_COMMON_ADDRESS; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: 2 stitch pattern(s) (comma-joined contributing tables).
 -- DBT_RUN_TS present (load_after_run_ts checked).
@@ -2010,7 +2014,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_ADMIN_GEOGRAPHY
 
 
 ----------------------------------------------------------------------------------------
--- 35. OPUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 35. OPUS — SATELLITE  SAT_COMMON_CLASSIFICATION [Partner LOB]   [Implemented]
 -- satellite SAT_COMMON_CLASSIFICATION; rows scoped to startswith(RECORD_SOURCE,
 -- 'OPUS_'). Expected RECORD_SOURCE: 1 stitch pattern(s) (comma-joined contributing
 -- tables). DBT_RUN_TS present (load_after_run_ts checked).
@@ -2034,7 +2038,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CLASSIFICATION'
 
 
 ----------------------------------------------------------------------------------------
--- 36. OPUS — SATELLITE  SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 36. OPUS — SATELLITE  SAT_COMMON_COMMUNICATION_PREFERENCE [Partner LOB]   [Implemented]
 -- satellite SAT_COMMON_COMMUNICATION_PREFERENCE; rows scoped to
 -- startswith(RECORD_SOURCE, 'OPUS_'). Expected RECORD_SOURCE: 1 stitch pattern(s)
 -- (comma-joined contributing tables). DBT_RUN_TS present (load_after_run_ts checked).
@@ -2058,7 +2062,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_COMMUNICATION_P
 
 
 ----------------------------------------------------------------------------------------
--- 37. OPUS — SATELLITE  SAT_COMMON_CONSENT   [Implemented]
+-- 37. OPUS — SATELLITE  SAT_COMMON_CONSENT [Partner LOB]   [Implemented]
 -- satellite SAT_COMMON_CONSENT; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: OPUS_BJAZ_T_CKYC_PERSONAL_DTLS. No DBT_RUN_TS column on this
 -- table.
@@ -2082,7 +2086,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONSENT' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 38. OPUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]
+-- 38. OPUS — SATELLITE  SAT_COMMON_CONTACT [Partner LOB]   [Implemented]
 -- satellite SAT_COMMON_CONTACT; rows scoped to RECORD_SOURCE = 'OPUS'. Expected
 -- RECORD_SOURCE: OPUS. DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
@@ -2105,7 +2109,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONTACT' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 39. OPUS — SATELLITE  SAT_COMMON_GEO   [Implemented]
+-- 39. OPUS — SATELLITE  SAT_COMMON_GEO [Partner LOB]   [Implemented]
 -- satellite SAT_COMMON_GEO; rows scoped to startswith(RECORD_SOURCE, 'OPUS_'). Expected
 -- RECORD_SOURCE: 1 stitch pattern(s) (comma-joined contributing tables). DBT_RUN_TS
 -- present (load_after_run_ts checked).
@@ -2129,7 +2133,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_GEO' as table_n
 
 
 ----------------------------------------------------------------------------------------
--- 40. OPUS — SATELLITE  SAT_DOCUMENT_DEFINITION   [Implemented]
+-- 40. OPUS — SATELLITE  SAT_DOCUMENT_DEFINITION [Partner LOB]   [Implemented]
 -- satellite SAT_DOCUMENT_DEFINITION; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: OPUS_BJAZ_T_KYC_OCR, OPUS_BJAZ_T_KYC_POA_DOCUMENT,
 -- OPUS_BJAZ_T_KYC_POI_DOCUMENT. DBT_RUN_TS present (load_after_run_ts checked).
@@ -2177,7 +2181,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_CLAIM_PARTY_ROLE' 
 
 
 ----------------------------------------------------------------------------------------
--- 42. OPUS — SATELLITE  SAT_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 42. OPUS — SATELLITE  SAT_LNK_PARTY_ROLE_CORE [Partner LOB]   [Implemented]
 -- satellite SAT_LNK_PARTY_ROLE_CORE; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS. No DBT_RUN_TS column on
 -- this table.
@@ -2201,7 +2205,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_PARTY_ROLE_CORE' a
 
 
 ----------------------------------------------------------------------------------------
--- 43. OPUS — SATELLITE  SAT_LNK_POLICY_PARTY_ROLE   [Implemented]
+-- 43. OPUS — SATELLITE  SAT_LNK_POLICY_PARTY_ROLE [Partner LOB]   [Implemented]
 -- satellite SAT_LNK_POLICY_PARTY_ROLE; rows scoped to startswith(RECORD_SOURCE,
 -- 'OPUS_'). Expected RECORD_SOURCE: OPUS_OCP_INTERESTED_PARTIES. No DBT_RUN_TS column on
 -- this table.
@@ -2225,7 +2229,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_POLICY_PARTY_ROLE'
 
 
 ----------------------------------------------------------------------------------------
--- 44. OPUS — SATELLITE  SAT_LNK_ROLE_AGENT   [Implemented]
+-- 44. OPUS — SATELLITE  SAT_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
 -- satellite SAT_LNK_ROLE_AGENT; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: OPUS_BJAZ_INTERMEDIARY. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
@@ -2248,7 +2252,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_AGENT' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 45. OPUS — SATELLITE  SAT_LNK_ROLE_CUSTOMER   [Implemented]
+-- 45. OPUS — SATELLITE  SAT_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
 -- satellite SAT_LNK_ROLE_CUSTOMER; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: OPUS_CLM_INTERESTED_PARTIES. No DBT_RUN_TS column on this
 -- table.
@@ -2298,7 +2302,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_NOMINEE_BENEF
 
 
 ----------------------------------------------------------------------------------------
--- 47. OPUS — SATELLITE  SAT_LNK_ROLE_PROVIDER   [Implemented]
+-- 47. OPUS — SATELLITE  SAT_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
 -- satellite SAT_LNK_ROLE_PROVIDER; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: OPUS_BJAZ_HM_HOSPITAL_MASTER, OPUS_CLM_SUPPLIERS. DBT_RUN_TS
 -- present (load_after_run_ts checked).
@@ -2322,7 +2326,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_PROVIDER' as 
 
 
 ----------------------------------------------------------------------------------------
--- 48. OPUS — SATELLITE  SAT_LNK_ROLE_SURVEYOR   [Implemented]
+-- 48. OPUS — SATELLITE  SAT_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
 -- satellite SAT_LNK_ROLE_SURVEYOR; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: OPUS_BJAZ_CLM_SUPP_EXTN. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
@@ -2345,7 +2349,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_SURVEYOR' as 
 
 
 ----------------------------------------------------------------------------------------
--- 49. OPUS — SATELLITE  SAT_PARTY_AML_SCREENING   [Implemented]
+-- 49. OPUS — SATELLITE  SAT_PARTY_AML_SCREENING [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_AML_SCREENING; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: OPUS_BJAZ_T_CKYC_PERSONAL_DTLS. No DBT_RUN_TS column on this
 -- table.
@@ -2369,7 +2373,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_AML_SCREENING' a
 
 
 ----------------------------------------------------------------------------------------
--- 50. OPUS — SATELLITE  SAT_PARTY_BANKING   [Implemented]
+-- 50. OPUS — SATELLITE  SAT_PARTY_BANKING [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_BANKING; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: OPUS_AZBJ_PARTNER_EXTN, OPUS_BJAZ_CLM_SUPP_EXTN,
 -- OPUS_BJAZ_CTNGY_PA_MEM_DTLS, OPUS_BJAZ_HM_MEMBER_DTLS. DBT_RUN_TS present
@@ -2418,7 +2422,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_CLAIM_HISTORY' a
 
 
 ----------------------------------------------------------------------------------------
--- 52. OPUS — SATELLITE  SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 52. OPUS — SATELLITE  SAT_PARTY_CONTACT_ADDRESS_LINK [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_CONTACT_ADDRESS_LINK; rows scoped to startswith(RECORD_SOURCE,
 -- 'OPUS_'). Expected RECORD_SOURCE: OPUS_BJAZ_CP_ADDRESS_LINK,
 -- OPUS_BJAZ_T_CKYC_PERSONAL_DTLS. DBT_RUN_TS present (load_after_run_ts checked).
@@ -2442,7 +2446,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_CONTACT_ADDRESS_
 
 
 ----------------------------------------------------------------------------------------
--- 53. OPUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 53. OPUS — SATELLITE  SAT_PARTY_EMPLOYMENT [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_EMPLOYMENT; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: 1 stitch pattern(s) (comma-joined contributing tables).
 -- DBT_RUN_TS present (load_after_run_ts checked).
@@ -2466,7 +2470,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_EMPLOYMENT' as t
 
 
 ----------------------------------------------------------------------------------------
--- 54. OPUS — SATELLITE  SAT_PARTY_GROUP_CENSUS   [Implemented]
+-- 54. OPUS — SATELLITE  SAT_PARTY_GROUP_CENSUS [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_GROUP_CENSUS; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: OPUS_AZBJ_PARTNER_EXTN, OPUS_BJAZ_CLM_SUPP_EXTN,
 -- OPUS_BJAZ_CTNGY_PA_MEM_DTLS, OPUS_BJAZ_EC_MEM_DTLS_EXTN, OPUS_BJAZ_HCF_MEMBER_DTLS,
@@ -2492,7 +2496,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_GROUP_CENSUS' as
 
 
 ----------------------------------------------------------------------------------------
--- 55. OPUS — SATELLITE  SAT_PARTY_GROUP_HOUSEHOLD   [Implemented]
+-- 55. OPUS — SATELLITE  SAT_PARTY_GROUP_HOUSEHOLD [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_GROUP_HOUSEHOLD; rows scoped to startswith(RECORD_SOURCE,
 -- 'OPUS_'). Expected RECORD_SOURCE: OPUS_AZBJ_PARTNER_EXTN. No DBT_RUN_TS column on this
 -- table.
@@ -2516,7 +2520,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_GROUP_HOUSEHOLD'
 
 
 ----------------------------------------------------------------------------------------
--- 56. OPUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 56. OPUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_HEALTH_PROFILE; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: OPUS_BJAZ_M_KYC_DRIVING_LICENCE,
 -- OPUS_BJAZ_T_CKYC_PERSONAL_DTLS; 1 stitch pattern(s) (comma-joined contributing
@@ -2541,7 +2545,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_HEALTH_PROFILE' 
 
 
 ----------------------------------------------------------------------------------------
--- 57. OPUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 57. OPUS — SATELLITE  SAT_PARTY_IDENTIFICATION [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_IDENTIFICATION; rows scoped to RECORD_SOURCE = 'OPUS'. Expected
 -- RECORD_SOURCE: OPUS. DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
@@ -2564,7 +2568,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTIFICATION' 
 
 
 ----------------------------------------------------------------------------------------
--- 58. OPUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]
+-- 58. OPUS — SATELLITE  SAT_PARTY_IDENTITY [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_IDENTITY; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: OPUS_BJAZ_T_CKYC_PERSONAL_DTLS,
 -- OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS, OPUS_BJAZ_T_CKYC_SEARCH, OPUS_BJAZ_T_EKYC,
@@ -2590,7 +2594,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTITY' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 59. OPUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 59. OPUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS; rows scoped to startswith(RECORD_SOURCE,
 -- 'OPUS_'). Expected RECORD_SOURCE: OPUS_BJAZ_T_CKYC_PERSONAL_DTLS, OPUS_BJAZ_T_KYC_OCR;
 -- 1 stitch pattern(s) (comma-joined contributing tables). DBT_RUN_TS present
@@ -2615,7 +2619,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_INDIVIDUAL_DEMOG
 
 
 ----------------------------------------------------------------------------------------
--- 60. OPUS — SATELLITE  SAT_PARTY_KYC   [Implemented]
+-- 60. OPUS — SATELLITE  SAT_PARTY_KYC [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_KYC; rows scoped to startswith(RECORD_SOURCE, 'OPUS_'). Expected
 -- RECORD_SOURCE: OPUS_BJAZ_T_CKYC_PERSONAL_DTLS, OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS,
 -- OPUS_BJAZ_T_CKYC_SEARCH, OPUS_BJAZ_T_KYC_DETAILS, OPUS_BJAZ_T_KYC_INCOMING. DBT_RUN_TS
@@ -2640,7 +2644,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_KYC' as table_na
 
 
 ----------------------------------------------------------------------------------------
--- 61. OPUS — SATELLITE  SAT_PARTY_KYC_REFERENCE   [Implemented]
+-- 61. OPUS — SATELLITE  SAT_PARTY_KYC_REFERENCE [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_KYC_REFERENCE; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: OPUS_CP_PARTNERS, OPUS_BJAZ_T_CKYC_OTP,
 -- OPUS_BJAZ_T_CKYC_SEARCH, OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS. DBT_RUN_TS present
@@ -2665,7 +2669,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_KYC_REFERENCE' a
 
 
 ----------------------------------------------------------------------------------------
--- 62. OPUS — SATELLITE  SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 62. OPUS — SATELLITE  SAT_PARTY_ORGANISATION_PROFILE [Partner LOB]   [Implemented]
 -- satellite SAT_PARTY_ORGANISATION_PROFILE; rows scoped to startswith(RECORD_SOURCE,
 -- 'OPUS_'). Expected RECORD_SOURCE: OPUS_BJAZ_M_KYC_GSTN,
 -- OPUS_BJAZ_T_CKYC_PERSONAL_DTLS; 1 stitch pattern(s) (comma-joined contributing
@@ -2764,7 +2768,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_CERTIFICATE' as
 
 
 ----------------------------------------------------------------------------------------
--- 66. OPUS — SATELLITE  SAT_POLICY_CLASSIFICATION   [Implemented]
+-- 66. OPUS — SATELLITE  SAT_POLICY_CLASSIFICATION [Partner LOB]   [Implemented]
 -- satellite SAT_POLICY_CLASSIFICATION; rows scoped to startswith(RECORD_SOURCE,
 -- 'OPUS_'). Expected RECORD_SOURCE: OPUS_BJAZ_T_KYC_DETAILS, OPUS_BJAZ_T_KYC_INCOMING,
 -- OPUS_BJAZ_T_KYC_POA_DOCUMENT, OPUS_BJAZ_T_KYC_POI_DOCUMENT. DBT_RUN_TS present
@@ -2836,7 +2840,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_ENDORSEMENT' as
 
 
 ----------------------------------------------------------------------------------------
--- 69. OPUS — SATELLITE  SAT_POLICY_HEADER   [Implemented]
+-- 69. OPUS — SATELLITE  SAT_POLICY_HEADER [Partner LOB]   [Implemented]
 -- satellite SAT_POLICY_HEADER; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: 1 stitch pattern(s) (comma-joined contributing tables).
 -- DBT_RUN_TS present (load_after_run_ts checked).
@@ -2884,7 +2888,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_PREMIUM_HEAD' a
 
 
 ----------------------------------------------------------------------------------------
--- 71. OPUS — SATELLITE  SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
+-- 71. OPUS — SATELLITE  SAT_POLICY_PREMIUM_SUMMARY [Partner LOB]   [Implemented]
 -- satellite SAT_POLICY_PREMIUM_SUMMARY; rows scoped to startswith(RECORD_SOURCE,
 -- 'OPUS_'). Expected RECORD_SOURCE: OPUS_BJAZ_T_KYC_INCOMING, OPUS_BJAZ_T_KYC_OCR.
 -- DBT_RUN_TS present (load_after_run_ts checked).
@@ -2932,7 +2936,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_DEFINITION' as
 
 
 ----------------------------------------------------------------------------------------
--- 73. OPUS — SATELLITE  SAT_PROVIDER_BANKING   [Implemented]
+-- 73. OPUS — SATELLITE  SAT_PROVIDER_BANKING [Partner LOB]   [Implemented]
 -- satellite SAT_PROVIDER_BANKING; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: 1 stitch pattern(s) (comma-joined contributing tables).
 -- DBT_RUN_TS present (load_after_run_ts checked).
@@ -2956,7 +2960,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PROVIDER_BANKING' as t
 
 
 ----------------------------------------------------------------------------------------
--- 74. OPUS — SATELLITE  SAT_PROVIDER_TARIFF   [Implemented]
+-- 74. OPUS — SATELLITE  SAT_PROVIDER_TARIFF [Partner LOB]   [Implemented]
 -- satellite SAT_PROVIDER_TARIFF; rows scoped to startswith(RECORD_SOURCE, 'OPUS_').
 -- Expected RECORD_SOURCE: OPUS_BJAZ_HM_HOSPITAL_MASTER. No DBT_RUN_TS column on this
 -- table.

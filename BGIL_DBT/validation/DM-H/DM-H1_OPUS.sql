@@ -2,6 +2,10 @@
    DM-H1  |  History Checks - Change Creates a New Satellite Row  (OPUS)
    A record changed in the SF Mirror source creates a new satellite row. Pass criterion: new sat row on change.
 
+   PARTNER LOB: 37 of 59 objects below carry the [Partner LOB] tag -- the same objects
+       tagged in the matching .docx (Customer / Party domain rows of the partner
+       Source-To-Model mapping). The tag is scope information only: SQL bodies, pass
+       criteria and results are unaffected.
    Check ID: DM-H1
    Category: History checks
    Sign-off criterion: Change creates a new satellite row
@@ -78,7 +82,7 @@ set DM_H_PHASE = 'AFTER';
 
 
 ----------------------------------------------------------------------------------------
--- 3. OPUS — SAT_AGREEMENT_COMMERCIAL_TERMS   [Implemented]
+-- 3. OPUS — SAT_AGREEMENT_COMMERCIAL_TERMS [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -135,7 +139,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AGREEMENT_COMMERCIAL_TERMS', 'OPUS_B
 
 
 ----------------------------------------------------------------------------------------
--- 4. OPUS — SAT_AGREEMENT_DEFINITION   [Implemented]
+-- 4. OPUS — SAT_AGREEMENT_DEFINITION [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -192,7 +196,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AGREEMENT_DEFINITION', 'OPUS_BJAZ_IN
 
 
 ----------------------------------------------------------------------------------------
--- 5. OPUS — SAT_COMMON_ADDRESS   [Implemented]
+-- 5. OPUS — SAT_COMMON_ADDRESS [Partner LOB]   [Implemented]
 -- HASHDIFF of stitch_kyc_common_address (6 tables) (stg2_kyc_common_address) also hashes
 -- CAREOFNAME, which this satellite does not store (a shared stage feeding several
 -- satellites). A change in only those columns gives a new HASHDIFF and so a NEW ROW WITH
@@ -653,7 +657,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_ADMIN_GEOGRAPHY', 'stitch_sha
 
 
 ----------------------------------------------------------------------------------------
--- 7. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 7. OPUS — SAT_COMMON_CLASSIFICATION [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -759,7 +763,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_CLASSIFICATION', 'stitch_comm
 
 
 ----------------------------------------------------------------------------------------
--- 8. OPUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Design finding]
+-- 8. OPUS — SAT_COMMON_COMMUNICATION_PREFERENCE [Partner LOB]   [Design finding]
 -- HASHDIFF of stitch_shared__common_communication_preference_party_employment (1 tables)
 -- (stg2_shared__common_communication_preference_party_employment) also hashes
 -- EMPLOYMENTSTATUS, which this satellite does not store (a shared stage feeding several
@@ -839,7 +843,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_COMMUNICATION_PREFERENCE', 's
 
 
 ----------------------------------------------------------------------------------------
--- 9. OPUS — SAT_COMMON_CONSENT   [Implemented]
+-- 9. OPUS — SAT_COMMON_CONSENT [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -896,7 +900,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_CONSENT', 'OPUS_BJAZ_T_CKYC_P
 
 
 ----------------------------------------------------------------------------------------
--- 10. OPUS — SAT_COMMON_CONTACT   [Implemented]
+-- 10. OPUS — SAT_COMMON_CONTACT [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1105,7 +1109,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_CONTACT', 'OPUS_BJAZ_T_KYC_DE
 
 
 ----------------------------------------------------------------------------------------
--- 11. OPUS — SAT_COMMON_GEO   [Design finding]
+-- 11. OPUS — SAT_COMMON_GEO [Partner LOB]   [Design finding]
 -- HASHDIFF of stitch_shared__common_admin_geography_common_geo (2 tables)
 -- (stg2_shared__common_admin_geography_common_geo) also hashes PINCODE, which this
 -- satellite does not store (a shared stage feeding several satellites). A change in only
@@ -1207,7 +1211,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_GEO', 'stitch_shared__common_
 
 
 ----------------------------------------------------------------------------------------
--- 12. OPUS — SAT_DOCUMENT_DEFINITION   [Implemented]
+-- 12. OPUS — SAT_DOCUMENT_DEFINITION [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1415,7 +1419,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_CLAIM_PARTY_ROLE', 'OPUS_CLM_INT
 
 
 ----------------------------------------------------------------------------------------
--- 14. OPUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 14. OPUS — SAT_LNK_PARTY_ROLE_CORE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1475,7 +1479,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_PARTY_ROLE_CORE', 'OPUS_BJAZ_T_C
 
 
 ----------------------------------------------------------------------------------------
--- 15. OPUS — SAT_LNK_POLICY_PARTY_ROLE   [Implemented]
+-- 15. OPUS — SAT_LNK_POLICY_PARTY_ROLE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1534,7 +1538,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_POLICY_PARTY_ROLE', 'OPUS_OCP_IN
 
 
 ----------------------------------------------------------------------------------------
--- 16. OPUS — SAT_LNK_ROLE_AGENT   [Implemented]
+-- 16. OPUS — SAT_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1595,7 +1599,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_AGENT', 'OPUS_BJAZ_INTERMED
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]
+-- 17. OPUS — SAT_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2130,7 +2134,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY', 'OPUS
 
 
 ----------------------------------------------------------------------------------------
--- 19. OPUS — SAT_LNK_ROLE_PROVIDER   [Implemented]
+-- 19. OPUS — SAT_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2240,7 +2244,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_PROVIDER', 'OPUS_CLM_SUPPLI
 
 
 ----------------------------------------------------------------------------------------
--- 20. OPUS — SAT_LNK_ROLE_SURVEYOR   [Implemented]
+-- 20. OPUS — SAT_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2298,7 +2302,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_SURVEYOR', 'OPUS_BJAZ_CLM_S
 
 
 ----------------------------------------------------------------------------------------
--- 21. OPUS — SAT_PARTY_AML_SCREENING   [Implemented]
+-- 21. OPUS — SAT_PARTY_AML_SCREENING [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2356,7 +2360,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_AML_SCREENING', 'OPUS_BJAZ_T_C
 
 
 ----------------------------------------------------------------------------------------
--- 22. OPUS — SAT_PARTY_BANKING   [Implemented]
+-- 22. OPUS — SAT_PARTY_BANKING [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2698,7 +2702,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_CLAIM_HISTORY', 'stitch_party_
 
 
 ----------------------------------------------------------------------------------------
--- 24. OPUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 24. OPUS — SAT_PARTY_CONTACT_ADDRESS_LINK [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2758,7 +2762,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_CONTACT_ADDRESS_LINK', 'OPUS_B
 
 
 ----------------------------------------------------------------------------------------
--- 25. OPUS — SAT_PARTY_EMPLOYMENT   [Design finding]
+-- 25. OPUS — SAT_PARTY_EMPLOYMENT [Partner LOB]   [Design finding]
 -- HASHDIFF of stitch_shared__common_communication_preference_party_employment (1 tables)
 -- (stg2_shared__common_communication_preference_party_employment) also hashes
 -- CORRESPONDENCELANGUAGE, MARKETINGOPTININDICATOR, which this satellite does not store
@@ -2838,7 +2842,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_EMPLOYMENT', 'stitch_shared__c
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — SAT_PARTY_GROUP_CENSUS   [Implemented]
+-- 26. OPUS — SAT_PARTY_GROUP_CENSUS [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -3253,7 +3257,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_GROUP_CENSUS', 'OPUS_BJAZ_SPP_
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — SAT_PARTY_GROUP_HOUSEHOLD   [Implemented]
+-- 27. OPUS — SAT_PARTY_GROUP_HOUSEHOLD [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -3310,7 +3314,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_GROUP_HOUSEHOLD', 'OPUS_AZBJ_P
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 28. OPUS — SAT_PARTY_HEALTH_PROFILE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -3441,7 +3445,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_HEALTH_PROFILE', 'stitch_party
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 29. OPUS — SAT_PARTY_IDENTIFICATION [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -3802,7 +3806,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_M_
 
 
 ----------------------------------------------------------------------------------------
--- 30. OPUS — SAT_PARTY_IDENTITY   [Implemented]
+-- 30. OPUS — SAT_PARTY_IDENTITY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -4506,7 +4510,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTITY', 'OPUS_BJAZ_T_KYC_OC
 
 
 ----------------------------------------------------------------------------------------
--- 31. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 31. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -4773,7 +4777,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS', 'OPU
 
 
 ----------------------------------------------------------------------------------------
--- 32. OPUS — SAT_PARTY_KYC   [Implemented]
+-- 32. OPUS — SAT_PARTY_KYC [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -4982,7 +4986,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_KYC', 'OPUS_BJAZ_T_KYC_INCOMIN
 
 
 ----------------------------------------------------------------------------------------
--- 33. OPUS — SAT_PARTY_KYC_REFERENCE   [Implemented]
+-- 33. OPUS — SAT_PARTY_KYC_REFERENCE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -5040,7 +5044,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_KYC_REFERENCE', 'OPUS_CP_PARTN
 
 
 ----------------------------------------------------------------------------------------
--- 34. OPUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 34. OPUS — SAT_PARTY_ORGANISATION_PROFILE [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -5856,7 +5860,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_CERTIFICATE', 'OPUS_BJAZ_HM_M
 
 
 ----------------------------------------------------------------------------------------
--- 38. OPUS — SAT_POLICY_CLASSIFICATION   [Implemented]
+-- 38. OPUS — SAT_POLICY_CLASSIFICATION [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -6141,7 +6145,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_ENDORSEMENT', 'OPUS_BJAZ_HM_M
 
 
 ----------------------------------------------------------------------------------------
--- 41. OPUS — SAT_POLICY_HEADER   [Implemented]
+-- 41. OPUS — SAT_POLICY_HEADER [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -6439,7 +6443,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_PREMIUM_HEAD', 'OPUS_BJAZ_STA
 
 
 ----------------------------------------------------------------------------------------
--- 43. OPUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
+-- 43. OPUS — SAT_POLICY_PREMIUM_SUMMARY [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -6606,7 +6610,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PRODUCT_DEFINITION', 'stitch_product
 
 
 ----------------------------------------------------------------------------------------
--- 45. OPUS — SAT_PROVIDER_BANKING   [Implemented]
+-- 45. OPUS — SAT_PROVIDER_BANKING [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -6699,7 +6703,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PROVIDER_BANKING', 'stitch_provider_
 
 
 ----------------------------------------------------------------------------------------
--- 46. OPUS — SAT_PROVIDER_TARIFF   [Implemented]
+-- 46. OPUS — SAT_PROVIDER_TARIFF [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -7829,7 +7833,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_LAWYER_ADVOCATE_ROLE', 'OPUS_BJA
 
 
 ----------------------------------------------------------------------------------------
--- 55. OPUS — SAT_AUG_LNK_ROLE_AGENT   [Implemented]
+-- 55. OPUS — SAT_AUG_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -7886,7 +7890,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_LNK_ROLE_AGENT', 'OPUS_BJAZ_INTE
 
 
 ----------------------------------------------------------------------------------------
--- 56. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 56. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -7943,7 +7947,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_LNK_ROLE_CUSTOMER', 'OPUS_CLM_IN
 
 
 ----------------------------------------------------------------------------------------
--- 57. OPUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
+-- 57. OPUS — SAT_AUG_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -8090,7 +8094,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_LNK_ROLE_PROVIDER', 'OPUS_BJAZ_H
 
 
 ----------------------------------------------------------------------------------------
--- 58. OPUS — SAT_AUG_LNK_ROLE_SURVEYOR   [Implemented]
+-- 58. OPUS — SAT_AUG_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,

@@ -2,6 +2,10 @@
    DM-H3  |  History Checks - Idempotent Re-load  (OPUS)
    Re-running the same load does not create duplicate satellite rows. Pass criterion: no duplicate rows on re-run.
 
+   PARTNER LOB: 37 of 59 objects below carry the [Partner LOB] tag -- the same objects
+       tagged in the matching .docx (Customer / Party domain rows of the partner
+       Source-To-Model mapping). The tag is scope information only: SQL bodies, pass
+       criteria and results are unaffected.
    Check ID: DM-H3
    Category: History checks
    Sign-off criterion: Idempotent re-load
@@ -35,7 +39,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. OPUS — SAT_AGREEMENT_COMMERCIAL_TERMS   [Implemented]
+-- 1. OPUS — SAT_AGREEMENT_COMMERCIAL_TERMS [Partner LOB]   [Implemented]
 -- Grain (AGREEMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -61,7 +65,7 @@ select 'OPUS' as project, 'SAT_AGREEMENT_COMMERCIAL_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 2. OPUS — SAT_AGREEMENT_DEFINITION   [Implemented]
+-- 2. OPUS — SAT_AGREEMENT_DEFINITION [Partner LOB]   [Implemented]
 -- Grain (AGREEMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -87,7 +91,7 @@ select 'OPUS' as project, 'SAT_AGREEMENT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 3. OPUS — SAT_COMMON_ADDRESS   [Implemented]
+-- 3. OPUS — SAT_COMMON_ADDRESS [Partner LOB]   [Implemented]
 -- Grain (LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -139,7 +143,7 @@ select 'OPUS' as project, 'SAT_COMMON_ADMIN_GEOGRAPHY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 5. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 5. OPUS — SAT_COMMON_CLASSIFICATION [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -165,7 +169,7 @@ select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 6. OPUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 6. OPUS — SAT_COMMON_COMMUNICATION_PREFERENCE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -191,7 +195,7 @@ select 'OPUS' as project, 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 7. OPUS — SAT_COMMON_CONSENT   [Implemented]
+-- 7. OPUS — SAT_COMMON_CONSENT [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -217,7 +221,7 @@ select 'OPUS' as project, 'SAT_COMMON_CONSENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 8. OPUS — SAT_COMMON_CONTACT   [Implemented]
+-- 8. OPUS — SAT_COMMON_CONTACT [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -251,7 +255,7 @@ select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 9. OPUS — SAT_COMMON_GEO   [Implemented]
+-- 9. OPUS — SAT_COMMON_GEO [Partner LOB]   [Implemented]
 -- Grain (LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -277,7 +281,7 @@ select 'OPUS' as project, 'SAT_COMMON_GEO' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 10. OPUS — SAT_DOCUMENT_DEFINITION   [Implemented]
+-- 10. OPUS — SAT_DOCUMENT_DEFINITION [Partner LOB]   [Implemented]
 -- Grain (DOCUMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -332,7 +336,7 @@ select 'OPUS' as project, 'SAT_LNK_CLAIM_PARTY_ROLE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 12. OPUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 12. OPUS — SAT_LNK_PARTY_ROLE_CORE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, ROLECODE, ROLESEQUENCE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -359,7 +363,7 @@ select 'OPUS' as project, 'SAT_LNK_PARTY_ROLE_CORE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 13. OPUS — SAT_LNK_POLICY_PARTY_ROLE   [Implemented]
+-- 13. OPUS — SAT_LNK_POLICY_PARTY_ROLE [Partner LOB]   [Implemented]
 -- Grain (POLICY_PARTY_HKEY, ROLE_SEQUENCE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -386,7 +390,7 @@ select 'OPUS' as project, 'SAT_LNK_POLICY_PARTY_ROLE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 14. OPUS — SAT_LNK_ROLE_AGENT   [Implemented]
+-- 14. OPUS — SAT_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -412,7 +416,7 @@ select 'OPUS' as project, 'SAT_LNK_ROLE_AGENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 15. OPUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]
+-- 15. OPUS — SAT_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -469,7 +473,7 @@ select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — SAT_LNK_ROLE_PROVIDER   [Implemented]
+-- 17. OPUS — SAT_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -495,7 +499,7 @@ select 'OPUS' as project, 'SAT_LNK_ROLE_PROVIDER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 18. OPUS — SAT_LNK_ROLE_SURVEYOR   [Implemented]
+-- 18. OPUS — SAT_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -521,7 +525,7 @@ select 'OPUS' as project, 'SAT_LNK_ROLE_SURVEYOR' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 19. OPUS — SAT_PARTY_AML_SCREENING   [Implemented]
+-- 19. OPUS — SAT_PARTY_AML_SCREENING [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -547,7 +551,7 @@ select 'OPUS' as project, 'SAT_PARTY_AML_SCREENING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 20. OPUS — SAT_PARTY_BANKING   [Implemented]
+-- 20. OPUS — SAT_PARTY_BANKING [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -600,7 +604,7 @@ select 'OPUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 22. OPUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 22. OPUS — SAT_PARTY_CONTACT_ADDRESS_LINK [Partner LOB]   [Implemented]
 -- Grain (PARTY_LOCATION_HKEY, ADDRESS_USAGE_TYPE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -628,7 +632,7 @@ select 'OPUS' as project, 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 23. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 23. OPUS — SAT_PARTY_EMPLOYMENT [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -654,7 +658,7 @@ select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 24. OPUS — SAT_PARTY_GROUP_CENSUS   [Implemented]
+-- 24. OPUS — SAT_PARTY_GROUP_CENSUS [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -684,7 +688,7 @@ select 'OPUS' as project, 'SAT_PARTY_GROUP_CENSUS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 25. OPUS — SAT_PARTY_GROUP_HOUSEHOLD   [Implemented]
+-- 25. OPUS — SAT_PARTY_GROUP_HOUSEHOLD [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -710,7 +714,7 @@ select 'OPUS' as project, 'SAT_PARTY_GROUP_HOUSEHOLD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 26. OPUS — SAT_PARTY_HEALTH_PROFILE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -737,7 +741,7 @@ select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 27. OPUS — SAT_PARTY_IDENTIFICATION [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -776,7 +780,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — SAT_PARTY_IDENTITY   [Implemented]
+-- 28. OPUS — SAT_PARTY_IDENTITY [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -805,7 +809,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 29. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -832,7 +836,7 @@ select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 30. OPUS — SAT_PARTY_KYC   [Implemented]
+-- 30. OPUS — SAT_PARTY_KYC [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -860,7 +864,7 @@ select 'OPUS' as project, 'SAT_PARTY_KYC' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 31. OPUS — SAT_PARTY_KYC_REFERENCE   [Implemented]
+-- 31. OPUS — SAT_PARTY_KYC_REFERENCE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -887,7 +891,7 @@ select 'OPUS' as project, 'SAT_PARTY_KYC_REFERENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 32. OPUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 32. OPUS — SAT_PARTY_ORGANISATION_PROFILE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -995,7 +999,7 @@ select 'OPUS' as project, 'SAT_POLICY_CERTIFICATE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 36. OPUS — SAT_POLICY_CLASSIFICATION   [Implemented]
+-- 36. OPUS — SAT_POLICY_CLASSIFICATION [Partner LOB]   [Implemented]
 -- Grain (POLICY_HKEY, CLASSIFICATIONTYPE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -1076,7 +1080,7 @@ select 'OPUS' as project, 'SAT_POLICY_ENDORSEMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 39. OPUS — SAT_POLICY_HEADER   [Implemented]
+-- 39. OPUS — SAT_POLICY_HEADER [Partner LOB]   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1128,7 +1132,7 @@ select 'OPUS' as project, 'SAT_POLICY_PREMIUM_HEAD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 41. OPUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
+-- 41. OPUS — SAT_POLICY_PREMIUM_SUMMARY [Partner LOB]   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1180,7 +1184,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 43. OPUS — SAT_PROVIDER_BANKING   [Implemented]
+-- 43. OPUS — SAT_PROVIDER_BANKING [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1206,7 +1210,7 @@ select 'OPUS' as project, 'SAT_PROVIDER_BANKING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 44. OPUS — SAT_PROVIDER_TARIFF   [Implemented]
+-- 44. OPUS — SAT_PROVIDER_TARIFF [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1445,7 +1449,7 @@ select 'OPUS' as project, 'SAT_AUG_LAWYER_ADVOCATE_ROLE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 53. OPUS — SAT_AUG_LNK_ROLE_AGENT   [Implemented]
+-- 53. OPUS — SAT_AUG_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1471,7 +1475,7 @@ select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_AGENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 54. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 54. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1497,7 +1501,7 @@ select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 55. OPUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
+-- 55. OPUS — SAT_AUG_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1523,7 +1527,7 @@ select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 56. OPUS — SAT_AUG_LNK_ROLE_SURVEYOR   [Implemented]
+-- 56. OPUS — SAT_AUG_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a

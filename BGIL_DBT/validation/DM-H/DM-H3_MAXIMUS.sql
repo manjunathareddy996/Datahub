@@ -2,6 +2,10 @@
    DM-H3  |  History Checks - Idempotent Re-load  (MAXIMUS)
    Re-running the same load does not create duplicate satellite rows. Pass criterion: no duplicate rows on re-run.
 
+   PARTNER LOB: 82 of 98 objects below carry the [Partner LOB] tag -- the same objects
+       tagged in the matching .docx (Customer / Party domain rows of the partner
+       Source-To-Model mapping). The tag is scope information only: SQL bodies, pass
+       criteria and results are unaffected.
    Check ID: DM-H3
    Category: History checks
    Sign-off criterion: Idempotent re-load
@@ -35,7 +39,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]
+-- 1. MAXIMUS — SAT_CHANNEL_DEFINITION [Partner LOB]   [Implemented]
 -- Grain (DISTRIBUTION_CHANNEL_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups
 -- = the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -62,7 +66,7 @@ select 'MAXIMUS' as project, 'SAT_CHANNEL_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]
+-- 2. MAXIMUS — SAT_COMMON_ADDRESS [Partner LOB]   [Implemented]
 -- Grain (LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -92,7 +96,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADDRESS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]
+-- 3. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY [Partner LOB]   [Implemented]
 -- Grain (LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -119,7 +123,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADMIN_GEOGRAPHY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 4. MAXIMUS — SAT_COMMON_CLASSIFICATION [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -146,7 +150,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 5. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -173,7 +177,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]
+-- 6. MAXIMUS — SAT_COMMON_CONSENT [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -200,7 +204,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONSENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]
+-- 7. MAXIMUS — SAT_COMMON_CONTACT [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -236,7 +240,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONTACT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — SAT_COMMON_GEO   [Implemented]
+-- 8. MAXIMUS — SAT_COMMON_GEO [Partner LOB]   [Implemented]
 -- Grain (LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -265,7 +269,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_GEO' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]
+-- 9. MAXIMUS — SAT_DOCUMENT_DEFINITION [Partner LOB]   [Implemented]
 -- Grain (DOCUMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -291,7 +295,7 @@ select 'MAXIMUS' as project, 'SAT_DOCUMENT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]
+-- 10. MAXIMUS — SAT_INSTRUMENT_DEFINITION [Partner LOB]   [Implemented]
 -- Grain (PAYMENT_INSTRUMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups =
 -- the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -318,7 +322,7 @@ select 'MAXIMUS' as project, 'SAT_INSTRUMENT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 11. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, ROLECODE, ROLESEQUENCE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -350,7 +354,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_PARTY_ROLE_CORE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]
+-- 12. MAXIMUS — SAT_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -377,7 +381,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_AGENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]
+-- 13. MAXIMUS — SAT_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -404,7 +408,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_CUSTOMER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]
+-- 14. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE [Partner LOB]   [Implemented]
 -- Grain (PARTY_ROLE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -431,7 +435,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_EMPLOYEE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — SAT_LNK_ROLE_INVESTIGATOR   [Implemented]
+-- 15. MAXIMUS — SAT_LNK_ROLE_INVESTIGATOR [Partner LOB]   [Implemented]
 -- Grain (PARTY_ROLE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -458,7 +462,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_INVESTIGATOR' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 16. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 16. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -485,7 +489,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 17. MAXIMUS — SAT_LNK_ROLE_PROVIDER   [Implemented]
+-- 17. MAXIMUS — SAT_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -512,7 +516,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_PROVIDER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 18. MAXIMUS — SAT_LNK_ROLE_SURVEYOR   [Implemented]
+-- 18. MAXIMUS — SAT_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -539,7 +543,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_SURVEYOR' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 19. MAXIMUS — SAT_LOCATION_PROFILE   [Implemented]
+-- 19. MAXIMUS — SAT_LOCATION_PROFILE [Partner LOB]   [Implemented]
 -- Grain (LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -568,7 +572,7 @@ select 'MAXIMUS' as project, 'SAT_LOCATION_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 20. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
+-- 20. MAXIMUS — SAT_ORG_UNIT_DEFINITION [Partner LOB]   [Implemented]
 -- Grain (ORG_UNIT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -595,7 +599,7 @@ select 'MAXIMUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 21. MAXIMUS — SAT_ORG_UNIT_LICENCE   [Implemented]
+-- 21. MAXIMUS — SAT_ORG_UNIT_LICENCE [Partner LOB]   [Implemented]
 -- Grain (ORG_UNIT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -622,7 +626,7 @@ select 'MAXIMUS' as project, 'SAT_ORG_UNIT_LICENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 22. MAXIMUS — SAT_PARTY_AGENT_LICENCE_LINE   [Implemented]
+-- 22. MAXIMUS — SAT_PARTY_AGENT_LICENCE_LINE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -651,7 +655,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_AGENT_LICENCE_LINE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 23. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]
+-- 23. MAXIMUS — SAT_PARTY_AML_SCREENING [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -678,7 +682,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_AML_SCREENING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 24. MAXIMUS — SAT_PARTY_BANKING   [Implemented]
+-- 24. MAXIMUS — SAT_PARTY_BANKING [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -707,7 +711,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_BANKING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 25. MAXIMUS — SAT_PARTY_CONSENT_MANDATE   [Implemented]
+-- 25. MAXIMUS — SAT_PARTY_CONSENT_MANDATE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -736,7 +740,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CONSENT_MANDATE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 26. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 26. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK [Partner LOB]   [Implemented]
 -- Grain (PARTY_LOCATION_HKEY, ADDRESS_USAGE_TYPE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -765,7 +769,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 27. MAXIMUS — SAT_PARTY_DIGITAL_IDENTITY   [Implemented]
+-- 27. MAXIMUS — SAT_PARTY_DIGITAL_IDENTITY [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, ACTIVESEQUENCENUMBER, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -796,7 +800,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_DIGITAL_IDENTITY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 28. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 28. MAXIMUS — SAT_PARTY_EMPLOYMENT [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -823,7 +827,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 29. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]
+-- 29. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -850,7 +854,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FINANCIAL_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]
+-- 30. MAXIMUS — SAT_PARTY_FRAUD_PROFILE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -877,7 +881,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FRAUD_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 31. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 31. MAXIMUS — SAT_PARTY_HEALTH_PROFILE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -904,7 +908,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 32. MAXIMUS — SAT_PARTY_HIERARCHY   [Implemented]
+-- 32. MAXIMUS — SAT_PARTY_HIERARCHY [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -932,7 +936,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_HIERARCHY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 33. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 33. MAXIMUS — SAT_PARTY_IDENTIFICATION [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -965,7 +969,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 34. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]
+-- 34. MAXIMUS — SAT_PARTY_IDENTITY [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -993,7 +997,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_IDENTITY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 35. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 35. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1021,7 +1025,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 36. MAXIMUS — SAT_PARTY_KYC   [Implemented]
+-- 36. MAXIMUS — SAT_PARTY_KYC [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1048,7 +1052,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 37. MAXIMUS — SAT_PARTY_LEGAL_PANEL   [Implemented]
+-- 37. MAXIMUS — SAT_PARTY_LEGAL_PANEL [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1075,7 +1079,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_LEGAL_PANEL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 38. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]
+-- 38. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1102,7 +1106,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ONBOARDING_JOURNEY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 39. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 39. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1130,7 +1134,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ORGANISATION_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 40. MAXIMUS — SAT_PARTY_ORG_DIRECTORS   [Implemented]
+-- 40. MAXIMUS — SAT_PARTY_ORG_DIRECTORS [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, PERSONROLE, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups =
 -- the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1158,7 +1162,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ORG_DIRECTORS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 41. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]
+-- 41. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1187,7 +1191,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PAYOUT_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 42. MAXIMUS — SAT_PARTY_PROVIDER_CAPABILITY   [Implemented]
+-- 42. MAXIMUS — SAT_PARTY_PROVIDER_CAPABILITY [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, FACILITYCODE, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups =
 -- the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1215,7 +1219,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PROVIDER_CAPABILITY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 43. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]
+-- 43. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1242,7 +1246,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_RELATIONSHIP_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 44. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]
+-- 44. MAXIMUS — SAT_PRODUCT_DEFINITION [Partner LOB]   [Implemented]
 -- Grain (PRODUCT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1269,7 +1273,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 45. MAXIMUS — SAT_PROVIDER_BANKING   [Implemented]
+-- 45. MAXIMUS — SAT_PROVIDER_BANKING [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1296,7 +1300,7 @@ select 'MAXIMUS' as project, 'SAT_PROVIDER_BANKING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 46. MAXIMUS — SAT_PROVIDER_QUALITY   [Implemented]
+-- 46. MAXIMUS — SAT_PROVIDER_QUALITY [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1323,7 +1327,7 @@ select 'MAXIMUS' as project, 'SAT_PROVIDER_QUALITY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 47. MAXIMUS — SAT_PROVIDER_TARIFF   [Implemented]
+-- 47. MAXIMUS — SAT_PROVIDER_TARIFF [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1350,7 +1354,7 @@ select 'MAXIMUS' as project, 'SAT_PROVIDER_TARIFF' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 48. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]
+-- 48. MAXIMUS — SAT_AUG_COMMON_ADDRESS [Partner LOB]   [Implemented]
 -- Grain (LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1376,7 +1380,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_ADDRESS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 49. MAXIMUS — SAT_AUG_COMMON_ADMIN_GEOGRAPHY   [Implemented]
+-- 49. MAXIMUS — SAT_AUG_COMMON_ADMIN_GEOGRAPHY [Partner LOB]   [Implemented]
 -- Grain (LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1402,7 +1406,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_ADMIN_GEOGRAPHY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 50. MAXIMUS — SAT_AUG_COMMON_CLASSIFICATION   [Implemented]
+-- 50. MAXIMUS — SAT_AUG_COMMON_CLASSIFICATION [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1428,7 +1432,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_CLASSIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 51. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 51. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1454,7 +1458,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satell
 
 
 ----------------------------------------------------------------------------------------
--- 52. MAXIMUS — SAT_AUG_COMMON_CONTACT   [Implemented]
+-- 52. MAXIMUS — SAT_AUG_COMMON_CONTACT [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1480,7 +1484,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_CONTACT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 53. MAXIMUS — SAT_AUG_COMMON_GEO   [Implemented]
+-- 53. MAXIMUS — SAT_AUG_COMMON_GEO [Partner LOB]   [Implemented]
 -- Grain (LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1506,7 +1510,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_GEO' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 54. MAXIMUS — SAT_AUG_INSTRUMENT_DEFINITION   [Implemented]
+-- 54. MAXIMUS — SAT_AUG_INSTRUMENT_DEFINITION [Partner LOB]   [Implemented]
 -- Grain (PAYMENT_INSTRUMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups =
 -- the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1532,7 +1536,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_INSTRUMENT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 55. MAXIMUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 55. MAXIMUS — SAT_AUG_LNK_PARTY_ROLE_CORE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1558,7 +1562,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_PARTY_ROLE_CORE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 56. MAXIMUS — SAT_AUG_LNK_ROLE_AGENT   [Implemented]
+-- 56. MAXIMUS — SAT_AUG_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1584,7 +1588,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_AGENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 57. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 57. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1610,7 +1614,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 58. MAXIMUS — SAT_AUG_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 58. MAXIMUS — SAT_AUG_LNK_ROLE_NOMINEE_BENEFICIARY [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1636,7 +1640,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite
 
 
 ----------------------------------------------------------------------------------------
--- 59. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
+-- 59. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1662,7 +1666,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 60. MAXIMUS — SAT_AUG_LNK_ROLE_SURVEYOR   [Implemented]
+-- 60. MAXIMUS — SAT_AUG_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1740,7 +1744,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_AMENDMENT_ENDORSEMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 63. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]
+-- 63. MAXIMUS — SAT_AUG_PARTY_BANKING [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1792,7 +1796,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CLAIM_HISTORY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 65. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 65. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1870,7 +1874,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CREDIT_CONTROL_PAYMENT_TERMS' as sat
 
 
 ----------------------------------------------------------------------------------------
--- 68. MAXIMUS — SAT_AUG_PARTY_DIGITAL_IDENTITY   [Implemented]
+-- 68. MAXIMUS — SAT_AUG_PARTY_DIGITAL_IDENTITY [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1922,7 +1926,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_DRIVING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 70. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
+-- 70. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1948,7 +1952,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 71. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]
+-- 71. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1974,7 +1978,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_FINANCIAL_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 72. MAXIMUS — SAT_AUG_PARTY_FRAUD_PROFILE   [Implemented]
+-- 72. MAXIMUS — SAT_AUG_PARTY_FRAUD_PROFILE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2026,7 +2030,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_GROUP_SCHEME' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 74. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]
+-- 74. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2052,7 +2056,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HEALTH_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 75. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]
+-- 75. MAXIMUS — SAT_AUG_PARTY_HIERARCHY [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2078,7 +2082,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HIERARCHY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 76. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]
+-- 76. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2104,7 +2108,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_IDENTIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 77. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]
+-- 77. MAXIMUS — SAT_AUG_PARTY_IDENTITY [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2130,7 +2134,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_IDENTITY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 78. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 78. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2182,7 +2186,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_INTERACTION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 80. MAXIMUS — SAT_AUG_PARTY_KYC   [Implemented]
+-- 80. MAXIMUS — SAT_AUG_PARTY_KYC [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2208,7 +2212,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_KYC' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 81. MAXIMUS — SAT_AUG_PARTY_LEGAL_PANEL   [Implemented]
+-- 81. MAXIMUS — SAT_AUG_PARTY_LEGAL_PANEL [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2287,7 +2291,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_MARKETING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 84. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]
+-- 84. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2313,7 +2317,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_ONBOARDING_JOURNEY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 85. MAXIMUS — SAT_AUG_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 85. MAXIMUS — SAT_AUG_PARTY_ORGANISATION_PROFILE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2339,7 +2343,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_ORGANISATION_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 86. MAXIMUS — SAT_AUG_PARTY_ORG_DIRECTORS   [Implemented]
+-- 86. MAXIMUS — SAT_AUG_PARTY_ORG_DIRECTORS [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2365,7 +2369,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_ORG_DIRECTORS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 87. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]
+-- 87. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2417,7 +2421,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PREFERENCE_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 89. MAXIMUS — SAT_AUG_PARTY_PROVIDER_CAPABILITY   [Implemented]
+-- 89. MAXIMUS — SAT_AUG_PARTY_PROVIDER_CAPABILITY [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2469,7 +2473,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RECORD_REMARKS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 91. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]
+-- 91. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2599,7 +2603,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_VEHICLE_OWNER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 96. MAXIMUS — SAT_AUG_PROVIDER_BANKING   [Implemented]
+-- 96. MAXIMUS — SAT_AUG_PROVIDER_BANKING [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2625,7 +2629,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PROVIDER_BANKING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 97. MAXIMUS — SAT_AUG_PROVIDER_QUALITY   [Implemented]
+-- 97. MAXIMUS — SAT_AUG_PROVIDER_QUALITY [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2651,7 +2655,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PROVIDER_QUALITY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 98. MAXIMUS — SAT_AUG_PROVIDER_TARIFF   [Implemented]
+-- 98. MAXIMUS — SAT_AUG_PROVIDER_TARIFF [Partner LOB]   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
