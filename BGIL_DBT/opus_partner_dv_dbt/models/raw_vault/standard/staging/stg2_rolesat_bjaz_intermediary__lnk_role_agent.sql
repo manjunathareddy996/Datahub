@@ -18,8 +18,8 @@ hashed_columns:
       - 'LICENCE_ISSUE_DATE'
       - 'LICENCE_CATEGORY'
 derived_columns:
-  PARENT_BK: 'intermediary_id'
-  PARENT_NK: "'HUB_PARTY|' || (intermediary_id)"
+  PARENT_BK: 'partner_id'
+  PARENT_NK: "'HUB_PARTY|' || (partner_id)"
   ROLE_TYPE_CK: '!agent'
   AGENT_CODE: 'irda_intermediary_code'
   IRDAI_AGENT_LICENCE_NUMBER: 'irda_license_no'

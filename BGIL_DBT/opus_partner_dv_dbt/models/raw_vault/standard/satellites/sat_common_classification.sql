@@ -5,7 +5,7 @@
     )
 }}
 
--- PARTNER STANDARD-MODEL sat() for SAT_COMMON_CLASSIFICATION (HUB_PARTY grain) -- stitch-backed, 5 table(s).
+-- PARTNER STANDARD-MODEL sat() for SAT_COMMON_CLASSIFICATION (HUB_PARTY grain) -- stitch-backed, 2 table(s).
 -- Source: stg2_common_classification.
 
 {%- set yaml_metadata -%}

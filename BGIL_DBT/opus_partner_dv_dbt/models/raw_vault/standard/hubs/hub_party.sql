@@ -1,9 +1,11 @@
 {{ config(materialized='incremental') }}
 
 -- PARTNER STANDARD-MODEL hub() for HUB_PARTY.
--- CP_PARTNERS holds every partner_id, so a single cp_partners branch is the
--- authoritative source for the full HUB_PARTY key set. The previous per-table
--- hub stages were redundant against this and have been removed.
+-- CP_PARTNERS is the primary partner_id branch, but it is NOT the complete key
+-- set: AZBJ_PARTNER_EXTN carries ~45.6k part_ids not in CP_PARTNERS, and
+-- BJAZ_INTERMEDIARY contributes intermediary parties on PARTNER_ID. Both are
+-- added below (DM-R1 item 6 fix) so party-grain satellites keyed from those
+-- tables have a parent hub row.
 -- KYC: 17 KYC feeds added below. They key the KYC SUBJECT (CKYC:/PAN:/GSTIN:/
 -- LICENCE:/PASSPORT:/VOTER:/CATEGORY:INPUT forms), a separate key space from
 -- cp_partners' part_id, so KYC parties are new HUB_PARTY rows, not partner rows.
@@ -11,6 +13,8 @@
 {%- set yaml_metadata -%}
 source_model:
   - 'stg2_hub_cp_partners__party'
+  - 'stg2_hub_azbj_partner_extn__party'
+  - 'stg2_hub_bjaz_intermediary__party'
   - 'stg2_hub_bjaz_m_kyc_driving_licence__party'
   - 'stg2_hub_bjaz_m_kyc_gstn__party'
   - 'stg2_hub_bjaz_m_kyc_pan__party'

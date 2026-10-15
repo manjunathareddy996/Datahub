@@ -1,0 +1,1660 @@
+﻿DM-R1  |  Referential Integrity — No Orphan Satellite Rows  (OPUS)
+Every satellite row references a valid hub (or link) key. Pass criterion: 0 orphan satellite rows.
+Check Overview
+Check ID
+DM-R1
+Category
+Referential integrity
+Sign-off criterion
+No orphan satellite rows
+Method
+Anti-join: satellite key -> parent hub / link (the table whose src_pk is the satellite's src_pk)
+Evidence required
+Orphan-row query result
+Pass criteria / tolerance
+0 orphan satellite rows
+Owner
+LUMIQ
+Vault location
+BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL
+Maximus RAW
+BAGIC_PROD_MIRROR_DB.MAXI_RAW
+Opus RAW (test)
+BAGIC_PREPROD_CURATED_DB.UTILS  (prod: BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE)
+Shared vault
+Parents (hubs / links) are checked across ALL their rows: a key may have been loaded by the other project. Child rows (satellites / links) are scoped to this project's RECORD_SOURCE.
+Ghost record
+Satellite rows keyed by the ghost hash TO_BINARY(REPEAT('0', 32), 'HEX') are excluded from the orphan test.
+Project in this file
+OPUS
+Revision notes
+• Generated 2026-10-13 from the current opus_partner_dv_dbt models by validation/tools/gen_dm_r.py (satellite lineage from gen_dm_a.py, hash formula from gen_dm_k.py).
+• This file: OPUS only -- 59 satellites (standard + augmented) and 3 links (LNK_CLAIM_PARTY, LNK_PARTY_LOCATION, LNK_POLICY_PARTY). The other project is in the sibling file.
+• Every satellite key has a parent hub / link model.
+Results summary
+#
+Project
+Satellite
+Status
+Result
+Failing rows
+1
+OPUS
+Summary: all OPUS satellites in one query
+Implemented
+
+
+2
+OPUS
+SAT_AGREEMENT_COMMERCIAL_TERMS
+Implemented
+
+
+3
+OPUS
+SAT_AGREEMENT_DEFINITION
+Implemented
+
+
+4
+OPUS
+SAT_COMMON_ADDRESS
+Implemented
+
+
+5
+OPUS
+SAT_COMMON_ADMIN_GEOGRAPHY
+Implemented
+
+
+6
+OPUS
+SAT_COMMON_CLASSIFICATION
+Implemented
+
+
+7
+OPUS
+SAT_COMMON_COMMUNICATION_PREFERENCE
+Implemented
+
+
+8
+OPUS
+SAT_COMMON_CONSENT
+Implemented
+
+
+9
+OPUS
+SAT_COMMON_CONTACT
+Implemented
+
+
+10
+OPUS
+SAT_COMMON_GEO
+Implemented
+
+
+11
+OPUS
+SAT_DOCUMENT_DEFINITION
+Implemented
+
+
+12
+OPUS
+SAT_LNK_CLAIM_PARTY_ROLE
+Implemented
+
+
+13
+OPUS
+SAT_LNK_PARTY_ROLE_CORE
+Implemented
+
+
+14
+OPUS
+SAT_LNK_POLICY_PARTY_ROLE
+Implemented
+
+
+15
+OPUS
+SAT_LNK_ROLE_AGENT
+Implemented
+
+
+16
+OPUS
+SAT_LNK_ROLE_CUSTOMER
+Implemented
+
+
+17
+OPUS
+SAT_LNK_ROLE_NOMINEE_BENEFICIARY
+Implemented
+
+
+18
+OPUS
+SAT_LNK_ROLE_PROVIDER
+Implemented
+
+
+19
+OPUS
+SAT_LNK_ROLE_SURVEYOR
+Implemented
+
+
+20
+OPUS
+SAT_PARTY_AML_SCREENING
+Implemented
+
+
+21
+OPUS
+SAT_PARTY_BANKING
+Implemented
+
+
+22
+OPUS
+SAT_PARTY_CLAIM_HISTORY
+Implemented
+
+
+23
+OPUS
+SAT_PARTY_CONTACT_ADDRESS_LINK
+Implemented
+
+
+24
+OPUS
+SAT_PARTY_EMPLOYMENT
+Implemented
+
+
+25
+OPUS
+SAT_PARTY_GROUP_CENSUS
+Implemented
+
+
+26
+OPUS
+SAT_PARTY_GROUP_HOUSEHOLD
+Implemented
+
+
+27
+OPUS
+SAT_PARTY_HEALTH_PROFILE
+Implemented
+
+
+28
+OPUS
+SAT_PARTY_IDENTIFICATION
+Implemented
+
+
+29
+OPUS
+SAT_PARTY_IDENTITY
+Implemented
+
+
+30
+OPUS
+SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
+Implemented
+
+
+31
+OPUS
+SAT_PARTY_KYC
+Implemented
+
+
+32
+OPUS
+SAT_PARTY_KYC_REFERENCE
+Implemented
+
+
+33
+OPUS
+SAT_PARTY_ORGANISATION_PROFILE
+Implemented
+
+
+34
+OPUS
+SAT_PARTY_VEHICLE_PRIOR_INSURANCE
+Implemented
+
+
+35
+OPUS
+SAT_POLICY_BONUS_TRACKING
+Implemented
+
+
+36
+OPUS
+SAT_POLICY_CERTIFICATE
+Implemented
+
+
+37
+OPUS
+SAT_POLICY_CLASSIFICATION
+Implemented
+
+
+38
+OPUS
+SAT_POLICY_COVERAGE_SCHEDULE
+Implemented
+
+
+39
+OPUS
+SAT_POLICY_ENDORSEMENT
+Implemented
+
+
+40
+OPUS
+SAT_POLICY_HEADER
+Implemented
+
+
+41
+OPUS
+SAT_POLICY_PREMIUM_HEAD
+Implemented
+
+
+42
+OPUS
+SAT_POLICY_PREMIUM_SUMMARY
+Implemented
+
+
+43
+OPUS
+SAT_PRODUCT_DEFINITION
+Implemented
+
+
+44
+OPUS
+SAT_PROVIDER_BANKING
+Implemented
+
+
+45
+OPUS
+SAT_PROVIDER_TARIFF
+Implemented
+
+
+46
+OPUS
+SAT_AUG_AFFINITY_MEMBERSHIP
+Implemented
+
+
+47
+OPUS
+SAT_AUG_AGREEMENT
+Implemented
+
+
+48
+OPUS
+SAT_AUG_CHANNEL
+Implemented
+
+
+49
+OPUS
+SAT_AUG_KYC_DOCUMENT
+Implemented
+
+
+50
+OPUS
+SAT_AUG_KYC_LOCATION
+Implemented
+
+
+51
+OPUS
+SAT_AUG_KYC_PARTY
+Implemented
+
+
+52
+OPUS
+SAT_AUG_KYC_POLICY
+Implemented
+
+
+53
+OPUS
+SAT_AUG_LAWYER_ADVOCATE_ROLE
+Implemented
+
+
+54
+OPUS
+SAT_AUG_LNK_ROLE_AGENT
+Implemented
+
+
+55
+OPUS
+SAT_AUG_LNK_ROLE_CUSTOMER
+Implemented
+
+
+56
+OPUS
+SAT_AUG_LNK_ROLE_PROVIDER
+Implemented
+
+
+57
+OPUS
+SAT_AUG_LNK_ROLE_SURVEYOR
+Implemented
+
+
+58
+OPUS
+SAT_AUG_LOCATION
+Implemented
+
+
+59
+OPUS
+SAT_AUG_PARTY
+Implemented
+
+
+60
+OPUS
+SAT_AUG_POLICY
+Implemented
+
+
+Validation Queries
+1. OPUS — Summary: all OPUS satellites in one query
+Project
+OPUS
+Satellite
+Summary: all OPUS satellites in one query
+Status
+Implemented
+Pass criteria
+status = PASS on every row
+Result (Pass / Fail / NA)
+
+Rows with status = FAIL (count)
+
+Remarks
+
+Note: One row per satellite (no RECORD_SOURCE split) -- quick evidence for the whole project. The per-satellite sections below give the RECORD_SOURCE breakdown and orphan examples.
+SQL query
+select 'OPUS' as project, satellite, parent_table, sat_rows, orphan_or_null_rows,       iff(orphan_or_null_rows = 0, 'PASS', 'FAIL') as status  from (    select 'SAT_AGREEMENT_COMMERCIAL_TERMS' as satellite, 'HUB_AGREEMENT' as parent_table, count(*) as sat_rows,           count_if(s.AGREEMENT_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AGREEMENT_COMMERCIAL_TERMS s      left join (select distinct AGREEMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGREEMENT) p on p.k = s.AGREEMENT_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.AGREEMENT_HKEY is null or s.AGREEMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_AGREEMENT_DEFINITION' as satellite, 'HUB_AGREEMENT' as parent_table, count(*) as sat_rows,           count_if(s.AGREEMENT_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AGREEMENT_DEFINITION s      left join (select distinct AGREEMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGREEMENT) p on p.k = s.AGREEMENT_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.AGREEMENT_HKEY is null or s.AGREEMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_COMMON_ADDRESS' as satellite, 'HUB_LOCATION' as parent_table, count(*) as sat_rows,           count_if(s.LOCATION_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS s      left join (select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION) p on p.k = s.LOCATION_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_COMMON_ADMIN_GEOGRAPHY' as satellite, 'HUB_LOCATION' as parent_table, count(*) as sat_rows,           count_if(s.LOCATION_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADMIN_GEOGRAPHY s      left join (select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION) p on p.k = s.LOCATION_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_COMMON_CLASSIFICATION' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_COMMUNICATION_PREFERENCE s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_COMMON_CONSENT' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONSENT s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_COMMON_CONTACT' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where s.RECORD_SOURCE = 'OPUS' and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_COMMON_GEO' as satellite, 'HUB_LOCATION' as parent_table, count(*) as sat_rows,           count_if(s.LOCATION_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_GEO s      left join (select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION) p on p.k = s.LOCATION_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_DOCUMENT_DEFINITION' as satellite, 'HUB_DOCUMENT' as parent_table, count(*) as sat_rows,           count_if(s.DOCUMENT_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_DOCUMENT_DEFINITION s      left join (select distinct DOCUMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DOCUMENT) p on p.k = s.DOCUMENT_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_LNK_CLAIM_PARTY_ROLE' as satellite, 'LNK_CLAIM_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.CLAIM_PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_CLAIM_PARTY_ROLE s      left join (select distinct CLAIM_PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LNK_CLAIM_PARTY) p on p.k = s.CLAIM_PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.CLAIM_PARTY_HKEY is null or s.CLAIM_PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_LNK_PARTY_ROLE_CORE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_PARTY_ROLE_CORE s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_LNK_POLICY_PARTY_ROLE' as satellite, 'LNK_POLICY_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.POLICY_PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_POLICY_PARTY_ROLE s      left join (select distinct POLICY_PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LNK_POLICY_PARTY) p on p.k = s.POLICY_PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.POLICY_PARTY_HKEY is null or s.POLICY_PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_LNK_ROLE_AGENT' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_AGENT s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_LNK_ROLE_CUSTOMER' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_CUSTOMER s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_LNK_ROLE_PROVIDER' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_PROVIDER s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_LNK_ROLE_SURVEYOR' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_SURVEYOR s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PARTY_AML_SCREENING' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_AML_SCREENING s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PARTY_BANKING' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PARTY_CLAIM_HISTORY' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CLAIM_HISTORY s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite, 'LNK_PARTY_LOCATION' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_LOCATION_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CONTACT_ADDRESS_LINK s      left join (select distinct PARTY_LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LNK_PARTY_LOCATION) p on p.k = s.PARTY_LOCATION_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_LOCATION_HKEY is null or s.PARTY_LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PARTY_GROUP_CENSUS' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PARTY_GROUP_HOUSEHOLD' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_HOUSEHOLD s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PARTY_IDENTIFICATION' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where s.RECORD_SOURCE = 'OPUS' and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PARTY_IDENTITY' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PARTY_KYC' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PARTY_KYC_REFERENCE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC_REFERENCE s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PARTY_ORGANISATION_PROFILE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_POLICY_BONUS_TRACKING' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,           count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_BONUS_TRACKING s      left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_POLICY_CERTIFICATE' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,           count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE s      left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_POLICY_CLASSIFICATION' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,           count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION s      left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_POLICY_COVERAGE_SCHEDULE' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,           count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_COVERAGE_SCHEDULE s      left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_POLICY_ENDORSEMENT' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,           count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_ENDORSEMENT s      left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_POLICY_HEADER' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,           count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER s      left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_POLICY_PREMIUM_HEAD' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,           count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_HEAD s      left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_POLICY_PREMIUM_SUMMARY' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,           count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_SUMMARY s      left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PRODUCT_DEFINITION' as satellite, 'HUB_PRODUCT' as parent_table, count(*) as sat_rows,           count_if(s.PRODUCT_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION s      left join (select distinct PRODUCT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT) p on p.k = s.PRODUCT_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PROVIDER_BANKING' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROVIDER_BANKING s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_PROVIDER_TARIFF' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROVIDER_TARIFF s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_AUG_AFFINITY_MEMBERSHIP' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_AFFINITY_MEMBERSHIP s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_AUG_AGREEMENT' as satellite, 'HUB_AGREEMENT' as parent_table, count(*) as sat_rows,           count_if(s.AGREEMENT_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_AGREEMENT s      left join (select distinct AGREEMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGREEMENT) p on p.k = s.AGREEMENT_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.AGREEMENT_HKEY is null or s.AGREEMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_AUG_CHANNEL' as satellite, 'HUB_DISTRIBUTION_CHANNEL' as parent_table, count(*) as sat_rows,           count_if(s.DISTRIBUTION_CHANNEL_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CHANNEL s      left join (select distinct DISTRIBUTION_CHANNEL_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL) p on p.k = s.DISTRIBUTION_CHANNEL_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.DISTRIBUTION_CHANNEL_HKEY is null or s.DISTRIBUTION_CHANNEL_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_AUG_KYC_DOCUMENT' as satellite, 'HUB_DOCUMENT' as parent_table, count(*) as sat_rows,           count_if(s.DOCUMENT_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_DOCUMENT s      left join (select distinct DOCUMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DOCUMENT) p on p.k = s.DOCUMENT_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_AUG_KYC_LOCATION' as satellite, 'HUB_LOCATION' as parent_table, count(*) as sat_rows,           count_if(s.LOCATION_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_LOCATION s      left join (select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION) p on p.k = s.LOCATION_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_AUG_KYC_PARTY' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_AUG_KYC_POLICY' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,           count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_POLICY s      left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_AUG_LAWYER_ADVOCATE_ROLE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LAWYER_ADVOCATE_ROLE s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_AUG_LNK_ROLE_AGENT' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_AGENT s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_PROVIDER s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_AUG_LNK_ROLE_SURVEYOR' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_SURVEYOR s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_AUG_LOCATION' as satellite, 'HUB_LOCATION' as parent_table, count(*) as sat_rows,           count_if(s.LOCATION_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOCATION s      left join (select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION) p on p.k = s.LOCATION_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_AUG_PARTY' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY s      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))    union all    select 'SAT_AUG_POLICY' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,           count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY s      left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY     where startswith(s.RECORD_SOURCE, 'OPUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))  ) order by iff(status = 'FAIL', 0, 1), satellite;
+Query output (attach / paste below)
+Output:
+
+2. OPUS — SAT_AGREEMENT_COMMERCIAL_TERMS
+Project
+OPUS
+Satellite
+SAT_AGREEMENT_COMMERCIAL_TERMS
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_AGREEMENT (src_pk AGREEMENT_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK AGREEMENT_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct AGREEMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGREEMENT)select 'OPUS' as project, 'SAT_AGREEMENT_COMMERCIAL_TERMS' as satellite, 'HUB_AGREEMENT' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.AGREEMENT_HKEY is null) as null_key_rows,       count_if(s.AGREEMENT_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.AGREEMENT_HKEY is not null and p.k is null, s.AGREEMENT_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.AGREEMENT_HKEY is not null and p.k is null, to_varchar(s.AGREEMENT_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AGREEMENT_COMMERCIAL_TERMS s  left join p on p.k = s.AGREEMENT_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.AGREEMENT_HKEY is null or s.AGREEMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+3. OPUS — SAT_AGREEMENT_DEFINITION
+Project
+OPUS
+Satellite
+SAT_AGREEMENT_DEFINITION
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_AGREEMENT (src_pk AGREEMENT_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK AGREEMENT_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct AGREEMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGREEMENT)select 'OPUS' as project, 'SAT_AGREEMENT_DEFINITION' as satellite, 'HUB_AGREEMENT' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.AGREEMENT_HKEY is null) as null_key_rows,       count_if(s.AGREEMENT_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.AGREEMENT_HKEY is not null and p.k is null, s.AGREEMENT_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.AGREEMENT_HKEY is not null and p.k is null, to_varchar(s.AGREEMENT_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AGREEMENT_DEFINITION s  left join p on p.k = s.AGREEMENT_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.AGREEMENT_HKEY is null or s.AGREEMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+4. OPUS — SAT_COMMON_ADDRESS
+Project
+OPUS
+Satellite
+SAT_COMMON_ADDRESS
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK LOCATION_HKEY; 2 RECORD_SOURCE group(s): stitch_common_address (5 tables) [11 col(s)], stitch_kyc_common_address (6 tables) [11 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION)select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'HUB_LOCATION' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.LOCATION_HKEY is null) as null_key_rows,       count_if(s.LOCATION_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.LOCATION_HKEY is not null and p.k is null, s.LOCATION_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.LOCATION_HKEY is not null and p.k is null, to_varchar(s.LOCATION_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS s  left join p on p.k = s.LOCATION_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+5. OPUS — SAT_COMMON_ADMIN_GEOGRAPHY
+Project
+OPUS
+Satellite
+SAT_COMMON_ADMIN_GEOGRAPHY
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK LOCATION_HKEY; 1 RECORD_SOURCE group(s): stitch_shared__common_admin_geography_common_geo (2 tables) [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION)select 'OPUS' as project, 'SAT_COMMON_ADMIN_GEOGRAPHY' as satellite, 'HUB_LOCATION' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.LOCATION_HKEY is null) as null_key_rows,       count_if(s.LOCATION_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.LOCATION_HKEY is not null and p.k is null, s.LOCATION_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.LOCATION_HKEY is not null and p.k is null, to_varchar(s.LOCATION_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADMIN_GEOGRAPHY s  left join p on p.k = s.LOCATION_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+6. OPUS — SAT_COMMON_CLASSIFICATION
+Project
+OPUS
+Satellite
+SAT_COMMON_CLASSIFICATION
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+458632
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): stitch_common_classification (3 tables) [2 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+7. OPUS — SAT_COMMON_COMMUNICATION_PREFERENCE
+Project
+OPUS
+Satellite
+SAT_COMMON_COMMUNICATION_PREFERENCE
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): stitch_shared__common_communication_preference_party_employment (1 tables) [2 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_COMMUNICATION_PREFERENCE s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+8. OPUS — SAT_COMMON_CONSENT
+Project
+OPUS
+Satellite
+SAT_COMMON_CONSENT
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_COMMON_CONSENT' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONSENT s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+9. OPUS — SAT_COMMON_CONTACT
+Project
+OPUS
+Satellite
+SAT_COMMON_CONTACT
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+922028
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK PARTY_HKEY; 12 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [4 col(s)], OPUS_BJAZ_CLM_SUPP_EXTN [4 col(s)], OPUS_BJAZ_CTNGY_GC_MEM_DATA [1 col(s)], OPUS_BJAZ_CTNGY_PA_MEM_DTLS [4 col(s)], OPUS_BJAZ_HM_HOSPITAL_MASTER [4 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [2 col(s)], OPUS_BJAZ_SH_MEM_DTLS_EXTN [1 col(s)], OPUS_CLM_SUPPLIERS [1 col(s)], OPUS_CP_PARTNERS [3 col(s)], OPUS_BJAZ_T_CKYC_OTP [1 col(s)], OPUS_BJAZ_T_EKYC [1 col(s)], OPUS_BJAZ_T_KYC_DETAILS [1 col(s)]. OBJECT satellite: MOBILENUMBER hold one entry per source table (sat value = col:"<TABLE>"; expected = MAX over that table's RAW rows, as the macro does). Plain columns are MAX across all tables and are not compared per table. A table absent from the latest incremental window is absent from the latest row -- compare after a full load.
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT s  left join p on p.k = s.PARTY_HKEY where s.RECORD_SOURCE = 'OPUS'   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+10. OPUS — SAT_COMMON_GEO
+Project
+OPUS
+Satellite
+SAT_COMMON_GEO
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK LOCATION_HKEY; 1 RECORD_SOURCE group(s): stitch_shared__common_admin_geography_common_geo (2 tables) [4 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION)select 'OPUS' as project, 'SAT_COMMON_GEO' as satellite, 'HUB_LOCATION' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.LOCATION_HKEY is null) as null_key_rows,       count_if(s.LOCATION_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.LOCATION_HKEY is not null and p.k is null, s.LOCATION_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.LOCATION_HKEY is not null and p.k is null, to_varchar(s.LOCATION_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_GEO s  left join p on p.k = s.LOCATION_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+11. OPUS — SAT_DOCUMENT_DEFINITION
+Project
+OPUS
+Satellite
+SAT_DOCUMENT_DEFINITION
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_DOCUMENT (src_pk DOCUMENT_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK DOCUMENT_HKEY; 3 RECORD_SOURCE group(s): OPUS_BJAZ_T_KYC_OCR [4 col(s)], OPUS_BJAZ_T_KYC_POA_DOCUMENT [8 col(s)], OPUS_BJAZ_T_KYC_POI_DOCUMENT [8 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct DOCUMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DOCUMENT)select 'OPUS' as project, 'SAT_DOCUMENT_DEFINITION' as satellite, 'HUB_DOCUMENT' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.DOCUMENT_HKEY is null) as null_key_rows,       count_if(s.DOCUMENT_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.DOCUMENT_HKEY is not null and p.k is null, s.DOCUMENT_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.DOCUMENT_HKEY is not null and p.k is null, to_varchar(s.DOCUMENT_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_DOCUMENT_DEFINITION s  left join p on p.k = s.DOCUMENT_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+12. OPUS — SAT_LNK_CLAIM_PARTY_ROLE
+Project
+OPUS
+Satellite
+SAT_LNK_CLAIM_PARTY_ROLE
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent link LNK_CLAIM_PARTY (src_pk CLAIM_PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.ma_sat; PK CLAIM_PARTY_HKEY, child key PARTY_ROLE_TYPE, ROLE_SEQUENCE; 1 RECORD_SOURCE group(s): OPUS_CLM_INTERESTED_PARTIES [2 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct CLAIM_PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LNK_CLAIM_PARTY)select 'OPUS' as project, 'SAT_LNK_CLAIM_PARTY_ROLE' as satellite, 'LNK_CLAIM_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.CLAIM_PARTY_HKEY is null) as null_key_rows,       count_if(s.CLAIM_PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.CLAIM_PARTY_HKEY is not null and p.k is null, s.CLAIM_PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.CLAIM_PARTY_HKEY is not null and p.k is null, to_varchar(s.CLAIM_PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_CLAIM_PARTY_ROLE s  left join p on p.k = s.CLAIM_PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.CLAIM_PARTY_HKEY is null or s.CLAIM_PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+13. OPUS — SAT_LNK_PARTY_ROLE_CORE
+Project
+OPUS
+Satellite
+SAT_LNK_PARTY_ROLE_CORE
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+Na
+Rows with status = FAIL (count)
+Remarks
+No opus row in sat
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.ma_sat; PK PARTY_HKEY, child key ROLECODE, ROLESEQUENCE; 1 RECORD_SOURCE group(s): OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_LNK_PARTY_ROLE_CORE' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_PARTY_ROLE_CORE s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+14. OPUS — SAT_LNK_POLICY_PARTY_ROLE
+Project
+OPUS
+Satellite
+SAT_LNK_POLICY_PARTY_ROLE
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent link LNK_POLICY_PARTY (src_pk POLICY_PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.ma_sat; PK POLICY_PARTY_HKEY, child key ROLE_SEQUENCE; 1 RECORD_SOURCE group(s): OPUS_OCP_INTERESTED_PARTIES [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct POLICY_PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LNK_POLICY_PARTY)select 'OPUS' as project, 'SAT_LNK_POLICY_PARTY_ROLE' as satellite, 'LNK_POLICY_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.POLICY_PARTY_HKEY is null) as null_key_rows,       count_if(s.POLICY_PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.POLICY_PARTY_HKEY is not null and p.k is null, s.POLICY_PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.POLICY_PARTY_HKEY is not null and p.k is null, to_varchar(s.POLICY_PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_POLICY_PARTY_ROLE s  left join p on p.k = s.POLICY_PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.POLICY_PARTY_HKEY is null or s.POLICY_PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+15. OPUS — SAT_LNK_ROLE_AGENT
+Project
+OPUS
+Satellite
+SAT_LNK_ROLE_AGENT
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+12443
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY [5 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_LNK_ROLE_AGENT' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_AGENT s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+16. OPUS — SAT_LNK_ROLE_CUSTOMER
+Project
+OPUS
+Satellite
+SAT_LNK_ROLE_CUSTOMER
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+4
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_CLM_INTERESTED_PARTIES [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_LNK_ROLE_CUSTOMER' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_CUSTOMER s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+17. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY
+Project
+OPUS
+Satellite
+SAT_LNK_ROLE_NOMINEE_BENEFICIARY
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+790853
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK PARTY_HKEY; 12 RECORD_SOURCE group(s): OPUS_BJAZ_CTNGY_FF_DTLS_EXTN [2 col(s)], OPUS_BJAZ_CTNGY_GC_MEM_DATA [1 col(s)], OPUS_BJAZ_CTNGY_PA_MEM_DTLS [2 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [2 col(s)], OPUS_BJAZ_HCF_MEMBER_DTLS [2 col(s)], OPUS_BJAZ_HC_PART_EXTN [2 col(s)], OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [2 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [2 col(s)], OPUS_BJAZ_PA_DETL_EXTN [2 col(s)], OPUS_BJAZ_SH_MEM_DTLS_EXTN [2 col(s)], OPUS_BJAZ_SPP_MEMBER_DTLS [2 col(s)], OPUS_BJAZ_STARPKG_FF_DTLS [2 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+18. OPUS — SAT_LNK_ROLE_PROVIDER
+Project
+OPUS
+Satellite
+SAT_LNK_ROLE_PROVIDER
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+191988
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_HM_HOSPITAL_MASTER [5 col(s)], OPUS_CLM_SUPPLIERS [5 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_LNK_ROLE_PROVIDER' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_PROVIDER s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+19. OPUS — SAT_LNK_ROLE_SURVEYOR
+Project
+OPUS
+Satellite
+SAT_LNK_ROLE_SURVEYOR
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+287056
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_CLM_SUPP_EXTN [2 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_LNK_ROLE_SURVEYOR' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_SURVEYOR s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+20. OPUS — SAT_PARTY_AML_SCREENING
+Project
+OPUS
+Satellite
+SAT_PARTY_AML_SCREENING
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [2 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_PARTY_AML_SCREENING' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_AML_SCREENING s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+21. OPUS — SAT_PARTY_BANKING
+Project
+OPUS
+Satellite
+SAT_PARTY_BANKING
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+737058
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK PARTY_HKEY; 4 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [3 col(s)], OPUS_BJAZ_CLM_SUPP_EXTN [2 col(s)], OPUS_BJAZ_CTNGY_PA_MEM_DTLS [2 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [3 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_PARTY_BANKING' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+22. OPUS — SAT_PARTY_CLAIM_HISTORY
+Project
+OPUS
+Satellite
+SAT_PARTY_CLAIM_HISTORY
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+766753
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): stitch_party_claim_history (6 tables) [2 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CLAIM_HISTORY s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+23. OPUS — SAT_PARTY_CONTACT_ADDRESS_LINK
+Project
+OPUS
+Satellite
+SAT_PARTY_CONTACT_ADDRESS_LINK
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+2402636
+Remarks
+
+Note: Parent link LNK_PARTY_LOCATION (src_pk PARTY_LOCATION_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, ma_sat_multi_source; PK PARTY_LOCATION_HKEY, child key ADDRESS_USAGE_TYPE; 2 RECORD_SOURCE group(s): OPUS_BJAZ_CP_ADDRESS_LINK [1 col(s)], OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [0 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LNK_PARTY_LOCATION)select 'OPUS' as project, 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite, 'LNK_PARTY_LOCATION' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_LOCATION_HKEY is null) as null_key_rows,       count_if(s.PARTY_LOCATION_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_LOCATION_HKEY is not null and p.k is null, s.PARTY_LOCATION_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_LOCATION_HKEY is not null and p.k is null, to_varchar(s.PARTY_LOCATION_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CONTACT_ADDRESS_LINK s  left join p on p.k = s.PARTY_LOCATION_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_LOCATION_HKEY is null or s.PARTY_LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+24. OPUS — SAT_PARTY_EMPLOYMENT
+Project
+OPUS
+Satellite
+SAT_PARTY_EMPLOYMENT
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): stitch_shared__common_communication_preference_party_employment (1 tables) [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+25. OPUS — SAT_PARTY_GROUP_CENSUS
+Project
+OPUS
+Satellite
+SAT_PARTY_GROUP_CENSUS
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+1106216
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK PARTY_HKEY; 10 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [1 col(s)], OPUS_BJAZ_CLM_SUPP_EXTN [1 col(s)], OPUS_BJAZ_CTNGY_PA_MEM_DTLS [1 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [1 col(s)], OPUS_BJAZ_HCF_MEMBER_DTLS [1 col(s)], OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [1 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [4 col(s)], OPUS_BJAZ_PA_DETL_EXTN [1 col(s)], OPUS_BJAZ_SH_MEM_DTLS_EXTN [1 col(s)], OPUS_BJAZ_SPP_MEMBER_DTLS [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_PARTY_GROUP_CENSUS' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+26. OPUS — SAT_PARTY_GROUP_HOUSEHOLD
+Project
+OPUS
+Satellite
+SAT_PARTY_GROUP_HOUSEHOLD
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+45792
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_PARTY_GROUP_HOUSEHOLD' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_HOUSEHOLD s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+27. OPUS — SAT_PARTY_HEALTH_PROFILE
+Project
+OPUS
+Satellite
+SAT_PARTY_HEALTH_PROFILE
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+362587
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK PARTY_HKEY; 3 RECORD_SOURCE group(s): stitch_party_health_profile (4 tables) [5 col(s)], OPUS_BJAZ_M_KYC_DRIVING_LICENCE [0 col(s)], OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [0 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+28. OPUS — SAT_PARTY_IDENTIFICATION
+Project
+OPUS
+Satellite
+SAT_PARTY_IDENTIFICATION
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+911960
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK PARTY_HKEY; 19 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [2 col(s)], OPUS_BJAZ_CLM_SUPP_EXTN [3 col(s)], OPUS_BJAZ_CTNGY_FF_DTLS_EXTN [1 col(s)], OPUS_BJAZ_CTNGY_PA_MEM_DTLS [5 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [1 col(s)], OPUS_BJAZ_HCF_MEMBER_DTLS [1 col(s)], OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [1 col(s)], OPUS_BJAZ_HM_HOSPITAL_MASTER [1 col(s)], OPUS_BJAZ_INTERMEDIARY [3 col(s)], OPUS_BJAZ_STARPKG_FF_DTLS [1 col(s)], OPUS_CP_PARTNERS [2 col(s)], OPUS_BJAZ_M_KYC_DRIVING_LICENCE [0 col(s)], OPUS_BJAZ_M_KYC_GSTN [1 col(s)], OPUS_BJAZ_M_KYC_PAN [1 col(s)], OPUS_BJAZ_M_KYC_PASSPORT [1 col(s)], OPUS_BJAZ_M_KYC_VOTER [1 col(s)], OPUS_BJAZ_T_CKYC_OTP [1 col(s)], OPUS_BJAZ_T_KYC_INCOMING [1 col(s)], OPUS_BJAZ_T_KYC_NAME_MATCH [1 col(s)]. OBJECT satellite: AADHAARNUMBER, GSTIN, PANNUMBER, PASSPORTNUMBER, VOTERIDNUMBER, CKYCNUMBER hold one entry per source table (sat value = col:"<TABLE>"; expected = MAX over that table's RAW rows, as the macro does). Plain columns are MAX across all tables and are not compared per table. A table absent from the latest incremental window is absent from the latest row -- compare after a full load.
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION s  left join p on p.k = s.PARTY_HKEY where s.RECORD_SOURCE = 'OPUS'   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+29. OPUS — SAT_PARTY_IDENTITY
+Project
+OPUS
+Satellite
+SAT_PARTY_IDENTITY
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+1539776
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK PARTY_HKEY; 9 RECORD_SOURCE group(s): stitch_party_identity (19 tables) [17 col(s)], OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [9 col(s)], OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS [4 col(s)], OPUS_BJAZ_T_CKYC_SEARCH [3 col(s)], OPUS_BJAZ_T_EKYC [3 col(s)], OPUS_BJAZ_T_KYC_AUTH [3 col(s)], OPUS_BJAZ_T_KYC_DETAILS [3 col(s)], OPUS_BJAZ_T_KYC_INCOMING [4 col(s)], OPUS_BJAZ_T_KYC_OCR [5 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+30. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
+Project
+OPUS
+Satellite
+SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+808779
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK PARTY_HKEY; 3 RECORD_SOURCE group(s): stitch_party_individual_demographics (8 tables) [10 col(s)], OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [3 col(s)], OPUS_BJAZ_T_KYC_OCR [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+31. OPUS — SAT_PARTY_KYC
+Project
+OPUS
+Satellite
+SAT_PARTY_KYC
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK PARTY_HKEY; 5 RECORD_SOURCE group(s): OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [2 col(s)], OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS [1 col(s)], OPUS_BJAZ_T_CKYC_SEARCH [4 col(s)], OPUS_BJAZ_T_KYC_DETAILS [2 col(s)], OPUS_BJAZ_T_KYC_INCOMING [2 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_PARTY_KYC' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+32. OPUS — SAT_PARTY_KYC_REFERENCE
+Project
+OPUS
+Satellite
+SAT_PARTY_KYC_REFERENCE
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK PARTY_HKEY; 4 RECORD_SOURCE group(s): OPUS_CP_PARTNERS [1 col(s)], OPUS_BJAZ_T_CKYC_OTP [0 col(s)], OPUS_BJAZ_T_CKYC_SEARCH [0 col(s)], OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS [0 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_PARTY_KYC_REFERENCE' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC_REFERENCE s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+33. OPUS — SAT_PARTY_ORGANISATION_PROFILE
+Project
+OPUS
+Satellite
+SAT_PARTY_ORGANISATION_PROFILE
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+331689
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK PARTY_HKEY; 3 RECORD_SOURCE group(s): stitch_party_organisation_profile (3 tables) [8 col(s)], OPUS_BJAZ_M_KYC_GSTN [1 col(s)], OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [0 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_PARTY_ORGANISATION_PROFILE' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+34. OPUS — SAT_PARTY_VEHICLE_PRIOR_INSURANCE
+Project
+OPUS
+Satellite
+SAT_PARTY_VEHICLE_PRIOR_INSURANCE
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+369689
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK PARTY_HKEY; 8 RECORD_SOURCE group(s): OPUS_BJAZ_CTNGY_PA_MEM_DTLS [1 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [4 col(s)], OPUS_BJAZ_HCF_MEMBER_DTLS [3 col(s)], OPUS_BJAZ_HC_PART_EXTN [1 col(s)], OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [5 col(s)], OPUS_BJAZ_PA_DETL_EXTN [1 col(s)], OPUS_BJAZ_SH_MEM_DTLS_EXTN [2 col(s)], OPUS_BJAZ_SPP_MEMBER_DTLS [3 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+35. OPUS — SAT_POLICY_BONUS_TRACKING
+Project
+OPUS
+Satellite
+SAT_POLICY_BONUS_TRACKING
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s): stitch_policy_bonus_tracking (7 tables) [2 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY)select 'OPUS' as project, 'SAT_POLICY_BONUS_TRACKING' as satellite, 'HUB_POLICY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.POLICY_HKEY is null) as null_key_rows,       count_if(s.POLICY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.POLICY_HKEY is not null and p.k is null, s.POLICY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.POLICY_HKEY is not null and p.k is null, to_varchar(s.POLICY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_BONUS_TRACKING s  left join p on p.k = s.POLICY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+36. OPUS — SAT_POLICY_CERTIFICATE
+Project
+OPUS
+Satellite
+SAT_POLICY_CERTIFICATE
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK POLICY_HKEY; 3 RECORD_SOURCE group(s): OPUS_BA_HCP_DT_MEM [1 col(s)], OPUS_BJAZ_CTNGY_PA_MEM_DTLS [1 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY)select 'OPUS' as project, 'SAT_POLICY_CERTIFICATE' as satellite, 'HUB_POLICY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.POLICY_HKEY is null) as null_key_rows,       count_if(s.POLICY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.POLICY_HKEY is not null and p.k is null, s.POLICY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.POLICY_HKEY is not null and p.k is null, to_varchar(s.POLICY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE s  left join p on p.k = s.POLICY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+37. OPUS — SAT_POLICY_CLASSIFICATION
+Project
+OPUS
+Satellite
+SAT_POLICY_CLASSIFICATION
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+NA
+Rows with status = FAIL (count)
+
+Remarks
+No records in sat
+Note: Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, ma_sat_multi_source; PK POLICY_HKEY, child key CLASSIFICATIONTYPE; 4 RECORD_SOURCE group(s): OPUS_BJAZ_T_KYC_DETAILS [1 col(s)], OPUS_BJAZ_T_KYC_INCOMING [1 col(s)], OPUS_BJAZ_T_KYC_POA_DOCUMENT [1 col(s)], OPUS_BJAZ_T_KYC_POI_DOCUMENT [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY)select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'HUB_POLICY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.POLICY_HKEY is null) as null_key_rows,       count_if(s.POLICY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.POLICY_HKEY is not null and p.k is null, s.POLICY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.POLICY_HKEY is not null and p.k is null, to_varchar(s.POLICY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION s  left join p on p.k = s.POLICY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+38. OPUS — SAT_POLICY_COVERAGE_SCHEDULE
+Project
+OPUS
+Satellite
+SAT_POLICY_COVERAGE_SCHEDULE
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BA_HCP_DT_MEM [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY)select 'OPUS' as project, 'SAT_POLICY_COVERAGE_SCHEDULE' as satellite, 'HUB_POLICY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.POLICY_HKEY is null) as null_key_rows,       count_if(s.POLICY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.POLICY_HKEY is not null and p.k is null, s.POLICY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.POLICY_HKEY is not null and p.k is null, to_varchar(s.POLICY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_COVERAGE_SCHEDULE s  left join p on p.k = s.POLICY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+39. OPUS — SAT_POLICY_ENDORSEMENT
+Project
+OPUS
+Satellite
+SAT_POLICY_ENDORSEMENT
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_HM_MEMBER_DTLS [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY)select 'OPUS' as project, 'SAT_POLICY_ENDORSEMENT' as satellite, 'HUB_POLICY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.POLICY_HKEY is null) as null_key_rows,       count_if(s.POLICY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.POLICY_HKEY is not null and p.k is null, s.POLICY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.POLICY_HKEY is not null and p.k is null, to_varchar(s.POLICY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_ENDORSEMENT s  left join p on p.k = s.POLICY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+40. OPUS — SAT_POLICY_HEADER
+Project
+OPUS
+Satellite
+SAT_POLICY_HEADER
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s): stitch_policy_header (10 tables) [5 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY)select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'HUB_POLICY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.POLICY_HKEY is null) as null_key_rows,       count_if(s.POLICY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.POLICY_HKEY is not null and p.k is null, s.POLICY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.POLICY_HKEY is not null and p.k is null, to_varchar(s.POLICY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER s  left join p on p.k = s.POLICY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+41. OPUS — SAT_POLICY_PREMIUM_HEAD
+Project
+OPUS
+Satellite
+SAT_POLICY_PREMIUM_HEAD
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK POLICY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_HCF_MEMBER_DTLS [1 col(s)], OPUS_BJAZ_STARPKG_FF_DTLS [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY)select 'OPUS' as project, 'SAT_POLICY_PREMIUM_HEAD' as satellite, 'HUB_POLICY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.POLICY_HKEY is null) as null_key_rows,       count_if(s.POLICY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.POLICY_HKEY is not null and p.k is null, s.POLICY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.POLICY_HKEY is not null and p.k is null, to_varchar(s.POLICY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_HEAD s  left join p on p.k = s.POLICY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+42. OPUS — SAT_POLICY_PREMIUM_SUMMARY
+Project
+OPUS
+Satellite
+SAT_POLICY_PREMIUM_SUMMARY
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+NA
+Rows with status = FAIL (count)
+
+Remarks
+No records in sat
+Note: Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, sat_multi_source; PK POLICY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_T_KYC_INCOMING [0 col(s)], OPUS_BJAZ_T_KYC_OCR [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY)select 'OPUS' as project, 'SAT_POLICY_PREMIUM_SUMMARY' as satellite, 'HUB_POLICY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.POLICY_HKEY is null) as null_key_rows,       count_if(s.POLICY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.POLICY_HKEY is not null and p.k is null, s.POLICY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.POLICY_HKEY is not null and p.k is null, to_varchar(s.POLICY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_SUMMARY s  left join p on p.k = s.POLICY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+43. OPUS — SAT_PRODUCT_DEFINITION
+Project
+OPUS
+Satellite
+SAT_PRODUCT_DEFINITION
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK PRODUCT_HKEY; 1 RECORD_SOURCE group(s): stitch_product_definition (3 tables) [3 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PRODUCT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT)select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'HUB_PRODUCT' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PRODUCT_HKEY is null) as null_key_rows,       count_if(s.PRODUCT_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PRODUCT_HKEY is not null and p.k is null, s.PRODUCT_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PRODUCT_HKEY is not null and p.k is null, to_varchar(s.PRODUCT_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION s  left join p on p.k = s.PRODUCT_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+44. OPUS — SAT_PROVIDER_BANKING
+Project
+OPUS
+Satellite
+SAT_PROVIDER_BANKING
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+476761f
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): stitch_provider_banking (2 tables) [2 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_PROVIDER_BANKING' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROVIDER_BANKING s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+45. OPUS — SAT_PROVIDER_TARIFF
+Project
+OPUS
+Satellite
+SAT_PROVIDER_TARIFF
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+189970
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_HM_HOSPITAL_MASTER [4 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_PROVIDER_TARIFF' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROVIDER_TARIFF s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+46. OPUS — SAT_AUG_AFFINITY_MEMBERSHIP
+Project
+OPUS
+Satellite
+SAT_AUG_AFFINITY_MEMBERSHIP
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+45792
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [2 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_AUG_AFFINITY_MEMBERSHIP' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_AFFINITY_MEMBERSHIP s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+47. OPUS — SAT_AUG_AGREEMENT
+Project
+OPUS
+Satellite
+SAT_AUG_AGREEMENT
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+pass
+Rows with status = FAIL (count)
+0
+Remarks
+
+Note: Parent hub HUB_AGREEMENT (src_pk AGREEMENT_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite, automate_dv.sat; PK AGREEMENT_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct AGREEMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGREEMENT)select 'OPUS' as project, 'SAT_AUG_AGREEMENT' as satellite, 'HUB_AGREEMENT' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.AGREEMENT_HKEY is null) as null_key_rows,       count_if(s.AGREEMENT_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.AGREEMENT_HKEY is not null and p.k is null, s.AGREEMENT_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.AGREEMENT_HKEY is not null and p.k is null, to_varchar(s.AGREEMENT_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_AGREEMENT s  left join p on p.k = s.AGREEMENT_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.AGREEMENT_HKEY is null or s.AGREEMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+48. OPUS — SAT_AUG_CHANNEL
+Project
+OPUS
+Satellite
+SAT_AUG_CHANNEL
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+NA
+Rows with status = FAIL (count)
+
+Remarks
+No records in sat
+Note: Parent hub HUB_DISTRIBUTION_CHANNEL (src_pk DISTRIBUTION_CHANNEL_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite, sat_multi_source; PK DISTRIBUTION_CHANNEL_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY [8 col(s)], OPUS_BJAZ_CLM_SUPP_EXTN [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct DISTRIBUTION_CHANNEL_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL)select 'OPUS' as project, 'SAT_AUG_CHANNEL' as satellite, 'HUB_DISTRIBUTION_CHANNEL' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.DISTRIBUTION_CHANNEL_HKEY is null) as null_key_rows,       count_if(s.DISTRIBUTION_CHANNEL_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.DISTRIBUTION_CHANNEL_HKEY is not null and p.k is null, s.DISTRIBUTION_CHANNEL_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.DISTRIBUTION_CHANNEL_HKEY is not null and p.k is null, to_varchar(s.DISTRIBUTION_CHANNEL_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CHANNEL s  left join p on p.k = s.DISTRIBUTION_CHANNEL_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.DISTRIBUTION_CHANNEL_HKEY is null or s.DISTRIBUTION_CHANNEL_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+49. OPUS — SAT_AUG_KYC_DOCUMENT
+Project
+OPUS
+Satellite
+SAT_AUG_KYC_DOCUMENT
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+Na
+Rows with status = FAIL (count)
+
+Remarks
+No records in sat
+Note: Parent hub HUB_DOCUMENT (src_pk DOCUMENT_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite, sat_multi_source; PK DOCUMENT_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_T_KYC_POA_DOCUMENT [1 col(s)], OPUS_BJAZ_T_KYC_POI_DOCUMENT [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct DOCUMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DOCUMENT)select 'OPUS' as project, 'SAT_AUG_KYC_DOCUMENT' as satellite, 'HUB_DOCUMENT' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.DOCUMENT_HKEY is null) as null_key_rows,       count_if(s.DOCUMENT_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.DOCUMENT_HKEY is not null and p.k is null, s.DOCUMENT_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.DOCUMENT_HKEY is not null and p.k is null, to_varchar(s.DOCUMENT_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_DOCUMENT s  left join p on p.k = s.DOCUMENT_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+50. OPUS — SAT_AUG_KYC_LOCATION
+Project
+OPUS
+Satellite
+SAT_AUG_KYC_LOCATION
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+Na
+Rows with status = FAIL (count)
+
+Remarks
+No records in sat
+Note: Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite, sat_multi_source; PK LOCATION_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_M_KYC_VOTER [1 col(s)], OPUS_BJAZ_T_EKYC [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION)select 'OPUS' as project, 'SAT_AUG_KYC_LOCATION' as satellite, 'HUB_LOCATION' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.LOCATION_HKEY is null) as null_key_rows,       count_if(s.LOCATION_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.LOCATION_HKEY is not null and p.k is null, s.LOCATION_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.LOCATION_HKEY is not null and p.k is null, to_varchar(s.LOCATION_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_LOCATION s  left join p on p.k = s.LOCATION_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+51. OPUS — SAT_AUG_KYC_PARTY
+Project
+OPUS
+Satellite
+SAT_AUG_KYC_PARTY
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+Na
+Rows with status = FAIL (count)
+
+Remarks
+No record in satf
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite, sat_multi_source; PK PARTY_HKEY; 13 RECORD_SOURCE group(s): OPUS_BJAZ_M_KYC_DRIVING_LICENCE [6 col(s)], OPUS_BJAZ_M_KYC_GSTN [3 col(s)], OPUS_BJAZ_M_KYC_PAN [2 col(s)], OPUS_BJAZ_M_KYC_PASSPORT [5 col(s)], OPUS_BJAZ_M_KYC_VOTER [5 col(s)], OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [4 col(s)], OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS [1 col(s)], OPUS_BJAZ_T_CKYC_SEARCH [7 col(s)], OPUS_BJAZ_T_EKYC [5 col(s)], OPUS_BJAZ_T_KYC_AUTH [6 col(s)], OPUS_BJAZ_T_KYC_DETAILS [2 col(s)], OPUS_BJAZ_T_KYC_NAME_MATCH [4 col(s)], OPUS_BJAZ_T_KYC_OCR [3 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_AUG_KYC_PARTY' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+52. OPUS — SAT_AUG_KYC_POLICY
+Project
+OPUS
+Satellite
+SAT_AUG_KYC_POLICY
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+Na
+Rows with status = FAIL (count)
+
+Remarks
+No records in sat
+Note: Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_T_KYC_INCOMING [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY)select 'OPUS' as project, 'SAT_AUG_KYC_POLICY' as satellite, 'HUB_POLICY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.POLICY_HKEY is null) as null_key_rows,       count_if(s.POLICY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.POLICY_HKEY is not null and p.k is null, s.POLICY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.POLICY_HKEY is not null and p.k is null, to_varchar(s.POLICY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_POLICY s  left join p on p.k = s.POLICY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+53. OPUS — SAT_AUG_LAWYER_ADVOCATE_ROLE
+Project
+OPUS
+Satellite
+SAT_AUG_LAWYER_ADVOCATE_ROLE
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+287474
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_CLM_SUPP_EXTN [13 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_AUG_LAWYER_ADVOCATE_ROLE' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LAWYER_ADVOCATE_ROLE s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+54. OPUS — SAT_AUG_LNK_ROLE_AGENT
+Project
+OPUS
+Satellite
+SAT_AUG_LNK_ROLE_AGENT
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+12443
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_AGENT' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_AGENT s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+55. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER
+Project
+OPUS
+Satellite
+SAT_AUG_LNK_ROLE_CUSTOMER
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+74199836
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_CLM_INTERESTED_PARTIES [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+56. OPUS — SAT_AUG_LNK_ROLE_PROVIDER
+Project
+OPUS
+Satellite
+SAT_AUG_LNK_ROLE_PROVIDER
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+NA
+Rows with status = FAIL (count)
+
+Remarks
+No records in sat
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_CLM_SUPP_EXTN [40 col(s)], OPUS_BJAZ_HM_HOSPITAL_MASTER [7 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_PROVIDER s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+57. OPUS — SAT_AUG_LNK_ROLE_SURVEYOR
+Project
+OPUS
+Satellite
+SAT_AUG_LNK_ROLE_SURVEYOR
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+287148
+Remarks
+
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_CLM_SUPP_EXTN [4 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_SURVEYOR' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_SURVEYOR s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+58. OPUS — SAT_AUG_LOCATION
+Project
+OPUS
+Satellite
+SAT_AUG_LOCATION
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+fail
+Rows with status = FAIL (count)
+
+Remarks
+No records in sat
+Note: Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite, sat_multi_source; PK LOCATION_HKEY; 2 RECORD_SOURCE group(s): OPUS_CP_ADDRESSES [2 col(s)], OPUS_CP_PARTNERS [1 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION)select 'OPUS' as project, 'SAT_AUG_LOCATION' as satellite, 'HUB_LOCATION' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.LOCATION_HKEY is null) as null_key_rows,       count_if(s.LOCATION_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.LOCATION_HKEY is not null and p.k is null, s.LOCATION_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.LOCATION_HKEY is not null and p.k is null, to_varchar(s.LOCATION_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOCATION s  left join p on p.k = s.LOCATION_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+59. OPUS — SAT_AUG_PARTY
+Project
+OPUS
+Satellite
+SAT_AUG_PARTY
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+Na
+Rows with status = FAIL (count)
+
+Remarks
+No records in sat
+Note: Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite, sat_multi_source; PK PARTY_HKEY; 10 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [8 col(s)], OPUS_BJAZ_INTERMEDIARY [3 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [3 col(s)], OPUS_BJAZ_HCF_MEMBER_DTLS [1 col(s)], OPUS_BJAZ_SPP_MEMBER_DTLS [4 col(s)], OPUS_BJAZ_HC_PART_EXTN [1 col(s)], OPUS_CP_PARTNERS [2 col(s)], OPUS_BJAZ_CLM_SUPP_EXTN [6 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [1 col(s)], OPUS_BJAZ_HM_HOSPITAL_MASTER [3 col(s)].
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY)select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'HUB_PARTY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.PARTY_HKEY is null) as null_key_rows,       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY s  left join p on p.k = s.PARTY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
+60. OPUS — SAT_AUG_POLICY
+Project
+OPUS
+Satellite
+SAT_AUG_POLICY
+Status
+Implemented
+Pass criteria
+status = PASS on every row (0 orphan rows, 0 null keys)
+Result (Pass / Fail / NA)
+Na
+Rows with status = FAIL (count)
+
+Remarks
+No records in sat
+Note: Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent (shared vault: the key may have been loaded by the other project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite, ma_sat_multi_source; PK POLICY_HKEY, child key MEMBER_SEQUENCE; 5 RECORD_SOURCE group(s): OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [1 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [1 col(s)], OPUS_BJAZ_PA_DETL_EXTN [5 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [1 col(s)], OPUS_BJAZ_SH_MEM_DTLS_EXTN [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
+SQL query
+with p as (  -- every key of the parent table(s), any project        select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY)select 'OPUS' as project, 'SAT_AUG_POLICY' as satellite, 'HUB_POLICY' as parent_table,       s.RECORD_SOURCE,       count(*) as sat_rows,       count_if(s.POLICY_HKEY is null) as null_key_rows,       count_if(s.POLICY_HKEY is not null and p.k is null) as orphan_rows,       count(distinct iff(s.POLICY_HKEY is not null and p.k is null, s.POLICY_HKEY, null)) as orphan_keys,       array_slice(array_agg(distinct iff(s.POLICY_HKEY is not null and p.k is null, to_varchar(s.POLICY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY s  left join p on p.k = s.POLICY_HKEY where startswith(s.RECORD_SOURCE, 'OPUS_')   and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')) group by s.RECORD_SOURCE order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
+Query output (attach / paste below)
+Output:
+
