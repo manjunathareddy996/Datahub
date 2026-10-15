@@ -18,10 +18,6 @@ hashed_columns:
       - 'LICENCE_ISSUE_DATE'
       - 'LICENCE_CATEGORY'
 derived_columns:
-  {#-- DM-R1 item 15 fix: HUB_PARTY key for BJAZ_INTERMEDIARY is partner_id,
-       NOT intermediary_id (intermediary_id <> partner_id on 100% of rows;
-       intermediary_id is a HUB_AGREEMENT key). Keying on intermediary_id
-       orphaned 254 rows and mis-joined the rest to coincidental parties. --#}
   PARENT_BK: 'partner_id'
   PARENT_NK: "'HUB_PARTY|' || (partner_id)"
   ROLE_TYPE_CK: '!agent'
