@@ -14,8 +14,13 @@ hashed_columns:
     columns:
       - 'CUSTOMER_CATEGORY'
 derived_columns:
-  PARENT_BK: 'claimant'
-  PARENT_NK: "'HUB_PARTY|' || (claimant)"
+  {#-- DM-R1 item 16 fix: 'claimant' is a Y/N indicator flag, NOT a party id
+       (verified: claimant holds only 'Y'/'N', so every row collapsed onto two
+       bogus parties 'HUB_PARTY|Y' / 'HUB_PARTY|N'). The real party key on
+       CLM_INTERESTED_PARTIES is part_id (ratified HUB_PARTY key). Re-keyed to
+       part_id so rows attach to the correct party and resolve against the hub. --#}
+  PARENT_BK: 'part_id'
+  PARENT_NK: "'HUB_PARTY|' || (part_id)"
   ROLE_TYPE_CK: '!customer'
   CUSTOMER_CATEGORY: 'object_type'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
