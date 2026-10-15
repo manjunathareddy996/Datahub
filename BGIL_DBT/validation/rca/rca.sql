@@ -1,90 +1,3 @@
--- =====================================================================
--- RCA scratch queries
--- =====================================================================
-
-
--- =====================================================================
--- ITEM 9 : SAT_COMMON_CONTACT  (HUB_PARTY grain)
--- =====================================================================
-
--- Query 9A : per-source-table orphan breakdown
--- Shows which contributing table drives the orphans and the key column it uses.
-with p as (
-    select distinct PARTY_HKEY as k
-    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
-)
-select src.tbl, src.key_col,
-       count(*)                 as rows_checked,
-       count_if(p.k is null)    as orphan_rows
-from (
-    select 'bjaz_hm_member_dtls'      as tbl, 'partner_id' as key_col, PARTY_HKEY from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_hm_member_dtls__common_contact
-    union all select 'bjaz_clm_supp_extn',      'partner_id', PARTY_HKEY from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_clm_supp_extn__common_contact
-    union all select 'bjaz_hm_hospital_master', 'hosid',      PARTY_HKEY from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_hm_hospital_master__common_contact
-    union all select 'bjaz_ctngy_pa_mem_dtls',  'partner_id', PARTY_HKEY from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_ctngy_pa_mem_dtls__common_contact
-    union all select 'bjaz_ctngy_gc_mem_data',  'partner_id', PARTY_HKEY from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_ctngy_gc_mem_data__common_contact
-    union all select 'bjaz_sh_mem_dtls_extn',   'partner_id', PARTY_HKEY from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_sh_mem_dtls_extn__common_contact
-    union all select 'clm_suppliers',           'part_id',    PARTY_HKEY from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_clm_suppliers__common_contact
-    union all select 'cp_partners',             'part_id',    PARTY_HKEY from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_cp_partners__common_contact
-    union all select 'azbj_partner_extn',       'part_id',    PARTY_HKEY from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_azbj_partner_extn__common_contact
-) src
-left join p on p.k = src.PARTY_HKEY
-where src.PARTY_HKEY is not null
-  and src.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX')
-group by src.tbl, src.key_col
-order by orphan_rows desc;
-
-
--- Query 9B : are the two legit party tables' own keys usable to seed HUB_PARTY?
--- (clm_supp_extn.partner_id , hm_hospital_master.hosid)
-select 'clm_supp_extn' as tbl,
-       count(*)                      as raw_rows,
-       count(distinct partner_id)    as distinct_keys,
-       count_if(partner_id is null)  as null_keys
-from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_clm_supp_extn
-union all
-select 'hm_hospital_master',
-       count(*),
-       count(distinct hosid),
-       count_if(hosid is null)
-from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_hm_hospital_master;
-
-
--- =====================================================================
--- ITEM 9 : do the member/supplier/hospital tables' PARTNER_ID values
---          actually exist in the CP_PARTNERS master (part_id)?
--- Premise: HUB_PARTY is built from CP_PARTNERS, which is claimed to hold
--- every partner_id. If true, every satellite should key on partner_id and
--- resolve. This measures how many partner_id values are missing from the
--- cp_partners master.
--- =====================================================================
-with master as (
-    select distinct part_id as id
-    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__cp_partners
-    where part_id is not null
-)
-select 'bjaz_hm_member_dtls' as tbl, 'partner_id' as key_col,
-       count(distinct t.partner_id)                                   as distinct_keys,
-       count(distinct iff(m.id is null, t.partner_id, null))          as keys_missing_from_cp
-from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_hm_member_dtls t
-left join master m on m.id = t.partner_id
-where t.partner_id is not null
-
-union all
-select 'bjaz_clm_supp_extn', 'partner_id',
-       count(distinct t.partner_id),
-       count(distinct iff(m.id is null, t.partner_id, null))
-from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_clm_supp_extn t
-left join master m on m.id = t.partner_id
-where t.partner_id is not null
-
-union all
--- hospital master: does it even carry partner_id, and is it in cp?
-select 'bjaz_hm_hospital_master', 'partner_id',
-       count(distinct t.partner_id),
-       count(distinct iff(m.id is null, t.partner_id, null))
-from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_hm_hospital_master t
-left join master m on m.id = t.partner_id
-where t.partner_id is not null;
 
 
 -- =====================================================================
@@ -113,3 +26,31 @@ select count(*) as rows_,
        count_if(intermediary_id <> partner_id) as different,
        count_if(partner_id is null) as partner_id_null
 from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_intermediary;
+
+
+-- =====================================================================
+-- ITEM 16 : SAT_LNK_ROLE_CUSTOMER (CLM_INTERESTED_PARTIES) - 4 orphans.
+-- Satellite keys HUB_PARTY on 'claimant' (a ratified HUB_PARTY key per
+-- mapper docs: CLM_INTERESTED_PARTIES verified on PART_ID / CLAIMANT).
+-- Only 4 rows orphan -> inspect the 4 claimant values: null/blank? present
+-- in cp_partners master? present as part_id elsewhere?
+-- =====================================================================
+with p as (
+    select distinct PARTY_HKEY as k
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
+),
+cp as (
+    select distinct part_id as id
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__cp_partners
+    where part_id is not null
+)
+select s.claimant,
+       count(*) as rows_,
+       max(iff(cp.id is null, 'NOT_IN_CP', 'IN_CP')) as in_cp_master
+from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__clm_interested_parties s
+left join cp on cp.id = s.claimant
+left join p  on p.k = TO_BINARY(md5('HUB_PARTY|' || s.claimant), 'HEX')
+where p.k is null            -- orphans only
+  and s.claimant is not null
+group by s.claimant
+order by rows_ desc;
