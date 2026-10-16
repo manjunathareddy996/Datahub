@@ -13,8 +13,6 @@
 {%- set yaml_metadata -%}
 source_model:
   - 'stg2_hub_cp_partners__party'
-  - 'stg2_hub_azbj_partner_extn__party'
-  - 'stg2_hub_bjaz_intermediary__party'
   - 'stg2_hub_bjaz_m_kyc_driving_licence__party'
   - 'stg2_hub_bjaz_m_kyc_gstn__party'
   - 'stg2_hub_bjaz_m_kyc_pan__party'
