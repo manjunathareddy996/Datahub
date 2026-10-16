@@ -156,3 +156,59 @@ from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_hcf_member_dtls 
 left join p p_raw on p_raw.k = TO_BINARY(md5('HUB_PARTY|' || s.partner_id), 'HEX')
 left join p p_fix on p_fix.k = TO_BINARY(md5('HUB_PARTY|' || regexp_replace(s.partner_id, '\\.0+$', '')), 'HEX')
 where s.partner_id is not null;
+
+
+-- =====================================================================
+-- ITEM 18 : SAT_LNK_ROLE_PROVIDER (BJAZ_HM_HOSPITAL_MASTER) - 76,478 orphans.
+-- The satellite keys HUB_PARTY on 'HUB_PARTY|' || hosid (hospital id), but:
+--   (a) the hospital HUB_PARTY branch stg2_hub_bjaz_hm_hospital_master__party
+--       is NOT listed in hub_party.sql's source_model (never loaded), and
+--   (b) that branch keys on partner_id, not hosid -- so even if wired it would
+--       not match the hosid-keyed satellites.
+-- CLM_SUPPLIERS passes because it keys on part_id (a real cp_partners key).
+-- Confirm: do hosid-derived keys exist in HUB_PARTY at all, and would wiring a
+-- hosid-keyed hub branch resolve them?
+-- =====================================================================
+with p as (
+    select distinct PARTY_HKEY as k
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
+)
+select
+    count(*)                                                  as rows_checked,
+    count_if(s.hosid is null)                                 as null_hosid,
+    count(distinct s.hosid)                                   as distinct_hosid,
+    count_if(p.k is null)                                     as orphans_on_hosid,          -- current (hosid) keying
+    count(distinct iff(p.k is null, s.hosid, null))           as orphan_keys_on_hosid
+from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_hm_hospital_master s
+left join p on p.k = TO_BINARY(md5('HUB_PARTY|' || s.hosid), 'HEX')
+where s.hosid is not null;
+
+
+-- =====================================================================
+-- ITEM 19 : SAT_LNK_ROLE_SURVEYOR (BJAZ_CLM_SUPP_EXTN) - 1 orphan of 298,600.
+-- Keys HUB_PARTY on 'HUB_PARTY|' || partner_id. Single orphan -> inspect the one
+-- partner_id: is it the item-17 NUMBER '.0' artifact, blank, or genuinely absent
+-- from the cp_partners master?
+-- =====================================================================
+with p as (
+    select distinct PARTY_HKEY as k
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
+),
+cp as (
+    select distinct part_id as id
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__cp_partners
+    where part_id is not null
+)
+select s.partner_id,
+       count(*) as rows_,
+       max(iff(cp.id is null, 'NOT_IN_CP', 'IN_CP')) as in_cp_master,
+       -- would stripping a trailing '.0*' resolve it? (item-17 style)
+       max(iff(cp2.id is null, 'STILL_NOT_IN_CP', 'IN_CP_AFTER_STRIP')) as in_cp_after_strip
+from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_clm_supp_extn s
+left join cp  on cp.id  = s.partner_id
+left join cp  cp2 on cp2.id = regexp_replace(s.partner_id, '\\.0+$', '')
+left join p   on p.k   = TO_BINARY(md5('HUB_PARTY|' || s.partner_id), 'HEX')
+where p.k is null
+  and s.partner_id is not null
+group by s.partner_id
+order by rows_ desc;
