@@ -134,3 +134,25 @@ left join p  on p.k = TO_BINARY(md5('HUB_PARTY|' || s.partner_id), 'HEX')
 where p.k is null
 group by s.partner_id
 order by rows_ desc;
+
+
+-- =====================================================================
+-- ITEM 17 (confirmed) : the orphan partner_id is '494049720.0000000000'.
+-- Native PARTNER_ID is NUMBER(_,10) in the member tables, so ::varchar renders
+-- a trailing '.0000000000'. CP_PARTNERS.PART_ID casts to a clean integer string,
+-- so 'HUB_PARTY|' || partner_id never matches the hub NK. Not missing parties --
+-- a numeric-formatting mismatch. Re-test HCF orphans after stripping '.0*':
+-- all should resolve.
+-- =====================================================================
+with p as (
+    select distinct PARTY_HKEY as k
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
+)
+select
+    count(*)                                                          as rows_checked,
+    count_if(p_raw.k is null)                                         as orphans_raw,       -- current keying
+    count_if(p_fix.k is null)                                         as orphans_normalized -- after stripping trailing .0*
+from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_hcf_member_dtls s
+left join p p_raw on p_raw.k = TO_BINARY(md5('HUB_PARTY|' || s.partner_id), 'HEX')
+left join p p_fix on p_fix.k = TO_BINARY(md5('HUB_PARTY|' || regexp_replace(s.partner_id, '\\.0+$', '')), 'HEX')
+where s.partner_id is not null;
