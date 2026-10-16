@@ -80,3 +80,57 @@ where p.k is null
   and s.part_id is not null
 group by s.part_id
 order by rows_ desc;
+
+
+-- =====================================================================
+-- ITEM 17 : SAT_LNK_ROLE_NOMINEE_BENEFICIARY (HUB_PARTY grain, partner_id).
+-- Recon (DM-R1 section 17) FAILs on two record sources:
+--   OPUS_BJAZ_HCF_MEMBER_DTLS   : 370,896 orphan rows / 362,587 orphan keys
+--   OPUS_BJAZ_CTNGY_GC_MEM_DATA : 1 orphan row / 1 orphan key
+-- Both stg2 models key HUB_PARTY on NK 'HUB_PARTY|' || partner_id. HUB_PARTY is
+-- loaded from CP_PARTNERS (authoritative part_id) + AZBJ_PARTNER_EXTN +
+-- BJAZ_INTERMEDIARY + KYC feeds -- NOT from these member tables. So the question
+-- is: are the orphan partner_id values present in the CP_PARTNERS master?
+-- =====================================================================
+
+-- 17a. HCF_MEMBER_DTLS -- orphan partner_id values: present in cp_partners master?
+--      (large source: aggregate, do not list every key)
+with p as (
+    select distinct PARTY_HKEY as k
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
+),
+cp as (
+    select distinct part_id as id
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__cp_partners
+    where part_id is not null
+)
+select
+    count(*)                                   as rows_checked,
+    count_if(s.partner_id is null)             as null_partner_id,
+    count_if(p.k is null)                      as orphan_rows,
+    count(distinct iff(p.k is null, s.partner_id, null)) as orphan_keys,
+    count(distinct iff(p.k is null and cp.id is not null, s.partner_id, null)) as orphan_keys_in_cp_master,
+    count(distinct iff(p.k is null and cp.id is null,     s.partner_id, null)) as orphan_keys_not_in_cp_master
+from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_hcf_member_dtls s
+left join cp on cp.id = s.partner_id
+left join p  on p.k  = TO_BINARY(md5('HUB_PARTY|' || s.partner_id), 'HEX');
+
+-- 17b. CTNGY_GC_MEM_DATA -- the single orphan partner_id: null/blank? in cp master?
+with p as (
+    select distinct PARTY_HKEY as k
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
+),
+cp as (
+    select distinct part_id as id
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__cp_partners
+    where part_id is not null
+)
+select s.partner_id,
+       count(*) as rows_,
+       max(iff(cp.id is null, 'NOT_IN_CP', 'IN_CP')) as in_cp_master
+from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_ctngy_gc_mem_data s
+left join cp on cp.id = s.partner_id
+left join p  on p.k = TO_BINARY(md5('HUB_PARTY|' || s.partner_id), 'HEX')
+where p.k is null
+group by s.partner_id
+order by rows_ desc;
