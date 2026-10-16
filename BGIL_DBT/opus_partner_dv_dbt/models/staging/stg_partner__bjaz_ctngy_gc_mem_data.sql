@@ -22,7 +22,10 @@ with source as (
     nullif(trim("EXTRA_COL2"::varchar), '') as extra_col2,
     nullif(trim("INSURED_ADDRESS"::varchar), '') as insured_address,
     nullif(trim("TELEPHONE"::varchar), '') as telephone,
-    nullif(trim("PARTNER_ID"::varchar), '') as partner_id,
+    -- PARTNER_ID is NUMBER(_,10): ::varchar renders a trailing '.0000000000' that
+    -- breaks the HUB_PARTY key (CP_PARTNERS.PART_ID is a clean integer string).
+    -- Cast via TO_NUMBER(..., 0 scale) so the key matches the hub (DM-R1 item 17).
+    nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '') as partner_id,
     nullif(trim("INFOVIEW_FLAG"::varchar), '') as infoview_flag,
     "GG_CHANGE_DATE"::timestamp_ntz as gg_change_date,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at

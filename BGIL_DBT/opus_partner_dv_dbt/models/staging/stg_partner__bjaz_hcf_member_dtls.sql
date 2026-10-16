@@ -16,7 +16,10 @@ with source as (
     "MEMBER_NO"::number as member_no,
     nullif(trim("RELATION"::varchar), '') as relation,
     nullif(trim("INSURED_NAME"::varchar), '') as insured_name,
-    nullif(trim("PARTNER_ID"::varchar), '') as partner_id,
+    -- PARTNER_ID is NUMBER(_,10): ::varchar renders a trailing '.0000000000' that
+    -- breaks the HUB_PARTY key (CP_PARTNERS.PART_ID is a clean integer string).
+    -- Cast via TO_NUMBER(..., 0 scale) so the key matches the hub (DM-R1 item 17).
+    nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '') as partner_id,
     "DATE_OF_BIRTH"::timestamp_ntz as date_of_birth,
     "AGE"::number as age,
     nullif(trim("GENDER"::varchar), '') as gender,
