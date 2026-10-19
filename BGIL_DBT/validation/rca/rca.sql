@@ -370,3 +370,91 @@ select
        from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_hcf_member_dtls s
       where s.partner_id is not null
         and s.inc_job_updated_at >  to_timestamp_ntz('1900-01-01')) as keys_under_sentinel;
+
+
+-- =====================================================================
+-- ITEM 27 (correction) : the watermark-deadlock theory is WRONG.
+-- RCA results:
+--   L1 sat_party_health_profile      : 0 rows, opus_max_dbt_run_ts = NULL
+--                                      (full-refresh already emptied it -> from_date
+--                                       falls back to the 1900 sentinel; no watermark gate)
+--   L2 stitch_party_health_profile   : 0 rows
+--   L3 stg_partner__bjaz_hcf_member_dtls : 728,494 rows, ALL keyed,
+--                                      min_ldts = max_ldts = 2026-09-30 04:11:41.399
+--   L4 keys_under_live = keys_under_sentinel = 362,587 (identical; lower bound is fine)
+--
+-- The lower bound is not the problem. The source inc_job_updated_at is 2026-09-30,
+-- a FUTURE timestamp vs the run clock. affected_keys also requires
+--   inc_job_updated_at <= to_date,  to_date = run_started_at (UTC) -> IST ("now").
+-- If 2026-09-30 > now, EVERY row fails the UPPER bound -> affected_keys empty ->
+-- stitch 0. L4 only tested the lower bound, which is why it looked clean.
+-- Confirm the upper-bound exclusion:
+-- =====================================================================
+select
+    current_timestamp()                                                   as clock_now,
+    cast(convert_timezone('UTC','Asia/Kolkata', current_timestamp()::timestamp_ntz) as timestamp_ntz) as to_date_ist_approx,
+    min(s.inc_job_updated_at)                                             as src_min_ldts,
+    max(s.inc_job_updated_at)                                             as src_max_ldts,
+    count_if(s.inc_job_updated_at >  cast(convert_timezone('UTC','Asia/Kolkata', current_timestamp()::timestamp_ntz) as timestamp_ntz)) as rows_ABOVE_to_date,  -- excluded by upper bound
+    count_if(s.inc_job_updated_at <= cast(convert_timezone('UTC','Asia/Kolkata', current_timestamp()::timestamp_ntz) as timestamp_ntz)) as rows_within_window
+from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_hcf_member_dtls s
+where s.partner_id is not null;
+
+
+-- =====================================================================
+-- ITEM 27 (both bounds) : individually each bound passes all rows, but the macro
+-- applies BOTH together with the SAME from_date/to_date it computed at run time.
+-- Reproduce affected_keys EXACTLY (sentinel from_date, since the sat was empty;
+-- to_date = run clock in IST) with both predicates at once.
+-- =====================================================================
+with bounds as (
+    select to_timestamp_ntz('1900-01-01') as from_date,  -- sat empty -> sentinel
+           cast(convert_timezone('UTC','Asia/Kolkata', current_timestamp()::timestamp_ntz) as timestamp_ntz) as to_date
+)
+select
+    (select from_date from bounds) as from_date,
+    (select to_date   from bounds) as to_date,
+    count(*)                       as src_rows,
+    count_if(s.inc_job_updated_at >  (select from_date from bounds)
+         and s.inc_job_updated_at <= (select to_date   from bounds)) as rows_in_affected_keys
+from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_hcf_member_dtls s
+where s.partner_id is not null;
+
+-- 27 (direct) : bypass all theories -- just query the stitch view's affected_keys
+-- outcome by selecting straight from the compiled view. If this > 0 now but the
+-- --full-refresh produced 0, the run used a DIFFERENT clock (run_started_at) than now.
+-- Compare the view's live row count to the to_date used at build time.
+select count(*) as stitch_rows_now,
+       min(inc_job_updated_at) as mn,
+       max(inc_job_updated_at) as mx
+from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stitch_party_health_profile;
+
+
+-- =====================================================================
+-- ITEM 27 (RESOLVED) : confirmed by the two checks above --
+--   stitch_rows_now        = 0   (compiled view, baked to_date)
+--   rows_in_affected_keys  > 0   (live clock, same source data)
+--
+-- ROOT CAUSE (top-down, confirmed):
+--   1. sat_party_health_profile was emptied by --full-refresh -> from_date = 1900
+--      sentinel, so the LOWER bound excludes nothing.
+--   2. Every source row (stg_partner__bjaz_hcf_member_dtls) carries
+--      inc_job_updated_at = 2026-09-30, and ALL columns are keyed.
+--   3. stitch_incremental renders to_date as a CONSTANT literal baked into the
+--      stitch VIEW DDL at build time, from run_started_at (-> IST). The
+--      --full-refresh run's clock was EARLIER than 2026-09-30, so the baked
+--      upper bound (inc_job_updated_at <= to_date) excludes 100% of rows.
+--   4. Because to_date is a frozen literal in the view, re-querying the view today
+--      still returns 0 -- the stale bound travels with the DDL until rebuilt.
+--   => NOT keying, NOT a watermark deadlock, NOT the lower bound. It is the baked
+--      to_date upper bound vs future-dated source ldts (2026-09-30).
+--
+-- FIX: rebuild the stitch + sat with an explicit to_date past the source ldts, so
+--      the baked upper bound includes the 2026-09-30 rows:
+--   dbt run --select stitch_party_health_profile sat_party_health_profile \
+--           --full-refresh --vars '{"to_date": "2026-12-31"}'
+--
+-- NOTE (data quality): source inc_job_updated_at = 2026-09-30 is future-dated
+--   relative to the load clock. Any incremental stitch will silently drop these
+--   rows whenever run_started_at < the source ldts. Flag the raw feed's ldts.
+-- =====================================================================
