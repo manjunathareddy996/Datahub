@@ -354,7 +354,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_ADDRESS'
        count(*) as rows_in_scope,
        count_if(LOCATION_HKEY is null) as null_hkey,
        count_if(LOCATION_HKEY is not null and length(LOCATION_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_COMMON_ADDRESS is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_ADDRESS
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -370,7 +370,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_ADMIN_GE
        count(*) as rows_in_scope,
        count_if(LOCATION_HKEY is null) as null_hkey,
        count_if(LOCATION_HKEY is not null and length(LOCATION_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_COMMON_ADMIN_GEOGRAPHY is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_ADMIN_GEOGRAPHY
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -386,7 +386,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_CLASSIFI
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_COMMON_CLASSIFICATION is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_CLASSIFICATION
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -402,7 +402,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_COMMUNIC
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_COMMON_COMMUNICATION_PREFERENCE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -418,7 +418,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_CONTACT'
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_COMMON_CONTACT is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_CONTACT
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -434,7 +434,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_GEO' as 
        count(*) as rows_in_scope,
        count_if(LOCATION_HKEY is null) as null_hkey,
        count_if(LOCATION_HKEY is not null and length(LOCATION_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_COMMON_GEO is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_GEO
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -450,7 +450,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_INSTRUMENT_DEFI
        count(*) as rows_in_scope,
        count_if(PAYMENT_INSTRUMENT_HKEY is null) as null_hkey,
        count_if(PAYMENT_INSTRUMENT_HKEY is not null and length(PAYMENT_INSTRUMENT_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_INSTRUMENT_DEFINITION is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_INSTRUMENT_DEFINITION
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -466,7 +466,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_PARTY_ROLE_
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_LNK_PARTY_ROLE_CORE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_PARTY_ROLE_CORE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -514,7 +514,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_NOMINE
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_LNK_ROLE_NOMINEE_BENEFICIARY is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_NOMINEE_BENEFICIARY
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -562,7 +562,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_AGENT_PRO
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_AGENT_PRODUCTION is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_AGENT_PRODUCTION
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -578,7 +578,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_AMENDMENT
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_AMENDMENT_ENDORSEMENT is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_AMENDMENT_ENDORSEMENT
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -594,7 +594,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_BANKING' 
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_BANKING is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_BANKING
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -610,7 +610,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CLAIM_HIS
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_CLAIM_HISTORY is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CLAIM_HISTORY
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -626,7 +626,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CONTACT_A
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_CONTACT_ADDRESS_LINK is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CONTACT_ADDRESS_LINK
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -642,7 +642,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CORRESPON
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_CORRESPONDENCE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CORRESPONDENCE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -658,7 +658,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CREDIT_CO
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_CREDIT_CONTROL_PAYMENT_TERMS is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CREDIT_CONTROL_PAYMENT_TERMS
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -674,7 +674,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_DIGITAL_I
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_DIGITAL_IDENTITY is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_DIGITAL_IDENTITY
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -690,7 +690,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_DRIVING' 
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_DRIVING is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_DRIVING
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -706,7 +706,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_EMPLOYMEN
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_EMPLOYMENT is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -722,7 +722,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_FINANCIAL
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_FINANCIAL_PROFILE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_FINANCIAL_PROFILE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -738,7 +738,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_FRAUD_PRO
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_FRAUD_PROFILE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_FRAUD_PROFILE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -754,7 +754,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_GROUP_SCH
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_GROUP_SCHEME is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_GROUP_SCHEME
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -770,7 +770,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_HEALTH_PR
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_HEALTH_PROFILE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_HEALTH_PROFILE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -786,7 +786,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_HIERARCHY
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_HIERARCHY is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_HIERARCHY
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -802,7 +802,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_IDENTIFIC
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_IDENTIFICATION is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_IDENTIFICATION
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -818,7 +818,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_IDENTITY'
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_IDENTITY is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_IDENTITY
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -834,7 +834,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_INDIVIDUA
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -850,7 +850,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_INTERACTI
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_INTERACTION is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_INTERACTION
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -866,7 +866,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_KYC' as t
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_KYC is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_KYC
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -882,7 +882,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_LEGAL_PAN
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_LEGAL_PANEL is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_LEGAL_PANEL
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -898,7 +898,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_LEGAL_PAN
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_LEGAL_PANEL_ROLE_LINE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_LEGAL_PANEL_ROLE_LINE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -914,7 +914,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_MARKETING
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_MARKETING is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_MARKETING
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -930,7 +930,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_ONBOARDIN
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_ONBOARDING_JOURNEY is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_ONBOARDING_JOURNEY
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -946,7 +946,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_ORGANISAT
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_ORGANISATION_PROFILE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_ORGANISATION_PROFILE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -962,7 +962,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_ORG_DIREC
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_ORG_DIRECTORS is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_ORG_DIRECTORS
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -978,7 +978,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_PAYOUT_PR
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_PAYOUT_PROFILE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PAYOUT_PROFILE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -994,7 +994,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_PREFERENC
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_PREFERENCE_PROFILE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PREFERENCE_PROFILE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1010,7 +1010,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_PROVIDER_
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_PROVIDER_CAPABILITY is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PROVIDER_CAPABILITY
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1026,7 +1026,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_RECORD_RE
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_RECORD_REMARKS is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_RECORD_REMARKS
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1042,7 +1042,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_RELATIONS
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_RELATIONSHIP_PROFILE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_RELATIONSHIP_PROFILE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1058,7 +1058,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_SERVICE_E
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_SERVICE_ENGAGEMENT_TERMS is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_SERVICE_ENGAGEMENT_TERMS
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1074,7 +1074,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_SOURCE_PR
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_SOURCE_PROPERTY_SET_RECORD_GOVERNANCE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_SOURCE_PROPERTY_SET_RECORD_GOVERNANCE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1090,7 +1090,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_SUSPENSIO
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_SUSPENSION_NEGATIVE_ACTION is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_SUSPENSION_NEGATIVE_ACTION
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1106,7 +1106,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_VEHICLE_O
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PARTY_VEHICLE_OWNER is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_VEHICLE_OWNER
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1122,7 +1122,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PROVIDER_BANKIN
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PROVIDER_BANKING is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PROVIDER_BANKING
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1138,7 +1138,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PROVIDER_QUALIT
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PROVIDER_QUALITY is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PROVIDER_QUALITY
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1154,7 +1154,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PROVIDER_TARIFF
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_AUG_PROVIDER_TARIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PROVIDER_TARIFF
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1170,7 +1170,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CHANNEL_DEFINITION'
        count(*) as rows_in_scope,
        count_if(DISTRIBUTION_CHANNEL_HKEY is null) as null_hkey,
        count_if(DISTRIBUTION_CHANNEL_HKEY is not null and length(DISTRIBUTION_CHANNEL_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_CHANNEL_DEFINITION is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CHANNEL_DEFINITION
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1314,7 +1314,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_INSTRUMENT_DEFINITI
        count(*) as rows_in_scope,
        count_if(PAYMENT_INSTRUMENT_HKEY is null) as null_hkey,
        count_if(PAYMENT_INSTRUMENT_HKEY is not null and length(PAYMENT_INSTRUMENT_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_INSTRUMENT_DEFINITION is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_INSTRUMENT_DEFINITION
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1378,7 +1378,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_EMPLOYEE' 
        count(*) as rows_in_scope,
        count_if(PARTY_ROLE_HKEY is null) as null_hkey,
        count_if(PARTY_ROLE_HKEY is not null and length(PARTY_ROLE_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_LNK_ROLE_EMPLOYEE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_EMPLOYEE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1394,7 +1394,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_INVESTIGAT
        count(*) as rows_in_scope,
        count_if(PARTY_ROLE_HKEY is null) as null_hkey,
        count_if(PARTY_ROLE_HKEY is not null and length(PARTY_ROLE_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_LNK_ROLE_INVESTIGATOR is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_INVESTIGATOR
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1458,7 +1458,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LOCATION_PROFILE' a
        count(*) as rows_in_scope,
        count_if(LOCATION_HKEY is null) as null_hkey,
        count_if(LOCATION_HKEY is not null and length(LOCATION_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_LOCATION_PROFILE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LOCATION_PROFILE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1474,7 +1474,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_ORG_UNIT_DEFINITION
        count(*) as rows_in_scope,
        count_if(ORG_UNIT_HKEY is null) as null_hkey,
        count_if(ORG_UNIT_HKEY is not null and length(ORG_UNIT_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_ORG_UNIT_DEFINITION is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ORG_UNIT_DEFINITION
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1490,7 +1490,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_ORG_UNIT_LICENCE' a
        count(*) as rows_in_scope,
        count_if(ORG_UNIT_HKEY is null) as null_hkey,
        count_if(ORG_UNIT_HKEY is not null and length(ORG_UNIT_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_ORG_UNIT_LICENCE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ORG_UNIT_LICENCE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1506,7 +1506,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_AGENT_LICENCE
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_PARTY_AGENT_LICENCE_LINE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_AGENT_LICENCE_LINE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1554,7 +1554,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_CONSENT_MANDA
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_PARTY_CONSENT_MANDATE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CONSENT_MANDATE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1586,7 +1586,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_DIGITAL_IDENT
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_PARTY_DIGITAL_IDENTITY is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_DIGITAL_IDENTITY
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1618,7 +1618,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_FINANCIAL_PRO
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_PARTY_FINANCIAL_PROFILE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_FINANCIAL_PROFILE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1634,7 +1634,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_FRAUD_PROFILE
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_PARTY_FRAUD_PROFILE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_FRAUD_PROFILE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1666,7 +1666,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_HIERARCHY' as
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_PARTY_HIERARCHY is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HIERARCHY
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1746,7 +1746,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_LEGAL_PANEL' 
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_PARTY_LEGAL_PANEL is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_LEGAL_PANEL
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1762,7 +1762,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_ONBOARDING_JO
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_PARTY_ONBOARDING_JOURNEY is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ONBOARDING_JOURNEY
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1794,7 +1794,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_ORG_DIRECTORS
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_PARTY_ORG_DIRECTORS is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORG_DIRECTORS
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1810,7 +1810,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_PAYOUT_PROFIL
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_PARTY_PAYOUT_PROFILE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_PAYOUT_PROFILE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1826,7 +1826,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_PROVIDER_CAPA
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_PARTY_PROVIDER_CAPABILITY is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_PROVIDER_CAPABILITY
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1842,7 +1842,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_RELATIONSHIP_
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_PARTY_RELATIONSHIP_PROFILE is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_RELATIONSHIP_PROFILE
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
@@ -1890,7 +1890,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PROVIDER_QUALITY' a
        count(*) as rows_in_scope,
        count_if(PARTY_HKEY is null) as null_hkey,
        count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF_PROVIDER_QUALITY is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROVIDER_QUALITY
  where startswith(RECORD_SOURCE, 'MAXIMUS_');
