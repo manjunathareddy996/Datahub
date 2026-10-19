@@ -241,3 +241,132 @@ from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_hcf_member_dtls 
 left join p p_raw on p_raw.k = TO_BINARY(md5('HUB_PARTY|' || s.partner_id), 'HEX')
 left join p p_fix on p_fix.k = TO_BINARY(md5('HUB_PARTY|' || regexp_replace(s.partner_id, '\\.0+$', '')), 'HEX')
 where s.partner_id is not null;
+
+
+-- =====================================================================
+-- ITEM 23 : SAT_PARTY_CONTACT_ADDRESS_LINK (parent LNK_PARTY_LOCATION).
+-- Recon (DM-R1 section 23) FAILs 100% on two record sources:
+--   OPUS_BJAZ_CP_ADDRESS_LINK      : 2,312,234 orphan rows / 2,271,195 keys
+--   OPUS_BJAZ_T_CKYC_PERSONAL_DTLS :    90,402 orphan rows /    42,454 keys
+-- The satellite PARTY_LOCATION_HKEY uses the SAME formula + SAME source as the
+-- link feed (stg2_link_bjaz_cp_address_link__party_location):
+--   'LNK_PARTY_LOCATION|' || part_id || '|' || add_id
+-- So keying is not the issue -- a 100% orphan means the link simply doesn't hold
+-- those keys. LNK_PARTY_LOCATION is incremental; most likely the cp_address_link
+-- / ckyc feeds were added to the link AFTER its last load, so the sat rows have
+-- no parent yet. Confirm: do the sat keys exist in the link at all, and does
+-- re-deriving from the link feed resolve them?
+-- =====================================================================
+
+-- 23a. CP_ADDRESS_LINK -- sat keys present in LNK_PARTY_LOCATION? vs present in the link FEED view?
+with lnk as (
+    select distinct PARTY_LOCATION_HKEY as k
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LNK_PARTY_LOCATION
+),
+feed as (  -- the link's own stage view for this table (what SHOULD be in the link)
+    select distinct PARTY_LOCATION_HKEY as k
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_link_bjaz_cp_address_link__party_location
+)
+select
+    count(*)                                   as feed_rows,
+    count_if(lnk.k is null)                    as feed_keys_missing_from_link,   -- link never loaded them
+    count_if(lnk.k is not null)                as feed_keys_present_in_link
+from feed
+left join lnk on lnk.k = feed.k;
+
+-- 23b. same question for the CKYC correspondence + permanent feeds
+with lnk as (
+    select distinct PARTY_LOCATION_HKEY as k
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LNK_PARTY_LOCATION
+)
+select 'correspondence' as feed, count(*) as feed_rows,
+       count_if(lnk.k is null) as missing_from_link
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_link_bjaz_t_ckyc_personal_dtls__party_location__correspondence f
+  left join lnk on lnk.k = f.PARTY_LOCATION_HKEY
+ group by 1
+union all
+select 'permanent' as feed, count(*) as feed_rows,
+       count_if(lnk.k is null) as missing_from_link
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_link_bjaz_t_ckyc_personal_dtls__party_location__permanent f
+  left join lnk on lnk.k = f.PARTY_LOCATION_HKEY
+ group by 1;
+
+
+-- =====================================================================
+-- ITEM 27 : SAT_PARTY_HEALTH_PROFILE (stitch-backed, HUB_PARTY grain).
+-- Recon (DM-R1 section 27) FAILs only on OPUS_BJAZ_HCF_MEMBER_DTLS:
+--   362,587 orphan rows / 362,587 keys. The two KYC feeds pass.
+-- stitch_party_health_profile keys the HCF branch (t1) on partner_id -- same
+-- table, same count, same item-17 '.0000000000' NUMBER root cause as items 17
+-- and 22. The staging fix (to_number(_,38,0)) already covers it; the satellite
+-- (incremental/append) needs a --full-refresh to flush stale orphan rows.
+-- Confirm raw vs normalized orphans on the HCF branch:
+-- =====================================================================
+with p as (
+    select distinct PARTY_HKEY as k
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
+)
+select
+    count(*)                             as rows_checked,
+    count_if(s.partner_id is null)       as null_partner_id,
+    count_if(p_raw.k is null)            as orphans_raw,
+    count_if(p_fix.k is null)            as orphans_normalized
+from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_hcf_member_dtls s
+left join p p_raw on p_raw.k = TO_BINARY(md5('HUB_PARTY|' || s.partner_id), 'HEX')
+left join p p_fix on p_fix.k = TO_BINARY(md5('HUB_PARTY|' || regexp_replace(s.partner_id, '\\.0+$', '')), 'HEX')
+where s.partner_id is not null;
+
+
+-- =====================================================================
+-- ITEM 27 (follow-up) : --full-refresh ran but stitch_party_health_profile
+-- returns 0 rows. This is NOT a keying issue -- it is a watermark deadlock in
+-- the stitch_incremental macro. Trace top-down, layer by layer.
+--
+-- Mechanism (stitch_incremental, target_sat='sat_party_health_profile'):
+--   affected_keys filters sources to  from_date < inc_job_updated_at <= to_date
+--   from_date = MAX(DBT_RUN_TS) of the target sat WHERE RECORD_SOURCE LIKE 'OPUS_%'.
+-- The sat already holds stale rows with a recent DBT_RUN_TS, while every source
+-- row's inc_job_updated_at is OLDER than that watermark -> affected_keys empty ->
+-- stitch emits 0 -> sat never reloads. The stitch is a VIEW, so --full-refresh
+-- does not reset this; the window must be forced via var('from_date').
+-- =====================================================================
+
+-- 27-L1 (TOP: satellite) -- what watermark is gating the stitch? (MAX DBT_RUN_TS per system)
+select 'sat_party_health_profile' as model,
+       count(*) as sat_rows,
+       count_if(RECORD_SOURCE like 'OPUS_%') as opus_rows,
+       max(iff(RECORD_SOURCE like 'OPUS_%', DBT_RUN_TS, null)) as opus_max_dbt_run_ts  -- == from_date the macro computes
+from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE;
+
+-- 27-L2 (MIDDLE: stitch view) -- does the view return anything right now, and across what ldts range?
+select 'stitch_party_health_profile' as model,
+       count(*) as stitch_rows,
+       min(inc_job_updated_at) as min_ldts,
+       max(inc_job_updated_at) as max_ldts
+from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stitch_party_health_profile;
+
+-- 27-L3 (BOTTOM: source staging) -- the source ldts range the window must cover.
+-- If max(inc_job_updated_at) here is <= the L1 watermark, affected_keys is empty.
+select 'stg_partner__bjaz_hcf_member_dtls' as model,
+       count(*) as src_rows,
+       count_if(partner_id is not null) as keyed_rows,
+       min(inc_job_updated_at) as min_ldts,
+       max(inc_job_updated_at) as max_ldts
+from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_hcf_member_dtls;
+
+-- 27-L4 (CONFIRM the deadlock) -- rows the stitch WOULD emit under the live watermark
+-- vs under a forced sentinel from_date. If live=0 and forced>0, the watermark is the cause.
+with wm as (
+    select coalesce(max(iff(RECORD_SOURCE like 'OPUS_%', DBT_RUN_TS, null)),
+                    to_timestamp_ntz('1900-01-01')) as from_date_live
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
+)
+select
+    (select count(distinct partner_id)
+       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_hcf_member_dtls s, wm
+      where s.partner_id is not null
+        and s.inc_job_updated_at >  wm.from_date_live) as keys_under_live_watermark,
+    (select count(distinct partner_id)
+       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_hcf_member_dtls s
+      where s.partner_id is not null
+        and s.inc_job_updated_at >  to_timestamp_ntz('1900-01-01')) as keys_under_sentinel;
