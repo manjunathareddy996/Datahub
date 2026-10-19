@@ -522,3 +522,50 @@ from (
       left join p on p.k = s.PARTY_HKEY group by 1
 )
 order by orphan_rows desc;
+
+
+-- =====================================================================
+-- ITEM 28 (part 2) : the first 8 feeds account for only 76,735 of 439,319
+-- orphans. The remaining ~362,584 must come from the 11 KYC feeds (not in the
+-- first pass). KYC feeds key HUB_PARTY on subject forms (LICENCE:/PAN:/GSTIN:/
+-- PASSPORT:/VOTER:/CATEGORY:INPUT) loaded via the KYC hub branches -- check each.
+-- =====================================================================
+with p as (
+    select distinct PARTY_HKEY as k
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
+)
+select feed, sat_rows, orphan_rows
+from (
+    select 'kyc_driving_licence' as feed, count(*) as sat_rows, count_if(p.k is null) as orphan_rows
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_m_kyc_driving_licence__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'kyc_gstn', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_m_kyc_gstn__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'kyc_pan', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_m_kyc_pan__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'kyc_passport', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_m_kyc_passport__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'kyc_voter', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_m_kyc_voter__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'ckyc_otp', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_t_ckyc_otp__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'kyc_incoming', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_t_kyc_incoming__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'kyc_name_match', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_t_kyc_name_match__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+)
+order by orphan_rows desc;
