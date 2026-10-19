@@ -212,3 +212,32 @@ where p.k is null
   and s.partner_id is not null
 group by s.partner_id
 order by rows_ desc;
+
+
+-- =====================================================================
+-- ITEM 22 : SAT_PARTY_CLAIM_HISTORY (stitch-backed, HUB_PARTY grain).
+-- Recon (DM-R1 section 22) FAILs only on OPUS_BJAZ_HCF_MEMBER_DTLS:
+--   362,587 orphan rows / 362,587 orphan keys (100% of the HCF branch).
+--   OPUS_BJAZ_HM_MEMBER_DTLS passes.
+-- Both branches key HUB_PARTY on 'HUB_PARTY|' || partner_id (stitch
+-- key_column=partner_id for t1=HCF and t3=HM) -- identical logic. HCF is the
+-- same table as item 17, whose PARTNER_ID is a scaled NUMBER rendering the
+-- '.0000000000' artifact; the orphan count equals item 17's distinct-key count
+-- (362,587). So this is the SAME root cause as item 17, surfacing through the
+-- stitch path. The item-17 staging fix (to_number(_,38,0)) already covers it;
+-- SAT_PARTY_CLAIM_HISTORY (incremental/append) just needs a --full-refresh.
+-- Confirm: raw-keyed orphans vs normalized-key orphans on the HCF branch.
+-- =====================================================================
+with p as (
+    select distinct PARTY_HKEY as k
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
+)
+select
+    count(*)                                                 as rows_checked,
+    count_if(s.partner_id is null)                           as null_partner_id,
+    count_if(p_raw.k is null)                                as orphans_raw,        -- 'HUB_PARTY|' || partner_id  (pre-fix)
+    count_if(p_fix.k is null)                                as orphans_normalized  -- after stripping trailing .0*  (post-fix)
+from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg_partner__bjaz_hcf_member_dtls s
+left join p p_raw on p_raw.k = TO_BINARY(md5('HUB_PARTY|' || s.partner_id), 'HEX')
+left join p p_fix on p_fix.k = TO_BINARY(md5('HUB_PARTY|' || regexp_replace(s.partner_id, '\\.0+$', '')), 'HEX')
+where s.partner_id is not null;
