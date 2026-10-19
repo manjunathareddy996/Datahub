@@ -437,7 +437,7 @@ from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stitch_party_health_profile;
 --
 -- ROOT CAUSE (top-down, confirmed):
 --   1. sat_party_health_profile was emptied by --full-refresh -> from_date = 1900
---      sentinel, so the LOWER bound excludes nothing.
+--      sentinel, so the LOWER bound execludes nothing.
 --   2. Every source row (stg_partner__bjaz_hcf_member_dtls) carries
 --      inc_job_updated_at = 2026-09-30, and ALL columns are keyed.
 --   3. stitch_incremental renders to_date as a CONSTANT literal baked into the
@@ -458,3 +458,67 @@ from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stitch_party_health_profile;
 --   relative to the load clock. Any incremental stitch will silently drop these
 --   rows whenever run_started_at < the source ldts. Flag the raw feed's ldts.
 -- =====================================================================
+
+
+-- =====================================================================
+-- ITEM 28 : SAT_PARTY_IDENTIFICATION (sat_multi_source, 19 feeds, HUB_PARTY grain).
+-- Recon collapses all feeds to RECORD_SOURCE='OPUS': 22,639,759 rows, 439,319
+-- orphans. The recon can't say WHICH feed orphans, so attribute per feed at the
+-- stg2 level: anti-join each feed's PARTY_HKEY to HUB_PARTY.
+-- Known-risk feeds by key:
+--   hm_hospital_master -> hosid   (item 18: hub branch unwired -> expect orphans)
+--   hcf_member_dtls    -> partner_id (item 17: fixed; 0 if rebuilt)
+--   bjaz_intermediary  -> intermediary_id (item 15: ratified key is partner_id)
+--   KYC feeds          -> subject forms (LICENCE:/PAN:/... -> KYC hub feeds)
+-- =====================================================================
+with p as (
+    select distinct PARTY_HKEY as k
+    from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
+)
+select feed, sat_rows, orphan_rows
+from (
+    select 'hm_hospital_master' as feed, count(*) as sat_rows, count_if(p.k is null) as orphan_rows
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_hm_hospital_master__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'hcf_member_dtls', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_hcf_member_dtls__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'bjaz_intermediary', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_intermediary__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'clm_supp_extn', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_clm_supp_extn__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'ctngy_pa_mem_dtls', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_ctngy_pa_mem_dtls__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'ctngy_ff_dtls_extn', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_ctngy_ff_dtls_extn__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'ec_mem_dtls_extn', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_ec_mem_dtls_extn__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'hlt_ensure_mem_dtls', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_hlt_ensure_mem_dtls__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'starpkg_ff_dtls', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_bjaz_starpkg_ff_dtls__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'azbj_partner_extn', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_azbj_partner_extn__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+    union all
+    select 'cp_partners', count(*), count_if(p.k is null)
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.stg2_sat_cp_partners__party_identification s
+      left join p on p.k = s.PARTY_HKEY group by 1
+)
+order by orphan_rows desc;
