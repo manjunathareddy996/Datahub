@@ -14,7 +14,7 @@ hashed_columns:
     columns:
       - 'INTERMEDIARY_LICENCE_NUMBER'
 derived_columns:
-  PARENT_BK: 'intermediary_id'
+  PARENT_BK: 'partner_id'
   PARENT_NK: "'HUB_PARTY|' || (intermediary_id)"
   INTERMEDIARY_LICENCE_NUMBER: 'license_no'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'

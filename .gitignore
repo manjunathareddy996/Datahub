@@ -1,0 +1,9 @@
+# LUMIQ Amp learning skill and AI capability self-assessment artifacts.
+# These may contain quotes from work chats — keep them out of the repo.
+**/.kiro/skills/lumiq-amp/
+LUMIQ-AI-checks/
+*AI_capability_check_*.html
+
+# Saved work chats used for the Amp self-assessment (redact before use, never commit)
+amp-chats/
+*amp_chat*.md
