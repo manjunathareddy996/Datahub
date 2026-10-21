@@ -3534,7 +3534,7 @@ s7 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash k
      limit 100
 ),
 c7 as (  -- latest satellite row per sampled key
-    select PARTY_HKEY as hkey,
+    select PARTY_HKEY as hkey, LOAD_DATETIME,
            to_varchar(DESIGNATIONBAND) as DESIGNATIONBAND,
            to_varchar(EMPLOYEEID) as EMPLOYEEID,
            to_varchar(LOCATIONREFERENCE) as LOCATIONREFERENCE,
@@ -3556,7 +3556,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(("MEMBER_ID"::number)) as MEMBERREFERENCE
           from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
       )
-     where hkey in (select hkey from s7) and ldts is not null
+     where (hkey, ldts) in (select hkey, LOAD_DATETIME from c7) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
 ),
 r7 as (
@@ -4455,7 +4455,7 @@ with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by h
      limit 100
 ),
 c1 as (  -- latest satellite row per sampled key
-    select PARTY_HKEY as hkey,
+    select PARTY_HKEY as hkey, LOAD_DATETIME,
            to_varchar(AGE) as AGE,
            to_varchar(DATEOFBIRTH) as DATEOFBIRTH,
            to_varchar(DATEOFDEATH) as DATEOFDEATH,
@@ -4819,7 +4819,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                st.record_source as RECORD_SOURCE
           from st1 st
       )
-     where hkey in (select hkey from s1) and ldts is not null
+     where (hkey, ldts) in (select hkey, LOAD_DATETIME from c1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
 ),
 r1 as (
@@ -5153,7 +5153,7 @@ s6 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash k
      limit 100
 ),
 c6 as (  -- latest satellite row per sampled key
-    select PARTY_HKEY as hkey,
+    select PARTY_HKEY as hkey, LOAD_DATETIME,
            to_varchar(DATEOFBIRTH) as DATEOFBIRTH,
            to_varchar(GENDERCODE) as GENDERCODE,
            to_varchar(PARTYFULLNAME) as PARTYFULLNAME
@@ -5173,7 +5173,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim("FULL_NAME"::varchar), ''))) as PARTYFULLNAME
           from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_AUTH
       )
-     where hkey in (select hkey from s6) and ldts is not null
+     where (hkey, ldts) in (select hkey, LOAD_DATETIME from c6) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
 ),
 r6 as (
@@ -8343,7 +8343,7 @@ s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash k
      limit 100
 ),
 c2 as (  -- latest satellite row per sampled key
-    select DOCUMENT_HKEY as hkey,
+    select DOCUMENT_HKEY as hkey, LOAD_DATETIME,
            to_varchar(VERIFICATION_RESPONSE_MESSAGE) as VERIFICATION_RESPONSE_MESSAGE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_DOCUMENT
      where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT'
@@ -8359,7 +8359,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim("RESPONSE_MESSAGE"::varchar), ''))) as VERIFICATION_RESPONSE_MESSAGE
           from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_POI_DOCUMENT
       )
-     where hkey in (select hkey from s2) and ldts is not null
+     where (hkey, ldts) in (select hkey, LOAD_DATETIME from c2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
 ),
 r2 as (
@@ -8995,7 +8995,7 @@ s10 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash 
      limit 100
 ),
 c10 as (  -- latest satellite row per sampled key
-    select PARTY_HKEY as hkey,
+    select PARTY_HKEY as hkey, LOAD_DATETIME,
            to_varchar(VERIFICATION_RESPONSE_CODE) as VERIFICATION_RESPONSE_CODE,
            to_varchar(VERIFICATION_RESPONSE_MESSAGE) as VERIFICATION_RESPONSE_MESSAGE,
            to_varchar(VERIFIED_DATE_OF_BIRTH) as VERIFIED_DATE_OF_BIRTH,
@@ -9021,7 +9021,7 @@ e10 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim("AUTH_GENDER"::varchar), ''))) as VERIFIED_GENDER_CODE
           from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_AUTH
       )
-     where hkey in (select hkey from s10) and ldts is not null
+     where (hkey, ldts) in (select hkey, LOAD_DATETIME from c10) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
 ),
 r10 as (
