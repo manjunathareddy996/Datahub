@@ -114,16 +114,40 @@ from fk
 left join (select distinct PARTY_HKEY from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) h
        on h.PARTY_HKEY = fk.party_hkey;
 
--- INTERPRETATION:
---   * M-R2-5-c/d high match + M-R2-5-e shows missing => party_code IS a genuine party
---     not yet loaded -> FIX: add a HUB_PARTY feed keyed on 'HUB_PARTY|' || party_code
---     (e.g. a stg2 party branch over stg_maximus__pd_relparty.party_code, wired into
---     hubfeed_party), then re-run. Mirrors the existing foreign_key party feeds.
---   * M-R2-5-c/d near-zero match => party_code is NOT a party -> do NOT load it;
---     the link's RELATED_PARTY_HKEY -> HUB_PARTY FK is modeled against the wrong hub
---     and DM-R2's FK target needs re-scoping (modeler decision).
---   * M-R2-5-f should be ~100% present (proves the recompute matches how the vault
---     was built, so M-R2-5-e is trustworthy).
+-- RESULTS (run 2026-10-xx):
+--   M-R2-5-a  FOREIGN_KEY looks like EMP11798 / EMP10712 (employee-style party IDs);
+--             PARTY_CODE looks like 1001 / 1574 / 3216 (small numeric codes) + 'PP0001074'.
+--             Different format, different cardinality -- not the same identifier space.
+--   M-R2-5-b  total_rows 2,508,518; FOREIGN_KEY distinct 2,168,595;
+--             PARTY_CODE distinct 3,163 (min '0000', max 'PP0001074').
+--   M-R2-5-c  distinct_party_codes 3,163; matched_as_party 1; not_a_known_party 3,162;
+--             pct_matched 0.0%.
+--   M-R2-5-d  distinct_party_codes 3,163; matched_in_party_relation 0.
+--   M-R2-5-e  distinct_related_party_keys 3,163; present_in_hub_party 2; missing ~3,161.
+--   M-R2-5-f  distinct_party_keys 2,168,595; present_in_hub_party 2,168,595; missing 0.
+--
+-- CONCLUSION: PARTY_CODE is NOT a party.
+--   * 0% of PARTY_CODE values appear as a known party key (M-R2-5-c/d); only 2 of 3,163
+--     resolve in HUB_PARTY (M-R2-5-e) -- coincidental hash collisions, not real parents.
+--   * The FOREIGN_KEY side resolves 100% (M-R2-5-f), proving the recompute method is
+--     correct and the ~178k orphans are genuine, not a hashing/normalisation artifact.
+--   * PARTY_CODE is a low-cardinality code (3,163 distinct, values like 1001 / PP0001074,
+--     tied to STAKE_CODE BRANCH / DFLTSTKORG) -- a stakeholder/relationship/branch code,
+--     NOT a person or organisation party.
+--
+-- FIX (do NOT load party_code into HUB_PARTY -- that would add ~3,161 fake parties):
+--   The link LNK_PARTY_RELATIONSHIP models RELATED_PARTY_HKEY as a FK -> HUB_PARTY, but
+--   party_code does not denote a HUB_PARTY member. The relationship is mis-modeled:
+--     Option 1 (preferred): RELATED_PARTY_HKEY should point at the hub that party_code
+--       actually belongs to (e.g. a stakeholder/branch/relationship-type hub). If no such
+--       hub exists, party_code likely belongs as a satellite ATTRIBUTE of the relationship
+--       (e.g. on SAT_LNK_PARTY_ROLE_CORE / a relationship sat), not as a hub FK.
+--     Option 2: if the business rule is truly party-to-party, the RAW party_code column is
+--       the wrong source for the related party -- confirm the correct related-party key
+--       column with the mapper before re-deriving RELATED_PARTY_NK.
+--   Either way the FIX is a MODEL/MAPPING change (modeler decision), and DM-R2's
+--   RELATED_PARTY_HKEY -> HUB_PARTY check must be re-scoped once the target is corrected.
+--   This is NOT a "missing hub feed" and NOT a data/timing issue.
 -- =====================================================================
 
 
