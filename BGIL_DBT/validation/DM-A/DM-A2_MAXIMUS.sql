@@ -65,7 +65,7 @@ with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by h
      limit 100
 ),
 c1 as (  -- latest satellite row per sampled key
-    select DISTRIBUTION_CHANNEL_HKEY as hkey,
+    select DISTRIBUTION_CHANNEL_HKEY as hkey, LOAD_DATETIME,
            to_varchar(SUBCHANNELCODE) as SUBCHANNELCODE,
            to_varchar(SUBCHANNELEFFECTIVEDATE) as SUBCHANNELEFFECTIVEDATE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CHANNEL_DEFINITION
@@ -83,7 +83,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("SUB_CHANNEL_EFFECTIVE_DATE")), ''))) as SUBCHANNELEFFECTIVEDATE
           from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
-     where hkey in (select hkey from s1) and ldts is not null
+     where (hkey, ldts) in (select hkey, LOAD_DATETIME from c1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
 ),
 r1 as (
