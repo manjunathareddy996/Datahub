@@ -52,7 +52,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]
+-- 1. MAXIMUS — SAT_CHANNEL_DEFINITION [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK DISTRIBUTION_CHANNEL_HKEY; 1 RECORD_SOURCE
 -- group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -112,7 +112,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]
+-- 2. MAXIMUS — SAT_COMMON_ADDRESS [Partner LOB]   [Implemented]
 -- standard satellite, sat_multi_source; PK LOCATION_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS [8 col(s)],
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
@@ -393,7 +393,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]
+-- 3. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK LOCATION_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -445,7 +445,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 4. MAXIMUS — SAT_COMMON_CLASSIFICATION [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -497,7 +497,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 5. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [4 col(s)].
@@ -570,7 +570,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]
+-- 6. MAXIMUS — SAT_COMMON_CONSENT [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -622,7 +622,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]
+-- 7. MAXIMUS — SAT_COMMON_CONTACT [Partner LOB]   [Implemented]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS [6 col(s)],
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
@@ -816,7 +816,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — SAT_COMMON_GEO   [Implemented]
+-- 8. MAXIMUS — SAT_COMMON_GEO [Partner LOB]   [Implemented]
 -- standard satellite, sat_multi_source; PK LOCATION_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
 -- [2 col(s)],
@@ -934,7 +934,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]
+-- 9. MAXIMUS — SAT_DOCUMENT_DEFINITION [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK DOCUMENT_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_DOCUMENT_DETAIL [3 col(s)].
 ----------------------------------------------------------------------------------------
@@ -999,7 +999,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]
+-- 10. MAXIMUS — SAT_INSTRUMENT_DEFINITION [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PAYMENT_INSTRUMENT_HKEY; 1 RECORD_SOURCE
 -- group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -1059,7 +1059,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 11. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE [Partner LOB]   [Implemented]
 -- standard satellite, ma_sat_multi_source; PK PARTY_HKEY, child key ROLECODE,
 -- ROLESEQUENCE; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -1374,7 +1374,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]
+-- 12. MAXIMUS — SAT_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [4 col(s)].
@@ -1447,7 +1447,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]
+-- 13. MAXIMUS — SAT_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)].
@@ -1506,7 +1506,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]
+-- 14. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_ROLE_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)].
@@ -1572,7 +1572,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — SAT_LNK_ROLE_INVESTIGATOR   [Implemented]
+-- 15. MAXIMUS — SAT_LNK_ROLE_INVESTIGATOR [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_ROLE_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -1624,7 +1624,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 16. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [NA]
+-- 16. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY [Partner LOB]   [NA]
 -- Not applicable: every payload column is hard-coded NULL padding in staging (nothing
 -- loaded to reconcile).
 ----------------------------------------------------------------------------------------
@@ -1633,7 +1633,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 17. MAXIMUS — SAT_LNK_ROLE_PROVIDER   [Implemented]
+-- 17. MAXIMUS — SAT_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [15 col(s)].
@@ -1783,7 +1783,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 18. MAXIMUS — SAT_LNK_ROLE_SURVEYOR   [Implemented]
+-- 18. MAXIMUS — SAT_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)].
@@ -1849,7 +1849,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 19. MAXIMUS — SAT_LOCATION_PROFILE   [Implemented]
+-- 19. MAXIMUS — SAT_LOCATION_PROFILE [Partner LOB]   [Implemented]
 -- standard satellite, sat_multi_source; PK LOCATION_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -1946,7 +1946,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 20. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [NA]
+-- 20. MAXIMUS — SAT_ORG_UNIT_DEFINITION [Partner LOB]   [NA]
 -- Not applicable: every payload column is hard-coded NULL padding in staging (nothing
 -- loaded to reconcile).
 ----------------------------------------------------------------------------------------
@@ -1955,7 +1955,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 21. MAXIMUS — SAT_ORG_UNIT_LICENCE   [NA]
+-- 21. MAXIMUS — SAT_ORG_UNIT_LICENCE [Partner LOB]   [NA]
 -- Not applicable: every payload column is hard-coded NULL padding in staging (nothing
 -- loaded to reconcile).
 ----------------------------------------------------------------------------------------
@@ -1964,7 +1964,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 22. MAXIMUS — SAT_PARTY_AGENT_LICENCE_LINE   [Implemented]
+-- 22. MAXIMUS — SAT_PARTY_AGENT_LICENCE_LINE [Partner LOB]   [Implemented]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -2061,7 +2061,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 23. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]
+-- 23. MAXIMUS — SAT_PARTY_AML_SCREENING [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -2113,7 +2113,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 24. MAXIMUS — SAT_PARTY_BANKING   [Implemented]
+-- 24. MAXIMUS — SAT_PARTY_BANKING [Partner LOB]   [Implemented]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [9 col(s)],
@@ -2266,7 +2266,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 25. MAXIMUS — SAT_PARTY_CONSENT_MANDATE   [Implemented]
+-- 25. MAXIMUS — SAT_PARTY_CONSENT_MANDATE [Partner LOB]   [Implemented]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [5 col(s)],
@@ -2348,7 +2348,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 26. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 26. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK PARTY_LOCATION_HKEY, child key
 -- ADDRESS_USAGE_TYPE; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -2421,7 +2421,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 27. MAXIMUS — SAT_PARTY_DIGITAL_IDENTITY   [Implemented]
+-- 27. MAXIMUS — SAT_PARTY_DIGITAL_IDENTITY [Partner LOB]   [Implemented]
 -- standard satellite, ma_sat_multi_source; PK PARTY_HKEY, child key
 -- ACTIVESEQUENCENUMBER; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -2512,7 +2512,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 28. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 28. MAXIMUS — SAT_PARTY_EMPLOYMENT [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)].
@@ -2571,7 +2571,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 29. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]
+-- 29. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -2623,7 +2623,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]
+-- 30. MAXIMUS — SAT_PARTY_FRAUD_PROFILE [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [5 col(s)].
@@ -2703,7 +2703,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 31. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 31. MAXIMUS — SAT_PARTY_HEALTH_PROFILE [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [5 col(s)].
@@ -2783,7 +2783,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 32. MAXIMUS — SAT_PARTY_HIERARCHY   [Implemented]
+-- 32. MAXIMUS — SAT_PARTY_HIERARCHY [Partner LOB]   [Implemented]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL [1 col(s)],
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -2886,7 +2886,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 33. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 33. MAXIMUS — SAT_PARTY_IDENTIFICATION [Partner LOB]   [Implemented]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)],
@@ -3024,7 +3024,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 34. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]
+-- 34. MAXIMUS — SAT_PARTY_IDENTITY [Partner LOB]   [Implemented]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL [11 col(s)],
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -3281,7 +3281,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 35. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 35. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS [Partner LOB]   [Implemented]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL [1 col(s)],
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -3447,7 +3447,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 36. MAXIMUS — SAT_PARTY_KYC   [Implemented]
+-- 36. MAXIMUS — SAT_PARTY_KYC [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)].
@@ -3506,7 +3506,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 37. MAXIMUS — SAT_PARTY_LEGAL_PANEL   [Implemented]
+-- 37. MAXIMUS — SAT_PARTY_LEGAL_PANEL [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [6 col(s)].
@@ -3593,7 +3593,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 38. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]
+-- 38. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)].
@@ -3659,7 +3659,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 39. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 39. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE [Partner LOB]   [Implemented]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL [3 col(s)],
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -3853,7 +3853,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 40. MAXIMUS — SAT_PARTY_ORG_DIRECTORS   [Implemented]
+-- 40. MAXIMUS — SAT_PARTY_ORG_DIRECTORS [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK PARTY_HKEY, child key PERSONROLE; 1
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -4004,7 +4004,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 41. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]
+-- 41. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE [Partner LOB]   [Implemented]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -4108,7 +4108,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 42. MAXIMUS — SAT_PARTY_PROVIDER_CAPABILITY   [Implemented]
+-- 42. MAXIMUS — SAT_PARTY_PROVIDER_CAPABILITY [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK PARTY_HKEY, child key FACILITYCODE; 1
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -5942,7 +5942,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 43. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]
+-- 43. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -5994,7 +5994,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 44. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]
+-- 44. MAXIMUS — SAT_PRODUCT_DEFINITION [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PRODUCT_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -6046,7 +6046,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 45. MAXIMUS — SAT_PROVIDER_BANKING   [NA]
+-- 45. MAXIMUS — SAT_PROVIDER_BANKING [Partner LOB]   [NA]
 -- Not applicable: every payload column is hard-coded NULL padding in staging (nothing
 -- loaded to reconcile).
 ----------------------------------------------------------------------------------------
@@ -6055,7 +6055,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 46. MAXIMUS — SAT_PROVIDER_QUALITY   [Implemented]
+-- 46. MAXIMUS — SAT_PROVIDER_QUALITY [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)].
@@ -6114,7 +6114,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 47. MAXIMUS — SAT_PROVIDER_TARIFF   [Implemented]
+-- 47. MAXIMUS — SAT_PROVIDER_TARIFF [Partner LOB]   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [9 col(s)].
@@ -6222,7 +6222,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 48. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]
+-- 48. MAXIMUS — SAT_AUG_COMMON_ADDRESS [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK LOCATION_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [1 col(s)].
 ----------------------------------------------------------------------------------------
@@ -6273,7 +6273,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 49. MAXIMUS — SAT_AUG_COMMON_ADMIN_GEOGRAPHY   [NA]
+-- 49. MAXIMUS — SAT_AUG_COMMON_ADMIN_GEOGRAPHY [Partner LOB]   [NA]
 -- Not applicable: every payload column is hard-coded NULL padding in staging (nothing
 -- loaded to reconcile).
 ----------------------------------------------------------------------------------------
@@ -6282,7 +6282,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 50. MAXIMUS — SAT_AUG_COMMON_CLASSIFICATION   [Implemented]
+-- 50. MAXIMUS — SAT_AUG_COMMON_CLASSIFICATION [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [4 col(s)].
 ----------------------------------------------------------------------------------------
@@ -6354,7 +6354,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 51. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 51. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [1 col(s)].
 ----------------------------------------------------------------------------------------
@@ -6405,7 +6405,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 52. MAXIMUS — SAT_AUG_COMMON_CONTACT   [Implemented]
+-- 52. MAXIMUS — SAT_AUG_COMMON_CONTACT [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [3 col(s)].
 ----------------------------------------------------------------------------------------
@@ -6470,7 +6470,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 53. MAXIMUS — SAT_AUG_COMMON_GEO   [Implemented]
+-- 53. MAXIMUS — SAT_AUG_COMMON_GEO [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK LOCATION_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_party_addr_prop_pv [1 col(s)].
 ----------------------------------------------------------------------------------------
@@ -6521,7 +6521,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 54. MAXIMUS — SAT_AUG_INSTRUMENT_DEFINITION   [Implemented]
+-- 54. MAXIMUS — SAT_AUG_INSTRUMENT_DEFINITION [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PAYMENT_INSTRUMENT_HKEY; 1 RECORD_SOURCE
 -- group(s): MAXIMUS_pd_prop_msdp_pv [1 col(s)].
 ----------------------------------------------------------------------------------------
@@ -6572,7 +6572,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 55. MAXIMUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 55. MAXIMUS — SAT_AUG_LNK_PARTY_ROLE_CORE [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [1 col(s)].
 ----------------------------------------------------------------------------------------
@@ -6623,7 +6623,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 56. MAXIMUS — SAT_AUG_LNK_ROLE_AGENT   [Implemented]
+-- 56. MAXIMUS — SAT_AUG_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [7 col(s)].
 ----------------------------------------------------------------------------------------
@@ -6716,7 +6716,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 57. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 57. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [3 col(s)].
 ----------------------------------------------------------------------------------------
@@ -6781,7 +6781,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 58. MAXIMUS — SAT_AUG_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 58. MAXIMUS — SAT_AUG_LNK_ROLE_NOMINEE_BENEFICIARY [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [3 col(s)].
 ----------------------------------------------------------------------------------------
@@ -6846,7 +6846,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 59. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
+-- 59. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [72 col(s)].
 ----------------------------------------------------------------------------------------
@@ -7394,7 +7394,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 60. MAXIMUS — SAT_AUG_LNK_ROLE_SURVEYOR   [Implemented]
+-- 60. MAXIMUS — SAT_AUG_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [4 col(s)].
 ----------------------------------------------------------------------------------------
@@ -7533,7 +7533,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 63. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]
+-- 63. MAXIMUS — SAT_AUG_PARTY_BANKING [Partner LOB]   [Implemented]
 -- augmented satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_msdp_pv [1 col(s)], MAXIMUS_pd_prop_sp_pv [2 col(s)].
 ----------------------------------------------------------------------------------------
@@ -7685,7 +7685,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 65. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 65. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [1 col(s)].
 ----------------------------------------------------------------------------------------
@@ -7838,7 +7838,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 68. MAXIMUS — SAT_AUG_PARTY_DIGITAL_IDENTITY   [Implemented]
+-- 68. MAXIMUS — SAT_AUG_PARTY_DIGITAL_IDENTITY [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [3 col(s)].
 ----------------------------------------------------------------------------------------
@@ -7961,7 +7961,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 70. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
+-- 70. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [8 col(s)].
 ----------------------------------------------------------------------------------------
@@ -8061,7 +8061,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 71. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]
+-- 71. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [4 col(s)].
 ----------------------------------------------------------------------------------------
@@ -8133,7 +8133,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 72. MAXIMUS — SAT_AUG_PARTY_FRAUD_PROFILE   [Implemented]
+-- 72. MAXIMUS — SAT_AUG_PARTY_FRAUD_PROFILE [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [4 col(s)].
 ----------------------------------------------------------------------------------------
@@ -8263,7 +8263,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 74. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]
+-- 74. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [1 col(s)].
 ----------------------------------------------------------------------------------------
@@ -8314,7 +8314,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 75. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]
+-- 75. MAXIMUS — SAT_AUG_PARTY_HIERARCHY [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [6 col(s)].
 ----------------------------------------------------------------------------------------
@@ -8400,7 +8400,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 76. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]
+-- 76. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION [Partner LOB]   [Implemented]
 -- augmented satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_msdp_pv [2 col(s)], MAXIMUS_pd_prop_sp_pv [10 col(s)].
 ----------------------------------------------------------------------------------------
@@ -8564,7 +8564,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 77. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]
+-- 77. MAXIMUS — SAT_AUG_PARTY_IDENTITY [Partner LOB]   [Implemented]
 -- augmented satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_pd [2 col(s)], MAXIMUS_pd_prop_sp_pv [9 col(s)].
 ----------------------------------------------------------------------------------------
@@ -8721,7 +8721,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 78. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 78. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS [Partner LOB]   [Implemented]
 -- augmented satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_msdp_pv [2 col(s)], MAXIMUS_pd_prop_sp_pv [21 col(s)].
 ----------------------------------------------------------------------------------------
@@ -9013,7 +9013,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 80. MAXIMUS — SAT_AUG_PARTY_KYC   [Implemented]
+-- 80. MAXIMUS — SAT_AUG_PARTY_KYC [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [14 col(s)].
 ----------------------------------------------------------------------------------------
@@ -9155,7 +9155,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 81. MAXIMUS — SAT_AUG_PARTY_LEGAL_PANEL   [Implemented]
+-- 81. MAXIMUS — SAT_AUG_PARTY_LEGAL_PANEL [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [7 col(s)].
 ----------------------------------------------------------------------------------------
@@ -9569,7 +9569,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 84. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]
+-- 84. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [23 col(s)].
 ----------------------------------------------------------------------------------------
@@ -9774,7 +9774,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 85. MAXIMUS — SAT_AUG_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 85. MAXIMUS — SAT_AUG_PARTY_ORGANISATION_PROFILE [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [17 col(s)].
 ----------------------------------------------------------------------------------------
@@ -9937,7 +9937,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 86. MAXIMUS — SAT_AUG_PARTY_ORG_DIRECTORS   [Implemented]
+-- 86. MAXIMUS — SAT_AUG_PARTY_ORG_DIRECTORS [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [1 col(s)].
 ----------------------------------------------------------------------------------------
@@ -9988,7 +9988,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 87. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]
+-- 87. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE [Partner LOB]   [Implemented]
 -- augmented satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_msdp_pv [4 col(s)], MAXIMUS_pd_prop_sp_pv [12 col(s)].
 ----------------------------------------------------------------------------------------
@@ -10245,7 +10245,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 89. MAXIMUS — SAT_AUG_PARTY_PROVIDER_CAPABILITY   [Implemented]
+-- 89. MAXIMUS — SAT_AUG_PARTY_PROVIDER_CAPABILITY [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [2 col(s)].
 ----------------------------------------------------------------------------------------
@@ -10375,7 +10375,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 91. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]
+-- 91. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [10 col(s)].
 ----------------------------------------------------------------------------------------
@@ -10798,7 +10798,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 96. MAXIMUS — SAT_AUG_PROVIDER_BANKING   [Implemented]
+-- 96. MAXIMUS — SAT_AUG_PROVIDER_BANKING [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [8 col(s)].
 ----------------------------------------------------------------------------------------
@@ -10898,7 +10898,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 97. MAXIMUS — SAT_AUG_PROVIDER_QUALITY   [Implemented]
+-- 97. MAXIMUS — SAT_AUG_PROVIDER_QUALITY [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [38 col(s)].
 ----------------------------------------------------------------------------------------
@@ -11208,7 +11208,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 98. MAXIMUS — SAT_AUG_PROVIDER_TARIFF   [Implemented]
+-- 98. MAXIMUS — SAT_AUG_PROVIDER_TARIFF [Partner LOB]   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_pd_prop_sp_pv [17 col(s)].
 ----------------------------------------------------------------------------------------
