@@ -137,42 +137,58 @@ left join (select distinct PARTY_HKEY from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MO
 -- Characterize the 8: pull them out of the link and check presence in RAW.
 -- =====================================================================
 
--- M-R2-6-a : list the 8 unexpected link rows and their keys
+-- NOTE: the RAW-side link hash is rebuilt with the SAME expression the DM-R2
+--   generator uses (automate_dv 0.11.5 MD5_BINARY). Each key form is wrapped
+--   individually in nullif(trim(to_varchar(col)),'') and joined with '||'; the
+--   whole BK string is then UPPER/TRIM/NULLIF-normalised before MD5_BINARY.
+--   Keep the parenthesis grouping exactly as below -- mismatched nesting is what
+--   caused the earlier compile error.
+
+-- M-R2-6-a : list the unexpected link rows (link row with no matching RAW relationship)
 with src as (
-    select
-        MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_RELATIONSHIP|' ||
-            ((nullif(trim(to_varchar("FOREIGN_KEY")), '')) || '||' ||
-             (nullif(trim(to_varchar("PARTY_CODE")), ''))) AS VARCHAR))), '')) as link_hkey
+    select distinct
+        MD5_BINARY(NULLIF(UPPER(TRIM(CAST(
+            'LNK_PARTY_RELATIONSHIP|'
+            || ( nullif(trim(to_varchar(FOREIGN_KEY)), '')
+                 || '||' ||
+                 nullif(trim(to_varchar(PARTY_CODE)), '') )
+            AS VARCHAR))), '')) as link_hkey
     from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_RELATED_PARTY
-    where nullif(trim(to_varchar("FOREIGN_KEY")), '') is not null
-      and nullif(trim(to_varchar("PARTY_CODE")), '')  is not null
+    where nullif(trim(to_varchar(FOREIGN_KEY)), '') is not null
+      and nullif(trim(to_varchar(PARTY_CODE)),  '') is not null
 )
 select to_varchar(l.PARTY_RELATIONSHIP_HKEY, 'HEX') as link_hkey_hex,
        to_varchar(l.PARTY_HKEY, 'HEX')              as party_hkey_hex,
        to_varchar(l.RELATED_PARTY_HKEY, 'HEX')      as related_party_hkey_hex,
-       l.RECORD_SOURCE, l.LOAD_DATETIME
+       l.RECORD_SOURCE,
+       l.LOAD_DATETIME
 from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LNK_PARTY_RELATIONSHIP l
-left join (select distinct link_hkey from src) k on k.link_hkey = l.PARTY_RELATIONSHIP_HKEY
+left join src k on k.link_hkey = l.PARTY_RELATIONSHIP_HKEY
 where startswith(l.RECORD_SOURCE, 'MAXIMUS_')
   and k.link_hkey is null
 order by l.LOAD_DATETIME;
 
--- M-R2-6-b : are these 8 older than the current RAW snapshot? (ldts distribution)
+-- M-R2-6-b : count + ldts span of the unexpected rows vs the link's latest load
 with src as (
-    select
-        MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_RELATIONSHIP|' ||
-            ((nullif(trim(to_varchar("FOREIGN_KEY")), '')) || '||' ||
-             (nullif(trim(to_varchar("PARTY_CODE")), ''))) AS VARCHAR))), '')) as link_hkey
+    select distinct
+        MD5_BINARY(NULLIF(UPPER(TRIM(CAST(
+            'LNK_PARTY_RELATIONSHIP|'
+            || ( nullif(trim(to_varchar(FOREIGN_KEY)), '')
+                 || '||' ||
+                 nullif(trim(to_varchar(PARTY_CODE)), '') )
+            AS VARCHAR))), '')) as link_hkey
     from BAGIC_PROD_MIRROR_DB.MAXI_RAW.BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_RELATED_PARTY
-    where nullif(trim(to_varchar("FOREIGN_KEY")), '') is not null
-      and nullif(trim(to_varchar("PARTY_CODE")), '')  is not null
+    where nullif(trim(to_varchar(FOREIGN_KEY)), '') is not null
+      and nullif(trim(to_varchar(PARTY_CODE)),  '') is not null
 )
-select count_if(k.link_hkey is null) as unexpected_links,
-       min(iff(k.link_hkey is null, l.LOAD_DATETIME, null)) as min_unexpected_ldts,
-       max(iff(k.link_hkey is null, l.LOAD_DATETIME, null)) as max_unexpected_ldts,
-       max(l.LOAD_DATETIME) as link_max_ldts
+select
+    count(*)                                                        as link_rows,
+    count_if(k.link_hkey is null)                                   as unexpected_links,
+    min(case when k.link_hkey is null then l.LOAD_DATETIME end)     as min_unexpected_ldts,
+    max(case when k.link_hkey is null then l.LOAD_DATETIME end)     as max_unexpected_ldts,
+    max(l.LOAD_DATETIME)                                            as link_max_ldts
 from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LNK_PARTY_RELATIONSHIP l
-left join (select distinct link_hkey from src) k on k.link_hkey = l.PARTY_RELATIONSHIP_HKEY
+left join src k on k.link_hkey = l.PARTY_RELATIONSHIP_HKEY
 where startswith(l.RECORD_SOURCE, 'MAXIMUS_');
 
 -- INTERPRETATION: 8 / 178,191 is tiny and informational. If M-R2-6-a shows the
