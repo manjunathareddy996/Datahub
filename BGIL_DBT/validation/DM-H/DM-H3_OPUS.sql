@@ -37,60 +37,58 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. OPUS — [automate_dv.ma_sat] SAT_LNK_PARTY_ROLE_CORE   [Implemented]
--- Grain (PARTY_HKEY, ROLECODE, ROLESEQUENCE, RECORD_SOURCE, LOAD_DATETIME).
+-- 1. OPUS — [automate_dv.ma_sat] SAT_LNK_CLAIM_PARTY_ROLE   [Implemented]
+-- Grain (CLAIM_PARTY_HKEY, PARTY_ROLE_TYPE, ROLE_SEQUENCE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
 -- LOAD_DATETIME (a source grain conflict, not a re-load duplicate) -- informational.
--- standard satellite, automate_dv.ma_sat; PK PARTY_HKEY, child key ROLECODE,
--- ROLESEQUENCE; 1 RECORD_SOURCE group(s): OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS [1 col(s)].
+-- standard satellite, automate_dv.ma_sat; PK CLAIM_PARTY_HKEY, child key PARTY_ROLE_TYPE,
+-- ROLE_SEQUENCE; 1 RECORD_SOURCE group(s): OPUS_CLM_INTERESTED_PARTIES [1 col(s)].
 -- Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
 ----------------------------------------------------------------------------------------
 with d as (
-    select PARTY_HKEY, ROLECODE, ROLESEQUENCE, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_PARTY_ROLE_CORE
+    select CLAIM_PARTY_HKEY, PARTY_ROLE_TYPE, ROLE_SEQUENCE, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_CLAIM_PARTY_ROLE
      where startswith(RECORD_SOURCE, 'OPUS_')
-     group by PARTY_HKEY, ROLECODE, ROLESEQUENCE, RECORD_SOURCE, LOAD_DATETIME
+     group by CLAIM_PARTY_HKEY, PARTY_ROLE_TYPE, ROLE_SEQUENCE, RECORD_SOURCE, LOAD_DATETIME
     having count(*) > 1
 )
-select 'OPUS' as project, 'SAT_LNK_PARTY_ROLE_CORE' as satellite,
+select 'OPUS' as project, 'SAT_LNK_CLAIM_PARTY_ROLE' as satellite,
        count_if(hashdiffs = 1)            as duplicate_row_groups,
        coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
        count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as examples,
+       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(CLAIM_PARTY_HKEY, 'HEX'), null)) within group (order by CLAIM_PARTY_HKEY), 0, 3) as examples,
        iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
   from d;
 
 
 
 ----------------------------------------------------------------------------------------
--- 2. OPUS — [ma_sat_multi_source] SAT_POLICY_CLASSIFICATION   [Implemented]
--- Grain (POLICY_HKEY, CLASSIFICATIONTYPE, RECORD_SOURCE, LOAD_DATETIME).
+-- 2. OPUS — [ma_sat_multi_source] SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- Grain (PARTY_LOCATION_HKEY, ADDRESS_USAGE_TYPE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
 -- LOAD_DATETIME (a source grain conflict, not a re-load duplicate) -- informational.
--- standard satellite, ma_sat_multi_source; PK POLICY_HKEY, child key CLASSIFICATIONTYPE;
--- 4 RECORD_SOURCE group(s): OPUS_BJAZ_T_KYC_DETAILS [1 col(s)], OPUS_BJAZ_T_KYC_INCOMING
+-- standard satellite, ma_sat_multi_source; PK PARTY_LOCATION_HKEY, child key ADDRESS_USAGE_TYPE;
+-- 3 RECORD_SOURCE group(s): OPUS_BJAZ_T_KYC_DETAILS [1 col(s)], OPUS_BJAZ_T_KYC_INCOMING
 -- [1 col(s)], OPUS_BJAZ_T_KYC_POA_DOCUMENT [1 col(s)], OPUS_BJAZ_T_KYC_POI_DOCUMENT [1
 -- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
 -- member.
 ----------------------------------------------------------------------------------------
 with d as (
-    select POLICY_HKEY, CLASSIFICATIONTYPE, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
+    select PARTY_LOCATION_HKEY, ADDRESS_USAGE_TYPE, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CONTACT_ADDRESS_LINK
      where startswith(RECORD_SOURCE, 'OPUS_')
-     group by POLICY_HKEY, CLASSIFICATIONTYPE, RECORD_SOURCE, LOAD_DATETIME
+     group by PARTY_LOCATION_HKEY, ADDRESS_USAGE_TYPE, RECORD_SOURCE, LOAD_DATETIME
     having count(*) > 1
 )
-select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite,
+select 'OPUS' as project, 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite,
        count_if(hashdiffs = 1)            as duplicate_row_groups,
        coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
        count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as examples,
+       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(PARTY_LOCATION_HKEY, 'HEX'), null)) within group (order by PARTY_LOCATION_HKEY), 0, 3) as examples,
        iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
   from d;
-
-
 
 ----------------------------------------------------------------------------------------
 -- 3. OPUS — [sat_multi_source] SAT_PARTY_BANKING   [Implemented]
