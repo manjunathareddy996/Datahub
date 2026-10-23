@@ -2,10 +2,6 @@
    DM-H2  |  History Checks - No Change Creates No New Row  (OPUS)
    An unchanged record creates no new satellite row. Pass criterion: no new row when unchanged.
 
-   PARTNER LOB: 37 of 59 objects below carry the [Partner LOB] tag -- the same objects
-       tagged in the matching .docx (Customer / Party domain rows of the partner
-       Source-To-Model mapping). The tag is scope information only: SQL bodies, pass
-       criteria and results are unaffected.
    Check ID: DM-H2
    Category: History checks
    Sign-off criterion: No change creates no new row
@@ -30,8 +26,11 @@
    Revision notes:
    - Generated 2026-10-13 from the current opus_partner_dv_dbt models by
      validation/tools/gen_dm_h.py (satellite lineage from gen_dm_a.py).
-   - This file: OPUS only (59 satellites, 59 with mapped payload; standard + augmented).
-     The other project is in the sibling file.
+   - TRIMMED to the DM-H member test plan (see validation/DM-H/DM-H_MEMBER_PLAN.md): OPUS
+     has 32 assigned satellites in this file (32 with mapped payload). Each sat is
+     prefixed with its [member | macro-path]. If an assigned sat has 0 rows, swap it for
+     a same-path sat from DM-H_REMAINING.md (confirm counts with
+     DM-H_ROWCOUNT_CHECK.sql).
    - Static queries (a) run on the data already loaded; the (b) procedures need a dbt
      load between a BEFORE and an AFTER capture and write to the snapshot schema.
    - Sections marked NA load only hard-coded NULL padding or a disabled placeholder.
@@ -39,332 +38,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. OPUS — SAT_AGREEMENT_COMMERCIAL_TERMS [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- AGREEMENT_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select AGREEMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(COMMISSIONSTRUCTURE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AGREEMENT_COMMERCIAL_TERMS
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by AGREEMENT_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by AGREEMENT_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_AGREEMENT_COMMERCIAL_TERMS' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(AGREEMENT_HKEY, 'HEX'), null))
-                   within group (order by AGREEMENT_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 2. OPUS — SAT_AGREEMENT_DEFINITION [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- AGREEMENT_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select AGREEMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(AGREEMENTTYPE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AGREEMENT_DEFINITION
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by AGREEMENT_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by AGREEMENT_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_AGREEMENT_DEFINITION' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(AGREEMENT_HKEY, 'HEX'), null))
-                   within group (order by AGREEMENT_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 3. OPUS — SAT_COMMON_ADDRESS [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
--- LOCATION_HKEY; 2 RECORD_SOURCE group(s): stitch_common_address (5 tables) [11 col(s)],
--- stitch_kyc_common_address (6 tables) [11 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(ADDRESSLINE1), '^^') || '||' || coalesce(to_varchar(ADDRESSLINE2), '^^') || '||' || coalesce(to_varchar(ADDRESSLINE3), '^^') || '||' || coalesce(to_varchar(BUILDINGNAME), '^^') || '||' || coalesce(to_varchar(CITY), '^^') || '||' || coalesce(to_varchar(COUNTRYCODE), '^^') || '||' || coalesce(to_varchar(COUNTRYNAME), '^^') || '||' || coalesce(to_varchar(DOORNUMBER), '^^') || '||' || coalesce(to_varchar(POSTALCODE), '^^') || '||' || coalesce(to_varchar(STATENAME), '^^') || '||' || coalesce(to_varchar(STREETNAME), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(LOCATION_HKEY, 'HEX'), null))
-                   within group (order by LOCATION_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 4. OPUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- LOCATION_HKEY; 1 RECORD_SOURCE group(s):
--- stitch_shared__common_admin_geography_common_geo (2 tables) [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(PINCODE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADMIN_GEOGRAPHY
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_COMMON_ADMIN_GEOGRAPHY' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(LOCATION_HKEY, 'HEX'), null))
-                   within group (order by LOCATION_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 5. OPUS — SAT_COMMON_CLASSIFICATION [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- PARTY_HKEY; 1 RECORD_SOURCE group(s): stitch_common_classification (3 tables) [2
--- col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(PRIORITYCODE), '^^') || '||' || coalesce(to_varchar(SEGMENTCODE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 6. OPUS — SAT_COMMON_COMMUNICATION_PREFERENCE [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- stitch_shared__common_communication_preference_party_employment (1 tables) [2 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(CORRESPONDENCELANGUAGE), '^^') || '||' || coalesce(to_varchar(MARKETINGOPTININDICATOR), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_COMMUNICATION_PREFERENCE
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 7. OPUS — SAT_COMMON_CONSENT [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(CONSENTDATE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONSENT
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_COMMON_CONSENT' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 8. OPUS — SAT_COMMON_CONTACT [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
--- PARTY_HKEY; 12 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [4 col(s)],
--- OPUS_BJAZ_CLM_SUPP_EXTN [4 col(s)], OPUS_BJAZ_CTNGY_GC_MEM_DATA [1 col(s)],
--- OPUS_BJAZ_CTNGY_PA_MEM_DTLS [4 col(s)], OPUS_BJAZ_HM_HOSPITAL_MASTER [4 col(s)],
--- OPUS_BJAZ_HM_MEMBER_DTLS [2 col(s)], OPUS_BJAZ_SH_MEM_DTLS_EXTN [1 col(s)],
--- OPUS_CLM_SUPPLIERS [1 col(s)], OPUS_CP_PARTNERS [3 col(s)], OPUS_BJAZ_T_CKYC_OTP [1
--- col(s)], OPUS_BJAZ_T_EKYC [1 col(s)], OPUS_BJAZ_T_KYC_DETAILS [1 col(s)]. OBJECT
--- satellite: MOBILENUMBER hold one entry per source table (sat value = col:"<TABLE>";
--- expected = MAX over that table's RAW rows, as the macro does). Plain columns are MAX
--- across all tables and are not compared per table. A table absent from the latest
--- incremental window is absent from the latest row -- compare after a full load.
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(to_json(object_construct_keep_null('ALTERNATEEMAILADDRESS', ALTERNATEEMAILADDRESS, 'ALTERNATEMOBILENUMBER', ALTERNATEMOBILENUMBER, 'EMAILADDRESS', EMAILADDRESS, 'FAXNUMBER', FAXNUMBER, 'LANDLINENUMBER', LANDLINENUMBER, 'MOBILENUMBER', MOBILENUMBER, 'PREFERREDCONTACTTIME', PREFERREDCONTACTTIME, 'STDCODE', STDCODE))) as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-     where RECORD_SOURCE = 'OPUS'
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 9. OPUS — SAT_COMMON_GEO [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- LOCATION_HKEY; 1 RECORD_SOURCE group(s):
--- stitch_shared__common_admin_geography_common_geo (2 tables) [4 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(REGIONCODE), '^^') || '||' || coalesce(to_varchar(REGIONNAME), '^^') || '||' || coalesce(to_varchar(SUBZONECODE), '^^') || '||' || coalesce(to_varchar(ZONECODE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_GEO
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_COMMON_GEO' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(LOCATION_HKEY, 'HEX'), null))
-                   within group (order by LOCATION_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 10. OPUS — SAT_DOCUMENT_DEFINITION [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
--- DOCUMENT_HKEY; 3 RECORD_SOURCE group(s): OPUS_BJAZ_T_KYC_OCR [4 col(s)],
--- OPUS_BJAZ_T_KYC_POA_DOCUMENT [8 col(s)], OPUS_BJAZ_T_KYC_POI_DOCUMENT [8 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select DOCUMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(DOCUMENTCATEGORY), '^^') || '||' || coalesce(to_varchar(DOCUMENTFORMAT), '^^') || '||' || coalesce(to_varchar(DOCUMENTNAME), '^^') || '||' || coalesce(to_varchar(DOCUMENTREFERENCENUMBER), '^^') || '||' || coalesce(to_varchar(DOCUMENTSTATUS), '^^') || '||' || coalesce(to_varchar(DOCUMENTTYPE), '^^') || '||' || coalesce(to_varchar(EXPIRYDATE), '^^') || '||' || coalesce(to_varchar(STORAGEREFERENCE), '^^') || '||' || coalesce(to_varchar(VERIFICATIONSTATUS), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_DOCUMENT_DEFINITION
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by DOCUMENT_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by DOCUMENT_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_DOCUMENT_DEFINITION' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(DOCUMENT_HKEY, 'HEX'), null))
-                   within group (order by DOCUMENT_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 11. OPUS — SAT_LNK_CLAIM_PARTY_ROLE   [Implemented]
+-- 1. OPUS — [M1 | automate_dv.ma_sat] SAT_LNK_CLAIM_PARTY_ROLE   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK CLAIM_PARTY_HKEY, child key PARTY_ROLE_TYPE, ROLE_SEQUENCE; 1
@@ -391,71 +65,22 @@ select 'OPUS' as project, 'SAT_LNK_CLAIM_PARTY_ROLE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 12. OPUS — SAT_LNK_PARTY_ROLE_CORE [Partner LOB]   [Implemented]
--- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
--- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
--- automate_dv.ma_sat; PK PARTY_HKEY, child key ROLECODE, ROLESEQUENCE; 1 RECORD_SOURCE
--- group(s): OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS [1 col(s)]. Multi-active: compared per
--- (key, child key); latest = max LOAD_DATETIME per member.
-----------------------------------------------------------------------------------------
-with grp as (  -- one signature per loaded group (key, RECORD_SOURCE, LOAD_DATETIME)
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME,
-           listagg(to_varchar(ROLECODE) || to_varchar(ROLESEQUENCE) || ':' || to_varchar(HASHDIFF, 'HEX'), ',')
-               within group (order by ROLECODE, ROLESEQUENCE, HASHDIFF) as sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_PARTY_ROLE_CORE
-     where startswith(RECORD_SOURCE, 'OPUS_')
-     group by PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME
-),
-seq as (
-    select *, lag(sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_sig from grp
-)
-select 'OPUS' as project, 'SAT_LNK_PARTY_ROLE_CORE' as satellite,
-       count(*) as versions, count_if(sig = prev_sig) as unchanged_reinserts,
-       array_slice(array_agg(iff(sig = prev_sig, to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 13. OPUS — SAT_LNK_POLICY_PARTY_ROLE [Partner LOB]   [Implemented]
--- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
--- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
--- automate_dv.ma_sat; PK POLICY_PARTY_HKEY, child key ROLE_SEQUENCE; 1 RECORD_SOURCE
--- group(s): OPUS_OCP_INTERESTED_PARTIES [1 col(s)]. Multi-active: compared per (key,
--- child key); latest = max LOAD_DATETIME per member.
-----------------------------------------------------------------------------------------
-with grp as (  -- one signature per loaded group (key, RECORD_SOURCE, LOAD_DATETIME)
-    select POLICY_PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME,
-           listagg(to_varchar(ROLE_SEQUENCE) || ':' || to_varchar(HASHDIFF, 'HEX'), ',')
-               within group (order by ROLE_SEQUENCE, HASHDIFF) as sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_POLICY_PARTY_ROLE
-     where startswith(RECORD_SOURCE, 'OPUS_')
-     group by POLICY_PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME
-),
-seq as (
-    select *, lag(sig) over (partition by POLICY_PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_sig from grp
-)
-select 'OPUS' as project, 'SAT_LNK_POLICY_PARTY_ROLE' as satellite,
-       count(*) as versions, count_if(sig = prev_sig) as unchanged_reinserts,
-       array_slice(array_agg(iff(sig = prev_sig, to_varchar(POLICY_PARTY_HKEY, 'HEX'), null)) within group (order by POLICY_PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 14. OPUS — SAT_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
+-- 2. OPUS — [M1 | sat_multi_source] SAT_AUG_PARTY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY [5 col(s)].
+-- does not store, e.g. a shared stage). augmented satellite, sat_multi_source; PK
+-- PARTY_HKEY; 10 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [8 col(s)],
+-- OPUS_BJAZ_INTERMEDIARY [3 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [3 col(s)],
+-- OPUS_BJAZ_HCF_MEMBER_DTLS [1 col(s)], OPUS_BJAZ_SPP_MEMBER_DTLS [4 col(s)],
+-- OPUS_BJAZ_HC_PART_EXTN [1 col(s)], OPUS_CP_PARTNERS [2 col(s)],
+-- OPUS_BJAZ_CLM_SUPP_EXTN [6 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [1 col(s)],
+-- OPUS_BJAZ_HM_HOSPITAL_MASTER [3 col(s)].
 ----------------------------------------------------------------------------------------
 with base as (
     select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(AGENT_CODE), '^^') || '||' || coalesce(to_varchar(IRDAI_AGENT_LICENCE_NUMBER), '^^') || '||' || coalesce(to_varchar(LICENCE_CATEGORY), '^^') || '||' || coalesce(to_varchar(LICENCE_EXPIRY_DATE), '^^') || '||' || coalesce(to_varchar(LICENCE_ISSUE_DATE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_AGENT
+           md5(coalesce(to_varchar(ADHAAR_PAN_LINK_FLAG), '^^') || '||' || coalesce(to_varchar(BMI), '^^') || '||' || coalesce(to_varchar(BMI_FLAG), '^^') || '||' || coalesce(to_varchar(CAUSE_OF_DEATH), '^^') || '||' || coalesce(to_varchar(DATE_OF_BIRTH_M), '^^') || '||' || coalesce(to_varchar(ECS_MANDATE_STATUS), '^^') || '||' || coalesce(to_varchar(EXISTING_CUSTOMER_INDICATOR), '^^') || '||' || coalesce(to_varchar(HEIGHT_FEET), '^^') || '||' || coalesce(to_varchar(HEIGHT_INCHES), '^^') || '||' || coalesce(to_varchar(HNI_FLAG), '^^') || '||' || coalesce(to_varchar(IMPS_ACTIVE_DATE), '^^') || '||' || coalesce(to_varchar(IMPS_END_DATE), '^^') || '||' || coalesce(to_varchar(IT_RETURN_2YR), '^^') || '||' || coalesce(to_varchar(IT_STATUS), '^^') || '||' || coalesce(to_varchar(MARRIAGE_ANNIVERSARY_DATE), '^^') || '||' || coalesce(to_varchar(MONTHLY_SALARY), '^^') || '||' || coalesce(to_varchar(NUMBER_OF_DAUGHTERS), '^^') || '||' || coalesce(to_varchar(NUMBER_OF_SONS), '^^') || '||' || coalesce(to_varchar(OTHER_OCC), '^^') || '||' || coalesce(to_varchar(PAN_AADHAR_LINKED), '^^') || '||' || coalesce(to_varchar(PAN_ACK_DT), '^^') || '||' || coalesce(to_varchar(PAN_APP_NO), '^^') || '||' || coalesce(to_varchar(PAN_STATUS), '^^') || '||' || coalesce(to_varchar(PARENT_ENTITY_REFERENCE), '^^') || '||' || coalesce(to_varchar(PAYMENT_MODE), '^^') || '||' || coalesce(to_varchar(PREGNANT_MONTHS), '^^') || '||' || coalesce(to_varchar(PRIOR_CLAIM_REASON), '^^') || '||' || coalesce(to_varchar(PROOF_OF_DEATH_TYPE), '^^') || '||' || coalesce(to_varchar(SMOKE_CONSUMP), '^^') || '||' || coalesce(to_varchar(TWO_YR_ITR_FLAG), '^^') || '||' || coalesce(to_varchar(WEBSITE_URL), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
      where startswith(RECORD_SOURCE, 'OPUS_')
 ),
 seq as (
@@ -464,7 +89,7 @@ seq as (
            lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
       from base
 )
-select 'OPUS' as project, 'SAT_LNK_ROLE_AGENT' as satellite,
+select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite,
        count(*) as versions,
        count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
        count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
@@ -476,54 +101,21 @@ select 'OPUS' as project, 'SAT_LNK_ROLE_AGENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 15. OPUS — SAT_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_CLM_INTERESTED_PARTIES [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(CUSTOMER_CATEGORY), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_CUSTOMER
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_LNK_ROLE_CUSTOMER' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 16. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 3. OPUS — [M1 | sat_multi_source] SAT_PARTY_VEHICLE_PRIOR_INSURANCE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
 -- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
--- PARTY_HKEY; 12 RECORD_SOURCE group(s): OPUS_BJAZ_CTNGY_FF_DTLS_EXTN [2 col(s)],
--- OPUS_BJAZ_CTNGY_GC_MEM_DATA [1 col(s)], OPUS_BJAZ_CTNGY_PA_MEM_DTLS [2 col(s)],
--- OPUS_BJAZ_EC_MEM_DTLS_EXTN [2 col(s)], OPUS_BJAZ_HCF_MEMBER_DTLS [2 col(s)],
--- OPUS_BJAZ_HC_PART_EXTN [2 col(s)], OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [2 col(s)],
--- OPUS_BJAZ_HM_MEMBER_DTLS [2 col(s)], OPUS_BJAZ_PA_DETL_EXTN [2 col(s)],
--- OPUS_BJAZ_SH_MEM_DTLS_EXTN [2 col(s)], OPUS_BJAZ_SPP_MEMBER_DTLS [2 col(s)],
--- OPUS_BJAZ_STARPKG_FF_DTLS [2 col(s)].
+-- PARTY_HKEY; 8 RECORD_SOURCE group(s): OPUS_BJAZ_CTNGY_PA_MEM_DTLS [1 col(s)],
+-- OPUS_BJAZ_EC_MEM_DTLS_EXTN [4 col(s)], OPUS_BJAZ_HCF_MEMBER_DTLS [3 col(s)],
+-- OPUS_BJAZ_HC_PART_EXTN [1 col(s)], OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [5 col(s)],
+-- OPUS_BJAZ_PA_DETL_EXTN [1 col(s)], OPUS_BJAZ_SH_MEM_DTLS_EXTN [2 col(s)],
+-- OPUS_BJAZ_SPP_MEMBER_DTLS [3 col(s)].
 ----------------------------------------------------------------------------------------
 with base as (
     select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(APPOINTEE_NAME), '^^') || '||' || coalesce(to_varchar(RELATIONSHIP_TO_INSURED), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
+           md5(coalesce(to_varchar(CONTINUITYINDICATOR), '^^') || '||' || coalesce(to_varchar(PREVIOUSEXPIRYDATE), '^^') || '||' || coalesce(to_varchar(PREVIOUSINSURERNAME), '^^') || '||' || coalesce(to_varchar(PREVIOUSPOLICYNUMBER), '^^') || '||' || coalesce(to_varchar(PREVIOUSSUMINSURED), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
      where startswith(RECORD_SOURCE, 'OPUS_')
 ),
 seq as (
@@ -532,7 +124,7 @@ seq as (
            lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
       from base
 )
-select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite,
+select 'OPUS' as project, 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' as satellite,
        count(*) as versions,
        count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
        count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
@@ -544,326 +136,39 @@ select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — SAT_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
+-- 4. OPUS — [M1 | sat_multi_source] SAT_POLICY_CERTIFICATE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
 -- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
--- PARTY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_HM_HOSPITAL_MASTER [5 col(s)],
--- OPUS_CLM_SUPPLIERS [5 col(s)].
+-- POLICY_HKEY; 3 RECORD_SOURCE group(s): OPUS_BA_HCP_DT_MEM [1 col(s)],
+-- OPUS_BJAZ_CTNGY_PA_MEM_DTLS [1 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [1 col(s)].
 ----------------------------------------------------------------------------------------
 with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(EMPANELMENT_DATE), '^^') || '||' || coalesce(to_varchar(EMPANELMENT_STATUS), '^^') || '||' || coalesce(to_varchar(NETWORK_INDICATOR), '^^') || '||' || coalesce(to_varchar(PREFERRED_PROVIDER_INDICATOR), '^^') || '||' || coalesce(to_varchar(PROVIDER_TYPE), '^^') || '||' || coalesce(to_varchar(RE_EMPANELMENT_DUE_DATE), '^^') || '||' || coalesce(to_varchar(SPECIALISATION), '^^') || '||' || coalesce(to_varchar(SUPPLIER_ID), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_PROVIDER
+    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(coalesce(to_varchar(ENROLMENTDATE), '^^') || '||' || coalesce(to_varchar(MEMBERSTATUS), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE
      where startswith(RECORD_SOURCE, 'OPUS_')
 ),
 seq as (
     select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+           lag(HASHDIFF) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
       from base
 )
-select 'OPUS' as project, 'SAT_LNK_ROLE_PROVIDER' as satellite,
+select 'OPUS' as project, 'SAT_POLICY_CERTIFICATE' as satellite,
        count(*) as versions,
        count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
        count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(POLICY_HKEY, 'HEX'), null))
+                   within group (order by POLICY_HKEY), 0, 3) as examples,
        iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
   from seq;
 
 
 
 ----------------------------------------------------------------------------------------
--- 18. OPUS — SAT_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_CLM_SUPP_EXTN [2 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(IRDAI_SURVEYOR_LICENCE_NUMBER), '^^') || '||' || coalesce(to_varchar(LICENCE_CATEGORY), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_SURVEYOR
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_LNK_ROLE_SURVEYOR' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 19. OPUS — SAT_PARTY_AML_SCREENING [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [2 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(CRSREPORTABLEINDICATOR), '^^') || '||' || coalesce(to_varchar(TAXRESIDENCYCOUNTRY), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_AML_SCREENING
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_PARTY_AML_SCREENING' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 20. OPUS — SAT_PARTY_BANKING [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
--- PARTY_HKEY; 4 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [3 col(s)],
--- OPUS_BJAZ_CLM_SUPP_EXTN [2 col(s)], OPUS_BJAZ_CTNGY_PA_MEM_DTLS [2 col(s)],
--- OPUS_BJAZ_HM_MEMBER_DTLS [3 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(ACCOUNTNUMBERMASKED), '^^') || '||' || coalesce(to_varchar(BANKCODE), '^^') || '||' || coalesce(to_varchar(BANKNAME), '^^') || '||' || coalesce(to_varchar(IFSCCODE), '^^') || '||' || coalesce(to_varchar(MICRCODE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_PARTY_BANKING' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 21. OPUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- PARTY_HKEY; 1 RECORD_SOURCE group(s): stitch_party_claim_history (6 tables) [2
--- col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(TOTALCLAIMAMOUNT), '^^') || '||' || coalesce(to_varchar(TOTALCLAIMCOUNT), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CLAIM_HISTORY
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 22. OPUS — SAT_PARTY_CONTACT_ADDRESS_LINK [Partner LOB]   [Implemented]
--- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
--- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
--- ma_sat_multi_source; PK PARTY_LOCATION_HKEY, child key ADDRESS_USAGE_TYPE; 2
--- RECORD_SOURCE group(s): OPUS_BJAZ_CP_ADDRESS_LINK [1 col(s)],
--- OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [0 col(s)]. Multi-active: compared per (key, child
--- key); latest = max LOAD_DATETIME per member.
-----------------------------------------------------------------------------------------
-with grp as (  -- one signature per loaded group (key, RECORD_SOURCE, LOAD_DATETIME)
-    select PARTY_LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME,
-           listagg(to_varchar(ADDRESS_USAGE_TYPE) || ':' || to_varchar(HASHDIFF, 'HEX'), ',')
-               within group (order by ADDRESS_USAGE_TYPE, HASHDIFF) as sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CONTACT_ADDRESS_LINK
-     where startswith(RECORD_SOURCE, 'OPUS_')
-     group by PARTY_LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME
-),
-seq as (
-    select *, lag(sig) over (partition by PARTY_LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_sig from grp
-)
-select 'OPUS' as project, 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite,
-       count(*) as versions, count_if(sig = prev_sig) as unchanged_reinserts,
-       array_slice(array_agg(iff(sig = prev_sig, to_varchar(PARTY_LOCATION_HKEY, 'HEX'), null)) within group (order by PARTY_LOCATION_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 23. OPUS — SAT_PARTY_EMPLOYMENT [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- stitch_shared__common_communication_preference_party_employment (1 tables) [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(EMPLOYMENTSTATUS), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 24. OPUS — SAT_PARTY_GROUP_CENSUS [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
--- PARTY_HKEY; 10 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [1 col(s)],
--- OPUS_BJAZ_CLM_SUPP_EXTN [1 col(s)], OPUS_BJAZ_CTNGY_PA_MEM_DTLS [1 col(s)],
--- OPUS_BJAZ_EC_MEM_DTLS_EXTN [1 col(s)], OPUS_BJAZ_HCF_MEMBER_DTLS [1 col(s)],
--- OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [1 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [4 col(s)],
--- OPUS_BJAZ_PA_DETL_EXTN [1 col(s)], OPUS_BJAZ_SH_MEM_DTLS_EXTN [1 col(s)],
--- OPUS_BJAZ_SPP_MEMBER_DTLS [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(ACTIVEINDICATOR), '^^') || '||' || coalesce(to_varchar(DESIGNATIONBAND), '^^') || '||' || coalesce(to_varchar(EMPLOYEEID), '^^') || '||' || coalesce(to_varchar(LOCATIONREFERENCE), '^^') || '||' || coalesce(to_varchar(MEMBERREFERENCE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_PARTY_GROUP_CENSUS' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 25. OPUS — SAT_PARTY_GROUP_HOUSEHOLD [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(HOUSEHOLDIDENTIFIER), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_HOUSEHOLD
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_PARTY_GROUP_HOUSEHOLD' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 26. OPUS — SAT_PARTY_HEALTH_PROFILE [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
--- PARTY_HKEY; 3 RECORD_SOURCE group(s): stitch_party_health_profile (4 tables) [5
--- col(s)], OPUS_BJAZ_M_KYC_DRIVING_LICENCE [0 col(s)], OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [0
--- col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(BODYMASSINDEX), '^^') || '||' || coalesce(to_varchar(HEIGHT), '^^') || '||' || coalesce(to_varchar(MATERNITYSTATUS), '^^') || '||' || coalesce(to_varchar(SMOKERINDICATOR), '^^') || '||' || coalesce(to_varchar(WEIGHT), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 27. OPUS — SAT_PARTY_IDENTIFICATION [Partner LOB]   [Implemented]
+-- 5. OPUS — [M1 | sat_multi_source(OBJECT)] SAT_PARTY_IDENTIFICATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -908,7 +213,71 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — SAT_PARTY_IDENTITY [Partner LOB]   [Implemented]
+-- 6. OPUS — [M1 | stitch_incremental] SAT_COMMON_ADDRESS   [Implemented]
+-- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
+-- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
+-- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
+-- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
+-- LOCATION_HKEY; 2 RECORD_SOURCE group(s): stitch_common_address (5 tables) [11 col(s)],
+-- stitch_kyc_common_address (6 tables) [11 col(s)].
+----------------------------------------------------------------------------------------
+with base as (
+    select LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(coalesce(to_varchar(ADDRESSLINE1), '^^') || '||' || coalesce(to_varchar(ADDRESSLINE2), '^^') || '||' || coalesce(to_varchar(ADDRESSLINE3), '^^') || '||' || coalesce(to_varchar(BUILDINGNAME), '^^') || '||' || coalesce(to_varchar(CITY), '^^') || '||' || coalesce(to_varchar(COUNTRYCODE), '^^') || '||' || coalesce(to_varchar(COUNTRYNAME), '^^') || '||' || coalesce(to_varchar(DOORNUMBER), '^^') || '||' || coalesce(to_varchar(POSTALCODE), '^^') || '||' || coalesce(to_varchar(STATENAME), '^^') || '||' || coalesce(to_varchar(STREETNAME), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
+     where startswith(RECORD_SOURCE, 'OPUS_')
+),
+seq as (
+    select *,
+           lag(HASHDIFF) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+      from base
+)
+select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite,
+       count(*) as versions,
+       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
+       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(LOCATION_HKEY, 'HEX'), null))
+                   within group (order by LOCATION_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 7. OPUS — [M1 | stitch_incremental] SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]
+-- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
+-- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
+-- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
+-- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
+-- LOCATION_HKEY; 1 RECORD_SOURCE group(s):
+-- stitch_shared__common_admin_geography_common_geo (2 tables) [1 col(s)].
+----------------------------------------------------------------------------------------
+with base as (
+    select LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(coalesce(to_varchar(PINCODE), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADMIN_GEOGRAPHY
+     where startswith(RECORD_SOURCE, 'OPUS_')
+),
+seq as (
+    select *,
+           lag(HASHDIFF) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+      from base
+)
+select 'OPUS' as project, 'SAT_COMMON_ADMIN_GEOGRAPHY' as satellite,
+       count(*) as versions,
+       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
+       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(LOCATION_HKEY, 'HEX'), null))
+                   within group (order by LOCATION_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 8. OPUS — [M1 | stitch_incremental] SAT_PARTY_IDENTITY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -943,7 +312,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS [Partner LOB]   [Implemented]
+-- 9. OPUS — [M1 | stitch_incremental] SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -976,7 +345,187 @@ select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 30. OPUS — SAT_PARTY_KYC [Partner LOB]   [Implemented]
+-- 10. OPUS — [M1 | stitch_incremental] SAT_POLICY_HEADER   [Implemented]
+-- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
+-- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
+-- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
+-- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
+-- POLICY_HKEY; 1 RECORD_SOURCE group(s): stitch_policy_header (10 tables) [5 col(s)].
+----------------------------------------------------------------------------------------
+with base as (
+    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(coalesce(to_varchar(MASTERPOLICYREFERENCE), '^^') || '||' || coalesce(to_varchar(POLICYREFERENCENUMBER), '^^') || '||' || coalesce(to_varchar(POLICYTERM), '^^') || '||' || coalesce(to_varchar(RISKEXPIRYDATE), '^^') || '||' || coalesce(to_varchar(RISKINCEPTIONDATE), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
+     where startswith(RECORD_SOURCE, 'OPUS_')
+),
+seq as (
+    select *,
+           lag(HASHDIFF) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+      from base
+)
+select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite,
+       count(*) as versions,
+       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
+       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(POLICY_HKEY, 'HEX'), null))
+                   within group (order by POLICY_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 11. OPUS — [M2 | automate_dv.ma_sat] SAT_LNK_POLICY_PARTY_ROLE   [Implemented]
+-- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
+-- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
+-- automate_dv.ma_sat; PK POLICY_PARTY_HKEY, child key ROLE_SEQUENCE; 1 RECORD_SOURCE
+-- group(s): OPUS_OCP_INTERESTED_PARTIES [1 col(s)]. Multi-active: compared per (key,
+-- child key); latest = max LOAD_DATETIME per member.
+----------------------------------------------------------------------------------------
+with grp as (  -- one signature per loaded group (key, RECORD_SOURCE, LOAD_DATETIME)
+    select POLICY_PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME,
+           listagg(to_varchar(ROLE_SEQUENCE) || ':' || to_varchar(HASHDIFF, 'HEX'), ',')
+               within group (order by ROLE_SEQUENCE, HASHDIFF) as sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_POLICY_PARTY_ROLE
+     where startswith(RECORD_SOURCE, 'OPUS_')
+     group by POLICY_PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME
+),
+seq as (
+    select *, lag(sig) over (partition by POLICY_PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_sig from grp
+)
+select 'OPUS' as project, 'SAT_LNK_POLICY_PARTY_ROLE' as satellite,
+       count(*) as versions, count_if(sig = prev_sig) as unchanged_reinserts,
+       array_slice(array_agg(iff(sig = prev_sig, to_varchar(POLICY_PARTY_HKEY, 'HEX'), null)) within group (order by POLICY_PARTY_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 12. OPUS — [M2 | ma_sat_multi_source] SAT_AUG_POLICY   [Implemented]
+-- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
+-- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
+-- ma_sat_multi_source; PK POLICY_HKEY, child key MEMBER_SEQUENCE; 5 RECORD_SOURCE
+-- group(s): OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [1 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [1
+-- col(s)], OPUS_BJAZ_PA_DETL_EXTN [5 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [1 col(s)],
+-- OPUS_BJAZ_SH_MEM_DTLS_EXTN [1 col(s)]. Multi-active: compared per (key, child key);
+-- latest = max LOAD_DATETIME per member.
+----------------------------------------------------------------------------------------
+with grp as (  -- one signature per loaded group (key, RECORD_SOURCE, LOAD_DATETIME)
+    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME,
+           listagg(to_varchar(MEMBER_SEQUENCE) || ':' || to_varchar(HASHDIFF, 'HEX'), ',')
+               within group (order by MEMBER_SEQUENCE, HASHDIFF) as sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY
+     where startswith(RECORD_SOURCE, 'OPUS_')
+     group by POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME
+),
+seq as (
+    select *, lag(sig) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_sig from grp
+)
+select 'OPUS' as project, 'SAT_AUG_POLICY' as satellite,
+       count(*) as versions, count_if(sig = prev_sig) as unchanged_reinserts,
+       array_slice(array_agg(iff(sig = prev_sig, to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 13. OPUS — [M2 | ma_sat_multi_source] SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
+-- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
+-- ma_sat_multi_source; PK PARTY_LOCATION_HKEY, child key ADDRESS_USAGE_TYPE; 2
+-- RECORD_SOURCE group(s): OPUS_BJAZ_CP_ADDRESS_LINK [1 col(s)],
+-- OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [0 col(s)]. Multi-active: compared per (key, child
+-- key); latest = max LOAD_DATETIME per member.
+----------------------------------------------------------------------------------------
+with grp as (  -- one signature per loaded group (key, RECORD_SOURCE, LOAD_DATETIME)
+    select PARTY_LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME,
+           listagg(to_varchar(ADDRESS_USAGE_TYPE) || ':' || to_varchar(HASHDIFF, 'HEX'), ',')
+               within group (order by ADDRESS_USAGE_TYPE, HASHDIFF) as sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CONTACT_ADDRESS_LINK
+     where startswith(RECORD_SOURCE, 'OPUS_')
+     group by PARTY_LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME
+),
+seq as (
+    select *, lag(sig) over (partition by PARTY_LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_sig from grp
+)
+select 'OPUS' as project, 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite,
+       count(*) as versions, count_if(sig = prev_sig) as unchanged_reinserts,
+       array_slice(array_agg(iff(sig = prev_sig, to_varchar(PARTY_LOCATION_HKEY, 'HEX'), null)) within group (order by PARTY_LOCATION_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 14. OPUS — [M2 | sat_multi_source] SAT_AUG_KYC_DOCUMENT   [Implemented]
+-- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
+-- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
+-- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
+-- does not store, e.g. a shared stage). augmented satellite, sat_multi_source; PK
+-- DOCUMENT_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_T_KYC_POA_DOCUMENT [1 col(s)],
+-- OPUS_BJAZ_T_KYC_POI_DOCUMENT [1 col(s)].
+----------------------------------------------------------------------------------------
+with base as (
+    select DOCUMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(coalesce(to_varchar(VERIFICATION_RESPONSE_MESSAGE), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_DOCUMENT
+     where startswith(RECORD_SOURCE, 'OPUS_')
+),
+seq as (
+    select *,
+           lag(HASHDIFF) over (partition by DOCUMENT_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by DOCUMENT_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+      from base
+)
+select 'OPUS' as project, 'SAT_AUG_KYC_DOCUMENT' as satellite,
+       count(*) as versions,
+       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
+       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(DOCUMENT_HKEY, 'HEX'), null))
+                   within group (order by DOCUMENT_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 15. OPUS — [M2 | sat_multi_source] SAT_PARTY_BANKING   [Implemented]
+-- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
+-- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
+-- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
+-- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
+-- PARTY_HKEY; 4 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [3 col(s)],
+-- OPUS_BJAZ_CLM_SUPP_EXTN [2 col(s)], OPUS_BJAZ_CTNGY_PA_MEM_DTLS [2 col(s)],
+-- OPUS_BJAZ_HM_MEMBER_DTLS [3 col(s)].
+----------------------------------------------------------------------------------------
+with base as (
+    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(coalesce(to_varchar(ACCOUNTNUMBERMASKED), '^^') || '||' || coalesce(to_varchar(BANKCODE), '^^') || '||' || coalesce(to_varchar(BANKNAME), '^^') || '||' || coalesce(to_varchar(IFSCCODE), '^^') || '||' || coalesce(to_varchar(MICRCODE), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
+     where startswith(RECORD_SOURCE, 'OPUS_')
+),
+seq as (
+    select *,
+           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+      from base
+)
+select 'OPUS' as project, 'SAT_PARTY_BANKING' as satellite,
+       count(*) as versions,
+       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
+       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
+                   within group (order by PARTY_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 16. OPUS — [M2 | sat_multi_source] SAT_PARTY_KYC   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1009,7 +558,255 @@ select 'OPUS' as project, 'SAT_PARTY_KYC' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 31. OPUS — SAT_PARTY_KYC_REFERENCE [Partner LOB]   [Implemented]
+-- 17. OPUS — [M2 | stitch_incremental] SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
+-- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
+-- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
+-- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
+-- PARTY_HKEY; 1 RECORD_SOURCE group(s):
+-- stitch_shared__common_communication_preference_party_employment (1 tables) [2 col(s)].
+----------------------------------------------------------------------------------------
+with base as (
+    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(coalesce(to_varchar(CORRESPONDENCELANGUAGE), '^^') || '||' || coalesce(to_varchar(MARKETINGOPTININDICATOR), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_COMMUNICATION_PREFERENCE
+     where startswith(RECORD_SOURCE, 'OPUS_')
+),
+seq as (
+    select *,
+           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+      from base
+)
+select 'OPUS' as project, 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite,
+       count(*) as versions,
+       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
+       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
+                   within group (order by PARTY_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 18. OPUS — [M2 | stitch_incremental] SAT_COMMON_GEO   [Implemented]
+-- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
+-- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
+-- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
+-- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
+-- LOCATION_HKEY; 1 RECORD_SOURCE group(s):
+-- stitch_shared__common_admin_geography_common_geo (2 tables) [4 col(s)].
+----------------------------------------------------------------------------------------
+with base as (
+    select LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(coalesce(to_varchar(REGIONCODE), '^^') || '||' || coalesce(to_varchar(REGIONNAME), '^^') || '||' || coalesce(to_varchar(SUBZONECODE), '^^') || '||' || coalesce(to_varchar(ZONECODE), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_GEO
+     where startswith(RECORD_SOURCE, 'OPUS_')
+),
+seq as (
+    select *,
+           lag(HASHDIFF) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+      from base
+)
+select 'OPUS' as project, 'SAT_COMMON_GEO' as satellite,
+       count(*) as versions,
+       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
+       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(LOCATION_HKEY, 'HEX'), null))
+                   within group (order by LOCATION_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 19. OPUS — [M2 | stitch_incremental] SAT_PARTY_EMPLOYMENT   [Implemented]
+-- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
+-- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
+-- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
+-- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
+-- PARTY_HKEY; 1 RECORD_SOURCE group(s):
+-- stitch_shared__common_communication_preference_party_employment (1 tables) [1 col(s)].
+----------------------------------------------------------------------------------------
+with base as (
+    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(coalesce(to_varchar(EMPLOYMENTSTATUS), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
+     where startswith(RECORD_SOURCE, 'OPUS_')
+),
+seq as (
+    select *,
+           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+      from base
+)
+select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite,
+       count(*) as versions,
+       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
+       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
+                   within group (order by PARTY_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 20. OPUS — [M2 | stitch_incremental] SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
+-- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
+-- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
+-- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
+-- PARTY_HKEY; 3 RECORD_SOURCE group(s): stitch_party_health_profile (4 tables) [5
+-- col(s)], OPUS_BJAZ_M_KYC_DRIVING_LICENCE [0 col(s)], OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [0
+-- col(s)].
+----------------------------------------------------------------------------------------
+with base as (
+    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(coalesce(to_varchar(BODYMASSINDEX), '^^') || '||' || coalesce(to_varchar(HEIGHT), '^^') || '||' || coalesce(to_varchar(MATERNITYSTATUS), '^^') || '||' || coalesce(to_varchar(SMOKERINDICATOR), '^^') || '||' || coalesce(to_varchar(WEIGHT), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
+     where startswith(RECORD_SOURCE, 'OPUS_')
+),
+seq as (
+    select *,
+           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+      from base
+)
+select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite,
+       count(*) as versions,
+       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
+       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
+                   within group (order by PARTY_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 21. OPUS — [M2 | stitch_incremental] SAT_PRODUCT_DEFINITION   [Implemented]
+-- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
+-- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
+-- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
+-- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
+-- PRODUCT_HKEY; 1 RECORD_SOURCE group(s): stitch_product_definition (3 tables) [3
+-- col(s)].
+----------------------------------------------------------------------------------------
+with base as (
+    select PRODUCT_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(coalesce(to_varchar(PRODUCTCATEGORY), '^^') || '||' || coalesce(to_varchar(PRODUCTGENERATION), '^^') || '||' || coalesce(to_varchar(PRODUCTNAME), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
+     where startswith(RECORD_SOURCE, 'OPUS_')
+),
+seq as (
+    select *,
+           lag(HASHDIFF) over (partition by PRODUCT_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by PRODUCT_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+      from base
+)
+select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite,
+       count(*) as versions,
+       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
+       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PRODUCT_HKEY, 'HEX'), null))
+                   within group (order by PRODUCT_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 22. OPUS — [M3 | automate_dv.ma_sat] SAT_LNK_PARTY_ROLE_CORE   [Implemented]
+-- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
+-- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
+-- automate_dv.ma_sat; PK PARTY_HKEY, child key ROLECODE, ROLESEQUENCE; 1 RECORD_SOURCE
+-- group(s): OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS [1 col(s)]. Multi-active: compared per
+-- (key, child key); latest = max LOAD_DATETIME per member.
+----------------------------------------------------------------------------------------
+with grp as (  -- one signature per loaded group (key, RECORD_SOURCE, LOAD_DATETIME)
+    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME,
+           listagg(to_varchar(ROLECODE) || to_varchar(ROLESEQUENCE) || ':' || to_varchar(HASHDIFF, 'HEX'), ',')
+               within group (order by ROLECODE, ROLESEQUENCE, HASHDIFF) as sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_PARTY_ROLE_CORE
+     where startswith(RECORD_SOURCE, 'OPUS_')
+     group by PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME
+),
+seq as (
+    select *, lag(sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_sig from grp
+)
+select 'OPUS' as project, 'SAT_LNK_PARTY_ROLE_CORE' as satellite,
+       count(*) as versions, count_if(sig = prev_sig) as unchanged_reinserts,
+       array_slice(array_agg(iff(sig = prev_sig, to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 23. OPUS — [M3 | ma_sat_multi_source] SAT_POLICY_CLASSIFICATION   [Implemented]
+-- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
+-- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
+-- ma_sat_multi_source; PK POLICY_HKEY, child key CLASSIFICATIONTYPE; 4 RECORD_SOURCE
+-- group(s): OPUS_BJAZ_T_KYC_DETAILS [1 col(s)], OPUS_BJAZ_T_KYC_INCOMING [1 col(s)],
+-- OPUS_BJAZ_T_KYC_POA_DOCUMENT [1 col(s)], OPUS_BJAZ_T_KYC_POI_DOCUMENT [1 col(s)].
+-- Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
+----------------------------------------------------------------------------------------
+with grp as (  -- one signature per loaded group (key, RECORD_SOURCE, LOAD_DATETIME)
+    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME,
+           listagg(to_varchar(CLASSIFICATIONTYPE) || ':' || to_varchar(HASHDIFF, 'HEX'), ',')
+               within group (order by CLASSIFICATIONTYPE, HASHDIFF) as sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
+     where startswith(RECORD_SOURCE, 'OPUS_')
+     group by POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME
+),
+seq as (
+    select *, lag(sig) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_sig from grp
+)
+select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite,
+       count(*) as versions, count_if(sig = prev_sig) as unchanged_reinserts,
+       array_slice(array_agg(iff(sig = prev_sig, to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 24. OPUS — [M3 | sat_multi_source] SAT_AUG_LOCATION   [Implemented]
+-- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
+-- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
+-- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
+-- does not store, e.g. a shared stage). augmented satellite, sat_multi_source; PK
+-- LOCATION_HKEY; 2 RECORD_SOURCE group(s): OPUS_CP_ADDRESSES [2 col(s)],
+-- OPUS_CP_PARTNERS [1 col(s)].
+----------------------------------------------------------------------------------------
+with base as (
+    select LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(coalesce(to_varchar(ADDRESS_LINE4), '^^') || '||' || coalesce(to_varchar(ADDRESS_LINE5), '^^') || '||' || coalesce(to_varchar(CARE_OF_NAME), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOCATION
+     where startswith(RECORD_SOURCE, 'OPUS_')
+),
+seq as (
+    select *,
+           lag(HASHDIFF) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+      from base
+)
+select 'OPUS' as project, 'SAT_AUG_LOCATION' as satellite,
+       count(*) as versions,
+       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
+       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(LOCATION_HKEY, 'HEX'), null))
+                   within group (order by LOCATION_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 25. OPUS — [M3 | sat_multi_source] SAT_PARTY_KYC_REFERENCE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1042,291 +839,7 @@ select 'OPUS' as project, 'SAT_PARTY_KYC_REFERENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 32. OPUS — SAT_PARTY_ORGANISATION_PROFILE [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
--- PARTY_HKEY; 3 RECORD_SOURCE group(s): stitch_party_organisation_profile (3 tables) [8
--- col(s)], OPUS_BJAZ_M_KYC_GSTN [1 col(s)], OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [0 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(ANNUALTURNOVER), '^^') || '||' || coalesce(to_varchar(DATEOFINCORPORATION), '^^') || '||' || coalesce(to_varchar(GROUPNAME), '^^') || '||' || coalesce(to_varchar(INDUSTRYDESCRIPTION), '^^') || '||' || coalesce(to_varchar(LEGALCONSTITUTIONTYPE), '^^') || '||' || coalesce(to_varchar(MSMEINDICATOR), '^^') || '||' || coalesce(to_varchar(PAIDUPCAPITAL), '^^') || '||' || coalesce(to_varchar(PARENTENTITYNAME), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_PARTY_ORGANISATION_PROFILE' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 33. OPUS — SAT_PARTY_VEHICLE_PRIOR_INSURANCE   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
--- PARTY_HKEY; 8 RECORD_SOURCE group(s): OPUS_BJAZ_CTNGY_PA_MEM_DTLS [1 col(s)],
--- OPUS_BJAZ_EC_MEM_DTLS_EXTN [4 col(s)], OPUS_BJAZ_HCF_MEMBER_DTLS [3 col(s)],
--- OPUS_BJAZ_HC_PART_EXTN [1 col(s)], OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [5 col(s)],
--- OPUS_BJAZ_PA_DETL_EXTN [1 col(s)], OPUS_BJAZ_SH_MEM_DTLS_EXTN [2 col(s)],
--- OPUS_BJAZ_SPP_MEMBER_DTLS [3 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(CONTINUITYINDICATOR), '^^') || '||' || coalesce(to_varchar(PREVIOUSEXPIRYDATE), '^^') || '||' || coalesce(to_varchar(PREVIOUSINSURERNAME), '^^') || '||' || coalesce(to_varchar(PREVIOUSPOLICYNUMBER), '^^') || '||' || coalesce(to_varchar(PREVIOUSSUMINSURED), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 34. OPUS — SAT_POLICY_BONUS_TRACKING   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- POLICY_HKEY; 1 RECORD_SOURCE group(s): stitch_policy_bonus_tracking (7 tables) [2
--- col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(BONUSAMOUNT), '^^') || '||' || coalesce(to_varchar(CUMULATIVEBONUSPERCENTAGE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_BONUS_TRACKING
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_POLICY_BONUS_TRACKING' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(POLICY_HKEY, 'HEX'), null))
-                   within group (order by POLICY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 35. OPUS — SAT_POLICY_CERTIFICATE   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
--- POLICY_HKEY; 3 RECORD_SOURCE group(s): OPUS_BA_HCP_DT_MEM [1 col(s)],
--- OPUS_BJAZ_CTNGY_PA_MEM_DTLS [1 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(ENROLMENTDATE), '^^') || '||' || coalesce(to_varchar(MEMBERSTATUS), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_POLICY_CERTIFICATE' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(POLICY_HKEY, 'HEX'), null))
-                   within group (order by POLICY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 36. OPUS — SAT_POLICY_CLASSIFICATION [Partner LOB]   [Implemented]
--- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
--- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
--- ma_sat_multi_source; PK POLICY_HKEY, child key CLASSIFICATIONTYPE; 4 RECORD_SOURCE
--- group(s): OPUS_BJAZ_T_KYC_DETAILS [1 col(s)], OPUS_BJAZ_T_KYC_INCOMING [1 col(s)],
--- OPUS_BJAZ_T_KYC_POA_DOCUMENT [1 col(s)], OPUS_BJAZ_T_KYC_POI_DOCUMENT [1 col(s)].
--- Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
-----------------------------------------------------------------------------------------
-with grp as (  -- one signature per loaded group (key, RECORD_SOURCE, LOAD_DATETIME)
-    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME,
-           listagg(to_varchar(CLASSIFICATIONTYPE) || ':' || to_varchar(HASHDIFF, 'HEX'), ',')
-               within group (order by CLASSIFICATIONTYPE, HASHDIFF) as sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where startswith(RECORD_SOURCE, 'OPUS_')
-     group by POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME
-),
-seq as (
-    select *, lag(sig) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_sig from grp
-)
-select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite,
-       count(*) as versions, count_if(sig = prev_sig) as unchanged_reinserts,
-       array_slice(array_agg(iff(sig = prev_sig, to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 37. OPUS — SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- POLICY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BA_HCP_DT_MEM [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(COVERAGESEQUENCE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_COVERAGE_SCHEDULE
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_POLICY_COVERAGE_SCHEDULE' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(POLICY_HKEY, 'HEX'), null))
-                   within group (order by POLICY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 38. OPUS — SAT_POLICY_ENDORSEMENT   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- POLICY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_HM_MEMBER_DTLS [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(ENDORSEMENTNUMBER), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_ENDORSEMENT
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_POLICY_ENDORSEMENT' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(POLICY_HKEY, 'HEX'), null))
-                   within group (order by POLICY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 39. OPUS — SAT_POLICY_HEADER [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- POLICY_HKEY; 1 RECORD_SOURCE group(s): stitch_policy_header (10 tables) [5 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(MASTERPOLICYREFERENCE), '^^') || '||' || coalesce(to_varchar(POLICYREFERENCENUMBER), '^^') || '||' || coalesce(to_varchar(POLICYTERM), '^^') || '||' || coalesce(to_varchar(RISKEXPIRYDATE), '^^') || '||' || coalesce(to_varchar(RISKINCEPTIONDATE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(POLICY_HKEY, 'HEX'), null))
-                   within group (order by POLICY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 40. OPUS — SAT_POLICY_PREMIUM_HEAD   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
--- POLICY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_HCF_MEMBER_DTLS [1 col(s)],
--- OPUS_BJAZ_STARPKG_FF_DTLS [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(BASEAMOUNT), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_HEAD
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_POLICY_PREMIUM_HEAD' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(POLICY_HKEY, 'HEX'), null))
-                   within group (order by POLICY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 41. OPUS — SAT_POLICY_PREMIUM_SUMMARY [Partner LOB]   [Implemented]
+-- 26. OPUS — [M3 | sat_multi_source] SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1358,39 +871,175 @@ select 'OPUS' as project, 'SAT_POLICY_PREMIUM_SUMMARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 42. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]
+-- 27. OPUS — [M3 | sat_multi_source(OBJECT)] SAT_COMMON_CONTACT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- PRODUCT_HKEY; 1 RECORD_SOURCE group(s): stitch_product_definition (3 tables) [3
--- col(s)].
+-- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
+-- PARTY_HKEY; 12 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [4 col(s)],
+-- OPUS_BJAZ_CLM_SUPP_EXTN [4 col(s)], OPUS_BJAZ_CTNGY_GC_MEM_DATA [1 col(s)],
+-- OPUS_BJAZ_CTNGY_PA_MEM_DTLS [4 col(s)], OPUS_BJAZ_HM_HOSPITAL_MASTER [4 col(s)],
+-- OPUS_BJAZ_HM_MEMBER_DTLS [2 col(s)], OPUS_BJAZ_SH_MEM_DTLS_EXTN [1 col(s)],
+-- OPUS_CLM_SUPPLIERS [1 col(s)], OPUS_CP_PARTNERS [3 col(s)], OPUS_BJAZ_T_CKYC_OTP [1
+-- col(s)], OPUS_BJAZ_T_EKYC [1 col(s)], OPUS_BJAZ_T_KYC_DETAILS [1 col(s)]. OBJECT
+-- satellite: MOBILENUMBER hold one entry per source table (sat value = col:"<TABLE>";
+-- expected = MAX over that table's RAW rows, as the macro does). Plain columns are MAX
+-- across all tables and are not compared per table. A table absent from the latest
+-- incremental window is absent from the latest row -- compare after a full load.
 ----------------------------------------------------------------------------------------
 with base as (
-    select PRODUCT_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(PRODUCTCATEGORY), '^^') || '||' || coalesce(to_varchar(PRODUCTGENERATION), '^^') || '||' || coalesce(to_varchar(PRODUCTNAME), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-     where startswith(RECORD_SOURCE, 'OPUS_')
+    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(to_json(object_construct_keep_null('ALTERNATEEMAILADDRESS', ALTERNATEEMAILADDRESS, 'ALTERNATEMOBILENUMBER', ALTERNATEMOBILENUMBER, 'EMAILADDRESS', EMAILADDRESS, 'FAXNUMBER', FAXNUMBER, 'LANDLINENUMBER', LANDLINENUMBER, 'MOBILENUMBER', MOBILENUMBER, 'PREFERREDCONTACTTIME', PREFERREDCONTACTTIME, 'STDCODE', STDCODE))) as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
+     where RECORD_SOURCE = 'OPUS'
 ),
 seq as (
     select *,
-           lag(HASHDIFF) over (partition by PRODUCT_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PRODUCT_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
       from base
 )
-select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite,
+select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite,
        count(*) as versions,
        count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
        count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PRODUCT_HKEY, 'HEX'), null))
-                   within group (order by PRODUCT_HKEY), 0, 3) as examples,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
+                   within group (order by PARTY_HKEY), 0, 3) as examples,
        iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
   from seq;
 
 
 
 ----------------------------------------------------------------------------------------
--- 43. OPUS — SAT_PROVIDER_BANKING [Partner LOB]   [Implemented]
+-- 28. OPUS — [M3 | stitch_incremental] SAT_COMMON_CLASSIFICATION   [Implemented]
+-- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
+-- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
+-- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
+-- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
+-- PARTY_HKEY; 1 RECORD_SOURCE group(s): stitch_common_classification (2 tables) [2
+-- col(s)].
+----------------------------------------------------------------------------------------
+with base as (
+    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(coalesce(to_varchar(PRIORITYCODE), '^^') || '||' || coalesce(to_varchar(SEGMENTCODE), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
+     where startswith(RECORD_SOURCE, 'OPUS_')
+),
+seq as (
+    select *,
+           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+      from base
+)
+select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite,
+       count(*) as versions,
+       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
+       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
+                   within group (order by PARTY_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 29. OPUS — [M3 | stitch_incremental] SAT_PARTY_CLAIM_HISTORY   [Implemented]
+-- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
+-- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
+-- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
+-- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
+-- PARTY_HKEY; 1 RECORD_SOURCE group(s): stitch_party_claim_history (6 tables) [2
+-- col(s)].
+----------------------------------------------------------------------------------------
+with base as (
+    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(coalesce(to_varchar(TOTALCLAIMAMOUNT), '^^') || '||' || coalesce(to_varchar(TOTALCLAIMCOUNT), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CLAIM_HISTORY
+     where startswith(RECORD_SOURCE, 'OPUS_')
+),
+seq as (
+    select *,
+           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+      from base
+)
+select 'OPUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite,
+       count(*) as versions,
+       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
+       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
+                   within group (order by PARTY_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 30. OPUS — [M3 | stitch_incremental] SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
+-- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
+-- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
+-- does not store, e.g. a shared stage). standard satellite, sat_multi_source; PK
+-- PARTY_HKEY; 3 RECORD_SOURCE group(s): stitch_party_organisation_profile (3 tables) [8
+-- col(s)], OPUS_BJAZ_M_KYC_GSTN [1 col(s)], OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [0 col(s)].
+----------------------------------------------------------------------------------------
+with base as (
+    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(coalesce(to_varchar(ANNUALTURNOVER), '^^') || '||' || coalesce(to_varchar(DATEOFINCORPORATION), '^^') || '||' || coalesce(to_varchar(GROUPNAME), '^^') || '||' || coalesce(to_varchar(INDUSTRYDESCRIPTION), '^^') || '||' || coalesce(to_varchar(LEGALCONSTITUTIONTYPE), '^^') || '||' || coalesce(to_varchar(MSMEINDICATOR), '^^') || '||' || coalesce(to_varchar(PAIDUPCAPITAL), '^^') || '||' || coalesce(to_varchar(PARENTENTITYNAME), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE
+     where startswith(RECORD_SOURCE, 'OPUS_')
+),
+seq as (
+    select *,
+           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+      from base
+)
+select 'OPUS' as project, 'SAT_PARTY_ORGANISATION_PROFILE' as satellite,
+       count(*) as versions,
+       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
+       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
+                   within group (order by PARTY_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 31. OPUS — [M3 | stitch_incremental] SAT_POLICY_BONUS_TRACKING   [Implemented]
+-- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
+-- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
+-- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
+-- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
+-- POLICY_HKEY; 1 RECORD_SOURCE group(s): stitch_policy_bonus_tracking (7 tables) [2
+-- col(s)].
+----------------------------------------------------------------------------------------
+with base as (
+    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
+           md5(coalesce(to_varchar(BONUSAMOUNT), '^^') || '||' || coalesce(to_varchar(CUMULATIVEBONUSPERCENTAGE), '^^') || '||') as payload_sig
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_BONUS_TRACKING
+     where startswith(RECORD_SOURCE, 'OPUS_')
+),
+seq as (
+    select *,
+           lag(HASHDIFF) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
+           lag(payload_sig) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
+      from base
+)
+select 'OPUS' as project, 'SAT_POLICY_BONUS_TRACKING' as satellite,
+       count(*) as versions,
+       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
+       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
+       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(POLICY_HKEY, 'HEX'), null))
+                   within group (order by POLICY_HKEY), 0, 3) as examples,
+       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
+  from seq;
+
+
+
+----------------------------------------------------------------------------------------
+-- 32. OPUS — [M3 | stitch_incremental] SAT_PROVIDER_BANKING   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1421,517 +1070,7 @@ select 'OPUS' as project, 'SAT_PROVIDER_BANKING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 44. OPUS — SAT_PROVIDER_TARIFF [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). standard satellite, automate_dv.sat; PK
--- PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_HM_HOSPITAL_MASTER [4 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(DISCOUNTPERCENTAGE), '^^') || '||' || coalesce(to_varchar(EFFECTIVEDATE), '^^') || '||' || coalesce(to_varchar(EXPIRYDATE), '^^') || '||' || coalesce(to_varchar(TARIFFRATE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROVIDER_TARIFF
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_PROVIDER_TARIFF' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 45. OPUS — SAT_AUG_AFFINITY_MEMBERSHIP   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). augmented satellite, automate_dv.sat; PK
--- PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [2 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(AA_MEMBERSHIP_EXPIRY_DATE), '^^') || '||' || coalesce(to_varchar(AA_MEMBERSHIP_NUMBER), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_AFFINITY_MEMBERSHIP
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_AUG_AFFINITY_MEMBERSHIP' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 46. OPUS — SAT_AUG_AGREEMENT   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). augmented satellite, automate_dv.sat; PK
--- AGREEMENT_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select AGREEMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(AGREEMENT_NATURE_OTHER_DETAIL), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_AGREEMENT
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by AGREEMENT_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by AGREEMENT_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_AUG_AGREEMENT' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(AGREEMENT_HKEY, 'HEX'), null))
-                   within group (order by AGREEMENT_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 47. OPUS — SAT_AUG_CHANNEL   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). augmented satellite, sat_multi_source; PK
--- DISTRIBUTION_CHANNEL_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY [8
--- col(s)], OPUS_BJAZ_CLM_SUPP_EXTN [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select DISTRIBUTION_CHANNEL_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(BLOCKED_FOR_RECEIPT_INDICATOR), '^^') || '||' || coalesce(to_varchar(FINANCE_SUB_CHANNEL_CODE), '^^') || '||' || coalesce(to_varchar(GREEN_CHANNEL_INDICATOR), '^^') || '||' || coalesce(to_varchar(IMDFLAG), '^^') || '||' || coalesce(to_varchar(NEW_IMD_TYPE), '^^') || '||' || coalesce(to_varchar(REVISED_CHANNEL_CODE), '^^') || '||' || coalesce(to_varchar(SPECIAL_INTERMEDIARY_CODE), '^^') || '||' || coalesce(to_varchar(SUBIMD_YN), '^^') || '||' || coalesce(to_varchar(SUB_IMD_CODE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CHANNEL
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by DISTRIBUTION_CHANNEL_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by DISTRIBUTION_CHANNEL_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_AUG_CHANNEL' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(DISTRIBUTION_CHANNEL_HKEY, 'HEX'), null))
-                   within group (order by DISTRIBUTION_CHANNEL_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 48. OPUS — SAT_AUG_KYC_DOCUMENT   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). augmented satellite, sat_multi_source; PK
--- DOCUMENT_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_T_KYC_POA_DOCUMENT [1 col(s)],
--- OPUS_BJAZ_T_KYC_POI_DOCUMENT [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select DOCUMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(VERIFICATION_RESPONSE_MESSAGE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_DOCUMENT
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by DOCUMENT_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by DOCUMENT_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_AUG_KYC_DOCUMENT' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(DOCUMENT_HKEY, 'HEX'), null))
-                   within group (order by DOCUMENT_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 49. OPUS — SAT_AUG_KYC_LOCATION   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). augmented satellite, sat_multi_source; PK
--- LOCATION_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_M_KYC_VOTER [1 col(s)],
--- OPUS_BJAZ_T_EKYC [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(ELECTORAL_ROLL_PART_NAME), '^^') || '||' || coalesce(to_varchar(FULL_ADDRESS_TEXT), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_LOCATION
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_AUG_KYC_LOCATION' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(LOCATION_HKEY, 'HEX'), null))
-                   within group (order by LOCATION_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 50. OPUS — SAT_AUG_KYC_PARTY   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). augmented satellite, sat_multi_source; PK
--- PARTY_HKEY; 13 RECORD_SOURCE group(s): OPUS_BJAZ_M_KYC_DRIVING_LICENCE [6 col(s)],
--- OPUS_BJAZ_M_KYC_GSTN [3 col(s)], OPUS_BJAZ_M_KYC_PAN [2 col(s)],
--- OPUS_BJAZ_M_KYC_PASSPORT [5 col(s)], OPUS_BJAZ_M_KYC_VOTER [5 col(s)],
--- OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [4 col(s)], OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS [1
--- col(s)], OPUS_BJAZ_T_CKYC_SEARCH [7 col(s)], OPUS_BJAZ_T_EKYC [5 col(s)],
--- OPUS_BJAZ_T_KYC_AUTH [6 col(s)], OPUS_BJAZ_T_KYC_DETAILS [2 col(s)],
--- OPUS_BJAZ_T_KYC_NAME_MATCH [4 col(s)], OPUS_BJAZ_T_KYC_OCR [3 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(CONSENT_PLACE), '^^') || '||' || coalesce(to_varchar(DOCUMENT_IMAGE_COUNT), '^^') || '||' || coalesce(to_varchar(ENTITY_LEGAL_FORM_OTHER_DESCRIPTION), '^^') || '||' || coalesce(to_varchar(FATHER_FIRST_NAME), '^^') || '||' || coalesce(to_varchar(FATHER_LAST_NAME), '^^') || '||' || coalesce(to_varchar(FATHER_MIDDLE_NAME), '^^') || '||' || coalesce(to_varchar(FATHER_NAME_SALUTATION), '^^') || '||' || coalesce(to_varchar(FATHER_OR_SPOUSE_NAME_TYPE_INDICATOR), '^^') || '||' || coalesce(to_varchar(IDENTIFICATION_APPLICATION_RECEIVED_DATE), '^^') || '||' || coalesce(to_varchar(IDENTIFICATION_APPLICATION_TYPE), '^^') || '||' || coalesce(to_varchar(IDENTIFICATION_ISSUING_COUNTRY), '^^') || '||' || coalesce(to_varchar(IDENTIFICATION_REGISTRY_LAST_UPDATED_DATE), '^^') || '||' || coalesce(to_varchar(IN_PERSON_VERIFICATION_INDICATOR), '^^') || '||' || coalesce(to_varchar(ISD_COUNTRY_CODE), '^^') || '||' || coalesce(to_varchar(KYC_DEACTIVATION_DATE), '^^') || '||' || coalesce(to_varchar(KYC_DEACTIVATION_REASON), '^^') || '||' || coalesce(to_varchar(KYC_DECLARATION_PLACE), '^^') || '||' || coalesce(to_varchar(KYC_VERSION), '^^') || '||' || coalesce(to_varchar(LOCAL_ADDRESS_RECORD_COUNT), '^^') || '||' || coalesce(to_varchar(MAIDEN_FIRST_NAME), '^^') || '||' || coalesce(to_varchar(MAIDEN_LAST_NAME), '^^') || '||' || coalesce(to_varchar(MAIDEN_MIDDLE_NAME), '^^') || '||' || coalesce(to_varchar(MAIDEN_NAME_SALUTATION), '^^') || '||' || coalesce(to_varchar(MOTHER_FIRST_NAME), '^^') || '||' || coalesce(to_varchar(MOTHER_LAST_NAME), '^^') || '||' || coalesce(to_varchar(MOTHER_MIDDLE_NAME), '^^') || '||' || coalesce(to_varchar(MOTHER_NAME_SALUTATION), '^^') || '||' || coalesce(to_varchar(PAN_HOLDER_CATEGORY), '^^') || '||' || coalesce(to_varchar(PERFORM_KYC_VERIFICATION_CONSENT_INDICATOR), '^^') || '||' || coalesce(to_varchar(RELATED_PERSON_COUNT), '^^') || '||' || coalesce(to_varchar(RELATIVE_OR_GUARDIAN_NAME), '^^') || '||' || coalesce(to_varchar(ROLE_DESCRIPTION_OTHERS), '^^') || '||' || coalesce(to_varchar(USE_POA_NAME_AS_POLICY_NAME_CONSENT_INDICATOR), '^^') || '||' || coalesce(to_varchar(USE_POI_NAME_AS_POLICY_NAME_CONSENT_INDICATOR), '^^') || '||' || coalesce(to_varchar(VERIFICATION_MATCH_SCORE), '^^') || '||' || coalesce(to_varchar(VERIFICATION_REQUESTED_NAME), '^^') || '||' || coalesce(to_varchar(VERIFICATION_RESPONSE_CODE), '^^') || '||' || coalesce(to_varchar(VERIFICATION_RESPONSE_DATE), '^^') || '||' || coalesce(to_varchar(VERIFICATION_RESPONSE_MESSAGE), '^^') || '||' || coalesce(to_varchar(VERIFICATION_RESULT_VALID_UNTIL_DATE), '^^') || '||' || coalesce(to_varchar(VERIFICATION_RETURNED_NAME), '^^') || '||' || coalesce(to_varchar(VERIFIED_AGE), '^^') || '||' || coalesce(to_varchar(VERIFIED_CITIZENSHIP), '^^') || '||' || coalesce(to_varchar(VERIFIED_DATE_OF_BIRTH), '^^') || '||' || coalesce(to_varchar(VERIFIED_FATHER_NAME), '^^') || '||' || coalesce(to_varchar(VERIFIED_FULL_NAME), '^^') || '||' || coalesce(to_varchar(VERIFIED_GENDER_CODE), '^^') || '||' || coalesce(to_varchar(VERIFIED_GIVEN_NAME), '^^') || '||' || coalesce(to_varchar(VERIFIED_LEGAL_NAME), '^^') || '||' || coalesce(to_varchar(VERIFIED_RELATIVE_NAME), '^^') || '||' || coalesce(to_varchar(VERIFIED_SURNAME), '^^') || '||' || coalesce(to_varchar(VERIFIED_TRADE_NAME), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_AUG_KYC_PARTY' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 51. OPUS — SAT_AUG_KYC_POLICY   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). augmented satellite, automate_dv.sat; PK
--- POLICY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_T_KYC_INCOMING [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(SALES_ORDER_NUMBER), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_POLICY
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_AUG_KYC_POLICY' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(POLICY_HKEY, 'HEX'), null))
-                   within group (order by POLICY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 52. OPUS — SAT_AUG_LAWYER_ADVOCATE_ROLE   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). augmented satellite, automate_dv.sat; PK
--- PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_CLM_SUPP_EXTN [13 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(ACD_QUALIFICATION), '^^') || '||' || coalesce(to_varchar(BAR_ASSOCIATION_NAME), '^^') || '||' || coalesce(to_varchar(COVERED_COURT_LOC), '^^') || '||' || coalesce(to_varchar(DATE_OF_JOINING), '^^') || '||' || coalesce(to_varchar(ENROLMENT_NO), '^^') || '||' || coalesce(to_varchar(LAWYER_TYPE), '^^') || '||' || coalesce(to_varchar(NO_OF_BRIEFS), '^^') || '||' || coalesce(to_varchar(NO_OF_COMPANIES), '^^') || '||' || coalesce(to_varchar(NO_OF_CONSUMER), '^^') || '||' || coalesce(to_varchar(NO_OF_JUNIOR), '^^') || '||' || coalesce(to_varchar(NO_OF_MACT), '^^') || '||' || coalesce(to_varchar(NO_OF_WC), '^^') || '||' || coalesce(to_varchar(YR_EXPERIENCE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LAWYER_ADVOCATE_ROLE
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_AUG_LAWYER_ADVOCATE_ROLE' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 53. OPUS — SAT_AUG_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). augmented satellite, automate_dv.sat; PK
--- PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(INTERMEDIARY_LICENCE_NUMBER), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_AGENT
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_AGENT' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 54. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). augmented satellite, automate_dv.sat; PK
--- PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_CLM_INTERESTED_PARTIES [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(IP_TYPE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 55. OPUS — SAT_AUG_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). augmented satellite, sat_multi_source; PK
--- PARTY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_CLM_SUPP_EXTN [40 col(s)],
--- OPUS_BJAZ_HM_HOSPITAL_MASTER [7 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(BAGIC_LOCATION), '^^') || '||' || coalesce(to_varchar(CLAIM_NEAR_ME_FLAG), '^^') || '||' || coalesce(to_varchar(CLASS), '^^') || '||' || coalesce(to_varchar(COMP_TYPE), '^^') || '||' || coalesce(to_varchar(CONTACT_PERSON_DESIGNATION), '^^') || '||' || coalesce(to_varchar(CONTACT_PERSON_NAME), '^^') || '||' || coalesce(to_varchar(CON_EXPERTISE), '^^') || '||' || coalesce(to_varchar(COVERED_AREA), '^^') || '||' || coalesce(to_varchar(DEALER_CODE), '^^') || '||' || coalesce(to_varchar(DEDUCTIBLE_EXEMPT), '^^') || '||' || coalesce(to_varchar(DIAGNO_YN), '^^') || '||' || coalesce(to_varchar(EMPANEL_DATE), '^^') || '||' || coalesce(to_varchar(EW_WHITE_GOODS_FLG), '^^') || '||' || coalesce(to_varchar(EXP_LOB_ENGINEERING_FLG), '^^') || '||' || coalesce(to_varchar(EXP_LOB_FIRE_FLG), '^^') || '||' || coalesce(to_varchar(EXP_LOB_LOSS_PROFIT_FLG), '^^') || '||' || coalesce(to_varchar(EXP_LOB_MARINE_HULL_FLG), '^^') || '||' || coalesce(to_varchar(EXP_LOB_MARIN_CARGO_FLG), '^^') || '||' || coalesce(to_varchar(EXP_LOB_MISCELL_FLG), '^^') || '||' || coalesce(to_varchar(EXP_LOB_MOTOR_FLG), '^^') || '||' || coalesce(to_varchar(EXP_LOB_WORKMAN_COMP_FLG), '^^') || '||' || coalesce(to_varchar(GRADE), '^^') || '||' || coalesce(to_varchar(HOSP_SPEC_TYPE), '^^') || '||' || coalesce(to_varchar(INVOICE_PATTERN), '^^') || '||' || coalesce(to_varchar(IRN_FLAG), '^^') || '||' || coalesce(to_varchar(JW_FLAG), '^^') || '||' || coalesce(to_varchar(JW_ID), '^^') || '||' || coalesce(to_varchar(LVS_FLAG), '^^') || '||' || coalesce(to_varchar(MOU_STATUS), '^^') || '||' || coalesce(to_varchar(NETWORK_TYPE), '^^') || '||' || coalesce(to_varchar(NO_TOWING_VEHICLE), '^^') || '||' || coalesce(to_varchar(ON_DUTY_FLAG), '^^') || '||' || coalesce(to_varchar(OPERATION_PLACE), '^^') || '||' || coalesce(to_varchar(ORIGIN_COMP), '^^') || '||' || coalesce(to_varchar(ORIGIN_CONT), '^^') || '||' || coalesce(to_varchar(OTHER_BAGIC_BUSINESS), '^^') || '||' || coalesce(to_varchar(OWNRSHIP_DEPT), '^^') || '||' || coalesce(to_varchar(PRIORITY), '^^') || '||' || coalesce(to_varchar(PRIORITY_FLG), '^^') || '||' || coalesce(to_varchar(SPEC_REPAIRER), '^^') || '||' || coalesce(to_varchar(SUPP_OWNERSHIP), '^^') || '||' || coalesce(to_varchar(SUPP_SCOPE), '^^') || '||' || coalesce(to_varchar(TOWING_VEHICLE), '^^') || '||' || coalesce(to_varchar(WORKSHOP_CATEGORY), '^^') || '||' || coalesce(to_varchar(WORKSHOP_CLASS), '^^') || '||' || coalesce(to_varchar(WORKSHOP_NAME), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_PROVIDER
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 56. OPUS — SAT_AUG_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). augmented satellite, automate_dv.sat; PK
--- PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_CLM_SUPP_EXTN [4 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(HAS_IRDA_LICENCE_INDICATOR), '^^') || '||' || coalesce(to_varchar(IIISLA_MEM_NO), '^^') || '||' || coalesce(to_varchar(IIISLA_MEM_STATUS), '^^') || '||' || coalesce(to_varchar(SUR_LICENSE_EXP_DATE), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_SURVEYOR
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_SURVEYOR' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 57. OPUS — SAT_AUG_LOCATION   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). augmented satellite, sat_multi_source; PK
--- LOCATION_HKEY; 2 RECORD_SOURCE group(s): OPUS_CP_ADDRESSES [2 col(s)],
--- OPUS_CP_PARTNERS [1 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(ADDRESS_LINE4), '^^') || '||' || coalesce(to_varchar(ADDRESS_LINE5), '^^') || '||' || coalesce(to_varchar(CARE_OF_NAME), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOCATION
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by LOCATION_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_AUG_LOCATION' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(LOCATION_HKEY, 'HEX'), null))
-                   within group (order by LOCATION_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 58. OPUS — SAT_AUG_PARTY   [Implemented]
--- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
--- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
--- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
--- does not store, e.g. a shared stage). augmented satellite, sat_multi_source; PK
--- PARTY_HKEY; 10 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [8 col(s)],
--- OPUS_BJAZ_INTERMEDIARY [3 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [3 col(s)],
--- OPUS_BJAZ_HCF_MEMBER_DTLS [1 col(s)], OPUS_BJAZ_SPP_MEMBER_DTLS [4 col(s)],
--- OPUS_BJAZ_HC_PART_EXTN [1 col(s)], OPUS_CP_PARTNERS [2 col(s)],
--- OPUS_BJAZ_CLM_SUPP_EXTN [6 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [1 col(s)],
--- OPUS_BJAZ_HM_HOSPITAL_MASTER [3 col(s)].
-----------------------------------------------------------------------------------------
-with base as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
-           md5(coalesce(to_varchar(ADHAAR_PAN_LINK_FLAG), '^^') || '||' || coalesce(to_varchar(BMI), '^^') || '||' || coalesce(to_varchar(BMI_FLAG), '^^') || '||' || coalesce(to_varchar(CAUSE_OF_DEATH), '^^') || '||' || coalesce(to_varchar(DATE_OF_BIRTH_M), '^^') || '||' || coalesce(to_varchar(ECS_MANDATE_STATUS), '^^') || '||' || coalesce(to_varchar(EXISTING_CUSTOMER_INDICATOR), '^^') || '||' || coalesce(to_varchar(HEIGHT_FEET), '^^') || '||' || coalesce(to_varchar(HEIGHT_INCHES), '^^') || '||' || coalesce(to_varchar(HNI_FLAG), '^^') || '||' || coalesce(to_varchar(IMPS_ACTIVE_DATE), '^^') || '||' || coalesce(to_varchar(IMPS_END_DATE), '^^') || '||' || coalesce(to_varchar(IT_RETURN_2YR), '^^') || '||' || coalesce(to_varchar(IT_STATUS), '^^') || '||' || coalesce(to_varchar(MARRIAGE_ANNIVERSARY_DATE), '^^') || '||' || coalesce(to_varchar(MONTHLY_SALARY), '^^') || '||' || coalesce(to_varchar(NUMBER_OF_DAUGHTERS), '^^') || '||' || coalesce(to_varchar(NUMBER_OF_SONS), '^^') || '||' || coalesce(to_varchar(OTHER_OCC), '^^') || '||' || coalesce(to_varchar(PAN_AADHAR_LINKED), '^^') || '||' || coalesce(to_varchar(PAN_ACK_DT), '^^') || '||' || coalesce(to_varchar(PAN_APP_NO), '^^') || '||' || coalesce(to_varchar(PAN_STATUS), '^^') || '||' || coalesce(to_varchar(PARENT_ENTITY_REFERENCE), '^^') || '||' || coalesce(to_varchar(PAYMENT_MODE), '^^') || '||' || coalesce(to_varchar(PREGNANT_MONTHS), '^^') || '||' || coalesce(to_varchar(PRIOR_CLAIM_REASON), '^^') || '||' || coalesce(to_varchar(PROOF_OF_DEATH_TYPE), '^^') || '||' || coalesce(to_varchar(SMOKE_CONSUMP), '^^') || '||' || coalesce(to_varchar(TWO_YR_ITR_FLAG), '^^') || '||' || coalesce(to_varchar(WEBSITE_URL), '^^') || '||') as payload_sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
-     where startswith(RECORD_SOURCE, 'OPUS_')
-),
-seq as (
-    select *,
-           lag(HASHDIFF) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_hashdiff,
-           lag(payload_sig) over (partition by PARTY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_payload_sig
-      from base
-)
-select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite,
-       count(*) as versions,
-       count_if(HASHDIFF = prev_hashdiff) as unchanged_reinserts,
-       count_if(payload_sig = prev_payload_sig) as unchanged_payload_reinserts,
-       array_slice(array_agg(iff(HASHDIFF = prev_hashdiff or payload_sig = prev_payload_sig, to_varchar(PARTY_HKEY, 'HEX'), null))
-                   within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0 and unchanged_payload_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 59. OPUS — SAT_AUG_POLICY   [Implemented]
--- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
--- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
--- ma_sat_multi_source; PK POLICY_HKEY, child key MEMBER_SEQUENCE; 5 RECORD_SOURCE
--- group(s): OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [1 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [1
--- col(s)], OPUS_BJAZ_PA_DETL_EXTN [5 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [1 col(s)],
--- OPUS_BJAZ_SH_MEM_DTLS_EXTN [1 col(s)]. Multi-active: compared per (key, child key);
--- latest = max LOAD_DATETIME per member.
-----------------------------------------------------------------------------------------
-with grp as (  -- one signature per loaded group (key, RECORD_SOURCE, LOAD_DATETIME)
-    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME,
-           listagg(to_varchar(MEMBER_SEQUENCE) || ':' || to_varchar(HASHDIFF, 'HEX'), ',')
-               within group (order by MEMBER_SEQUENCE, HASHDIFF) as sig
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY
-     where startswith(RECORD_SOURCE, 'OPUS_')
-     group by POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME
-),
-seq as (
-    select *, lag(sig) over (partition by POLICY_HKEY, RECORD_SOURCE order by LOAD_DATETIME) as prev_sig from grp
-)
-select 'OPUS' as project, 'SAT_AUG_POLICY' as satellite,
-       count(*) as versions, count_if(sig = prev_sig) as unchanged_reinserts,
-       array_slice(array_agg(iff(sig = prev_sig, to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as examples,
-       iff(unchanged_reinserts = 0, 'PASS', 'FAIL') as status
-  from seq;
-
-
-
-----------------------------------------------------------------------------------------
--- 60. OPUS — CDC result (all satellites)   [Implemented]
+-- 33. OPUS — CDC result (all satellites)   [Implemented]
 -- Joins the BEFORE and AFTER captures of the same run id. raw_changed compares the
 -- normalised RAW payload hash (same UPPER/TRIM/NULL rules as the HASHDIFF, so a
 -- case-only RAW edit is not a change); new_rows = satellite rows added for the key

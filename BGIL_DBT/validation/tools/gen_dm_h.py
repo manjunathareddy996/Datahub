@@ -38,6 +38,132 @@ COUNT_SNAP = f"{VALIDATION_SCHEMA}.DM_H_RELOAD_SNAPSHOT"
 MD = dict(A.PROJECTS)
 lit = A.lit
 
+# ---------------------------------------------------------------------------------------
+# Member test-plan selection (see validation/DM-H/DM-H_MEMBER_PLAN.md).
+# Only these satellites are emitted into DM-H1..H4. Each entry: (SAT_NAME, PROJECT) ->
+# (member, path). A sat may be assigned in both projects (listed twice). Keep this in
+# sync with DM-H_MEMBER_PLAN.md / DM-H_ROWCOUNT_CHECK.sql.
+# ---------------------------------------------------------------------------------------
+SELECTION = {
+    # Path 1: automate_dv.sat
+    ("SAT_COMMON_ADMIN_GEOGRAPHY", "MAXIMUS"): ("M1", "automate_dv.sat"),
+    ("SAT_PARTY_FINANCIAL_PROFILE", "MAXIMUS"): ("M1", "automate_dv.sat"),
+    ("SAT_COMMON_CONSENT", "MAXIMUS"): ("M2", "automate_dv.sat"),
+    ("SAT_PARTY_FRAUD_PROFILE", "MAXIMUS"): ("M2", "automate_dv.sat"),
+    ("SAT_COMMON_CLASSIFICATION", "MAXIMUS"): ("M3", "automate_dv.sat"),
+    ("SAT_PARTY_RELATIONSHIP_PROFILE", "MAXIMUS"): ("M3", "automate_dv.sat"),
+    # Path 2: sat_multi_source plain
+    ("SAT_COMMON_ADDRESS", "MAXIMUS"): ("M1", "sat_multi_source"),
+    ("SAT_PARTY_BANKING", "MAXIMUS"): ("M1", "sat_multi_source"),
+    ("SAT_PARTY_IDENTITY", "MAXIMUS"): ("M1", "sat_multi_source"),
+    ("SAT_LOCATION_PROFILE", "MAXIMUS"): ("M1", "sat_multi_source"),
+    ("SAT_PARTY_VEHICLE_PRIOR_INSURANCE", "OPUS"): ("M1", "sat_multi_source"),
+    ("SAT_POLICY_CERTIFICATE", "OPUS"): ("M1", "sat_multi_source"),
+    ("SAT_AUG_PARTY", "OPUS"): ("M1", "sat_multi_source"),
+    ("SAT_COMMON_GEO", "MAXIMUS"): ("M2", "sat_multi_source"),
+    ("SAT_PARTY_ORGANISATION_PROFILE", "MAXIMUS"): ("M2", "sat_multi_source"),
+    ("SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS", "MAXIMUS"): ("M2", "sat_multi_source"),
+    ("SAT_PARTY_CONSENT_MANDATE", "MAXIMUS"): ("M2", "sat_multi_source"),
+    ("SAT_PARTY_BANKING", "OPUS"): ("M2", "sat_multi_source"),
+    ("SAT_PARTY_KYC", "OPUS"): ("M2", "sat_multi_source"),
+    ("SAT_AUG_KYC_DOCUMENT", "OPUS"): ("M2", "sat_multi_source"),
+    ("SAT_PARTY_HIERARCHY", "MAXIMUS"): ("M3", "sat_multi_source"),
+    ("SAT_PARTY_AGENT_LICENCE_LINE", "MAXIMUS"): ("M3", "sat_multi_source"),
+    ("SAT_PARTY_PAYOUT_PROFILE", "MAXIMUS"): ("M3", "sat_multi_source"),
+    ("SAT_AUG_PARTY_IDENTIFICATION", "MAXIMUS"): ("M3", "sat_multi_source"),
+    ("SAT_PARTY_KYC_REFERENCE", "OPUS"): ("M3", "sat_multi_source"),
+    ("SAT_POLICY_PREMIUM_SUMMARY", "OPUS"): ("M3", "sat_multi_source"),
+    ("SAT_AUG_LOCATION", "OPUS"): ("M3", "sat_multi_source"),
+    # Path 3: sat_multi_source OBJECT
+    ("SAT_COMMON_CONTACT", "MAXIMUS"): ("M1", "sat_multi_source(OBJECT)"),
+    ("SAT_PARTY_IDENTIFICATION", "MAXIMUS"): ("M1", "sat_multi_source(OBJECT)"),
+    ("SAT_PARTY_IDENTIFICATION", "OPUS"): ("M1", "sat_multi_source(OBJECT)"),
+    ("SAT_COMMON_CONTACT", "OPUS"): ("M3", "sat_multi_source(OBJECT)"),
+    # Path 4: ma_sat_multi_source
+    ("SAT_LNK_PARTY_ROLE_CORE", "MAXIMUS"): ("M1", "ma_sat_multi_source"),
+    ("SAT_PARTY_DIGITAL_IDENTITY", "MAXIMUS"): ("M1", "ma_sat_multi_source"),
+    ("SAT_PARTY_CONTACT_ADDRESS_LINK", "OPUS"): ("M2", "ma_sat_multi_source"),
+    ("SAT_AUG_POLICY", "OPUS"): ("M2", "ma_sat_multi_source"),
+    ("SAT_POLICY_CLASSIFICATION", "OPUS"): ("M3", "ma_sat_multi_source"),
+    # Path 5: automate_dv.ma_sat
+    ("SAT_PARTY_ORG_DIRECTORS", "MAXIMUS"): ("M1", "automate_dv.ma_sat"),
+    ("SAT_LNK_CLAIM_PARTY_ROLE", "OPUS"): ("M1", "automate_dv.ma_sat"),
+    ("SAT_PARTY_CONTACT_ADDRESS_LINK", "MAXIMUS"): ("M1", "automate_dv.ma_sat"),
+    ("SAT_PARTY_PROVIDER_CAPABILITY", "MAXIMUS"): ("M2", "automate_dv.ma_sat"),
+    ("SAT_LNK_POLICY_PARTY_ROLE", "OPUS"): ("M2", "automate_dv.ma_sat"),
+    ("SAT_AUG_PARTY_LEGAL_PANEL_ROLE_LINE", "MAXIMUS"): ("M3", "automate_dv.ma_sat"),
+    ("SAT_LNK_PARTY_ROLE_CORE", "OPUS"): ("M3", "automate_dv.ma_sat"),
+    # Path 6: stitch_incremental (all OPUS)
+    ("SAT_COMMON_ADDRESS", "OPUS"): ("M1", "stitch_incremental"),
+    ("SAT_POLICY_HEADER", "OPUS"): ("M1", "stitch_incremental"),
+    ("SAT_PARTY_IDENTITY", "OPUS"): ("M1", "stitch_incremental"),
+    ("SAT_COMMON_ADMIN_GEOGRAPHY", "OPUS"): ("M1", "stitch_incremental"),
+    ("SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS", "OPUS"): ("M1", "stitch_incremental"),
+    ("SAT_COMMON_GEO", "OPUS"): ("M2", "stitch_incremental"),
+    ("SAT_PARTY_HEALTH_PROFILE", "OPUS"): ("M2", "stitch_incremental"),
+    ("SAT_PRODUCT_DEFINITION", "OPUS"): ("M2", "stitch_incremental"),
+    ("SAT_COMMON_COMMUNICATION_PREFERENCE", "OPUS"): ("M2", "stitch_incremental"),
+    ("SAT_PARTY_EMPLOYMENT", "OPUS"): ("M2", "stitch_incremental"),
+    ("SAT_COMMON_CLASSIFICATION", "OPUS"): ("M3", "stitch_incremental"),
+    ("SAT_PROVIDER_BANKING", "OPUS"): ("M3", "stitch_incremental"),
+    ("SAT_POLICY_BONUS_TRACKING", "OPUS"): ("M3", "stitch_incremental"),
+    ("SAT_PARTY_CLAIM_HISTORY", "OPUS"): ("M3", "stitch_incremental"),
+    ("SAT_PARTY_ORGANISATION_PROFILE", "OPUS"): ("M3", "stitch_incremental"),
+}
+
+
+def selected_sats(ps, project):
+    """Filter the project's sats to those in the member plan, in (member, path, name) order."""
+    out = []
+    for s in ps:
+        key = (s.name, project)
+        if key in SELECTION:
+            out.append(s)
+    out.sort(key=lambda s: (SELECTION[(s.name, project)][0], SELECTION[(s.name, project)][1], s.name))
+    return out
+
+
+def plan_tag(sat):
+    """'[M1 | automate_dv.sat]' prefix for a sat in the plan, else ''."""
+    key = (sat.name, sat.project)
+    if key in SELECTION:
+        m, p = SELECTION[key]
+        return f"[{m} | {p}] "
+    return ""
+
+
+# ---------------------------------------------------------------------------------------
+# DM-H3 (Idempotent re-load) is trimmed further: ONE representative satellite per
+# (project, macro path). The idempotency check behaves the same for every sat built by a
+# given macro, so one per macro per project is enough. Keyed (SAT_NAME, PROJECT) -> path.
+# ---------------------------------------------------------------------------------------
+H3_SELECTION = {
+    # MAXIMUS
+    ("SAT_COMMON_ADMIN_GEOGRAPHY", "MAXIMUS"): "automate_dv.sat",
+    ("SAT_PARTY_BANKING", "MAXIMUS"): "sat_multi_source",
+    ("SAT_COMMON_CONTACT", "MAXIMUS"): "sat_multi_source(OBJECT)",
+    ("SAT_LNK_PARTY_ROLE_CORE", "MAXIMUS"): "ma_sat_multi_source",
+    ("SAT_PARTY_ORG_DIRECTORS", "MAXIMUS"): "automate_dv.ma_sat",
+    # OPUS
+    ("SAT_PARTY_BANKING", "OPUS"): "sat_multi_source",
+    ("SAT_COMMON_CONTACT", "OPUS"): "sat_multi_source(OBJECT)",
+    ("SAT_POLICY_CLASSIFICATION", "OPUS"): "ma_sat_multi_source",
+    ("SAT_LNK_PARTY_ROLE_CORE", "OPUS"): "automate_dv.ma_sat",
+    ("SAT_COMMON_ADDRESS", "OPUS"): "stitch_incremental",
+}
+
+
+def selected_sats_h3(ps, project):
+    """DM-H3 subset: one sat per (project, macro), from H3_SELECTION."""
+    out = [s for s in ps if (s.name, project) in H3_SELECTION]
+    out.sort(key=lambda s: (H3_SELECTION[(s.name, project)], s.name))
+    return out
+
+
+def h3_tag(sat):
+    key = (sat.name, sat.project)
+    return f"[{H3_SELECTION[key]}] " if key in H3_SELECTION else ""
+
 
 # ---------------------------------------------------------------------------------------
 # HASHDIFF metadata
@@ -498,17 +624,30 @@ def before_part_b(project, check):
 
 
 def main():
-    template = K.TEMPLATE_DOCX.read_bytes()
+    # Styles template for the generated .docx. Prefer the canonical DM-K4 template; if it
+    # is absent, fall back to any existing generated .docx (same base styling).
+    tpl_path = K.TEMPLATE_DOCX
+    if not tpl_path.exists():
+        from pathlib import Path as _P
+        fallbacks = sorted(_P(K.VALIDATION).glob("DM-*/DM-*.docx"))
+        tpl_path = fallbacks[0] if fallbacks else None
+    template = tpl_path.read_bytes() if tpl_path is not None else None
+    if template is None:
+        print("WARNING: no docx template found -- writing .sql only, skipping .docx")
+    else:
+        print(f"docx template: {tpl_path}")
     sats = A.build_sats()
     sats.sort(key=lambda s: (s.project != "MAXIMUS", s.layer != "standard", s.name))
     for pj, md in A.PROJECTS:
-        ps = [s for s in sats if s.project == pj]
+        ps = selected_sats([s for s in sats if s.project == pj], pj)
         live = [s for s in ps if s.applicable]
         revision = [
             f"Generated 2026-10-13 from the current {md.parent.name} models by validation/tools/gen_dm_h.py "
             f"(satellite lineage from gen_dm_a.py).",
-            f"This file: {pj} only ({len(ps)} satellites, {len(live)} with mapped payload; standard + augmented). "
-            f"The other project is in the sibling file.",
+            f"TRIMMED to the DM-H member test plan (see validation/DM-H/DM-H_MEMBER_PLAN.md): {pj} has "
+            f"{len(ps)} assigned satellites in this file ({len(live)} with mapped payload). Each sat is "
+            f"prefixed with its [member | macro-path]. If an assigned sat has 0 rows, swap it for a same-path "
+            f"sat from DM-H_REMAINING.md (confirm counts with DM-H_ROWCOUNT_CHECK.sql).",
             "Static queries (a) run on the data already loaded; the (b) procedures need a dbt load between a "
             "BEFORE and an AFTER capture and write to the snapshot schema.",
             "Sections marked NA load only hard-coded NULL padding or a disabled placeholder.",
@@ -518,22 +657,42 @@ def main():
                 sections = [cdc_setup(), cdc_procedure(pj)]
                 for s in ps:
                     sec = h1a(s)
+                    sec["hub"] = plan_tag(s) + sec["hub"]
                     cap = cdc_capture(s) if s.applicable else None
                     if cap and sec["status"] != "NA":
                         sec["queries"].append(("SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)", cap))
                     sections.append(sec)
                 sections.append(cdc_result(pj, cid))
             elif cid == "DM-H2":
-                sections = [h2a(s) for s in ps] + [cdc_result(pj, cid)]
+                sections = []
+                for s in ps:
+                    sec = h2a(s); sec["hub"] = plan_tag(s) + sec["hub"]; sections.append(sec)
+                sections.append(cdc_result(pj, cid))
             elif cid == "DM-H3":
-                sections = [h3a(s) for s in ps] + h3_reload(pj, ps)
+                ps3 = selected_sats_h3([s for s in sats if s.project == pj], pj)
+                sections = []
+                for s in ps3:
+                    sec = h3a(s); sec["hub"] = h3_tag(s) + sec["hub"]; sections.append(sec)
+                sections += h3_reload(pj, ps3)
             else:
-                sections = [h4(s) for s in ps]
+                sections = []
+                for s in ps:
+                    sec = h4(s); sec["hub"] = plan_tag(s) + sec["hub"]; sections.append(sec)
             pmeta = dict(meta, title=f"{meta['title']}  ({pj})", overview=meta["overview"] + [("Project in this file", pj)])
             fid = f"{cid}_{pj}"
-            K.write_sql(fid, pmeta, sections, revision)
-            A.write_docx(fid, pmeta, sections, revision, template,
-                         preface=before_part_b(pj, cid) if cid != "DM-H4" else None)
+            rev = revision
+            if cid == "DM-H3":
+                n3 = len(selected_sats_h3([s for s in sats if s.project == pj], pj))
+                rev = [revision[0],
+                       f"DM-H3 (idempotent re-load) is trimmed to ONE satellite per macro path for {pj} "
+                       f"({n3} satellites here). Idempotency behaves identically for every sat built by a "
+                       f"given macro, so one representative per macro is sufficient. Each sat is prefixed "
+                       f"with its [macro-path].",
+                       revision[2], revision[3]]
+            K.write_sql(fid, pmeta, sections, rev)
+            if template is not None:
+                A.write_docx(fid, pmeta, sections, rev, template,
+                             preface=before_part_b(pj, cid) if cid != "DM-H4" else None)
             print(f"{fid}: {len(sections)} sections, {sum(x['status'] == 'NA' for x in sections)} NA")
 
 

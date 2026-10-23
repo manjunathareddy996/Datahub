@@ -2,10 +2,6 @@
    DM-H1  |  History Checks - Change Creates a New Satellite Row  (OPUS)
    A record changed in the SF Mirror source creates a new satellite row. Pass criterion: new sat row on change.
 
-   PARTNER LOB: 37 of 59 objects below carry the [Partner LOB] tag -- the same objects
-       tagged in the matching .docx (Customer / Party domain rows of the partner
-       Source-To-Model mapping). The tag is scope information only: SQL bodies, pass
-       criteria and results are unaffected.
    Check ID: DM-H1
    Category: History checks
    Sign-off criterion: Change creates a new satellite row
@@ -30,8 +26,11 @@
    Revision notes:
    - Generated 2026-10-13 from the current opus_partner_dv_dbt models by
      validation/tools/gen_dm_h.py (satellite lineage from gen_dm_a.py).
-   - This file: OPUS only (59 satellites, 59 with mapped payload; standard + augmented).
-     The other project is in the sibling file.
+   - TRIMMED to the DM-H member test plan (see validation/DM-H/DM-H_MEMBER_PLAN.md): OPUS
+     has 32 assigned satellites in this file (32 with mapped payload). Each sat is
+     prefixed with its [member | macro-path]. If an assigned sat has 0 rows, swap it for
+     a same-path sat from DM-H_REMAINING.md (confirm counts with
+     DM-H_ROWCOUNT_CHECK.sql).
    - Static queries (a) run on the data already loaded; the (b) procedures need a dbt
      load between a BEFORE and an AFTER capture and write to the snapshot schema.
    - Sections marked NA load only hard-coded NULL padding or a disabled placeholder.
@@ -82,121 +81,1415 @@ set DM_H_PHASE = 'AFTER';
 
 
 ----------------------------------------------------------------------------------------
--- 3. OPUS — SAT_AGREEMENT_COMMERCIAL_TERMS [Partner LOB]   [Implemented]
+-- 3. OPUS — [M1 | automate_dv.ma_sat] SAT_LNK_CLAIM_PARTY_ROLE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK AGREEMENT_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY
--- [1 col(s)].
+-- automate_dv.ma_sat; PK CLAIM_PARTY_HKEY, child key PARTY_ROLE_TYPE, ROLE_SEQUENCE; 1
+-- RECORD_SOURCE group(s): OPUS_CLM_INTERESTED_PARTIES [2 col(s)]. Multi-active: compared
+-- per (key, child key); latest = max LOAD_DATETIME per member.
 ----------------------------------------------------------------------------------------
 -- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_AGREEMENT_COMMERCIAL_TERMS' as satellite, 'OPUS_BJAZ_INTERMEDIARY' as scope,
+select 'OPUS' as project, 'SAT_LNK_CLAIM_PARTY_ROLE' as satellite, 'OPUS_CLM_INTERESTED_PARTIES' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(COMMISSIONSTRUCTURE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(COMMISSIONSTRUCTURE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(AGREEMENT_HKEY, 'HEX'), null)) within group (order by AGREEMENT_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PARTY_ROLE_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ROLE_SEQUENCE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PARTY_ROLE_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ROLE_SEQUENCE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(CLAIM_PARTY_HKEY, 'HEX'), null)) within group (order by CLAIM_PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AGREEMENT_COMMERCIAL_TERMS
- where (RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY');
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_CLAIM_PARTY_ROLE
+ where (RECORD_SOURCE = 'OPUS_CLM_INTERESTED_PARTIES');
 
 -- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
 insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
 with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
     select hkey from (
-        select distinct AGREEMENT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AGREEMENT_COMMERCIAL_TERMS where RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY' order by hkey limit 100
+        select distinct CLAIM_PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_CLAIM_PARTY_ROLE where RECORD_SOURCE = 'OPUS_CLM_INTERESTED_PARTIES' order by hkey limit 100
     ) where $DM_H_PHASE = 'BEFORE'
     union
     select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
      where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AGREEMENT_COMMERCIAL_TERMS' and record_source = 'OPUS_BJAZ_INTERMEDIARY'
+       and satellite = 'SAT_LNK_CLAIM_PARTY_ROLE' and record_source = 'OPUS_CLM_INTERESTED_PARTIES'
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_partner__bjaz_intermediary
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_AGREEMENT|' || ((nullif(trim("INTERMEDIARY_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+        -- via stg_partner__clm_interested_parties
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_CLAIM_PARTY|' || (nullif(trim("PART_ID"::varchar), '')) || '|' || (nullif(trim("CLAIM_ID"::varchar), '')) AS VARCHAR))), '')) as hkey,
+               to_varchar((nullif(trim("IP_TYPE"::varchar), ''))) as cdk_1,
+               to_varchar(("IP_NO"::number)) as cdk_2,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("TYPE_OF_COMM_ARR"::varchar), ''))) as COMMISSIONSTRUCTURE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_INTERMEDIARY
+               to_varchar((nullif(trim("IP_TYPE"::varchar), ''))) as PARTY_ROLE_TYPE,
+               to_varchar(("IP_NO"::number)) as ROLE_SEQUENCE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.CLM_INTERESTED_PARTIES
       )
      where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
+    qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
 ),
 n1 as (  -- satellite history per sampled key
-    select AGREEMENT_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AGREEMENT_COMMERCIAL_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY' and AGREEMENT_HKEY in (select hkey from s1)
+    select CLAIM_PARTY_HKEY as hkey, coalesce(to_varchar(PARTY_ROLE_TYPE), '^^') || '|' || coalesce(to_varchar(ROLE_SEQUENCE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_CLAIM_PARTY_ROLE
+     where RECORD_SOURCE = 'OPUS_CLM_INTERESTED_PARTIES' and CLAIM_PARTY_HKEY in (select hkey from s1)
      group by 1, 2
 ),
 x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.COMMISSIONSTRUCTURE AS VARCHAR))), ''), '^^'))) as raw_hash
+    select e.hkey, coalesce(e.cdk_1, '^^') || '|' || coalesce(e.cdk_2, '^^') as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.PARTY_ROLE_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.ROLE_SEQUENCE AS VARCHAR))), ''), '^^')))) as raw_hash
       from e1 e group by 1, 2
 )
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AGREEMENT_COMMERCIAL_TERMS', 'OPUS_BJAZ_INTERMEDIARY',
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_CLAIM_PARTY_ROLE', 'OPUS_CLM_INTERESTED_PARTIES',
        coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
   from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
 
 
 
 ----------------------------------------------------------------------------------------
--- 4. OPUS — SAT_AGREEMENT_DEFINITION [Partner LOB]   [Implemented]
+-- 4. OPUS — [M1 | sat_multi_source] SAT_AUG_PARTY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK AGREEMENT_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY
--- [1 col(s)].
+-- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
+-- sat_multi_source; PK PARTY_HKEY; 10 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [8
+-- col(s)], OPUS_BJAZ_INTERMEDIARY [3 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [3 col(s)],
+-- OPUS_BJAZ_HCF_MEMBER_DTLS [1 col(s)], OPUS_BJAZ_SPP_MEMBER_DTLS [4 col(s)],
+-- OPUS_BJAZ_HC_PART_EXTN [1 col(s)], OPUS_CP_PARTNERS [2 col(s)],
+-- OPUS_BJAZ_CLM_SUPP_EXTN [6 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [1 col(s)],
+-- OPUS_BJAZ_HM_HOSPITAL_MASTER [3 col(s)].
 ----------------------------------------------------------------------------------------
 -- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_AGREEMENT_DEFINITION' as satellite, 'OPUS_BJAZ_INTERMEDIARY' as scope,
+select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_AZBJ_PARTNER_EXTN' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(AGREEMENTTYPE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(AGREEMENTTYPE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(AGREEMENT_HKEY, 'HEX'), null)) within group (order by AGREEMENT_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ECS_MANDATE_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXISTING_CUSTOMER_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HNI_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IT_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NUMBER_OF_DAUGHTERS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NUMBER_OF_SONS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PARENT_ENTITY_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WEBSITE_URL AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ECS_MANDATE_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXISTING_CUSTOMER_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HNI_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IT_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NUMBER_OF_DAUGHTERS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NUMBER_OF_SONS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PARENT_ENTITY_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WEBSITE_URL AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AGREEMENT_DEFINITION
- where (RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY');
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+ where (RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN')
+union all
+select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_BJAZ_INTERMEDIARY' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(IT_RETURN_2YR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_AADHAR_LINKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WEBSITE_URL AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(IT_RETURN_2YR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_AADHAR_LINKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WEBSITE_URL AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+ where (RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY')
+union all
+select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PREGNANT_MONTHS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRIOR_CLAIM_REASON AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SMOKE_CONSUMP AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PREGNANT_MONTHS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRIOR_CLAIM_REASON AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SMOKE_CONSUMP AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+ where (RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN')
+union all
+select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_BJAZ_HCF_MEMBER_DTLS' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(BMI_FLAG AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(BMI_FLAG AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+ where (RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS')
+union all
+select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_BJAZ_SPP_MEMBER_DTLS' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BMI AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HEIGHT_FEET AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HEIGHT_INCHES AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OTHER_OCC AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BMI AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HEIGHT_FEET AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HEIGHT_INCHES AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OTHER_OCC AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+ where (RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS')
+union all
+select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_BJAZ_HC_PART_EXTN' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_BIRTH_M AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_BIRTH_M AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+ where (RECORD_SOURCE = 'OPUS_BJAZ_HC_PART_EXTN')
+union all
+select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_CP_PARTNERS' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CAUSE_OF_DEATH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PROOF_OF_DEATH_TYPE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CAUSE_OF_DEATH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PROOF_OF_DEATH_TYPE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+ where (RECORD_SOURCE = 'OPUS_CP_PARTNERS')
+union all
+select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_BJAZ_CLM_SUPP_EXTN' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADHAAR_PAN_LINK_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MARRIAGE_ANNIVERSARY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_ACK_DT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_APP_NO AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TWO_YR_ITR_FLAG AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADHAAR_PAN_LINK_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MARRIAGE_ANNIVERSARY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_ACK_DT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_APP_NO AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TWO_YR_ITR_FLAG AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+ where (RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN')
+union all
+select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_BJAZ_HM_MEMBER_DTLS' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(MONTHLY_SALARY AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(MONTHLY_SALARY AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+ where (RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS')
+union all
+select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_BJAZ_HM_HOSPITAL_MASTER' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(IMPS_ACTIVE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IMPS_END_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAYMENT_MODE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(IMPS_ACTIVE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IMPS_END_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAYMENT_MODE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+ where (RECORD_SOURCE = 'OPUS_BJAZ_HM_HOSPITAL_MASTER');
 
 -- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
 insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
 with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
     select hkey from (
-        select distinct AGREEMENT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AGREEMENT_DEFINITION where RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY' order by hkey limit 100
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN' order by hkey limit 100
     ) where $DM_H_PHASE = 'BEFORE'
     union
     select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
      where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AGREEMENT_DEFINITION' and record_source = 'OPUS_BJAZ_INTERMEDIARY'
+       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_AZBJ_PARTNER_EXTN'
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_partner__bjaz_intermediary
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_AGREEMENT|' || ((nullif(trim("INTERMEDIARY_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+        -- via stg_partner__azbj_partner_extn
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("NATURE_OF_AGREEMENT"::varchar), ''))) as AGREEMENTTYPE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_INTERMEDIARY
+               to_varchar((nullif(trim("ECS_STATUS"::varchar), ''))) as ECS_MANDATE_STATUS,
+               to_varchar((nullif(trim("EXISTING_CUST"::varchar), ''))) as EXISTING_CUSTOMER_INDICATOR,
+               to_varchar((nullif(trim("HNI_FLAG"::varchar), ''))) as HNI_FLAG,
+               to_varchar((nullif(trim("IT_STATUS"::varchar), ''))) as IT_STATUS,
+               to_varchar(("DAUGHTERS"::number)) as NUMBER_OF_DAUGHTERS,
+               to_varchar(("SONS"::number)) as NUMBER_OF_SONS,
+               to_varchar((nullif(trim("PARENT_ID"::varchar), ''))) as PARENT_ENTITY_REFERENCE,
+               to_varchar((nullif(trim("WEBSITE"::varchar), ''))) as WEBSITE_URL
+          from BAGIC_PREPROD_CURATED_DB.UTILS.AZBJ_PARTNER_EXTN
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
 ),
 n1 as (  -- satellite history per sampled key
-    select AGREEMENT_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AGREEMENT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY' and AGREEMENT_HKEY in (select hkey from s1)
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+     where RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN' and PARTY_HKEY in (select hkey from s1)
      group by 1, 2
 ),
 x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.AGREEMENTTYPE AS VARCHAR))), ''), '^^'))) as raw_hash
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.ECS_MANDATE_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EXISTING_CUSTOMER_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.HNI_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.IT_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.NUMBER_OF_DAUGHTERS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.NUMBER_OF_SONS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PARENT_ENTITY_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.WEBSITE_URL AS VARCHAR))), ''), '^^')))) as raw_hash
       from e1 e group by 1, 2
 )
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AGREEMENT_DEFINITION', 'OPUS_BJAZ_INTERMEDIARY',
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_AZBJ_PARTNER_EXTN',
        coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
   from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_BJAZ_INTERMEDIARY'
+),
+e2 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_intermediary
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("INTERMEDIARY_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("IT_RETURN_2YR"::varchar), ''))) as IT_RETURN_2YR,
+               to_varchar((nullif(trim("PAN_AADHAR_LINKED"::varchar), ''))) as PAN_AADHAR_LINKED,
+               to_varchar((nullif(trim("WEBSITE_LINK"::varchar), ''))) as WEBSITE_URL
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_INTERMEDIARY
+      )
+     where hkey in (select hkey from s2) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n2 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+     where RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY' and PARTY_HKEY in (select hkey from s2)
+     group by 1, 2
+),
+x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.IT_RETURN_2YR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PAN_AADHAR_LINKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.WEBSITE_URL AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e2 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_BJAZ_INTERMEDIARY',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN'
+),
+e3 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_ec_mem_dtls_extn
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar(("PREGNANT_MONTHS"::number)) as PREGNANT_MONTHS,
+               to_varchar((nullif(trim("CLAIMED_FOR"::varchar), ''))) as PRIOR_CLAIM_REASON,
+               to_varchar((nullif(trim("SMOKE_CONSUMP"::varchar), ''))) as SMOKE_CONSUMP
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_EC_MEM_DTLS_EXTN
+      )
+     where hkey in (select hkey from s3) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n3 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+     where RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' and PARTY_HKEY in (select hkey from s3)
+     group by 1, 2
+),
+x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREGNANT_MONTHS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PRIOR_CLAIM_REASON AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.SMOKE_CONSUMP AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e3 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_BJAZ_EC_MEM_DTLS_EXTN',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_BJAZ_HCF_MEMBER_DTLS'
+),
+e4 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_hcf_member_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("BMI_FLAG"::varchar), ''))) as BMI_FLAG
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HCF_MEMBER_DTLS
+      )
+     where hkey in (select hkey from s4) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n4 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+     where RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s4)
+     group by 1, 2
+),
+x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.BMI_FLAG AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e4 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_BJAZ_HCF_MEMBER_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s5 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_BJAZ_SPP_MEMBER_DTLS'
+),
+e5 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_spp_member_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("BMI"::varchar), ''))) as BMI,
+               to_varchar((nullif(trim("HEIGHT_FEET"::varchar), ''))) as HEIGHT_FEET,
+               to_varchar((nullif(trim("HEIGHT_INCHES"::varchar), ''))) as HEIGHT_INCHES,
+               to_varchar((nullif(trim("OTHER_OCC"::varchar), ''))) as OTHER_OCC
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SPP_MEMBER_DTLS
+      )
+     where hkey in (select hkey from s5) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n5 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+     where RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s5)
+     group by 1, 2
+),
+x5 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.BMI AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.HEIGHT_FEET AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.HEIGHT_INCHES AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.OTHER_OCC AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e5 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_BJAZ_SPP_MEMBER_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n5 n full outer join x5 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s6 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_HC_PART_EXTN' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_BJAZ_HC_PART_EXTN'
+),
+e6 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_hc_part_extn
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar(("DATE_OF_BIRTH_M"::timestamp_ntz)) as DATE_OF_BIRTH_M
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HC_PART_EXTN
+      )
+     where hkey in (select hkey from s6) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n6 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+     where RECORD_SOURCE = 'OPUS_BJAZ_HC_PART_EXTN' and PARTY_HKEY in (select hkey from s6)
+     group by 1, 2
+),
+x6 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.DATE_OF_BIRTH_M AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e6 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_BJAZ_HC_PART_EXTN',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n6 n full outer join x6 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s7 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_CP_PARTNERS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_CP_PARTNERS'
+),
+e7 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__cp_partners
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("CAUSE_OF_DEATH"::varchar), ''))) as CAUSE_OF_DEATH,
+               to_varchar((nullif(trim("PROOF_OF_DEATH"::varchar), ''))) as PROOF_OF_DEATH_TYPE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.CP_PARTNERS
+      )
+     where hkey in (select hkey from s7) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n7 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+     where RECORD_SOURCE = 'OPUS_CP_PARTNERS' and PARTY_HKEY in (select hkey from s7)
+     group by 1, 2
+),
+x7 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.CAUSE_OF_DEATH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PROOF_OF_DEATH_TYPE AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e7 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_CP_PARTNERS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n7 n full outer join x7 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s8 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_BJAZ_CLM_SUPP_EXTN'
+),
+e8 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_clm_supp_extn
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("ADHAAR_PAN_LINK_FLAG"::varchar), ''))) as ADHAAR_PAN_LINK_FLAG,
+               to_varchar(("MRG_ANNIVERSIRY"::timestamp_ntz)) as MARRIAGE_ANNIVERSARY_DATE,
+               to_varchar(("PAN_ACK_DT"::timestamp_ntz)) as PAN_ACK_DT,
+               to_varchar((nullif(trim("PAN_APP_NO"::varchar), ''))) as PAN_APP_NO,
+               to_varchar((nullif(trim("PAN_STATUS"::varchar), ''))) as PAN_STATUS,
+               to_varchar((nullif(trim("TWO_YR_ITR_FLAG"::varchar), ''))) as TWO_YR_ITR_FLAG
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
+      )
+     where hkey in (select hkey from s8) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n8 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+     where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' and PARTY_HKEY in (select hkey from s8)
+     group by 1, 2
+),
+x8 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.ADHAAR_PAN_LINK_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.MARRIAGE_ANNIVERSARY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PAN_ACK_DT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PAN_APP_NO AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PAN_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.TWO_YR_ITR_FLAG AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e8 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_BJAZ_CLM_SUPP_EXTN',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n8 n full outer join x8 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s9 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_BJAZ_HM_MEMBER_DTLS'
+),
+e9 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_hm_member_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("MONTHLY_SALARY"::varchar), ''))) as MONTHLY_SALARY
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
+      )
+     where hkey in (select hkey from s9) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n9 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+     where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s9)
+     group by 1, 2
+),
+x9 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MONTHLY_SALARY AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e9 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_BJAZ_HM_MEMBER_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n9 n full outer join x9 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s10 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_HM_HOSPITAL_MASTER' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_BJAZ_HM_HOSPITAL_MASTER'
+),
+e10 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_hm_hospital_master
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("HOSID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar(("IMPS_ACTIVE_DATE"::timestamp_ntz)) as IMPS_ACTIVE_DATE,
+               to_varchar(("IMPS_END_DATE"::timestamp_ntz)) as IMPS_END_DATE,
+               to_varchar((nullif(trim("PAYMENT_MODE"::varchar), ''))) as PAYMENT_MODE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_HOSPITAL_MASTER
+      )
+     where hkey in (select hkey from s10) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n10 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
+     where RECORD_SOURCE = 'OPUS_BJAZ_HM_HOSPITAL_MASTER' and PARTY_HKEY in (select hkey from s10)
+     group by 1, 2
+),
+x10 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.IMPS_ACTIVE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.IMPS_END_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PAYMENT_MODE AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e10 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_BJAZ_HM_HOSPITAL_MASTER',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n10 n full outer join x10 x on x.hkey = n.hkey and x.cdk = n.cdk;
 
 
 
 ----------------------------------------------------------------------------------------
--- 5. OPUS — SAT_COMMON_ADDRESS [Partner LOB]   [Implemented]
+-- 5. OPUS — [M1 | sat_multi_source] SAT_PARTY_VEHICLE_PRIOR_INSURANCE   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- sat_multi_source; PK PARTY_HKEY; 8 RECORD_SOURCE group(s): OPUS_BJAZ_CTNGY_PA_MEM_DTLS
+-- [1 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [4 col(s)], OPUS_BJAZ_HCF_MEMBER_DTLS [3
+-- col(s)], OPUS_BJAZ_HC_PART_EXTN [1 col(s)], OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [5 col(s)],
+-- OPUS_BJAZ_PA_DETL_EXTN [1 col(s)], OPUS_BJAZ_SH_MEM_DTLS_EXTN [2 col(s)],
+-- OPUS_BJAZ_SPP_MEMBER_DTLS [3 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' as satellite, '3 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
+ where (RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_HC_PART_EXTN') or (RECORD_SOURCE = 'OPUS_BJAZ_PA_DETL_EXTN')
+union all
+select 'OPUS' as project, 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' as satellite, 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSEXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSINSURERNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSEXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSINSURERNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
+ where (RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN')
+union all
+select 'OPUS' as project, 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CONTINUITYINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CONTINUITYINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
+ where (RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS')
+union all
+select 'OPUS' as project, 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' as satellite, 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CONTINUITYINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSEXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSINSURERNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CONTINUITYINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSEXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSINSURERNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
+ where (RECORD_SOURCE = 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS')
+union all
+select 'OPUS' as project, 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' as satellite, 'OPUS_BJAZ_SH_MEM_DTLS_EXTN' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
+ where (RECORD_SOURCE = 'OPUS_BJAZ_SH_MEM_DTLS_EXTN');
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' and record_source = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS'
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_ctngy_pa_mem_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("PREVIOUS_POLICY_DETAILS"::varchar), ''))) as PREVIOUSPOLICYNUMBER
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_PA_MEM_DTLS
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
+     where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' and PARTY_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE', 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE where RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' and record_source = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN'
+),
+e2 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_ec_mem_dtls_extn
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("PERV_POL_EXP_DATE"::varchar), ''))) as PREVIOUSEXPIRYDATE,
+               to_varchar((nullif(trim("PREV_COMPANY_NAME"::varchar), ''))) as PREVIOUSINSURERNAME,
+               to_varchar((nullif(trim("PREV_POLICY_DTLS"::varchar), ''))) as PREVIOUSPOLICYNUMBER,
+               to_varchar(("PREV_SUM_INSURED"::number)) as PREVIOUSSUMINSURED
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_EC_MEM_DTLS_EXTN
+      )
+     where hkey in (select hkey from s2) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n2 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
+     where RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' and PARTY_HKEY in (select hkey from s2)
+     group by 1, 2
+),
+x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSEXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSINSURERNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e2 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE', 'OPUS_BJAZ_EC_MEM_DTLS_EXTN',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE where RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' and record_source = 'OPUS_BJAZ_HCF_MEMBER_DTLS'
+),
+e3 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_hcf_member_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar(("PREV_POLICY_SINCE"::timestamp_ntz)) as CONTINUITYINDICATOR,
+               to_varchar((nullif(trim("CONCURRENT_POLICY_DETAILS"::varchar), ''))) as PREVIOUSPOLICYNUMBER,
+               to_varchar(("PREVIOUS_SI"::number)) as PREVIOUSSUMINSURED
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HCF_MEMBER_DTLS
+      )
+     where hkey in (select hkey from s3) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n3 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
+     where RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s3)
+     group by 1, 2
+),
+x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.CONTINUITYINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e3 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE', 'OPUS_BJAZ_HCF_MEMBER_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE where RECORD_SOURCE = 'OPUS_BJAZ_HC_PART_EXTN' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' and record_source = 'OPUS_BJAZ_HC_PART_EXTN'
+),
+e4 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_hc_part_extn
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("FIRST_POLICY_REF"::varchar), ''))) as PREVIOUSPOLICYNUMBER
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HC_PART_EXTN
+      )
+     where hkey in (select hkey from s4) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n4 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
+     where RECORD_SOURCE = 'OPUS_BJAZ_HC_PART_EXTN' and PARTY_HKEY in (select hkey from s4)
+     group by 1, 2
+),
+x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e4 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE', 'OPUS_BJAZ_HC_PART_EXTN',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s5 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE where RECORD_SOURCE = 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' and record_source = 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS'
+),
+e5 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_hlt_ensure_mem_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("PREVIOUS_SINCE_NOOF_YEARS"::varchar), ''))) as CONTINUITYINDICATOR,
+               to_varchar((nullif(trim("PREVIOUS_TO_DATE"::varchar), ''))) as PREVIOUSEXPIRYDATE,
+               to_varchar((nullif(trim("PREVIOUS_COMPANY_NAME"::varchar), ''))) as PREVIOUSINSURERNAME,
+               to_varchar((nullif(trim("PREV_POLICY_NO"::varchar), ''))) as PREVIOUSPOLICYNUMBER,
+               to_varchar((nullif(trim("PREVIOUS_SUM_INSURED"::varchar), ''))) as PREVIOUSSUMINSURED
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HLT_ENSURE_MEM_DTLS
+      )
+     where hkey in (select hkey from s5) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n5 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
+     where RECORD_SOURCE = 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS' and PARTY_HKEY in (select hkey from s5)
+     group by 1, 2
+),
+x5 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.CONTINUITYINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSEXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSINSURERNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e5 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE', 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n5 n full outer join x5 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s6 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE where RECORD_SOURCE = 'OPUS_BJAZ_PA_DETL_EXTN' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' and record_source = 'OPUS_BJAZ_PA_DETL_EXTN'
+),
+e6 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_pa_detl_extn
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("FIRST_POLICY_REF"::varchar), ''))) as PREVIOUSPOLICYNUMBER
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_PA_DETL_EXTN
+      )
+     where hkey in (select hkey from s6) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n6 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
+     where RECORD_SOURCE = 'OPUS_BJAZ_PA_DETL_EXTN' and PARTY_HKEY in (select hkey from s6)
+     group by 1, 2
+),
+x6 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e6 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE', 'OPUS_BJAZ_PA_DETL_EXTN',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n6 n full outer join x6 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s7 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE where RECORD_SOURCE = 'OPUS_BJAZ_SH_MEM_DTLS_EXTN' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' and record_source = 'OPUS_BJAZ_SH_MEM_DTLS_EXTN'
+),
+e7 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_sh_mem_dtls_extn
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("PREV_POLICY_DTLS"::varchar), ''))) as PREVIOUSPOLICYNUMBER,
+               to_varchar(("PREV_SUM_INSURED"::number)) as PREVIOUSSUMINSURED
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SH_MEM_DTLS_EXTN
+      )
+     where hkey in (select hkey from s7) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n7 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
+     where RECORD_SOURCE = 'OPUS_BJAZ_SH_MEM_DTLS_EXTN' and PARTY_HKEY in (select hkey from s7)
+     group by 1, 2
+),
+x7 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e7 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE', 'OPUS_BJAZ_SH_MEM_DTLS_EXTN',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n7 n full outer join x7 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s8 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE where RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' and record_source = 'OPUS_BJAZ_SPP_MEMBER_DTLS'
+),
+e8 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_spp_member_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar(("PREV_POLICY_SINCE"::timestamp_ntz)) as CONTINUITYINDICATOR,
+               to_varchar((nullif(trim("CONCURRENT_POLICY_DETAILS"::varchar), ''))) as PREVIOUSPOLICYNUMBER,
+               to_varchar(("PREVIOUS_SI"::number)) as PREVIOUSSUMINSURED
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SPP_MEMBER_DTLS
+      )
+     where hkey in (select hkey from s8) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n8 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
+     where RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s8)
+     group by 1, 2
+),
+x8 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.CONTINUITYINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e8 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE', 'OPUS_BJAZ_SPP_MEMBER_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n8 n full outer join x8 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 6. OPUS — [M1 | sat_multi_source] SAT_POLICY_CERTIFICATE   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- sat_multi_source; PK POLICY_HKEY; 3 RECORD_SOURCE group(s): OPUS_BA_HCP_DT_MEM [1
+-- col(s)], OPUS_BJAZ_CTNGY_PA_MEM_DTLS [1 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [1 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_POLICY_CERTIFICATE' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(MEMBERSTATUS AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(MEMBERSTATUS AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE
+ where (RECORD_SOURCE = 'OPUS_BA_HCP_DT_MEM') or (RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS')
+union all
+select 'OPUS' as project, 'SAT_POLICY_CERTIFICATE' as satellite, 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ENROLMENTDATE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ENROLMENTDATE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE
+ where (RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS');
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE where RECORD_SOURCE = 'OPUS_BA_HCP_DT_MEM' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_POLICY_CERTIFICATE' and record_source = 'OPUS_BA_HCP_DT_MEM'
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__ba_hcp_dt_mem
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim("CONTRACT_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("MEM_STATUS"::varchar), ''))) as MEMBERSTATUS
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_HCP_DT_MEM
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select POLICY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE
+     where RECORD_SOURCE = 'OPUS_BA_HCP_DT_MEM' and POLICY_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MEMBERSTATUS AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_CERTIFICATE', 'OPUS_BA_HCP_DT_MEM',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_POLICY_CERTIFICATE' and record_source = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS'
+),
+e2 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_ctngy_pa_mem_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim("CONTRACT_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar(("PM_POL_ENROLMENT_DATE"::timestamp_ntz)) as ENROLMENTDATE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_PA_MEM_DTLS
+      )
+     where hkey in (select hkey from s2) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n2 as (  -- satellite history per sampled key
+    select POLICY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE
+     where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' and POLICY_HKEY in (select hkey from s2)
+     group by 1, 2
+),
+x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.ENROLMENTDATE AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e2 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_CERTIFICATE', 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_POLICY_CERTIFICATE' and record_source = 'OPUS_BJAZ_HM_MEMBER_DTLS'
+),
+e3 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_hm_member_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim("CONTRACT_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("MEMBER_STATUS"::varchar), ''))) as MEMBERSTATUS
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
+      )
+     where hkey in (select hkey from s3) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n3 as (  -- satellite history per sampled key
+    select POLICY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE
+     where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' and POLICY_HKEY in (select hkey from s3)
+     group by 1, 2
+),
+x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MEMBERSTATUS AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e3 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_CERTIFICATE', 'OPUS_BJAZ_HM_MEMBER_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 7. OPUS — [M1 | sat_multi_source(OBJECT)] SAT_PARTY_IDENTIFICATION   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- sat_multi_source; PK PARTY_HKEY; 19 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [2
+-- col(s)], OPUS_BJAZ_CLM_SUPP_EXTN [3 col(s)], OPUS_BJAZ_CTNGY_FF_DTLS_EXTN [1 col(s)],
+-- OPUS_BJAZ_CTNGY_PA_MEM_DTLS [5 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [1 col(s)],
+-- OPUS_BJAZ_HCF_MEMBER_DTLS [1 col(s)], OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [1 col(s)],
+-- OPUS_BJAZ_HM_HOSPITAL_MASTER [1 col(s)], OPUS_BJAZ_INTERMEDIARY [3 col(s)],
+-- OPUS_BJAZ_STARPKG_FF_DTLS [1 col(s)], OPUS_CP_PARTNERS [2 col(s)],
+-- OPUS_BJAZ_M_KYC_DRIVING_LICENCE [0 col(s)], OPUS_BJAZ_M_KYC_GSTN [1 col(s)],
+-- OPUS_BJAZ_M_KYC_PAN [1 col(s)], OPUS_BJAZ_M_KYC_PASSPORT [1 col(s)],
+-- OPUS_BJAZ_M_KYC_VOTER [1 col(s)], OPUS_BJAZ_T_CKYC_OTP [1 col(s)],
+-- OPUS_BJAZ_T_KYC_INCOMING [1 col(s)], OPUS_BJAZ_T_KYC_NAME_MATCH [1 col(s)]. OBJECT
+-- satellite: AADHAARNUMBER, GSTIN, PANNUMBER, PASSPORTNUMBER, VOTERIDNUMBER, CKYCNUMBER
+-- hold one entry per source table (sat value = col:"<TABLE>"; expected = MAX over that
+-- table's RAW rows, as the macro does). Plain columns are MAX across all tables and are
+-- not compared per table. A table absent from the latest incremental window is absent
+-- from the latest row -- compare after a full load.
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'all OPUS rows (OBJECT hashdiff)' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT(IFNULL(TO_JSON(AADHAARNUMBER), '^^'), '||', IFNULL(TO_JSON(GSTIN), '^^'), '||', IFNULL(TO_JSON(PANNUMBER), '^^'), '||', IFNULL(TO_JSON(PASSPORTNUMBER), '^^'), '||', IFNULL(TO_JSON(VOTERIDNUMBER), '^^'), '||', IFNULL(TO_JSON(CKYCNUMBER), '^^'), '||', IFNULL(CAST(AGEPROOFTYPE AS VARCHAR), '^^'), '||', IFNULL(CAST(EIANUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(GSTREGISTRATIONSTATUS AS VARCHAR), '^^'), '||', IFNULL(CAST(GSTTAXPAYERTYPE AS VARCHAR), '^^'), '||', IFNULL(CAST(IDENTIFICATIONNUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(TANNUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(VATREGISTRATIONNUMBER AS VARCHAR), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT(IFNULL(TO_JSON(AADHAARNUMBER), '^^'), '||', IFNULL(TO_JSON(GSTIN), '^^'), '||', IFNULL(TO_JSON(PANNUMBER), '^^'), '||', IFNULL(TO_JSON(PASSPORTNUMBER), '^^'), '||', IFNULL(TO_JSON(VOTERIDNUMBER), '^^'), '||', IFNULL(TO_JSON(CKYCNUMBER), '^^'), '||', IFNULL(CAST(AGEPROOFTYPE AS VARCHAR), '^^'), '||', IFNULL(CAST(EIANUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(GSTREGISTRATIONSTATUS AS VARCHAR), '^^'), '||', IFNULL(CAST(GSTTAXPAYERTYPE AS VARCHAR), '^^'), '||', IFNULL(CAST(IDENTIFICATIONNUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(TANNUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(VATREGISTRATIONNUMBER AS VARCHAR), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
+ where RECORD_SOURCE = 'OPUS';
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_CLM_SUPP_EXTN'
+),
+e2 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select hkey, max(PANNUMBER) as PANNUMBER
+      from (
+        -- via stg_partner__bjaz_clm_supp_extn
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("PAN_NO"::varchar), ''))) as PANNUMBER
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
+      )
+     where hkey in (select hkey from s2) and ldts is not null
+     group by hkey
+),
+n2 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
+     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s2)
+     group by 1, 2
+),
+x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PANNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e2 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_CLM_SUPP_EXTN',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_CTNGY_FF_DTLS_EXTN'
+),
+e3 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select hkey, max(PASSPORTNUMBER) as PASSPORTNUMBER
+      from (
+        -- via stg_partner__bjaz_ctngy_ff_dtls_extn
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("PASSPORTNO"::varchar), ''))) as PASSPORTNUMBER
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_FF_DTLS_EXTN
+      )
+     where hkey in (select hkey from s3) and ldts is not null
+     group by hkey
+),
+n3 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
+     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s3)
+     group by 1, 2
+),
+x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PASSPORTNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e3 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_CTNGY_FF_DTLS_EXTN',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS'
+),
+e4 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select hkey, max(AADHAARNUMBER) as AADHAARNUMBER, max(PANNUMBER) as PANNUMBER, max(PASSPORTNUMBER) as PASSPORTNUMBER
+      from (
+        -- via stg_partner__bjaz_ctngy_pa_mem_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("AADHAR_CARD_NO"::varchar), ''))) as AADHAARNUMBER,
+               to_varchar((nullif(trim("PAN_CARD_NO"::varchar), ''))) as PANNUMBER,
+               to_varchar((nullif(trim("PASSPORT_NUMBER"::varchar), ''))) as PASSPORTNUMBER
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_PA_MEM_DTLS
+      )
+     where hkey in (select hkey from s4) and ldts is not null
+     group by hkey
+),
+n4 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
+     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s4)
+     group by 1, 2
+),
+x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.AADHAARNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PANNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PASSPORTNUMBER AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e4 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s9 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_INTERMEDIARY'
+),
+e9 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select hkey, max(GSTIN) as GSTIN, max(PANNUMBER) as PANNUMBER
+      from (
+        -- via stg_partner__bjaz_intermediary
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("INTERMEDIARY_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("GST_NO"::varchar), ''))) as GSTIN,
+               to_varchar((nullif(trim("PAN_NUMBER"::varchar), ''))) as PANNUMBER
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_INTERMEDIARY
+      )
+     where hkey in (select hkey from s9) and ldts is not null
+     group by hkey
+),
+n9 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
+     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s9)
+     group by 1, 2
+),
+x9 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.GSTIN AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PANNUMBER AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e9 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_INTERMEDIARY',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n9 n full outer join x9 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s10 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_STARPKG_FF_DTLS'
+),
+e10 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select hkey, max(PASSPORTNUMBER) as PASSPORTNUMBER
+      from (
+        -- via stg_partner__bjaz_starpkg_ff_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("PASSPORTNO"::varchar), ''))) as PASSPORTNUMBER
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_STARPKG_FF_DTLS
+      )
+     where hkey in (select hkey from s10) and ldts is not null
+     group by hkey
+),
+n10 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
+     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s10)
+     group by 1, 2
+),
+x10 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PASSPORTNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e10 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_STARPKG_FF_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n10 n full outer join x10 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s13 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_M_KYC_GSTN'
+),
+e13 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select hkey, max(GSTIN) as GSTIN
+      from (
+        -- via stg_partner__bjaz_m_kyc_gstn
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('GSTIN:' || upper(trim(coalesce((nullif(trim("GSTIN_NUMBER"::varchar), '')),''))), 'GSTIN:')) AS VARCHAR))), '')) as hkey,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("GSTIN_NUMBER"::varchar), ''))) as GSTIN
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_M_KYC_GSTN
+      )
+     where hkey in (select hkey from s13) and ldts is not null
+     group by hkey
+),
+n13 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
+     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s13)
+     group by 1, 2
+),
+x13 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.GSTIN AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e13 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_M_KYC_GSTN',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n13 n full outer join x13 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s14 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_M_KYC_PAN'
+),
+e14 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select hkey, max(PANNUMBER) as PANNUMBER
+      from (
+        -- via stg_partner__bjaz_m_kyc_pan
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('PAN:' || upper(trim(coalesce((nullif(trim("PAN_NUMBER"::varchar), '')),''))), 'PAN:')) AS VARCHAR))), '')) as hkey,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("PAN_NUMBER"::varchar), ''))) as PANNUMBER
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_M_KYC_PAN
+      )
+     where hkey in (select hkey from s14) and ldts is not null
+     group by hkey
+),
+n14 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
+     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s14)
+     group by 1, 2
+),
+x14 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PANNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e14 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_M_KYC_PAN',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n14 n full outer join x14 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s15 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_M_KYC_PASSPORT'
+),
+e15 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select hkey, max(PASSPORTNUMBER) as PASSPORTNUMBER
+      from (
+        -- via stg_partner__bjaz_m_kyc_passport
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('PASSPORT:' || upper(trim(coalesce((nullif(trim("PASSPORT_NUMBER"::varchar), '')),''))), 'PASSPORT:')) AS VARCHAR))), '')) as hkey,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("PASSPORT_NUMBER"::varchar), ''))) as PASSPORTNUMBER
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_M_KYC_PASSPORT
+      )
+     where hkey in (select hkey from s15) and ldts is not null
+     group by hkey
+),
+n15 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
+     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s15)
+     group by 1, 2
+),
+x15 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PASSPORTNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e15 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_M_KYC_PASSPORT',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n15 n full outer join x15 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s16 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_M_KYC_VOTER'
+),
+e16 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select hkey, max(VOTERIDNUMBER) as VOTERIDNUMBER
+      from (
+        -- via stg_partner__bjaz_m_kyc_voter
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('VOTER:' || upper(trim(coalesce((nullif(trim("VOTER_NUMBER"::varchar), '')),''))), 'VOTER:')) AS VARCHAR))), '')) as hkey,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("VOTER_NUMBER"::varchar), ''))) as VOTERIDNUMBER
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_M_KYC_VOTER
+      )
+     where hkey in (select hkey from s16) and ldts is not null
+     group by hkey
+),
+n16 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
+     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s16)
+     group by 1, 2
+),
+x16 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.VOTERIDNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e16 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_M_KYC_VOTER',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n16 n full outer join x16 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 8. OPUS — [M1 | stitch_incremental] SAT_COMMON_ADDRESS   [Implemented]
 -- HASHDIFF of stitch_kyc_common_address (6 tables) (stg2_kyc_common_address) also hashes
 -- CAREOFNAME, which this satellite does not store (a shared stage feeding several
 -- satellites). A change in only those columns gives a new HASHDIFF and so a NEW ROW WITH
@@ -558,7 +1851,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_ADDRESS', 'stitch_kyc_common_
 
 
 ----------------------------------------------------------------------------------------
--- 6. OPUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Design finding]
+-- 9. OPUS — [M1 | stitch_incremental] SAT_COMMON_ADMIN_GEOGRAPHY   [Design finding]
 -- HASHDIFF of stitch_shared__common_admin_geography_common_geo (2 tables)
 -- (stg2_shared__common_admin_geography_common_geo) also hashes REGIONCODE, REGIONNAME,
 -- SUBZONECODE, ZONECODE, which this satellite does not store (a shared stage feeding
@@ -657,3156 +1950,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_ADMIN_GEOGRAPHY', 'stitch_sha
 
 
 ----------------------------------------------------------------------------------------
--- 7. OPUS — SAT_COMMON_CLASSIFICATION [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): stitch_common_classification
--- (3 tables) [2 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'stitch_common_classification (3 tables)' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PRIORITYCODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SEGMENTCODE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PRIORITYCODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SEGMENTCODE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
- where (regexp_like(RECORD_SOURCE, '^(OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_INTERMEDIARY)(, (OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_INTERMEDIARY))*$'));
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION where regexp_like(RECORD_SOURCE, '^(OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_INTERMEDIARY)(, (OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_INTERMEDIARY))*$') order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_COMMON_CLASSIFICATION' and record_source = 'stitch_common_classification (3 tables)'
-),
-g1_t0 as (  -- stitch source OPUS_AZBJ_PARTNER_EXTN
-    select distinct (nullif(trim("PART_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("VIP_CUST"::varchar), '')))), '') as prioritycode,
-           nullif(trim(to_varchar((nullif(trim("UCIC_FLAG"::varchar), '')))), '') as segmentcode,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.AZBJ_PARTNER_EXTN
-     where (nullif(trim("PART_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PART_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t2 as (  -- stitch source OPUS_BJAZ_HM_MEMBER_DTLS
-    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("VIP_FLG"::varchar), '')))), '') as prioritycode,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
-     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t3 as (  -- stitch source OPUS_BJAZ_INTERMEDIARY
-    select distinct (nullif(trim("INTERMEDIARY_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("FLAGGING"::varchar), '')))), '') as segmentcode,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_INTERMEDIARY
-     where (nullif(trim("INTERMEDIARY_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("INTERMEDIARY_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-k1 as (
-    select parent_bk from g1_t0
-    union
-    select parent_bk from g1_t2
-    union
-    select parent_bk from g1_t3
-),
-st1 as (  -- stitch_common_classification recomputed from RAW (same coalesce / priority as the stitch macro)
-    select ak.parent_bk,
-           coalesce(g1_t0.prioritycode, g1_t2.prioritycode) as prioritycode,
-           coalesce(g1_t0.segmentcode, g1_t3.segmentcode) as segmentcode,
-           array_to_string(array_construct_compact(
-               case when g1_t0.parent_bk is not null then 'OPUS_AZBJ_PARTNER_EXTN' end,
-               case when g1_t2.parent_bk is not null then 'OPUS_BJAZ_HM_MEMBER_DTLS' end,
-               case when g1_t3.parent_bk is not null then 'OPUS_BJAZ_INTERMEDIARY' end
-           ), ', ') as record_source,
-           greatest_ignore_nulls(g1_t0.inc_job_updated_at, g1_t2.inc_job_updated_at, g1_t3.inc_job_updated_at) as inc_job_updated_at
-      from k1 ak
-      left join g1_t0 on g1_t0.parent_bk = ak.parent_bk
-      left join g1_t2 on g1_t2.parent_bk = ak.parent_bk
-      left join g1_t3 on g1_t3.parent_bk = ak.parent_bk
-    qualify row_number() over (partition by ak.parent_bk order by g1_t0.prioritycode nulls last, g1_t0.segmentcode nulls last, g1_t2.prioritycode nulls last, g1_t3.segmentcode nulls last) = 1
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stitch_common_classification
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || st.parent_bk AS VARCHAR))), '')) as hkey,
-               st.inc_job_updated_at as ldts,
-               to_varchar(st.prioritycode) as PRIORITYCODE,
-               to_varchar(st.segmentcode) as SEGMENTCODE
-          from st1 st
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
-     where regexp_like(RECORD_SOURCE, '^(OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_INTERMEDIARY)(, (OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_INTERMEDIARY))*$') and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.PRIORITYCODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.SEGMENTCODE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_CLASSIFICATION', 'stitch_common_classification (3 tables)',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 8. OPUS — SAT_COMMON_COMMUNICATION_PREFERENCE [Partner LOB]   [Design finding]
--- HASHDIFF of stitch_shared__common_communication_preference_party_employment (1 tables)
--- (stg2_shared__common_communication_preference_party_employment) also hashes
--- EMPLOYMENTSTATUS, which this satellite does not store (a shared stage feeding several
--- satellites). A change in only those columns gives a new HASHDIFF and so a NEW ROW WITH
--- AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts.
--- The HASHDIFF cannot be recomputed from the satellite row. standard satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- stitch_shared__common_communication_preference_party_employment (1 tables) [2 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a)
--- DM-H1 (a) OPUS SAT_COMMON_COMMUNICATION_PREFERENCE: HASHDIFF not recomputable -- see note
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_COMMUNICATION_PREFERENCE where regexp_like(RECORD_SOURCE, '^(OPUS_CP_PARTNERS)(, (OPUS_CP_PARTNERS))*$') order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_COMMON_COMMUNICATION_PREFERENCE' and record_source = 'stitch_shared__common_communication_preference_party_employment (1 tables)'
-),
-g1_t1 as (  -- stitch source OPUS_CP_PARTNERS
-    select distinct (nullif(trim("PART_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("LANGUAGE"::varchar), '')))), '') as correspondencelanguage,
-           nullif(trim(to_varchar((nullif(trim("LITERATURE"::varchar), '')))), '') as marketingoptinindicator,
-           nullif(trim(to_varchar((nullif(trim("EMPLOYMENT_STATUS"::varchar), '')))), '') as employmentstatus,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.CP_PARTNERS
-     where (nullif(trim("PART_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PART_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-k1 as (
-    select parent_bk from g1_t1
-),
-st1 as (  -- stitch_shared__common_communication_preference_party_employment recomputed from RAW (same coalesce / priority as the stitch macro)
-    select ak.parent_bk,
-           g1_t1.correspondencelanguage as correspondencelanguage,
-           g1_t1.marketingoptinindicator as marketingoptinindicator,
-           g1_t1.employmentstatus as employmentstatus,
-           array_to_string(array_construct_compact(
-               case when g1_t1.parent_bk is not null then 'OPUS_CP_PARTNERS' end
-           ), ', ') as record_source,
-           greatest_ignore_nulls(g1_t1.inc_job_updated_at) as inc_job_updated_at
-      from k1 ak
-      left join g1_t1 on g1_t1.parent_bk = ak.parent_bk
-    qualify row_number() over (partition by ak.parent_bk order by g1_t1.correspondencelanguage nulls last, g1_t1.marketingoptinindicator nulls last, g1_t1.employmentstatus nulls last) = 1
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stitch_shared__common_communication_preference_party_employment
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || st.parent_bk AS VARCHAR))), '')) as hkey,
-               st.inc_job_updated_at as ldts,
-               to_varchar(st.correspondencelanguage) as CORRESPONDENCELANGUAGE,
-               to_varchar(st.marketingoptinindicator) as MARKETINGOPTININDICATOR
-          from st1 st
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_COMMUNICATION_PREFERENCE
-     where regexp_like(RECORD_SOURCE, '^(OPUS_CP_PARTNERS)(, (OPUS_CP_PARTNERS))*$') and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.CORRESPONDENCELANGUAGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.MARKETINGOPTININDICATOR AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_COMMUNICATION_PREFERENCE', 'stitch_shared__common_communication_preference_party_employment (1 tables)',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 9. OPUS — SAT_COMMON_CONSENT [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [1 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_COMMON_CONSENT' as satellite, 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CONSENTDATE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CONSENTDATE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONSENT
- where (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONSENT where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_COMMON_CONSENT' and record_source = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_ckyc_personal_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('CKYC:' || upper(trim(coalesce((nullif(trim("CKYC_NO"::varchar), '')),''))), 'CKYC:')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("DEC_DATE"::varchar), ''))) as CONSENTDATE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_CKYC_PERSONAL_DTLS
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONSENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.CONSENTDATE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_CONSENT', 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 10. OPUS — SAT_COMMON_CONTACT [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 12 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [4
--- col(s)], OPUS_BJAZ_CLM_SUPP_EXTN [4 col(s)], OPUS_BJAZ_CTNGY_GC_MEM_DATA [1 col(s)],
--- OPUS_BJAZ_CTNGY_PA_MEM_DTLS [4 col(s)], OPUS_BJAZ_HM_HOSPITAL_MASTER [4 col(s)],
--- OPUS_BJAZ_HM_MEMBER_DTLS [2 col(s)], OPUS_BJAZ_SH_MEM_DTLS_EXTN [1 col(s)],
--- OPUS_CLM_SUPPLIERS [1 col(s)], OPUS_CP_PARTNERS [3 col(s)], OPUS_BJAZ_T_CKYC_OTP [1
--- col(s)], OPUS_BJAZ_T_EKYC [1 col(s)], OPUS_BJAZ_T_KYC_DETAILS [1 col(s)]. OBJECT
--- satellite: MOBILENUMBER hold one entry per source table (sat value = col:"<TABLE>";
--- expected = MAX over that table's RAW rows, as the macro does). Plain columns are MAX
--- across all tables and are not compared per table. A table absent from the latest
--- incremental window is absent from the latest row -- compare after a full load.
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'all OPUS rows (OBJECT hashdiff)' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT(IFNULL(TO_JSON(MOBILENUMBER), '^^'), '||', IFNULL(CAST(ALTERNATEEMAILADDRESS AS VARCHAR), '^^'), '||', IFNULL(CAST(ALTERNATEMOBILENUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(EMAILADDRESS AS VARCHAR), '^^'), '||', IFNULL(CAST(FAXNUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(LANDLINENUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(PREFERREDCONTACTTIME AS VARCHAR), '^^'), '||', IFNULL(CAST(STDCODE AS VARCHAR), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT(IFNULL(TO_JSON(MOBILENUMBER), '^^'), '||', IFNULL(CAST(ALTERNATEEMAILADDRESS AS VARCHAR), '^^'), '||', IFNULL(CAST(ALTERNATEMOBILENUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(EMAILADDRESS AS VARCHAR), '^^'), '||', IFNULL(CAST(FAXNUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(LANDLINENUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(PREFERREDCONTACTTIME AS VARCHAR), '^^'), '||', IFNULL(CAST(STDCODE AS VARCHAR), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
- where RECORD_SOURCE = 'OPUS';
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT where RECORD_SOURCE = 'OPUS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_COMMON_CONTACT' and record_source = 'OPUS_BJAZ_CLM_SUPP_EXTN'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select hkey, max(MOBILENUMBER) as MOBILENUMBER
-      from (
-        -- via stg_partner__bjaz_clm_supp_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("SUPP_MOBILE"::number)) as MOBILENUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-     group by hkey
-),
-n2 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MOBILENUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_CONTACT', 'OPUS_BJAZ_CLM_SUPP_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT where RECORD_SOURCE = 'OPUS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_COMMON_CONTACT' and record_source = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS'
-),
-e4 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select hkey, max(MOBILENUMBER) as MOBILENUMBER
-      from (
-        -- via stg_partner__bjaz_ctngy_pa_mem_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("MOBILE_NO"::number)) as MOBILENUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_PA_MEM_DTLS
-      )
-     where hkey in (select hkey from s4) and ldts is not null
-     group by hkey
-),
-n4 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s4)
-     group by 1, 2
-),
-x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MOBILENUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e4 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_CONTACT', 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s10 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT where RECORD_SOURCE = 'OPUS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_COMMON_CONTACT' and record_source = 'OPUS_BJAZ_T_CKYC_OTP'
-),
-e10 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select hkey, max(MOBILENUMBER) as MOBILENUMBER
-      from (
-        -- via stg_partner__bjaz_t_ckyc_otp
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("MOBILE_NUMBER"::varchar), ''))) as MOBILENUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_CKYC_OTP
-      )
-     where hkey in (select hkey from s10) and ldts is not null
-     group by hkey
-),
-n10 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s10)
-     group by 1, 2
-),
-x10 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MOBILENUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e10 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_CONTACT', 'OPUS_BJAZ_T_CKYC_OTP',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n10 n full outer join x10 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s11 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT where RECORD_SOURCE = 'OPUS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_COMMON_CONTACT' and record_source = 'OPUS_BJAZ_T_EKYC'
-),
-e11 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select hkey, max(MOBILENUMBER) as MOBILENUMBER
-      from (
-        -- via stg_partner__bjaz_t_ekyc
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("MOBILE_NUMBER"::varchar), ''))) as MOBILENUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_EKYC
-      )
-     where hkey in (select hkey from s11) and ldts is not null
-     group by hkey
-),
-n11 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s11)
-     group by 1, 2
-),
-x11 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MOBILENUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e11 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_CONTACT', 'OPUS_BJAZ_T_EKYC',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n11 n full outer join x11 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s12 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT where RECORD_SOURCE = 'OPUS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_COMMON_CONTACT' and record_source = 'OPUS_BJAZ_T_KYC_DETAILS'
-),
-e12 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select hkey, max(MOBILENUMBER) as MOBILENUMBER
-      from (
-        -- via stg_partner__bjaz_t_kyc_details
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("MOBILE_NUMBER"::varchar), ''))) as MOBILENUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_DETAILS
-      )
-     where hkey in (select hkey from s12) and ldts is not null
-     group by hkey
-),
-n12 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s12)
-     group by 1, 2
-),
-x12 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MOBILENUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e12 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_CONTACT', 'OPUS_BJAZ_T_KYC_DETAILS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n12 n full outer join x12 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 11. OPUS — SAT_COMMON_GEO [Partner LOB]   [Design finding]
--- HASHDIFF of stitch_shared__common_admin_geography_common_geo (2 tables)
--- (stg2_shared__common_admin_geography_common_geo) also hashes PINCODE, which this
--- satellite does not store (a shared stage feeding several satellites). A change in only
--- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
--- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
--- recomputed from the satellite row. standard satellite, automate_dv.sat; PK
--- LOCATION_HKEY; 1 RECORD_SOURCE group(s):
--- stitch_shared__common_admin_geography_common_geo (2 tables) [4 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a)
--- DM-H1 (a) OPUS SAT_COMMON_GEO: HASHDIFF not recomputable -- see note
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct LOCATION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_GEO where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_PINCODE|OPUS_BJAZ_PINCODE_MASTER)(, (OPUS_BJAZ_PINCODE|OPUS_BJAZ_PINCODE_MASTER))*$') order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_COMMON_GEO' and record_source = 'stitch_shared__common_admin_geography_common_geo (2 tables)'
-),
-g1_t0 as (  -- stitch source OPUS_BJAZ_PINCODE
-    select distinct (nullif(trim("PINCODE"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("PINCODE"::varchar), '')))), '') as pincode,
-           nullif(trim(to_varchar((nullif(trim("ZONE1"::varchar), '')))), '') as regioncode,
-           nullif(trim(to_varchar((nullif(trim("STATE"::varchar), '')))), '') as regionname,
-           nullif(trim(to_varchar((nullif(trim("ZONE2"::varchar), '')))), '') as subzonecode,
-           nullif(trim(to_varchar((nullif(trim("ZONE"::varchar), '')))), '') as zonecode,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_PINCODE
-     where (nullif(trim("PINCODE"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (((nullif(trim("PINCODE"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t1 as (  -- stitch source OPUS_BJAZ_PINCODE_MASTER
-    select distinct (nullif(trim("PINCODE"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("PINCODE"::varchar), '')))), '') as pincode,
-           nullif(trim(to_varchar((nullif(trim("ZONE1"::varchar), '')))), '') as regioncode,
-           nullif(trim(to_varchar((nullif(trim("STATE"::varchar), '')))), '') as regionname,
-           nullif(trim(to_varchar((nullif(trim("ZONE2"::varchar), '')))), '') as subzonecode,
-           nullif(trim(to_varchar((nullif(trim("ZONE_PIN"::varchar), '')))), '') as zonecode,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_PINCODE_MASTER
-     where (nullif(trim("PINCODE"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (((nullif(trim("PINCODE"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-k1 as (
-    select parent_bk from g1_t0
-    union
-    select parent_bk from g1_t1
-),
-st1 as (  -- stitch_shared__common_admin_geography_common_geo recomputed from RAW (same coalesce / priority as the stitch macro)
-    select ak.parent_bk,
-           coalesce(g1_t0.pincode, g1_t1.pincode) as pincode,
-           coalesce(g1_t0.regioncode, g1_t1.regioncode) as regioncode,
-           coalesce(g1_t0.regionname, g1_t1.regionname) as regionname,
-           coalesce(g1_t0.subzonecode, g1_t1.subzonecode) as subzonecode,
-           coalesce(g1_t0.zonecode, g1_t1.zonecode) as zonecode,
-           array_to_string(array_construct_compact(
-               case when g1_t0.parent_bk is not null then 'OPUS_BJAZ_PINCODE' end,
-               case when g1_t1.parent_bk is not null then 'OPUS_BJAZ_PINCODE_MASTER' end
-           ), ', ') as record_source,
-           greatest_ignore_nulls(g1_t0.inc_job_updated_at, g1_t1.inc_job_updated_at) as inc_job_updated_at
-      from k1 ak
-      left join g1_t0 on g1_t0.parent_bk = ak.parent_bk
-      left join g1_t1 on g1_t1.parent_bk = ak.parent_bk
-    qualify row_number() over (partition by ak.parent_bk order by g1_t0.pincode nulls last, g1_t0.regioncode nulls last, g1_t0.regionname nulls last, g1_t0.subzonecode nulls last, g1_t0.zonecode nulls last, g1_t1.pincode nulls last, g1_t1.regioncode nulls last, g1_t1.regionname nulls last, g1_t1.subzonecode nulls last, g1_t1.zonecode nulls last) = 1
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stitch_shared__common_admin_geography_common_geo
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || st.parent_bk AS VARCHAR))), '')) as hkey,
-               st.inc_job_updated_at as ldts,
-               to_varchar(st.regioncode) as REGIONCODE,
-               to_varchar(st.regionname) as REGIONNAME,
-               to_varchar(st.subzonecode) as SUBZONECODE,
-               to_varchar(st.zonecode) as ZONECODE
-          from st1 st
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select LOCATION_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_GEO
-     where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_PINCODE|OPUS_BJAZ_PINCODE_MASTER)(, (OPUS_BJAZ_PINCODE|OPUS_BJAZ_PINCODE_MASTER))*$') and LOCATION_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.REGIONCODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.REGIONNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.SUBZONECODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.ZONECODE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_GEO', 'stitch_shared__common_admin_geography_common_geo (2 tables)',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 12. OPUS — SAT_DOCUMENT_DEFINITION [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK DOCUMENT_HKEY; 3 RECORD_SOURCE group(s): OPUS_BJAZ_T_KYC_OCR [4
--- col(s)], OPUS_BJAZ_T_KYC_POA_DOCUMENT [8 col(s)], OPUS_BJAZ_T_KYC_POI_DOCUMENT [8
--- col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_DOCUMENT_DEFINITION' as satellite, '3 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENTCATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENTFORMAT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENTNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENTREFERENCENUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENTSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENTTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STORAGEREFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATIONSTATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENTCATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENTFORMAT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENTNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENTREFERENCENUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENTSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENTTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STORAGEREFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATIONSTATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(DOCUMENT_HKEY, 'HEX'), null)) within group (order by DOCUMENT_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_DOCUMENT_DEFINITION
- where (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_OCR') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct DOCUMENT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_DOCUMENT_DEFINITION where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_OCR' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_DOCUMENT_DEFINITION' and record_source = 'OPUS_BJAZ_T_KYC_OCR'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_ocr
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (upper(trim((nullif(trim("FIELD_TYPE"::varchar), '')))) || ':' || trim((nullif(trim("FIELD_VALUE"::varchar), ''))) || '#' || upper(trim((nullif(trim("IMAGE_TYPE"::varchar), ''))))) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("CATEGORY"::varchar), ''))) as DOCUMENTCATEGORY,
-               to_varchar((nullif(trim("FILE_NUMBER"::varchar), ''))) as DOCUMENTREFERENCENUMBER,
-               to_varchar((nullif(trim("IMAGE_TYPE"::varchar), ''))) as DOCUMENTTYPE,
-               to_varchar((nullif(trim("OCR_STATUS"::varchar), ''))) as VERIFICATIONSTATUS
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_OCR
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select DOCUMENT_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_DOCUMENT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_OCR' and DOCUMENT_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.DOCUMENTCATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.DOCUMENTREFERENCENUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.DOCUMENTTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATIONSTATUS AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_DOCUMENT_DEFINITION', 'OPUS_BJAZ_T_KYC_OCR',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct DOCUMENT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_DOCUMENT_DEFINITION where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_DOCUMENT_DEFINITION' and record_source = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_poa_document
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (upper(trim(coalesce((nullif(trim("DOCS_TYPE"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("DOCS_NUMBER"::varchar), '')),'')))) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("DOCUMENT_CATEGORY"::varchar), ''))) as DOCUMENTCATEGORY,
-               to_varchar((nullif(trim("DOC_EXTENSION"::varchar), ''))) as DOCUMENTFORMAT,
-               to_varchar((nullif(trim("DOC_NAME"::varchar), ''))) as DOCUMENTNAME,
-               to_varchar((nullif(trim("STATUS"::varchar), ''))) as DOCUMENTSTATUS,
-               to_varchar((nullif(trim("DOCS_TYPE"::varchar), ''))) as DOCUMENTTYPE,
-               to_varchar((nullif(trim("EXPIRY_DATE"::varchar), ''))) as EXPIRYDATE,
-               to_varchar((nullif(trim("OMNI_DOC_INDEX"::varchar), ''))) as STORAGEREFERENCE,
-               to_varchar((nullif(trim("RESPONSE_CODE"::varchar), ''))) as VERIFICATIONSTATUS
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_POA_DOCUMENT
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select DOCUMENT_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_DOCUMENT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT' and DOCUMENT_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.DOCUMENTCATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.DOCUMENTFORMAT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.DOCUMENTNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.DOCUMENTSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.DOCUMENTTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.STORAGEREFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATIONSTATUS AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_DOCUMENT_DEFINITION', 'OPUS_BJAZ_T_KYC_POA_DOCUMENT',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct DOCUMENT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_DOCUMENT_DEFINITION where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_DOCUMENT_DEFINITION' and record_source = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT'
-),
-e3 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_poi_document
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (upper(trim(coalesce((nullif(trim("DOCS_TYPE"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("DOCS_NUMBER"::varchar), '')),'')))) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("DOCUMENT_CATEGORY"::varchar), ''))) as DOCUMENTCATEGORY,
-               to_varchar((nullif(trim("DOC_EXTENSION"::varchar), ''))) as DOCUMENTFORMAT,
-               to_varchar((nullif(trim("DOC_NAME"::varchar), ''))) as DOCUMENTNAME,
-               to_varchar((nullif(trim("STATUS"::varchar), ''))) as DOCUMENTSTATUS,
-               to_varchar((nullif(trim("DOCS_TYPE"::varchar), ''))) as DOCUMENTTYPE,
-               to_varchar((nullif(trim("EXPIRY_DATE"::varchar), ''))) as EXPIRYDATE,
-               to_varchar((nullif(trim("OMNI_DOC_INDEX"::varchar), ''))) as STORAGEREFERENCE,
-               to_varchar((nullif(trim("RESPONSE_CODE"::varchar), ''))) as VERIFICATIONSTATUS
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_POI_DOCUMENT
-      )
-     where hkey in (select hkey from s3) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n3 as (  -- satellite history per sampled key
-    select DOCUMENT_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_DOCUMENT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT' and DOCUMENT_HKEY in (select hkey from s3)
-     group by 1, 2
-),
-x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.DOCUMENTCATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.DOCUMENTFORMAT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.DOCUMENTNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.DOCUMENTSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.DOCUMENTTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.STORAGEREFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATIONSTATUS AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e3 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_DOCUMENT_DEFINITION', 'OPUS_BJAZ_T_KYC_POI_DOCUMENT',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 13. OPUS — SAT_LNK_CLAIM_PARTY_ROLE   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.ma_sat; PK CLAIM_PARTY_HKEY, child key PARTY_ROLE_TYPE, ROLE_SEQUENCE; 1
--- RECORD_SOURCE group(s): OPUS_CLM_INTERESTED_PARTIES [2 col(s)]. Multi-active: compared
--- per (key, child key); latest = max LOAD_DATETIME per member.
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_LNK_CLAIM_PARTY_ROLE' as satellite, 'OPUS_CLM_INTERESTED_PARTIES' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PARTY_ROLE_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ROLE_SEQUENCE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PARTY_ROLE_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ROLE_SEQUENCE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(CLAIM_PARTY_HKEY, 'HEX'), null)) within group (order by CLAIM_PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_CLAIM_PARTY_ROLE
- where (RECORD_SOURCE = 'OPUS_CLM_INTERESTED_PARTIES');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct CLAIM_PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_CLAIM_PARTY_ROLE where RECORD_SOURCE = 'OPUS_CLM_INTERESTED_PARTIES' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_CLAIM_PARTY_ROLE' and record_source = 'OPUS_CLM_INTERESTED_PARTIES'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__clm_interested_parties
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_CLAIM_PARTY|' || (nullif(trim("PART_ID"::varchar), '')) || '|' || (nullif(trim("CLAIM_ID"::varchar), '')) AS VARCHAR))), '')) as hkey,
-               to_varchar((nullif(trim("IP_TYPE"::varchar), ''))) as cdk_1,
-               to_varchar(("IP_NO"::number)) as cdk_2,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("IP_TYPE"::varchar), ''))) as PARTY_ROLE_TYPE,
-               to_varchar(("IP_NO"::number)) as ROLE_SEQUENCE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.CLM_INTERESTED_PARTIES
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select CLAIM_PARTY_HKEY as hkey, coalesce(to_varchar(PARTY_ROLE_TYPE), '^^') || '|' || coalesce(to_varchar(ROLE_SEQUENCE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_CLAIM_PARTY_ROLE
-     where RECORD_SOURCE = 'OPUS_CLM_INTERESTED_PARTIES' and CLAIM_PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, coalesce(e.cdk_1, '^^') || '|' || coalesce(e.cdk_2, '^^') as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.PARTY_ROLE_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.ROLE_SEQUENCE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_CLAIM_PARTY_ROLE', 'OPUS_CLM_INTERESTED_PARTIES',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 14. OPUS — SAT_LNK_PARTY_ROLE_CORE [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.ma_sat; PK PARTY_HKEY, child key ROLECODE, ROLESEQUENCE; 1 RECORD_SOURCE
--- group(s): OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS [1 col(s)]. Multi-active: compared per
--- (key, child key); latest = max LOAD_DATETIME per member.
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_LNK_PARTY_ROLE_CORE' as satellite, 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ROLESTATUS AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ROLESTATUS AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_PARTY_ROLE_CORE
- where (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_PARTY_ROLE_CORE where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_PARTY_ROLE_CORE' and record_source = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_ckyc_rel_persion_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('CKYC:' || upper(trim(coalesce((nullif(trim("CKYC_NO"::varchar), '')),''))), 'CKYC:')) AS VARCHAR))), '')) as hkey,
-               to_varchar(coalesce(nullif(trim(to_varchar((nullif(trim("REL_TYPE"::varchar), '')))), ''), '~')) as cdk_1,
-               to_varchar(coalesce(nullif(trim(to_varchar((nullif(trim("SEQUENCE_NO"::varchar), '')))), ''), '~')) as cdk_2,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("ADD_DEL_FLAG"::varchar), ''))) as ROLESTATUS
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_CKYC_REL_PERSION_DTLS
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, coalesce(to_varchar(ROLECODE), '^^') || '|' || coalesce(to_varchar(ROLESEQUENCE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_PARTY_ROLE_CORE
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, coalesce(e.cdk_1, '^^') || '|' || coalesce(e.cdk_2, '^^') as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.ROLESTATUS AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_PARTY_ROLE_CORE', 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 15. OPUS — SAT_LNK_POLICY_PARTY_ROLE [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.ma_sat; PK POLICY_PARTY_HKEY, child key ROLE_SEQUENCE; 1 RECORD_SOURCE
--- group(s): OPUS_OCP_INTERESTED_PARTIES [1 col(s)]. Multi-active: compared per (key,
--- child key); latest = max LOAD_DATETIME per member.
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_LNK_POLICY_PARTY_ROLE' as satellite, 'OPUS_OCP_INTERESTED_PARTIES' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ROLE_SEQUENCE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ROLE_SEQUENCE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_PARTY_HKEY, 'HEX'), null)) within group (order by POLICY_PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_POLICY_PARTY_ROLE
- where (RECORD_SOURCE = 'OPUS_OCP_INTERESTED_PARTIES');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct POLICY_PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_POLICY_PARTY_ROLE where RECORD_SOURCE = 'OPUS_OCP_INTERESTED_PARTIES' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_POLICY_PARTY_ROLE' and record_source = 'OPUS_OCP_INTERESTED_PARTIES'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__ocp_interested_parties
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (nullif(trim("PARTNER_ID"::varchar), '')) || '|' || (nullif(trim("CONTRACT_ID"::varchar), '')) AS VARCHAR))), '')) as hkey,
-               to_varchar(("IP_NO"::number)) as cdk_1,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("IP_NO"::number)) as ROLE_SEQUENCE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.OCP_INTERESTED_PARTIES
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select POLICY_PARTY_HKEY as hkey, coalesce(to_varchar(ROLE_SEQUENCE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_POLICY_PARTY_ROLE
-     where RECORD_SOURCE = 'OPUS_OCP_INTERESTED_PARTIES' and POLICY_PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, coalesce(e.cdk_1, '^^') as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.ROLE_SEQUENCE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_POLICY_PARTY_ROLE', 'OPUS_OCP_INTERESTED_PARTIES',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 16. OPUS — SAT_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY [5
--- col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_LNK_ROLE_AGENT' as satellite, 'OPUS_BJAZ_INTERMEDIARY' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(AGENT_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IRDAI_AGENT_LICENCE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_EXPIRY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_ISSUE_DATE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(AGENT_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IRDAI_AGENT_LICENCE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_EXPIRY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_ISSUE_DATE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_AGENT
- where (RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_AGENT where RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_AGENT' and record_source = 'OPUS_BJAZ_INTERMEDIARY'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_intermediary
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("INTERMEDIARY_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("IRDA_INTERMEDIARY_CODE"::varchar), ''))) as AGENT_CODE,
-               to_varchar((nullif(trim("IRDA_LICENSE_NO"::varchar), ''))) as IRDAI_AGENT_LICENCE_NUMBER,
-               to_varchar((nullif(trim("LICENSE_TYPE"::varchar), ''))) as LICENCE_CATEGORY,
-               to_varchar(("LICENSE_EXPIRY_DATE"::timestamp_ntz)) as LICENCE_EXPIRY_DATE,
-               to_varchar(("LICENSE_ISSUE_DATE"::timestamp_ntz)) as LICENCE_ISSUE_DATE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_INTERMEDIARY
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_AGENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.AGENT_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.IRDAI_AGENT_LICENCE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.LICENCE_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.LICENCE_EXPIRY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.LICENCE_ISSUE_DATE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_AGENT', 'OPUS_BJAZ_INTERMEDIARY',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 17. OPUS — SAT_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_CLM_INTERESTED_PARTIES
--- [1 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_LNK_ROLE_CUSTOMER' as satellite, 'OPUS_CLM_INTERESTED_PARTIES' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CUSTOMER_CATEGORY AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CUSTOMER_CATEGORY AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_CUSTOMER
- where (RECORD_SOURCE = 'OPUS_CLM_INTERESTED_PARTIES');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_CUSTOMER where RECORD_SOURCE = 'OPUS_CLM_INTERESTED_PARTIES' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_CUSTOMER' and record_source = 'OPUS_CLM_INTERESTED_PARTIES'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__clm_interested_parties
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("CLAIMANT"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("OBJECT_TYPE"::varchar), ''))) as CUSTOMER_CATEGORY
-          from BAGIC_PREPROD_CURATED_DB.UTILS.CLM_INTERESTED_PARTIES
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_CUSTOMER
-     where RECORD_SOURCE = 'OPUS_CLM_INTERESTED_PARTIES' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.CUSTOMER_CATEGORY AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_CUSTOMER', 'OPUS_CLM_INTERESTED_PARTIES',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 18. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 12 RECORD_SOURCE group(s):
--- OPUS_BJAZ_CTNGY_FF_DTLS_EXTN [2 col(s)], OPUS_BJAZ_CTNGY_GC_MEM_DATA [1 col(s)],
--- OPUS_BJAZ_CTNGY_PA_MEM_DTLS [2 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [2 col(s)],
--- OPUS_BJAZ_HCF_MEMBER_DTLS [2 col(s)], OPUS_BJAZ_HC_PART_EXTN [2 col(s)],
--- OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [2 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [2 col(s)],
--- OPUS_BJAZ_PA_DETL_EXTN [2 col(s)], OPUS_BJAZ_SH_MEM_DTLS_EXTN [2 col(s)],
--- OPUS_BJAZ_SPP_MEMBER_DTLS [2 col(s)], OPUS_BJAZ_STARPKG_FF_DTLS [2 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, '11 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(APPOINTEE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(APPOINTEE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
- where (RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_FF_DTLS_EXTN') or (RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN') or (RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_HC_PART_EXTN') or (RECORD_SOURCE = 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_PA_DETL_EXTN') or (RECORD_SOURCE = 'OPUS_BJAZ_SH_MEM_DTLS_EXTN') or (RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_STARPKG_FF_DTLS')
-union all
-select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'OPUS_BJAZ_CTNGY_GC_MEM_DATA' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
- where (RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_GC_MEM_DATA');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_FF_DTLS_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' and record_source = 'OPUS_BJAZ_CTNGY_FF_DTLS_EXTN'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_ctngy_ff_dtls_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ASSIGNEE"::varchar), ''))) as APPOINTEE_NAME,
-               to_varchar((nullif(trim("RELATION"::varchar), ''))) as RELATIONSHIP_TO_INSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_FF_DTLS_EXTN
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_FF_DTLS_EXTN' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.APPOINTEE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY', 'OPUS_BJAZ_CTNGY_FF_DTLS_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_GC_MEM_DATA' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' and record_source = 'OPUS_BJAZ_CTNGY_GC_MEM_DATA'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_ctngy_gc_mem_data
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("RELATION"::varchar), ''))) as RELATIONSHIP_TO_INSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_GC_MEM_DATA
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_GC_MEM_DATA' and PARTY_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY', 'OPUS_BJAZ_CTNGY_GC_MEM_DATA',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' and record_source = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS'
-),
-e3 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_ctngy_pa_mem_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ASSIGNEE_NAME"::varchar), ''))) as APPOINTEE_NAME,
-               to_varchar((nullif(trim("RELATION"::varchar), ''))) as RELATIONSHIP_TO_INSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_PA_MEM_DTLS
-      )
-     where hkey in (select hkey from s3) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n3 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' and PARTY_HKEY in (select hkey from s3)
-     group by 1, 2
-),
-x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.APPOINTEE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e3 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY', 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY where RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' and record_source = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN'
-),
-e4 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_ec_mem_dtls_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ASSIGNEE"::varchar), ''))) as APPOINTEE_NAME,
-               to_varchar((nullif(trim("RELATION"::varchar), ''))) as RELATIONSHIP_TO_INSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_EC_MEM_DTLS_EXTN
-      )
-     where hkey in (select hkey from s4) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n4 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' and PARTY_HKEY in (select hkey from s4)
-     group by 1, 2
-),
-x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.APPOINTEE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e4 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY', 'OPUS_BJAZ_EC_MEM_DTLS_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s5 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY where RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' and record_source = 'OPUS_BJAZ_HCF_MEMBER_DTLS'
-),
-e5 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hcf_member_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ASSIGNEE"::varchar), ''))) as APPOINTEE_NAME,
-               to_varchar((nullif(trim("RELATION"::varchar), ''))) as RELATIONSHIP_TO_INSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HCF_MEMBER_DTLS
-      )
-     where hkey in (select hkey from s5) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n5 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s5)
-     group by 1, 2
-),
-x5 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.APPOINTEE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e5 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY', 'OPUS_BJAZ_HCF_MEMBER_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n5 n full outer join x5 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s6 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY where RECORD_SOURCE = 'OPUS_BJAZ_HC_PART_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' and record_source = 'OPUS_BJAZ_HC_PART_EXTN'
-),
-e6 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hc_part_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ASSIGNEE_NAME"::varchar), ''))) as APPOINTEE_NAME,
-               to_varchar((nullif(trim("RELATION"::varchar), ''))) as RELATIONSHIP_TO_INSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HC_PART_EXTN
-      )
-     where hkey in (select hkey from s6) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n6 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_HC_PART_EXTN' and PARTY_HKEY in (select hkey from s6)
-     group by 1, 2
-),
-x6 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.APPOINTEE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e6 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY', 'OPUS_BJAZ_HC_PART_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n6 n full outer join x6 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s7 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY where RECORD_SOURCE = 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' and record_source = 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS'
-),
-e7 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hlt_ensure_mem_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ASSIGNEE"::varchar), ''))) as APPOINTEE_NAME,
-               to_varchar((nullif(trim("RELATION"::varchar), ''))) as RELATIONSHIP_TO_INSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HLT_ENSURE_MEM_DTLS
-      )
-     where hkey in (select hkey from s7) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n7 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS' and PARTY_HKEY in (select hkey from s7)
-     group by 1, 2
-),
-x7 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.APPOINTEE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e7 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY', 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n7 n full outer join x7 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s8 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' and record_source = 'OPUS_BJAZ_HM_MEMBER_DTLS'
-),
-e8 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hm_member_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ASSIGNEE_NAME"::varchar), ''))) as APPOINTEE_NAME,
-               to_varchar((nullif(trim("RELATION"::varchar), ''))) as RELATIONSHIP_TO_INSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
-      )
-     where hkey in (select hkey from s8) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n8 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s8)
-     group by 1, 2
-),
-x8 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.APPOINTEE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e8 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY', 'OPUS_BJAZ_HM_MEMBER_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n8 n full outer join x8 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s9 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY where RECORD_SOURCE = 'OPUS_BJAZ_PA_DETL_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' and record_source = 'OPUS_BJAZ_PA_DETL_EXTN'
-),
-e9 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_pa_detl_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ASSIGNEE"::varchar), ''))) as APPOINTEE_NAME,
-               to_varchar((nullif(trim("RELATION"::varchar), ''))) as RELATIONSHIP_TO_INSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_PA_DETL_EXTN
-      )
-     where hkey in (select hkey from s9) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n9 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_PA_DETL_EXTN' and PARTY_HKEY in (select hkey from s9)
-     group by 1, 2
-),
-x9 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.APPOINTEE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e9 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY', 'OPUS_BJAZ_PA_DETL_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n9 n full outer join x9 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s10 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY where RECORD_SOURCE = 'OPUS_BJAZ_SH_MEM_DTLS_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' and record_source = 'OPUS_BJAZ_SH_MEM_DTLS_EXTN'
-),
-e10 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_sh_mem_dtls_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ASSIGNEE"::varchar), ''))) as APPOINTEE_NAME,
-               to_varchar((nullif(trim("RELATION"::varchar), ''))) as RELATIONSHIP_TO_INSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SH_MEM_DTLS_EXTN
-      )
-     where hkey in (select hkey from s10) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n10 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_SH_MEM_DTLS_EXTN' and PARTY_HKEY in (select hkey from s10)
-     group by 1, 2
-),
-x10 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.APPOINTEE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e10 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY', 'OPUS_BJAZ_SH_MEM_DTLS_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n10 n full outer join x10 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s11 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY where RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' and record_source = 'OPUS_BJAZ_SPP_MEMBER_DTLS'
-),
-e11 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_spp_member_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ASSIGNEE"::varchar), ''))) as APPOINTEE_NAME,
-               to_varchar((nullif(trim("RELATION"::varchar), ''))) as RELATIONSHIP_TO_INSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SPP_MEMBER_DTLS
-      )
-     where hkey in (select hkey from s11) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n11 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s11)
-     group by 1, 2
-),
-x11 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.APPOINTEE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e11 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY', 'OPUS_BJAZ_SPP_MEMBER_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n11 n full outer join x11 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s12 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY where RECORD_SOURCE = 'OPUS_BJAZ_STARPKG_FF_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' and record_source = 'OPUS_BJAZ_STARPKG_FF_DTLS'
-),
-e12 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_starpkg_ff_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ASSIGNEE"::varchar), ''))) as APPOINTEE_NAME,
-               to_varchar((nullif(trim("RELATION"::varchar), ''))) as RELATIONSHIP_TO_INSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_STARPKG_FF_DTLS
-      )
-     where hkey in (select hkey from s12) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n12 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_STARPKG_FF_DTLS' and PARTY_HKEY in (select hkey from s12)
-     group by 1, 2
-),
-x12 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.APPOINTEE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e12 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY', 'OPUS_BJAZ_STARPKG_FF_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n12 n full outer join x12 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 19. OPUS — SAT_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_HM_HOSPITAL_MASTER [5 col(s)], OPUS_CLM_SUPPLIERS [5 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_LNK_ROLE_PROVIDER' as satellite, 'OPUS_BJAZ_HM_HOSPITAL_MASTER' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(EMPANELMENT_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NETWORK_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREFERRED_PROVIDER_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PROVIDER_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIALISATION AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(EMPANELMENT_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NETWORK_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREFERRED_PROVIDER_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PROVIDER_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIALISATION AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_PROVIDER
- where (RECORD_SOURCE = 'OPUS_BJAZ_HM_HOSPITAL_MASTER')
-union all
-select 'OPUS' as project, 'SAT_LNK_ROLE_PROVIDER' as satellite, 'OPUS_CLM_SUPPLIERS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(EMPANELMENT_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EMPANELMENT_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PROVIDER_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RE_EMPANELMENT_DUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SUPPLIER_ID AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(EMPANELMENT_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EMPANELMENT_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PROVIDER_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RE_EMPANELMENT_DUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SUPPLIER_ID AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_PROVIDER
- where (RECORD_SOURCE = 'OPUS_CLM_SUPPLIERS');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_PROVIDER where RECORD_SOURCE = 'OPUS_BJAZ_HM_HOSPITAL_MASTER' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_PROVIDER' and record_source = 'OPUS_BJAZ_HM_HOSPITAL_MASTER'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hm_hospital_master
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("HOSID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("DATE_OF_SUP"::timestamp_ntz)) as EMPANELMENT_DATE,
-               to_varchar((nullif(trim("HOSP_SPECIALITY"::varchar), ''))) as SPECIALISATION,
-               to_varchar((nullif(trim("HOSP_TYPE"::varchar), ''))) as PROVIDER_TYPE,
-               to_varchar(("HOS_STATUS"::number)) as NETWORK_INDICATOR,
-               to_varchar(("PREFERRED_FLAG"::number)) as PREFERRED_PROVIDER_INDICATOR
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_HOSPITAL_MASTER
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_PROVIDER
-     where RECORD_SOURCE = 'OPUS_BJAZ_HM_HOSPITAL_MASTER' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.EMPANELMENT_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.SPECIALISATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PROVIDER_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.NETWORK_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREFERRED_PROVIDER_INDICATOR AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_PROVIDER', 'OPUS_BJAZ_HM_HOSPITAL_MASTER',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_PROVIDER where RECORD_SOURCE = 'OPUS_CLM_SUPPLIERS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_PROVIDER' and record_source = 'OPUS_CLM_SUPPLIERS'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__clm_suppliers
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("EFF_DATE"::timestamp_ntz)) as EMPANELMENT_DATE,
-               to_varchar(("EXP_DATE"::timestamp_ntz)) as RE_EMPANELMENT_DUE_DATE,
-               to_varchar((nullif(trim("SUPP_STATUS"::varchar), ''))) as EMPANELMENT_STATUS,
-               to_varchar((nullif(trim("SUPP_TYPE"::varchar), ''))) as PROVIDER_TYPE,
-               to_varchar((nullif(trim("SUPP_ID"::varchar), ''))) as SUPPLIER_ID
-          from BAGIC_PREPROD_CURATED_DB.UTILS.CLM_SUPPLIERS
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_PROVIDER
-     where RECORD_SOURCE = 'OPUS_CLM_SUPPLIERS' and PARTY_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.EMPANELMENT_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.RE_EMPANELMENT_DUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EMPANELMENT_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PROVIDER_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.SUPPLIER_ID AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_PROVIDER', 'OPUS_CLM_SUPPLIERS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 20. OPUS — SAT_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_CLM_SUPP_EXTN [2
--- col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_LNK_ROLE_SURVEYOR' as satellite, 'OPUS_BJAZ_CLM_SUPP_EXTN' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(IRDAI_SURVEYOR_LICENCE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_CATEGORY AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(IRDAI_SURVEYOR_LICENCE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_CATEGORY AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_SURVEYOR
- where (RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_SURVEYOR where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_LNK_ROLE_SURVEYOR' and record_source = 'OPUS_BJAZ_CLM_SUPP_EXTN'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_clm_supp_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("SURVEYOR_LICENSE_NO"::varchar), ''))) as IRDAI_SURVEYOR_LICENCE_NUMBER,
-               to_varchar((nullif(trim("SURVEYOR_CATEGORY"::varchar), ''))) as LICENCE_CATEGORY
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_SURVEYOR
-     where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.IRDAI_SURVEYOR_LICENCE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.LICENCE_CATEGORY AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_ROLE_SURVEYOR', 'OPUS_BJAZ_CLM_SUPP_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 21. OPUS — SAT_PARTY_AML_SCREENING [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [2 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_PARTY_AML_SCREENING' as satellite, 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CRSREPORTABLEINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TAXRESIDENCYCOUNTRY AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CRSREPORTABLEINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TAXRESIDENCYCOUNTRY AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_AML_SCREENING
- where (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_AML_SCREENING where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_AML_SCREENING' and record_source = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_ckyc_personal_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('CKYC:' || upper(trim(coalesce((nullif(trim("CKYC_NO"::varchar), '')),''))), 'CKYC:')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("JURI_FLAG"::varchar), ''))) as CRSREPORTABLEINDICATOR,
-               to_varchar((nullif(trim("JURI_RESI"::varchar), ''))) as TAXRESIDENCYCOUNTRY
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_CKYC_PERSONAL_DTLS
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_AML_SCREENING
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.CRSREPORTABLEINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.TAXRESIDENCYCOUNTRY AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_AML_SCREENING', 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 22. OPUS — SAT_PARTY_BANKING [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 4 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [3
--- col(s)], OPUS_BJAZ_CLM_SUPP_EXTN [2 col(s)], OPUS_BJAZ_CTNGY_PA_MEM_DTLS [2 col(s)],
--- OPUS_BJAZ_HM_MEMBER_DTLS [3 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_PARTY_BANKING' as satellite, 'OPUS_AZBJ_PARTNER_EXTN' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IFSCCODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MICRCODE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IFSCCODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MICRCODE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
- where (RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN')
-union all
-select 'OPUS' as project, 'SAT_PARTY_BANKING' as satellite, 'OPUS_BJAZ_CLM_SUPP_EXTN' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANKNAME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANKNAME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
- where (RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN')
-union all
-select 'OPUS' as project, 'SAT_PARTY_BANKING' as satellite, 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANKCODE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANKCODE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
- where (RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS')
-union all
-select 'OPUS' as project, 'SAT_PARTY_BANKING' as satellite, 'OPUS_BJAZ_HM_MEMBER_DTLS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANKNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MICRCODE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANKNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MICRCODE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
- where (RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING where RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_BANKING' and record_source = 'OPUS_AZBJ_PARTNER_EXTN'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__azbj_partner_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ACCOUNT_NO"::varchar), ''))) as ACCOUNTNUMBERMASKED,
-               to_varchar((nullif(trim("IFSC_CODE"::varchar), ''))) as IFSCCODE,
-               to_varchar((nullif(trim("MICR_CODE"::varchar), ''))) as MICRCODE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.AZBJ_PARTNER_EXTN
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
-     where RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.IFSCCODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.MICRCODE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_BANKING', 'OPUS_AZBJ_PARTNER_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_BANKING' and record_source = 'OPUS_BJAZ_CLM_SUPP_EXTN'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_clm_supp_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("SUPP_BANK_ACC_NO"::varchar), ''))) as ACCOUNTNUMBERMASKED,
-               to_varchar((nullif(trim("SUPP_BANK_NAME"::varchar), ''))) as BANKNAME
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
-     where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' and PARTY_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.BANKNAME AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_BANKING', 'OPUS_BJAZ_CLM_SUPP_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_BANKING' and record_source = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS'
-),
-e3 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_ctngy_pa_mem_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("LOAN_ACCOUNT_NO"::varchar), ''))) as ACCOUNTNUMBERMASKED,
-               to_varchar((nullif(trim("BANK_RM_CODE"::varchar), ''))) as BANKCODE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_PA_MEM_DTLS
-      )
-     where hkey in (select hkey from s3) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n3 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
-     where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' and PARTY_HKEY in (select hkey from s3)
-     group by 1, 2
-),
-x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.BANKCODE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e3 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_BANKING', 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_BANKING' and record_source = 'OPUS_BJAZ_HM_MEMBER_DTLS'
-),
-e4 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hm_member_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("BANK_AC_NO"::varchar), ''))) as ACCOUNTNUMBERMASKED,
-               to_varchar((nullif(trim("BANK_NAME"::varchar), ''))) as BANKNAME,
-               to_varchar((nullif(trim("MICR_CODE"::varchar), ''))) as MICRCODE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
-      )
-     where hkey in (select hkey from s4) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n4 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
-     where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s4)
-     group by 1, 2
-),
-x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.BANKNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.MICRCODE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e4 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_BANKING', 'OPUS_BJAZ_HM_MEMBER_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 23. OPUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): stitch_party_claim_history
--- (6 tables) [2 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite, 'stitch_party_claim_history (6 tables)' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(TOTALCLAIMAMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TOTALCLAIMCOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(TOTALCLAIMAMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TOTALCLAIMCOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CLAIM_HISTORY
- where (regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HC_PART_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HC_PART_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$'));
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CLAIM_HISTORY where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HC_PART_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HC_PART_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$') order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_CLAIM_HISTORY' and record_source = 'stitch_party_claim_history (6 tables)'
-),
-g1_t0 as (  -- stitch source OPUS_BJAZ_EC_MEM_DTLS_EXTN
-    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar(("CLAIM_RECEIVED"::number))), '') as totalclaimcount,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_EC_MEM_DTLS_EXTN
-     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t1 as (  -- stitch source OPUS_BJAZ_HCF_MEMBER_DTLS
-    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("CLAIM_DTLS"::varchar), '')))), '') as totalclaimcount,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HCF_MEMBER_DTLS
-     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t2 as (  -- stitch source OPUS_BJAZ_HC_PART_EXTN
-    select distinct (nullif(trim("PART_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar(("AMOUNT_CLAIMED"::number))), '') as totalclaimamount,
-           nullif(trim(to_varchar((nullif(trim("CLAIM_HISTORY"::varchar), '')))), '') as totalclaimcount,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HC_PART_EXTN
-     where (nullif(trim("PART_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PART_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t3 as (  -- stitch source OPUS_BJAZ_HM_MEMBER_DTLS
-    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar(("CLAIM_COUNT"::number))), '') as totalclaimcount,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
-     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t4 as (  -- stitch source OPUS_BJAZ_SH_MEM_DTLS_EXTN
-    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar(("AMOUNT_CLAIMED"::number))), '') as totalclaimamount,
-           nullif(trim(to_varchar((nullif(trim("CLAIM_HISTORY"::varchar), '')))), '') as totalclaimcount,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SH_MEM_DTLS_EXTN
-     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t5 as (  -- stitch source OPUS_BJAZ_SPP_MEMBER_DTLS
-    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("CLAIM_DTLS"::varchar), '')))), '') as totalclaimcount,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SPP_MEMBER_DTLS
-     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-k1 as (
-    select parent_bk from g1_t0
-    union
-    select parent_bk from g1_t1
-    union
-    select parent_bk from g1_t2
-    union
-    select parent_bk from g1_t3
-    union
-    select parent_bk from g1_t4
-    union
-    select parent_bk from g1_t5
-),
-st1 as (  -- stitch_party_claim_history recomputed from RAW (same coalesce / priority as the stitch macro)
-    select ak.parent_bk,
-           coalesce(g1_t2.totalclaimamount, g1_t4.totalclaimamount) as totalclaimamount,
-           coalesce(g1_t0.totalclaimcount, g1_t1.totalclaimcount, g1_t2.totalclaimcount, g1_t3.totalclaimcount, g1_t4.totalclaimcount, g1_t5.totalclaimcount) as totalclaimcount,
-           array_to_string(array_construct_compact(
-               case when g1_t0.parent_bk is not null then 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' end,
-               case when g1_t1.parent_bk is not null then 'OPUS_BJAZ_HCF_MEMBER_DTLS' end,
-               case when g1_t2.parent_bk is not null then 'OPUS_BJAZ_HC_PART_EXTN' end,
-               case when g1_t3.parent_bk is not null then 'OPUS_BJAZ_HM_MEMBER_DTLS' end,
-               case when g1_t4.parent_bk is not null then 'OPUS_BJAZ_SH_MEM_DTLS_EXTN' end,
-               case when g1_t5.parent_bk is not null then 'OPUS_BJAZ_SPP_MEMBER_DTLS' end
-           ), ', ') as record_source,
-           greatest_ignore_nulls(g1_t0.inc_job_updated_at, g1_t1.inc_job_updated_at, g1_t2.inc_job_updated_at, g1_t3.inc_job_updated_at, g1_t4.inc_job_updated_at, g1_t5.inc_job_updated_at) as inc_job_updated_at
-      from k1 ak
-      left join g1_t0 on g1_t0.parent_bk = ak.parent_bk
-      left join g1_t1 on g1_t1.parent_bk = ak.parent_bk
-      left join g1_t2 on g1_t2.parent_bk = ak.parent_bk
-      left join g1_t3 on g1_t3.parent_bk = ak.parent_bk
-      left join g1_t4 on g1_t4.parent_bk = ak.parent_bk
-      left join g1_t5 on g1_t5.parent_bk = ak.parent_bk
-    qualify row_number() over (partition by ak.parent_bk order by g1_t0.totalclaimcount nulls last, g1_t1.totalclaimcount nulls last, g1_t2.totalclaimamount nulls last, g1_t2.totalclaimcount nulls last, g1_t3.totalclaimcount nulls last, g1_t4.totalclaimamount nulls last, g1_t4.totalclaimcount nulls last, g1_t5.totalclaimcount nulls last) = 1
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stitch_party_claim_history
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || st.parent_bk AS VARCHAR))), '')) as hkey,
-               st.inc_job_updated_at as ldts,
-               to_varchar(st.totalclaimamount) as TOTALCLAIMAMOUNT,
-               to_varchar(st.totalclaimcount) as TOTALCLAIMCOUNT
-          from st1 st
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CLAIM_HISTORY
-     where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HC_PART_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HC_PART_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$') and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.TOTALCLAIMAMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.TOTALCLAIMCOUNT AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_CLAIM_HISTORY', 'stitch_party_claim_history (6 tables)',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 24. OPUS — SAT_PARTY_CONTACT_ADDRESS_LINK [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- ma_sat_multi_source; PK PARTY_LOCATION_HKEY, child key ADDRESS_USAGE_TYPE; 2
--- RECORD_SOURCE group(s): OPUS_BJAZ_CP_ADDRESS_LINK [1 col(s)],
--- OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [0 col(s)]. Multi-active: compared per (key, child
--- key); latest = max LOAD_DATETIME per member.
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PRIMARY_ADDRESS_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PRIMARY_ADDRESS_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_LOCATION_HKEY, 'HEX'), null)) within group (order by PARTY_LOCATION_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CONTACT_ADDRESS_LINK
- where (RECORD_SOURCE = 'OPUS_BJAZ_CP_ADDRESS_LINK') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_LOCATION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CONTACT_ADDRESS_LINK where RECORD_SOURCE = 'OPUS_BJAZ_CP_ADDRESS_LINK' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_CONTACT_ADDRESS_LINK' and record_source = 'OPUS_BJAZ_CP_ADDRESS_LINK'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_cp_address_link
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_LOCATION|' || (nullif(trim("PART_ID"::varchar), '')) || '|' || (nullif(trim("ADD_ID"::varchar), '')) AS VARCHAR))), '')) as hkey,
-               to_varchar(to_varchar(("ADD_TYPE"::number))) as cdk_1,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("PRIMARY_YN"::varchar), ''))) as PRIMARY_ADDRESS_INDICATOR
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CP_ADDRESS_LINK
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_LOCATION_HKEY as hkey, coalesce(to_varchar(ADDRESS_USAGE_TYPE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CONTACT_ADDRESS_LINK
-     where RECORD_SOURCE = 'OPUS_BJAZ_CP_ADDRESS_LINK' and PARTY_LOCATION_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, coalesce(e.cdk_1, '^^') as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PRIMARY_ADDRESS_INDICATOR AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_CONTACT_ADDRESS_LINK', 'OPUS_BJAZ_CP_ADDRESS_LINK',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 25. OPUS — SAT_PARTY_EMPLOYMENT [Partner LOB]   [Design finding]
--- HASHDIFF of stitch_shared__common_communication_preference_party_employment (1 tables)
--- (stg2_shared__common_communication_preference_party_employment) also hashes
--- CORRESPONDENCELANGUAGE, MARKETINGOPTININDICATOR, which this satellite does not store
--- (a shared stage feeding several satellites). A change in only those columns gives a
--- new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2; see
--- DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be recomputed from the
--- satellite row. standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE
--- group(s): stitch_shared__common_communication_preference_party_employment (1 tables)
--- [1 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a)
--- DM-H1 (a) OPUS SAT_PARTY_EMPLOYMENT: HASHDIFF not recomputable -- see note
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT where regexp_like(RECORD_SOURCE, '^(OPUS_CP_PARTNERS)(, (OPUS_CP_PARTNERS))*$') order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_EMPLOYMENT' and record_source = 'stitch_shared__common_communication_preference_party_employment (1 tables)'
-),
-g1_t1 as (  -- stitch source OPUS_CP_PARTNERS
-    select distinct (nullif(trim("PART_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("LANGUAGE"::varchar), '')))), '') as correspondencelanguage,
-           nullif(trim(to_varchar((nullif(trim("LITERATURE"::varchar), '')))), '') as marketingoptinindicator,
-           nullif(trim(to_varchar((nullif(trim("EMPLOYMENT_STATUS"::varchar), '')))), '') as employmentstatus,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.CP_PARTNERS
-     where (nullif(trim("PART_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PART_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-k1 as (
-    select parent_bk from g1_t1
-),
-st1 as (  -- stitch_shared__common_communication_preference_party_employment recomputed from RAW (same coalesce / priority as the stitch macro)
-    select ak.parent_bk,
-           g1_t1.correspondencelanguage as correspondencelanguage,
-           g1_t1.marketingoptinindicator as marketingoptinindicator,
-           g1_t1.employmentstatus as employmentstatus,
-           array_to_string(array_construct_compact(
-               case when g1_t1.parent_bk is not null then 'OPUS_CP_PARTNERS' end
-           ), ', ') as record_source,
-           greatest_ignore_nulls(g1_t1.inc_job_updated_at) as inc_job_updated_at
-      from k1 ak
-      left join g1_t1 on g1_t1.parent_bk = ak.parent_bk
-    qualify row_number() over (partition by ak.parent_bk order by g1_t1.correspondencelanguage nulls last, g1_t1.marketingoptinindicator nulls last, g1_t1.employmentstatus nulls last) = 1
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stitch_shared__common_communication_preference_party_employment
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || st.parent_bk AS VARCHAR))), '')) as hkey,
-               st.inc_job_updated_at as ldts,
-               to_varchar(st.employmentstatus) as EMPLOYMENTSTATUS
-          from st1 st
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
-     where regexp_like(RECORD_SOURCE, '^(OPUS_CP_PARTNERS)(, (OPUS_CP_PARTNERS))*$') and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.EMPLOYMENTSTATUS AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_EMPLOYMENT', 'stitch_shared__common_communication_preference_party_employment (1 tables)',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 26. OPUS — SAT_PARTY_GROUP_CENSUS [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 10 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [1
--- col(s)], OPUS_BJAZ_CLM_SUPP_EXTN [1 col(s)], OPUS_BJAZ_CTNGY_PA_MEM_DTLS [1 col(s)],
--- OPUS_BJAZ_EC_MEM_DTLS_EXTN [1 col(s)], OPUS_BJAZ_HCF_MEMBER_DTLS [1 col(s)],
--- OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [1 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [4 col(s)],
--- OPUS_BJAZ_PA_DETL_EXTN [1 col(s)], OPUS_BJAZ_SH_MEM_DTLS_EXTN [1 col(s)],
--- OPUS_BJAZ_SPP_MEMBER_DTLS [1 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_PARTY_GROUP_CENSUS' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(EMPLOYEEID AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(EMPLOYEEID AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS
- where (RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN') or (RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN')
-union all
-select 'OPUS' as project, 'SAT_PARTY_GROUP_CENSUS' as satellite, 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ACTIVEINDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ACTIVEINDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS
- where (RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS')
-union all
-select 'OPUS' as project, 'SAT_PARTY_GROUP_CENSUS' as satellite, '6 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(MEMBERREFERENCE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(MEMBERREFERENCE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS
- where (RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN') or (RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_PA_DETL_EXTN') or (RECORD_SOURCE = 'OPUS_BJAZ_SH_MEM_DTLS_EXTN') or (RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS')
-union all
-select 'OPUS' as project, 'SAT_PARTY_GROUP_CENSUS' as satellite, 'OPUS_BJAZ_HM_MEMBER_DTLS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DESIGNATIONBAND AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EMPLOYEEID AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOCATIONREFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MEMBERREFERENCE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DESIGNATIONBAND AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EMPLOYEEID AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOCATIONREFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MEMBERREFERENCE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS
- where (RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS where RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_GROUP_CENSUS' and record_source = 'OPUS_AZBJ_PARTNER_EXTN'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__azbj_partner_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("EMP_ID"::varchar), ''))) as EMPLOYEEID
-          from BAGIC_PREPROD_CURATED_DB.UTILS.AZBJ_PARTNER_EXTN
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS
-     where RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.EMPLOYEEID AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_GROUP_CENSUS', 'OPUS_AZBJ_PARTNER_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_GROUP_CENSUS' and record_source = 'OPUS_BJAZ_CLM_SUPP_EXTN'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_clm_supp_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("EMPCODE"::varchar), ''))) as EMPLOYEEID
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS
-     where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' and PARTY_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.EMPLOYEEID AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_GROUP_CENSUS', 'OPUS_BJAZ_CLM_SUPP_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_GROUP_CENSUS' and record_source = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS'
-),
-e3 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_ctngy_pa_mem_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("FAMILY_FLAGGING"::varchar), ''))) as ACTIVEINDICATOR
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_PA_MEM_DTLS
-      )
-     where hkey in (select hkey from s3) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n3 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS
-     where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' and PARTY_HKEY in (select hkey from s3)
-     group by 1, 2
-),
-x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.ACTIVEINDICATOR AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e3 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_GROUP_CENSUS', 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS where RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_GROUP_CENSUS' and record_source = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN'
-),
-e4 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_ec_mem_dtls_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("MEMBER_NO"::number)) as MEMBERREFERENCE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_EC_MEM_DTLS_EXTN
-      )
-     where hkey in (select hkey from s4) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n4 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS
-     where RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' and PARTY_HKEY in (select hkey from s4)
-     group by 1, 2
-),
-x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MEMBERREFERENCE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e4 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_GROUP_CENSUS', 'OPUS_BJAZ_EC_MEM_DTLS_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s5 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS where RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_GROUP_CENSUS' and record_source = 'OPUS_BJAZ_HCF_MEMBER_DTLS'
-),
-e5 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hcf_member_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("MEMBER_NO"::number)) as MEMBERREFERENCE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HCF_MEMBER_DTLS
-      )
-     where hkey in (select hkey from s5) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n5 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS
-     where RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s5)
-     group by 1, 2
-),
-x5 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MEMBERREFERENCE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e5 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_GROUP_CENSUS', 'OPUS_BJAZ_HCF_MEMBER_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n5 n full outer join x5 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s6 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS where RECORD_SOURCE = 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_GROUP_CENSUS' and record_source = 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS'
-),
-e6 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hlt_ensure_mem_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("MEMBER_NO"::number)) as MEMBERREFERENCE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HLT_ENSURE_MEM_DTLS
-      )
-     where hkey in (select hkey from s6) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n6 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS
-     where RECORD_SOURCE = 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS' and PARTY_HKEY in (select hkey from s6)
-     group by 1, 2
-),
-x6 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MEMBERREFERENCE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e6 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_GROUP_CENSUS', 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n6 n full outer join x6 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s7 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_GROUP_CENSUS' and record_source = 'OPUS_BJAZ_HM_MEMBER_DTLS'
-),
-e7 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hm_member_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("GRADE"::varchar), ''))) as DESIGNATIONBAND,
-               to_varchar((nullif(trim("HAT_EMPCODE"::varchar), ''))) as EMPLOYEEID,
-               to_varchar((nullif(trim("EMPLOYEE_LOCATION"::varchar), ''))) as LOCATIONREFERENCE,
-               to_varchar(("MEMBER_ID"::number)) as MEMBERREFERENCE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
-      )
-     where hkey in (select hkey from s7) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n7 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS
-     where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s7)
-     group by 1, 2
-),
-x7 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.DESIGNATIONBAND AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EMPLOYEEID AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.LOCATIONREFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.MEMBERREFERENCE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e7 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_GROUP_CENSUS', 'OPUS_BJAZ_HM_MEMBER_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n7 n full outer join x7 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s8 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS where RECORD_SOURCE = 'OPUS_BJAZ_PA_DETL_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_GROUP_CENSUS' and record_source = 'OPUS_BJAZ_PA_DETL_EXTN'
-),
-e8 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_pa_detl_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("REF_NO"::number)) as MEMBERREFERENCE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_PA_DETL_EXTN
-      )
-     where hkey in (select hkey from s8) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n8 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS
-     where RECORD_SOURCE = 'OPUS_BJAZ_PA_DETL_EXTN' and PARTY_HKEY in (select hkey from s8)
-     group by 1, 2
-),
-x8 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MEMBERREFERENCE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e8 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_GROUP_CENSUS', 'OPUS_BJAZ_PA_DETL_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n8 n full outer join x8 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s9 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS where RECORD_SOURCE = 'OPUS_BJAZ_SH_MEM_DTLS_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_GROUP_CENSUS' and record_source = 'OPUS_BJAZ_SH_MEM_DTLS_EXTN'
-),
-e9 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_sh_mem_dtls_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("MEMBER_NO"::number)) as MEMBERREFERENCE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SH_MEM_DTLS_EXTN
-      )
-     where hkey in (select hkey from s9) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n9 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS
-     where RECORD_SOURCE = 'OPUS_BJAZ_SH_MEM_DTLS_EXTN' and PARTY_HKEY in (select hkey from s9)
-     group by 1, 2
-),
-x9 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MEMBERREFERENCE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e9 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_GROUP_CENSUS', 'OPUS_BJAZ_SH_MEM_DTLS_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n9 n full outer join x9 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s10 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS where RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_GROUP_CENSUS' and record_source = 'OPUS_BJAZ_SPP_MEMBER_DTLS'
-),
-e10 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_spp_member_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("MEMBER_NO"::number)) as MEMBERREFERENCE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SPP_MEMBER_DTLS
-      )
-     where hkey in (select hkey from s10) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n10 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_CENSUS
-     where RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s10)
-     group by 1, 2
-),
-x10 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MEMBERREFERENCE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e10 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_GROUP_CENSUS', 'OPUS_BJAZ_SPP_MEMBER_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n10 n full outer join x10 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 27. OPUS — SAT_PARTY_GROUP_HOUSEHOLD [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [1
--- col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_PARTY_GROUP_HOUSEHOLD' as satellite, 'OPUS_AZBJ_PARTNER_EXTN' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(HOUSEHOLDIDENTIFIER AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(HOUSEHOLDIDENTIFIER AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_HOUSEHOLD
- where (RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_HOUSEHOLD where RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_GROUP_HOUSEHOLD' and record_source = 'OPUS_AZBJ_PARTNER_EXTN'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__azbj_partner_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("FAMILY_ID"::number)) as HOUSEHOLDIDENTIFIER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.AZBJ_PARTNER_EXTN
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_GROUP_HOUSEHOLD
-     where RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.HOUSEHOLDIDENTIFIER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_GROUP_HOUSEHOLD', 'OPUS_AZBJ_PARTNER_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 28. OPUS — SAT_PARTY_HEALTH_PROFILE [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 3 RECORD_SOURCE group(s): stitch_party_health_profile
--- (4 tables) [5 col(s)], OPUS_BJAZ_M_KYC_DRIVING_LICENCE [0 col(s)],
--- OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [0 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, '3 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BODYMASSINDEX AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HEIGHT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MATERNITYSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SMOKERINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WEIGHT AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BODYMASSINDEX AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HEIGHT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MATERNITYSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SMOKERINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WEIGHT AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
- where (regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$')) or (RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_DRIVING_LICENCE') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$') order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_HEALTH_PROFILE' and record_source = 'stitch_party_health_profile (4 tables)'
-),
-g1_t0 as (  -- stitch source OPUS_BJAZ_EC_MEM_DTLS_EXTN
-    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar(("HEIGHT_CM"::number))), '') as height,
-           nullif(trim(to_varchar((nullif(trim("PREGNANT_YN"::varchar), '')))), '') as maternitystatus,
-           nullif(trim(to_varchar((nullif(trim("SMOKER_YN"::varchar), '')))), '') as smokerindicator,
-           nullif(trim(to_varchar(("WEIGHT_KG"::number))), '') as weight,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_EC_MEM_DTLS_EXTN
-     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t1 as (  -- stitch source OPUS_BJAZ_HCF_MEMBER_DTLS
-    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("OBESITY_FLAG"::varchar), '')))), '') as bodymassindex,
-           nullif(trim(to_varchar((nullif(trim("HEIGHT_FLAG"::varchar), '')))), '') as height,
-           nullif(trim(to_varchar((nullif(trim("SMOKER_FLAG"::varchar), '')))), '') as smokerindicator,
-           nullif(trim(to_varchar((nullif(trim("WEIGHT_FLAG"::varchar), '')))), '') as weight,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HCF_MEMBER_DTLS
-     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t2 as (  -- stitch source OPUS_BJAZ_SH_MEM_DTLS_EXTN
-    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("SMOKER_YN"::varchar), '')))), '') as smokerindicator,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SH_MEM_DTLS_EXTN
-     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t3 as (  -- stitch source OPUS_BJAZ_SPP_MEMBER_DTLS
-    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("OBESITY"::varchar), '')))), '') as bodymassindex,
-           nullif(trim(to_varchar((nullif(trim("WEIGHT"::varchar), '')))), '') as weight,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SPP_MEMBER_DTLS
-     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-k1 as (
-    select parent_bk from g1_t0
-    union
-    select parent_bk from g1_t1
-    union
-    select parent_bk from g1_t2
-    union
-    select parent_bk from g1_t3
-),
-st1 as (  -- stitch_party_health_profile recomputed from RAW (same coalesce / priority as the stitch macro)
-    select ak.parent_bk,
-           coalesce(g1_t1.bodymassindex, g1_t3.bodymassindex) as bodymassindex,
-           coalesce(g1_t0.height, g1_t1.height) as height,
-           g1_t0.maternitystatus as maternitystatus,
-           coalesce(g1_t0.smokerindicator, g1_t1.smokerindicator, g1_t2.smokerindicator) as smokerindicator,
-           coalesce(g1_t0.weight, g1_t1.weight, g1_t3.weight) as weight,
-           array_to_string(array_construct_compact(
-               case when g1_t0.parent_bk is not null then 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' end,
-               case when g1_t1.parent_bk is not null then 'OPUS_BJAZ_HCF_MEMBER_DTLS' end,
-               case when g1_t2.parent_bk is not null then 'OPUS_BJAZ_SH_MEM_DTLS_EXTN' end,
-               case when g1_t3.parent_bk is not null then 'OPUS_BJAZ_SPP_MEMBER_DTLS' end
-           ), ', ') as record_source,
-           greatest_ignore_nulls(g1_t0.inc_job_updated_at, g1_t1.inc_job_updated_at, g1_t2.inc_job_updated_at, g1_t3.inc_job_updated_at) as inc_job_updated_at
-      from k1 ak
-      left join g1_t0 on g1_t0.parent_bk = ak.parent_bk
-      left join g1_t1 on g1_t1.parent_bk = ak.parent_bk
-      left join g1_t2 on g1_t2.parent_bk = ak.parent_bk
-      left join g1_t3 on g1_t3.parent_bk = ak.parent_bk
-    qualify row_number() over (partition by ak.parent_bk order by g1_t0.height nulls last, g1_t0.maternitystatus nulls last, g1_t0.smokerindicator nulls last, g1_t0.weight nulls last, g1_t1.bodymassindex nulls last, g1_t1.height nulls last, g1_t1.smokerindicator nulls last, g1_t1.weight nulls last, g1_t2.smokerindicator nulls last, g1_t3.bodymassindex nulls last, g1_t3.weight nulls last) = 1
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stitch_party_health_profile
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || st.parent_bk AS VARCHAR))), '')) as hkey,
-               st.inc_job_updated_at as ldts,
-               to_varchar(st.bodymassindex) as BODYMASSINDEX,
-               to_varchar(st.height) as HEIGHT,
-               to_varchar(st.maternitystatus) as MATERNITYSTATUS,
-               to_varchar(st.smokerindicator) as SMOKERINDICATOR,
-               to_varchar(st.weight) as WEIGHT
-          from st1 st
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
-     where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$') and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.BODYMASSINDEX AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.HEIGHT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.MATERNITYSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.SMOKERINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.WEIGHT AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_HEALTH_PROFILE', 'stitch_party_health_profile (4 tables)',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 29. OPUS — SAT_PARTY_IDENTIFICATION [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 19 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [2
--- col(s)], OPUS_BJAZ_CLM_SUPP_EXTN [3 col(s)], OPUS_BJAZ_CTNGY_FF_DTLS_EXTN [1 col(s)],
--- OPUS_BJAZ_CTNGY_PA_MEM_DTLS [5 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [1 col(s)],
--- OPUS_BJAZ_HCF_MEMBER_DTLS [1 col(s)], OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [1 col(s)],
--- OPUS_BJAZ_HM_HOSPITAL_MASTER [1 col(s)], OPUS_BJAZ_INTERMEDIARY [3 col(s)],
--- OPUS_BJAZ_STARPKG_FF_DTLS [1 col(s)], OPUS_CP_PARTNERS [2 col(s)],
--- OPUS_BJAZ_M_KYC_DRIVING_LICENCE [0 col(s)], OPUS_BJAZ_M_KYC_GSTN [1 col(s)],
--- OPUS_BJAZ_M_KYC_PAN [1 col(s)], OPUS_BJAZ_M_KYC_PASSPORT [1 col(s)],
--- OPUS_BJAZ_M_KYC_VOTER [1 col(s)], OPUS_BJAZ_T_CKYC_OTP [1 col(s)],
--- OPUS_BJAZ_T_KYC_INCOMING [1 col(s)], OPUS_BJAZ_T_KYC_NAME_MATCH [1 col(s)]. OBJECT
--- satellite: AADHAARNUMBER, GSTIN, PANNUMBER, PASSPORTNUMBER, VOTERIDNUMBER, CKYCNUMBER
--- hold one entry per source table (sat value = col:"<TABLE>"; expected = MAX over that
--- table's RAW rows, as the macro does). Plain columns are MAX across all tables and are
--- not compared per table. A table absent from the latest incremental window is absent
--- from the latest row -- compare after a full load.
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'all OPUS rows (OBJECT hashdiff)' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT(IFNULL(TO_JSON(AADHAARNUMBER), '^^'), '||', IFNULL(TO_JSON(GSTIN), '^^'), '||', IFNULL(TO_JSON(PANNUMBER), '^^'), '||', IFNULL(TO_JSON(PASSPORTNUMBER), '^^'), '||', IFNULL(TO_JSON(VOTERIDNUMBER), '^^'), '||', IFNULL(TO_JSON(CKYCNUMBER), '^^'), '||', IFNULL(CAST(AGEPROOFTYPE AS VARCHAR), '^^'), '||', IFNULL(CAST(EIANUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(GSTREGISTRATIONSTATUS AS VARCHAR), '^^'), '||', IFNULL(CAST(GSTTAXPAYERTYPE AS VARCHAR), '^^'), '||', IFNULL(CAST(IDENTIFICATIONNUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(TANNUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(VATREGISTRATIONNUMBER AS VARCHAR), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT(IFNULL(TO_JSON(AADHAARNUMBER), '^^'), '||', IFNULL(TO_JSON(GSTIN), '^^'), '||', IFNULL(TO_JSON(PANNUMBER), '^^'), '||', IFNULL(TO_JSON(PASSPORTNUMBER), '^^'), '||', IFNULL(TO_JSON(VOTERIDNUMBER), '^^'), '||', IFNULL(TO_JSON(CKYCNUMBER), '^^'), '||', IFNULL(CAST(AGEPROOFTYPE AS VARCHAR), '^^'), '||', IFNULL(CAST(EIANUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(GSTREGISTRATIONSTATUS AS VARCHAR), '^^'), '||', IFNULL(CAST(GSTTAXPAYERTYPE AS VARCHAR), '^^'), '||', IFNULL(CAST(IDENTIFICATIONNUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(TANNUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(VATREGISTRATIONNUMBER AS VARCHAR), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
- where RECORD_SOURCE = 'OPUS';
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_CLM_SUPP_EXTN'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select hkey, max(PANNUMBER) as PANNUMBER
-      from (
-        -- via stg_partner__bjaz_clm_supp_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("PAN_NO"::varchar), ''))) as PANNUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-     group by hkey
-),
-n2 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PANNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_CLM_SUPP_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_CTNGY_FF_DTLS_EXTN'
-),
-e3 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select hkey, max(PASSPORTNUMBER) as PASSPORTNUMBER
-      from (
-        -- via stg_partner__bjaz_ctngy_ff_dtls_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("PASSPORTNO"::varchar), ''))) as PASSPORTNUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_FF_DTLS_EXTN
-      )
-     where hkey in (select hkey from s3) and ldts is not null
-     group by hkey
-),
-n3 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s3)
-     group by 1, 2
-),
-x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PASSPORTNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e3 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_CTNGY_FF_DTLS_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS'
-),
-e4 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select hkey, max(AADHAARNUMBER) as AADHAARNUMBER, max(PANNUMBER) as PANNUMBER, max(PASSPORTNUMBER) as PASSPORTNUMBER
-      from (
-        -- via stg_partner__bjaz_ctngy_pa_mem_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("AADHAR_CARD_NO"::varchar), ''))) as AADHAARNUMBER,
-               to_varchar((nullif(trim("PAN_CARD_NO"::varchar), ''))) as PANNUMBER,
-               to_varchar((nullif(trim("PASSPORT_NUMBER"::varchar), ''))) as PASSPORTNUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_PA_MEM_DTLS
-      )
-     where hkey in (select hkey from s4) and ldts is not null
-     group by hkey
-),
-n4 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s4)
-     group by 1, 2
-),
-x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.AADHAARNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PANNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PASSPORTNUMBER AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e4 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s9 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_INTERMEDIARY'
-),
-e9 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select hkey, max(GSTIN) as GSTIN, max(PANNUMBER) as PANNUMBER
-      from (
-        -- via stg_partner__bjaz_intermediary
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("INTERMEDIARY_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("GST_NO"::varchar), ''))) as GSTIN,
-               to_varchar((nullif(trim("PAN_NUMBER"::varchar), ''))) as PANNUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_INTERMEDIARY
-      )
-     where hkey in (select hkey from s9) and ldts is not null
-     group by hkey
-),
-n9 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s9)
-     group by 1, 2
-),
-x9 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.GSTIN AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PANNUMBER AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e9 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_INTERMEDIARY',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n9 n full outer join x9 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s10 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_STARPKG_FF_DTLS'
-),
-e10 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select hkey, max(PASSPORTNUMBER) as PASSPORTNUMBER
-      from (
-        -- via stg_partner__bjaz_starpkg_ff_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("PASSPORTNO"::varchar), ''))) as PASSPORTNUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_STARPKG_FF_DTLS
-      )
-     where hkey in (select hkey from s10) and ldts is not null
-     group by hkey
-),
-n10 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s10)
-     group by 1, 2
-),
-x10 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PASSPORTNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e10 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_STARPKG_FF_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n10 n full outer join x10 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s13 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_M_KYC_GSTN'
-),
-e13 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select hkey, max(GSTIN) as GSTIN
-      from (
-        -- via stg_partner__bjaz_m_kyc_gstn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('GSTIN:' || upper(trim(coalesce((nullif(trim("GSTIN_NUMBER"::varchar), '')),''))), 'GSTIN:')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("GSTIN_NUMBER"::varchar), ''))) as GSTIN
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_M_KYC_GSTN
-      )
-     where hkey in (select hkey from s13) and ldts is not null
-     group by hkey
-),
-n13 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s13)
-     group by 1, 2
-),
-x13 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.GSTIN AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e13 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_M_KYC_GSTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n13 n full outer join x13 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s14 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_M_KYC_PAN'
-),
-e14 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select hkey, max(PANNUMBER) as PANNUMBER
-      from (
-        -- via stg_partner__bjaz_m_kyc_pan
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('PAN:' || upper(trim(coalesce((nullif(trim("PAN_NUMBER"::varchar), '')),''))), 'PAN:')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("PAN_NUMBER"::varchar), ''))) as PANNUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_M_KYC_PAN
-      )
-     where hkey in (select hkey from s14) and ldts is not null
-     group by hkey
-),
-n14 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s14)
-     group by 1, 2
-),
-x14 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PANNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e14 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_M_KYC_PAN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n14 n full outer join x14 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s15 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_M_KYC_PASSPORT'
-),
-e15 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select hkey, max(PASSPORTNUMBER) as PASSPORTNUMBER
-      from (
-        -- via stg_partner__bjaz_m_kyc_passport
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('PASSPORT:' || upper(trim(coalesce((nullif(trim("PASSPORT_NUMBER"::varchar), '')),''))), 'PASSPORT:')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("PASSPORT_NUMBER"::varchar), ''))) as PASSPORTNUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_M_KYC_PASSPORT
-      )
-     where hkey in (select hkey from s15) and ldts is not null
-     group by hkey
-),
-n15 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s15)
-     group by 1, 2
-),
-x15 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PASSPORTNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e15 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_M_KYC_PASSPORT',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n15 n full outer join x15 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s16 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION where RECORD_SOURCE = 'OPUS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_IDENTIFICATION' and record_source = 'OPUS_BJAZ_M_KYC_VOTER'
-),
-e16 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select hkey, max(VOTERIDNUMBER) as VOTERIDNUMBER
-      from (
-        -- via stg_partner__bjaz_m_kyc_voter
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('VOTER:' || upper(trim(coalesce((nullif(trim("VOTER_NUMBER"::varchar), '')),''))), 'VOTER:')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("VOTER_NUMBER"::varchar), ''))) as VOTERIDNUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_M_KYC_VOTER
-      )
-     where hkey in (select hkey from s16) and ldts is not null
-     group by hkey
-),
-n16 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s16)
-     group by 1, 2
-),
-x16 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.VOTERIDNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e16 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTIFICATION', 'OPUS_BJAZ_M_KYC_VOTER',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n16 n full outer join x16 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 30. OPUS — SAT_PARTY_IDENTITY [Partner LOB]   [Implemented]
+-- 10. OPUS — [M1 | stitch_incremental] SAT_PARTY_IDENTITY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -3877,15 +2021,15 @@ g1_t5 as (  -- stitch source OPUS_BJAZ_CTNGY_FF_DTLS_EXTN
        and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
 ),
 g1_t6 as (  -- stitch source OPUS_BJAZ_CTNGY_GC_MEM_DATA
-    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
+    select distinct (nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '')) as parent_bk,
            nullif(trim(to_varchar(("AGE"::number))), '') as age,
            nullif(trim(to_varchar(("DATE_OF_BIRTH"::timestamp_ntz))), '') as dateofbirth,
            nullif(trim(to_varchar((nullif(trim("GENDER"::varchar), '')))), '') as gendercode,
            nullif(trim(to_varchar((nullif(trim("MEMBER_NAME"::varchar), '')))), '') as partyfullname,
            ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
       from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_GC_MEM_DATA
-     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+     where (nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '')))) AS VARCHAR))), '')) in (select hkey from s1)
 ),
 g1_t7 as (  -- stitch source OPUS_BJAZ_CTNGY_PA_MEM_DTLS
     select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
@@ -3913,7 +2057,7 @@ g1_t8 as (  -- stitch source OPUS_BJAZ_EC_MEM_DTLS_EXTN
        and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
 ),
 g1_t9 as (  -- stitch source OPUS_BJAZ_HCF_MEMBER_DTLS
-    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
+    select distinct (nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '')) as parent_bk,
            nullif(trim(to_varchar(("AGE"::number))), '') as age,
            nullif(trim(to_varchar(("DATE_OF_BIRTH"::timestamp_ntz))), '') as dateofbirth,
            nullif(trim(to_varchar((nullif(trim("GENDER"::varchar), '')))), '') as gendercode,
@@ -3921,8 +2065,8 @@ g1_t9 as (  -- stitch source OPUS_BJAZ_HCF_MEMBER_DTLS
            nullif(trim(to_varchar((nullif(trim("COMPANY_NAME"::varchar), '')))), '') as partylegalname,
            ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
       from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HCF_MEMBER_DTLS
-     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+     where (nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '')))) AS VARCHAR))), '')) in (select hkey from s1)
 ),
 g1_t10 as (  -- stitch source OPUS_BJAZ_HC_PART_EXTN
     select distinct (nullif(trim("PART_ID"::varchar), '')) as parent_bk,
@@ -4510,7 +2654,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_IDENTITY', 'OPUS_BJAZ_T_KYC_OC
 
 
 ----------------------------------------------------------------------------------------
--- 31. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS [Partner LOB]   [Implemented]
+-- 11. OPUS — [M1 | stitch_incremental] SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -4562,13 +2706,13 @@ g1_t3 as (  -- stitch source OPUS_BJAZ_EC_MEM_DTLS_EXTN
        and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
 ),
 g1_t4 as (  -- stitch source OPUS_BJAZ_HCF_MEMBER_DTLS
-    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
+    select distinct (nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '')) as parent_bk,
            nullif(trim(to_varchar(("MONTHLY_INCOME"::number))), '') as annualincome,
            nullif(trim(to_varchar((nullif(trim("MEMBER_OCCUPATION"::varchar), '')))), '') as occupationcode,
            ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
       from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HCF_MEMBER_DTLS
-     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+     where (nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '')))) AS VARCHAR))), '')) in (select hkey from s1)
 ),
 g1_t5 as (  -- stitch source OPUS_BJAZ_HC_PART_EXTN
     select distinct (nullif(trim("PART_ID"::varchar), '')) as parent_bk,
@@ -4777,1375 +2921,7 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS', 'OPU
 
 
 ----------------------------------------------------------------------------------------
--- 32. OPUS — SAT_PARTY_KYC [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 5 RECORD_SOURCE group(s):
--- OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [2 col(s)], OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS [1
--- col(s)], OPUS_BJAZ_T_CKYC_SEARCH [4 col(s)], OPUS_BJAZ_T_KYC_DETAILS [2 col(s)],
--- OPUS_BJAZ_T_KYC_INCOMING [2 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_PARTY_KYC' as satellite, '5 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CKYCNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CKYCREGISTRATIONSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYCCOMPLETIONDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYCMODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYCSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYCTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LASTKYCREVIEWDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OVDSUBMITTEDCOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CKYCNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CKYCREGISTRATIONSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYCCOMPLETIONDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYCMODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYCSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYCTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LASTKYCREVIEWDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OVDSUBMITTEDCOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC
- where (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_SEARCH') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_DETAILS') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_KYC' and record_source = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_ckyc_personal_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('CKYC:' || upper(trim(coalesce((nullif(trim("CKYC_NO"::varchar), '')),''))), 'CKYC:')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("ACC_TYPE"::varchar), ''))) as KYCTYPE,
-               to_varchar((nullif(trim("NUM_IDENTITY"::varchar), ''))) as OVDSUBMITTEDCOUNT
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_CKYC_PERSONAL_DTLS
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYCTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.OVDSUBMITTEDCOUNT AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_KYC', 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_KYC' and record_source = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_ckyc_rel_persion_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('CKYC:' || upper(trim(coalesce((nullif(trim("CKYC_NO"::varchar), '')),''))), 'CKYC:')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("DEC_DATE"::varchar), ''))) as KYCCOMPLETIONDATE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_CKYC_REL_PERSION_DTLS
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS' and PARTY_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYCCOMPLETIONDATE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_KYC', 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_SEARCH' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_KYC' and record_source = 'OPUS_BJAZ_T_CKYC_SEARCH'
-),
-e3 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_ckyc_search
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("CKYC_NUMBER"::varchar), ''))) as CKYCNUMBER,
-               to_varchar((nullif(trim("CKYC_STATUS"::varchar), ''))) as CKYCREGISTRATIONSTATUS,
-               to_varchar((nullif(trim("CKYC_KYC_DATE"::varchar), ''))) as KYCCOMPLETIONDATE,
-               to_varchar((nullif(trim("CKYC_UPDATE_DATE"::varchar), ''))) as LASTKYCREVIEWDATE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_CKYC_SEARCH
-      )
-     where hkey in (select hkey from s3) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n3 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_SEARCH' and PARTY_HKEY in (select hkey from s3)
-     group by 1, 2
-),
-x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.CKYCNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.CKYCREGISTRATIONSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYCCOMPLETIONDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.LASTKYCREVIEWDATE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e3 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_KYC', 'OPUS_BJAZ_T_CKYC_SEARCH',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_DETAILS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_KYC' and record_source = 'OPUS_BJAZ_T_KYC_DETAILS'
-),
-e4 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_details
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("KYC_DATE"::varchar), ''))) as KYCCOMPLETIONDATE,
-               to_varchar((nullif(trim("KYC_STATUS"::varchar), ''))) as KYCSTATUS
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_DETAILS
-      )
-     where hkey in (select hkey from s4) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n4 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_DETAILS' and PARTY_HKEY in (select hkey from s4)
-     group by 1, 2
-),
-x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYCCOMPLETIONDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYCSTATUS AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e4 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_KYC', 'OPUS_BJAZ_T_KYC_DETAILS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s5 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_KYC' and record_source = 'OPUS_BJAZ_T_KYC_INCOMING'
-),
-e5 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_incoming
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("SEARCH_CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("SEARCH_INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("KYC_MODE"::varchar), ''))) as KYCMODE,
-               to_varchar((nullif(trim("KYC_TYPE"::varchar), ''))) as KYCTYPE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_INCOMING
-      )
-     where hkey in (select hkey from s5) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n5 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING' and PARTY_HKEY in (select hkey from s5)
-     group by 1, 2
-),
-x5 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYCMODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYCTYPE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e5 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_KYC', 'OPUS_BJAZ_T_KYC_INCOMING',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n5 n full outer join x5 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 33. OPUS — SAT_PARTY_KYC_REFERENCE [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 4 RECORD_SOURCE group(s): OPUS_CP_PARTNERS [1
--- col(s)], OPUS_BJAZ_T_CKYC_OTP [0 col(s)], OPUS_BJAZ_T_CKYC_SEARCH [0 col(s)],
--- OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS [0 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_PARTY_KYC_REFERENCE' as satellite, '4 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(KYCREFERENCETYPE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(KYCREFERENCETYPE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC_REFERENCE
- where (RECORD_SOURCE = 'OPUS_CP_PARTNERS') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_OTP') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_SEARCH') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC_REFERENCE where RECORD_SOURCE = 'OPUS_CP_PARTNERS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_KYC_REFERENCE' and record_source = 'OPUS_CP_PARTNERS'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__cp_partners
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("EVID_TYPE"::varchar), ''))) as KYCREFERENCETYPE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.CP_PARTNERS
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC_REFERENCE
-     where RECORD_SOURCE = 'OPUS_CP_PARTNERS' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYCREFERENCETYPE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_KYC_REFERENCE', 'OPUS_CP_PARTNERS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 34. OPUS — SAT_PARTY_ORGANISATION_PROFILE [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 3 RECORD_SOURCE group(s):
--- stitch_party_organisation_profile (3 tables) [8 col(s)], OPUS_BJAZ_M_KYC_GSTN [1
--- col(s)], OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [0 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_PARTY_ORGANISATION_PROFILE' as satellite, '3 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ANNUALTURNOVER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DATEOFINCORPORATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GROUPNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INDUSTRYDESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LEGALCONSTITUTIONTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MSMEINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAIDUPCAPITAL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PARENTENTITYNAME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ANNUALTURNOVER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DATEOFINCORPORATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GROUPNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INDUSTRYDESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LEGALCONSTITUTIONTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MSMEINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAIDUPCAPITAL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PARENTENTITYNAME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE
- where (regexp_like(RECORD_SOURCE, '^(OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_CP_PARTNERS)(, (OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_CP_PARTNERS))*$')) or (RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_GSTN') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE where regexp_like(RECORD_SOURCE, '^(OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_CP_PARTNERS)(, (OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_CP_PARTNERS))*$') order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_ORGANISATION_PROFILE' and record_source = 'stitch_party_organisation_profile (3 tables)'
-),
-g1_t0 as (  -- stitch source OPUS_AZBJ_PARTNER_EXTN
-    select distinct (nullif(trim("PART_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("GLOBAL_CO_NAME"::varchar), '')))), '') as groupname,
-           nullif(trim(to_varchar(("INDUSTRY"::number))), '') as industrydescription,
-           nullif(trim(to_varchar((nullif(trim("MSME_FLAG"::varchar), '')))), '') as msmeindicator,
-           nullif(trim(to_varchar(("PAIDUP_CAPITAL"::number))), '') as paidupcapital,
-           nullif(trim(to_varchar((nullif(trim("PARENT_CO"::varchar), '')))), '') as parententityname,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.AZBJ_PARTNER_EXTN
-     where (nullif(trim("PART_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PART_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t2 as (  -- stitch source OPUS_BJAZ_CLM_SUPP_EXTN
-    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("ANN_TURNOVER"::varchar), '')))), '') as annualturnover,
-           nullif(trim(to_varchar((nullif(trim("ESTABLISH_YEAR"::varchar), '')))), '') as dateofincorporation,
-           nullif(trim(to_varchar((nullif(trim("MSME_CLASS"::varchar), '')))), '') as msmeindicator,
-           nullif(trim(to_varchar((nullif(trim("PARENT_CO_NAME"::varchar), '')))), '') as parententityname,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
-     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t4 as (  -- stitch source OPUS_CP_PARTNERS
-    select distinct (nullif(trim("PART_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("LEGAL_FORM"::varchar), '')))), '') as legalconstitutiontype,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.CP_PARTNERS
-     where (nullif(trim("PART_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PART_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-k1 as (
-    select parent_bk from g1_t0
-    union
-    select parent_bk from g1_t2
-    union
-    select parent_bk from g1_t4
-),
-st1 as (  -- stitch_party_organisation_profile recomputed from RAW (same coalesce / priority as the stitch macro)
-    select ak.parent_bk,
-           g1_t2.annualturnover as annualturnover,
-           g1_t2.dateofincorporation as dateofincorporation,
-           g1_t0.groupname as groupname,
-           g1_t0.industrydescription as industrydescription,
-           g1_t4.legalconstitutiontype as legalconstitutiontype,
-           coalesce(g1_t0.msmeindicator, g1_t2.msmeindicator) as msmeindicator,
-           g1_t0.paidupcapital as paidupcapital,
-           coalesce(g1_t0.parententityname, g1_t2.parententityname) as parententityname,
-           array_to_string(array_construct_compact(
-               case when g1_t0.parent_bk is not null then 'OPUS_AZBJ_PARTNER_EXTN' end,
-               case when g1_t2.parent_bk is not null then 'OPUS_BJAZ_CLM_SUPP_EXTN' end,
-               case when g1_t4.parent_bk is not null then 'OPUS_CP_PARTNERS' end
-           ), ', ') as record_source,
-           greatest_ignore_nulls(g1_t0.inc_job_updated_at, g1_t2.inc_job_updated_at, g1_t4.inc_job_updated_at) as inc_job_updated_at
-      from k1 ak
-      left join g1_t0 on g1_t0.parent_bk = ak.parent_bk
-      left join g1_t2 on g1_t2.parent_bk = ak.parent_bk
-      left join g1_t4 on g1_t4.parent_bk = ak.parent_bk
-    qualify row_number() over (partition by ak.parent_bk order by g1_t0.groupname nulls last, g1_t0.industrydescription nulls last, g1_t0.msmeindicator nulls last, g1_t0.paidupcapital nulls last, g1_t0.parententityname nulls last, g1_t2.annualturnover nulls last, g1_t2.dateofincorporation nulls last, g1_t2.msmeindicator nulls last, g1_t2.parententityname nulls last, g1_t4.legalconstitutiontype nulls last) = 1
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stitch_party_organisation_profile
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || st.parent_bk AS VARCHAR))), '')) as hkey,
-               st.inc_job_updated_at as ldts,
-               to_varchar(st.annualturnover) as ANNUALTURNOVER,
-               to_varchar(st.dateofincorporation) as DATEOFINCORPORATION,
-               to_varchar(st.groupname) as GROUPNAME,
-               to_varchar(st.industrydescription) as INDUSTRYDESCRIPTION,
-               to_varchar(st.legalconstitutiontype) as LEGALCONSTITUTIONTYPE,
-               to_varchar(st.msmeindicator) as MSMEINDICATOR,
-               to_varchar(st.paidupcapital) as PAIDUPCAPITAL,
-               to_varchar(st.parententityname) as PARENTENTITYNAME
-          from st1 st
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE
-     where regexp_like(RECORD_SOURCE, '^(OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_CP_PARTNERS)(, (OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_CP_PARTNERS))*$') and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.ANNUALTURNOVER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.DATEOFINCORPORATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.GROUPNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.INDUSTRYDESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.LEGALCONSTITUTIONTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.MSMEINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PAIDUPCAPITAL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PARENTENTITYNAME AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_ORGANISATION_PROFILE', 'stitch_party_organisation_profile (3 tables)',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE where RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_GSTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_ORGANISATION_PROFILE' and record_source = 'OPUS_BJAZ_M_KYC_GSTN'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_m_kyc_gstn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('GSTIN:' || upper(trim(coalesce((nullif(trim("GSTIN_NUMBER"::varchar), '')),''))), 'GSTIN:')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("BUSINESS_TYPE"::varchar), ''))) as LEGALCONSTITUTIONTYPE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_M_KYC_GSTN
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE
-     where RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_GSTN' and PARTY_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.LEGALCONSTITUTIONTYPE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_ORGANISATION_PROFILE', 'OPUS_BJAZ_M_KYC_GSTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 35. OPUS — SAT_PARTY_VEHICLE_PRIOR_INSURANCE   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 8 RECORD_SOURCE group(s): OPUS_BJAZ_CTNGY_PA_MEM_DTLS
--- [1 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [4 col(s)], OPUS_BJAZ_HCF_MEMBER_DTLS [3
--- col(s)], OPUS_BJAZ_HC_PART_EXTN [1 col(s)], OPUS_BJAZ_HLT_ENSURE_MEM_DTLS [5 col(s)],
--- OPUS_BJAZ_PA_DETL_EXTN [1 col(s)], OPUS_BJAZ_SH_MEM_DTLS_EXTN [2 col(s)],
--- OPUS_BJAZ_SPP_MEMBER_DTLS [3 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' as satellite, '3 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
- where (RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_HC_PART_EXTN') or (RECORD_SOURCE = 'OPUS_BJAZ_PA_DETL_EXTN')
-union all
-select 'OPUS' as project, 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' as satellite, 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSEXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSINSURERNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSEXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSINSURERNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
- where (RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN')
-union all
-select 'OPUS' as project, 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CONTINUITYINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CONTINUITYINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
- where (RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS')
-union all
-select 'OPUS' as project, 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' as satellite, 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CONTINUITYINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSEXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSINSURERNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CONTINUITYINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSEXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSINSURERNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
- where (RECORD_SOURCE = 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS')
-union all
-select 'OPUS' as project, 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' as satellite, 'OPUS_BJAZ_SH_MEM_DTLS_EXTN' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
- where (RECORD_SOURCE = 'OPUS_BJAZ_SH_MEM_DTLS_EXTN');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' and record_source = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_ctngy_pa_mem_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("PREVIOUS_POLICY_DETAILS"::varchar), ''))) as PREVIOUSPOLICYNUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_PA_MEM_DTLS
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
-     where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE', 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE where RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' and record_source = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_ec_mem_dtls_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("PERV_POL_EXP_DATE"::varchar), ''))) as PREVIOUSEXPIRYDATE,
-               to_varchar((nullif(trim("PREV_COMPANY_NAME"::varchar), ''))) as PREVIOUSINSURERNAME,
-               to_varchar((nullif(trim("PREV_POLICY_DTLS"::varchar), ''))) as PREVIOUSPOLICYNUMBER,
-               to_varchar(("PREV_SUM_INSURED"::number)) as PREVIOUSSUMINSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_EC_MEM_DTLS_EXTN
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
-     where RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' and PARTY_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSEXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSINSURERNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE', 'OPUS_BJAZ_EC_MEM_DTLS_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE where RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' and record_source = 'OPUS_BJAZ_HCF_MEMBER_DTLS'
-),
-e3 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hcf_member_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("PREV_POLICY_SINCE"::timestamp_ntz)) as CONTINUITYINDICATOR,
-               to_varchar((nullif(trim("CONCURRENT_POLICY_DETAILS"::varchar), ''))) as PREVIOUSPOLICYNUMBER,
-               to_varchar(("PREVIOUS_SI"::number)) as PREVIOUSSUMINSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HCF_MEMBER_DTLS
-      )
-     where hkey in (select hkey from s3) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n3 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
-     where RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s3)
-     group by 1, 2
-),
-x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.CONTINUITYINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e3 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE', 'OPUS_BJAZ_HCF_MEMBER_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE where RECORD_SOURCE = 'OPUS_BJAZ_HC_PART_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' and record_source = 'OPUS_BJAZ_HC_PART_EXTN'
-),
-e4 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hc_part_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("FIRST_POLICY_REF"::varchar), ''))) as PREVIOUSPOLICYNUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HC_PART_EXTN
-      )
-     where hkey in (select hkey from s4) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n4 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
-     where RECORD_SOURCE = 'OPUS_BJAZ_HC_PART_EXTN' and PARTY_HKEY in (select hkey from s4)
-     group by 1, 2
-),
-x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e4 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE', 'OPUS_BJAZ_HC_PART_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s5 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE where RECORD_SOURCE = 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' and record_source = 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS'
-),
-e5 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hlt_ensure_mem_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("PREVIOUS_SINCE_NOOF_YEARS"::varchar), ''))) as CONTINUITYINDICATOR,
-               to_varchar((nullif(trim("PREVIOUS_TO_DATE"::varchar), ''))) as PREVIOUSEXPIRYDATE,
-               to_varchar((nullif(trim("PREVIOUS_COMPANY_NAME"::varchar), ''))) as PREVIOUSINSURERNAME,
-               to_varchar((nullif(trim("PREV_POLICY_NO"::varchar), ''))) as PREVIOUSPOLICYNUMBER,
-               to_varchar((nullif(trim("PREVIOUS_SUM_INSURED"::varchar), ''))) as PREVIOUSSUMINSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HLT_ENSURE_MEM_DTLS
-      )
-     where hkey in (select hkey from s5) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n5 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
-     where RECORD_SOURCE = 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS' and PARTY_HKEY in (select hkey from s5)
-     group by 1, 2
-),
-x5 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.CONTINUITYINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSEXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSINSURERNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e5 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE', 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n5 n full outer join x5 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s6 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE where RECORD_SOURCE = 'OPUS_BJAZ_PA_DETL_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' and record_source = 'OPUS_BJAZ_PA_DETL_EXTN'
-),
-e6 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_pa_detl_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("FIRST_POLICY_REF"::varchar), ''))) as PREVIOUSPOLICYNUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_PA_DETL_EXTN
-      )
-     where hkey in (select hkey from s6) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n6 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
-     where RECORD_SOURCE = 'OPUS_BJAZ_PA_DETL_EXTN' and PARTY_HKEY in (select hkey from s6)
-     group by 1, 2
-),
-x6 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e6 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE', 'OPUS_BJAZ_PA_DETL_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n6 n full outer join x6 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s7 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE where RECORD_SOURCE = 'OPUS_BJAZ_SH_MEM_DTLS_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' and record_source = 'OPUS_BJAZ_SH_MEM_DTLS_EXTN'
-),
-e7 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_sh_mem_dtls_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("PREV_POLICY_DTLS"::varchar), ''))) as PREVIOUSPOLICYNUMBER,
-               to_varchar(("PREV_SUM_INSURED"::number)) as PREVIOUSSUMINSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SH_MEM_DTLS_EXTN
-      )
-     where hkey in (select hkey from s7) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n7 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
-     where RECORD_SOURCE = 'OPUS_BJAZ_SH_MEM_DTLS_EXTN' and PARTY_HKEY in (select hkey from s7)
-     group by 1, 2
-),
-x7 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e7 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE', 'OPUS_BJAZ_SH_MEM_DTLS_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n7 n full outer join x7 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s8 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE where RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE' and record_source = 'OPUS_BJAZ_SPP_MEMBER_DTLS'
-),
-e8 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_spp_member_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("PREV_POLICY_SINCE"::timestamp_ntz)) as CONTINUITYINDICATOR,
-               to_varchar((nullif(trim("CONCURRENT_POLICY_DETAILS"::varchar), ''))) as PREVIOUSPOLICYNUMBER,
-               to_varchar(("PREVIOUS_SI"::number)) as PREVIOUSSUMINSURED
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SPP_MEMBER_DTLS
-      )
-     where hkey in (select hkey from s8) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n8 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_VEHICLE_PRIOR_INSURANCE
-     where RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s8)
-     group by 1, 2
-),
-x8 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.CONTINUITYINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSPOLICYNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREVIOUSSUMINSURED AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e8 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_VEHICLE_PRIOR_INSURANCE', 'OPUS_BJAZ_SPP_MEMBER_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n8 n full outer join x8 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 36. OPUS — SAT_POLICY_BONUS_TRACKING   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- stitch_policy_bonus_tracking (7 tables) [2 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_POLICY_BONUS_TRACKING' as satellite, 'stitch_policy_bonus_tracking (7 tables)' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BONUSAMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CUMULATIVEBONUSPERCENTAGE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BONUSAMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CUMULATIVEBONUSPERCENTAGE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_BONUS_TRACKING
- where (regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HLT_ENSURE_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_PA_DETL_EXTN|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HLT_ENSURE_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_PA_DETL_EXTN|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$'));
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_BONUS_TRACKING where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HLT_ENSURE_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_PA_DETL_EXTN|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HLT_ENSURE_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_PA_DETL_EXTN|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$') order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_POLICY_BONUS_TRACKING' and record_source = 'stitch_policy_bonus_tracking (7 tables)'
-),
-g1_t0 as (  -- stitch source OPUS_BJAZ_EC_MEM_DTLS_EXTN
-    select distinct (nullif(trim("CONTRACT_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar(("PRE_POL_NCB_PER"::number))), '') as cumulativebonuspercentage,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_EC_MEM_DTLS_EXTN
-     where (nullif(trim("CONTRACT_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (((nullif(trim("CONTRACT_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t1 as (  -- stitch source OPUS_BJAZ_HCF_MEMBER_DTLS
-    select distinct (nullif(trim("CONTRACT_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar(("CUMULATIVE_AMT"::number))), '') as bonusamount,
-           nullif(trim(to_varchar(("CUMULATIVE_BNOUZ_PER"::number))), '') as cumulativebonuspercentage,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HCF_MEMBER_DTLS
-     where (nullif(trim("CONTRACT_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (((nullif(trim("CONTRACT_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t2 as (  -- stitch source OPUS_BJAZ_HLT_ENSURE_MEM_DTLS
-    select distinct (nullif(trim("CONTRACT_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("PREVIOUS_CUM_BONUS"::varchar), '')))), '') as bonusamount,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HLT_ENSURE_MEM_DTLS
-     where (nullif(trim("CONTRACT_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (((nullif(trim("CONTRACT_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t3 as (  -- stitch source OPUS_BJAZ_HM_MEMBER_DTLS
-    select distinct (nullif(trim("CONTRACT_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar(("BONUS_SI"::number))), '') as bonusamount,
-           nullif(trim(to_varchar(("CUMM_BONUS_PER"::number))), '') as cumulativebonuspercentage,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
-     where (nullif(trim("CONTRACT_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (((nullif(trim("CONTRACT_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t4 as (  -- stitch source OPUS_BJAZ_PA_DETL_EXTN
-    select distinct (nullif(trim("CONTRACT_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("CUMMULATIVE_BONUS"::varchar), '')))), '') as bonusamount,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_PA_DETL_EXTN
-     where (nullif(trim("CONTRACT_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (((nullif(trim("CONTRACT_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t5 as (  -- stitch source OPUS_BJAZ_SH_MEM_DTLS_EXTN
-    select distinct (nullif(trim("CONTRACT_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar(("CUMM_BONUS"::number))), '') as bonusamount,
-           nullif(trim(to_varchar(("CUMM_BONUS_PER"::number))), '') as cumulativebonuspercentage,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SH_MEM_DTLS_EXTN
-     where (nullif(trim("CONTRACT_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (((nullif(trim("CONTRACT_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t6 as (  -- stitch source OPUS_BJAZ_SPP_MEMBER_DTLS
-    select distinct (nullif(trim("CONTRACT_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar(("CUMULATIVE_AMT"::number))), '') as bonusamount,
-           nullif(trim(to_varchar(("CUMULATIVE_BNOUZ_PER"::number))), '') as cumulativebonuspercentage,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SPP_MEMBER_DTLS
-     where (nullif(trim("CONTRACT_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (((nullif(trim("CONTRACT_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-k1 as (
-    select parent_bk from g1_t0
-    union
-    select parent_bk from g1_t1
-    union
-    select parent_bk from g1_t2
-    union
-    select parent_bk from g1_t3
-    union
-    select parent_bk from g1_t4
-    union
-    select parent_bk from g1_t5
-    union
-    select parent_bk from g1_t6
-),
-st1 as (  -- stitch_policy_bonus_tracking recomputed from RAW (same coalesce / priority as the stitch macro)
-    select ak.parent_bk,
-           coalesce(g1_t1.bonusamount, g1_t2.bonusamount, g1_t3.bonusamount, g1_t4.bonusamount, g1_t5.bonusamount, g1_t6.bonusamount) as bonusamount,
-           coalesce(g1_t0.cumulativebonuspercentage, g1_t1.cumulativebonuspercentage, g1_t3.cumulativebonuspercentage, g1_t5.cumulativebonuspercentage, g1_t6.cumulativebonuspercentage) as cumulativebonuspercentage,
-           array_to_string(array_construct_compact(
-               case when g1_t0.parent_bk is not null then 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' end,
-               case when g1_t1.parent_bk is not null then 'OPUS_BJAZ_HCF_MEMBER_DTLS' end,
-               case when g1_t2.parent_bk is not null then 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS' end,
-               case when g1_t3.parent_bk is not null then 'OPUS_BJAZ_HM_MEMBER_DTLS' end,
-               case when g1_t4.parent_bk is not null then 'OPUS_BJAZ_PA_DETL_EXTN' end,
-               case when g1_t5.parent_bk is not null then 'OPUS_BJAZ_SH_MEM_DTLS_EXTN' end,
-               case when g1_t6.parent_bk is not null then 'OPUS_BJAZ_SPP_MEMBER_DTLS' end
-           ), ', ') as record_source,
-           greatest_ignore_nulls(g1_t0.inc_job_updated_at, g1_t1.inc_job_updated_at, g1_t2.inc_job_updated_at, g1_t3.inc_job_updated_at, g1_t4.inc_job_updated_at, g1_t5.inc_job_updated_at, g1_t6.inc_job_updated_at) as inc_job_updated_at
-      from k1 ak
-      left join g1_t0 on g1_t0.parent_bk = ak.parent_bk
-      left join g1_t1 on g1_t1.parent_bk = ak.parent_bk
-      left join g1_t2 on g1_t2.parent_bk = ak.parent_bk
-      left join g1_t3 on g1_t3.parent_bk = ak.parent_bk
-      left join g1_t4 on g1_t4.parent_bk = ak.parent_bk
-      left join g1_t5 on g1_t5.parent_bk = ak.parent_bk
-      left join g1_t6 on g1_t6.parent_bk = ak.parent_bk
-    qualify row_number() over (partition by ak.parent_bk order by g1_t0.cumulativebonuspercentage nulls last, g1_t1.bonusamount nulls last, g1_t1.cumulativebonuspercentage nulls last, g1_t2.bonusamount nulls last, g1_t3.bonusamount nulls last, g1_t3.cumulativebonuspercentage nulls last, g1_t4.bonusamount nulls last, g1_t5.bonusamount nulls last, g1_t5.cumulativebonuspercentage nulls last, g1_t6.bonusamount nulls last, g1_t6.cumulativebonuspercentage nulls last) = 1
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stitch_policy_bonus_tracking
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || st.parent_bk AS VARCHAR))), '')) as hkey,
-               st.inc_job_updated_at as ldts,
-               to_varchar(st.bonusamount) as BONUSAMOUNT,
-               to_varchar(st.cumulativebonuspercentage) as CUMULATIVEBONUSPERCENTAGE
-          from st1 st
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select POLICY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_BONUS_TRACKING
-     where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HLT_ENSURE_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_PA_DETL_EXTN|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HLT_ENSURE_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_PA_DETL_EXTN|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$') and POLICY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.BONUSAMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.CUMULATIVEBONUSPERCENTAGE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_BONUS_TRACKING', 'stitch_policy_bonus_tracking (7 tables)',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 37. OPUS — SAT_POLICY_CERTIFICATE   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK POLICY_HKEY; 3 RECORD_SOURCE group(s): OPUS_BA_HCP_DT_MEM [1
--- col(s)], OPUS_BJAZ_CTNGY_PA_MEM_DTLS [1 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [1 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_POLICY_CERTIFICATE' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(MEMBERSTATUS AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(MEMBERSTATUS AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE
- where (RECORD_SOURCE = 'OPUS_BA_HCP_DT_MEM') or (RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS')
-union all
-select 'OPUS' as project, 'SAT_POLICY_CERTIFICATE' as satellite, 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ENROLMENTDATE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ENROLMENTDATE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE
- where (RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE where RECORD_SOURCE = 'OPUS_BA_HCP_DT_MEM' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_POLICY_CERTIFICATE' and record_source = 'OPUS_BA_HCP_DT_MEM'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__ba_hcp_dt_mem
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim("CONTRACT_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("MEM_STATUS"::varchar), ''))) as MEMBERSTATUS
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_HCP_DT_MEM
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select POLICY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE
-     where RECORD_SOURCE = 'OPUS_BA_HCP_DT_MEM' and POLICY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MEMBERSTATUS AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_CERTIFICATE', 'OPUS_BA_HCP_DT_MEM',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_POLICY_CERTIFICATE' and record_source = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_ctngy_pa_mem_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim("CONTRACT_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("PM_POL_ENROLMENT_DATE"::timestamp_ntz)) as ENROLMENTDATE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_PA_MEM_DTLS
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select POLICY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE
-     where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' and POLICY_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.ENROLMENTDATE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_CERTIFICATE', 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_POLICY_CERTIFICATE' and record_source = 'OPUS_BJAZ_HM_MEMBER_DTLS'
-),
-e3 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hm_member_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim("CONTRACT_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("MEMBER_STATUS"::varchar), ''))) as MEMBERSTATUS
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
-      )
-     where hkey in (select hkey from s3) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n3 as (  -- satellite history per sampled key
-    select POLICY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CERTIFICATE
-     where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' and POLICY_HKEY in (select hkey from s3)
-     group by 1, 2
-),
-x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MEMBERSTATUS AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e3 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_CERTIFICATE', 'OPUS_BJAZ_HM_MEMBER_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 38. OPUS — SAT_POLICY_CLASSIFICATION [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- ma_sat_multi_source; PK POLICY_HKEY, child key CLASSIFICATIONTYPE; 4 RECORD_SOURCE
--- group(s): OPUS_BJAZ_T_KYC_DETAILS [1 col(s)], OPUS_BJAZ_T_KYC_INCOMING [1 col(s)],
--- OPUS_BJAZ_T_KYC_POA_DOCUMENT [1 col(s)], OPUS_BJAZ_T_KYC_POI_DOCUMENT [1 col(s)].
--- Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, '4 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CLASSIFICATIONVALUE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CLASSIFICATIONVALUE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
- where (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_DETAILS') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_DETAILS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_POLICY_CLASSIFICATION' and record_source = 'OPUS_BJAZ_T_KYC_DETAILS'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_details
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (upper(case when upper(trim((nullif(trim("FIELD_TYPE"::varchar), '')))) like 'POLICY%' then trim((nullif(trim("FIELD_VALUE"::varchar), ''))) end)) AS VARCHAR))), '')) as hkey,
-               to_varchar('BUSINESS_TYPE') as cdk_1,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("BUSINESS_TYPE"::varchar), ''))) as CLASSIFICATIONVALUE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_DETAILS
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select POLICY_HKEY as hkey, coalesce(to_varchar(CLASSIFICATIONTYPE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_DETAILS' and POLICY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, coalesce(e.cdk_1, '^^') as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.CLASSIFICATIONVALUE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_CLASSIFICATION', 'OPUS_BJAZ_T_KYC_DETAILS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_POLICY_CLASSIFICATION' and record_source = 'OPUS_BJAZ_T_KYC_INCOMING'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_incoming
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (case when upper(trim((nullif(trim("FIELD_TYPE"::varchar), '')))) like 'POLICY%' then trim((nullif(trim("FIELD_VALUE"::varchar), ''))) end) AS VARCHAR))), '')) as hkey,
-               to_varchar('BUSINESS_TYPE') as cdk_1,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("BUSINESS_TYPE"::varchar), ''))) as CLASSIFICATIONVALUE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_INCOMING
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select POLICY_HKEY as hkey, coalesce(to_varchar(CLASSIFICATIONTYPE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING' and POLICY_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, coalesce(e.cdk_1, '^^') as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.CLASSIFICATIONVALUE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_CLASSIFICATION', 'OPUS_BJAZ_T_KYC_INCOMING',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_POLICY_CLASSIFICATION' and record_source = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT'
-),
-e3 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_poa_document
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (upper(case when upper(trim((nullif(trim("FIELD_TYPE"::varchar), '')))) like 'POLICY%' then trim((nullif(trim("FIELD_VALUE"::varchar), ''))) end)) AS VARCHAR))), '')) as hkey,
-               to_varchar('BUSINESS_TYPE') as cdk_1,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("BUSINESS_TYPE"::varchar), ''))) as CLASSIFICATIONVALUE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_POA_DOCUMENT
-      )
-     where hkey in (select hkey from s3) and ldts is not null
-    qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
-),
-n3 as (  -- satellite history per sampled key
-    select POLICY_HKEY as hkey, coalesce(to_varchar(CLASSIFICATIONTYPE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT' and POLICY_HKEY in (select hkey from s3)
-     group by 1, 2
-),
-x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, coalesce(e.cdk_1, '^^') as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.CLASSIFICATIONVALUE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e3 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_CLASSIFICATION', 'OPUS_BJAZ_T_KYC_POA_DOCUMENT',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_POLICY_CLASSIFICATION' and record_source = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT'
-),
-e4 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_poi_document
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (upper(case when upper(trim((nullif(trim("FIELD_TYPE"::varchar), '')))) like 'POLICY%' then trim((nullif(trim("FIELD_VALUE"::varchar), ''))) end)) AS VARCHAR))), '')) as hkey,
-               to_varchar('BUSINESS_TYPE') as cdk_1,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("BUSINESS_TYPE"::varchar), ''))) as CLASSIFICATIONVALUE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_POI_DOCUMENT
-      )
-     where hkey in (select hkey from s4) and ldts is not null
-    qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
-),
-n4 as (  -- satellite history per sampled key
-    select POLICY_HKEY as hkey, coalesce(to_varchar(CLASSIFICATIONTYPE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT' and POLICY_HKEY in (select hkey from s4)
-     group by 1, 2
-),
-x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, coalesce(e.cdk_1, '^^') as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.CLASSIFICATIONVALUE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e4 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_CLASSIFICATION', 'OPUS_BJAZ_T_KYC_POI_DOCUMENT',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 39. OPUS — SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BA_HCP_DT_MEM [1
--- col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_POLICY_COVERAGE_SCHEDULE' as satellite, 'OPUS_BA_HCP_DT_MEM' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(COVERAGESEQUENCE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(COVERAGESEQUENCE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_COVERAGE_SCHEDULE
- where (RECORD_SOURCE = 'OPUS_BA_HCP_DT_MEM');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_COVERAGE_SCHEDULE where RECORD_SOURCE = 'OPUS_BA_HCP_DT_MEM' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_POLICY_COVERAGE_SCHEDULE' and record_source = 'OPUS_BA_HCP_DT_MEM'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__ba_hcp_dt_mem
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim("CONTRACT_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("MEM_SEQNO"::number)) as COVERAGESEQUENCE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_HCP_DT_MEM
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select POLICY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_COVERAGE_SCHEDULE
-     where RECORD_SOURCE = 'OPUS_BA_HCP_DT_MEM' and POLICY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.COVERAGESEQUENCE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_COVERAGE_SCHEDULE', 'OPUS_BA_HCP_DT_MEM',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 40. OPUS — SAT_POLICY_ENDORSEMENT   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_HM_MEMBER_DTLS [1
--- col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_POLICY_ENDORSEMENT' as satellite, 'OPUS_BJAZ_HM_MEMBER_DTLS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ENDORSEMENTNUMBER AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ENDORSEMENTNUMBER AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_ENDORSEMENT
- where (RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_ENDORSEMENT where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_POLICY_ENDORSEMENT' and record_source = 'OPUS_BJAZ_HM_MEMBER_DTLS'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hm_member_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim("CONTRACT_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ENDORSEMENT_NO"::varchar), ''))) as ENDORSEMENTNUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select POLICY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_ENDORSEMENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' and POLICY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.ENDORSEMENTNUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_ENDORSEMENT', 'OPUS_BJAZ_HM_MEMBER_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 41. OPUS — SAT_POLICY_HEADER [Partner LOB]   [Implemented]
+-- 12. OPUS — [M1 | stitch_incremental] SAT_POLICY_HEADER   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -6350,2402 +3126,66 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_HEADER', 'stitch_policy_heade
 
 
 ----------------------------------------------------------------------------------------
--- 42. OPUS — SAT_POLICY_PREMIUM_HEAD   [Implemented]
+-- 13. OPUS — [M2 | automate_dv.ma_sat] SAT_LNK_POLICY_PARTY_ROLE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK POLICY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_HCF_MEMBER_DTLS
--- [1 col(s)], OPUS_BJAZ_STARPKG_FF_DTLS [1 col(s)].
+-- automate_dv.ma_sat; PK POLICY_PARTY_HKEY, child key ROLE_SEQUENCE; 1 RECORD_SOURCE
+-- group(s): OPUS_OCP_INTERESTED_PARTIES [1 col(s)]. Multi-active: compared per (key,
+-- child key); latest = max LOAD_DATETIME per member.
 ----------------------------------------------------------------------------------------
 -- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_POLICY_PREMIUM_HEAD' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
+select 'OPUS' as project, 'SAT_LNK_POLICY_PARTY_ROLE' as satellite, 'OPUS_OCP_INTERESTED_PARTIES' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(BASEAMOUNT AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(BASEAMOUNT AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ROLE_SEQUENCE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ROLE_SEQUENCE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_PARTY_HKEY, 'HEX'), null)) within group (order by POLICY_PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_HEAD
- where (RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_STARPKG_FF_DTLS');
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_POLICY_PARTY_ROLE
+ where (RECORD_SOURCE = 'OPUS_OCP_INTERESTED_PARTIES');
 
 -- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
 insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
 with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
     select hkey from (
-        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_HEAD where RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS' order by hkey limit 100
+        select distinct POLICY_PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_POLICY_PARTY_ROLE where RECORD_SOURCE = 'OPUS_OCP_INTERESTED_PARTIES' order by hkey limit 100
     ) where $DM_H_PHASE = 'BEFORE'
     union
     select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
      where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_POLICY_PREMIUM_HEAD' and record_source = 'OPUS_BJAZ_HCF_MEMBER_DTLS'
+       and satellite = 'SAT_LNK_POLICY_PARTY_ROLE' and record_source = 'OPUS_OCP_INTERESTED_PARTIES'
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_partner__bjaz_hcf_member_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim("CONTRACT_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+        -- via stg_partner__ocp_interested_parties
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (nullif(trim("PARTNER_ID"::varchar), '')) || '|' || (nullif(trim("CONTRACT_ID"::varchar), '')) AS VARCHAR))), '')) as hkey,
+               to_varchar(("IP_NO"::number)) as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("FLOAT_PREMIUM"::number)) as BASEAMOUNT
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HCF_MEMBER_DTLS
+               to_varchar(("IP_NO"::number)) as ROLE_SEQUENCE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.OCP_INTERESTED_PARTIES
       )
      where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
+    qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
 ),
 n1 as (  -- satellite history per sampled key
-    select POLICY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_HEAD
-     where RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS' and POLICY_HKEY in (select hkey from s1)
+    select POLICY_PARTY_HKEY as hkey, coalesce(to_varchar(ROLE_SEQUENCE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_POLICY_PARTY_ROLE
+     where RECORD_SOURCE = 'OPUS_OCP_INTERESTED_PARTIES' and POLICY_PARTY_HKEY in (select hkey from s1)
      group by 1, 2
 ),
 x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.BASEAMOUNT AS VARCHAR))), ''), '^^'))) as raw_hash
+    select e.hkey, coalesce(e.cdk_1, '^^') as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.ROLE_SEQUENCE AS VARCHAR))), ''), '^^'))) as raw_hash
       from e1 e group by 1, 2
 )
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_PREMIUM_HEAD', 'OPUS_BJAZ_HCF_MEMBER_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_HEAD where RECORD_SOURCE = 'OPUS_BJAZ_STARPKG_FF_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_POLICY_PREMIUM_HEAD' and record_source = 'OPUS_BJAZ_STARPKG_FF_DTLS'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_starpkg_ff_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim("CONTRACT_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("FF_PREMIUM"::number)) as BASEAMOUNT
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_STARPKG_FF_DTLS
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select POLICY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_HEAD
-     where RECORD_SOURCE = 'OPUS_BJAZ_STARPKG_FF_DTLS' and POLICY_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.BASEAMOUNT AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_PREMIUM_HEAD', 'OPUS_BJAZ_STARPKG_FF_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 43. OPUS — SAT_POLICY_PREMIUM_SUMMARY [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK POLICY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_T_KYC_INCOMING
--- [0 col(s)], OPUS_BJAZ_T_KYC_OCR [1 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_POLICY_PREMIUM_SUMMARY' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(GROSSPREMIUM AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(GROSSPREMIUM AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_SUMMARY
- where (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_OCR');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_SUMMARY where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_OCR' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_POLICY_PREMIUM_SUMMARY' and record_source = 'OPUS_BJAZ_T_KYC_OCR'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_ocr
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (case when upper(trim((nullif(trim("FIELD_TYPE"::varchar), '')))) like 'POLICY%' then trim((nullif(trim("FIELD_VALUE"::varchar), ''))) end) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar(("PREMIUM_AMOUNT"::number)) as GROSSPREMIUM
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_OCR
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select POLICY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_SUMMARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_OCR' and POLICY_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.GROSSPREMIUM AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_PREMIUM_SUMMARY', 'OPUS_BJAZ_T_KYC_OCR',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 44. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK PRODUCT_HKEY; 1 RECORD_SOURCE group(s): stitch_product_definition
--- (3 tables) [3 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'stitch_product_definition (3 tables)' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCTCATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCTGENERATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCTNAME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCTCATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCTGENERATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCTNAME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PRODUCT_HKEY, 'HEX'), null)) within group (order by PRODUCT_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
- where (regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_CTNGY_FF_DTLS_EXTN|OPUS_BJAZ_CTNGY_PA_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS)(, (OPUS_BJAZ_CTNGY_FF_DTLS_EXTN|OPUS_BJAZ_CTNGY_PA_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS))*$'));
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_CTNGY_FF_DTLS_EXTN|OPUS_BJAZ_CTNGY_PA_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS)(, (OPUS_BJAZ_CTNGY_FF_DTLS_EXTN|OPUS_BJAZ_CTNGY_PA_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS))*$') order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PRODUCT_DEFINITION' and record_source = 'stitch_product_definition (3 tables)'
-),
-g1_t0 as (  -- stitch source OPUS_BJAZ_CTNGY_FF_DTLS_EXTN
-    select distinct (nullif(trim("SCHEME_CODE"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar(("SECTION_CODE"::number))), '') as productcategory,
-           nullif(trim(to_varchar(("SCHEME_VERSION"::number))), '') as productgeneration,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_FF_DTLS_EXTN
-     where (nullif(trim("SCHEME_CODE"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (((nullif(trim("SCHEME_CODE"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t1 as (  -- stitch source OPUS_BJAZ_CTNGY_PA_MEM_DTLS
-    select distinct (nullif(trim("SCHEME_CODE"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar(("SECTION_CODE"::number))), '') as productcategory,
-           nullif(trim(to_varchar(("SCHEME_VERSION"::number))), '') as productgeneration,
-           nullif(trim(to_varchar((nullif(trim("PLAN"::varchar), '')))), '') as productname,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_PA_MEM_DTLS
-     where (nullif(trim("SCHEME_CODE"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (((nullif(trim("SCHEME_CODE"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t2 as (  -- stitch source OPUS_BJAZ_HM_MEMBER_DTLS
-    select distinct (nullif(trim("PRODUCT_CODE"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("PLAN_NAME"::varchar), '')))), '') as productname,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
-     where (nullif(trim("PRODUCT_CODE"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (((nullif(trim("PRODUCT_CODE"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-k1 as (
-    select parent_bk from g1_t0
-    union
-    select parent_bk from g1_t1
-    union
-    select parent_bk from g1_t2
-),
-st1 as (  -- stitch_product_definition recomputed from RAW (same coalesce / priority as the stitch macro)
-    select ak.parent_bk,
-           coalesce(g1_t0.productcategory, g1_t1.productcategory) as productcategory,
-           coalesce(g1_t0.productgeneration, g1_t1.productgeneration) as productgeneration,
-           coalesce(g1_t1.productname, g1_t2.productname) as productname,
-           array_to_string(array_construct_compact(
-               case when g1_t0.parent_bk is not null then 'OPUS_BJAZ_CTNGY_FF_DTLS_EXTN' end,
-               case when g1_t1.parent_bk is not null then 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' end,
-               case when g1_t2.parent_bk is not null then 'OPUS_BJAZ_HM_MEMBER_DTLS' end
-           ), ', ') as record_source,
-           greatest_ignore_nulls(g1_t0.inc_job_updated_at, g1_t1.inc_job_updated_at, g1_t2.inc_job_updated_at) as inc_job_updated_at
-      from k1 ak
-      left join g1_t0 on g1_t0.parent_bk = ak.parent_bk
-      left join g1_t1 on g1_t1.parent_bk = ak.parent_bk
-      left join g1_t2 on g1_t2.parent_bk = ak.parent_bk
-    qualify row_number() over (partition by ak.parent_bk order by g1_t0.productcategory nulls last, g1_t0.productgeneration nulls last, g1_t1.productcategory nulls last, g1_t1.productgeneration nulls last, g1_t1.productname nulls last, g1_t2.productname nulls last) = 1
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stitch_product_definition
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || st.parent_bk AS VARCHAR))), '')) as hkey,
-               st.inc_job_updated_at as ldts,
-               to_varchar(st.productcategory) as PRODUCTCATEGORY,
-               to_varchar(st.productgeneration) as PRODUCTGENERATION,
-               to_varchar(st.productname) as PRODUCTNAME
-          from st1 st
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PRODUCT_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-     where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_CTNGY_FF_DTLS_EXTN|OPUS_BJAZ_CTNGY_PA_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS)(, (OPUS_BJAZ_CTNGY_FF_DTLS_EXTN|OPUS_BJAZ_CTNGY_PA_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS))*$') and PRODUCT_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.PRODUCTCATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PRODUCTGENERATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PRODUCTNAME AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PRODUCT_DEFINITION', 'stitch_product_definition (3 tables)',
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_POLICY_PARTY_ROLE', 'OPUS_OCP_INTERESTED_PARTIES',
        coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
   from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
 
 
 
 ----------------------------------------------------------------------------------------
--- 45. OPUS — SAT_PROVIDER_BANKING [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): stitch_provider_banking (2
--- tables) [2 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_PROVIDER_BANKING' as satellite, 'stitch_provider_banking (2 tables)' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(GSTREGISTRATIONNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TCSSTATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(GSTREGISTRATIONNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TCSSTATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROVIDER_BANKING
- where (regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_BJAZ_HM_HOSPITAL_MASTER)(, (OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_BJAZ_HM_HOSPITAL_MASTER))*$'));
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROVIDER_BANKING where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_BJAZ_HM_HOSPITAL_MASTER)(, (OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_BJAZ_HM_HOSPITAL_MASTER))*$') order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PROVIDER_BANKING' and record_source = 'stitch_provider_banking (2 tables)'
-),
-g1_t0 as (  -- stitch source OPUS_BJAZ_CLM_SUPP_EXTN
-    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("TCS_STATUS"::varchar), '')))), '') as tcsstatus,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
-     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-g1_t1 as (  -- stitch source OPUS_BJAZ_HM_HOSPITAL_MASTER
-    select distinct (nullif(trim("HOSID"::varchar), '')) as parent_bk,
-           nullif(trim(to_varchar((nullif(trim("STAX_REG_NO"::varchar), '')))), '') as gstregistrationnumber,
-           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
-      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_HOSPITAL_MASTER
-     where (nullif(trim("HOSID"::varchar), '')) is not null
-       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("HOSID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
-),
-k1 as (
-    select parent_bk from g1_t0
-    union
-    select parent_bk from g1_t1
-),
-st1 as (  -- stitch_provider_banking recomputed from RAW (same coalesce / priority as the stitch macro)
-    select ak.parent_bk,
-           g1_t1.gstregistrationnumber as gstregistrationnumber,
-           g1_t0.tcsstatus as tcsstatus,
-           array_to_string(array_construct_compact(
-               case when g1_t0.parent_bk is not null then 'OPUS_BJAZ_CLM_SUPP_EXTN' end,
-               case when g1_t1.parent_bk is not null then 'OPUS_BJAZ_HM_HOSPITAL_MASTER' end
-           ), ', ') as record_source,
-           greatest_ignore_nulls(g1_t0.inc_job_updated_at, g1_t1.inc_job_updated_at) as inc_job_updated_at
-      from k1 ak
-      left join g1_t0 on g1_t0.parent_bk = ak.parent_bk
-      left join g1_t1 on g1_t1.parent_bk = ak.parent_bk
-    qualify row_number() over (partition by ak.parent_bk order by g1_t0.tcsstatus nulls last, g1_t1.gstregistrationnumber nulls last) = 1
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stitch_provider_banking
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || st.parent_bk AS VARCHAR))), '')) as hkey,
-               st.inc_job_updated_at as ldts,
-               to_varchar(st.gstregistrationnumber) as GSTREGISTRATIONNUMBER,
-               to_varchar(st.tcsstatus) as TCSSTATUS
-          from st1 st
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROVIDER_BANKING
-     where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_BJAZ_HM_HOSPITAL_MASTER)(, (OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_BJAZ_HM_HOSPITAL_MASTER))*$') and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.GSTREGISTRATIONNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.TCSSTATUS AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PROVIDER_BANKING', 'stitch_provider_banking (2 tables)',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 46. OPUS — SAT_PROVIDER_TARIFF [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_HM_HOSPITAL_MASTER
--- [4 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_PROVIDER_TARIFF' as satellite, 'OPUS_BJAZ_HM_HOSPITAL_MASTER' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DISCOUNTPERCENTAGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EFFECTIVEDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TARIFFRATE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DISCOUNTPERCENTAGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EFFECTIVEDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TARIFFRATE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROVIDER_TARIFF
- where (RECORD_SOURCE = 'OPUS_BJAZ_HM_HOSPITAL_MASTER');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROVIDER_TARIFF where RECORD_SOURCE = 'OPUS_BJAZ_HM_HOSPITAL_MASTER' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_PROVIDER_TARIFF' and record_source = 'OPUS_BJAZ_HM_HOSPITAL_MASTER'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hm_hospital_master
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("HOSID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("IMPS_DISCNT_ON"::varchar), ''))) as DISCOUNTPERCENTAGE,
-               to_varchar(("IMPS_TARIF_FRM"::timestamp_ntz)) as EFFECTIVEDATE,
-               to_varchar(("IMPS_TARIF_TO"::timestamp_ntz)) as EXPIRYDATE,
-               to_varchar(("IMPS_PAYMENT_LMT"::number)) as TARIFFRATE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_HOSPITAL_MASTER
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROVIDER_TARIFF
-     where RECORD_SOURCE = 'OPUS_BJAZ_HM_HOSPITAL_MASTER' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.DISCOUNTPERCENTAGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EFFECTIVEDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EXPIRYDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.TARIFFRATE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PROVIDER_TARIFF', 'OPUS_BJAZ_HM_HOSPITAL_MASTER',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 47. OPUS — SAT_AUG_AFFINITY_MEMBERSHIP   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [2
--- col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_AUG_AFFINITY_MEMBERSHIP' as satellite, 'OPUS_AZBJ_PARTNER_EXTN' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(AA_MEMBERSHIP_EXPIRY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(AA_MEMBERSHIP_NUMBER AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(AA_MEMBERSHIP_EXPIRY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(AA_MEMBERSHIP_NUMBER AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_AFFINITY_MEMBERSHIP
- where (RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_AFFINITY_MEMBERSHIP where RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_AFFINITY_MEMBERSHIP' and record_source = 'OPUS_AZBJ_PARTNER_EXTN'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__azbj_partner_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("AA_MEMBERSHIP_NUMBER"::varchar), ''))) as AA_MEMBERSHIP_NUMBER,
-               to_varchar(("AA_MEMBERSHIP_EXPIRY_DATE"::timestamp_ntz)) as AA_MEMBERSHIP_EXPIRY_DATE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.AZBJ_PARTNER_EXTN
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_AFFINITY_MEMBERSHIP
-     where RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.AA_MEMBERSHIP_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.AA_MEMBERSHIP_EXPIRY_DATE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_AFFINITY_MEMBERSHIP', 'OPUS_AZBJ_PARTNER_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 48. OPUS — SAT_AUG_AGREEMENT   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK AGREEMENT_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY
--- [1 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_AUG_AGREEMENT' as satellite, 'OPUS_BJAZ_INTERMEDIARY' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(AGREEMENT_NATURE_OTHER_DETAIL AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(AGREEMENT_NATURE_OTHER_DETAIL AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(AGREEMENT_HKEY, 'HEX'), null)) within group (order by AGREEMENT_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_AGREEMENT
- where (RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct AGREEMENT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_AGREEMENT where RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_AGREEMENT' and record_source = 'OPUS_BJAZ_INTERMEDIARY'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_intermediary
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_AGREEMENT|' || ((nullif(trim("INTERMEDIARY_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("NATURE_OF_AGREEMENT_OTHER"::varchar), ''))) as AGREEMENT_NATURE_OTHER_DETAIL
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_INTERMEDIARY
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select AGREEMENT_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_AGREEMENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY' and AGREEMENT_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.AGREEMENT_NATURE_OTHER_DETAIL AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_AGREEMENT', 'OPUS_BJAZ_INTERMEDIARY',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 49. OPUS — SAT_AUG_CHANNEL   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- sat_multi_source; PK DISTRIBUTION_CHANNEL_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_INTERMEDIARY [8 col(s)], OPUS_BJAZ_CLM_SUPP_EXTN [1 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_AUG_CHANNEL' as satellite, 'OPUS_BJAZ_INTERMEDIARY' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BLOCKED_FOR_RECEIPT_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FINANCE_SUB_CHANNEL_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GREEN_CHANNEL_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IMDFLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NEW_IMD_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REVISED_CHANNEL_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_INTERMEDIARY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SUBIMD_YN AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BLOCKED_FOR_RECEIPT_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FINANCE_SUB_CHANNEL_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GREEN_CHANNEL_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IMDFLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NEW_IMD_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REVISED_CHANNEL_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_INTERMEDIARY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SUBIMD_YN AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(DISTRIBUTION_CHANNEL_HKEY, 'HEX'), null)) within group (order by DISTRIBUTION_CHANNEL_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CHANNEL
- where (RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY')
-union all
-select 'OPUS' as project, 'SAT_AUG_CHANNEL' as satellite, 'OPUS_BJAZ_CLM_SUPP_EXTN' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(SUB_IMD_CODE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(SUB_IMD_CODE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(DISTRIBUTION_CHANNEL_HKEY, 'HEX'), null)) within group (order by DISTRIBUTION_CHANNEL_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CHANNEL
- where (RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct DISTRIBUTION_CHANNEL_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CHANNEL where RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_CHANNEL' and record_source = 'OPUS_BJAZ_INTERMEDIARY'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_intermediary
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || ((nullif(trim("INTERMEDIARY_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("BLOCK_FOR_RECEIPT"::varchar), ''))) as BLOCKED_FOR_RECEIPT_INDICATOR,
-               to_varchar((nullif(trim("FIN_SUB_CHANNEL_CODE"::varchar), ''))) as FINANCE_SUB_CHANNEL_CODE,
-               to_varchar((nullif(trim("GREEN_CHANNEL_IMD"::varchar), ''))) as GREEN_CHANNEL_INDICATOR,
-               to_varchar((nullif(trim("IMDFLAG"::varchar), ''))) as IMDFLAG,
-               to_varchar((nullif(trim("NEW_IMD_TYPE"::varchar), ''))) as NEW_IMD_TYPE,
-               to_varchar((nullif(trim("NEW_BC"::varchar), ''))) as REVISED_CHANNEL_CODE,
-               to_varchar((nullif(trim("SPL_INTER_CODE"::varchar), ''))) as SPECIAL_INTERMEDIARY_CODE,
-               to_varchar((nullif(trim("SUBIMD_YN"::varchar), ''))) as SUBIMD_YN
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_INTERMEDIARY
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select DISTRIBUTION_CHANNEL_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CHANNEL
-     where RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY' and DISTRIBUTION_CHANNEL_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.BLOCKED_FOR_RECEIPT_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.FINANCE_SUB_CHANNEL_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.GREEN_CHANNEL_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.IMDFLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.NEW_IMD_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.REVISED_CHANNEL_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.SPECIAL_INTERMEDIARY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.SUBIMD_YN AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_CHANNEL', 'OPUS_BJAZ_INTERMEDIARY',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct DISTRIBUTION_CHANNEL_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CHANNEL where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_CHANNEL' and record_source = 'OPUS_BJAZ_CLM_SUPP_EXTN'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_clm_supp_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || ((nullif(trim("IMD_CODE"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("SUB_IMD_CODE"::varchar), ''))) as SUB_IMD_CODE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select DISTRIBUTION_CHANNEL_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CHANNEL
-     where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' and DISTRIBUTION_CHANNEL_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.SUB_IMD_CODE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_CHANNEL', 'OPUS_BJAZ_CLM_SUPP_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 50. OPUS — SAT_AUG_KYC_DOCUMENT   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- sat_multi_source; PK DOCUMENT_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_T_KYC_POA_DOCUMENT [1 col(s)], OPUS_BJAZ_T_KYC_POI_DOCUMENT [1 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_AUG_KYC_DOCUMENT' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_RESPONSE_MESSAGE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_RESPONSE_MESSAGE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(DOCUMENT_HKEY, 'HEX'), null)) within group (order by DOCUMENT_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_DOCUMENT
- where (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct DOCUMENT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_DOCUMENT where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_DOCUMENT' and record_source = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_poa_document
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (upper(trim(coalesce((nullif(trim("DOCS_TYPE"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("DOCS_NUMBER"::varchar), '')),'')))) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("RESPONSE_MESSAGE"::varchar), ''))) as VERIFICATION_RESPONSE_MESSAGE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_POA_DOCUMENT
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select DOCUMENT_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_DOCUMENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT' and DOCUMENT_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RESPONSE_MESSAGE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_DOCUMENT', 'OPUS_BJAZ_T_KYC_POA_DOCUMENT',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct DOCUMENT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_DOCUMENT where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_DOCUMENT' and record_source = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_poi_document
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (upper(trim(coalesce((nullif(trim("DOCS_TYPE"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("DOCS_NUMBER"::varchar), '')),'')))) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("RESPONSE_MESSAGE"::varchar), ''))) as VERIFICATION_RESPONSE_MESSAGE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_POI_DOCUMENT
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select DOCUMENT_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_DOCUMENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT' and DOCUMENT_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RESPONSE_MESSAGE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_DOCUMENT', 'OPUS_BJAZ_T_KYC_POI_DOCUMENT',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 51. OPUS — SAT_AUG_KYC_LOCATION   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- sat_multi_source; PK LOCATION_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_M_KYC_VOTER [1
--- col(s)], OPUS_BJAZ_T_EKYC [1 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_AUG_KYC_LOCATION' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ELECTORAL_ROLL_PART_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FULL_ADDRESS_TEXT AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ELECTORAL_ROLL_PART_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FULL_ADDRESS_TEXT AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(LOCATION_HKEY, 'HEX'), null)) within group (order by LOCATION_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_LOCATION
- where (RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_VOTER') or (RECORD_SOURCE = 'OPUS_BJAZ_T_EKYC');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct LOCATION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_LOCATION where RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_VOTER' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_LOCATION' and record_source = 'OPUS_BJAZ_M_KYC_VOTER'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_m_kyc_voter
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (coalesce(nullif(upper(trim(to_varchar((nullif(trim("PART_NAME"::varchar), ''))))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar((nullif(trim("DISTRICT"::varchar), ''))))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar((nullif(trim("STATE"::varchar), ''))))), ''), '')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("PART_NAME"::varchar), ''))) as ELECTORAL_ROLL_PART_NAME
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_M_KYC_VOTER
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select LOCATION_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_LOCATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_VOTER' and LOCATION_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.ELECTORAL_ROLL_PART_NAME AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_LOCATION', 'OPUS_BJAZ_M_KYC_VOTER',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct LOCATION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_LOCATION where RECORD_SOURCE = 'OPUS_BJAZ_T_EKYC' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_LOCATION' and record_source = 'OPUS_BJAZ_T_EKYC'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_ekyc
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (coalesce(nullif(upper(trim(to_varchar((nullif(trim("HOUSE_NUMBER"::varchar), ''))))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar((nullif(trim("STREET"::varchar), ''))))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar((nullif(trim("LANDMARK"::varchar), ''))))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar((nullif(trim("LOCATION"::varchar), ''))))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar((nullif(trim("POST_OFFICE"::varchar), ''))))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar((nullif(trim("SUB_DISTRICT"::varchar), ''))))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar((nullif(trim("VTC_NAME"::varchar), ''))))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar((nullif(trim("DISTRICT"::varchar), ''))))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar((nullif(trim("STATE"::varchar), ''))))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar((nullif(trim("COUNTRY"::varchar), ''))))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar((nullif(trim("PIN_CODE"::varchar), ''))))), ''), '')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("COMBINE_ADDRESS"::varchar), ''))) as FULL_ADDRESS_TEXT
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_EKYC
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select LOCATION_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_LOCATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_EKYC' and LOCATION_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.FULL_ADDRESS_TEXT AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_LOCATION', 'OPUS_BJAZ_T_EKYC',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 52. OPUS — SAT_AUG_KYC_PARTY   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- sat_multi_source; PK PARTY_HKEY; 13 RECORD_SOURCE group(s):
--- OPUS_BJAZ_M_KYC_DRIVING_LICENCE [6 col(s)], OPUS_BJAZ_M_KYC_GSTN [3 col(s)],
--- OPUS_BJAZ_M_KYC_PAN [2 col(s)], OPUS_BJAZ_M_KYC_PASSPORT [5 col(s)],
--- OPUS_BJAZ_M_KYC_VOTER [5 col(s)], OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [4 col(s)],
--- OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS [1 col(s)], OPUS_BJAZ_T_CKYC_SEARCH [7 col(s)],
--- OPUS_BJAZ_T_EKYC [5 col(s)], OPUS_BJAZ_T_KYC_AUTH [6 col(s)], OPUS_BJAZ_T_KYC_DETAILS
--- [2 col(s)], OPUS_BJAZ_T_KYC_NAME_MATCH [4 col(s)], OPUS_BJAZ_T_KYC_OCR [3 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_AUG_KYC_PARTY' as satellite, '13 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CONSENT_PLACE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_IMAGE_COUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ENTITY_LEGAL_FORM_OTHER_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FATHER_FIRST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FATHER_LAST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FATHER_MIDDLE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FATHER_NAME_SALUTATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FATHER_OR_SPOUSE_NAME_TYPE_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IDENTIFICATION_APPLICATION_RECEIVED_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IDENTIFICATION_APPLICATION_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IDENTIFICATION_ISSUING_COUNTRY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IDENTIFICATION_REGISTRY_LAST_UPDATED_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IN_PERSON_VERIFICATION_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ISD_COUNTRY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_DEACTIVATION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_DEACTIVATION_REASON AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_DECLARATION_PLACE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_VERSION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOCAL_ADDRESS_RECORD_COUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MAIDEN_FIRST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MAIDEN_LAST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MAIDEN_MIDDLE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MAIDEN_NAME_SALUTATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MOTHER_FIRST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MOTHER_LAST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MOTHER_MIDDLE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MOTHER_NAME_SALUTATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_HOLDER_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PERFORM_KYC_VERIFICATION_CONSENT_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RELATED_PERSON_COUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RELATIVE_OR_GUARDIAN_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ROLE_DESCRIPTION_OTHERS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(USE_POA_NAME_AS_POLICY_NAME_CONSENT_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(USE_POI_NAME_AS_POLICY_NAME_CONSENT_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_MATCH_SCORE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_REQUESTED_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_RESPONSE_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_RESPONSE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_RESPONSE_MESSAGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_RESULT_VALID_UNTIL_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_RETURNED_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_AGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_CITIZENSHIP AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_DATE_OF_BIRTH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_FATHER_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_FULL_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_GENDER_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_GIVEN_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_LEGAL_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_RELATIVE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_SURNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_TRADE_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CONSENT_PLACE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_IMAGE_COUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ENTITY_LEGAL_FORM_OTHER_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FATHER_FIRST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FATHER_LAST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FATHER_MIDDLE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FATHER_NAME_SALUTATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FATHER_OR_SPOUSE_NAME_TYPE_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IDENTIFICATION_APPLICATION_RECEIVED_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IDENTIFICATION_APPLICATION_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IDENTIFICATION_ISSUING_COUNTRY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IDENTIFICATION_REGISTRY_LAST_UPDATED_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IN_PERSON_VERIFICATION_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ISD_COUNTRY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_DEACTIVATION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_DEACTIVATION_REASON AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_DECLARATION_PLACE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_VERSION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOCAL_ADDRESS_RECORD_COUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MAIDEN_FIRST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MAIDEN_LAST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MAIDEN_MIDDLE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MAIDEN_NAME_SALUTATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MOTHER_FIRST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MOTHER_LAST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MOTHER_MIDDLE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MOTHER_NAME_SALUTATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_HOLDER_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PERFORM_KYC_VERIFICATION_CONSENT_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RELATED_PERSON_COUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RELATIVE_OR_GUARDIAN_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ROLE_DESCRIPTION_OTHERS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(USE_POA_NAME_AS_POLICY_NAME_CONSENT_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(USE_POI_NAME_AS_POLICY_NAME_CONSENT_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_MATCH_SCORE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_REQUESTED_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_RESPONSE_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_RESPONSE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_RESPONSE_MESSAGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_RESULT_VALID_UNTIL_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_RETURNED_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_AGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_CITIZENSHIP AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_DATE_OF_BIRTH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_FATHER_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_FULL_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_GENDER_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_GIVEN_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_LEGAL_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_RELATIVE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_SURNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFIED_TRADE_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY
- where (RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_DRIVING_LICENCE') or (RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_GSTN') or (RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_PAN') or (RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_PASSPORT') or (RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_VOTER') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_SEARCH') or (RECORD_SOURCE = 'OPUS_BJAZ_T_EKYC') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_AUTH') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_DETAILS') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_NAME_MATCH') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_OCR');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_DRIVING_LICENCE' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_PARTY' and record_source = 'OPUS_BJAZ_M_KYC_DRIVING_LICENCE'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_m_kyc_driving_licence
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('LICENCE:' || upper(trim(coalesce((nullif(trim("LICENCE_NUMBER"::varchar), '')),''))), 'LICENCE:')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((try_to_timestamp_ntz(regexp_replace("EXPIRY_DATE"::varchar, '^Z[ ]*', '')))) as VERIFICATION_RESULT_VALID_UNTIL_DATE,
-               to_varchar((nullif(trim("CITIZENSHIP"::varchar), ''))) as VERIFIED_CITIZENSHIP,
-               to_varchar((nullif(trim("DOB"::varchar), ''))) as VERIFIED_DATE_OF_BIRTH,
-               to_varchar((nullif(trim("FATHER_NAME"::varchar), ''))) as VERIFIED_FATHER_NAME,
-               to_varchar((nullif(trim("NAME"::varchar), ''))) as VERIFIED_FULL_NAME,
-               to_varchar((nullif(trim("GENDER"::varchar), ''))) as VERIFIED_GENDER_CODE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_M_KYC_DRIVING_LICENCE
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_DRIVING_LICENCE' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RESULT_VALID_UNTIL_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_CITIZENSHIP AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_DATE_OF_BIRTH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_FATHER_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_FULL_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_GENDER_CODE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_PARTY', 'OPUS_BJAZ_M_KYC_DRIVING_LICENCE',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_GSTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_PARTY' and record_source = 'OPUS_BJAZ_M_KYC_GSTN'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_m_kyc_gstn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('GSTIN:' || upper(trim(coalesce((nullif(trim("GSTIN_NUMBER"::varchar), '')),''))), 'GSTIN:')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((try_to_timestamp_ntz(regexp_replace("EXPIRY_DATE"::varchar, '^Z[ ]*', '')))) as VERIFICATION_RESULT_VALID_UNTIL_DATE,
-               to_varchar((nullif(trim("LEGAL_NAME"::varchar), ''))) as VERIFIED_LEGAL_NAME,
-               to_varchar((nullif(trim("TRADE_NAME"::varchar), ''))) as VERIFIED_TRADE_NAME
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_M_KYC_GSTN
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_GSTN' and PARTY_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RESULT_VALID_UNTIL_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_LEGAL_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_TRADE_NAME AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_PARTY', 'OPUS_BJAZ_M_KYC_GSTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_PAN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_PARTY' and record_source = 'OPUS_BJAZ_M_KYC_PAN'
-),
-e3 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_m_kyc_pan
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('PAN:' || upper(trim(coalesce((nullif(trim("PAN_NUMBER"::varchar), '')),''))), 'PAN:')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((try_to_timestamp_ntz(regexp_replace("EXPIRY_DATE"::varchar, '^Z[ ]*', '')))) as VERIFICATION_RESULT_VALID_UNTIL_DATE,
-               to_varchar((nullif(trim("NAME"::varchar), ''))) as VERIFIED_FULL_NAME
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_M_KYC_PAN
-      )
-     where hkey in (select hkey from s3) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n3 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_PAN' and PARTY_HKEY in (select hkey from s3)
-     group by 1, 2
-),
-x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RESULT_VALID_UNTIL_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_FULL_NAME AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e3 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_PARTY', 'OPUS_BJAZ_M_KYC_PAN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_PASSPORT' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_PARTY' and record_source = 'OPUS_BJAZ_M_KYC_PASSPORT'
-),
-e4 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_m_kyc_passport
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('PASSPORT:' || upper(trim(coalesce((nullif(trim("PASSPORT_NUMBER"::varchar), '')),''))), 'PASSPORT:')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((try_to_timestamp_ntz(regexp_replace("EXPIRY_DATE"::varchar, '^Z[ ]*', '')))) as VERIFICATION_RESULT_VALID_UNTIL_DATE,
-               to_varchar((nullif(trim("DOB"::varchar), ''))) as VERIFIED_DATE_OF_BIRTH,
-               to_varchar((nullif(trim("FULL_NAME"::varchar), ''))) as VERIFIED_FULL_NAME,
-               to_varchar((nullif(trim("NAME"::varchar), ''))) as VERIFIED_GIVEN_NAME,
-               to_varchar((nullif(trim("SURNAME"::varchar), ''))) as VERIFIED_SURNAME
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_M_KYC_PASSPORT
-      )
-     where hkey in (select hkey from s4) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n4 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_PASSPORT' and PARTY_HKEY in (select hkey from s4)
-     group by 1, 2
-),
-x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RESULT_VALID_UNTIL_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_DATE_OF_BIRTH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_FULL_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_GIVEN_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_SURNAME AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e4 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_PARTY', 'OPUS_BJAZ_M_KYC_PASSPORT',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s5 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_VOTER' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_PARTY' and record_source = 'OPUS_BJAZ_M_KYC_VOTER'
-),
-e5 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_m_kyc_voter
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('VOTER:' || upper(trim(coalesce((nullif(trim("VOTER_NUMBER"::varchar), '')),''))), 'VOTER:')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((try_to_timestamp_ntz(regexp_replace("EXPIRY_DATE"::varchar, '^Z[ ]*', '')))) as VERIFICATION_RESULT_VALID_UNTIL_DATE,
-               to_varchar((nullif(trim("AGE"::varchar), ''))) as VERIFIED_AGE,
-               to_varchar((nullif(trim("NAME"::varchar), ''))) as VERIFIED_FULL_NAME,
-               to_varchar((nullif(trim("GENDER"::varchar), ''))) as VERIFIED_GENDER_CODE,
-               to_varchar((nullif(trim("RELATIVE_NAME"::varchar), ''))) as VERIFIED_RELATIVE_NAME
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_M_KYC_VOTER
-      )
-     where hkey in (select hkey from s5) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n5 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_VOTER' and PARTY_HKEY in (select hkey from s5)
-     group by 1, 2
-),
-x5 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RESULT_VALID_UNTIL_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_AGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_FULL_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_GENDER_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_RELATIVE_NAME AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e5 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_PARTY', 'OPUS_BJAZ_M_KYC_VOTER',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n5 n full outer join x5 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s6 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_PARTY' and record_source = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS'
-),
-e6 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_ckyc_personal_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('CKYC:' || upper(trim(coalesce((nullif(trim("CKYC_NO"::varchar), '')),''))), 'CKYC:')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("NUM_IMAGES"::varchar), ''))) as DOCUMENT_IMAGE_COUNT,
-               to_varchar((nullif(trim("IPV_FLAG"::varchar), ''))) as IN_PERSON_VERIFICATION_INDICATOR,
-               to_varchar((nullif(trim("NUM_LOCALADDRESS"::varchar), ''))) as LOCAL_ADDRESS_RECORD_COUNT,
-               to_varchar((nullif(trim("NUM_RELATED"::varchar), ''))) as RELATED_PERSON_COUNT
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_CKYC_PERSONAL_DTLS
-      )
-     where hkey in (select hkey from s6) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n6 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS' and PARTY_HKEY in (select hkey from s6)
-     group by 1, 2
-),
-x6 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.DOCUMENT_IMAGE_COUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.IN_PERSON_VERIFICATION_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.LOCAL_ADDRESS_RECORD_COUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.RELATED_PERSON_COUNT AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e6 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_PARTY', 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n6 n full outer join x6 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s7 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_PARTY' and record_source = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS'
-),
-e7 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_ckyc_rel_persion_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('CKYC:' || upper(trim(coalesce((nullif(trim("CKYC_NO"::varchar), '')),''))), 'CKYC:')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("DEC_PLACE"::varchar), ''))) as KYC_DECLARATION_PLACE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_CKYC_REL_PERSION_DTLS
-      )
-     where hkey in (select hkey from s7) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n7 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS' and PARTY_HKEY in (select hkey from s7)
-     group by 1, 2
-),
-x7 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYC_DECLARATION_PLACE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e7 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_PARTY', 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n7 n full outer join x7 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s8 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_SEARCH' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_PARTY' and record_source = 'OPUS_BJAZ_T_CKYC_SEARCH'
-),
-e8 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_ckyc_search
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("CKYC_RESPONSE_CODE"::varchar), ''))) as VERIFICATION_RESPONSE_CODE,
-               to_varchar((nullif(trim("CKYC_RESPONSE_MESSAGE"::varchar), ''))) as VERIFICATION_RESPONSE_MESSAGE,
-               to_varchar((nullif(trim("CKYC_AGE"::varchar), ''))) as VERIFIED_AGE,
-               to_varchar((nullif(trim("CKYC_DOB"::varchar), ''))) as VERIFIED_DATE_OF_BIRTH,
-               to_varchar((nullif(trim("CKYC_FATHER_NAME"::varchar), ''))) as VERIFIED_FATHER_NAME,
-               to_varchar((nullif(trim("CKYC_FULL_NAME"::varchar), ''))) as VERIFIED_FULL_NAME,
-               to_varchar((nullif(trim("CKYC_GENDER"::varchar), ''))) as VERIFIED_GENDER_CODE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_CKYC_SEARCH
-      )
-     where hkey in (select hkey from s8) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n8 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_SEARCH' and PARTY_HKEY in (select hkey from s8)
-     group by 1, 2
-),
-x8 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RESPONSE_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RESPONSE_MESSAGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_AGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_DATE_OF_BIRTH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_FATHER_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_FULL_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_GENDER_CODE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e8 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_PARTY', 'OPUS_BJAZ_T_CKYC_SEARCH',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n8 n full outer join x8 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s9 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_T_EKYC' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_PARTY' and record_source = 'OPUS_BJAZ_T_EKYC'
-),
-e9 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_ekyc
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("RESPONSE_CODE"::varchar), ''))) as VERIFICATION_RESPONSE_CODE,
-               to_varchar((nullif(trim("RESPONSE_MESSAGE"::varchar), ''))) as VERIFICATION_RESPONSE_MESSAGE,
-               to_varchar((nullif(trim("EKYC_DOB"::varchar), ''))) as VERIFIED_DATE_OF_BIRTH,
-               to_varchar((nullif(trim("EKYC_NAME"::varchar), ''))) as VERIFIED_FULL_NAME,
-               to_varchar((nullif(trim("EKYC_GENDER"::varchar), ''))) as VERIFIED_GENDER_CODE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_EKYC
-      )
-     where hkey in (select hkey from s9) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n9 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_EKYC' and PARTY_HKEY in (select hkey from s9)
-     group by 1, 2
-),
-x9 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RESPONSE_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RESPONSE_MESSAGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_DATE_OF_BIRTH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_FULL_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_GENDER_CODE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e9 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_PARTY', 'OPUS_BJAZ_T_EKYC',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n9 n full outer join x9 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s10 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_AUTH' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_PARTY' and record_source = 'OPUS_BJAZ_T_KYC_AUTH'
-),
-e10 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_auth
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("AUTH_RESPONSE_CODE"::varchar), ''))) as VERIFICATION_RESPONSE_CODE,
-               to_varchar((nullif(trim("AUTH_RESPONSE_MESSAGE"::varchar), ''))) as VERIFICATION_RESPONSE_MESSAGE,
-               to_varchar((nullif(trim("AUTH_DOB"::varchar), ''))) as VERIFIED_DATE_OF_BIRTH,
-               to_varchar((nullif(trim("AUTH_FATHER_NAME"::varchar), ''))) as VERIFIED_FATHER_NAME,
-               to_varchar((nullif(trim("AUTH_FULL_NAME"::varchar), ''))) as VERIFIED_FULL_NAME,
-               to_varchar((nullif(trim("AUTH_GENDER"::varchar), ''))) as VERIFIED_GENDER_CODE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_AUTH
-      )
-     where hkey in (select hkey from s10) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n10 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_AUTH' and PARTY_HKEY in (select hkey from s10)
-     group by 1, 2
-),
-x10 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RESPONSE_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RESPONSE_MESSAGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_DATE_OF_BIRTH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_FATHER_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_FULL_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_GENDER_CODE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e10 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_PARTY', 'OPUS_BJAZ_T_KYC_AUTH',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n10 n full outer join x10 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s11 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_DETAILS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_PARTY' and record_source = 'OPUS_BJAZ_T_KYC_DETAILS'
-),
-e11 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_details
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("RESPONSE_DOB"::varchar), ''))) as VERIFIED_DATE_OF_BIRTH,
-               to_varchar((nullif(trim("POI_RESPONSE_FULL_NAME"::varchar), ''))) as VERIFIED_FULL_NAME
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_DETAILS
-      )
-     where hkey in (select hkey from s11) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n11 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_DETAILS' and PARTY_HKEY in (select hkey from s11)
-     group by 1, 2
-),
-x11 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_DATE_OF_BIRTH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFIED_FULL_NAME AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e11 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_PARTY', 'OPUS_BJAZ_T_KYC_DETAILS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n11 n full outer join x11 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s12 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_NAME_MATCH' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_PARTY' and record_source = 'OPUS_BJAZ_T_KYC_NAME_MATCH'
-),
-e12 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_name_match
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("SCORE"::varchar), ''))) as VERIFICATION_MATCH_SCORE,
-               to_varchar((nullif(trim("REQUEST_NAME"::varchar), ''))) as VERIFICATION_REQUESTED_NAME,
-               to_varchar((try_to_timestamp_ntz(regexp_replace("RESPONSE_DATE"::varchar, '^Z[ ]*', '')))) as VERIFICATION_RESPONSE_DATE,
-               to_varchar((nullif(trim("RESPONSE_NAME"::varchar), ''))) as VERIFICATION_RETURNED_NAME
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_NAME_MATCH
-      )
-     where hkey in (select hkey from s12) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n12 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_NAME_MATCH' and PARTY_HKEY in (select hkey from s12)
-     group by 1, 2
-),
-x12 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_MATCH_SCORE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_REQUESTED_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RESPONSE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RETURNED_NAME AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e12 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_PARTY', 'OPUS_BJAZ_T_KYC_NAME_MATCH',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n12 n full outer join x12 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s13 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_OCR' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_PARTY' and record_source = 'OPUS_BJAZ_T_KYC_OCR'
-),
-e13 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_ocr
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("FIELD_TYPE"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("FIELD_VALUE"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("CUSTOMER_KYC_CONSENT"::varchar), ''))) as PERFORM_KYC_VERIFICATION_CONSENT_INDICATOR,
-               to_varchar((nullif(trim("POA_POLICY_NAME_CONSENT"::varchar), ''))) as USE_POA_NAME_AS_POLICY_NAME_CONSENT_INDICATOR,
-               to_varchar((nullif(trim("POI_POLICY_NAME_CONSENT"::varchar), ''))) as USE_POI_NAME_AS_POLICY_NAME_CONSENT_INDICATOR
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_OCR
-      )
-     where hkey in (select hkey from s13) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n13 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_OCR' and PARTY_HKEY in (select hkey from s13)
-     group by 1, 2
-),
-x13 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.PERFORM_KYC_VERIFICATION_CONSENT_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.USE_POA_NAME_AS_POLICY_NAME_CONSENT_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.USE_POI_NAME_AS_POLICY_NAME_CONSENT_INDICATOR AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e13 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_PARTY', 'OPUS_BJAZ_T_KYC_OCR',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n13 n full outer join x13 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 53. OPUS — SAT_AUG_KYC_POLICY   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_T_KYC_INCOMING [1
--- col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_AUG_KYC_POLICY' as satellite, 'OPUS_BJAZ_T_KYC_INCOMING' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(SALES_ORDER_NUMBER AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(SALES_ORDER_NUMBER AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_POLICY
- where (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_POLICY where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_KYC_POLICY' and record_source = 'OPUS_BJAZ_T_KYC_INCOMING'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_t_kyc_incoming
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (case when upper(trim((nullif(trim("FIELD_TYPE"::varchar), '')))) like 'POLICY%' then trim((nullif(trim("FIELD_VALUE"::varchar), ''))) end) AS VARCHAR))), '')) as hkey,
-               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
-               to_varchar((nullif(trim("ORDER_NUMBER"::varchar), ''))) as SALES_ORDER_NUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_INCOMING
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select POLICY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_POLICY
-     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING' and POLICY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.SALES_ORDER_NUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_POLICY', 'OPUS_BJAZ_T_KYC_INCOMING',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 54. OPUS — SAT_AUG_LAWYER_ADVOCATE_ROLE   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_CLM_SUPP_EXTN [13
--- col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_AUG_LAWYER_ADVOCATE_ROLE' as satellite, 'OPUS_BJAZ_CLM_SUPP_EXTN' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACD_QUALIFICATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BAR_ASSOCIATION_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(COVERED_COURT_LOC AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_JOINING AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ENROLMENT_NO AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LAWYER_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NO_OF_BRIEFS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NO_OF_COMPANIES AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NO_OF_CONSUMER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NO_OF_JUNIOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NO_OF_MACT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NO_OF_WC AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(YR_EXPERIENCE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACD_QUALIFICATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BAR_ASSOCIATION_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(COVERED_COURT_LOC AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_JOINING AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ENROLMENT_NO AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LAWYER_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NO_OF_BRIEFS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NO_OF_COMPANIES AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NO_OF_CONSUMER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NO_OF_JUNIOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NO_OF_MACT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NO_OF_WC AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(YR_EXPERIENCE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LAWYER_ADVOCATE_ROLE
- where (RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LAWYER_ADVOCATE_ROLE where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_LAWYER_ADVOCATE_ROLE' and record_source = 'OPUS_BJAZ_CLM_SUPP_EXTN'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_clm_supp_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("BAR_ASSOCIATION_NAME"::varchar), ''))) as BAR_ASSOCIATION_NAME,
-               to_varchar((nullif(trim("ENROLMENT_NO"::varchar), ''))) as ENROLMENT_NO,
-               to_varchar((nullif(trim("COVERED_COURT_LOC"::varchar), ''))) as COVERED_COURT_LOC,
-               to_varchar((nullif(trim("LAWYER_TYPE"::varchar), ''))) as LAWYER_TYPE,
-               to_varchar(("DATE_OF_JOINING"::timestamp_ntz)) as DATE_OF_JOINING,
-               to_varchar(("YR_EXPERIENCE"::number)) as YR_EXPERIENCE,
-               to_varchar(("NO_OF_BRIEFS"::number)) as NO_OF_BRIEFS,
-               to_varchar(("NO_OF_CONSUMER"::number)) as NO_OF_CONSUMER,
-               to_varchar(("NO_OF_JUNIOR"::number)) as NO_OF_JUNIOR,
-               to_varchar(("NO_OF_WC"::number)) as NO_OF_WC,
-               to_varchar(("NO_OF_MACT"::number)) as NO_OF_MACT,
-               to_varchar(("NO_OF_COMPANIES"::number)) as NO_OF_COMPANIES,
-               to_varchar((nullif(trim("ACD_QUALIFICATION"::varchar), ''))) as ACD_QUALIFICATION
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LAWYER_ADVOCATE_ROLE
-     where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.BAR_ASSOCIATION_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.ENROLMENT_NO AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.COVERED_COURT_LOC AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.LAWYER_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.DATE_OF_JOINING AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.YR_EXPERIENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.NO_OF_BRIEFS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.NO_OF_CONSUMER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.NO_OF_JUNIOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.NO_OF_WC AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.NO_OF_MACT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.NO_OF_COMPANIES AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.ACD_QUALIFICATION AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_LAWYER_ADVOCATE_ROLE', 'OPUS_BJAZ_CLM_SUPP_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 55. OPUS — SAT_AUG_LNK_ROLE_AGENT [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_INTERMEDIARY [1
--- col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_AGENT' as satellite, 'OPUS_BJAZ_INTERMEDIARY' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(INTERMEDIARY_LICENCE_NUMBER AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(INTERMEDIARY_LICENCE_NUMBER AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_AGENT
- where (RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_AGENT where RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_LNK_ROLE_AGENT' and record_source = 'OPUS_BJAZ_INTERMEDIARY'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_intermediary
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("INTERMEDIARY_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("LICENSE_NO"::varchar), ''))) as INTERMEDIARY_LICENCE_NUMBER
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_INTERMEDIARY
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_AGENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.INTERMEDIARY_LICENCE_NUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_LNK_ROLE_AGENT', 'OPUS_BJAZ_INTERMEDIARY',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 56. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_CLM_INTERESTED_PARTIES
--- [1 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'OPUS_CLM_INTERESTED_PARTIES' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(IP_TYPE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(IP_TYPE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
- where (RECORD_SOURCE = 'OPUS_CLM_INTERESTED_PARTIES');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER where RECORD_SOURCE = 'OPUS_CLM_INTERESTED_PARTIES' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_LNK_ROLE_CUSTOMER' and record_source = 'OPUS_CLM_INTERESTED_PARTIES'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__clm_interested_parties
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("CLAIMANT"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("IP_TYPE"::varchar), ''))) as IP_TYPE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.CLM_INTERESTED_PARTIES
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
-     where RECORD_SOURCE = 'OPUS_CLM_INTERESTED_PARTIES' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.IP_TYPE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_LNK_ROLE_CUSTOMER', 'OPUS_CLM_INTERESTED_PARTIES',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 57. OPUS — SAT_AUG_LNK_ROLE_PROVIDER [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_CLM_SUPP_EXTN [40
--- col(s)], OPUS_BJAZ_HM_HOSPITAL_MASTER [7 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite, 'OPUS_BJAZ_CLM_SUPP_EXTN' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BAGIC_LOCATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CLAIM_NEAR_ME_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CLASS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(COMP_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CONTACT_PERSON_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CON_EXPERTISE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(COVERED_AREA AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DEALER_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DEDUCTIBLE_EXEMPT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EW_WHITE_GOODS_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXP_LOB_ENGINEERING_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXP_LOB_FIRE_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXP_LOB_LOSS_PROFIT_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXP_LOB_MARINE_HULL_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXP_LOB_MARIN_CARGO_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXP_LOB_MISCELL_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXP_LOB_MOTOR_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXP_LOB_WORKMAN_COMP_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GRADE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INVOICE_PATTERN AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IRN_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(JW_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(JW_ID AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LVS_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MOU_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NO_TOWING_VEHICLE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ON_DUTY_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OPERATION_PLACE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ORIGIN_COMP AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ORIGIN_CONT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OTHER_BAGIC_BUSINESS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OWNRSHIP_DEPT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRIORITY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPEC_REPAIRER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SUPP_OWNERSHIP AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SUPP_SCOPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TOWING_VEHICLE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WORKSHOP_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WORKSHOP_CLASS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WORKSHOP_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BAGIC_LOCATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CLAIM_NEAR_ME_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CLASS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(COMP_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CONTACT_PERSON_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CON_EXPERTISE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(COVERED_AREA AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DEALER_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DEDUCTIBLE_EXEMPT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EW_WHITE_GOODS_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXP_LOB_ENGINEERING_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXP_LOB_FIRE_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXP_LOB_LOSS_PROFIT_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXP_LOB_MARINE_HULL_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXP_LOB_MARIN_CARGO_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXP_LOB_MISCELL_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXP_LOB_MOTOR_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXP_LOB_WORKMAN_COMP_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GRADE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INVOICE_PATTERN AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IRN_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(JW_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(JW_ID AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LVS_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MOU_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NO_TOWING_VEHICLE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ON_DUTY_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OPERATION_PLACE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ORIGIN_COMP AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ORIGIN_CONT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OTHER_BAGIC_BUSINESS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OWNRSHIP_DEPT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRIORITY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPEC_REPAIRER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SUPP_OWNERSHIP AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SUPP_SCOPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TOWING_VEHICLE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WORKSHOP_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WORKSHOP_CLASS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WORKSHOP_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_PROVIDER
- where (RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN')
-union all
-select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite, 'OPUS_BJAZ_HM_HOSPITAL_MASTER' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CONTACT_PERSON_DESIGNATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CONTACT_PERSON_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DIAGNO_YN AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EMPANEL_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HOSP_SPEC_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NETWORK_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRIORITY_FLG AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CONTACT_PERSON_DESIGNATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CONTACT_PERSON_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DIAGNO_YN AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EMPANEL_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HOSP_SPEC_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NETWORK_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRIORITY_FLG AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_PROVIDER
- where (RECORD_SOURCE = 'OPUS_BJAZ_HM_HOSPITAL_MASTER');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_PROVIDER where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_LNK_ROLE_PROVIDER' and record_source = 'OPUS_BJAZ_CLM_SUPP_EXTN'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_clm_supp_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("BAGIC_LOCATION"::varchar), ''))) as BAGIC_LOCATION,
-               to_varchar((nullif(trim("CLAIM_NEAR_ME_FLAG"::varchar), ''))) as CLAIM_NEAR_ME_FLAG,
-               to_varchar((nullif(trim("CLASS"::varchar), ''))) as CLASS,
-               to_varchar((nullif(trim("COMP_TYPE"::varchar), ''))) as COMP_TYPE,
-               to_varchar((nullif(trim("CONTACT_PERSON_NAME"::varchar), ''))) as CONTACT_PERSON_NAME,
-               to_varchar((nullif(trim("CON_EXPERTISE"::varchar), ''))) as CON_EXPERTISE,
-               to_varchar(("COVERED_AREA"::number)) as COVERED_AREA,
-               to_varchar((nullif(trim("DEALER_CODE"::varchar), ''))) as DEALER_CODE,
-               to_varchar((nullif(trim("DEDUCTIBLE_EXEMPT"::varchar), ''))) as DEDUCTIBLE_EXEMPT,
-               to_varchar((nullif(trim("EW_WHITE_GOODS_FLG"::varchar), ''))) as EW_WHITE_GOODS_FLG,
-               to_varchar((nullif(trim("EXP_LOB_ENGINEERING_FLG"::varchar), ''))) as EXP_LOB_ENGINEERING_FLG,
-               to_varchar((nullif(trim("EXP_LOB_FIRE_FLG"::varchar), ''))) as EXP_LOB_FIRE_FLG,
-               to_varchar((nullif(trim("EXP_LOB_LOSS_PROFIT_FLG"::varchar), ''))) as EXP_LOB_LOSS_PROFIT_FLG,
-               to_varchar((nullif(trim("EXP_LOB_MARINE_HULL_FLG"::varchar), ''))) as EXP_LOB_MARINE_HULL_FLG,
-               to_varchar((nullif(trim("EXP_LOB_MARIN_CARGO_FLG"::varchar), ''))) as EXP_LOB_MARIN_CARGO_FLG,
-               to_varchar((nullif(trim("EXP_LOB_MISCELL_FLG"::varchar), ''))) as EXP_LOB_MISCELL_FLG,
-               to_varchar((nullif(trim("EXP_LOB_MOTOR_FLG"::varchar), ''))) as EXP_LOB_MOTOR_FLG,
-               to_varchar((nullif(trim("EXP_LOB_WORKMAN_COMP_FLG"::varchar), ''))) as EXP_LOB_WORKMAN_COMP_FLG,
-               to_varchar((nullif(trim("GRADE"::varchar), ''))) as GRADE,
-               to_varchar((nullif(trim("INVOICE_PATTERN"::varchar), ''))) as INVOICE_PATTERN,
-               to_varchar((nullif(trim("IRN_FLAG"::varchar), ''))) as IRN_FLAG,
-               to_varchar((nullif(trim("JW_FLAG"::varchar), ''))) as JW_FLAG,
-               to_varchar(("JW_ID"::number)) as JW_ID,
-               to_varchar((nullif(trim("LVS_FLAG"::varchar), ''))) as LVS_FLAG,
-               to_varchar((nullif(trim("MOU_STATUS"::varchar), ''))) as MOU_STATUS,
-               to_varchar(("NO_TOWING_VEHICLE"::number)) as NO_TOWING_VEHICLE,
-               to_varchar((nullif(trim("ON_DUTY_FLAG"::varchar), ''))) as ON_DUTY_FLAG,
-               to_varchar((nullif(trim("OPERATION_PLACE"::varchar), ''))) as OPERATION_PLACE,
-               to_varchar((nullif(trim("ORIGIN_COMP"::varchar), ''))) as ORIGIN_COMP,
-               to_varchar((nullif(trim("ORIGIN_CONT"::varchar), ''))) as ORIGIN_CONT,
-               to_varchar((nullif(trim("OTHER_BAGIC_BUSINESS"::varchar), ''))) as OTHER_BAGIC_BUSINESS,
-               to_varchar((nullif(trim("OWNRSHIP_DEPT"::varchar), ''))) as OWNRSHIP_DEPT,
-               to_varchar(("PRIORITY"::number)) as PRIORITY,
-               to_varchar((nullif(trim("SPEC_REPAIRER"::varchar), ''))) as SPEC_REPAIRER,
-               to_varchar((nullif(trim("SUPP_OWNERSHIP"::varchar), ''))) as SUPP_OWNERSHIP,
-               to_varchar((nullif(trim("SUPP_SCOPE"::varchar), ''))) as SUPP_SCOPE,
-               to_varchar((nullif(trim("TOWING_VEHICLE"::varchar), ''))) as TOWING_VEHICLE,
-               to_varchar((nullif(trim("WORKSHOP_CATEGORY"::varchar), ''))) as WORKSHOP_CATEGORY,
-               to_varchar((nullif(trim("WORKSHOP_CLASS"::varchar), ''))) as WORKSHOP_CLASS,
-               to_varchar((nullif(trim("WORKSHOP_NAME"::varchar), ''))) as WORKSHOP_NAME
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_PROVIDER
-     where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.BAGIC_LOCATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.CLAIM_NEAR_ME_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.CLASS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.COMP_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.CONTACT_PERSON_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.CON_EXPERTISE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.COVERED_AREA AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.DEALER_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.DEDUCTIBLE_EXEMPT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EW_WHITE_GOODS_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EXP_LOB_ENGINEERING_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EXP_LOB_FIRE_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EXP_LOB_LOSS_PROFIT_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EXP_LOB_MARINE_HULL_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EXP_LOB_MARIN_CARGO_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EXP_LOB_MISCELL_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EXP_LOB_MOTOR_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EXP_LOB_WORKMAN_COMP_FLG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.GRADE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.INVOICE_PATTERN AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.IRN_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.JW_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.JW_ID AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.LVS_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.MOU_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.NO_TOWING_VEHICLE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.ON_DUTY_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.OPERATION_PLACE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.ORIGIN_COMP AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.ORIGIN_CONT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.OTHER_BAGIC_BUSINESS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.OWNRSHIP_DEPT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PRIORITY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.SPEC_REPAIRER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.SUPP_OWNERSHIP AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.SUPP_SCOPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.TOWING_VEHICLE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.WORKSHOP_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.WORKSHOP_CLASS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.WORKSHOP_NAME AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_LNK_ROLE_PROVIDER', 'OPUS_BJAZ_CLM_SUPP_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_PROVIDER where RECORD_SOURCE = 'OPUS_BJAZ_HM_HOSPITAL_MASTER' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_LNK_ROLE_PROVIDER' and record_source = 'OPUS_BJAZ_HM_HOSPITAL_MASTER'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hm_hospital_master
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("HOSID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("DESIGNATION"::varchar), ''))) as CONTACT_PERSON_DESIGNATION,
-               to_varchar((nullif(trim("CONTACT_PERSON"::varchar), ''))) as CONTACT_PERSON_NAME,
-               to_varchar(("DIAGNO_YN"::number)) as DIAGNO_YN,
-               to_varchar(("EMPANEL_DATE"::timestamp_ntz)) as EMPANEL_DATE,
-               to_varchar((nullif(trim("HOSP_SPEC_TYPE"::varchar), ''))) as HOSP_SPEC_TYPE,
-               to_varchar(("NETWORK_TYPE"::number)) as NETWORK_TYPE,
-               to_varchar((nullif(trim("PRIORITY_FLG"::varchar), ''))) as PRIORITY_FLG
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_HOSPITAL_MASTER
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_PROVIDER
-     where RECORD_SOURCE = 'OPUS_BJAZ_HM_HOSPITAL_MASTER' and PARTY_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.CONTACT_PERSON_DESIGNATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.CONTACT_PERSON_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.DIAGNO_YN AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EMPANEL_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.HOSP_SPEC_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.NETWORK_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PRIORITY_FLG AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_LNK_ROLE_PROVIDER', 'OPUS_BJAZ_HM_HOSPITAL_MASTER',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 58. OPUS — SAT_AUG_LNK_ROLE_SURVEYOR [Partner LOB]   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_CLM_SUPP_EXTN [4
--- col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_SURVEYOR' as satellite, 'OPUS_BJAZ_CLM_SUPP_EXTN' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(HAS_IRDA_LICENCE_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IIISLA_MEM_NO AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IIISLA_MEM_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SUR_LICENSE_EXP_DATE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(HAS_IRDA_LICENCE_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IIISLA_MEM_NO AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IIISLA_MEM_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SUR_LICENSE_EXP_DATE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_SURVEYOR
- where (RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_SURVEYOR where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_LNK_ROLE_SURVEYOR' and record_source = 'OPUS_BJAZ_CLM_SUPP_EXTN'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_clm_supp_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("IRDA_LICENSE"::varchar), ''))) as HAS_IRDA_LICENCE_INDICATOR,
-               to_varchar((nullif(trim("IIISLA_MEM_NO"::varchar), ''))) as IIISLA_MEM_NO,
-               to_varchar((nullif(trim("IIISLA_MEM_STATUS"::varchar), ''))) as IIISLA_MEM_STATUS,
-               to_varchar(("SUR_LICENSE_EXP_DATE"::timestamp_ntz)) as SUR_LICENSE_EXP_DATE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_SURVEYOR
-     where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.HAS_IRDA_LICENCE_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.IIISLA_MEM_NO AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.IIISLA_MEM_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.SUR_LICENSE_EXP_DATE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_LNK_ROLE_SURVEYOR', 'OPUS_BJAZ_CLM_SUPP_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 59. OPUS — SAT_AUG_LOCATION   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- sat_multi_source; PK LOCATION_HKEY; 2 RECORD_SOURCE group(s): OPUS_CP_ADDRESSES [2
--- col(s)], OPUS_CP_PARTNERS [1 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_AUG_LOCATION' as satellite, 'OPUS_CP_ADDRESSES' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADDRESS_LINE4 AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ADDRESS_LINE5 AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADDRESS_LINE4 AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ADDRESS_LINE5 AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(LOCATION_HKEY, 'HEX'), null)) within group (order by LOCATION_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOCATION
- where (RECORD_SOURCE = 'OPUS_CP_ADDRESSES')
-union all
-select 'OPUS' as project, 'SAT_AUG_LOCATION' as satellite, 'OPUS_CP_PARTNERS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CARE_OF_NAME AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CARE_OF_NAME AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(LOCATION_HKEY, 'HEX'), null)) within group (order by LOCATION_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOCATION
- where (RECORD_SOURCE = 'OPUS_CP_PARTNERS');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct LOCATION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOCATION where RECORD_SOURCE = 'OPUS_CP_ADDRESSES' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_LOCATION' and record_source = 'OPUS_CP_ADDRESSES'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__cp_addresses
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || ((nullif(trim("ADD_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ADDRESS_LINE4"::varchar), ''))) as ADDRESS_LINE4,
-               to_varchar((nullif(trim("ADDRESS_LINE5"::varchar), ''))) as ADDRESS_LINE5
-          from BAGIC_PREPROD_CURATED_DB.UTILS.CP_ADDRESSES
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select LOCATION_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOCATION
-     where RECORD_SOURCE = 'OPUS_CP_ADDRESSES' and LOCATION_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.ADDRESS_LINE4 AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.ADDRESS_LINE5 AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_LOCATION', 'OPUS_CP_ADDRESSES',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct LOCATION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOCATION where RECORD_SOURCE = 'OPUS_CP_PARTNERS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_LOCATION' and record_source = 'OPUS_CP_PARTNERS'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__cp_partners
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || ((nullif(trim("ADD_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ADDRESSEE"::varchar), ''))) as CARE_OF_NAME
-          from BAGIC_PREPROD_CURATED_DB.UTILS.CP_PARTNERS
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select LOCATION_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOCATION
-     where RECORD_SOURCE = 'OPUS_CP_PARTNERS' and LOCATION_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.CARE_OF_NAME AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_LOCATION', 'OPUS_CP_PARTNERS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 60. OPUS — SAT_AUG_PARTY   [Implemented]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- sat_multi_source; PK PARTY_HKEY; 10 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [8
--- col(s)], OPUS_BJAZ_INTERMEDIARY [3 col(s)], OPUS_BJAZ_EC_MEM_DTLS_EXTN [3 col(s)],
--- OPUS_BJAZ_HCF_MEMBER_DTLS [1 col(s)], OPUS_BJAZ_SPP_MEMBER_DTLS [4 col(s)],
--- OPUS_BJAZ_HC_PART_EXTN [1 col(s)], OPUS_CP_PARTNERS [2 col(s)],
--- OPUS_BJAZ_CLM_SUPP_EXTN [6 col(s)], OPUS_BJAZ_HM_MEMBER_DTLS [1 col(s)],
--- OPUS_BJAZ_HM_HOSPITAL_MASTER [3 col(s)].
-----------------------------------------------------------------------------------------
--- SQL query (a) -- HASHDIFF integrity (all rows of this project)
-select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_AZBJ_PARTNER_EXTN' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ECS_MANDATE_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXISTING_CUSTOMER_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HNI_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IT_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NUMBER_OF_DAUGHTERS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NUMBER_OF_SONS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PARENT_ENTITY_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WEBSITE_URL AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ECS_MANDATE_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXISTING_CUSTOMER_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HNI_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IT_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NUMBER_OF_DAUGHTERS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NUMBER_OF_SONS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PARENT_ENTITY_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WEBSITE_URL AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
- where (RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN')
-union all
-select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_BJAZ_INTERMEDIARY' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(IT_RETURN_2YR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_AADHAR_LINKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WEBSITE_URL AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(IT_RETURN_2YR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_AADHAR_LINKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WEBSITE_URL AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
- where (RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY')
-union all
-select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PREGNANT_MONTHS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRIOR_CLAIM_REASON AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SMOKE_CONSUMP AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PREGNANT_MONTHS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRIOR_CLAIM_REASON AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SMOKE_CONSUMP AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
- where (RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN')
-union all
-select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_BJAZ_HCF_MEMBER_DTLS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(BMI_FLAG AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(BMI_FLAG AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
- where (RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS')
-union all
-select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_BJAZ_SPP_MEMBER_DTLS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BMI AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HEIGHT_FEET AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HEIGHT_INCHES AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OTHER_OCC AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BMI AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HEIGHT_FEET AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HEIGHT_INCHES AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OTHER_OCC AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
- where (RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS')
-union all
-select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_BJAZ_HC_PART_EXTN' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_BIRTH_M AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_BIRTH_M AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
- where (RECORD_SOURCE = 'OPUS_BJAZ_HC_PART_EXTN')
-union all
-select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_CP_PARTNERS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CAUSE_OF_DEATH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PROOF_OF_DEATH_TYPE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CAUSE_OF_DEATH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PROOF_OF_DEATH_TYPE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
- where (RECORD_SOURCE = 'OPUS_CP_PARTNERS')
-union all
-select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_BJAZ_CLM_SUPP_EXTN' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADHAAR_PAN_LINK_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MARRIAGE_ANNIVERSARY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_ACK_DT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_APP_NO AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TWO_YR_ITR_FLAG AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADHAAR_PAN_LINK_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MARRIAGE_ANNIVERSARY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_ACK_DT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_APP_NO AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAN_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TWO_YR_ITR_FLAG AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
- where (RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN')
-union all
-select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_BJAZ_HM_MEMBER_DTLS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(MONTHLY_SALARY AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(MONTHLY_SALARY AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
- where (RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS')
-union all
-select 'OPUS' as project, 'SAT_AUG_PARTY' as satellite, 'OPUS_BJAZ_HM_HOSPITAL_MASTER' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(IMPS_ACTIVE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IMPS_END_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAYMENT_MODE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(IMPS_ACTIVE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IMPS_END_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAYMENT_MODE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
- where (RECORD_SOURCE = 'OPUS_BJAZ_HM_HOSPITAL_MASTER');
-
--- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_AZBJ_PARTNER_EXTN'
-),
-e1 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__azbj_partner_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ECS_STATUS"::varchar), ''))) as ECS_MANDATE_STATUS,
-               to_varchar((nullif(trim("EXISTING_CUST"::varchar), ''))) as EXISTING_CUSTOMER_INDICATOR,
-               to_varchar((nullif(trim("HNI_FLAG"::varchar), ''))) as HNI_FLAG,
-               to_varchar((nullif(trim("IT_STATUS"::varchar), ''))) as IT_STATUS,
-               to_varchar(("DAUGHTERS"::number)) as NUMBER_OF_DAUGHTERS,
-               to_varchar(("SONS"::number)) as NUMBER_OF_SONS,
-               to_varchar((nullif(trim("PARENT_ID"::varchar), ''))) as PARENT_ENTITY_REFERENCE,
-               to_varchar((nullif(trim("WEBSITE"::varchar), ''))) as WEBSITE_URL
-          from BAGIC_PREPROD_CURATED_DB.UTILS.AZBJ_PARTNER_EXTN
-      )
-     where hkey in (select hkey from s1) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n1 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
-     where RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN' and PARTY_HKEY in (select hkey from s1)
-     group by 1, 2
-),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.ECS_MANDATE_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.EXISTING_CUSTOMER_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.HNI_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.IT_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.NUMBER_OF_DAUGHTERS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.NUMBER_OF_SONS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PARENT_ENTITY_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.WEBSITE_URL AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_AZBJ_PARTNER_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_BJAZ_INTERMEDIARY'
-),
-e2 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_intermediary
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("INTERMEDIARY_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("IT_RETURN_2YR"::varchar), ''))) as IT_RETURN_2YR,
-               to_varchar((nullif(trim("PAN_AADHAR_LINKED"::varchar), ''))) as PAN_AADHAR_LINKED,
-               to_varchar((nullif(trim("WEBSITE_LINK"::varchar), ''))) as WEBSITE_URL
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_INTERMEDIARY
-      )
-     where hkey in (select hkey from s2) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n2 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_INTERMEDIARY' and PARTY_HKEY in (select hkey from s2)
-     group by 1, 2
-),
-x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.IT_RETURN_2YR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PAN_AADHAR_LINKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.WEBSITE_URL AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e2 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_BJAZ_INTERMEDIARY',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN'
-),
-e3 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_ec_mem_dtls_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("PREGNANT_MONTHS"::number)) as PREGNANT_MONTHS,
-               to_varchar((nullif(trim("CLAIMED_FOR"::varchar), ''))) as PRIOR_CLAIM_REASON,
-               to_varchar((nullif(trim("SMOKE_CONSUMP"::varchar), ''))) as SMOKE_CONSUMP
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_EC_MEM_DTLS_EXTN
-      )
-     where hkey in (select hkey from s3) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n3 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' and PARTY_HKEY in (select hkey from s3)
-     group by 1, 2
-),
-x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.PREGNANT_MONTHS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PRIOR_CLAIM_REASON AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.SMOKE_CONSUMP AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e3 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_BJAZ_EC_MEM_DTLS_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_BJAZ_HCF_MEMBER_DTLS'
-),
-e4 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hcf_member_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("BMI_FLAG"::varchar), ''))) as BMI_FLAG
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HCF_MEMBER_DTLS
-      )
-     where hkey in (select hkey from s4) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n4 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_HCF_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s4)
-     group by 1, 2
-),
-x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.BMI_FLAG AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e4 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_BJAZ_HCF_MEMBER_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s5 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_BJAZ_SPP_MEMBER_DTLS'
-),
-e5 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_spp_member_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("BMI"::varchar), ''))) as BMI,
-               to_varchar((nullif(trim("HEIGHT_FEET"::varchar), ''))) as HEIGHT_FEET,
-               to_varchar((nullif(trim("HEIGHT_INCHES"::varchar), ''))) as HEIGHT_INCHES,
-               to_varchar((nullif(trim("OTHER_OCC"::varchar), ''))) as OTHER_OCC
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SPP_MEMBER_DTLS
-      )
-     where hkey in (select hkey from s5) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n5 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_SPP_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s5)
-     group by 1, 2
-),
-x5 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.BMI AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.HEIGHT_FEET AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.HEIGHT_INCHES AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.OTHER_OCC AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e5 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_BJAZ_SPP_MEMBER_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n5 n full outer join x5 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s6 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_HC_PART_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_BJAZ_HC_PART_EXTN'
-),
-e6 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hc_part_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("DATE_OF_BIRTH_M"::timestamp_ntz)) as DATE_OF_BIRTH_M
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HC_PART_EXTN
-      )
-     where hkey in (select hkey from s6) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n6 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_HC_PART_EXTN' and PARTY_HKEY in (select hkey from s6)
-     group by 1, 2
-),
-x6 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.DATE_OF_BIRTH_M AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e6 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_BJAZ_HC_PART_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n6 n full outer join x6 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s7 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_CP_PARTNERS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_CP_PARTNERS'
-),
-e7 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__cp_partners
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("CAUSE_OF_DEATH"::varchar), ''))) as CAUSE_OF_DEATH,
-               to_varchar((nullif(trim("PROOF_OF_DEATH"::varchar), ''))) as PROOF_OF_DEATH_TYPE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.CP_PARTNERS
-      )
-     where hkey in (select hkey from s7) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n7 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
-     where RECORD_SOURCE = 'OPUS_CP_PARTNERS' and PARTY_HKEY in (select hkey from s7)
-     group by 1, 2
-),
-x7 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.CAUSE_OF_DEATH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PROOF_OF_DEATH_TYPE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e7 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_CP_PARTNERS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n7 n full outer join x7 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s8 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_BJAZ_CLM_SUPP_EXTN'
-),
-e8 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_clm_supp_extn
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("ADHAAR_PAN_LINK_FLAG"::varchar), ''))) as ADHAAR_PAN_LINK_FLAG,
-               to_varchar(("MRG_ANNIVERSIRY"::timestamp_ntz)) as MARRIAGE_ANNIVERSARY_DATE,
-               to_varchar(("PAN_ACK_DT"::timestamp_ntz)) as PAN_ACK_DT,
-               to_varchar((nullif(trim("PAN_APP_NO"::varchar), ''))) as PAN_APP_NO,
-               to_varchar((nullif(trim("PAN_STATUS"::varchar), ''))) as PAN_STATUS,
-               to_varchar((nullif(trim("TWO_YR_ITR_FLAG"::varchar), ''))) as TWO_YR_ITR_FLAG
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
-      )
-     where hkey in (select hkey from s8) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n8 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' and PARTY_HKEY in (select hkey from s8)
-     group by 1, 2
-),
-x8 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.ADHAAR_PAN_LINK_FLAG AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.MARRIAGE_ANNIVERSARY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PAN_ACK_DT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PAN_APP_NO AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PAN_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.TWO_YR_ITR_FLAG AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e8 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_BJAZ_CLM_SUPP_EXTN',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n8 n full outer join x8 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s9 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_BJAZ_HM_MEMBER_DTLS'
-),
-e9 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hm_member_dtls
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar((nullif(trim("MONTHLY_SALARY"::varchar), ''))) as MONTHLY_SALARY
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
-      )
-     where hkey in (select hkey from s9) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n9 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s9)
-     group by 1, 2
-),
-x9 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MONTHLY_SALARY AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e9 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_BJAZ_HM_MEMBER_DTLS',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n9 n full outer join x9 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
-with s10 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
-    select hkey from (
-        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY where RECORD_SOURCE = 'OPUS_BJAZ_HM_HOSPITAL_MASTER' order by hkey limit 100
-    ) where $DM_H_PHASE = 'BEFORE'
-    union
-    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
-     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
-       and satellite = 'SAT_AUG_PARTY' and record_source = 'OPUS_BJAZ_HM_HOSPITAL_MASTER'
-),
-e10 as (  -- expected value(s) at the latest RAW load timestamp per key
-    select *
-      from (
-        -- via stg_partner__bjaz_hm_hospital_master
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("HOSID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
-               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
-               to_varchar(("IMPS_ACTIVE_DATE"::timestamp_ntz)) as IMPS_ACTIVE_DATE,
-               to_varchar(("IMPS_END_DATE"::timestamp_ntz)) as IMPS_END_DATE,
-               to_varchar((nullif(trim("PAYMENT_MODE"::varchar), ''))) as PAYMENT_MODE
-          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_HOSPITAL_MASTER
-      )
-     where hkey in (select hkey from s10) and ldts is not null
-    qualify rank() over (partition by hkey order by ldts desc) = 1
-),
-n10 as (  -- satellite history per sampled key
-    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY
-     where RECORD_SOURCE = 'OPUS_BJAZ_HM_HOSPITAL_MASTER' and PARTY_HKEY in (select hkey from s10)
-     group by 1, 2
-),
-x10 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.IMPS_ACTIVE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.IMPS_END_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PAYMENT_MODE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e10 e group by 1, 2
-)
-select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_PARTY', 'OPUS_BJAZ_HM_HOSPITAL_MASTER',
-       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
-  from n10 n full outer join x10 x on x.hkey = n.hkey and x.cdk = n.cdk;
-
-
-
-----------------------------------------------------------------------------------------
--- 61. OPUS — SAT_AUG_POLICY   [Implemented]
+-- 14. OPUS — [M2 | ma_sat_multi_source] SAT_AUG_POLICY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -8985,7 +3425,2377 @@ select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_POLICY', 'OPUS_BJAZ_SH_MEM_DTLS_
 
 
 ----------------------------------------------------------------------------------------
--- 62. OPUS — CDC result (all satellites)   [Implemented]
+-- 15. OPUS — [M2 | ma_sat_multi_source] SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- ma_sat_multi_source; PK PARTY_LOCATION_HKEY, child key ADDRESS_USAGE_TYPE; 2
+-- RECORD_SOURCE group(s): OPUS_BJAZ_CP_ADDRESS_LINK [1 col(s)],
+-- OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [0 col(s)]. Multi-active: compared per (key, child
+-- key); latest = max LOAD_DATETIME per member.
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PRIMARY_ADDRESS_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PRIMARY_ADDRESS_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_LOCATION_HKEY, 'HEX'), null)) within group (order by PARTY_LOCATION_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CONTACT_ADDRESS_LINK
+ where (RECORD_SOURCE = 'OPUS_BJAZ_CP_ADDRESS_LINK') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS');
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_LOCATION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CONTACT_ADDRESS_LINK where RECORD_SOURCE = 'OPUS_BJAZ_CP_ADDRESS_LINK' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_CONTACT_ADDRESS_LINK' and record_source = 'OPUS_BJAZ_CP_ADDRESS_LINK'
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_cp_address_link
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_LOCATION|' || (nullif(trim("PART_ID"::varchar), '')) || '|' || (nullif(trim("ADD_ID"::varchar), '')) AS VARCHAR))), '')) as hkey,
+               to_varchar(to_varchar(("ADD_TYPE"::number))) as cdk_1,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("PRIMARY_YN"::varchar), ''))) as PRIMARY_ADDRESS_INDICATOR
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CP_ADDRESS_LINK
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select PARTY_LOCATION_HKEY as hkey, coalesce(to_varchar(ADDRESS_USAGE_TYPE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CONTACT_ADDRESS_LINK
+     where RECORD_SOURCE = 'OPUS_BJAZ_CP_ADDRESS_LINK' and PARTY_LOCATION_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, coalesce(e.cdk_1, '^^') as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.PRIMARY_ADDRESS_INDICATOR AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_CONTACT_ADDRESS_LINK', 'OPUS_BJAZ_CP_ADDRESS_LINK',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 16. OPUS — [M2 | sat_multi_source] SAT_AUG_KYC_DOCUMENT   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
+-- sat_multi_source; PK DOCUMENT_HKEY; 2 RECORD_SOURCE group(s):
+-- OPUS_BJAZ_T_KYC_POA_DOCUMENT [1 col(s)], OPUS_BJAZ_T_KYC_POI_DOCUMENT [1 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_AUG_KYC_DOCUMENT' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_RESPONSE_MESSAGE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(VERIFICATION_RESPONSE_MESSAGE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(DOCUMENT_HKEY, 'HEX'), null)) within group (order by DOCUMENT_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_DOCUMENT
+ where (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT');
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct DOCUMENT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_DOCUMENT where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_AUG_KYC_DOCUMENT' and record_source = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT'
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_t_kyc_poa_document
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (upper(trim(coalesce((nullif(trim("DOCS_TYPE"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("DOCS_NUMBER"::varchar), '')),'')))) AS VARCHAR))), '')) as hkey,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("RESPONSE_MESSAGE"::varchar), ''))) as VERIFICATION_RESPONSE_MESSAGE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_POA_DOCUMENT
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select DOCUMENT_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_DOCUMENT
+     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT' and DOCUMENT_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RESPONSE_MESSAGE AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_DOCUMENT', 'OPUS_BJAZ_T_KYC_POA_DOCUMENT',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct DOCUMENT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_DOCUMENT where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_AUG_KYC_DOCUMENT' and record_source = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT'
+),
+e2 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_t_kyc_poi_document
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (upper(trim(coalesce((nullif(trim("DOCS_TYPE"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("DOCS_NUMBER"::varchar), '')),'')))) AS VARCHAR))), '')) as hkey,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("RESPONSE_MESSAGE"::varchar), ''))) as VERIFICATION_RESPONSE_MESSAGE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_POI_DOCUMENT
+      )
+     where hkey in (select hkey from s2) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n2 as (  -- satellite history per sampled key
+    select DOCUMENT_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_KYC_DOCUMENT
+     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT' and DOCUMENT_HKEY in (select hkey from s2)
+     group by 1, 2
+),
+x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.VERIFICATION_RESPONSE_MESSAGE AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e2 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_KYC_DOCUMENT', 'OPUS_BJAZ_T_KYC_POI_DOCUMENT',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 17. OPUS — [M2 | sat_multi_source] SAT_PARTY_BANKING   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- sat_multi_source; PK PARTY_HKEY; 4 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [3
+-- col(s)], OPUS_BJAZ_CLM_SUPP_EXTN [2 col(s)], OPUS_BJAZ_CTNGY_PA_MEM_DTLS [2 col(s)],
+-- OPUS_BJAZ_HM_MEMBER_DTLS [3 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_PARTY_BANKING' as satellite, 'OPUS_AZBJ_PARTNER_EXTN' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IFSCCODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MICRCODE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IFSCCODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MICRCODE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
+ where (RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN')
+union all
+select 'OPUS' as project, 'SAT_PARTY_BANKING' as satellite, 'OPUS_BJAZ_CLM_SUPP_EXTN' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANKNAME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANKNAME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
+ where (RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN')
+union all
+select 'OPUS' as project, 'SAT_PARTY_BANKING' as satellite, 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANKCODE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANKCODE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
+ where (RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS')
+union all
+select 'OPUS' as project, 'SAT_PARTY_BANKING' as satellite, 'OPUS_BJAZ_HM_MEMBER_DTLS' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANKNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MICRCODE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANKNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MICRCODE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
+ where (RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS');
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING where RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_BANKING' and record_source = 'OPUS_AZBJ_PARTNER_EXTN'
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__azbj_partner_extn
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("ACCOUNT_NO"::varchar), ''))) as ACCOUNTNUMBERMASKED,
+               to_varchar((nullif(trim("IFSC_CODE"::varchar), ''))) as IFSCCODE,
+               to_varchar((nullif(trim("MICR_CODE"::varchar), ''))) as MICRCODE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.AZBJ_PARTNER_EXTN
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
+     where RECORD_SOURCE = 'OPUS_AZBJ_PARTNER_EXTN' and PARTY_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.IFSCCODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.MICRCODE AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_BANKING', 'OPUS_AZBJ_PARTNER_EXTN',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_BANKING' and record_source = 'OPUS_BJAZ_CLM_SUPP_EXTN'
+),
+e2 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_clm_supp_extn
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("SUPP_BANK_ACC_NO"::varchar), ''))) as ACCOUNTNUMBERMASKED,
+               to_varchar((nullif(trim("SUPP_BANK_NAME"::varchar), ''))) as BANKNAME
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
+      )
+     where hkey in (select hkey from s2) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n2 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
+     where RECORD_SOURCE = 'OPUS_BJAZ_CLM_SUPP_EXTN' and PARTY_HKEY in (select hkey from s2)
+     group by 1, 2
+),
+x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.BANKNAME AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e2 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_BANKING', 'OPUS_BJAZ_CLM_SUPP_EXTN',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_BANKING' and record_source = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS'
+),
+e3 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_ctngy_pa_mem_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("LOAN_ACCOUNT_NO"::varchar), ''))) as ACCOUNTNUMBERMASKED,
+               to_varchar((nullif(trim("BANK_RM_CODE"::varchar), ''))) as BANKCODE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_PA_MEM_DTLS
+      )
+     where hkey in (select hkey from s3) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n3 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
+     where RECORD_SOURCE = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' and PARTY_HKEY in (select hkey from s3)
+     group by 1, 2
+),
+x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.BANKCODE AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e3 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_BANKING', 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_BANKING' and record_source = 'OPUS_BJAZ_HM_MEMBER_DTLS'
+),
+e4 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_hm_member_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("BANK_AC_NO"::varchar), ''))) as ACCOUNTNUMBERMASKED,
+               to_varchar((nullif(trim("BANK_NAME"::varchar), ''))) as BANKNAME,
+               to_varchar((nullif(trim("MICR_CODE"::varchar), ''))) as MICRCODE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
+      )
+     where hkey in (select hkey from s4) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n4 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_BANKING
+     where RECORD_SOURCE = 'OPUS_BJAZ_HM_MEMBER_DTLS' and PARTY_HKEY in (select hkey from s4)
+     group by 1, 2
+),
+x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.ACCOUNTNUMBERMASKED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.BANKNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.MICRCODE AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e4 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_BANKING', 'OPUS_BJAZ_HM_MEMBER_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 18. OPUS — [M2 | sat_multi_source] SAT_PARTY_KYC   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- sat_multi_source; PK PARTY_HKEY; 5 RECORD_SOURCE group(s):
+-- OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [2 col(s)], OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS [1
+-- col(s)], OPUS_BJAZ_T_CKYC_SEARCH [4 col(s)], OPUS_BJAZ_T_KYC_DETAILS [2 col(s)],
+-- OPUS_BJAZ_T_KYC_INCOMING [2 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_PARTY_KYC' as satellite, '5 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CKYCNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CKYCREGISTRATIONSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYCCOMPLETIONDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYCMODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYCSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYCTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LASTKYCREVIEWDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OVDSUBMITTEDCOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CKYCNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CKYCREGISTRATIONSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYCCOMPLETIONDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYCMODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYCSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYCTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LASTKYCREVIEWDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OVDSUBMITTEDCOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC
+ where (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_SEARCH') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_DETAILS') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING');
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_KYC' and record_source = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS'
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_t_ckyc_personal_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('CKYC:' || upper(trim(coalesce((nullif(trim("CKYC_NO"::varchar), '')),''))), 'CKYC:')) AS VARCHAR))), '')) as hkey,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("ACC_TYPE"::varchar), ''))) as KYCTYPE,
+               to_varchar((nullif(trim("NUM_IDENTITY"::varchar), ''))) as OVDSUBMITTEDCOUNT
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_CKYC_PERSONAL_DTLS
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC
+     where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS' and PARTY_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYCTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.OVDSUBMITTEDCOUNT AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_KYC', 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_KYC' and record_source = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS'
+),
+e2 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_t_ckyc_rel_persion_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('CKYC:' || upper(trim(coalesce((nullif(trim("CKYC_NO"::varchar), '')),''))), 'CKYC:')) AS VARCHAR))), '')) as hkey,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("DEC_DATE"::varchar), ''))) as KYCCOMPLETIONDATE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_CKYC_REL_PERSION_DTLS
+      )
+     where hkey in (select hkey from s2) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n2 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC
+     where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS' and PARTY_HKEY in (select hkey from s2)
+     group by 1, 2
+),
+x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYCCOMPLETIONDATE AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e2 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_KYC', 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_SEARCH' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_KYC' and record_source = 'OPUS_BJAZ_T_CKYC_SEARCH'
+),
+e3 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_t_ckyc_search
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("CKYC_NUMBER"::varchar), ''))) as CKYCNUMBER,
+               to_varchar((nullif(trim("CKYC_STATUS"::varchar), ''))) as CKYCREGISTRATIONSTATUS,
+               to_varchar((nullif(trim("CKYC_KYC_DATE"::varchar), ''))) as KYCCOMPLETIONDATE,
+               to_varchar((nullif(trim("CKYC_UPDATE_DATE"::varchar), ''))) as LASTKYCREVIEWDATE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_CKYC_SEARCH
+      )
+     where hkey in (select hkey from s3) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n3 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC
+     where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_SEARCH' and PARTY_HKEY in (select hkey from s3)
+     group by 1, 2
+),
+x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.CKYCNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.CKYCREGISTRATIONSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYCCOMPLETIONDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.LASTKYCREVIEWDATE AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e3 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_KYC', 'OPUS_BJAZ_T_CKYC_SEARCH',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_DETAILS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_KYC' and record_source = 'OPUS_BJAZ_T_KYC_DETAILS'
+),
+e4 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_t_kyc_details
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("KYC_DATE"::varchar), ''))) as KYCCOMPLETIONDATE,
+               to_varchar((nullif(trim("KYC_STATUS"::varchar), ''))) as KYCSTATUS
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_DETAILS
+      )
+     where hkey in (select hkey from s4) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n4 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC
+     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_DETAILS' and PARTY_HKEY in (select hkey from s4)
+     group by 1, 2
+),
+x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYCCOMPLETIONDATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYCSTATUS AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e4 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_KYC', 'OPUS_BJAZ_T_KYC_DETAILS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s5 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_KYC' and record_source = 'OPUS_BJAZ_T_KYC_INCOMING'
+),
+e5 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_t_kyc_incoming
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("SEARCH_CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("SEARCH_INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("KYC_MODE"::varchar), ''))) as KYCMODE,
+               to_varchar((nullif(trim("KYC_TYPE"::varchar), ''))) as KYCTYPE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_INCOMING
+      )
+     where hkey in (select hkey from s5) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n5 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC
+     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING' and PARTY_HKEY in (select hkey from s5)
+     group by 1, 2
+),
+x5 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYCMODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYCTYPE AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e5 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_KYC', 'OPUS_BJAZ_T_KYC_INCOMING',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n5 n full outer join x5 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 19. OPUS — [M2 | stitch_incremental] SAT_COMMON_COMMUNICATION_PREFERENCE   [Design finding]
+-- HASHDIFF of stitch_shared__common_communication_preference_party_employment (1 tables)
+-- (stg2_shared__common_communication_preference_party_employment) also hashes
+-- EMPLOYMENTSTATUS, which this satellite does not store (a shared stage feeding several
+-- satellites). A change in only those columns gives a new HASHDIFF and so a NEW ROW WITH
+-- AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts.
+-- The HASHDIFF cannot be recomputed from the satellite row. standard satellite,
+-- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
+-- stitch_shared__common_communication_preference_party_employment (1 tables) [2 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a)
+-- DM-H1 (a) OPUS SAT_COMMON_COMMUNICATION_PREFERENCE: HASHDIFF not recomputable -- see note
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_COMMUNICATION_PREFERENCE where regexp_like(RECORD_SOURCE, '^(OPUS_CP_PARTNERS)(, (OPUS_CP_PARTNERS))*$') order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_COMMON_COMMUNICATION_PREFERENCE' and record_source = 'stitch_shared__common_communication_preference_party_employment (1 tables)'
+),
+g1_t1 as (  -- stitch source OPUS_CP_PARTNERS
+    select distinct (nullif(trim("PART_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("LANGUAGE"::varchar), '')))), '') as correspondencelanguage,
+           nullif(trim(to_varchar((nullif(trim("LITERATURE"::varchar), '')))), '') as marketingoptinindicator,
+           nullif(trim(to_varchar((nullif(trim("EMPLOYMENT_STATUS"::varchar), '')))), '') as employmentstatus,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.CP_PARTNERS
+     where (nullif(trim("PART_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PART_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+k1 as (
+    select parent_bk from g1_t1
+),
+st1 as (  -- stitch_shared__common_communication_preference_party_employment recomputed from RAW (same coalesce / priority as the stitch macro)
+    select ak.parent_bk,
+           g1_t1.correspondencelanguage as correspondencelanguage,
+           g1_t1.marketingoptinindicator as marketingoptinindicator,
+           g1_t1.employmentstatus as employmentstatus,
+           array_to_string(array_construct_compact(
+               case when g1_t1.parent_bk is not null then 'OPUS_CP_PARTNERS' end
+           ), ', ') as record_source,
+           greatest_ignore_nulls(g1_t1.inc_job_updated_at) as inc_job_updated_at
+      from k1 ak
+      left join g1_t1 on g1_t1.parent_bk = ak.parent_bk
+    qualify row_number() over (partition by ak.parent_bk order by g1_t1.correspondencelanguage nulls last, g1_t1.marketingoptinindicator nulls last, g1_t1.employmentstatus nulls last) = 1
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stitch_shared__common_communication_preference_party_employment
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || st.parent_bk AS VARCHAR))), '')) as hkey,
+               st.inc_job_updated_at as ldts,
+               to_varchar(st.correspondencelanguage) as CORRESPONDENCELANGUAGE,
+               to_varchar(st.marketingoptinindicator) as MARKETINGOPTININDICATOR
+          from st1 st
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_COMMUNICATION_PREFERENCE
+     where regexp_like(RECORD_SOURCE, '^(OPUS_CP_PARTNERS)(, (OPUS_CP_PARTNERS))*$') and PARTY_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.CORRESPONDENCELANGUAGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.MARKETINGOPTININDICATOR AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_COMMUNICATION_PREFERENCE', 'stitch_shared__common_communication_preference_party_employment (1 tables)',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 20. OPUS — [M2 | stitch_incremental] SAT_COMMON_GEO   [Design finding]
+-- HASHDIFF of stitch_shared__common_admin_geography_common_geo (2 tables)
+-- (stg2_shared__common_admin_geography_common_geo) also hashes PINCODE, which this
+-- satellite does not store (a shared stage feeding several satellites). A change in only
+-- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
+-- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
+-- recomputed from the satellite row. standard satellite, automate_dv.sat; PK
+-- LOCATION_HKEY; 1 RECORD_SOURCE group(s):
+-- stitch_shared__common_admin_geography_common_geo (2 tables) [4 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a)
+-- DM-H1 (a) OPUS SAT_COMMON_GEO: HASHDIFF not recomputable -- see note
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct LOCATION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_GEO where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_PINCODE|OPUS_BJAZ_PINCODE_MASTER)(, (OPUS_BJAZ_PINCODE|OPUS_BJAZ_PINCODE_MASTER))*$') order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_COMMON_GEO' and record_source = 'stitch_shared__common_admin_geography_common_geo (2 tables)'
+),
+g1_t0 as (  -- stitch source OPUS_BJAZ_PINCODE
+    select distinct (nullif(trim("PINCODE"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("PINCODE"::varchar), '')))), '') as pincode,
+           nullif(trim(to_varchar((nullif(trim("ZONE1"::varchar), '')))), '') as regioncode,
+           nullif(trim(to_varchar((nullif(trim("STATE"::varchar), '')))), '') as regionname,
+           nullif(trim(to_varchar((nullif(trim("ZONE2"::varchar), '')))), '') as subzonecode,
+           nullif(trim(to_varchar((nullif(trim("ZONE"::varchar), '')))), '') as zonecode,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_PINCODE
+     where (nullif(trim("PINCODE"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (((nullif(trim("PINCODE"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t1 as (  -- stitch source OPUS_BJAZ_PINCODE_MASTER
+    select distinct (nullif(trim("PINCODE"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("PINCODE"::varchar), '')))), '') as pincode,
+           nullif(trim(to_varchar((nullif(trim("ZONE1"::varchar), '')))), '') as regioncode,
+           nullif(trim(to_varchar((nullif(trim("STATE"::varchar), '')))), '') as regionname,
+           nullif(trim(to_varchar((nullif(trim("ZONE2"::varchar), '')))), '') as subzonecode,
+           nullif(trim(to_varchar((nullif(trim("ZONE_PIN"::varchar), '')))), '') as zonecode,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_PINCODE_MASTER
+     where (nullif(trim("PINCODE"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (((nullif(trim("PINCODE"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+k1 as (
+    select parent_bk from g1_t0
+    union
+    select parent_bk from g1_t1
+),
+st1 as (  -- stitch_shared__common_admin_geography_common_geo recomputed from RAW (same coalesce / priority as the stitch macro)
+    select ak.parent_bk,
+           coalesce(g1_t0.pincode, g1_t1.pincode) as pincode,
+           coalesce(g1_t0.regioncode, g1_t1.regioncode) as regioncode,
+           coalesce(g1_t0.regionname, g1_t1.regionname) as regionname,
+           coalesce(g1_t0.subzonecode, g1_t1.subzonecode) as subzonecode,
+           coalesce(g1_t0.zonecode, g1_t1.zonecode) as zonecode,
+           array_to_string(array_construct_compact(
+               case when g1_t0.parent_bk is not null then 'OPUS_BJAZ_PINCODE' end,
+               case when g1_t1.parent_bk is not null then 'OPUS_BJAZ_PINCODE_MASTER' end
+           ), ', ') as record_source,
+           greatest_ignore_nulls(g1_t0.inc_job_updated_at, g1_t1.inc_job_updated_at) as inc_job_updated_at
+      from k1 ak
+      left join g1_t0 on g1_t0.parent_bk = ak.parent_bk
+      left join g1_t1 on g1_t1.parent_bk = ak.parent_bk
+    qualify row_number() over (partition by ak.parent_bk order by g1_t0.pincode nulls last, g1_t0.regioncode nulls last, g1_t0.regionname nulls last, g1_t0.subzonecode nulls last, g1_t0.zonecode nulls last, g1_t1.pincode nulls last, g1_t1.regioncode nulls last, g1_t1.regionname nulls last, g1_t1.subzonecode nulls last, g1_t1.zonecode nulls last) = 1
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stitch_shared__common_admin_geography_common_geo
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || st.parent_bk AS VARCHAR))), '')) as hkey,
+               st.inc_job_updated_at as ldts,
+               to_varchar(st.regioncode) as REGIONCODE,
+               to_varchar(st.regionname) as REGIONNAME,
+               to_varchar(st.subzonecode) as SUBZONECODE,
+               to_varchar(st.zonecode) as ZONECODE
+          from st1 st
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select LOCATION_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_GEO
+     where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_PINCODE|OPUS_BJAZ_PINCODE_MASTER)(, (OPUS_BJAZ_PINCODE|OPUS_BJAZ_PINCODE_MASTER))*$') and LOCATION_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.REGIONCODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.REGIONNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.SUBZONECODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.ZONECODE AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_GEO', 'stitch_shared__common_admin_geography_common_geo (2 tables)',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 21. OPUS — [M2 | stitch_incremental] SAT_PARTY_EMPLOYMENT   [Design finding]
+-- HASHDIFF of stitch_shared__common_communication_preference_party_employment (1 tables)
+-- (stg2_shared__common_communication_preference_party_employment) also hashes
+-- CORRESPONDENCELANGUAGE, MARKETINGOPTININDICATOR, which this satellite does not store
+-- (a shared stage feeding several satellites). A change in only those columns gives a
+-- new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2; see
+-- DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be recomputed from the
+-- satellite row. standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE
+-- group(s): stitch_shared__common_communication_preference_party_employment (1 tables)
+-- [1 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a)
+-- DM-H1 (a) OPUS SAT_PARTY_EMPLOYMENT: HASHDIFF not recomputable -- see note
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT where regexp_like(RECORD_SOURCE, '^(OPUS_CP_PARTNERS)(, (OPUS_CP_PARTNERS))*$') order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_EMPLOYMENT' and record_source = 'stitch_shared__common_communication_preference_party_employment (1 tables)'
+),
+g1_t1 as (  -- stitch source OPUS_CP_PARTNERS
+    select distinct (nullif(trim("PART_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("LANGUAGE"::varchar), '')))), '') as correspondencelanguage,
+           nullif(trim(to_varchar((nullif(trim("LITERATURE"::varchar), '')))), '') as marketingoptinindicator,
+           nullif(trim(to_varchar((nullif(trim("EMPLOYMENT_STATUS"::varchar), '')))), '') as employmentstatus,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.CP_PARTNERS
+     where (nullif(trim("PART_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PART_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+k1 as (
+    select parent_bk from g1_t1
+),
+st1 as (  -- stitch_shared__common_communication_preference_party_employment recomputed from RAW (same coalesce / priority as the stitch macro)
+    select ak.parent_bk,
+           g1_t1.correspondencelanguage as correspondencelanguage,
+           g1_t1.marketingoptinindicator as marketingoptinindicator,
+           g1_t1.employmentstatus as employmentstatus,
+           array_to_string(array_construct_compact(
+               case when g1_t1.parent_bk is not null then 'OPUS_CP_PARTNERS' end
+           ), ', ') as record_source,
+           greatest_ignore_nulls(g1_t1.inc_job_updated_at) as inc_job_updated_at
+      from k1 ak
+      left join g1_t1 on g1_t1.parent_bk = ak.parent_bk
+    qualify row_number() over (partition by ak.parent_bk order by g1_t1.correspondencelanguage nulls last, g1_t1.marketingoptinindicator nulls last, g1_t1.employmentstatus nulls last) = 1
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stitch_shared__common_communication_preference_party_employment
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || st.parent_bk AS VARCHAR))), '')) as hkey,
+               st.inc_job_updated_at as ldts,
+               to_varchar(st.employmentstatus) as EMPLOYMENTSTATUS
+          from st1 st
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
+     where regexp_like(RECORD_SOURCE, '^(OPUS_CP_PARTNERS)(, (OPUS_CP_PARTNERS))*$') and PARTY_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.EMPLOYMENTSTATUS AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_EMPLOYMENT', 'stitch_shared__common_communication_preference_party_employment (1 tables)',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 22. OPUS — [M2 | stitch_incremental] SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- sat_multi_source; PK PARTY_HKEY; 3 RECORD_SOURCE group(s): stitch_party_health_profile
+-- (4 tables) [5 col(s)], OPUS_BJAZ_M_KYC_DRIVING_LICENCE [0 col(s)],
+-- OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [0 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, '3 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BODYMASSINDEX AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HEIGHT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MATERNITYSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SMOKERINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WEIGHT AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BODYMASSINDEX AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HEIGHT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MATERNITYSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SMOKERINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WEIGHT AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
+ where (regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$')) or (RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_DRIVING_LICENCE') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS');
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$') order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_HEALTH_PROFILE' and record_source = 'stitch_party_health_profile (4 tables)'
+),
+g1_t0 as (  -- stitch source OPUS_BJAZ_EC_MEM_DTLS_EXTN
+    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar(("HEIGHT_CM"::number))), '') as height,
+           nullif(trim(to_varchar((nullif(trim("PREGNANT_YN"::varchar), '')))), '') as maternitystatus,
+           nullif(trim(to_varchar((nullif(trim("SMOKER_YN"::varchar), '')))), '') as smokerindicator,
+           nullif(trim(to_varchar(("WEIGHT_KG"::number))), '') as weight,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_EC_MEM_DTLS_EXTN
+     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t1 as (  -- stitch source OPUS_BJAZ_HCF_MEMBER_DTLS
+    select distinct (nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("OBESITY_FLAG"::varchar), '')))), '') as bodymassindex,
+           nullif(trim(to_varchar((nullif(trim("HEIGHT_FLAG"::varchar), '')))), '') as height,
+           nullif(trim(to_varchar((nullif(trim("SMOKER_FLAG"::varchar), '')))), '') as smokerindicator,
+           nullif(trim(to_varchar((nullif(trim("WEIGHT_FLAG"::varchar), '')))), '') as weight,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HCF_MEMBER_DTLS
+     where (nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t2 as (  -- stitch source OPUS_BJAZ_SH_MEM_DTLS_EXTN
+    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("SMOKER_YN"::varchar), '')))), '') as smokerindicator,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SH_MEM_DTLS_EXTN
+     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t3 as (  -- stitch source OPUS_BJAZ_SPP_MEMBER_DTLS
+    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("OBESITY"::varchar), '')))), '') as bodymassindex,
+           nullif(trim(to_varchar((nullif(trim("WEIGHT"::varchar), '')))), '') as weight,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SPP_MEMBER_DTLS
+     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+k1 as (
+    select parent_bk from g1_t0
+    union
+    select parent_bk from g1_t1
+    union
+    select parent_bk from g1_t2
+    union
+    select parent_bk from g1_t3
+),
+st1 as (  -- stitch_party_health_profile recomputed from RAW (same coalesce / priority as the stitch macro)
+    select ak.parent_bk,
+           coalesce(g1_t1.bodymassindex, g1_t3.bodymassindex) as bodymassindex,
+           coalesce(g1_t0.height, g1_t1.height) as height,
+           g1_t0.maternitystatus as maternitystatus,
+           coalesce(g1_t0.smokerindicator, g1_t1.smokerindicator, g1_t2.smokerindicator) as smokerindicator,
+           coalesce(g1_t0.weight, g1_t1.weight, g1_t3.weight) as weight,
+           array_to_string(array_construct_compact(
+               case when g1_t0.parent_bk is not null then 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' end,
+               case when g1_t1.parent_bk is not null then 'OPUS_BJAZ_HCF_MEMBER_DTLS' end,
+               case when g1_t2.parent_bk is not null then 'OPUS_BJAZ_SH_MEM_DTLS_EXTN' end,
+               case when g1_t3.parent_bk is not null then 'OPUS_BJAZ_SPP_MEMBER_DTLS' end
+           ), ', ') as record_source,
+           greatest_ignore_nulls(g1_t0.inc_job_updated_at, g1_t1.inc_job_updated_at, g1_t2.inc_job_updated_at, g1_t3.inc_job_updated_at) as inc_job_updated_at
+      from k1 ak
+      left join g1_t0 on g1_t0.parent_bk = ak.parent_bk
+      left join g1_t1 on g1_t1.parent_bk = ak.parent_bk
+      left join g1_t2 on g1_t2.parent_bk = ak.parent_bk
+      left join g1_t3 on g1_t3.parent_bk = ak.parent_bk
+    qualify row_number() over (partition by ak.parent_bk order by g1_t0.height nulls last, g1_t0.maternitystatus nulls last, g1_t0.smokerindicator nulls last, g1_t0.weight nulls last, g1_t1.bodymassindex nulls last, g1_t1.height nulls last, g1_t1.smokerindicator nulls last, g1_t1.weight nulls last, g1_t2.smokerindicator nulls last, g1_t3.bodymassindex nulls last, g1_t3.weight nulls last) = 1
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stitch_party_health_profile
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || st.parent_bk AS VARCHAR))), '')) as hkey,
+               st.inc_job_updated_at as ldts,
+               to_varchar(st.bodymassindex) as BODYMASSINDEX,
+               to_varchar(st.height) as HEIGHT,
+               to_varchar(st.maternitystatus) as MATERNITYSTATUS,
+               to_varchar(st.smokerindicator) as SMOKERINDICATOR,
+               to_varchar(st.weight) as WEIGHT
+          from st1 st
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
+     where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$') and PARTY_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.BODYMASSINDEX AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.HEIGHT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.MATERNITYSTATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.SMOKERINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.WEIGHT AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_HEALTH_PROFILE', 'stitch_party_health_profile (4 tables)',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 23. OPUS — [M2 | stitch_incremental] SAT_PRODUCT_DEFINITION   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- automate_dv.sat; PK PRODUCT_HKEY; 1 RECORD_SOURCE group(s): stitch_product_definition
+-- (3 tables) [3 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'stitch_product_definition (3 tables)' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCTCATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCTGENERATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCTNAME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCTCATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCTGENERATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCTNAME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PRODUCT_HKEY, 'HEX'), null)) within group (order by PRODUCT_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
+ where (regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_CTNGY_FF_DTLS_EXTN|OPUS_BJAZ_CTNGY_PA_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS)(, (OPUS_BJAZ_CTNGY_FF_DTLS_EXTN|OPUS_BJAZ_CTNGY_PA_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS))*$'));
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_CTNGY_FF_DTLS_EXTN|OPUS_BJAZ_CTNGY_PA_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS)(, (OPUS_BJAZ_CTNGY_FF_DTLS_EXTN|OPUS_BJAZ_CTNGY_PA_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS))*$') order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PRODUCT_DEFINITION' and record_source = 'stitch_product_definition (3 tables)'
+),
+g1_t0 as (  -- stitch source OPUS_BJAZ_CTNGY_FF_DTLS_EXTN
+    select distinct (nullif(trim("SCHEME_CODE"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar(("SECTION_CODE"::number))), '') as productcategory,
+           nullif(trim(to_varchar(("SCHEME_VERSION"::number))), '') as productgeneration,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_FF_DTLS_EXTN
+     where (nullif(trim("SCHEME_CODE"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (((nullif(trim("SCHEME_CODE"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t1 as (  -- stitch source OPUS_BJAZ_CTNGY_PA_MEM_DTLS
+    select distinct (nullif(trim("SCHEME_CODE"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar(("SECTION_CODE"::number))), '') as productcategory,
+           nullif(trim(to_varchar(("SCHEME_VERSION"::number))), '') as productgeneration,
+           nullif(trim(to_varchar((nullif(trim("PLAN"::varchar), '')))), '') as productname,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_PA_MEM_DTLS
+     where (nullif(trim("SCHEME_CODE"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (((nullif(trim("SCHEME_CODE"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t2 as (  -- stitch source OPUS_BJAZ_HM_MEMBER_DTLS
+    select distinct (nullif(trim("PRODUCT_CODE"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("PLAN_NAME"::varchar), '')))), '') as productname,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
+     where (nullif(trim("PRODUCT_CODE"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (((nullif(trim("PRODUCT_CODE"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+k1 as (
+    select parent_bk from g1_t0
+    union
+    select parent_bk from g1_t1
+    union
+    select parent_bk from g1_t2
+),
+st1 as (  -- stitch_product_definition recomputed from RAW (same coalesce / priority as the stitch macro)
+    select ak.parent_bk,
+           coalesce(g1_t0.productcategory, g1_t1.productcategory) as productcategory,
+           coalesce(g1_t0.productgeneration, g1_t1.productgeneration) as productgeneration,
+           coalesce(g1_t1.productname, g1_t2.productname) as productname,
+           array_to_string(array_construct_compact(
+               case when g1_t0.parent_bk is not null then 'OPUS_BJAZ_CTNGY_FF_DTLS_EXTN' end,
+               case when g1_t1.parent_bk is not null then 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS' end,
+               case when g1_t2.parent_bk is not null then 'OPUS_BJAZ_HM_MEMBER_DTLS' end
+           ), ', ') as record_source,
+           greatest_ignore_nulls(g1_t0.inc_job_updated_at, g1_t1.inc_job_updated_at, g1_t2.inc_job_updated_at) as inc_job_updated_at
+      from k1 ak
+      left join g1_t0 on g1_t0.parent_bk = ak.parent_bk
+      left join g1_t1 on g1_t1.parent_bk = ak.parent_bk
+      left join g1_t2 on g1_t2.parent_bk = ak.parent_bk
+    qualify row_number() over (partition by ak.parent_bk order by g1_t0.productcategory nulls last, g1_t0.productgeneration nulls last, g1_t1.productcategory nulls last, g1_t1.productgeneration nulls last, g1_t1.productname nulls last, g1_t2.productname nulls last) = 1
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stitch_product_definition
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || st.parent_bk AS VARCHAR))), '')) as hkey,
+               st.inc_job_updated_at as ldts,
+               to_varchar(st.productcategory) as PRODUCTCATEGORY,
+               to_varchar(st.productgeneration) as PRODUCTGENERATION,
+               to_varchar(st.productname) as PRODUCTNAME
+          from st1 st
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select PRODUCT_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
+     where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_CTNGY_FF_DTLS_EXTN|OPUS_BJAZ_CTNGY_PA_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS)(, (OPUS_BJAZ_CTNGY_FF_DTLS_EXTN|OPUS_BJAZ_CTNGY_PA_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS))*$') and PRODUCT_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.PRODUCTCATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PRODUCTGENERATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PRODUCTNAME AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PRODUCT_DEFINITION', 'stitch_product_definition (3 tables)',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 24. OPUS — [M3 | automate_dv.ma_sat] SAT_LNK_PARTY_ROLE_CORE   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- automate_dv.ma_sat; PK PARTY_HKEY, child key ROLECODE, ROLESEQUENCE; 1 RECORD_SOURCE
+-- group(s): OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS [1 col(s)]. Multi-active: compared per
+-- (key, child key); latest = max LOAD_DATETIME per member.
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_LNK_PARTY_ROLE_CORE' as satellite, 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ROLESTATUS AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ROLESTATUS AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_PARTY_ROLE_CORE
+ where (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS');
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_PARTY_ROLE_CORE where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_LNK_PARTY_ROLE_CORE' and record_source = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS'
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_t_ckyc_rel_persion_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('CKYC:' || upper(trim(coalesce((nullif(trim("CKYC_NO"::varchar), '')),''))), 'CKYC:')) AS VARCHAR))), '')) as hkey,
+               to_varchar(coalesce(nullif(trim(to_varchar((nullif(trim("REL_TYPE"::varchar), '')))), ''), '~')) as cdk_1,
+               to_varchar(coalesce(nullif(trim(to_varchar((nullif(trim("SEQUENCE_NO"::varchar), '')))), ''), '~')) as cdk_2,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("ADD_DEL_FLAG"::varchar), ''))) as ROLESTATUS
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_CKYC_REL_PERSION_DTLS
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, coalesce(to_varchar(ROLECODE), '^^') || '|' || coalesce(to_varchar(ROLESEQUENCE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_PARTY_ROLE_CORE
+     where RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS' and PARTY_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, coalesce(e.cdk_1, '^^') || '|' || coalesce(e.cdk_2, '^^') as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.ROLESTATUS AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_PARTY_ROLE_CORE', 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 25. OPUS — [M3 | ma_sat_multi_source] SAT_POLICY_CLASSIFICATION   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- ma_sat_multi_source; PK POLICY_HKEY, child key CLASSIFICATIONTYPE; 4 RECORD_SOURCE
+-- group(s): OPUS_BJAZ_T_KYC_DETAILS [1 col(s)], OPUS_BJAZ_T_KYC_INCOMING [1 col(s)],
+-- OPUS_BJAZ_T_KYC_POA_DOCUMENT [1 col(s)], OPUS_BJAZ_T_KYC_POI_DOCUMENT [1 col(s)].
+-- Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, '4 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CLASSIFICATIONVALUE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CLASSIFICATIONVALUE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
+ where (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_DETAILS') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT');
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_DETAILS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_POLICY_CLASSIFICATION' and record_source = 'OPUS_BJAZ_T_KYC_DETAILS'
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_t_kyc_details
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (upper(case when upper(trim((nullif(trim("FIELD_TYPE"::varchar), '')))) like 'POLICY%' then trim((nullif(trim("FIELD_VALUE"::varchar), ''))) end)) AS VARCHAR))), '')) as hkey,
+               to_varchar('BUSINESS_TYPE') as cdk_1,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("BUSINESS_TYPE"::varchar), ''))) as CLASSIFICATIONVALUE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_DETAILS
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select POLICY_HKEY as hkey, coalesce(to_varchar(CLASSIFICATIONTYPE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
+     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_DETAILS' and POLICY_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, coalesce(e.cdk_1, '^^') as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.CLASSIFICATIONVALUE AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_CLASSIFICATION', 'OPUS_BJAZ_T_KYC_DETAILS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_POLICY_CLASSIFICATION' and record_source = 'OPUS_BJAZ_T_KYC_INCOMING'
+),
+e2 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_t_kyc_incoming
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (case when upper(trim((nullif(trim("FIELD_TYPE"::varchar), '')))) like 'POLICY%' then trim((nullif(trim("FIELD_VALUE"::varchar), ''))) end) AS VARCHAR))), '')) as hkey,
+               to_varchar('BUSINESS_TYPE') as cdk_1,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("BUSINESS_TYPE"::varchar), ''))) as CLASSIFICATIONVALUE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_INCOMING
+      )
+     where hkey in (select hkey from s2) and ldts is not null
+    qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
+),
+n2 as (  -- satellite history per sampled key
+    select POLICY_HKEY as hkey, coalesce(to_varchar(CLASSIFICATIONTYPE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
+     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING' and POLICY_HKEY in (select hkey from s2)
+     group by 1, 2
+),
+x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, coalesce(e.cdk_1, '^^') as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.CLASSIFICATIONVALUE AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e2 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_CLASSIFICATION', 'OPUS_BJAZ_T_KYC_INCOMING',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s3 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_POLICY_CLASSIFICATION' and record_source = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT'
+),
+e3 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_t_kyc_poa_document
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (upper(case when upper(trim((nullif(trim("FIELD_TYPE"::varchar), '')))) like 'POLICY%' then trim((nullif(trim("FIELD_VALUE"::varchar), ''))) end)) AS VARCHAR))), '')) as hkey,
+               to_varchar('BUSINESS_TYPE') as cdk_1,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("BUSINESS_TYPE"::varchar), ''))) as CLASSIFICATIONVALUE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_POA_DOCUMENT
+      )
+     where hkey in (select hkey from s3) and ldts is not null
+    qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
+),
+n3 as (  -- satellite history per sampled key
+    select POLICY_HKEY as hkey, coalesce(to_varchar(CLASSIFICATIONTYPE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
+     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POA_DOCUMENT' and POLICY_HKEY in (select hkey from s3)
+     group by 1, 2
+),
+x3 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, coalesce(e.cdk_1, '^^') as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.CLASSIFICATIONVALUE AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e3 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_CLASSIFICATION', 'OPUS_BJAZ_T_KYC_POA_DOCUMENT',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n3 n full outer join x3 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_POLICY_CLASSIFICATION' and record_source = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT'
+),
+e4 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_t_kyc_poi_document
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (upper(case when upper(trim((nullif(trim("FIELD_TYPE"::varchar), '')))) like 'POLICY%' then trim((nullif(trim("FIELD_VALUE"::varchar), ''))) end)) AS VARCHAR))), '')) as hkey,
+               to_varchar('BUSINESS_TYPE') as cdk_1,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("BUSINESS_TYPE"::varchar), ''))) as CLASSIFICATIONVALUE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_POI_DOCUMENT
+      )
+     where hkey in (select hkey from s4) and ldts is not null
+    qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
+),
+n4 as (  -- satellite history per sampled key
+    select POLICY_HKEY as hkey, coalesce(to_varchar(CLASSIFICATIONTYPE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
+     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_POI_DOCUMENT' and POLICY_HKEY in (select hkey from s4)
+     group by 1, 2
+),
+x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, coalesce(e.cdk_1, '^^') as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.CLASSIFICATIONVALUE AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e4 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_CLASSIFICATION', 'OPUS_BJAZ_T_KYC_POI_DOCUMENT',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 26. OPUS — [M3 | sat_multi_source] SAT_AUG_LOCATION   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
+-- sat_multi_source; PK LOCATION_HKEY; 2 RECORD_SOURCE group(s): OPUS_CP_ADDRESSES [2
+-- col(s)], OPUS_CP_PARTNERS [1 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_AUG_LOCATION' as satellite, 'OPUS_CP_ADDRESSES' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADDRESS_LINE4 AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ADDRESS_LINE5 AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADDRESS_LINE4 AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ADDRESS_LINE5 AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(LOCATION_HKEY, 'HEX'), null)) within group (order by LOCATION_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOCATION
+ where (RECORD_SOURCE = 'OPUS_CP_ADDRESSES')
+union all
+select 'OPUS' as project, 'SAT_AUG_LOCATION' as satellite, 'OPUS_CP_PARTNERS' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CARE_OF_NAME AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CARE_OF_NAME AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(LOCATION_HKEY, 'HEX'), null)) within group (order by LOCATION_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOCATION
+ where (RECORD_SOURCE = 'OPUS_CP_PARTNERS');
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct LOCATION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOCATION where RECORD_SOURCE = 'OPUS_CP_ADDRESSES' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_AUG_LOCATION' and record_source = 'OPUS_CP_ADDRESSES'
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__cp_addresses
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || ((nullif(trim("ADD_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("ADDRESS_LINE4"::varchar), ''))) as ADDRESS_LINE4,
+               to_varchar((nullif(trim("ADDRESS_LINE5"::varchar), ''))) as ADDRESS_LINE5
+          from BAGIC_PREPROD_CURATED_DB.UTILS.CP_ADDRESSES
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select LOCATION_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOCATION
+     where RECORD_SOURCE = 'OPUS_CP_ADDRESSES' and LOCATION_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.ADDRESS_LINE4 AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.ADDRESS_LINE5 AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_LOCATION', 'OPUS_CP_ADDRESSES',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct LOCATION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOCATION where RECORD_SOURCE = 'OPUS_CP_PARTNERS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_AUG_LOCATION' and record_source = 'OPUS_CP_PARTNERS'
+),
+e2 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__cp_partners
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || ((nullif(trim("ADD_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("ADDRESSEE"::varchar), ''))) as CARE_OF_NAME
+          from BAGIC_PREPROD_CURATED_DB.UTILS.CP_PARTNERS
+      )
+     where hkey in (select hkey from s2) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n2 as (  -- satellite history per sampled key
+    select LOCATION_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOCATION
+     where RECORD_SOURCE = 'OPUS_CP_PARTNERS' and LOCATION_HKEY in (select hkey from s2)
+     group by 1, 2
+),
+x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.CARE_OF_NAME AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e2 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_AUG_LOCATION', 'OPUS_CP_PARTNERS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 27. OPUS — [M3 | sat_multi_source] SAT_PARTY_KYC_REFERENCE   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- sat_multi_source; PK PARTY_HKEY; 4 RECORD_SOURCE group(s): OPUS_CP_PARTNERS [1
+-- col(s)], OPUS_BJAZ_T_CKYC_OTP [0 col(s)], OPUS_BJAZ_T_CKYC_SEARCH [0 col(s)],
+-- OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS [0 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_PARTY_KYC_REFERENCE' as satellite, '4 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(KYCREFERENCETYPE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(KYCREFERENCETYPE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC_REFERENCE
+ where (RECORD_SOURCE = 'OPUS_CP_PARTNERS') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_OTP') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_SEARCH') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS');
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC_REFERENCE where RECORD_SOURCE = 'OPUS_CP_PARTNERS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_KYC_REFERENCE' and record_source = 'OPUS_CP_PARTNERS'
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__cp_partners
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PART_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar((nullif(trim("EVID_TYPE"::varchar), ''))) as KYCREFERENCETYPE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.CP_PARTNERS
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC_REFERENCE
+     where RECORD_SOURCE = 'OPUS_CP_PARTNERS' and PARTY_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.KYCREFERENCETYPE AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_KYC_REFERENCE', 'OPUS_CP_PARTNERS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 28. OPUS — [M3 | sat_multi_source] SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- sat_multi_source; PK POLICY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_T_KYC_INCOMING
+-- [0 col(s)], OPUS_BJAZ_T_KYC_OCR [1 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_POLICY_PREMIUM_SUMMARY' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(GROSSPREMIUM AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(GROSSPREMIUM AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_SUMMARY
+ where (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_INCOMING') or (RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_OCR');
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_SUMMARY where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_OCR' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_POLICY_PREMIUM_SUMMARY' and record_source = 'OPUS_BJAZ_T_KYC_OCR'
+),
+e2 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_t_kyc_ocr
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (case when upper(trim((nullif(trim("FIELD_TYPE"::varchar), '')))) like 'POLICY%' then trim((nullif(trim("FIELD_VALUE"::varchar), ''))) end) AS VARCHAR))), '')) as hkey,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar(("PREMIUM_AMOUNT"::number)) as GROSSPREMIUM
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_OCR
+      )
+     where hkey in (select hkey from s2) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n2 as (  -- satellite history per sampled key
+    select POLICY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_PREMIUM_SUMMARY
+     where RECORD_SOURCE = 'OPUS_BJAZ_T_KYC_OCR' and POLICY_HKEY in (select hkey from s2)
+     group by 1, 2
+),
+x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.GROSSPREMIUM AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e2 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_PREMIUM_SUMMARY', 'OPUS_BJAZ_T_KYC_OCR',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 29. OPUS — [M3 | sat_multi_source(OBJECT)] SAT_COMMON_CONTACT   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- sat_multi_source; PK PARTY_HKEY; 12 RECORD_SOURCE group(s): OPUS_AZBJ_PARTNER_EXTN [4
+-- col(s)], OPUS_BJAZ_CLM_SUPP_EXTN [4 col(s)], OPUS_BJAZ_CTNGY_GC_MEM_DATA [1 col(s)],
+-- OPUS_BJAZ_CTNGY_PA_MEM_DTLS [4 col(s)], OPUS_BJAZ_HM_HOSPITAL_MASTER [4 col(s)],
+-- OPUS_BJAZ_HM_MEMBER_DTLS [2 col(s)], OPUS_BJAZ_SH_MEM_DTLS_EXTN [1 col(s)],
+-- OPUS_CLM_SUPPLIERS [1 col(s)], OPUS_CP_PARTNERS [3 col(s)], OPUS_BJAZ_T_CKYC_OTP [1
+-- col(s)], OPUS_BJAZ_T_EKYC [1 col(s)], OPUS_BJAZ_T_KYC_DETAILS [1 col(s)]. OBJECT
+-- satellite: MOBILENUMBER hold one entry per source table (sat value = col:"<TABLE>";
+-- expected = MAX over that table's RAW rows, as the macro does). Plain columns are MAX
+-- across all tables and are not compared per table. A table absent from the latest
+-- incremental window is absent from the latest row -- compare after a full load.
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'all OPUS rows (OBJECT hashdiff)' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT(IFNULL(TO_JSON(MOBILENUMBER), '^^'), '||', IFNULL(CAST(ALTERNATEEMAILADDRESS AS VARCHAR), '^^'), '||', IFNULL(CAST(ALTERNATEMOBILENUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(EMAILADDRESS AS VARCHAR), '^^'), '||', IFNULL(CAST(FAXNUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(LANDLINENUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(PREFERREDCONTACTTIME AS VARCHAR), '^^'), '||', IFNULL(CAST(STDCODE AS VARCHAR), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT(IFNULL(TO_JSON(MOBILENUMBER), '^^'), '||', IFNULL(CAST(ALTERNATEEMAILADDRESS AS VARCHAR), '^^'), '||', IFNULL(CAST(ALTERNATEMOBILENUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(EMAILADDRESS AS VARCHAR), '^^'), '||', IFNULL(CAST(FAXNUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(LANDLINENUMBER AS VARCHAR), '^^'), '||', IFNULL(CAST(PREFERREDCONTACTTIME AS VARCHAR), '^^'), '||', IFNULL(CAST(STDCODE AS VARCHAR), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
+ where RECORD_SOURCE = 'OPUS';
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT where RECORD_SOURCE = 'OPUS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_COMMON_CONTACT' and record_source = 'OPUS_BJAZ_CLM_SUPP_EXTN'
+),
+e2 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select hkey, max(MOBILENUMBER) as MOBILENUMBER
+      from (
+        -- via stg_partner__bjaz_clm_supp_extn
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar(("SUPP_MOBILE"::number)) as MOBILENUMBER
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
+      )
+     where hkey in (select hkey from s2) and ldts is not null
+     group by hkey
+),
+n2 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
+     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s2)
+     group by 1, 2
+),
+x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MOBILENUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e2 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_CONTACT', 'OPUS_BJAZ_CLM_SUPP_EXTN',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s4 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT where RECORD_SOURCE = 'OPUS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_COMMON_CONTACT' and record_source = 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS'
+),
+e4 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select hkey, max(MOBILENUMBER) as MOBILENUMBER
+      from (
+        -- via stg_partner__bjaz_ctngy_pa_mem_dtls
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim("PARTNER_ID"::varchar), ''))) AS VARCHAR))), '')) as hkey,
+               ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
+               to_varchar(("MOBILE_NO"::number)) as MOBILENUMBER
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CTNGY_PA_MEM_DTLS
+      )
+     where hkey in (select hkey from s4) and ldts is not null
+     group by hkey
+),
+n4 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
+     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s4)
+     group by 1, 2
+),
+x4 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MOBILENUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e4 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_CONTACT', 'OPUS_BJAZ_CTNGY_PA_MEM_DTLS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n4 n full outer join x4 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s10 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT where RECORD_SOURCE = 'OPUS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_COMMON_CONTACT' and record_source = 'OPUS_BJAZ_T_CKYC_OTP'
+),
+e10 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select hkey, max(MOBILENUMBER) as MOBILENUMBER
+      from (
+        -- via stg_partner__bjaz_t_ckyc_otp
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("MOBILE_NUMBER"::varchar), ''))) as MOBILENUMBER
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_CKYC_OTP
+      )
+     where hkey in (select hkey from s10) and ldts is not null
+     group by hkey
+),
+n10 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
+     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s10)
+     group by 1, 2
+),
+x10 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MOBILENUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e10 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_CONTACT', 'OPUS_BJAZ_T_CKYC_OTP',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n10 n full outer join x10 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s11 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT where RECORD_SOURCE = 'OPUS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_COMMON_CONTACT' and record_source = 'OPUS_BJAZ_T_EKYC'
+),
+e11 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select hkey, max(MOBILENUMBER) as MOBILENUMBER
+      from (
+        -- via stg_partner__bjaz_t_ekyc
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("MOBILE_NUMBER"::varchar), ''))) as MOBILENUMBER
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_EKYC
+      )
+     where hkey in (select hkey from s11) and ldts is not null
+     group by hkey
+),
+n11 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
+     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s11)
+     group by 1, 2
+),
+x11 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MOBILENUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e11 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_CONTACT', 'OPUS_BJAZ_T_EKYC',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n11 n full outer join x11 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s12 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT where RECORD_SOURCE = 'OPUS' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_COMMON_CONTACT' and record_source = 'OPUS_BJAZ_T_KYC_DETAILS'
+),
+e12 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select hkey, max(MOBILENUMBER) as MOBILENUMBER
+      from (
+        -- via stg_partner__bjaz_t_kyc_details
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(upper(trim(coalesce((nullif(trim("CATEGORY"::varchar), '')),''))) || ':' || upper(trim(coalesce((nullif(trim("INPUT"::varchar), '')),''))), ':')) AS VARCHAR))), '')) as hkey,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("MOBILE_NUMBER"::varchar), ''))) as MOBILENUMBER
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_T_KYC_DETAILS
+      )
+     where hkey in (select hkey from s12) and ldts is not null
+     group by hkey
+),
+n12 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
+     where RECORD_SOURCE = 'OPUS' and PARTY_HKEY in (select hkey from s12)
+     group by 1, 2
+),
+x12 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.MOBILENUMBER AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e12 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_CONTACT', 'OPUS_BJAZ_T_KYC_DETAILS',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n12 n full outer join x12 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 30. OPUS — [M3 | stitch_incremental] SAT_COMMON_CLASSIFICATION   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): stitch_common_classification
+-- (2 tables) [2 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'stitch_common_classification (2 tables)' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PRIORITYCODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SEGMENTCODE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PRIORITYCODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SEGMENTCODE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
+ where (regexp_like(RECORD_SOURCE, '^(OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_INTERMEDIARY)(, (OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_INTERMEDIARY))*$'));
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION where regexp_like(RECORD_SOURCE, '^(OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_INTERMEDIARY)(, (OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_INTERMEDIARY))*$') order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_COMMON_CLASSIFICATION' and record_source = 'stitch_common_classification (2 tables)'
+),
+g1_t0 as (  -- stitch source OPUS_AZBJ_PARTNER_EXTN
+    select distinct (nullif(trim("PART_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("VIP_CUST"::varchar), '')))), '') as prioritycode,
+           nullif(trim(to_varchar((nullif(trim("UCIC_FLAG"::varchar), '')))), '') as segmentcode,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.AZBJ_PARTNER_EXTN
+     where (nullif(trim("PART_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PART_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t3 as (  -- stitch source OPUS_BJAZ_INTERMEDIARY
+    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("FLAGGING"::varchar), '')))), '') as segmentcode,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_INTERMEDIARY
+     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+k1 as (
+    select parent_bk from g1_t0
+    union
+    select parent_bk from g1_t3
+),
+st1 as (  -- stitch_common_classification recomputed from RAW (same coalesce / priority as the stitch macro)
+    select ak.parent_bk,
+           g1_t0.prioritycode as prioritycode,
+           coalesce(g1_t0.segmentcode, g1_t3.segmentcode) as segmentcode,
+           array_to_string(array_construct_compact(
+               case when g1_t0.parent_bk is not null then 'OPUS_AZBJ_PARTNER_EXTN' end,
+               case when g1_t3.parent_bk is not null then 'OPUS_BJAZ_INTERMEDIARY' end
+           ), ', ') as record_source,
+           greatest_ignore_nulls(g1_t0.inc_job_updated_at, g1_t3.inc_job_updated_at) as inc_job_updated_at
+      from k1 ak
+      left join g1_t0 on g1_t0.parent_bk = ak.parent_bk
+      left join g1_t3 on g1_t3.parent_bk = ak.parent_bk
+    qualify row_number() over (partition by ak.parent_bk order by g1_t0.prioritycode nulls last, g1_t0.segmentcode nulls last, g1_t3.segmentcode nulls last) = 1
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stitch_common_classification
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || st.parent_bk AS VARCHAR))), '')) as hkey,
+               st.inc_job_updated_at as ldts,
+               to_varchar(st.prioritycode) as PRIORITYCODE,
+               to_varchar(st.segmentcode) as SEGMENTCODE
+          from st1 st
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
+     where regexp_like(RECORD_SOURCE, '^(OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_INTERMEDIARY)(, (OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_INTERMEDIARY))*$') and PARTY_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.PRIORITYCODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.SEGMENTCODE AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_COMMON_CLASSIFICATION', 'stitch_common_classification (2 tables)',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 31. OPUS — [M3 | stitch_incremental] SAT_PARTY_CLAIM_HISTORY   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): stitch_party_claim_history
+-- (6 tables) [2 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite, 'stitch_party_claim_history (6 tables)' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(TOTALCLAIMAMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TOTALCLAIMCOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(TOTALCLAIMAMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TOTALCLAIMCOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CLAIM_HISTORY
+ where (regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HC_PART_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HC_PART_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$'));
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CLAIM_HISTORY where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HC_PART_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HC_PART_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$') order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_CLAIM_HISTORY' and record_source = 'stitch_party_claim_history (6 tables)'
+),
+g1_t0 as (  -- stitch source OPUS_BJAZ_EC_MEM_DTLS_EXTN
+    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar(("CLAIM_RECEIVED"::number))), '') as totalclaimcount,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_EC_MEM_DTLS_EXTN
+     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t1 as (  -- stitch source OPUS_BJAZ_HCF_MEMBER_DTLS
+    select distinct (nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("CLAIM_DTLS"::varchar), '')))), '') as totalclaimcount,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HCF_MEMBER_DTLS
+     where (nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(to_varchar(to_number("PARTNER_ID", 38, 0))), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t2 as (  -- stitch source OPUS_BJAZ_HC_PART_EXTN
+    select distinct (nullif(trim("PART_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar(("AMOUNT_CLAIMED"::number))), '') as totalclaimamount,
+           nullif(trim(to_varchar((nullif(trim("CLAIM_HISTORY"::varchar), '')))), '') as totalclaimcount,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HC_PART_EXTN
+     where (nullif(trim("PART_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PART_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t3 as (  -- stitch source OPUS_BJAZ_HM_MEMBER_DTLS
+    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar(("CLAIM_COUNT"::number))), '') as totalclaimcount,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
+     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t4 as (  -- stitch source OPUS_BJAZ_SH_MEM_DTLS_EXTN
+    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar(("AMOUNT_CLAIMED"::number))), '') as totalclaimamount,
+           nullif(trim(to_varchar((nullif(trim("CLAIM_HISTORY"::varchar), '')))), '') as totalclaimcount,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SH_MEM_DTLS_EXTN
+     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t5 as (  -- stitch source OPUS_BJAZ_SPP_MEMBER_DTLS
+    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("CLAIM_DTLS"::varchar), '')))), '') as totalclaimcount,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SPP_MEMBER_DTLS
+     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+k1 as (
+    select parent_bk from g1_t0
+    union
+    select parent_bk from g1_t1
+    union
+    select parent_bk from g1_t2
+    union
+    select parent_bk from g1_t3
+    union
+    select parent_bk from g1_t4
+    union
+    select parent_bk from g1_t5
+),
+st1 as (  -- stitch_party_claim_history recomputed from RAW (same coalesce / priority as the stitch macro)
+    select ak.parent_bk,
+           coalesce(g1_t2.totalclaimamount, g1_t4.totalclaimamount) as totalclaimamount,
+           coalesce(g1_t0.totalclaimcount, g1_t1.totalclaimcount, g1_t2.totalclaimcount, g1_t3.totalclaimcount, g1_t4.totalclaimcount, g1_t5.totalclaimcount) as totalclaimcount,
+           array_to_string(array_construct_compact(
+               case when g1_t0.parent_bk is not null then 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' end,
+               case when g1_t1.parent_bk is not null then 'OPUS_BJAZ_HCF_MEMBER_DTLS' end,
+               case when g1_t2.parent_bk is not null then 'OPUS_BJAZ_HC_PART_EXTN' end,
+               case when g1_t3.parent_bk is not null then 'OPUS_BJAZ_HM_MEMBER_DTLS' end,
+               case when g1_t4.parent_bk is not null then 'OPUS_BJAZ_SH_MEM_DTLS_EXTN' end,
+               case when g1_t5.parent_bk is not null then 'OPUS_BJAZ_SPP_MEMBER_DTLS' end
+           ), ', ') as record_source,
+           greatest_ignore_nulls(g1_t0.inc_job_updated_at, g1_t1.inc_job_updated_at, g1_t2.inc_job_updated_at, g1_t3.inc_job_updated_at, g1_t4.inc_job_updated_at, g1_t5.inc_job_updated_at) as inc_job_updated_at
+      from k1 ak
+      left join g1_t0 on g1_t0.parent_bk = ak.parent_bk
+      left join g1_t1 on g1_t1.parent_bk = ak.parent_bk
+      left join g1_t2 on g1_t2.parent_bk = ak.parent_bk
+      left join g1_t3 on g1_t3.parent_bk = ak.parent_bk
+      left join g1_t4 on g1_t4.parent_bk = ak.parent_bk
+      left join g1_t5 on g1_t5.parent_bk = ak.parent_bk
+    qualify row_number() over (partition by ak.parent_bk order by g1_t0.totalclaimcount nulls last, g1_t1.totalclaimcount nulls last, g1_t2.totalclaimamount nulls last, g1_t2.totalclaimcount nulls last, g1_t3.totalclaimcount nulls last, g1_t4.totalclaimamount nulls last, g1_t4.totalclaimcount nulls last, g1_t5.totalclaimcount nulls last) = 1
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stitch_party_claim_history
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || st.parent_bk AS VARCHAR))), '')) as hkey,
+               st.inc_job_updated_at as ldts,
+               to_varchar(st.totalclaimamount) as TOTALCLAIMAMOUNT,
+               to_varchar(st.totalclaimcount) as TOTALCLAIMCOUNT
+          from st1 st
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CLAIM_HISTORY
+     where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HC_PART_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HC_PART_EXTN|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$') and PARTY_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.TOTALCLAIMAMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.TOTALCLAIMCOUNT AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_CLAIM_HISTORY', 'stitch_party_claim_history (6 tables)',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 32. OPUS — [M3 | stitch_incremental] SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- sat_multi_source; PK PARTY_HKEY; 3 RECORD_SOURCE group(s):
+-- stitch_party_organisation_profile (3 tables) [8 col(s)], OPUS_BJAZ_M_KYC_GSTN [1
+-- col(s)], OPUS_BJAZ_T_CKYC_PERSONAL_DTLS [0 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_PARTY_ORGANISATION_PROFILE' as satellite, '3 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ANNUALTURNOVER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DATEOFINCORPORATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GROUPNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INDUSTRYDESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LEGALCONSTITUTIONTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MSMEINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAIDUPCAPITAL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PARENTENTITYNAME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ANNUALTURNOVER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DATEOFINCORPORATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GROUPNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INDUSTRYDESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LEGALCONSTITUTIONTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MSMEINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAIDUPCAPITAL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PARENTENTITYNAME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE
+ where (regexp_like(RECORD_SOURCE, '^(OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_CP_PARTNERS)(, (OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_CP_PARTNERS))*$')) or (RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_GSTN') or (RECORD_SOURCE = 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS');
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE where regexp_like(RECORD_SOURCE, '^(OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_CP_PARTNERS)(, (OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_CP_PARTNERS))*$') order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_ORGANISATION_PROFILE' and record_source = 'stitch_party_organisation_profile (3 tables)'
+),
+g1_t0 as (  -- stitch source OPUS_AZBJ_PARTNER_EXTN
+    select distinct (nullif(trim("PART_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("GLOBAL_CO_NAME"::varchar), '')))), '') as groupname,
+           nullif(trim(to_varchar(("INDUSTRY"::number))), '') as industrydescription,
+           nullif(trim(to_varchar((nullif(trim("MSME_FLAG"::varchar), '')))), '') as msmeindicator,
+           nullif(trim(to_varchar(("PAIDUP_CAPITAL"::number))), '') as paidupcapital,
+           nullif(trim(to_varchar((nullif(trim("PARENT_CO"::varchar), '')))), '') as parententityname,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.AZBJ_PARTNER_EXTN
+     where (nullif(trim("PART_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PART_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t2 as (  -- stitch source OPUS_BJAZ_CLM_SUPP_EXTN
+    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("ANN_TURNOVER"::varchar), '')))), '') as annualturnover,
+           nullif(trim(to_varchar((nullif(trim("ESTABLISH_YEAR"::varchar), '')))), '') as dateofincorporation,
+           nullif(trim(to_varchar((nullif(trim("MSME_CLASS"::varchar), '')))), '') as msmeindicator,
+           nullif(trim(to_varchar((nullif(trim("PARENT_CO_NAME"::varchar), '')))), '') as parententityname,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
+     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t4 as (  -- stitch source OPUS_CP_PARTNERS
+    select distinct (nullif(trim("PART_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("LEGAL_FORM"::varchar), '')))), '') as legalconstitutiontype,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.CP_PARTNERS
+     where (nullif(trim("PART_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PART_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+k1 as (
+    select parent_bk from g1_t0
+    union
+    select parent_bk from g1_t2
+    union
+    select parent_bk from g1_t4
+),
+st1 as (  -- stitch_party_organisation_profile recomputed from RAW (same coalesce / priority as the stitch macro)
+    select ak.parent_bk,
+           g1_t2.annualturnover as annualturnover,
+           g1_t2.dateofincorporation as dateofincorporation,
+           g1_t0.groupname as groupname,
+           g1_t0.industrydescription as industrydescription,
+           g1_t4.legalconstitutiontype as legalconstitutiontype,
+           coalesce(g1_t0.msmeindicator, g1_t2.msmeindicator) as msmeindicator,
+           g1_t0.paidupcapital as paidupcapital,
+           coalesce(g1_t0.parententityname, g1_t2.parententityname) as parententityname,
+           array_to_string(array_construct_compact(
+               case when g1_t0.parent_bk is not null then 'OPUS_AZBJ_PARTNER_EXTN' end,
+               case when g1_t2.parent_bk is not null then 'OPUS_BJAZ_CLM_SUPP_EXTN' end,
+               case when g1_t4.parent_bk is not null then 'OPUS_CP_PARTNERS' end
+           ), ', ') as record_source,
+           greatest_ignore_nulls(g1_t0.inc_job_updated_at, g1_t2.inc_job_updated_at, g1_t4.inc_job_updated_at) as inc_job_updated_at
+      from k1 ak
+      left join g1_t0 on g1_t0.parent_bk = ak.parent_bk
+      left join g1_t2 on g1_t2.parent_bk = ak.parent_bk
+      left join g1_t4 on g1_t4.parent_bk = ak.parent_bk
+    qualify row_number() over (partition by ak.parent_bk order by g1_t0.groupname nulls last, g1_t0.industrydescription nulls last, g1_t0.msmeindicator nulls last, g1_t0.paidupcapital nulls last, g1_t0.parententityname nulls last, g1_t2.annualturnover nulls last, g1_t2.dateofincorporation nulls last, g1_t2.msmeindicator nulls last, g1_t2.parententityname nulls last, g1_t4.legalconstitutiontype nulls last) = 1
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stitch_party_organisation_profile
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || st.parent_bk AS VARCHAR))), '')) as hkey,
+               st.inc_job_updated_at as ldts,
+               to_varchar(st.annualturnover) as ANNUALTURNOVER,
+               to_varchar(st.dateofincorporation) as DATEOFINCORPORATION,
+               to_varchar(st.groupname) as GROUPNAME,
+               to_varchar(st.industrydescription) as INDUSTRYDESCRIPTION,
+               to_varchar(st.legalconstitutiontype) as LEGALCONSTITUTIONTYPE,
+               to_varchar(st.msmeindicator) as MSMEINDICATOR,
+               to_varchar(st.paidupcapital) as PAIDUPCAPITAL,
+               to_varchar(st.parententityname) as PARENTENTITYNAME
+          from st1 st
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE
+     where regexp_like(RECORD_SOURCE, '^(OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_CP_PARTNERS)(, (OPUS_AZBJ_PARTNER_EXTN|OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_CP_PARTNERS))*$') and PARTY_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.ANNUALTURNOVER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.DATEOFINCORPORATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.GROUPNAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.INDUSTRYDESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.LEGALCONSTITUTIONTYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.MSMEINDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PAIDUPCAPITAL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.PARENTENTITYNAME AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_ORGANISATION_PROFILE', 'stitch_party_organisation_profile (3 tables)',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s2 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE where RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_GSTN' order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PARTY_ORGANISATION_PROFILE' and record_source = 'OPUS_BJAZ_M_KYC_GSTN'
+),
+e2 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stg_partner__bjaz_m_kyc_gstn
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif('GSTIN:' || upper(trim(coalesce((nullif(trim("GSTIN_NUMBER"::varchar), '')),''))), 'GSTIN:')) AS VARCHAR))), '')) as hkey,
+               (to_timestamp_ntz(regexp_replace("INC_JOB_UPDATED_AT"::varchar, '^Z[ ]*', ''))) as ldts,
+               to_varchar((nullif(trim("BUSINESS_TYPE"::varchar), ''))) as LEGALCONSTITUTIONTYPE
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_M_KYC_GSTN
+      )
+     where hkey in (select hkey from s2) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n2 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE
+     where RECORD_SOURCE = 'OPUS_BJAZ_M_KYC_GSTN' and PARTY_HKEY in (select hkey from s2)
+     group by 1, 2
+),
+x2 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.LEGALCONSTITUTIONTYPE AS VARCHAR))), ''), '^^'))) as raw_hash
+      from e2 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PARTY_ORGANISATION_PROFILE', 'OPUS_BJAZ_M_KYC_GSTN',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n2 n full outer join x2 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 33. OPUS — [M3 | stitch_incremental] SAT_POLICY_BONUS_TRACKING   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
+-- stitch_policy_bonus_tracking (7 tables) [2 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_POLICY_BONUS_TRACKING' as satellite, 'stitch_policy_bonus_tracking (7 tables)' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BONUSAMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CUMULATIVEBONUSPERCENTAGE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BONUSAMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CUMULATIVEBONUSPERCENTAGE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_BONUS_TRACKING
+ where (regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HLT_ENSURE_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_PA_DETL_EXTN|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HLT_ENSURE_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_PA_DETL_EXTN|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$'));
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_BONUS_TRACKING where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HLT_ENSURE_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_PA_DETL_EXTN|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HLT_ENSURE_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_PA_DETL_EXTN|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$') order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_POLICY_BONUS_TRACKING' and record_source = 'stitch_policy_bonus_tracking (7 tables)'
+),
+g1_t0 as (  -- stitch source OPUS_BJAZ_EC_MEM_DTLS_EXTN
+    select distinct (nullif(trim("CONTRACT_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar(("PRE_POL_NCB_PER"::number))), '') as cumulativebonuspercentage,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_EC_MEM_DTLS_EXTN
+     where (nullif(trim("CONTRACT_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (((nullif(trim("CONTRACT_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t1 as (  -- stitch source OPUS_BJAZ_HCF_MEMBER_DTLS
+    select distinct (nullif(trim("CONTRACT_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar(("CUMULATIVE_AMT"::number))), '') as bonusamount,
+           nullif(trim(to_varchar(("CUMULATIVE_BNOUZ_PER"::number))), '') as cumulativebonuspercentage,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HCF_MEMBER_DTLS
+     where (nullif(trim("CONTRACT_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (((nullif(trim("CONTRACT_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t2 as (  -- stitch source OPUS_BJAZ_HLT_ENSURE_MEM_DTLS
+    select distinct (nullif(trim("CONTRACT_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("PREVIOUS_CUM_BONUS"::varchar), '')))), '') as bonusamount,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HLT_ENSURE_MEM_DTLS
+     where (nullif(trim("CONTRACT_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (((nullif(trim("CONTRACT_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t3 as (  -- stitch source OPUS_BJAZ_HM_MEMBER_DTLS
+    select distinct (nullif(trim("CONTRACT_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar(("BONUS_SI"::number))), '') as bonusamount,
+           nullif(trim(to_varchar(("CUMM_BONUS_PER"::number))), '') as cumulativebonuspercentage,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_MEMBER_DTLS
+     where (nullif(trim("CONTRACT_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (((nullif(trim("CONTRACT_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t4 as (  -- stitch source OPUS_BJAZ_PA_DETL_EXTN
+    select distinct (nullif(trim("CONTRACT_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("CUMMULATIVE_BONUS"::varchar), '')))), '') as bonusamount,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_PA_DETL_EXTN
+     where (nullif(trim("CONTRACT_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (((nullif(trim("CONTRACT_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t5 as (  -- stitch source OPUS_BJAZ_SH_MEM_DTLS_EXTN
+    select distinct (nullif(trim("CONTRACT_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar(("CUMM_BONUS"::number))), '') as bonusamount,
+           nullif(trim(to_varchar(("CUMM_BONUS_PER"::number))), '') as cumulativebonuspercentage,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SH_MEM_DTLS_EXTN
+     where (nullif(trim("CONTRACT_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (((nullif(trim("CONTRACT_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t6 as (  -- stitch source OPUS_BJAZ_SPP_MEMBER_DTLS
+    select distinct (nullif(trim("CONTRACT_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar(("CUMULATIVE_AMT"::number))), '') as bonusamount,
+           nullif(trim(to_varchar(("CUMULATIVE_BNOUZ_PER"::number))), '') as cumulativebonuspercentage,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_SPP_MEMBER_DTLS
+     where (nullif(trim("CONTRACT_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (((nullif(trim("CONTRACT_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+k1 as (
+    select parent_bk from g1_t0
+    union
+    select parent_bk from g1_t1
+    union
+    select parent_bk from g1_t2
+    union
+    select parent_bk from g1_t3
+    union
+    select parent_bk from g1_t4
+    union
+    select parent_bk from g1_t5
+    union
+    select parent_bk from g1_t6
+),
+st1 as (  -- stitch_policy_bonus_tracking recomputed from RAW (same coalesce / priority as the stitch macro)
+    select ak.parent_bk,
+           coalesce(g1_t1.bonusamount, g1_t2.bonusamount, g1_t3.bonusamount, g1_t4.bonusamount, g1_t5.bonusamount, g1_t6.bonusamount) as bonusamount,
+           coalesce(g1_t0.cumulativebonuspercentage, g1_t1.cumulativebonuspercentage, g1_t3.cumulativebonuspercentage, g1_t5.cumulativebonuspercentage, g1_t6.cumulativebonuspercentage) as cumulativebonuspercentage,
+           array_to_string(array_construct_compact(
+               case when g1_t0.parent_bk is not null then 'OPUS_BJAZ_EC_MEM_DTLS_EXTN' end,
+               case when g1_t1.parent_bk is not null then 'OPUS_BJAZ_HCF_MEMBER_DTLS' end,
+               case when g1_t2.parent_bk is not null then 'OPUS_BJAZ_HLT_ENSURE_MEM_DTLS' end,
+               case when g1_t3.parent_bk is not null then 'OPUS_BJAZ_HM_MEMBER_DTLS' end,
+               case when g1_t4.parent_bk is not null then 'OPUS_BJAZ_PA_DETL_EXTN' end,
+               case when g1_t5.parent_bk is not null then 'OPUS_BJAZ_SH_MEM_DTLS_EXTN' end,
+               case when g1_t6.parent_bk is not null then 'OPUS_BJAZ_SPP_MEMBER_DTLS' end
+           ), ', ') as record_source,
+           greatest_ignore_nulls(g1_t0.inc_job_updated_at, g1_t1.inc_job_updated_at, g1_t2.inc_job_updated_at, g1_t3.inc_job_updated_at, g1_t4.inc_job_updated_at, g1_t5.inc_job_updated_at, g1_t6.inc_job_updated_at) as inc_job_updated_at
+      from k1 ak
+      left join g1_t0 on g1_t0.parent_bk = ak.parent_bk
+      left join g1_t1 on g1_t1.parent_bk = ak.parent_bk
+      left join g1_t2 on g1_t2.parent_bk = ak.parent_bk
+      left join g1_t3 on g1_t3.parent_bk = ak.parent_bk
+      left join g1_t4 on g1_t4.parent_bk = ak.parent_bk
+      left join g1_t5 on g1_t5.parent_bk = ak.parent_bk
+      left join g1_t6 on g1_t6.parent_bk = ak.parent_bk
+    qualify row_number() over (partition by ak.parent_bk order by g1_t0.cumulativebonuspercentage nulls last, g1_t1.bonusamount nulls last, g1_t1.cumulativebonuspercentage nulls last, g1_t2.bonusamount nulls last, g1_t3.bonusamount nulls last, g1_t3.cumulativebonuspercentage nulls last, g1_t4.bonusamount nulls last, g1_t5.bonusamount nulls last, g1_t5.cumulativebonuspercentage nulls last, g1_t6.bonusamount nulls last, g1_t6.cumulativebonuspercentage nulls last) = 1
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stitch_policy_bonus_tracking
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || st.parent_bk AS VARCHAR))), '')) as hkey,
+               st.inc_job_updated_at as ldts,
+               to_varchar(st.bonusamount) as BONUSAMOUNT,
+               to_varchar(st.cumulativebonuspercentage) as CUMULATIVEBONUSPERCENTAGE
+          from st1 st
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select POLICY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_BONUS_TRACKING
+     where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HLT_ENSURE_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_PA_DETL_EXTN|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS)(, (OPUS_BJAZ_EC_MEM_DTLS_EXTN|OPUS_BJAZ_HCF_MEMBER_DTLS|OPUS_BJAZ_HLT_ENSURE_MEM_DTLS|OPUS_BJAZ_HM_MEMBER_DTLS|OPUS_BJAZ_PA_DETL_EXTN|OPUS_BJAZ_SH_MEM_DTLS_EXTN|OPUS_BJAZ_SPP_MEMBER_DTLS))*$') and POLICY_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.BONUSAMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.CUMULATIVEBONUSPERCENTAGE AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_POLICY_BONUS_TRACKING', 'stitch_policy_bonus_tracking (7 tables)',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 34. OPUS — [M3 | stitch_incremental] SAT_PROVIDER_BANKING   [Implemented]
+-- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
+-- computes it, from the payload stored on the same row. A match proves every payload
+-- change changes the HASHDIFF, which is what drives a new row. standard satellite,
+-- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): stitch_provider_banking (2
+-- tables) [2 col(s)].
+----------------------------------------------------------------------------------------
+-- SQL query (a) -- HASHDIFF integrity (all rows of this project)
+select 'OPUS' as project, 'SAT_PROVIDER_BANKING' as satellite, 'stitch_provider_banking (2 tables)' as scope,
+       count(*) as rows_checked,
+       count_if(HASHDIFF is null) as null_hashdiff,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(GSTREGISTRATIONNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TCSSTATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(GSTREGISTRATIONNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TCSSTATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
+  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROVIDER_BANKING
+ where (regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_BJAZ_HM_HOSPITAL_MASTER)(, (OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_BJAZ_HM_HOSPITAL_MASTER))*$'));
+
+-- SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)
+insert into BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)
+with s1 as (  -- BEFORE: first 100 keys by hash; AFTER: exactly the keys captured BEFORE
+    select hkey from (
+        select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROVIDER_BANKING where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_BJAZ_HM_HOSPITAL_MASTER)(, (OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_BJAZ_HM_HOSPITAL_MASTER))*$') order by hkey limit 100
+    ) where $DM_H_PHASE = 'BEFORE'
+    union
+    select distinct hkey from BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION.DM_H_CDC_SNAPSHOT
+     where $DM_H_PHASE = 'AFTER' and run_id = $DM_H_RUN and phase = 'BEFORE'
+       and satellite = 'SAT_PROVIDER_BANKING' and record_source = 'stitch_provider_banking (2 tables)'
+),
+g1_t0 as (  -- stitch source OPUS_BJAZ_CLM_SUPP_EXTN
+    select distinct (nullif(trim("PARTNER_ID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("TCS_STATUS"::varchar), '')))), '') as tcsstatus,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_CLM_SUPP_EXTN
+     where (nullif(trim("PARTNER_ID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("PARTNER_ID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+g1_t1 as (  -- stitch source OPUS_BJAZ_HM_HOSPITAL_MASTER
+    select distinct (nullif(trim("HOSID"::varchar), '')) as parent_bk,
+           nullif(trim(to_varchar((nullif(trim("STAX_REG_NO"::varchar), '')))), '') as gstregistrationnumber,
+           ("INC_JOB_UPDATED_AT"::timestamp_ntz) as inc_job_updated_at
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_HM_HOSPITAL_MASTER
+     where (nullif(trim("HOSID"::varchar), '')) is not null
+       and MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim("HOSID"::varchar), '')))) AS VARCHAR))), '')) in (select hkey from s1)
+),
+k1 as (
+    select parent_bk from g1_t0
+    union
+    select parent_bk from g1_t1
+),
+st1 as (  -- stitch_provider_banking recomputed from RAW (same coalesce / priority as the stitch macro)
+    select ak.parent_bk,
+           g1_t1.gstregistrationnumber as gstregistrationnumber,
+           g1_t0.tcsstatus as tcsstatus,
+           array_to_string(array_construct_compact(
+               case when g1_t0.parent_bk is not null then 'OPUS_BJAZ_CLM_SUPP_EXTN' end,
+               case when g1_t1.parent_bk is not null then 'OPUS_BJAZ_HM_HOSPITAL_MASTER' end
+           ), ', ') as record_source,
+           greatest_ignore_nulls(g1_t0.inc_job_updated_at, g1_t1.inc_job_updated_at) as inc_job_updated_at
+      from k1 ak
+      left join g1_t0 on g1_t0.parent_bk = ak.parent_bk
+      left join g1_t1 on g1_t1.parent_bk = ak.parent_bk
+    qualify row_number() over (partition by ak.parent_bk order by g1_t0.tcsstatus nulls last, g1_t1.gstregistrationnumber nulls last) = 1
+),
+e1 as (  -- expected value(s) at the latest RAW load timestamp per key
+    select *
+      from (
+        -- via stitch_provider_banking
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || st.parent_bk AS VARCHAR))), '')) as hkey,
+               st.inc_job_updated_at as ldts,
+               to_varchar(st.gstregistrationnumber) as GSTREGISTRATIONNUMBER,
+               to_varchar(st.tcsstatus) as TCSSTATUS
+          from st1 st
+      )
+     where hkey in (select hkey from s1) and ldts is not null
+    qualify rank() over (partition by hkey order by ldts desc) = 1
+),
+n1 as (  -- satellite history per sampled key
+    select PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROVIDER_BANKING
+     where regexp_like(RECORD_SOURCE, '^(OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_BJAZ_HM_HOSPITAL_MASTER)(, (OPUS_BJAZ_CLM_SUPP_EXTN|OPUS_BJAZ_HM_HOSPITAL_MASTER))*$') and PARTY_HKEY in (select hkey from s1)
+     group by 1, 2
+),
+x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
+    select e.hkey, '' as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.GSTREGISTRATIONNUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.TCSSTATUS AS VARCHAR))), ''), '^^')))) as raw_hash
+      from e1 e group by 1, 2
+)
+select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_PROVIDER_BANKING', 'stitch_provider_banking (2 tables)',
+       coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
+  from n1 n full outer join x1 x on x.hkey = n.hkey and x.cdk = n.cdk;
+
+
+
+----------------------------------------------------------------------------------------
+-- 35. OPUS — CDC result (all satellites)   [Implemented]
 -- Joins the BEFORE and AFTER captures of the same run id. raw_changed compares the
 -- normalised RAW payload hash (same UPPER/TRIM/NULL rules as the HASHDIFF, so a
 -- case-only RAW edit is not a change); new_rows = satellite rows added for the key
