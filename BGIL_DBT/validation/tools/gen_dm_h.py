@@ -32,7 +32,7 @@ import gen_dm_k as K  # noqa: E402
 import gen_dm_a as A  # noqa: E402
 
 # Scratch schema for the before / after snapshots (needs CREATE TABLE / INSERT rights).
-VALIDATION_SCHEMA = "BAGIC_PREPROD_CURATED_DB.BGIL_VALIDATION"
+VALIDATION_SCHEMA = "BAGIC_PREPROD_CURATED_DB.UTILS"
 SNAP = f"{VALIDATION_SCHEMA}.DM_H_CDC_SNAPSHOT"
 COUNT_SNAP = f"{VALIDATION_SCHEMA}.DM_H_RELOAD_SNAPSHOT"
 MD = dict(A.PROJECTS)
@@ -338,6 +338,161 @@ def cdc_capture(sat):
     return "\n\n".join(stmts)
 
 
+def bk_map_query(sat):
+    """Per-model helper: for the sampled BEFORE hkeys, show the RAW business-key columns
+    (and ldts) so a tester knows exactly which RAW row to edit for the DM-H1 (b) change.
+    Reuses each arm's hkey expression; the BK columns are the RAW columns inside it."""
+    groups = [(gi, g) for gi, g in enumerate(sat.groups.values(), 1)]
+    groups = [(gi, g) for gi, g in groups if g.cols]
+    if not groups:
+        return None
+    arms_sql = []
+    for gi, g in groups:
+        for a in g.arms:
+            if a.kind == "stitch":
+                # stitch: BK is the stitch unique key per source; show the key column + ldts
+                st = a.stitch
+                uk = st["unique_key"]
+                for s in st["sources"]:
+                    cols = s["_cols"]
+                    key = A.subst(A.lower_idents(s["key_column"]), cols)
+                    ldts = A.subst(A.lower_idents(s["ldts_column"]), cols)
+                    hk = A.Lookup(st["_dc"], st["_hc"], {uk: f"({key})"}).get(sat.pk)
+                    if not hk:
+                        continue
+                    arms_sql.append(
+                        f"-- via {s['source_tag']} ({s['_raw']})\n"
+                        f"select {lit(sat.name)} as satellite, {lit(g.label)} as record_source,\n"
+                        f"       {hk} as hkey, {key} as business_key, {ldts} as inc_job_updated_at,\n"
+                        f"       {lit(s['_raw'])} as raw_table\n"
+                        f"  from {s['_raw']}\n"
+                        f" where {key} is not null and {hk} in (select hkey from s_bk)")
+                continue
+            lk = a.lookup
+            hk = lk.get(sat.pk)
+            if not hk:
+                continue
+            bk_cols = A.raw_cols_of(hk)
+            bk_sel = (" || '|' || ".join(f'coalesce(to_varchar("{c}"), \'^^\')' for c in bk_cols)
+                      if bk_cols else "null")
+            ldts = lk.get(sat.ldts) or "null"
+            where = f" and {a.where}" if a.where else ""
+            arms_sql.append(
+                f"-- via {a.label} ({a.raw})\n"
+                f"select {lit(sat.name)} as satellite, {lit(g.label)} as record_source,\n"
+                f"       {hk} as hkey, {bk_sel} as business_key, {ldts} as inc_job_updated_at,\n"
+                f"       {lit(a.raw)} as raw_table\n"
+                f"  from {a.raw}\n"
+                f" where {hk} in (select hkey from s_bk){where}")
+    if not arms_sql:
+        return None
+    sampled = (f"s_bk as (  -- sampled BEFORE hkeys for this satellite\n"
+               f"    select distinct hkey from {SNAP}\n"
+               f"     where run_id = $DM_H_RUN and phase = 'BEFORE' and satellite = '{sat.name}'\n)")
+    body = "\nunion all\n".join(arms_sql)
+    return f"with {sampled}\n{body}\nlimit 20;"
+
+
+def force_change_query(sat):
+    """Per-model ready-to-run UPDATE template(s): bump a payload column + the LDTS of ONE
+    sampled key in the UTILS RAW source so the dbt reload produces a new satellite row.
+    Fill in the <...> business-key value from the (b-map) result before running."""
+    groups = [(gi, g) for gi, g in enumerate(sat.groups.values(), 1)]
+    groups = [(gi, g) for gi, g in groups if g.cols]
+    if not groups:
+        return None
+    stmts = []
+    for gi, g in groups:
+        for a in g.arms:
+            if a.kind == "stitch":
+                st = a.stitch
+                for s in st["sources"]:
+                    cols = s["_cols"]
+                    key_raw = A.raw_cols_of(A.subst(A.lower_idents(s["key_column"]), cols))
+                    # a payload RAW column to touch
+                    touch = None
+                    for c in s["columns"]:
+                        rc = A.raw_cols_of(A.subst(A.lower_idents(c["src"]), cols))
+                        if rc:
+                            touch = rc[0]
+                            break
+                    ldts_raw = A.raw_cols_of(A.subst(A.lower_idents(s["ldts_column"]), cols))
+                    if not (key_raw and touch and ldts_raw):
+                        continue
+                    where = " and ".join(f'"{k}" = \'<{k}>\'' for k in key_raw)
+                    stmts.append(
+                        f"-- {s['source_tag']} source ({s['_raw']}): change ONE sampled key\n"
+                        f"update {s['_raw']}\n"
+                        f'   set "{touch}" = coalesce(to_varchar("{touch}"), \'\') || \'_T\',\n'
+                        f'       "{ldts_raw[0]}" = current_timestamp()\n'
+                        f" where {where};")
+                continue
+            lk = a.lookup
+            hk = lk.get(sat.pk)
+            bk_cols = A.raw_cols_of(hk) if hk else []
+            # find a payload RAW column to touch (first payload col that maps to a single RAW col
+            # and is NOT part of the business key)
+            touch = None
+            for c in g.cols:
+                e = lk.get(c)
+                if not e or A.is_null_expr(e):
+                    continue
+                rc = A.raw_cols_of(e)
+                if len(rc) == 1 and rc[0] not in bk_cols:
+                    touch = rc[0]
+                    break
+            if touch is None:  # fall back to any single-col payload (even if it is a cdk)
+                for c in g.cols:
+                    e = lk.get(c)
+                    rc = A.raw_cols_of(e) if e else []
+                    if len(rc) == 1:
+                        touch = rc[0]
+                        break
+            ldts_raw = A.raw_cols_of(lk.get(sat.ldts) or "")
+            if not (bk_cols and touch and ldts_raw):
+                continue
+            where = " and ".join(f'"{k}" = \'<{k}>\'' for k in bk_cols)
+            stmts.append(
+                f"-- {g.label} ({a.raw}): change ONE sampled key (fill <..> from the b-map result)\n"
+                f"update {a.raw}\n"
+                f'   set "{touch}" = coalesce(to_varchar("{touch}"), \'\') || \'_T\',\n'
+                f'       "{ldts_raw[0]}" = current_timestamp()\n'
+                f" where {where};")
+            break  # one representative update per group is enough
+    return "\n\n".join(stmts) if stmts else None
+
+
+def cdc_result_for_sat(sat):
+    """STEP 7 scoped to ONE satellite: BEFORE vs AFTER of the same run id, PASS/FAIL for
+    just this sat. Same logic as the file-level cdc_result but filtered by satellite."""
+    return f"""with b as (
+    select * from {SNAP}
+     where run_id = $DM_H_RUN and phase = 'BEFORE' and satellite = '{sat.name}'
+),
+a as (
+    select * from {SNAP}
+     where run_id = $DM_H_RUN and phase = 'AFTER'  and satellite = '{sat.name}'
+),
+k as (
+    select b.satellite, b.record_source, b.hkey, b.cdk,
+           not equal_null(b.raw_hash, a.raw_hash) as raw_changed,
+           a.sat_rows - b.sat_rows as new_rows
+      from b join a
+        on a.satellite = b.satellite and a.record_source = b.record_source
+       and a.hkey = b.hkey and equal_null(a.cdk, b.cdk)
+)
+select '{sat.project}' as project, satellite, record_source,
+       count(*) as changed_keys,
+       count_if(new_rows >= 1) as changed_with_new_row,
+       count_if(new_rows < 1)  as changed_without_new_row,
+       iff(changed_keys = 0, 'NOT TESTED (no source change in sample)',
+           iff(changed_without_new_row = 0, 'PASS', 'FAIL')) as status
+  from k
+ where raw_changed
+ group by satellite, record_source
+ order by iff(status = 'FAIL', 0, 1), record_source;"""
+
+
 def cdc_setup():
     return dict(project="SETUP", hub="CDC test set-up (run once)", status="Procedure",
                 pass_criteria="n/a",
@@ -364,16 +519,21 @@ def cdc_procedure(project):
              "MAXIMUS RAW is the production mirror -- do NOT modify it. Let one normal load cycle land source "
              "changes between BEFORE and AFTER; a satellite whose sample saw no change reports NOT TESTED.")
     steps = f"""-- Step 1 (BEFORE): set the run id once and capture every satellite
-set DM_H_RUN = 'CDC_{project}_' || to_char(current_timestamp(), 'YYYYMMDD_HH24MI');
+-- PARALLEL RUNS: replace <M#> with your member tag (M1 / M2 / M3) so the three testers
+-- get distinct run_ids and never mix snapshots in the shared UTILS.DM_H_CDC_SNAPSHOT.
+set DM_H_RUN = 'CDC_{project}_<M#>_' || to_char(current_timestamp(), 'YYYYMMDD_HH24MI');
 set DM_H_PHASE = 'BEFORE';
--- now run every "(b) CDC capture" statement of this file
+-- now run every "(b) CDC capture" statement of YOUR assigned satellites
 
 -- Step 2: source changes land ({'forced or natural' if test_raw else 'natural only'}), then run the dbt load:
---   dbt run --select <this project's satellites>
+--   dbt run --select <your assigned satellites only>
+--   PARALLEL RUNS: do NOT dbt-run a satellite another member is running at the same time,
+--   and do NOT edit a UTILS source table another member is editing. Serialize the dbt
+--   load step if two members share a sat or source table (see DM-H_MEMBER_PLAN.md).
 
 -- Step 3 (AFTER): same run id, capture again
 set DM_H_PHASE = 'AFTER';
--- run every "(b) CDC capture" statement of this file again
+-- run every "(b) CDC capture" statement of your assigned satellites again
 
 -- Step 4: run the "CDC result" section at the end of DM-H1 (changed keys) and DM-H2 (unchanged keys)"""
     return dict(project=project, hub="CDC before / after test procedure", status="Procedure",
@@ -503,7 +663,9 @@ def h3_reload(project, sats):
     names = " ".join(s.path.stem for s in sats)
     capture = f"""-- Step 1: fix a load window that has ALREADY been loaded, e.g. yesterday
 --   from_date = '<YYYY-MM-DD HH:MI:SS>'   to_date = '<YYYY-MM-DD HH:MI:SS>'
-set DM_H_RUN = 'RELOAD_{project}_' || to_char(current_timestamp(), 'YYYYMMDD_HH24MI');
+-- PARALLEL RUNS: replace <M#> with your member tag (M1 / M2 / M3) so the three testers
+-- get distinct run_ids in the shared UTILS.DM_H_RELOAD_SNAPSHOT.
+set DM_H_RUN = 'RELOAD_{project}_<M#>_' || to_char(current_timestamp(), 'YYYYMMDD_HH24MI');
 set DM_H_PHASE = 'BEFORE';
 
 insert into {COUNT_SNAP} (run_id, phase, project, satellite, row_count, captured_at)
@@ -658,11 +820,35 @@ def main():
                 for s in ps:
                     sec = h1a(s)
                     sec["hub"] = plan_tag(s) + sec["hub"]
+                    # Relabel the static (a) query as STEP 1 for a clear per-model sequence.
+                    if sec["queries"]:
+                        a_label, a_sql = sec["queries"][0]
+                        sec["queries"][0] = (
+                            "STEP 1 (static, run anytime) -- HASHDIFF integrity. PASS here = the change-detection "
+                            "fingerprint is sound. " + a_label, a_sql)
                     cap = cdc_capture(s) if s.applicable else None
                     if cap and sec["status"] != "NA":
-                        sec["queries"].append(("SQL (b) -- CDC capture (run in BEFORE and in AFTER phase)", cap))
+                        sec["queries"].append(
+                            ("STEP 2 (BEFORE) -- set $DM_H_RUN (with your <M#>) and $DM_H_PHASE='BEFORE', then run "
+                             "this CDC capture. Re-run it again in STEP 6 after setting phase to AFTER.", cap))
+                        bkq = bk_map_query(s)
+                        if bkq:
+                            sec["queries"].append(
+                                ("STEP 3 (pick a key) -- map a sampled BEFORE hkey to its RAW business key. Copy one "
+                                 "business_key value to use in STEP 4.", bkq))
+                        fcq = force_change_query(s)
+                        if fcq:
+                            sec["queries"].append(
+                                ("STEP 4 (force the change) -- fill <BK> from STEP 3, run this UPDATE in UTILS. "
+                                 "STEP 5: dbt run --select this sat. STEP 6: set phase='AFTER' and re-run STEP 2.", fcq))
+                        sec["queries"].append(
+                            ("STEP 7 (result for THIS sat) -- after AFTER capture, run this. PASS = every changed "
+                             "key got >= 1 new row; NOT TESTED = no change reached the sample.",
+                             cdc_result_for_sat(s)))
                     sections.append(sec)
-                sections.append(cdc_result(pj, cid))
+                res = cdc_result(pj, cid)
+                res["hub"] = "STEP 7 -- " + res["hub"]
+                sections.append(res)
             elif cid == "DM-H2":
                 sections = []
                 for s in ps:
