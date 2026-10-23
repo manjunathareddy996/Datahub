@@ -308,27 +308,56 @@ def raw_hash(cols):
         else f"md5({std('e.' + cols[0])})"
 
 
+def is_key_only(sat):
+    """True when the satellite's payload is entirely its child key(s) -- a multi-active
+    link sat with no separate attributes (e.g. SAT_LNK_CLAIM_PARTY_ROLE). For these, a
+    source 'change' necessarily creates a NEW member (new cdk) rather than a new version
+    of an existing member, so CDC must be measured per PARENT KEY, not per (key, cdk)."""
+    if not sat.cdk:
+        return False
+    payload = {c.upper() for c in sat.payload}
+    cdk = {c.upper() for c in sat.cdk}
+    return payload.issubset(cdk)
+
+
 def cdc_capture(sat):
     groups = [(gi, g, A.a2_cols(sat, g)) for gi, g in enumerate(sat.groups.values(), 1)]
     groups = [(gi, g, [c for c in cols if c != "RECORD_SOURCE"]) for gi, g, cols in groups]
     groups = [x for x in groups if x[2]]
     if not groups:
         return None
+    key_only = is_key_only(sat)
     stmts = []
     for gi, g, cols in groups:
         ctes = [cdc_sample(sat, gi, g)]
         if any(a.kind == "stitch" for a in g.arms):
             ctes += A.stitch_ctes(sat, gi, next(a for a in g.arms if a.kind == "stitch"))
         ctes.append(A.expected_cte(sat, gi, g, cols, A.a2_value, aggregate=bool(sat.object_cols)))
-        cdk_sat = " || '|' || ".join(f"coalesce(to_varchar({c}), '^^')" for c in sat.cdk) or "''"
-        cdk_e = " || '|' || ".join(f"coalesce(e.{A.cdk_alias(i)}, '^^')" for i in range(len(sat.cdk))) or "''"
-        ctes.append(f"n{gi} as (  -- satellite history per sampled key\n"
+        # Key-only MA sats: collapse cdk to '' so the snapshot counts rows PER PARENT KEY.
+        if key_only:
+            cdk_sat = "''"
+            cdk_e = "''"
+        else:
+            cdk_sat = " || '|' || ".join(f"coalesce(to_varchar({c}), '^^')" for c in sat.cdk) or "''"
+            cdk_e = " || '|' || ".join(f"coalesce(e.{A.cdk_alias(i)}, '^^')" for i in range(len(sat.cdk))) or "''"
+        ctes.append(f"n{gi} as (  -- satellite history per sampled key"
+                    + ("  (key-only: rows PER PARENT KEY)" if key_only else "") + "\n"
                     f"    select {sat.pk} as hkey, {cdk_sat} as cdk, count(*) as sat_rows, max({sat.ldts}) as sat_max_ldts\n"
                     f"      from {sat.fq}\n     where {g.rs_filter} and {sat.pk} in (select hkey from s{gi})\n"
                     f"     group by 1, 2\n)")
-        ctes.append(f"x{gi} as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)\n"
-                    f"    select e.hkey, {cdk_e} as cdk, min({raw_hash(cols)}) as raw_hash\n"
-                    f"      from e{gi} e group by 1, 2\n)")
+        if key_only:
+            # raw_hash = fingerprint of the WHOLE member set per parent key, so a new
+            # member (new cdk) changes the hash and is detected as raw_changed.
+            member = " || '|' || ".join(f"coalesce(to_varchar(e.{A.cdk_alias(i)}), '^^')"
+                                        for i in range(len(sat.cdk)))
+            ctes.append(f"x{gi} as (  -- key-only: hash of the whole member set per parent key\n"
+                        f"    select e.hkey, '' as cdk,\n"
+                        f"           md5(listagg(distinct {member}, ',') within group (order by {member})) as raw_hash\n"
+                        f"      from e{gi} e group by 1\n)")
+        else:
+            ctes.append(f"x{gi} as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)\n"
+                        f"    select e.hkey, {cdk_e} as cdk, min({raw_hash(cols)}) as raw_hash\n"
+                        f"      from e{gi} e group by 1, 2\n)")
         stmts.append(
             f"insert into {SNAP} (run_id, phase, project, satellite, record_source, hkey, cdk, sat_rows, sat_max_ldts, raw_hash, captured_at)\n"
             f"with " + ",\n".join(ctes) + "\n"
@@ -841,9 +870,12 @@ def main():
                             sec["queries"].append(
                                 ("STEP 4 (force the change) -- fill <BK> from STEP 3, run this UPDATE in UTILS. "
                                  "STEP 5: dbt run --select this sat. STEP 6: set phase='AFTER' and re-run STEP 2.", fcq))
+                        ko = " NOTE: this is a KEY-ONLY multi-active sat (payload = child key), so a change " \
+                             "creates a NEW member; counting is PER PARENT KEY -- PASS = the parent key gained a row." \
+                             if is_key_only(s) else ""
                         sec["queries"].append(
                             ("STEP 7 (result for THIS sat) -- after AFTER capture, run this. PASS = every changed "
-                             "key got >= 1 new row; NOT TESTED = no change reached the sample.",
+                             "key got >= 1 new row; NOT TESTED = no change reached the sample." + ko,
                              cdc_result_for_sat(s)))
                     sections.append(sec)
                 res = cdc_result(pj, cid)

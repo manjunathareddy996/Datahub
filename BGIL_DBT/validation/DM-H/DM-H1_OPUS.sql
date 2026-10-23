@@ -130,15 +130,16 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
 ),
-n1 as (  -- satellite history per sampled key
-    select CLAIM_PARTY_HKEY as hkey, coalesce(to_varchar(PARTY_ROLE_TYPE), '^^') || '|' || coalesce(to_varchar(ROLE_SEQUENCE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+n1 as (  -- satellite history per sampled key  (key-only: rows PER PARENT KEY)
+    select CLAIM_PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_CLAIM_PARTY_ROLE
      where RECORD_SOURCE = 'OPUS_CLM_INTERESTED_PARTIES' and CLAIM_PARTY_HKEY in (select hkey from s1)
      group by 1, 2
 ),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, coalesce(e.cdk_1, '^^') || '|' || coalesce(e.cdk_2, '^^') as cdk, min(md5(concat_ws('||', IFNULL(NULLIF(UPPER(TRIM(CAST(e.PARTY_ROLE_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(e.ROLE_SEQUENCE AS VARCHAR))), ''), '^^')))) as raw_hash
-      from e1 e group by 1, 2
+x1 as (  -- key-only: hash of the whole member set per parent key
+    select e.hkey, '' as cdk,
+           md5(listagg(distinct coalesce(to_varchar(e.cdk_1), '^^') || '|' || coalesce(to_varchar(e.cdk_2), '^^'), ',') within group (order by coalesce(to_varchar(e.cdk_1), '^^') || '|' || coalesce(to_varchar(e.cdk_2), '^^'))) as raw_hash
+      from e1 e group by 1
 )
 select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_CLAIM_PARTY_ROLE', 'OPUS_CLM_INTERESTED_PARTIES',
        coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
@@ -164,7 +165,7 @@ update BAGIC_PREPROD_CURATED_DB.UTILS.CLM_INTERESTED_PARTIES
        "INC_JOB_UPDATED_AT" = current_timestamp()
  where "PART_ID" = '<PART_ID>' and "CLAIM_ID" = '<CLAIM_ID>';
 
--- STEP 7 (result for THIS sat) -- after AFTER capture, run this. PASS = every changed key got >= 1 new row; NOT TESTED = no change reached the sample.
+-- STEP 7 (result for THIS sat) -- after AFTER capture, run this. PASS = every changed key got >= 1 new row; NOT TESTED = no change reached the sample. NOTE: this is a KEY-ONLY multi-active sat (payload = child key), so a change creates a NEW member; counting is PER PARENT KEY -- PASS = the parent key gained a row.
 with b as (
     select * from BAGIC_PREPROD_CURATED_DB.UTILS.DM_H_CDC_SNAPSHOT
      where run_id = $DM_H_RUN and phase = 'BEFORE' and satellite = 'SAT_LNK_CLAIM_PARTY_ROLE'
@@ -4849,15 +4850,16 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
 ),
-n1 as (  -- satellite history per sampled key
-    select POLICY_PARTY_HKEY as hkey, coalesce(to_varchar(ROLE_SEQUENCE), '^^') as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
+n1 as (  -- satellite history per sampled key  (key-only: rows PER PARENT KEY)
+    select POLICY_PARTY_HKEY as hkey, '' as cdk, count(*) as sat_rows, max(LOAD_DATETIME) as sat_max_ldts
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_POLICY_PARTY_ROLE
      where RECORD_SOURCE = 'OPUS_OCP_INTERESTED_PARTIES' and POLICY_PARTY_HKEY in (select hkey from s1)
      group by 1, 2
 ),
-x1 as (  -- normalised RAW payload hash (UPPER / TRIM / '^^' like the HASHDIFF)
-    select e.hkey, coalesce(e.cdk_1, '^^') as cdk, min(md5(IFNULL(NULLIF(UPPER(TRIM(CAST(e.ROLE_SEQUENCE AS VARCHAR))), ''), '^^'))) as raw_hash
-      from e1 e group by 1, 2
+x1 as (  -- key-only: hash of the whole member set per parent key
+    select e.hkey, '' as cdk,
+           md5(listagg(distinct coalesce(to_varchar(e.cdk_1), '^^'), ',') within group (order by coalesce(to_varchar(e.cdk_1), '^^'))) as raw_hash
+      from e1 e group by 1
 )
 select $DM_H_RUN, $DM_H_PHASE, 'OPUS', 'SAT_LNK_POLICY_PARTY_ROLE', 'OPUS_OCP_INTERESTED_PARTIES',
        coalesce(n.hkey, x.hkey), coalesce(n.cdk, x.cdk), coalesce(n.sat_rows, 0), n.sat_max_ldts, x.raw_hash, current_timestamp()
@@ -4883,7 +4885,7 @@ update BAGIC_PREPROD_CURATED_DB.UTILS.OCP_INTERESTED_PARTIES
        "INC_JOB_UPDATED_AT" = current_timestamp()
  where "PARTNER_ID" = '<PARTNER_ID>' and "CONTRACT_ID" = '<CONTRACT_ID>';
 
--- STEP 7 (result for THIS sat) -- after AFTER capture, run this. PASS = every changed key got >= 1 new row; NOT TESTED = no change reached the sample.
+-- STEP 7 (result for THIS sat) -- after AFTER capture, run this. PASS = every changed key got >= 1 new row; NOT TESTED = no change reached the sample. NOTE: this is a KEY-ONLY multi-active sat (payload = child key), so a change creates a NEW member; counting is PER PARENT KEY -- PASS = the parent key gained a row.
 with b as (
     select * from BAGIC_PREPROD_CURATED_DB.UTILS.DM_H_CDC_SNAPSHOT
      where run_id = $DM_H_RUN and phase = 'BEFORE' and satellite = 'SAT_LNK_POLICY_PARTY_ROLE'
