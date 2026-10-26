@@ -4881,7 +4881,7 @@ limit 20;
 -- STEP 4 (force the change) -- fill <BK> from STEP 3, run this UPDATE in UTILS. STEP 5: dbt run --select this sat. STEP 6: set phase='AFTER' and re-run STEP 2.
 -- OPUS_OCP_INTERESTED_PARTIES (BAGIC_PREPROD_CURATED_DB.UTILS.OCP_INTERESTED_PARTIES): change ONE sampled key (fill <..> from the b-map result)
 update BAGIC_PREPROD_CURATED_DB.UTILS.OCP_INTERESTED_PARTIES
-   set "IP_NO" = coalesce(to_varchar("IP_NO"), '') || '_T',
+   set "IP_NO" = 999999,
        "INC_JOB_UPDATED_AT" = current_timestamp()
  where "PARTNER_ID" = '<PARTNER_ID>' and "CONTRACT_ID" = '<CONTRACT_ID>';
 
