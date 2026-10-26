@@ -37,30 +37,30 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. MAXIMUS — [automate_dv.ma_sat] SAT_PARTY_ORG_DIRECTORS   [Implemented]
--- Grain (PARTY_HKEY, PERSONROLE, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups =
+-- 1. MAXIMUS — [automate_dv.ma_sat] SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- Grain (PARTY_LOCATION_HKEY, ADDRESS_USAGE_TYPE, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups =
 -- the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
--- automate_dv.ma_sat; PK PARTY_HKEY, child key PERSONROLE; 1 RECORD_SOURCE group(s):
+-- automate_dv.ma_sat; PK PARTY_LOCATION_HKEY, child key ADDRESS_USAGE_TYPE; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_BUSINESS_PARTNERS_VW_DATA_PARTY_DETAIL_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
-with d as (
-    select PARTY_HKEY, PERSONROLE, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF_PARTY_ORG_DIRECTORS) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORG_DIRECTORS
-     where startswith(RECORD_SOURCE, 'MAXIMUS_')
-     group by PARTY_HKEY, PERSONROLE, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_PARTY_ORG_DIRECTORS' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
+with d as ( 
+     select PARTY_LOCATION_HKEY, ADDRESS_USAGE_TYPE, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs 
+       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_CONTACT_ADDRESS_LINK 
+      where startswith(RECORD_SOURCE, 'MAXIMUS_') 
+      group by PARTY_LOCATION_HKEY, ADDRESS_USAGE_TYPE, RECORD_SOURCE, LOAD_DATETIME 
+     having count(*) > 1 
+ ) 
+ select 'MAXIMUS' as project, 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite, 
+        count_if(hashdiffs = 1)            as duplicate_row_groups, 
+        coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows, 
+        count_if(hashdiffs > 1)            as same_ldts_different_payload_info, 
+        array_slice(array_agg(iff(hashdiffs = 1, to_varchar(PARTY_LOCATION_HKEY, 'HEX'), null)) within group (order by PARTY_LOCATION_HKEY), 0, 3) as examples, 
+        iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status 
+   from d; 
 
 
 
