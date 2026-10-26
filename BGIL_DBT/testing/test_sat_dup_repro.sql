@@ -1,36 +1,85 @@
 /* =====================================================================================
  test_sat_dup_repro.sql  --  reproduce the sat() tie/duplicate behaviour
 
- Goal: show that automate_dv.sat() (and the project's sat_multi_source plain branch)
- keeps duplicate / oscillating rows when the staging layer emits more than one row
- per (HKEY, LOAD_DATETIME) because the change-detection LAG window orders ONLY by
- LOAD_DATETIME (no tiebreaker, no src_eff).
+ Mirrors the REAL structure of sat_aug_kyc_document:
+   raw source  BJAZ_T_KYC_POI_DOCUMENT  (many verification events per document)
+     -> stg_partner__*          base cast view (reads source(), trims/casts)
+        -> stg2_aug_*__document automate_dv.stage() derives DOCUMENT_HKEY / HASHDIFF /
+                                 RECORD_SOURCE  (HKEY = HUB_DOCUMENT|docs_type:docs_number,
+                                 HASHDIFF over VERIFICATION_RESPONSE_MESSAGE only)
+           -> sat               automate_dv.sat()  (change-detection LAG, NO src_eff)
 
- How to use:
-   1. STEP A below is the dbt model body. Copy it into a NEW model file you create,
-      e.g. opus_partner_dv_dbt/models/raw_vault/.../test_sat.sql  (you said you'll
-      create the model file -- this is the body to paste).
-   2. STEP B builds a raw staging table in UTILS and loads the duplicate rows.
-      Run STEP B in Snowflake first, then `dbt run` the model, then re-run STEP B's
-      "second load" block and `dbt run` again to see duplicates accumulate.
-   3. STEP C are verification queries to see the duplicates.
+ The duplicates come from the RAW table holding several rows per
+ (docs_type, docs_number) at the same INC_JOB_UPDATED_AT -> same (HKEY, LOAD_DATETIME)
+ with oscillating / repeated messages. sat()'s LAG window orders only by LOAD_DATETIME
+ (no tiebreaker) so ties + exact repeats survive.
 
- Schema used (adjust db/schema if needed):
-   raw stage : BAGIC_PREPROD_CURATED_DB.UTILS.TEST_SAT_STG         (feeds the model)
-   satellite : BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.TEST_SAT   (dbt-built)
+ You will create 3 model files (bodies in STEP A1/A2/A3). STEP B seeds the raw table.
+ STEP C verifies. db/schema: raw source lives in the schema your source() points at;
+ here we seed BAGIC_PREPROD_CURATED_DB.UTILS.TEST_BJAZ_T_KYC_POI_DOCUMENT and reference
+ it directly (no sources.yml edit needed).
 ===================================================================================== */
 
 
 /* -------------------------------------------------------------------------------------
- STEP A -- dbt MODEL BODY  (paste into the model file you create)
- Model name suggestion: test_sat
- It reads the raw stage view/table and calls automate_dv.sat() exactly like the real
- augmented sats (single payload, NO src_eff -> no tiebreaker, reproduces the bug).
+ STEP A1 -- BASE STAGING MODEL  (paste into stg_partner__test_poi_document.sql)
+ Mirrors stg_partner__bjaz_t_kyc_poi_document: cast + trim, read the raw table.
+ Only the columns the downstream needs are kept.
+--------------------------------------------------------------------------------------*/
+-- {{ config(materialized='view') }}
+--
+-- with source as (
+--     select
+--         "POI_DOC_ID"::number                         as poi_doc_id,
+--         nullif(trim("DOCS_TYPE"::varchar), '')       as docs_type,
+--         nullif(trim("DOCS_NUMBER"::varchar), '')     as docs_number,
+--         nullif(trim("RESPONSE_MESSAGE"::varchar), '') as response_message,
+--         to_timestamp_ntz("INC_JOB_UPDATED_AT"::varchar) as inc_job_updated_at
+--     from BAGIC_PREPROD_CURATED_DB.UTILS.TEST_BJAZ_T_KYC_POI_DOCUMENT
+-- )
+-- select * from source
+
+
+/* -------------------------------------------------------------------------------------
+ STEP A2 -- STG2 STAGE MODEL  (paste into stg2_test_poi_document__document.sql)
+ Mirrors stg2_aug_bjaz_t_kyc_poi_document__document: automate_dv.stage() derives the
+ hub key and hashdiff EXACTLY like the real model. source_model is the A1 base view.
+--------------------------------------------------------------------------------------*/
+-- {{ config(materialized='view') }}
+--
+-- {%- set yaml_metadata -%}
+-- source_model: 'stg_partner__test_poi_document'
+-- hashed_columns:
+--   DOCUMENT_HKEY: 'PARENT_NK'
+--   HASHDIFF:
+--     is_hashdiff: true
+--     columns:
+--       - 'VERIFICATION_RESPONSE_MESSAGE'
+-- derived_columns:
+--   PARENT_BK: "upper(trim(coalesce(docs_type,''))) || ':' || upper(trim(coalesce(docs_number,'')))"
+--   PARENT_NK: "'HUB_DOCUMENT|' || (upper(trim(coalesce(docs_type,''))) || ':' || upper(trim(coalesce(docs_number,''))))"
+--   VERIFICATION_RESPONSE_MESSAGE: 'response_message'
+--   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
+--   RECORD_SOURCE: '!OPUS_TEST_POI_DOCUMENT'
+-- {%- endset -%}
+--
+-- {% set metadata_dict = fromyaml(yaml_metadata) %}
+--
+-- {{ automate_dv.stage(include_source_columns=false,
+--                       source_model=metadata_dict['source_model'],
+--                       hashed_columns=metadata_dict['hashed_columns'],
+--                       derived_columns=metadata_dict['derived_columns']) }}
+
+
+/* -------------------------------------------------------------------------------------
+ STEP A3 -- SATELLITE MODEL  (paste into test_sat.sql)
+ Mirrors sat_aug_kyc_document's single-source call: automate_dv.sat(), NO src_eff
+ -> no tiebreaker -> reproduces the duplicate/tie behaviour.
 --------------------------------------------------------------------------------------*/
 -- {{ config(materialized='incremental', incremental_strategy='append') }}
 --
 -- {%- set yaml_metadata -%}
--- source_model: 'test_sat_stg'
+-- source_model: 'stg2_test_poi_document__document'
 -- src_pk: 'DOCUMENT_HKEY'
 -- src_hashdiff: 'HASHDIFF'
 -- src_payload:
@@ -49,75 +98,50 @@
 --                    src_ldts=metadata_dict['src_ldts'],
 --                    src_source=metadata_dict['src_source'],
 --                    source_model=metadata_dict['source_model']) }}
---
--- NOTE: you also need a trivial staging model `test_sat_stg` that selects * from the
--- raw stage table below, OR point source_model at a source(). Simplest: create
--- test_sat_stg.sql with:  {{ config(materialized='view') }}  select * from
--- BAGIC_PREPROD_CURATED_DB.UTILS.TEST_SAT_STG
 
 
 /* -------------------------------------------------------------------------------------
- STEP B -- RAW STAGE + DUPLICATE LOADS   (run in Snowflake)
- HASHDIFF is BINARY(16) = MD5_BINARY of the payload, same as automate_dv.stage().
- Two documents, each with TIE rows (same HKEY + same LOAD_DATETIME, different message)
- and EXACT-duplicate rows (same HKEY + same LOAD_DATETIME + same message).
+ STEP B -- RAW SOURCE TABLE + DUPLICATE LOADS   (run in Snowflake)
+ Shaped like BJAZ_T_KYC_POI_DOCUMENT (only the columns A1 reads). The raw table holds
+ MANY verification events per (docs_type, docs_number) at the same INC_JOB_UPDATED_AT.
 --------------------------------------------------------------------------------------*/
 
--- B.1  create the raw stage table (one row per raw verification event)
-create or replace table BAGIC_PREPROD_CURATED_DB.UTILS.TEST_SAT_STG (
-    DOCUMENT_HKEY                  binary(16),
-    HASHDIFF                       binary(16),
-    VERIFICATION_RESPONSE_MESSAGE  varchar,
-    LOAD_DATETIME                  timestamp_ntz,
-    RECORD_SOURCE                  varchar
+-- B.1  create the raw source table
+create or replace table BAGIC_PREPROD_CURATED_DB.UTILS.TEST_BJAZ_T_KYC_POI_DOCUMENT (
+    POI_DOC_ID          number,
+    DOCS_TYPE           varchar,
+    DOCS_NUMBER         varchar,
+    RESPONSE_MESSAGE    varchar,
+    INC_JOB_UPDATED_AT  varchar      -- raw is text; A1 casts to timestamp_ntz
 );
 
--- helper: HKEY from a document business key, HASHDIFF from the payload (stage() convention)
--- doc A key = 'POI:AAA111'  doc B key = 'POI:BBB222'
+-- B.2  FIRST LOAD -- document AAA111 verified several times at the SAME instant
+--      (ties: two different messages; exact dups: each message repeated),
+--      plus a later instant that oscillates back. BBB222 is a clean control.
+insert into BAGIC_PREPROD_CURATED_DB.UTILS.TEST_BJAZ_T_KYC_POI_DOCUMENT
+    (POI_DOC_ID, DOCS_TYPE, DOCS_NUMBER, RESPONSE_MESSAGE, INC_JOB_UPDATED_AT)
+values
+    (1, 'POI', 'AAA111', 'Document added successfully in OmniDocs.', '2026-01-01 10:00:00'),
+    (2, 'POI', 'AAA111', NULL,                                       '2026-01-01 10:00:00'),
+    (3, 'POI', 'AAA111', 'Document added successfully in OmniDocs.', '2026-01-01 10:00:00'),  -- exact dup
+    (4, 'POI', 'AAA111', NULL,                                       '2026-01-01 10:00:00'),  -- exact dup
+    (5, 'POI', 'AAA111', 'Document added successfully in OmniDocs.', '2026-02-01 10:00:00'),
+    (6, 'POI', 'AAA111', NULL,                                       '2026-02-01 10:00:00'),
+    (7, 'POI', 'BBB222', 'Validate Data class Fail.',               '2026-01-01 10:00:00');
 
--- B.2  FIRST LOAD -- insert rows WITH ties + exact duplicates at the SAME LOAD_DATETIME
-insert into BAGIC_PREPROD_CURATED_DB.UTILS.TEST_SAT_STG
-    (DOCUMENT_HKEY, HASHDIFF, VERIFICATION_RESPONSE_MESSAGE, LOAD_DATETIME, RECORD_SOURCE)
-select
-    MD5_BINARY('HUB_DOCUMENT|' || bk)                              as DOCUMENT_HKEY,
-    MD5_BINARY(IFNULL(msg, '^^'))                                 as HASHDIFF,
-    msg                                                           as VERIFICATION_RESPONSE_MESSAGE,
-    ldts::timestamp_ntz                                           as LOAD_DATETIME,
-    'OPUS_TEST_POI_DOCUMENT'                                      as RECORD_SOURCE
-from values
-    -- doc A, same instant, TWO different messages (a TIE) + a repeat of each (EXACT dup)
-    ('POI:AAA111', 'Document added successfully in OmniDocs.', '2026-01-01 10:00:00'),
-    ('POI:AAA111', NULL,                                       '2026-01-01 10:00:00'),
-    ('POI:AAA111', 'Document added successfully in OmniDocs.', '2026-01-01 10:00:00'),  -- exact dup
-    ('POI:AAA111', NULL,                                       '2026-01-01 10:00:00'),  -- exact dup
-    -- doc A later instant, oscillate back
-    ('POI:AAA111', 'Document added successfully in OmniDocs.', '2026-02-01 10:00:00'),
-    ('POI:AAA111', NULL,                                       '2026-02-01 10:00:00'),
-    -- doc B, single clean row (control -- should NOT duplicate)
-    ('POI:BBB222', 'Validate Data class Fail.',               '2026-01-01 10:00:00')
-    as t(bk, msg, ldts);
-
--- >>> now run:  dbt run -s test_sat_stg test_sat
--- (first build is a full load; every surviving change-detection row is inserted)
+-- >>> dbt run -s stg_partner__test_poi_document stg2_test_poi_document__document test_sat
 
 
--- B.3  SECOND LOAD -- same rows again at a NEW instant to show append growth each run
-insert into BAGIC_PREPROD_CURATED_DB.UTILS.TEST_SAT_STG
-    (DOCUMENT_HKEY, HASHDIFF, VERIFICATION_RESPONSE_MESSAGE, LOAD_DATETIME, RECORD_SOURCE)
-select
-    MD5_BINARY('HUB_DOCUMENT|' || bk),
-    MD5_BINARY(IFNULL(msg, '^^')),
-    msg,
-    ldts::timestamp_ntz,
-    'OPUS_TEST_POI_DOCUMENT'
-from values
-    ('POI:AAA111', 'Document added successfully in OmniDocs.', '2026-03-01 10:00:00'),
-    ('POI:AAA111', NULL,                                       '2026-03-01 10:00:00'),
-    ('POI:AAA111', 'Document added successfully in OmniDocs.', '2026-03-01 10:00:00'),  -- exact dup
-    ('POI:AAA111', NULL,                                       '2026-03-01 10:00:00')   -- exact dup
-    as t(bk, msg, ldts);
+-- B.3  SECOND LOAD -- same oscillating pair at a new instant (append growth each run)
+insert into BAGIC_PREPROD_CURATED_DB.UTILS.TEST_BJAZ_T_KYC_POI_DOCUMENT
+    (POI_DOC_ID, DOCS_TYPE, DOCS_NUMBER, RESPONSE_MESSAGE, INC_JOB_UPDATED_AT)
+values
+    (8,  'POI', 'AAA111', 'Document added successfully in OmniDocs.', '2026-03-01 10:00:00'),
+    (9,  'POI', 'AAA111', NULL,                                       '2026-03-01 10:00:00'),
+    (10, 'POI', 'AAA111', 'Document added successfully in OmniDocs.', '2026-03-01 10:00:00'),  -- exact dup
+    (11, 'POI', 'AAA111', NULL,                                       '2026-03-01 10:00:00');  -- exact dup
 
--- >>> now run:  dbt run -s test_sat   (incremental append)
+-- >>> dbt run -s test_sat        (incremental append)
 
 
 /* -------------------------------------------------------------------------------------
