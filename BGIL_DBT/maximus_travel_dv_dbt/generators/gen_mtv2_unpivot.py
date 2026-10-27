@@ -59,7 +59,7 @@ def branch_sql(branch, sat, view, spec):
             contributing.extend(srcs)
         else:
             lines.append("        cast(null as varchar) as %s," % col)
-    lines.append("        '%s' as record_source" % view)
+    lines.append("        '%s%s' as record_source" % (N.RECORD_SOURCE_PREFIX, view))
     guard = " or ".join("%s is not null" % c for c in sorted(set(contributing))) or "1 = 1"
     return ("    select\n" + "\n".join(lines)
             + "\n    from {{ ref('%s') }}\n    where %s" % (source_model_for(view, spec), guard))

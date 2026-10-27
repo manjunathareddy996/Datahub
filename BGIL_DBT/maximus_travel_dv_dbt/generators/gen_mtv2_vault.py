@@ -240,13 +240,50 @@ def satfeed_body(sat, feeders, spec, layer):
     return "\n".join(lines) + "\n" + "\nunion all\n".join(parts)
 
 
-def satellite_body(sat, feed):
-    macro = "ma_sat" if sat["multi_active"] else "sat"
-    head = [
-        "{{ config(materialized='incremental') }}",
+def feeder_live_columns(feeder, payload):
+    """Payload columns this feeder genuinely populates (a mapped attribute on any branch), in
+    satellite payload order. Drives src_column_map so the macro's superset padding is explicit
+    rather than introspected (skill 2b / defect class #9)."""
+    return [c for c in payload
+            if any(b.get("attributes", {}).get(c) for b in feeder["branches"])]
+
+
+def satellite_body(sat, feed, column_map=None):
+    """`feed` is one satfeed name (single source -> automate_dv.sat()/ma_sat()) or a list of
+    per-feeder satfeed names (two or more sources -> the project's sat_multi_source /
+    ma_sat_multi_source, which union the sources inside the macro)."""
+    feeds = feed if isinstance(feed, list) else [feed]
+    multi = len(feeds) > 1
+    if multi:
+        macro = "ma_sat_multi_source" if sat["multi_active"] else "sat_multi_source"
+        uk = [sat["src_pk"]] + (list(sat["cdk"]) if sat["multi_active"] else []) \
+            + [sat["hashdiff_sat"], "RECORD_SOURCE"]
+        config = ["{{",
+                  "    config(",
+                  "        materialized='incremental',",
+                  "        incremental_strategy='merge',",
+                  "        on_schema_change='append_new_columns',",
+                  "        unique_key=[%s]" % ", ".join("'%s'" % c for c in uk),
+                  "    )",
+                  "}}"]
+    else:
+        macro = "automate_dv.ma_sat" if sat["multi_active"] else "automate_dv.sat"
+        config = ["{{ config(materialized='incremental') }}"]
+    head = config + [
         "",
-        "-- MAXIMUS TRAVEL V2 %s() for %s." % (macro, sat["emit_name"]),
+        "-- MAXIMUS TRAVEL V2 %s() for %s." % (macro.replace("automate_dv.", ""),
+                                               sat["emit_name"]),
     ] + SHARED_VAULT_NOTE
+    if multi:
+        head += [
+            "--",
+            "-- %d sources: unioned INSIDE %s (no hand-written union view). RECORD_SOURCE"
+            % (len(feeds), macro),
+            "-- group is %s; the macro scopes its MAX(DBT_RUN_TS) watermark to"
+            % N.RECORD_SOURCE_GROUP,
+            "-- RECORD_SOURCE LIKE '%s%%' so the OPUS writes to this shared table do not move it."
+            % N.RECORD_SOURCE_PREFIX,
+        ]
     if sat["sibling_built"]:
         head += [
             "--",
@@ -285,8 +322,8 @@ def satellite_body(sat, feed):
             "-- ** BUILT AS MAPPED (BUILD_RULES 5.7). Routed BLOCKING to the MODELLER; see",
             "-- ** build_artifacts/mtv2_spec.json census.ordinal_child_key_summary.",
         ] + _stability_caveat(sat)
-    yaml = ["{%- set yaml_metadata -%}", "source_model:", "  - '%s'" % feed,
-            "src_pk: '%s'" % sat["src_pk"]]
+    yaml = ["{%- set yaml_metadata -%}", "source_model:"] \
+        + ["  - '%s'" % f for f in feeds] + ["src_pk: '%s'" % sat["src_pk"]]
     if sat["multi_active"]:
         yaml.append("src_cdk:")
         for c in sat["cdk"]:
@@ -295,16 +332,31 @@ def satellite_body(sat, feed):
     for c in sat["payload"]:
         yaml.append("  - '%s'" % c)
     yaml += ["src_hashdiff: '%s'" % sat["hashdiff_sat"],
-             "src_ldts: 'LOAD_DATETIME'", "src_source: 'RECORD_SOURCE'", "{%- endset -%}"]
+             "src_ldts: 'LOAD_DATETIME'", "src_source: 'RECORD_SOURCE'"]
+    if multi:
+        yaml.append("src_record_source_map:")
+        yaml += ["  %s: '%s'" % (f, N.RECORD_SOURCE_GROUP) for f in feeds]
+    yaml.append("{%- endset -%}")
+    pad = " " * (len(macro) + 4)
     call = ["", "{% set metadata_dict = fromyaml(yaml_metadata) %}", "",
-            "{{ automate_dv.%s(src_pk=metadata_dict['src_pk']," % macro]
+            "{{ %s(src_pk=metadata_dict['src_pk']," % macro]
     if sat["multi_active"]:
-        call.append("                      src_cdk=metadata_dict['src_cdk'],")
-    call += ["                      src_payload=metadata_dict['src_payload'],",
-             "                      src_hashdiff=metadata_dict['src_hashdiff'],",
-             "                      src_ldts=metadata_dict['src_ldts'],",
-             "                      src_source=metadata_dict['src_source'],",
-             "                      source_model=metadata_dict['source_model']) }}"]
+        call.append(pad + "src_cdk=metadata_dict['src_cdk'],")
+    call += [pad + "src_payload=metadata_dict['src_payload'],",
+             pad + "src_hashdiff=metadata_dict['src_hashdiff'],",
+             pad + "src_ldts=metadata_dict['src_ldts'],",
+             pad + "src_source=metadata_dict['src_source'],"]
+    if multi:
+        call += [pad + "source_model=metadata_dict['source_model'],",
+                 pad + "src_record_source_map=metadata_dict['src_record_source_map'],",
+                 pad + "src_column_map={"]
+        cm = column_map or {}
+        call.append(",\n".join(
+            "%s    '%s': [%s]" % (pad, f, ", ".join("'%s'" % c for c in cm.get(f, sat["payload"])))
+            for f in feeds))
+        call.append(pad + "}) }}")
+    else:
+        call.append(pad + "source_model=metadata_dict['source_model']) }}")
     return "\n".join(head + [""] + yaml + call)
 
 
@@ -565,11 +617,23 @@ def main():
                                  "was dropped (BUILD_RULES 5.4); nothing is left to describe"))
             continue
         feed = "satfeed_%s_%s" % (N.PREFIX, N.sat_slug(sat["emit_name"]))
-        N.write_model(os.path.join(N.LAYER_DIRS["satfeed"], feed + ".sql"),
-                      satfeed_body(sat, feeders, spec, "standard"))
+        if len(feeders) == 1:
+            N.write_model(os.path.join(N.LAYER_DIRS["satfeed"], feed + ".sql"),
+                          satfeed_body(sat, feeders, spec, "standard"))
+            sat_sql = satellite_body(sat, feed)
+        else:
+            # one rename view PER feeder; the union happens inside sat_multi_source
+            feeds, col_map = [], {}
+            for i, f in enumerate(feeders, 1):
+                name = "%s__%02d" % (feed, i)
+                N.write_model(os.path.join(N.LAYER_DIRS["satfeed"], name + ".sql"),
+                              satfeed_body(sat, [f], spec, "standard"))
+                feeds.append(name)
+                col_map[name] = feeder_live_columns(f, sat["payload"])
+            sat_sql = satellite_body(sat, feeds, col_map)
+            counts["multi_source"] += 1
         N.write_model(os.path.join(N.LAYER_DIRS["satellite"],
-                                   "%s.sql" % N.sat_slug(sat["emit_name"])),
-                      satellite_body(sat, feed))
+                                   "%s.sql" % N.sat_slug(sat["emit_name"])), sat_sql)
         counts["satellites"] += 1
         counts["multi_active"] += bool(sat["multi_active"])
         counts["sat_feeders"] += len(feeders)
@@ -596,7 +660,8 @@ def main():
     print("  links               : %d" % counts["links"])
     print("  satellites (standard): %d   of which multi-active %d, over %d feeder(s)"
           % (counts["satellites"], counts["multi_active"], counts["sat_feeders"]))
-    print("  satfeed views       : %d   (the bare-HASHDIFF rename, BD7)" % counts["satellites"])
+    print("  multi-source sats   : %d   (sat_multi_source / ma_sat_multi_source)"
+          % counts["multi_source"])
     print("  audit models        : %d" % counts["audit"])
     print("  satellites NOT built at this layer: %d -- each with its reason:" % len(unbuilt_here))
     for name, why in unbuilt_here:

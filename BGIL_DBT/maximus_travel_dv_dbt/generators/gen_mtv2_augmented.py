@@ -71,7 +71,7 @@ def branch_select(branch, sat, view, spec, source_model):
             contributing.extend(srcs)
         else:
             lines.append("        cast(null as varchar) as %s," % col)
-    lines.append("        '%s' as record_source" % view)
+    lines.append("        '%s%s' as record_source" % (N.RECORD_SOURCE_PREFIX, view))
     guard = " or ".join("%s is not null" % c for c in sorted(set(contributing))) or "1 = 1"
     return ("    select\n" + "\n".join(lines)
             + "\n    from {{ ref('%s') }}\n    where %s" % (source_model, guard))
@@ -129,7 +129,7 @@ def aug_stage_body(feeder, sat, spec, aligned_note, fanout_model=None):
             derived.append("  %s: %s" % (c, N.yaml_scalar(sql)))
         for c in sat["payload"]:
             derived.append("  %s: %s" % (c, N.yaml_scalar(S.payload_sql(b["attributes"].get(c)))))
-        derived.append("  RECORD_SOURCE: '!%s'" % view)
+        derived.append("  RECORD_SOURCE: '!%s%s'" % (N.RECORD_SOURCE_PREFIX, view))
     derived.append("  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'")
     for line in derived:
         K.assert_no_prose(line, "augmented stage %s / %s" % (view, sat["emit_name"]))
@@ -264,7 +264,7 @@ def main(only_aligned=False, label="gen_mtv2_augmented"):
             continue
 
         emit_sat = dict(sat, payload=payload)
-        stage_models, slot_by_model = [], {}
+        stage_models, slot_by_model, feeder_of_model = [], {}, {}
         for f in feeders:
             slug = N.sat_slug(sat["emit_name"])
             name = N.model_name("aug_stage", f["view"], slug)
@@ -287,15 +287,28 @@ def main(only_aligned=False, label="gen_mtv2_augmented"):
             N.write_model(N.model_path("aug_stage", name), body)
             stage_models.append(name)
             slot_by_model[name] = f["branches"][0]["slot"]
+            feeder_of_model[name] = f
             counts["aug_stages"] += 1
         if not stage_models:
             continue
         feed = "satfeed_%s_aug_%s" % (N.PREFIX, N.sat_slug(sat["emit_name"]))
-        N.write_model(os.path.join(N.LAYER_DIRS["aug_satfeed"], feed + ".sql"),
-                      aug_satfeed_body(emit_sat, stage_models, slot_by_model))
+        if len(stage_models) == 1:
+            N.write_model(os.path.join(N.LAYER_DIRS["aug_satfeed"], feed + ".sql"),
+                          aug_satfeed_body(emit_sat, stage_models, slot_by_model))
+            sat_sql = V.satellite_body(emit_sat, feed)
+        else:
+            # one rename view PER stage model; the union happens inside sat_multi_source
+            feeds, col_map = [], {}
+            for i, m in enumerate(stage_models, 1):
+                name = "%s__%02d" % (feed, i)
+                N.write_model(os.path.join(N.LAYER_DIRS["aug_satfeed"], name + ".sql"),
+                              aug_satfeed_body(emit_sat, [m], slot_by_model))
+                feeds.append(name)
+                col_map[name] = V.feeder_live_columns(feeder_of_model[m], emit_sat["payload"])
+            sat_sql = V.satellite_body(emit_sat, feeds, col_map)
+            counts["aug_multi_source"] += 1
         N.write_model(os.path.join(N.LAYER_DIRS["aug_sat"],
-                                   "%s.sql" % N.sat_slug(sat["emit_name"])),
-                      V.satellite_body(emit_sat, feed))
+                                   "%s.sql" % N.sat_slug(sat["emit_name"])), sat_sql)
         counts["aug_satellites"] += 1
         counts["aug_multi_active"] += bool(sat["multi_active"])
         if is_aligned:
@@ -306,6 +319,8 @@ def main(only_aligned=False, label="gen_mtv2_augmented"):
           % (counts["aug_satellites"], counts["aug_multi_active"]))
     print("  augmented stages     : %d  (one per view per satellite, per-column reversible)"
           % counts["aug_stages"])
+    print("  augmented multi-source sats: %d  (sat_multi_source / ma_sat_multi_source)"
+          % counts["aug_multi_source"])
     print("  augmented fan-out models: %d  (column-as-instance families on the unratified track)"
           % counts["aug_fanouts"])
     if only_aligned:

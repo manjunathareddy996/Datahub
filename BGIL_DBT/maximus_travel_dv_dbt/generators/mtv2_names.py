@@ -622,6 +622,11 @@ PROFILE = load_profile()
 PROFILE_SELF_ASSERTION = assert_profile_self_consistent(PROFILE)
 
 LOB = PROFILE["lob"]                                         # maximus_travel_v2
+# Source-system prefix on every RECORD_SOURCE literal (skill defect class #12). Same value the
+# partner Maximus build uses ('!MAXIMUS_<view>'); it is also the group the multi-source
+# satellite macros scope their watermark on (RECORD_SOURCE LIKE 'MAXIMUS_%').
+RECORD_SOURCE_GROUP = "MAXIMUS"
+RECORD_SOURCE_PREFIX = RECORD_SOURCE_GROUP + "_"
 PREFIX = PROFILE["prefix"]                                   # mtv2
 BUNDLE = os.path.normpath(os.path.join(REPO, PROFILE["bundle_root"]))
 MAP_PATH = os.path.join(BUNDLE, *PROFILE["map_file"].split("/"))

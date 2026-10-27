@@ -497,9 +497,11 @@ def main():
         # a satellite names its feed as a MODEL NAME inside the YAML, not as a {{ ref() }} --
         # a reader that looked for ref() here found nothing and reported 0 attributes checked,
         # which is a check that cannot fail wearing a pass (BUILD_RULES 1).
-        if not feed or feed[0] not in names:
+        # a multi-source satellite (sat_multi_source) names one satfeed PER feeder; read them all
+        feed = [f for f in feed if f in names]
+        if not feed:
             continue
-        feed_body = sql[names[feed[0]]]
+        feed_body = "\nunion all\n".join(sql[names[f]] for f in feed)
         live_payload = set()
         for branch in feed_body.split("union all"):
             up = REF.findall(branch)

@@ -78,7 +78,7 @@ def stage_body(view, spec, slots, sat_feeders, sats):
     for col in sorted(emitted):
         derived.append("  %s: %s" % (col, N.yaml_scalar(emitted[col])))
     derived.append("  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'")
-    derived.append("  RECORD_SOURCE: '!%s'" % view)
+    derived.append("  RECORD_SOURCE: '!%s%s'" % (N.RECORD_SOURCE_PREFIX, view))
 
     for line in derived:
         K.assert_no_prose(line, "stage %s" % view)
