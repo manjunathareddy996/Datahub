@@ -1,0 +1,318 @@
+{{ config(materialized='view') }}
+
+-- FEED for SAT_PARTY_IDENTITY (target track): unions 14 feeder(s).
+--
+-- Payload is the union over ALL feeders, null-padded to the SATELLITE -- not to any one
+-- feeder group (BUILD_RULES 6). 15 payload column(s), 0 child-key column(s).
+--
+-- The hashdiff is renamed here from the wide stage's HASHDIFF_PARTY_IDENTITY to the bare HASHDIFF the sibling
+-- writes on all 45 of its satellites. The wide stage cannot use the bare name because
+-- 27 views feed more than one sibling-built satellite (BD7 / BUILD_RULES 12).
+
+    select
+        PARTY_HKEY__CLAIMANT_CUSTOMER as PARTY_HKEY,
+        AGE as AGE,
+        COUNTRY_OF_BIRTH as COUNTRY_OF_BIRTH,
+        COUNTRY_OF_RESIDENCE as COUNTRY_OF_RESIDENCE,
+        DATE_OF_BIRTH as DATE_OF_BIRTH,
+        FIRST_NAME as FIRST_NAME,
+        GENDER_CODE as GENDER_CODE,
+        LAST_NAME as LAST_NAME,
+        MIDDLE_NAME as MIDDLE_NAME,
+        NATIONALITY as NATIONALITY,
+        PARTY_FULL_NAME as PARTY_FULL_NAME,
+        PARTY_LEGAL_NAME as PARTY_LEGAL_NAME,
+        PARTY_STATUS as PARTY_STATUS,
+        PARTY_SUB_TYPE_CODE as PARTY_SUB_TYPE_CODE,
+        PARTY_TYPE_CODE as PARTY_TYPE_CODE,
+        SALUTATION as SALUTATION,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__clm_clmd_clmap_pv') }}
+    where PARTY_HKEY__CLAIMANT_CUSTOMER is not null
+union all
+    select
+        PARTY_HKEY as PARTY_HKEY,
+        AGE as AGE,
+        COUNTRY_OF_BIRTH as COUNTRY_OF_BIRTH,
+        COUNTRY_OF_RESIDENCE as COUNTRY_OF_RESIDENCE,
+        DATE_OF_BIRTH as DATE_OF_BIRTH,
+        FIRST_NAME as FIRST_NAME,
+        GENDER_CODE as GENDER_CODE,
+        LAST_NAME as LAST_NAME,
+        MIDDLE_NAME as MIDDLE_NAME,
+        NATIONALITY as NATIONALITY,
+        PARTY_FULL_NAME as PARTY_FULL_NAME,
+        PARTY_LEGAL_NAME as PARTY_LEGAL_NAME,
+        PARTY_STATUS as PARTY_STATUS,
+        PARTY_SUB_TYPE_CODE as PARTY_SUB_TYPE_CODE,
+        PARTY_TYPE_CODE as PARTY_TYPE_CODE,
+        SALUTATION as SALUTATION,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__clm_clmd_clmpty') }}
+    where PARTY_HKEY is not null
+union all
+    select
+        PARTY_HKEY as PARTY_HKEY,
+        AGE as AGE,
+        COUNTRY_OF_BIRTH as COUNTRY_OF_BIRTH,
+        COUNTRY_OF_RESIDENCE as COUNTRY_OF_RESIDENCE,
+        DATE_OF_BIRTH as DATE_OF_BIRTH,
+        FIRST_NAME as FIRST_NAME,
+        GENDER_CODE as GENDER_CODE,
+        LAST_NAME as LAST_NAME,
+        MIDDLE_NAME as MIDDLE_NAME,
+        NATIONALITY as NATIONALITY,
+        PARTY_FULL_NAME as PARTY_FULL_NAME,
+        PARTY_LEGAL_NAME as PARTY_LEGAL_NAME,
+        PARTY_STATUS as PARTY_STATUS,
+        PARTY_SUB_TYPE_CODE as PARTY_SUB_TYPE_CODE,
+        PARTY_TYPE_CODE as PARTY_TYPE_CODE,
+        SALUTATION as SALUTATION,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__clm_clmd_clmrsk_party') }}
+    where PARTY_HKEY is not null
+union all
+    select
+        PARTY_HKEY__EXPENSE_LINE_PARTY as PARTY_HKEY,
+        AGE as AGE,
+        COUNTRY_OF_BIRTH as COUNTRY_OF_BIRTH,
+        COUNTRY_OF_RESIDENCE as COUNTRY_OF_RESIDENCE,
+        DATE_OF_BIRTH as DATE_OF_BIRTH,
+        FIRST_NAME as FIRST_NAME,
+        GENDER_CODE as GENDER_CODE,
+        LAST_NAME as LAST_NAME,
+        MIDDLE_NAME as MIDDLE_NAME,
+        NATIONALITY as NATIONALITY,
+        PARTY_FULL_NAME as PARTY_FULL_NAME,
+        PARTY_LEGAL_NAME as PARTY_LEGAL_NAME,
+        PARTY_STATUS as PARTY_STATUS,
+        PARTY_SUB_TYPE_CODE as PARTY_SUB_TYPE_CODE,
+        PARTY_TYPE_CODE as PARTY_TYPE_CODE,
+        SALUTATION as SALUTATION,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__clm_clmd_clmrsk_rska_msp_msd_prop_pv') }}
+    where PARTY_HKEY__EXPENSE_LINE_PARTY is not null
+union all
+    select
+        PARTY_HKEY__TREATING_HOSPITAL_PROVIDER as PARTY_HKEY,
+        AGE as AGE,
+        COUNTRY_OF_BIRTH as COUNTRY_OF_BIRTH,
+        COUNTRY_OF_RESIDENCE as COUNTRY_OF_RESIDENCE,
+        DATE_OF_BIRTH as DATE_OF_BIRTH,
+        FIRST_NAME as FIRST_NAME,
+        GENDER_CODE as GENDER_CODE,
+        LAST_NAME as LAST_NAME,
+        MIDDLE_NAME as MIDDLE_NAME,
+        NATIONALITY as NATIONALITY,
+        PARTY_FULL_NAME as PARTY_FULL_NAME,
+        PARTY_LEGAL_NAME as PARTY_LEGAL_NAME,
+        PARTY_STATUS as PARTY_STATUS,
+        PARTY_SUB_TYPE_CODE as PARTY_SUB_TYPE_CODE,
+        PARTY_TYPE_CODE as PARTY_TYPE_CODE,
+        SALUTATION as SALUTATION,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__clm_clmd_clmrsk_rska_properties_pv') }}
+    where PARTY_HKEY__TREATING_HOSPITAL_PROVIDER is not null
+union all
+    select
+        PARTY_HKEY__INSURED_MEMBER as PARTY_HKEY,
+        AGE as AGE,
+        COUNTRY_OF_BIRTH as COUNTRY_OF_BIRTH,
+        COUNTRY_OF_RESIDENCE as COUNTRY_OF_RESIDENCE,
+        DATE_OF_BIRTH as DATE_OF_BIRTH,
+        FIRST_NAME as FIRST_NAME,
+        GENDER_CODE as GENDER_CODE,
+        LAST_NAME as LAST_NAME,
+        MIDDLE_NAME as MIDDLE_NAME,
+        NATIONALITY as NATIONALITY,
+        PARTY_FULL_NAME as PARTY_FULL_NAME,
+        PARTY_LEGAL_NAME as PARTY_LEGAL_NAME,
+        PARTY_STATUS as PARTY_STATUS,
+        PARTY_SUB_TYPE_CODE as PARTY_SUB_TYPE_CODE,
+        PARTY_TYPE_CODE as PARTY_TYPE_CODE,
+        SALUTATION as SALUTATION,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__uwr_pol_ins_mbr') }}
+    where PARTY_HKEY__INSURED_MEMBER is not null
+union all
+    select
+        PARTY_HKEY__INSURED_MEMBER as PARTY_HKEY,
+        AGE as AGE,
+        COUNTRY_OF_BIRTH as COUNTRY_OF_BIRTH,
+        COUNTRY_OF_RESIDENCE as COUNTRY_OF_RESIDENCE,
+        DATE_OF_BIRTH as DATE_OF_BIRTH,
+        FIRST_NAME as FIRST_NAME,
+        GENDER_CODE as GENDER_CODE,
+        LAST_NAME as LAST_NAME,
+        MIDDLE_NAME as MIDDLE_NAME,
+        NATIONALITY as NATIONALITY,
+        PARTY_FULL_NAME as PARTY_FULL_NAME,
+        PARTY_LEGAL_NAME as PARTY_LEGAL_NAME,
+        PARTY_STATUS as PARTY_STATUS,
+        PARTY_SUB_TYPE_CODE as PARTY_SUB_TYPE_CODE,
+        PARTY_TYPE_CODE as PARTY_TYPE_CODE,
+        SALUTATION as SALUTATION,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where PARTY_HKEY__INSURED_MEMBER is not null
+union all
+    select
+        PARTY_HKEY__NOMINEE as PARTY_HKEY,
+        AGE as AGE,
+        COUNTRY_OF_BIRTH as COUNTRY_OF_BIRTH,
+        COUNTRY_OF_RESIDENCE as COUNTRY_OF_RESIDENCE,
+        DATE_OF_BIRTH__SAT_PARTY_IDENTITY as DATE_OF_BIRTH,
+        FIRST_NAME as FIRST_NAME,
+        GENDER_CODE as GENDER_CODE,
+        LAST_NAME as LAST_NAME,
+        MIDDLE_NAME as MIDDLE_NAME,
+        NATIONALITY as NATIONALITY,
+        PARTY_FULL_NAME as PARTY_FULL_NAME,
+        PARTY_LEGAL_NAME as PARTY_LEGAL_NAME,
+        PARTY_STATUS as PARTY_STATUS,
+        PARTY_SUB_TYPE_CODE as PARTY_SUB_TYPE_CODE,
+        PARTY_TYPE_CODE as PARTY_TYPE_CODE,
+        SALUTATION as SALUTATION,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
+    where PARTY_HKEY__NOMINEE is not null
+union all
+    select
+        PARTY_HKEY__POLICYHOLDER as PARTY_HKEY,
+        AGE as AGE,
+        COUNTRY_OF_BIRTH as COUNTRY_OF_BIRTH,
+        COUNTRY_OF_RESIDENCE as COUNTRY_OF_RESIDENCE,
+        DATE_OF_BIRTH as DATE_OF_BIRTH,
+        FIRST_NAME as FIRST_NAME,
+        GENDER_CODE as GENDER_CODE,
+        LAST_NAME as LAST_NAME,
+        MIDDLE_NAME as MIDDLE_NAME,
+        NATIONALITY as NATIONALITY,
+        PARTY_FULL_NAME as PARTY_FULL_NAME,
+        PARTY_LEGAL_NAME as PARTY_LEGAL_NAME,
+        PARTY_STATUS as PARTY_STATUS,
+        PARTY_SUB_TYPE_CODE as PARTY_SUB_TYPE_CODE,
+        PARTY_TYPE_CODE as PARTY_TYPE_CODE,
+        SALUTATION as SALUTATION,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__uwr_pol_ins_rskp_sp_pv') }}
+    where PARTY_HKEY__POLICYHOLDER is not null
+union all
+    select
+        PARTY_HKEY as PARTY_HKEY,
+        AGE as AGE,
+        COUNTRY_OF_BIRTH as COUNTRY_OF_BIRTH,
+        COUNTRY_OF_RESIDENCE as COUNTRY_OF_RESIDENCE,
+        DATE_OF_BIRTH as DATE_OF_BIRTH,
+        FIRST_NAME as FIRST_NAME,
+        GENDER_CODE as GENDER_CODE,
+        LAST_NAME as LAST_NAME,
+        MIDDLE_NAME as MIDDLE_NAME,
+        NATIONALITY as NATIONALITY,
+        PARTY_FULL_NAME as PARTY_FULL_NAME,
+        PARTY_LEGAL_NAME as PARTY_LEGAL_NAME,
+        PARTY_STATUS as PARTY_STATUS,
+        PARTY_SUB_TYPE_CODE as PARTY_SUB_TYPE_CODE,
+        PARTY_TYPE_CODE as PARTY_TYPE_CODE,
+        SALUTATION as SALUTATION,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__uwr_pol_policy_relation') }}
+    where PARTY_HKEY is not null
+union all
+    select
+        PARTY_HKEY__PROPOSER as PARTY_HKEY,
+        AGE as AGE,
+        COUNTRY_OF_BIRTH as COUNTRY_OF_BIRTH,
+        COUNTRY_OF_RESIDENCE as COUNTRY_OF_RESIDENCE,
+        DATE_OF_BIRTH as DATE_OF_BIRTH,
+        FIRST_NAME as FIRST_NAME,
+        GENDER_CODE as GENDER_CODE,
+        LAST_NAME as LAST_NAME,
+        MIDDLE_NAME as MIDDLE_NAME,
+        NATIONALITY as NATIONALITY,
+        PARTY_FULL_NAME as PARTY_FULL_NAME,
+        PARTY_LEGAL_NAME as PARTY_LEGAL_NAME,
+        PARTY_STATUS as PARTY_STATUS,
+        PARTY_SUB_TYPE_CODE as PARTY_SUB_TYPE_CODE,
+        PARTY_TYPE_CODE as PARTY_TYPE_CODE,
+        SALUTATION as SALUTATION,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__uwr_pol_prp') }}
+    where PARTY_HKEY__PROPOSER is not null
+union all
+    select
+        PARTY_HKEY__PROPOSER as PARTY_HKEY,
+        AGE as AGE,
+        COUNTRY_OF_BIRTH as COUNTRY_OF_BIRTH,
+        COUNTRY_OF_RESIDENCE as COUNTRY_OF_RESIDENCE,
+        DATE_OF_BIRTH as DATE_OF_BIRTH,
+        FIRST_NAME as FIRST_NAME,
+        GENDER_CODE as GENDER_CODE,
+        LAST_NAME as LAST_NAME,
+        MIDDLE_NAME as MIDDLE_NAME,
+        NATIONALITY as NATIONALITY,
+        PARTY_FULL_NAME as PARTY_FULL_NAME,
+        PARTY_LEGAL_NAME as PARTY_LEGAL_NAME,
+        PARTY_STATUS as PARTY_STATUS,
+        PARTY_SUB_TYPE_CODE as PARTY_SUB_TYPE_CODE,
+        PARTY_TYPE_CODE as PARTY_TYPE_CODE,
+        SALUTATION as SALUTATION,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__uwr_pol_prp_pp_sp_pv') }}
+    where PARTY_HKEY__PROPOSER is not null
+union all
+    select
+        PARTY_HKEY__NOMINEE as PARTY_HKEY,
+        AGE as AGE,
+        COUNTRY_OF_BIRTH as COUNTRY_OF_BIRTH,
+        COUNTRY_OF_RESIDENCE as COUNTRY_OF_RESIDENCE,
+        DATE_OF_BIRTH__SAT_PARTY_IDENTITY as DATE_OF_BIRTH,
+        FIRST_NAME as FIRST_NAME,
+        GENDER_CODE as GENDER_CODE,
+        LAST_NAME as LAST_NAME,
+        MIDDLE_NAME as MIDDLE_NAME,
+        NATIONALITY as NATIONALITY,
+        PARTY_FULL_NAME as PARTY_FULL_NAME,
+        PARTY_LEGAL_NAME as PARTY_LEGAL_NAME,
+        PARTY_STATUS as PARTY_STATUS,
+        PARTY_SUB_TYPE_CODE as PARTY_SUB_TYPE_CODE,
+        PARTY_TYPE_CODE as PARTY_TYPE_CODE,
+        SALUTATION as SALUTATION,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__uwr_qpd_rskl_msp_imsd_inp_pv') }}
+    where PARTY_HKEY__NOMINEE is not null
+union all
+    select
+        PARTY_HKEY__POLICYHOLDER as PARTY_HKEY,
+        AGE as AGE,
+        COUNTRY_OF_BIRTH as COUNTRY_OF_BIRTH,
+        COUNTRY_OF_RESIDENCE as COUNTRY_OF_RESIDENCE,
+        DATE_OF_BIRTH as DATE_OF_BIRTH,
+        FIRST_NAME as FIRST_NAME,
+        GENDER_CODE as GENDER_CODE,
+        LAST_NAME as LAST_NAME,
+        MIDDLE_NAME as MIDDLE_NAME,
+        NATIONALITY as NATIONALITY,
+        PARTY_FULL_NAME as PARTY_FULL_NAME,
+        PARTY_LEGAL_NAME as PARTY_LEGAL_NAME,
+        PARTY_STATUS as PARTY_STATUS,
+        PARTY_SUB_TYPE_CODE as PARTY_SUB_TYPE_CODE,
+        PARTY_TYPE_CODE as PARTY_TYPE_CODE,
+        SALUTATION as SALUTATION,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__uwr_qpd_rskl_rskp_rl_pv') }}
+    where PARTY_HKEY__POLICYHOLDER is not null

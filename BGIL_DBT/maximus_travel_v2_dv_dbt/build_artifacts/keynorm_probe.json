@@ -1,0 +1,34 @@
+{
+ "probe": "keynorm history containment",
+ "keynorm_blocks": 1444,
+ "blocks_with_previous_expression": 1444,
+ "scratch_directory": "C:/Users/KAMALJ~1.SIN/AppData/Local/Temp/claude/C--Users-kamaljeet-singh-OneDrive---Crisp-Analytics-Private-Limited-Documents-dev-Health-DBTModel/7667403c-4085-4282-92c2-e44620043cb9/scratchpad/remediate/keynorm",
+ "bundle_written": false,
+ "checks": [
+  {
+   "check": "injection: an unrecognised keynorm shape is REFUSED",
+   "result": "pass",
+   "detail": "planted one extra keynorm field in a scratch copy of the map; the guard refused and NAMED the shape: REFUSING TO BUILD: keynorm carries 1 field-set shape(s) this build does not recognise: {('class', 'previous_expression', 'stage', 'superseded_by'): 1}. Nothing reads a keynorm value, but an unrecognised shape means the map grew a field nobo"
+  },
+  {
+   "check": "control: the UNMODIFIED map is accepted",
+   "result": "pass",
+   "detail": "the same code over an unmodified scratch copy returns the shape census {'class + previous_expression + stage': 1391, 'class + previous_expression + reason + stage': 33, 'previous_expression + reason': 20} and does not refuse, so the refusal above is caused by the planted field and not by the guard being unconditional"
+  },
+  {
+   "check": "containment: no archived previous_expression reaches the spec",
+   "result": "pass",
+   "detail": "every one of the 1444 archived previous_expression values in a scratch copy was replaced with a poison token and the WHOLE SPEC was rebuilt from that map: 0 occurrence(s) of the token in the spec."
+  },
+  {
+   "check": "the containment search CAN find the token",
+   "result": "pass",
+   "detail": "poisoning ONE LIVE resolved_key.expression instead puts the token into the spec 2 time(s), so the zero above is a judged zero and not a search that cannot match"
+  },
+  {
+   "check": "the key-selection slot SET excludes every keynorm slot",
+   "result": "pass",
+   "detail": "key selection reads exactly these resolved_key slots: expression, hub, instance, source_columns, tier. The map's own history slot is 'keynorm.previous_expression' and it is on mtv2_names.NEVER_READ_FIELDS (True), so a reader for it is fatal rather than quiet. Slots read that are keynorm slots: 0."
+  }
+ ]
+}

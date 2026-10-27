@@ -1,0 +1,2555 @@
+{
+ "lob": "maximus_travel_v2",
+ "bundle_root": "../SourceMapping_Skill/maximus travel mapping v2/outputs",
+ "model_file": "data_7.js",
+ "generated": "2026-09-24",
+ "map_file": "04_column_map.json",
+ "map_row_container": "columns",
+ "profile_revision": 5,
+ "re_entry": {
+  "entry": "RE-ENTRY #4 (map rev 5 - the transformation_kind / build-directive write)",
+  "previous_profile": "build_profile.prev.json  (rev 4)",
+  "chain": [
+   "build_profile.json = rev 5 (this file)",
+   "build_profile.prev.json = rev 4",
+   "build_profile.prev2.json = rev 3",
+   "build_profile.prev3.json = rev 2",
+   "build_profile.prev4.json = rev 1"
+  ],
+  "rotation_note": "Cascaded, nothing deleted: prev3 -> prev4, prev2 -> prev3, prev -> prev2, current copied to prev. Chain digests verified before and after and they match the chain rev 4 recorded: rev4 d221d2781e353072, rev3 586527df4dc57c3d, rev2 c157437e0ee2124d, rev1 7c0435bcf88f7168. build_artifacts/reports/ was NOT deleted and NOT backed up (BUILD_RULES 9.3); the three pre-existing reports were verified present before and after, and this run adds only stage0_reentry4_report.json.",
+  "baseline_identification": {
+   "method_used": "CONTENT DIGEST plus markers. Never mtime, never the covering note.",
+   "stated_build_baseline": {
+    "04_column_map.json": "bdb1f3fea01475fbe25b5c3c",
+    "KEY_FUNCTIONS.md": "7ef3230f7697e54f7178a3c1",
+    "20_build_directives.json": "4af35d693f487f6b339b3a89"
+   },
+   "stated_baseline_reproduced": true,
+   "current_bundle_equals_what_the_build_consumed": true,
+   "bundle_moved_since_the_build": false,
+   "proof_note": "build_artifacts/BUILD_STATUS.json input_digest names 04_column_map.json sha256 bdb1f3fea01475fbe25b5c3c0694e5eae791354e679326196009b83d3bfe224e, which is byte-for-byte the live map now. KEY_FUNCTIONS.md is 7ef3230f7697e54f7178a3c1 and 20_build_directives.json is 4af35d693f487f6b339b3a89, both exactly as stated. The bundle has NOT moved since the build, and no unannounced write occurred.",
+   "what_the_rev4_profile_actually_describes": {
+    "map_digest": "9243f6c5cb277e2e13673d4a",
+    "snapshot_it_equals": "04_column_map.pre_tfix.json (and 04_column_map.pre_legfix.json, byte-identical to it)",
+    "markers_note": "rev 4 contains ZERO occurrences of the strings transformation_kind, executable_expression, synonym_note, reference_decode and 20_build_directives; and it records KEY_FUNCTIONS.md at d62e136c, quoting its figures as trim 4415 / nullif 4405 / coalesce 1704 over 2344 expressions. The live KEY_FUNCTIONS.md publishes 5094 / 5084 / 1783 over 2843. No other snapshot in the bundle matches on both markers.",
+    "consequence_note": "The rev-4 profile is ONE REVISION BEHIND the map the build consumed. It is not wrong about what it describes; it describes a map that no longer exists. This profile supersedes it."
+   }
+  },
+  "map_diff_EXHAUSTIVE": {
+   "method": "every leaf path of every one of the 2639 rows of 04_column_map.pre_tfix.json compared against the live map, both directions, plus all non-column top-level keys",
+   "baseline": "04_column_map.pre_tfix.json (9243f6c5cb277e2e13673d4a)",
+   "current": "04_column_map.json (bdb1f3fea01475fbe25b5c3c)",
+   "rows_added": 0,
+   "rows_removed": 0,
+   "row_identity_order_identical": true,
+   "top_level_non_column_changes": 0,
+   "added_field_paths": {
+    ".target.transformation_kind": 63,
+    ".target.build_directive": 3,
+    ".target.build_note": 3
+   },
+   "removed_field_paths": {},
+   "changed_field_paths": {},
+   "verdict_note": "PURELY ADDITIVE. Not one existing leaf value changed anywhere in the map. Every key expression, every child-key component, every degenerate value and every keynorm block is byte-identical to the rev-4 baseline. This is the cleanest of the four re-issues, and the only one where the covering note and the diff agree completely."
+  }
+ },
+ "row_counts": {
+  "total": 2639,
+  "mapped": 1264,
+  "augmentation_needed": 1291,
+  "unmapped": 84,
+  "rows_with_target": 1265,
+  "rows_with_augmentation": 1291,
+  "resolved_key_blocks": 2366,
+  "resolved_key_blocks_with_an_expression": 2344,
+  "resolved_key_blocks_WITHOUT_an_expression": 22,
+  "child_key_components": 1119,
+  "child_key_component_expressions": 1074,
+  "live_key_expressions_total": 3418,
+  "distinct_model_targets": 1433
+ },
+ "sibling": {
+  "exists": true,
+  "project": "travel_dv_dbt",
+  "is_opus": true,
+  "superseded_sibling_ignored": "maximus_travel_dv_dbt",
+  "re_derived_this_run_from_the_BUILD": true,
+  "payload_convention": "YAML block list of single-quoted UPPER_SNAKE physical column names under src_payload",
+  "convention_evidence": {
+   "UPPER_SNAKE_physical": 109,
+   "business_name_with_spaces": 0,
+   "other": 0
+  },
+  "hashdiff_convention": "HASHDIFF",
+  "hashdiff_evidence": {
+   "HASHDIFF": 189,
+   "hash_diff": 0,
+   "HASH_DIFF": 0
+  },
+  "natural_key_convention": "'HUB_<NAME>|' || (<business key expression>)",
+  "natural_key_evidence": {
+   "quoted_byte_exact": "PARENT_NK: \"'HUB_QUOTE|' || (quote_no)\"",
+   "file": "models/automate_dv/standard/staging/stg2_hub_ba_trv_data_policy_dtls_mv__quote.sql line 11",
+   "distinct_hub_NK_prefixes_counted": 14,
+   "per_prefix": {
+    "HUB_COVERAGE": 53,
+    "HUB_PARTY": 42,
+    "HUB_RISK_OBJECT": 30,
+    "HUB_PRODUCT": 26,
+    "HUB_FINANCIAL_TRANSACTION": 21,
+    "HUB_POLICY": 16,
+    "HUB_DISTRIBUTION_CHANNEL": 13,
+    "HUB_LOCATION": 6,
+    "HUB_ORG_UNIT": 6,
+    "HUB_AGREEMENT": 5,
+    "HUB_PROPOSAL": 3,
+    "HUB_ASSESSMENT": 2,
+    "HUB_QUOTE": 2,
+    "HUB_FINANCIAL_ACCOUNT": 1
+   },
+   "note": "The parentheses around the key expression are part of the as-built string and must be reproduced. The previous profile counted 12 distinct prefixes; counting every PARENT_NK literal in the build gives 14. Sibling unchanged - this is a counting-scope difference, recorded so it is not read as a sibling change."
+  },
+  "standard_multi_active_count": 7,
+  "augmented_multi_active_count": 0,
+  "augmented_satellites": {
+   "SAT_AUG_COMMON_COMMUNICATION_PREFERENCE": {
+    "src_pk": "PARTY_HKEY",
+    "attrs": [
+     "CUSTOMER_CONSENT_INDICATOR"
+    ]
+   },
+   "SAT_AUG_COVERAGE_DEFINITION": {
+    "src_pk": "COVERAGE_HKEY",
+    "attrs": [
+     "COVERAGE_SEQUENCE",
+     "EFFECTIVE_DATE"
+    ]
+   },
+   "SAT_AUG_COVERAGE_LIMITS": {
+    "src_pk": "COVERAGE_HKEY",
+    "attrs": [
+     "CURRENCY_CODE",
+     "DEDUCTIBLE_DESCRIPTION",
+     "LIMIT_DESCRIPTION"
+    ]
+   },
+   "SAT_AUG_COVERAGE_RATING": {
+    "src_pk": "COVERAGE_HKEY",
+    "attrs": [
+     "EXTENSION_PREMIUM_EXCLUDING_ST",
+     "MINIMUM_EXTENSION_PREMIUM",
+     "MINIMUM_NEW_BUSINESS_PREMIUM",
+     "NEW_BUSINESS_PREMIUM_EXCLUDING_ST",
+     "RIDER_PREMIUM"
+    ]
+   },
+   "SAT_AUG_FINTXN_PREMIUM": {
+    "src_pk": "FINANCIAL_TRANSACTION_HKEY",
+    "attrs": [
+     "SPECIAL_DISCOUNT_AMOUNT",
+     "SPECIAL_DISCOUNT_PERCENTAGE"
+    ]
+   },
+   "SAT_AUG_LNK_PARTY_ROLE_CORE": {
+    "src_pk": "PARTY_HKEY",
+    "attrs": [
+     "PREMIUM_PAYER_INDICATOR"
+    ]
+   },
+   "SAT_AUG_LNK_ROLE_CUSTOMER": {
+    "src_pk": "PARTY_HKEY",
+    "attrs": [
+     "PROPOSER_IS_TRAVELLER_INDICATOR"
+    ]
+   },
+   "SAT_AUG_PARTY_BANKING": {
+    "src_pk": "PARTY_HKEY",
+    "attrs": [
+     "BANK_CUSTOMER_IDENTIFIER"
+    ]
+   },
+   "SAT_AUG_PARTY_EMPLOYMENT": {
+    "src_pk": "PARTY_HKEY",
+    "attrs": [
+     "EMPLOYEE_NUMBER"
+    ]
+   },
+   "SAT_AUG_PRODUCT_TERMS": {
+    "src_pk": "PRODUCT_HKEY",
+    "attrs": [
+     "AGE_ELIGIBILITY_BYPASS_INDICATOR",
+     "CFT_ELIGIBLE_INDICATOR",
+     "MULTI_YEAR_INDICATOR",
+     "PLAN_GEOGRAPHICAL_ZONE"
+    ]
+   },
+   "SAT_AUG_RISK_PERSON_INSURED": {
+    "src_pk": "RISK_OBJECT_HKEY",
+    "attrs": [
+     "DATE_OF_BIRTH"
+    ]
+   },
+   "SAT_AUG_RISK_PERSON_TRAVEL": {
+    "src_pk": "RISK_OBJECT_HKEY",
+    "attrs": [
+     "ALTITUDE_LIMIT",
+     "MODE_OF_TRANSPORT"
+    ]
+   }
+  },
+  "opus_aug_inventory_file_verified": "13_opus_aug_inventory.json reproduces the build exactly: 12 satellites, 24 attributes, src_pk per satellite, all single-active, bare HASHDIFF. The mapper's inventory is CORRECT.",
+  "alignment_verified_against_the_build": {
+   "same_concept_rows": 94,
+   "same_concept_rows_claimed_by_mapper": 90,
+   "exact_attribute_collisions_against_the_12_SAT_AUG_payloads": 2,
+   "exact_attribute_collisions_claimed_by_mapper": 8,
+   "exact_attribute_collisions_wide_net_all_45_OPUS_satellites": 240,
+   "same_concept_rows_declaring_multi_active": 16,
+   "same_concept_rows_declaring_multi_active_claimed": 16,
+   "multi_active_divergence_detail": "all 16 are SAT_PARTY_BANKING with child key 'Account Number Masked'; OPUS builds SAT_AUG_PARTY_BANKING single-active on PARTY_HKEY with no child key. 14 of the 16 back that leg with nullif(trim(BANK_ACCOUNT_NUMBER),''); the other 2 back it with the LITERAL 'BG_HOLDER_REFUND', which discriminates nothing.",
+   "reconciliation_note": "The 16 reproduce EXACTLY. The 94 and the 2 do not match the mapper's 90 and 8. 90 is the mapper's 'kept' count out of 96 alignment CASES - a different population from same-concept ROWS. The 8 is not reproducible under either scoping I can construct: matching Maximus (satellite, attribute) against the 12 SAT_AUG_* payload lists yields 2 (both 'Employee Number' on SAT_PARTY_EMPLOYMENT, from the proposer and insured branches); widening to all 45 OPUS as-built satellites yields 240, of which 238 are target-track."
+  },
+  "convention_note": "Counted, not assumed: 109 of 109 payload entries across the 33 satellite models carrying an src_payload block are UPPER_SNAKE physical column names. Zero use the model's business attribute spelling. The convention is unanimous.",
+  "sql_models": 295,
+  "hubs_built": 14,
+  "satellites_built": 45,
+  "augmented_satellites_built": 12,
+  "standard_multi_active_satellites": [
+   "sat_common_contact",
+   "sat_fin_charge_rate",
+   "sat_fintxn_commission",
+   "sat_fintxn_tax",
+   "sat_party_identification",
+   "sat_policy_classification",
+   "sat_product_rating_factor"
+  ],
+  "quote_branch_exists": true,
+  "quote_branch_evidence": {
+   "hub_quote.sql": "PRESENT (models/automate_dv/standard/hubs/hub_quote.sql)",
+   "sat_quote_header.sql": "PRESENT (models/automate_dv/standard/satellites/sat_quote_header.sql)",
+   "sat_quote_rating.sql": "ABSENT - no file matching *quote_rating* anywhere in the build",
+   "method": "filename glob over all 295 .sql files in travel_dv_dbt, counted not assumed",
+   "verdict": "The MINIMAL quote branch is CONFIRMED against the build itself. BUILD_INSTRUCTIONS section 4 and MESSAGE_TO_BUILDER now both state it correctly and identically, and both quote the NK byte-exactly including the parentheses."
+  },
+  "models_counted_this_run": {
+   "satellites": 45,
+   "hubs": 14,
+   "links": 0,
+   "standard_multi_active_src_cdk": 7,
+   "augmented_satellites": 12,
+   "augmented_multi_active": 0
+  },
+  "quote_branch_contradiction_NOT_fully_repaired": {
+   "severity": "warn",
+   "routing": "mapper",
+   "for_stage": "mapper",
+   "repaired_in": [
+    "BUILD_INSTRUCTIONS_TRAVEL_V2.md section 4",
+    "MESSAGE_TO_BUILDER.md"
+   ],
+   "NOT_repaired_in": "KEY_FUNCTIONS.md section 10, first bullet",
+   "surviving_text": "\"The earlier travel (OPUS) build has hub_quote.sql with natural key 'HUB_QUOTE|' || quote_no, and SAT_QUOTE_HEADER / SAT_QUOTE_RATING are present in every version of the OPUS map.\"",
+   "why_it_is_wrong": "That sentence sits under the heading 'As-built key contracts this build must not break'. SAT_QUOTE_RATING is NOT as-built - there is no sat_quote_rating.sql in travel_dv_dbt. The sentence is defensible only if 'the OPUS MAP' is read as distinct from 'the OPUS BUILD', which is precisely the distinction the other two documents were just corrected to make. A builder reading section 10 would try to match a satellite that does not exist.",
+   "second_discrepancy": "KEY_FUNCTIONS.md renders the NK as \"'HUB_QUOTE|' || quote_no\" without the parentheses. The build's literal is \"'HUB_QUOTE|' || (quote_no)\". The two corrected documents have it right; this one does not.",
+   "nested_correction_check": "Both corrected files were read in full surrounding context, not grepped for the corrected phrase. NEITHER contains a correction nested inside itself: BUILD_INSTRUCTIONS section 4 carries exactly one withdrawal parenthetical and MESSAGE_TO_BUILDER exactly one. The residual inconsistency is in the third file, which was not edited at all."
+  },
+  "re_verified_this_run": true,
+  "hub_quote_nk_as_built": "'HUB_QUOTE|' || (quote_no)",
+  "hub_quote_nk_evidence_note": "models/automate_dv/standard/staging/stg2_hub_ba_trv_data_policy_dtls_mv__quote.sql, derived_columns PARENT_NK, read this run.",
+  "satellites_on_disk": 45,
+  "hubs_on_disk": 14,
+  "sat_quote_rating_exists": false
+ },
+ "map_fields": {
+  "row": {
+   "container": "columns[]",
+   "table": "table_name",
+   "column": "column_name",
+   "outcome": "outcome",
+   "confidence": "confidence",
+   "rationale_note": "rationale",
+   "alternates": {
+    "owner": 2639,
+    "domains": 2639,
+    "reanchor": 2639,
+    "twin_scope_divergence": 86
+   }
+  },
+  "target": {
+   "container": "columns[].target",
+   "kind": "kind",
+   "anchor": "anchor",
+   "satellite": "satellite",
+   "attribute": "attribute",
+   "render_note": "child_key_value",
+   "derivation_note": "key_derivation",
+   "redundant_of": "redundant_of",
+   "instance": "instance",
+   "alternates": {
+    "key_name": 1265,
+    "key_tier": 1265,
+    "transformation": 1265,
+    "child_key_components": 491,
+    "collapse_resolution": 3,
+    "transformation_kind": 63,
+    "build_directive": 3,
+    "build_note": 3
+   },
+   "transformation_kind_NEW": "transformation_kind",
+   "build_directive_NEW": "build_directive",
+   "build_note_NEW": "build_note"
+  },
+  "target.resolved_key": {
+   "container": "columns[].target.resolved_key",
+   "hub": "hub",
+   "expression": "expression",
+   "tier": "tier",
+   "instance": "instance",
+   "source_columns": "source_columns",
+   "degenerate_value_NEW": "degenerate_value",
+   "history_do_not_parse": "keynorm.previous_expression",
+   "alternates": {
+    "degenerate_value": 1258,
+    "degenerate_verdict": 1258,
+    "keynorm": 659,
+    "note": 384,
+    "keynorm.previous_expression": 659,
+    "keynorm.stage": 647,
+    "keynorm.class": 647,
+    "keynorm.reason": 39
+   },
+   "degenerate_verdict_NEW": "degenerate_verdict"
+  },
+  "target.child_key_components": {
+   "container": "columns[].target.child_key_components[]",
+   "leg_name": "name",
+   "render_note": "value",
+   "kind": "leg_backing",
+   "expression": "expression",
+   "resolved_on_view": "resolved_on_view",
+   "alternates": {
+    "note": 611,
+    "column": 1
+   }
+  },
+  "augmentation": {
+   "container": "columns[].augmentation",
+   "existing_satellite": "best_home_satellite",
+   "new_satellite": "new_satellite",
+   "anchor": "anchor",
+   "attribute": "proposed_attribute",
+   "tier": "tier",
+   "multi_active": "multi_active",
+   "child_key_declared_note": "child_key",
+   "render_note": "child_key_value",
+   "derivation_note": "key_derivation",
+   "redundant_of": "redundant_of",
+   "instance": "instance",
+   "note": "note",
+   "alternates": {
+    "child_key_components": 364,
+    "applied": 336,
+    "child_key_legs_missing": 39,
+    "child_key_stability": 11,
+    "encoding_fix": 5,
+    "child_key_components_gap": 2
+   }
+  },
+  "augmentation.resolved_key": {
+   "container": "columns[].augmentation.resolved_key",
+   "hub": "hub",
+   "expression": "expression",
+   "tier": "tier",
+   "instance": "instance",
+   "source_columns": "source_columns",
+   "degenerate_value_NEW": "degenerate_value",
+   "history_do_not_parse": "keynorm.previous_expression",
+   "alternates": {
+    "degenerate_value": 1086,
+    "degenerate_verdict": 1086,
+    "keynorm": 785,
+    "note": 405,
+    "keynorm.previous_expression": 785,
+    "keynorm.stage": 777,
+    "keynorm.class": 777,
+    "keynorm.reason": 14
+   },
+   "degenerate_verdict_NEW": "degenerate_verdict"
+  },
+  "augmentation.child_key_components": {
+   "container": "columns[].augmentation.child_key_components[]",
+   "leg_name": "name",
+   "render_note": "value",
+   "kind": "leg_backing",
+   "expression": "expression",
+   "resolved_on_view": "resolved_on_view",
+   "alternates": {
+    "note": 377
+   }
+  }
+ },
+ "map_field_census_note": "Re-enumerated across all 2639 rows with counts, not looked up. THREE field spellings were ADDED by this re-issue, all on columns[].target and nowhere else: transformation_kind (63), build_directive (3), build_note (3). No field was removed and no field changed its spelling. target.transformation is present on all 1265 target containers but is JSON null on 1202 of them; only 63 carry a value, and those 63 are exactly the 63 that carry transformation_kind. There is NO transformation or transformation_kind field anywhere under augmentation - a sweep for the substring 'transform' over every key path in the map returns exactly two paths, row.target.transformation (1265) and row.target.transformation_kind (63).",
+ "minority_field_spellings": {
+  "target.child_key_components[].column": {
+   "count": 1,
+   "note": "ONE leg element carries a `column` field where 653 carry `value`. Unchanged. It also carries `value` and `expression`."
+  },
+  "resolved_key.keynorm HAS THREE SHAPES": {
+   "class+previous_expression+stage": 1391,
+   "class+previous_expression+reason+stage": 33,
+   "previous_expression+reason (NO stage, NO class)": 20,
+   "note": "THIS IS THE SPELLING HAZARD OF THIS RE-ISSUE. The previous profile recorded a two-shape world and stated 'keynorm blocks that carry reason carry NO stage and NO class'. That was TRUE of the 20 blocks then present and is now FALSE of 33 of the 53 reason-bearing blocks. Both facts hold, of different populations. A reader that iterates keynorm by `stage` still skips the same 20; a reader that inferred 'reason implies no stage' is now wrong on 33."
+  }
+ },
+ "component_kinds": {
+  "literal": 593,
+  "template": 443,
+  "spine": 55,
+  "column_as_instance": 27,
+  "unresolved": 1
+ },
+ "component_kinds_field": "leg_backing",
+ "component_kind_examples": {
+  "template": "nullif(trim(BANK_ACCOUNT_NUMBER),'')  (SAT_PARTY_BANKING.Account Number Masked)",
+  "literal": "'ACTION_TAKEN'  (SAT_CLAIM_NOTE.Note Sequence)",
+  "unresolved": "<not on this view - no media / document identifier on this view>  (SAT_CLAIM_EVIDENCE.Media Reference)",
+  "column_as_instance": "'UGST'  (SAT_FINTXN_TAX.Tax Type)",
+  "spine": "'RISK:' || nullif(trim(spine[PARENT_KEY_HASH -> NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY -> NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS -> NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS].POL_RISK_ID), '') || '#' || nullif(trim(spine[PARENT_KEY_HASH -> NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY -> NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS].COVER_CODE), '')  (SAT_POLICY_PREMIUM_HEAD.Coverage Reference)"
+ },
+ "component_kinds_note": "Identical to the previous profile, element for element. The `unresolved` kind (1 leg) carries NO expression and is a placeholder, not a value - it must not reach SQL.",
+ "grammar": [
+  {
+   "form": "spine[FOREIGN_KEY -> V1].COLUMN",
+   "count": 863,
+   "semantics": "cross",
+   "skips_levels": true,
+   "hops": 1,
+   "example": "coalesce(nullif(trim(CLAIMNO),''), nullif(trim(spine[FOREIGN_KEY -> NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS].CLAIMNO),''), nullif(trim(FOREIGN_KEY),''))"
+  },
+  {
+   "form": "spine[PARENT_KEY_HASH -> V1 -> V2 -> V3].COLUMN",
+   "count": 545,
+   "semantics": "climb",
+   "skips_levels": true,
+   "hops": 3,
+   "example": "'LOSSEVT:' || coalesce(nullif(trim(CLAIMNO), ''), nullif(trim(spine[PARENT_KEY_HASH -> ..._CLAIM_ATTRIBUTE_PROPERTIES -> ..._CLAIM_ATTRIBUTE -> ..._CLAIM_DETAILS].CLAIMNO), ''))"
+  },
+  {
+   "form": "spine[PARENT_KEY_HASH -> V1 -> V2].COLUMN",
+   "count": 423,
+   "semantics": "climb",
+   "skips_levels": true,
+   "hops": 2,
+   "example": "nullif(trim(spine[PARENT_KEY_HASH -> RISK_LIST -> QUOTE_PARAM_DETAILS].POLICY_QUOTE_NUMBER),'')"
+  },
+  {
+   "form": "spine[PARENT_KEY_HASH -> V1 -> V2 -> V3 -> V4].COLUMN",
+   "count": 271,
+   "semantics": "climb",
+   "skips_levels": true,
+   "hops": 4,
+   "example": "'RISK:' || nullif(trim(spine[PARENT_KEY_HASH -> ..._RISK_PROPERTY_RULE_LIST -> ... ].POL_RISK_ID),'')"
+  },
+  {
+   "form": "spine[PARENT_KEY_HASH -> V1 -> V2 -> V3 -> V4 -> V5].COLUMN",
+   "count": 195,
+   "semantics": "climb",
+   "skips_levels": true,
+   "hops": 5,
+   "example": "nullif(trim(spine[PARENT_KEY_HASH -> ..._INPUT_PROPERTY -> ... -> ..._QUOTE_PARAM_DETAILS].POLICY_QUOTE_NUMBER),'')"
+  },
+  {
+   "form": "spine[PARENT_KEY_HASH -> V1].COLUMN",
+   "count": 93,
+   "semantics": "climb",
+   "skips_levels": false,
+   "hops": 1,
+   "example": "nullif(trim(spine[PARENT_KEY_HASH -> NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS].POLICY_QUOTE_NUMBER),'')"
+  },
+  {
+   "form": "LNK(2 legs, POSITIONAL)",
+   "count": 24,
+   "semantics": "link",
+   "skips_levels": false,
+   "example": "LNK(coalesce(nullif(trim(CLAIMNO),''), ...), nullif(trim(CLAIM_COURT_PARTY_CODE),''))"
+  },
+  {
+   "form": "LNK(2 legs, NAMED  HUB_X = expr)",
+   "count": 16,
+   "semantics": "link",
+   "skips_levels": false,
+   "example": "LNK(HUB_POLICY = nullif(trim(FOREIGN_KEY), ''), HUB_PARTY = nullif(trim(spine[...].PARTY_CODE), ''))"
+  },
+  {
+   "form": "LNK(1 leg, NAMED)",
+   "count": 10,
+   "semantics": "link",
+   "skips_levels": false,
+   "example": "LNK(HUB_PARTY = nullif(trim(spine[PARENT_KEY_HASH -> PARTY_PROPERTY -> PROPOSER_DETAILS].PARTY_CODE), ''))"
+  },
+  {
+   "form": "LNK(1 leg, POSITIONAL)",
+   "count": 1,
+   "semantics": "link",
+   "skips_levels": false,
+   "example": "LNK(nullif(trim(spine[PARENT_KEY_HASH -> PARTY_PROPERTY -> PROPOSER_DETAILS].PARTY_CODE), ''))"
+  },
+  {
+   "form": "md5(normalise(op || SEP || op ...)) content hash",
+   "count": 128,
+   "semantics": "function",
+   "skips_levels": false,
+   "example": "md5(normalise(nullif(trim(coalesce(nullif(trim(ADDR1),''),'') || '#' || coalesce(nullif(trim(CITY_CODE),''),'')), '#')))"
+  },
+  {
+   "form": "md5(upper(trim(...))) content hash - UNDECLARED SECOND CANONICALISATION",
+   "count": 10,
+   "semantics": "function",
+   "skips_levels": false,
+   "example": "'NOMINEE:' || md5(upper(trim(nullif(trim(NOMINEE_NAME),''))))"
+  },
+  {
+   "form": ">> sibling cross operator",
+   "count": 0,
+   "semantics": "cross",
+   "skips_levels": false,
+   "example": "ABSENT. Zero occurrences across all 3418 live expressions. Do not implement it and do not assume it from another LOB."
+  }
+ ],
+ "grammar_expressions_parsed": 3418,
+ "grammar_expression_fields_swept": [
+  "target.resolved_key.expression",
+  "augmentation.resolved_key.expression",
+  "target.child_key_components[].expression",
+  "augmentation.child_key_components[].expression"
+ ],
+ "grammar_history_fields_excluded": [
+  "target.resolved_key.keynorm.previous_expression",
+  "augmentation.resolved_key.keynorm.previous_expression"
+ ],
+ "grammar_field_sweep_note": "Fields were found by scanning EVERY string value in the map for the grammar tokens (spine[, ->, >>, LNK(), not by naming the fields I expected. 15 fields contain a token; 4 are live expression fields, 2 are keynorm history (excluded from execution), and 9 are prose fields (rationale, notes, key_derivation, transformation, twin_scope_divergence) which must NEVER be parsed. Unchanged from the previous profile.",
+ "parse_residue": 0,
+ "parse_failures": 0,
+ "parse_residue_note": "Re-asserted this run over the live map. Every span matched by the spine and LNK grammars was stripped with a BALANCED-PAREN LNK stripper. A naive regex under-matches nested calls and manufactures false residue - that happened on the first attempt here and was caught by the control, which is the whole reason the control exists. After stripping, ZERO occurrences of spine[, ->, >> or LNK( survive in any of the 3418 live expression slots. THREE arrow occurrences survive elsewhere, all inside augmentation.key_derivation, which is PROSE BY DESIGN (624 slots, 0 function calls, 0 spine tokens) and is not an expression slot; they are English renderings of a walk such as 'PARENT_KEY_HASH -> CLAIM_ATTRIBUTE_PROPERTIES -> CLAIM_DETAILS.POLICYNO', correctly excluded from both the grammar and the function census. Parser controls: matched a real 3-hop spine and a real LNK, and correctly DECLINED a plain nullif(trim(POLICY_NUMBER)) expression.",
+ "function_census": {
+  "trim": 5094,
+  "nullif": 5084,
+  "coalesce": 1783,
+  "spine[]": 2390,
+  "md5": 138,
+  "normalise": 128,
+  "LNK": 51,
+  "upper": 19,
+  "lower": 0,
+  "to_char": 0
+ },
+ "function_census_note": "RESTORED AND CORRECT. KEY_FUNCTIONS.md now publishes trim 5094 / nullif 5084 / coalesce 1783 / spine[] 2390 / md5 138 / normalise 128 / lnk 51 / upper 19, and all EIGHT reproduce EXACTLY against the live map. The rev-4 disagreement is resolved: the document had been narrowed to resolved_key.expression only (4415 / 4405 / 1704 over 2344) and has been widened back. Three denominators are now in play and all three are right over their own scope - the document says 2843 (slots containing a call or a spine, which is what its generator iterates), this profile parses 3418 live expressions, and the full non-empty string surface is 5162 slots. The NUMERATORS are identical across all three because the extra slots contain ZERO function calls: child_key_components[].value (653), augmentation.child_key_components[].value (466), augmentation.key_derivation (624) and the single child_key_components[].column. Verified per slot, not assumed.",
+ "spine_semantics": {
+  "arrow_hops_total": 5496,
+  "spine_occurrences": 2390,
+  "join_columns": {
+   "PARENT_KEY_HASH": 1527,
+   "FOREIGN_KEY": 863
+  },
+  "destination_resolution": {
+   "exact_table_name": 5199,
+   "abbreviated_unique_on_start_view_chain": 297,
+   "ambiguous_after_scoping": 0,
+   "unresolved": 0
+  },
+  "hop_relation": {
+   "direct_parent": 4010,
+   "SELF_the_start_view_base_node": 697,
+   "ancestor_skipping_1_level": 245,
+   "ancestor_skipping_2_levels": 199,
+   "ancestor_skipping_3_levels": 191,
+   "ancestor_skipping_4_levels": 152,
+   "descendant": 0,
+   "neither_ancestor_nor_descendant_LCA_cross": 2
+  },
+  "lca_cross_detail": "NONHLTH_TRV_UWR_VW_DATA_PREMIUM_DETAILS -> NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS for POLICY_NUMBER, 2 arrows, two siblings under the feed root.",
+  "semantics_conclusion": "The operator is a LOWEST-COMMON-ANCESTOR cross of which the climb is the degenerate case. A climb-only resolver returns nothing for those 2 arrows and the miss reads downstream as a source gap.",
+  "skips_levels": true,
+  "skip_expansion_required_note": "787 arrows skip 1 to 4 levels. Every intervening view must be expanded into the join chain; that expansion is what takes the cast count from 97 to 113.",
+  "scoping_rule_to_implement": "Resolve an abbreviated destination ONLY against the start view's own ancestor chain, longest matching prefix wins. Verified: this resolves all 297 abbreviated hops uniquely. Resolved globally, PARTY_PROPERTY binds the proposer branch to the member branch.",
+  "hop_relation_measurement_note": "Measured CHAIN-RELATIVE (origin = start view for the first arrow, previous destination after) and with the PIVOT wrapper collapsed (X_PIVOT_VW measured as X). Both conventions matter: measured start-view-relative and without collapsing the wrapper the same 5496 arrows split 824 direct_parent / 777 skip-1 / 240 / 199 / 191 / 152, and the 697 SELF become 692+5. The totals (5496 arrows, 4797 ancestor, 697 self, 2 LCA) are identical under both. This is a definition, not a bundle change - it is recorded so the next stage does not read a classifier difference as a map change."
+ },
+ "hub_key_form_census": {
+  "method_note": "Distinct key FORMS per hub across EVERY hub, at three canonicalisations (raw text, whitespace-canonical token stream, spine-RESOLVED where two walks reaching the same destination column collapse), then the three repair rules: R1 strip function wrappers before testing for a leading literal, R2 compare only single-operand sides, R3 group by operand SET not count.",
+  "hubs": 19,
+  "per_hub_raw_text_forms": {
+   "HUB_PARTY": 35,
+   "HUB_CLAIM": 7,
+   "HUB_POLICY": 7,
+   "HUB_QUOTE": 14,
+   "HUB_RISK_OBJECT": 14,
+   "HUB_LOCATION": 20,
+   "HUB_FINANCIAL_TRANSACTION": 8,
+   "HUB_DOCUMENT": 4,
+   "HUB_COVERAGE": 6,
+   "HUB_PRODUCT": 6,
+   "HUB_ORG_UNIT": 8,
+   "LNK_PARTY_ROLE": 7,
+   "HUB_LOSS_EVENT": 2,
+   "HUB_DISTRIBUTION_CHANNEL": 7,
+   "LNK_PARTY_LOCATION": 9,
+   "LNK_CLAIM_PARTY": 9,
+   "LNK_POLICY_PARTY": 5,
+   "HUB_ASSESSMENT": 2,
+   "HUB_PAYMENT_INSTRUMENT": 2
+  },
+  "per_hub_unchanged_vs_rev3": "Every hub's raw-text and whitespace-canonical form count is identical to rev 3 EXCEPT HUB_DOCUMENT (6/5 -> 4/4). That is the whole of the key-form change in this re-issue.",
+  "HUB_DOCUMENT_verified": {
+   "claim": "unified on 'DOC:', 33 rows, 6 -> 4 key forms, whitespace-only duplicate of the INWARD: form removed",
+   "verdict": "VERIFIED, every clause",
+   "rows": 64,
+   "forms_before": {
+    "'INWARD:' || nullif(trim(INWARD_NUMBER),'')": 25,
+    "nullif(trim(DOCUMENT_ID), '')": 20,
+    "'INWARD:' || nullif(trim(INWARD_NUMBER), '')": 13,
+    "'DOC:' || nullif(trim(DOCUMENT_ID),'')": 2,
+    "'COI:' || nullif(trim(COI_NUMBER),'')": 2,
+    "'COI:' || nullif(trim(OLD_COI_NUMBER),'')": 2
+   },
+   "forms_after": 4,
+   "rows_changed": 33,
+   "forms_now": {
+    "'INWARD:' || nullif(trim(INWARD_NUMBER),'')": 38,
+    "'DOC:' || nullif(trim(DOCUMENT_ID),'')": 22,
+    "'COI:' || nullif(trim(COI_NUMBER),'')": 2,
+    "'COI:' || nullif(trim(OLD_COI_NUMBER),'')": 2
+   },
+   "namespaces_now": {
+    "INWARD:": 38,
+    "DOC:": 22,
+    "COI:": 4,
+    "<BARE>": 0
+   },
+   "arithmetic": "20 bare DOCUMENT_ID rows gained 'DOC:' plus 13 whitespace-variant INWARD rows merged = 33, matching 18_hub_document_fix.json rows_changed=33 exactly."
+  },
+  "findings_current": {
+   "R1R2_prefix_split_on_a_single_operand": 0,
+   "R1R2_two_different_prefixes_same_core": 0,
+   "R3_operand_set_two_key_spaces": 0
+  },
+  "NEGATIVE_CONTROL_that_fires": {
+   "what": "the identical checker, unmodified, run against the rev-3 baseline snapshot 04_column_map.pre_degenfix.json",
+   "result": "FIRES - 1 finding: HUB_DOCUMENT, core nullif(trim(DOCUMENT_ID),''), {'DOC:': 2, '<no prefix>': 20}",
+   "why_it_matters": "A zero on the current map is only meaningful because the same code returns 1 on the previous map."
+  },
+  "hubs_mixing_prefixed_and_unprefixed_keys": [
+   "HUB_DISTRIBUTION_CHANNEL",
+   "HUB_FINANCIAL_TRANSACTION",
+   "HUB_LOCATION",
+   "HUB_ORG_UNIT",
+   "HUB_PARTY"
+  ],
+  "HUB_DOCUMENT_no_longer_mixes": true,
+  "HUB_ORG_UNIT_unprefixed_namespace_STILL_OPEN": {
+   "forms": {
+    "nullif(trim(BRANCH_CODE),'')": 4,
+    "nullif(trim(LOCATION_CODE), '')": 1,
+    "nullif(trim(STORED_COMPANY_CODE), '')": 1
+   },
+   "verdict": "STILL OPEN - byte-identical on the rev-3 baseline and on the current map. Three different source columns share ONE unprefixed HUB_ORG_UNIT namespace; a branch code equal to a location code keys one hub row.",
+   "routing": "mapper",
+   "blocking": false
+  },
+  "HUB_RISK_OBJECT": {
+   "rows": 227,
+   "forms": 14,
+   "namespaces": {
+    "RISK:": 215,
+    "TRIP:": 12
+   },
+   "qualified_root_hash_form": 215,
+   "unqualified": 12,
+   "verdict": "UNCHANGED from the rev-3 baseline, row for row. The two-namespace defect of BUILD_INSTRUCTIONS section 5 is STILL OPEN."
+  },
+  "HUB_DOCUMENT_FIX_SIDE_EFFECT": {
+   "severity": "blocker-for-the-mapper, warn-for-the-build",
+   "routing": "mapper",
+   "for_stage": "mapper",
+   "what": "The HUB_DOCUMENT whitespace normalisation EXPOSED a second defect, and the gate count rose from 7 warns to 8 while both covering documents still say 7.",
+   "the_new_warn": {
+    "check": "resolved_key_sound",
+    "severity": "warn",
+    "status": "OPEN",
+    "view": "NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+    "hub": "HUB_DOCUMENT",
+    "instances": [
+     "claim-inward",
+     "claim-inward-document-set"
+    ],
+    "detail": "2 DISTINCT instances of HUB_DOCUMENT on this view resolve to the SAME key expression - they would collapse onto one parent"
+   },
+   "mechanism_measured": {
+    "before": {
+     "claim-inward (2 rows)": "'INWARD:' || nullif(trim(INWARD_NUMBER), '')",
+     "claim-inward-document-set (7 rows)": "'INWARD:' || nullif(trim(INWARD_NUMBER),'')"
+    },
+    "after": {
+     "claim-inward (2 rows)": "'INWARD:' || nullif(trim(INWARD_NUMBER),'')",
+     "claim-inward-document-set (7 rows)": "'INWARD:' || nullif(trim(INWARD_NUMBER),'')"
+    },
+    "explanation": "The two instances differed by ONE SPACE. A gate that compares expression strings saw two distinct keys and stayed silent. Whitespace inside SQL changes nothing at run time, so the two instances ALWAYS collapsed onto one hub row - the fix did not create the defect, it removed the whitespace that was hiding it from the gate."
+   },
+   "documentation_contradiction": {
+    "09_validation_report.json": "totals warn = 8; by_check resolved_key_sound 1, resolved_key_expression_missing 6, child_key_resolved 1",
+    "08_handoff_facts.json": "validation.totals.warn = 8",
+    "BUILD_INSTRUCTIONS_TRAVEL_V2.md section 1": "'PASS - 0 blockers / 7 warns / 0 info' and 'The 7 surviving warns are byte-identical to the pre-remediation baseline ... 6 resolved_key_expression_missing and 1 child_key_resolved'",
+    "MESSAGE_TO_BUILDER.md": "'gate PASS - 0 blockers / 7 warns'",
+    "verdict": "The two machine artifacts say 8 and the two prose artifacts say 7. The 8th warn is the one the HUB_DOCUMENT fix surfaced, it is OPEN, and the sentence claiming the warns are byte-identical to the baseline is no longer true."
+   },
+   "build_consequence": "SAT_CLAIM_EVIDENCE-family attributes arriving under two different HUB_DOCUMENT instances on this view will land on ONE hub row. Build them as mapped, emit the instance collision into BUILD_STATUS.json, and do not invent a discriminator - the mapper must give one instance its own key."
+  }
+ },
+ "hub_key_vs_link_leg": {
+  "rule": "A link leg must equal the key of the hub it references (KEY_FUNCTIONS 9, BUILD_INSTRUCTIONS 2.3). A disagreeing leg produces an EMPTY JOIN, not an error.",
+  "lnk_calls": 51,
+  "legs_total": 91,
+  "legs_named": 40,
+  "legs_positional": 51,
+  "named_legs_matching_a_whitespace_canonical_key_form_of_their_hub": 28,
+  "named_legs_disagreeing": 12,
+  "distinct_hub_view_disagreements": 8,
+  "baseline_identical": {
+   "named_matching": 28,
+   "disagreeing": 12,
+   "distinct": 8,
+   "note": "IDENTICAL on the rev-3 baseline. This re-issue neither created nor fixed a single leg disagreement."
+  },
+  "method_delta_note": "The previous profile reported 16 disagreements of which 9 whitespace-only. This run compares WHITESPACE-CANONICAL token streams, which absorbs those 9 by construction, leaving 7 value-changing plus one leg whose name is not a hub at all. Same map, stricter canonicalisation - not a change.",
+  "STILL_OPEN_value_changing": [
+   {
+    "hub": "HUB_CLAIM",
+    "view": "NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE",
+    "hub_key_walks_on": "FOREIGN_KEY",
+    "leg_walks_on": "PARENT_KEY_HASH",
+    "verdict": "STILL OPEN - unchanged. The hub key rides the UNPROVEN FK round-trip and the leg does not. If the round-trip is not 1:1 the link joins to nothing and reads downstream as sparse source data."
+   },
+   {
+    "hub": "HUB_PARTY",
+    "views": [
+     "..._POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+     "..._QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW"
+    ],
+    "leg": "'EMP:' || nullif(trim(BAGIC_RM_ECODE),'')",
+    "verdict": "STILL OPEN - unchanged. ORPHAN LEG: no HUB_PARTY key anywhere in the map is built from BAGIC_RM_ECODE; the only 'EMP:' hub keys come from BAGIC_EMPLOYEE_CODE on a different view."
+   },
+   {
+    "hub": "HUB_POLICY",
+    "views": [
+     "..._MEMBER_DETAILS_PARTY_RELATION",
+     "..._PROPOSER_DETAILS_PARTY_RELATION",
+     "..._INSURED_DETAILS_MEMBER_DETAILS",
+     "..._PROPOSER_DETAILS"
+    ],
+    "verdict": "STILL OPEN - unchanged. Legs use nullif(trim(FOREIGN_KEY),'') or a spine walk that no HUB_POLICY key form uses."
+   },
+   {
+    "leg_name": "ROLE",
+    "view": "..._MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "leg": "nullif(trim(PARTY_FUNCTION),'')",
+    "verdict": "NOT a hub at all - 'ROLE' is a role slot, so it can never match a hub key form. Recorded so stage 1 does not chase it as a defect."
+   }
+  ],
+  "pre_legfix_snapshot_finding": {
+   "severity": "warn",
+   "routing": "mapper",
+   "what": "outputs/04_column_map.pre_legfix.json (written 21:11:34) is BYTE-IDENTICAL to the live 04_column_map.json (sha256[:24] 9243f6c5cb277e2e13673d4a).",
+   "means": "A snapshot named for a leg fix exists and the leg fix it names changed nothing. Every leg disagreement above is measurably still present. Reported, not corrected - stage 0 does not fix the mapping."
+  }
+ },
+ "degenerate_value_contract": {
+  "inline_field": "columns[].<block>.resolved_key.degenerate_value",
+  "inline_verdict_field_NEW": "columns[].<block>.resolved_key.degenerate_verdict",
+  "blocks_carrying_both": 2344,
+  "blocks_carrying_only_one": 0,
+  "degenerate_value_types": {
+   "JSON_null": 2344,
+   "empty_string": 0,
+   "non_empty_string": 0,
+   "other": 0
+  },
+  "degenerate_verdict_values": {
+   "null_on_blank_row": 2344,
+   "empty_on_blank_row": 0,
+   "constant_on_blank_row": 0
+  },
+  "EXECUTABLE_AGAIN": true,
+  "value_verdict_agreement": {
+   "checked": 2344,
+   "disagreements": 0,
+   "rule": "JSON null <-> null_on_blank_row; '' <-> empty_on_blank_row; any other literal <-> constant_on_blank_row"
+  },
+  "mapper_assertion_no_space_no_60_chars": {
+   "verdict": "HOLDS, BUT VACUOUSLY",
+   "values_containing_a_space": 0,
+   "values_longer_than_60_chars": 0,
+   "non_null_values_at_all": 0,
+   "note": "There is no non-null degenerate_value anywhere in the map, so the assertion has nothing to be false about. The probe was proved to fire on planted values: \"'A B'\" -> space=True, a 61-character string -> len>60=True."
+  },
+  "independent_evaluation": {
+   "method": "Every live resolved_key expression re-parsed and evaluated on an ALL-BLANK source row under Snowflake/ANSI semantics: every column and every spine endpoint bound to '', NULL propagating through ||, md5, normalise, upper, trim, nullif, coalesce, and any NULL leg of LNK.",
+   "expressions_evaluated": 2344,
+   "evaluated_to_NULL": 2344,
+   "evaluated_to_a_constant": 0,
+   "evaluator_negative_control": "The evaluator returns 'PROD:' for \"'PROD:' || coalesce(nullif(trim(A),''),'')\" and a hash of the bare separator for an unguarded separator hash, and NULL only for the guarded forms. It is not a function that always says NULL.",
+   "verdict": "The mapper's contract is VERIFIED INDEPENDENTLY, not accepted."
+  },
+  "TWO_UNTESTED_BRANCHES": {
+   "severity": "info",
+   "for_stage": "1",
+   "note": "empty_on_blank_row and constant_on_blank_row have ZERO rows. A generator that switches on degenerate_verdict will ship two branches this bundle cannot exercise. Build the null branch; make the other two raise rather than guess."
+  },
+  "csv": {
+   "file": "KEY_DEGENERATE_VALUES.csv",
+   "rows": 2366,
+   "claimed": 2366,
+   "key_less_rows_present": 22,
+   "key_less_verdict": "NO KEY EXPRESSION - nothing to evaluate",
+   "block_split": {
+    "target": 1264,
+    "augmentation": 1102
+   },
+   "verdict": "VERIFIED - the CSV is rebuilt from the same row set as the workbook. The rev-3 finding that the CSV omitted the 22 key-less rows is now FIXED.",
+   "the_22": "all HUB_FINANCIAL_TRANSACTION currency / exchange-rate columns, tier field empty on exactly those 22."
+  },
+  "RENDERING_STILL_DISAGREES_IN_A_NEW_WAY": {
+   "severity": "warn",
+   "routing": "mapper",
+   "map": "degenerate_value = JSON null  +  degenerate_verdict = 'null_on_blank_row' (a machine token)",
+   "csv": "degenerate_value = '' (empty cell)  +  verdict = 'NULL - correctly rejected on an all-blank row' (an English sentence)",
+   "workbook": "'Degenerate Value (all-blank row)' EMPTY on all 2366 rows and NO verdict column at all",
+   "note": "Three artifacts, three renderings, and the workbook now carries no verdict at all. The rev-3 SECTION_3_REGRESSION (an English sentence in an identifier-shaped field) is RESOLVED everywhere. What replaced it is a vocabulary split: the machine token 'null_on_blank_row' exists only in the map. Nothing downstream may read the CSV's verdict column as an enum key."
+  },
+  "SECTION_3_REGRESSION_STATUS": "RESOLVED. degenerate_value is JSON null on all 2344 map rows and empty in both spreadsheets; no prose survives in that field in any artifact."
+ },
+ "key_guard_sweep": {
+  "method": "BY SHAPE: every CONCAT node in every one of the 3418 live expressions evaluated on an all-blank row; where it yields a non-empty constant, the whole expression is evaluated to see whether an enclosing guard fires.",
+  "concat_nodes": 812,
+  "concats_that_correctly_NULL_on_blank": 627,
+  "concats_that_yield_a_NON_EMPTY_CONSTANT": 185,
+  "of_those_guarded_and_the_guard_FIRES": 185,
+  "of_those_UNGUARDED": 0,
+  "baseline_rev3": {
+   "concat_nodes": 792,
+   "NULL_on_blank": 607,
+   "NON_EMPTY_CONSTANT": 185,
+   "UNGUARDED": 0
+  },
+  "delta_note": "concat_nodes rose 792 -> 812, exactly +20: the 20 rows that gained a 'DOC:' prefix each gained one concat node, and all 20 correctly NULL on a blank row. The non-empty-constant count did not move, so the HUB_DOCUMENT fix introduced no new degenerate. THE MAPPER'S NOTE DOES NOT MENTION THIS FIELD MOVING.",
+  "hash_operand_idiom": {
+   "per_operand_coalesce": "REQUIRED and must be copied through verbatim",
+   "do_not_normalise_note": "coalesce(nullif(trim(C),''),'') per component is correct (BUILD_INSTRUCTIONS 2.1). Do not 'fix' it."
+  }
+ },
+ "workbook": {
+  "file": "Travel_V2_SourceToModel_Mapping.xlsx",
+  "digest": "1dcdc949b034101cd46d292c",
+  "regenerated_after_the_rev3_profile": true,
+  "sheets": {
+   "Summary": 29,
+   "Source-Target": 2639,
+   "Target-Source": 462,
+   "Key Derivations": 2366,
+   "Augmentation": 1291,
+   "Excluded & Unmapped": 860,
+   "Review Flags": 74,
+   "Decisions & Notes": 34
+  },
+  "sheet_row_deltas_vs_rev3": {
+   "Review Flags": "73 -> 74 (+1)",
+   "all others": "identical"
+  },
+  "Key_Derivations_Degenerate_Value_column": {
+   "rev3": "the English sentence 'NULL (row correctly rejected on an all-blank source row)' on 2344 rows",
+   "now": "EMPTY on all 2366 rows",
+   "verdict": "CHANGED AND NOT MENTIONED IN THE COVERING NOTE. The workbook column was emptied to match the map's JSON null, but unlike the CSV the workbook gained NO verdict column, so the workbook now states the degenerate contract nowhere."
+  },
+  "new_review_flag_row": "gate_resolved_key_sound / warn / OPEN / HUB_DOCUMENT - the instance collision created visible by the whitespace normalisation. This is the row that took the sheet from 73 to 74."
+ },
+ "spreadsheet_columns": {
+  "Travel_V2_SourceToModel_Mapping.xlsx::Summary": {
+   "Item": {
+    "kind": "prose",
+    "contract": "free text",
+    "failing_values": 9,
+    "example_note": "no contract parses '  outcome: augmentation_needed'"
+   },
+   "Value": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'maximus travel mapping v2/outputs/04_column_map.json' -> {\"items\": [\"maximus travel mapping v2/outputs/04_column_map.json\"]}"
+   },
+   "Note": {
+    "kind": "machine",
+    "contract": "enum(4)",
+    "failing_values": 0,
+    "example_note": "closed set: maximus travel mapping v2/outputs/CHILDKEY_GAPS.csv | of 1167 satellite rows | see Review Flags sheet | {\"blocker\": 0, \"warn\": 7, \"info\": 0}"
+   }
+  },
+  "Travel_V2_SourceToModel_Mapping.xlsx::Source-Target": {
+   "Source Table": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI' -> {\"name\": \"NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW\"}"
+   },
+   "Source Column": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'FLAG_INDICATING_IF_CURRENT_PERMANENT_OVERSEAS_ADDRESS_IS_SAME_AS_CORRESPONDENCE_LOCAL_ADDR' -> {\"items\": [\"FLAG_INDICATING_IF_CURRENT_PERMANENT_OVERSEAS_ADDRESS_IS_SAME_AS_CORRESPONDENCE_LOCAL_ADDRESS\"]}"
+   },
+   "Domains": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'Claims, Customer / Party, Enterprise Shared, Loss Event, Policy, Distribution, Assessment,' -> {\"items\": [\"Claims\", \"Customer / Party\", \"Enterprise Shared\", \"Loss Event\", \"Policy\", \"Distribution\", \"Assessment\", \"Case Mgmt\", \"Content\", \"Travel\", "
+   },
+   "Outcome": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'augmentation_needed' -> {\"name\": \"augmentation_needed\"}"
+   },
+   "Model Target": {
+    "kind": "machine",
+    "contract": "union(list|model_target)",
+    "failing_values": 0,
+    "example_note": "round-tripped 'KEY: HUB_RISK_OBJECT (Risk Object Identifier (insured object / interest key))' -> {\"hub\": \"HUB_RISK_OBJECT\", \"desc\": \"Risk Object Identifier (insured object / interest key)\"}"
+   },
+   "Key / Grain / Derivation": {
+    "kind": "prose",
+    "contract": "free text",
+    "failing_values": 774,
+    "example_note": "no contract parses 'childkey[source_gap]: SOURCE GAP: this policy-property multiset carries ENDORSEMENT_TYPE but no endorsement number, and none is reachable on its shred path (POLICY_PROPERTY to POLICY_DETAILS carries n'"
+   },
+   "Resolved Key (tier)": {
+    "kind": "machine",
+    "contract": "key_expression",
+    "failing_values": 0,
+    "example_note": "parsed 'HUB_FINANCIAL_TRANSACTION (tier1_business_code)' -> call"
+   },
+   "Resolved Key Expression": {
+    "kind": "machine",
+    "contract": "key_expression",
+    "failing_values": 0,
+    "example_note": "parsed 'md5(normalise(nullif(trim(coalesce(nullif(trim(spine[PARENT_KEY_HASH -' -> call"
+   },
+   "Instance / Child Key": {
+    "kind": "prose",
+    "contract": "free text",
+    "failing_values": 164,
+    "example_note": "no contract parses 'treating-hospital-provider / Contact Point Type = LANDLINE_HOSPITAL | Contact Priority Order = 1'"
+   },
+   "Conf": {
+    "kind": "machine",
+    "contract": "scalar",
+    "failing_values": 0,
+    "example_note": "round-tripped '0.75' -> {\"number\": \"0.75\"}"
+   },
+   "Rationale": {
+    "kind": "prose",
+    "contract": "free text",
+    "failing_values": 829,
+    "example_note": "no contract parses \"sub-cover selection / limit. QT branch of twin10. No attribute on any KEYABLE anchor in this column's drawer carries it, so augmentation_needed (build-side) on SAT_QUOTE_COVERAGE_SCHEDULE. Repeating s\""
+   }
+  },
+  "Travel_V2_SourceToModel_Mapping.xlsx::Target-Source": {
+   "Model Column": {
+    "kind": "machine",
+    "contract": "model_target",
+    "failing_values": 0,
+    "example_note": "round-tripped 'KEY: HUB_RISK_OBJECT (Risk Object Identifier (insured object / interest key))' -> {\"hub\": \"HUB_RISK_OBJECT\", \"desc\": \"Risk Object Identifier (insured object / interest key)\"}"
+   },
+   "# Source Cols": {
+    "kind": "machine",
+    "contract": "scalar",
+    "failing_values": 0,
+    "example_note": "round-tripped '58' -> {\"number\": \"58\"}"
+   },
+   "# Distinct Names": {
+    "kind": "machine",
+    "contract": "scalar",
+    "failing_values": 0,
+    "example_note": "round-tripped '50' -> {\"number\": \"50\"}"
+   },
+   "Source Columns": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'ACE_PREMIUM_TYPE, ALTITUDE, BAGGAGE_TRACKING_SERVICE_APPLICABLE, BASE_AMT_ON_CURRENT_PMM_S' -> {\"items\": [\"ACE_PREMIUM_TYPE\", \"ALTITUDE\", \"BAGGAGE_TRACKING_SERVICE_APPLICABLE\", \"BASE_AMT_ON_CURRENT_PMM_SLAB\", \"COUNTRY\", \"CRUISE\", \"CRUISE_DAYS\", "
+   }
+  },
+  "Travel_V2_SourceToModel_Mapping.xlsx::Key Derivations": {
+   "Source Table": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI' -> {\"name\": \"NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW\"}"
+   },
+   "Source Column": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'FLAG_INDICATING_IF_CURRENT_PERMANENT_OVERSEAS_ADDRESS_IS_SAME_AS_CORRESPONDENCE_LOCAL_ADDR' -> {\"items\": [\"FLAG_INDICATING_IF_CURRENT_PERMANENT_OVERSEAS_ADDRESS_IS_SAME_AS_CORRESPONDENCE_LOCAL_ADDRESS\"]}"
+   },
+   "Row Block": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'augmentation' -> {\"name\": \"augmentation\"}"
+   },
+   "Hub / Link": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'HUB_FINANCIAL_TRANSACTION' -> {\"name\": \"HUB_FINANCIAL_TRANSACTION\"}"
+   },
+   "Instance": {
+    "kind": "machine",
+    "contract": "slug",
+    "failing_values": 0,
+    "example_note": "round-tripped 'insured-member@correspondence-local' -> {\"segments\": [\"insured-member\", \"correspondence-local\"]}"
+   },
+   "Tier": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'tier1_business_code' -> {\"name\": \"tier1_business_code\"}"
+   },
+   "Resolved Key Expression": {
+    "kind": "machine",
+    "contract": "key_expression",
+    "failing_values": 0,
+    "example_note": "parsed 'md5(normalise(nullif(trim(coalesce(nullif(trim(spine[PARENT_KEY_HASH -' -> call"
+   },
+   "Expression Source Columns": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'PARENT_KEY_HASH, CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_1, CURRENT_PERMANENT_OVERSEAS_ADD' -> {\"items\": [\"PARENT_KEY_HASH\", \"CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_1\", \"CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_2\", \"CURRENT_PERMANENT_OVERSEAS_AD"
+   },
+   "Degenerate Value (all-blank row)": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'NULL (row correctly rejected on an all-blank source row)' -> {\"items\": [\"NULL (row correctly rejected on an all-blank source row)\"]}"
+   },
+   "Key / Grain / Derivation": {
+    "kind": "prose",
+    "contract": "free text",
+    "failing_values": 1392,
+    "example_note": "no contract parses 'childkey[source_gap]: SOURCE GAP: this policy-property multiset carries ENDORSEMENT_TYPE but no endorsement number, and none is reachable on its shred path (POLICY_PROPERTY to POLICY_DETAILS carries n'"
+   }
+  },
+  "Travel_V2_SourceToModel_Mapping.xlsx::Augmentation": {
+   "Source Table": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI' -> {\"name\": \"NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW\"}"
+   },
+   "Source Column": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'FLAG_INDICATING_IF_CURRENT_PERMANENT_OVERSEAS_ADDRESS_IS_SAME_AS_CORRESPONDENCE_LOCAL_ADDR' -> {\"items\": [\"FLAG_INDICATING_IF_CURRENT_PERMANENT_OVERSEAS_ADDRESS_IS_SAME_AS_CORRESPONDENCE_LOCAL_ADDRESS\"]}"
+   },
+   "Anchor": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'HUB_FINANCIAL_TRANSACTION' -> {\"name\": \"HUB_FINANCIAL_TRANSACTION\"}"
+   },
+   "Target Satellite": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'SAT_COMMON_COMMUNICATION_PREFERENCE' -> {\"name\": \"SAT_COMMON_COMMUNICATION_PREFERENCE\"}"
+   },
+   "New Satellite": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'SAT_DOCUMENT_REQUIREMENT_REMINDER' -> {\"name\": \"SAT_DOCUMENT_REQUIREMENT_REMINDER\"}"
+   },
+   "Proposed Attribute": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'Final Admissible Amount In Policy Sum Insured Currency' -> {\"items\": [\"Final Admissible Amount In Policy Sum Insured Currency\"]}"
+   },
+   "Child Key": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'Premium Head Code + Coverage Reference + Section + Adjusted Indicator' -> {\"items\": [\"Premium Head Code\", \"Coverage Reference\", \"Section\", \"Adjusted Indicator\"]}"
+   },
+   "Tier": {
+    "kind": "machine",
+    "contract": "slug",
+    "failing_values": 0,
+    "example_note": "round-tripped 'build-side' -> {\"segments\": [\"build-side\"]}"
+   },
+   "Note": {
+    "kind": "prose",
+    "contract": "free text",
+    "failing_values": 682,
+    "example_note": "no contract parses \"Coded type of the document dispatched. NOT SAT_POLICY_DOC_CHECKLIST 'Document Type': that satellite's theme is inbound requirement / receipt tracking (Mandatory, Received, Deficiency), a different sub\""
+   }
+  },
+  "Travel_V2_SourceToModel_Mapping.xlsx::Excluded & Unmapped": {
+   "Source Table": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI' -> {\"name\": \"NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW\"}"
+   },
+   "Source Column": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'VEHICLE_WAS_RUNNING_AT_THE_TIME_OF_ACCIDENT' -> {\"name\": \"VEHICLE_WAS_RUNNING_AT_THE_TIME_OF_ACCIDENT\"}"
+   },
+   "Outcome / Class": {
+    "kind": "machine",
+    "contract": "slug",
+    "failing_values": 0,
+    "example_note": "round-tripped 'not-required-for-mapping' -> {\"segments\": [\"not-required-for-mapping\"]}"
+   },
+   "Reason / Rationale": {
+    "kind": "prose",
+    "contract": "free text",
+    "failing_values": 269,
+    "example_note": "no contract parses 'Endorsement-grain fact on a PARTY-grain pivot. SAT_POLICY_ENDORSEMENT is multi-active on Endorsement Number and NO endorsement number exists on this view or anywhere on its shred path, so the row coul'"
+   }
+  },
+  "Travel_V2_SourceToModel_Mapping.xlsx::Review Flags": {
+   "Category": {
+    "kind": "machine",
+    "contract": "category_path",
+    "failing_values": 0,
+    "example_note": "round-tripped 'consolidation_cross_table_conflicts:instance_split_inconsistency' -> {\"path\": [\"consolidation_cross_table_conflicts\", \"instance_split_inconsistency\"]}"
+   },
+   "Severity": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'blocker' -> {\"name\": \"blocker\"}"
+   },
+   "Status": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'RECORDED-NOT-APPLIED' -> {\"items\": [\"RECORDED-NOT-APPLIED\"]}"
+   },
+   "Source Table": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT' -> {\"items\": [\"NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW\", \"NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAI"
+   },
+   "Source Column": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'BAGIC_CONTRACT_ID, COLLECTED_PREMIUM, DATA_SOURCE, DOCUMENT_RECEIVED_DATE, FINAL_DIAGNOSIS' -> {\"items\": [\"BAGIC_CONTRACT_ID\", \"COLLECTED_PREMIUM\", \"DATA_SOURCE\", \"DOCUMENT_RECEIVED_DATE\", \"FINAL_DIAGNOSIS\", \"ICD_CODE\", \"ICD_DESCRIPTION\", \"INWAR"
+   },
+   "Target": {
+    "kind": "prose",
+    "contract": "free text",
+    "failing_values": 4,
+    "example_note": "no contract parses 'KEY:HUB_PARTY / KEY:HUB_QUOTE / KEY:HUB_RISK_OBJECT / KEY:HUB_COVERAGE / LNK_PARTY_ROLE'"
+   },
+   "Verdict": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'UNVERIFIED' -> {\"name\": \"UNVERIFIED\"}"
+   },
+   "Disposition": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'escalate-modeler' -> {\"items\": [\"escalate-modeler\"]}"
+   },
+   "Detail": {
+    "kind": "prose",
+    "contract": "free text",
+    "failing_values": 62,
+    "example_note": "no contract parses \"Scope: 41 travel_v2 rows (23 keyed, 18 unkeyed). BRIEF CORRECTION plus the requested recommendation. The cross-run gate NORMALISES the named-leg rendering: travel_v2's 'Tax Type = TDS' and health_v2's\""
+   }
+  },
+  "Travel_V2_SourceToModel_Mapping.xlsx::Decisions & Notes": {
+   "Decision / Note": {
+    "kind": "prose",
+    "contract": "free text",
+    "failing_values": 25,
+    "example_note": "no contract parses 'R12 key guard: a content hash is guarded against its EXACT degenerate value, not against the empty string'"
+   },
+   "Detail": {
+    "kind": "prose",
+    "contract": "free text",
+    "failing_values": 30,
+    "example_note": "no contract parses 'Measured structurally (the shred path encodes grain): of 324 monetary rows, 261 sit on N-per-policy views (per risk 69, multi-set 62, per cover 45) and 63 are genuinely 1:1. A degenerate policy-based '"
+   }
+  },
+  "KEY_DEGENERATE_VALUES.csv": {
+   "table": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI' -> {\"name\": \"NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW\"}"
+   },
+   "column": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'FLAG_INDICATING_IF_CURRENT_PERMANENT_OVERSEAS_ADDRESS_IS_SAME_AS_CORRESPONDENCE_LOCAL_ADDR' -> {\"items\": [\"FLAG_INDICATING_IF_CURRENT_PERMANENT_OVERSEAS_ADDRESS_IS_SAME_AS_CORRESPONDENCE_LOCAL_ADDRESS\"]}"
+   },
+   "block": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'augmentation' -> {\"name\": \"augmentation\"}"
+   },
+   "hub": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'HUB_FINANCIAL_TRANSACTION' -> {\"name\": \"HUB_FINANCIAL_TRANSACTION\"}"
+   },
+   "instance": {
+    "kind": "machine",
+    "contract": "slug",
+    "failing_values": 0,
+    "example_note": "round-tripped 'insured-member@correspondence-local' -> {\"segments\": [\"insured-member\", \"correspondence-local\"]}"
+   },
+   "tier": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'tier1_business_code' -> {\"name\": \"tier1_business_code\"}"
+   },
+   "degenerate_value": {
+    "kind": "machine",
+    "contract": "empty",
+    "failing_values": 0,
+    "example_note": "column present, unpopulated on every row"
+   },
+   "verdict": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'NULL - correctly rejected on an all-blank row' -> {\"items\": [\"NULL - correctly rejected on an all-blank row\"]}"
+   },
+   "expression": {
+    "kind": "machine",
+    "contract": "key_expression",
+    "failing_values": 0,
+    "example_note": "parsed 'md5(normalise(nullif(trim(coalesce(nullif(trim(spine[PARENT_KEY_HASH -' -> call"
+   }
+  },
+  "CHILDKEY_GAPS.csv": {
+   "satellite": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'SAT_POLICY_DISCOUNT_LOADING_APPLIED' -> {\"name\": \"SAT_POLICY_DISCOUNT_LOADING_APPLIED\"}"
+   },
+   "opus_child_key": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'Premium Head Code + Coverage Reference + Section + Adjusted Indicator' -> {\"items\": [\"Premium Head Code\", \"Coverage Reference\", \"Section\", \"Adjusted Indicator\"]}"
+   },
+   "view": {
+    "kind": "machine",
+    "contract": "identifier",
+    "failing_values": 0,
+    "example_note": "round-tripped 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI' -> {\"name\": \"NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW\"}"
+   },
+   "shape": {
+    "kind": "prose",
+    "contract": "free text",
+    "failing_values": 73,
+    "example_note": "no contract parses 'EAV pivot, depth 8, parent POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY, spine=True'"
+   },
+   "n_columns": {
+    "kind": "machine",
+    "contract": "scalar",
+    "failing_values": 0,
+    "example_note": "round-tripped '13' -> {\"number\": \"13\"}"
+   },
+   "maximus_currently_writes": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'Aadhaar Number | Aadhaar Verification Status | Age Proof Type | CIN Number | CKYC Number |' -> {\"items\": [\"Aadhaar Number\", \"Aadhaar Verification Status\", \"Age Proof Type\", \"CIN Number\", \"CKYC Number\", \"Driving Licence Expiry Date\", \"Driving Lic"
+   },
+   "source_columns": {
+    "kind": "machine",
+    "contract": "list",
+    "failing_values": 0,
+    "example_note": "round-tripped 'BASE_AMT_ON_CURRENT_PMM_SLAB | COMMON_CARRIER_RELATIVITY | OFFICE_PREMIUM_PER_MILE | OFFIC' -> {\"items\": [\"BASE_AMT_ON_CURRENT_PMM_SLAB\", \"COMMON_CARRIER_RELATIVITY\", \"OFFICE_PREMIUM_PER_MILE\", \"OFFICE_PREMIUM_PER_MILELOADING\", \"OFFICE_PREMIUM_P"
+   },
+   "CHILD_KEY_SOURCE_COLUMN": {
+    "kind": "prose",
+    "contract": "free text",
+    "failing_values": 7,
+    "example_note": "no contract parses '(column-as-instance) + POL_RISK_ID, PREMIUM_ADJUSTMENT_TYPE'"
+   },
+   "NOTE": {
+    "kind": "prose",
+    "contract": "free text",
+    "failing_values": 34,
+    "example_note": "no contract parses 'The column identity IS the identification type (KEYING 5.4). Vocabulary aligned to Health V2, the only valid precedent that populates this satellite: PAN, AADHAAR, AADHAAR_ENROLMENT, AADHAAR_VID, ABHA'"
+   }
+  }
+ },
+ "prose_test_note": "Re-run in full because the workbook was regenerated AFTER the rev-3 profile was written. Every column of 8 sheets and 2 CSVs tested under a STATED CONTRACT, not against a bare-identifier rule. Every non-prose class is proved by parsing: the longest value is round-tripped into its parts AND the whole column is counted for non-conforming values.",
+ "prose_columns_that_are_findings": {
+  "CHILDKEY_GAPS.csv::CHILD_KEY_SOURCE_COLUMN": {
+   "failing_values": 7,
+   "populated": 95,
+   "note": "UNCHANGED - CHILDKEY_GAPS.csv is byte-identical to rev 3 (6344d8e2904ddbb50ed40601). Mostly a comma-delimited identifier list plus two parenthesised sentinels, '(column-as-instance)' on 31 rows and '(none - single-active: constant role/head)' on 4; 7 values MIX the two. A column that is MOSTLY parseable is still prose - the 7 exceptions are exactly what would reach generated SQL."
+  },
+  "CHILDKEY_GAPS.csv::NOTE": {
+   "failing_values": 34,
+   "populated": 93,
+   "note": "prose by convention, never read. 2 of 95 rows unpopulated. Unchanged."
+  },
+  "Review Flags::Target": {
+   "failing_values": 4,
+   "populated": 57,
+   "note": "mostly a delimited target list, but 4 values carry counts and '6 others'. Never read by the build."
+  },
+  "Review Flags::Source Table": {
+   "failing_values": 4,
+   "populated": 60,
+   "note": "holds aggregate sentences such as '38 (view, hub) groups run-wide; largest on ...' where an identifier is expected. Never read by the build, recorded because the header is identifier-shaped."
+  }
+ },
+ "spreadsheet_note_columns_note": "Columns named Note / Rationale / Detail / Reason / Decision are prose by convention and are never read. ALL are populated - none was emptied by this re-issue, so no note content moved into a real field. The ONE column that WAS emptied is 'Key Derivations::Degenerate Value (all-blank row)', which is not a _note column; see workbook above.",
+ "collapse_traps": [
+  "SAT_CLAIM_DOCUMENT_REMINDER.Requirement Type Name",
+  "SAT_CLAIM_EVIDENCE.Evidence Type",
+  "SAT_CLAIM_EVIDENCE.Media Reference",
+  "SAT_CLAIM_INVESTIGATION_FINDING.Finding Sequence",
+  "SAT_CLAIM_RESERVE_HEAD.Reserve Head Code",
+  "SAT_COMMON_CONTACT.Contact Priority Order",
+  "SAT_COVERAGE_SUBLIMIT_SCHEDULE.Active Sequence Number",
+  "SAT_DOCUMENT_CHECKLIST.Required Document Type",
+  "SAT_LNK_CLAIM_PARTY_ROLE.Role Sequence",
+  "SAT_LNK_PARTY_ROLE_CORE.Role Sequence",
+  "SAT_LNK_POLICY_PARTY_ROLE.Role Sequence",
+  "SAT_PARTY_CORRESPONDENCE.Dispatch Reference",
+  "SAT_PARTY_DIGITAL_IDENTITY.Active Sequence Number",
+  "SAT_POLICY_DOCUMENT_DISPATCH.Dispatch Serial Number",
+  "SAT_POLICY_PREMIUM_HEAD.Adjusted Indicator",
+  "SAT_QUOTE_COVER_DETAIL.Coverage Reference",
+  "SAT_QUOTE_COVER_DETAIL.Coverage Sequence",
+  "SAT_QUOTE_PREMIUM_HEAD.Coverage Reference",
+  "SAT_RISK_HEALTH_MEMBER_MEDICAL.Condition Code",
+  "SAT_RISK_PERSON_MEMBER.Member Sequence"
+ ],
+ "collapse_trap_detail": {
+  "SAT_COMMON_CONTACT.Contact Priority Order": {
+   "trap": "SAT_COMMON_CONTACT.Contact Priority Order",
+   "rendered": "'1'",
+   "legs": 47,
+   "views": 8,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_PARTY_CORRESPONDENCE.Dispatch Reference": {
+   "trap": "SAT_PARTY_CORRESPONDENCE.Dispatch Reference",
+   "rendered": "nullif(trim(POD_NUMBER),'')",
+   "legs": 2,
+   "views": 1,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_CLAIM_EVIDENCE.Evidence Type": {
+   "trap": "SAT_CLAIM_EVIDENCE.Evidence Type",
+   "rendered": "'BANK_DETAILS_SUPPORTING_DOCUMENT'",
+   "legs": 1,
+   "views": 1,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_CLAIM_EVIDENCE.Media Reference": {
+   "trap": "SAT_CLAIM_EVIDENCE.Media Reference",
+   "rendered": "<not on this view - no media / document identifier on this view>",
+   "legs": 1,
+   "views": 1,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_LNK_CLAIM_PARTY_ROLE.Role Sequence": {
+   "trap": "SAT_LNK_CLAIM_PARTY_ROLE.Role Sequence",
+   "rendered": "'1'",
+   "legs": 9,
+   "views": 5,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_POLICY_PREMIUM_HEAD.Adjusted Indicator": {
+   "trap": "SAT_POLICY_PREMIUM_HEAD.Adjusted Indicator",
+   "rendered": "'N'",
+   "legs": 26,
+   "views": 4,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_PARTY_DIGITAL_IDENTITY.Active Sequence Number": {
+   "trap": "SAT_PARTY_DIGITAL_IDENTITY.Active Sequence Number",
+   "rendered": "'GH_TYPE_OF_USER'",
+   "legs": 2,
+   "views": 2,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_LNK_PARTY_ROLE_CORE.Role Sequence": {
+   "trap": "SAT_LNK_PARTY_ROLE_CORE.Role Sequence",
+   "rendered": "'1'",
+   "legs": 4,
+   "views": 2,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_LNK_POLICY_PARTY_ROLE.Role Sequence": {
+   "trap": "SAT_LNK_POLICY_PARTY_ROLE.Role Sequence",
+   "rendered": "'1'",
+   "legs": 10,
+   "views": 5,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_CLAIM_DOCUMENT_REMINDER.Requirement Type Name": {
+   "trap": "SAT_CLAIM_DOCUMENT_REMINDER.Requirement Type Name",
+   "rendered": "'REQUIREMENT_TYPE_NAME'",
+   "legs": 3,
+   "views": 1,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_COVERAGE_SUBLIMIT_SCHEDULE.Active Sequence Number": {
+   "trap": "SAT_COVERAGE_SUBLIMIT_SCHEDULE.Active Sequence Number",
+   "rendered": "nullif(trim(SUBLIMIT_NAME),'')",
+   "legs": 21,
+   "views": 1,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_RISK_PERSON_MEMBER.Member Sequence": {
+   "trap": "SAT_RISK_PERSON_MEMBER.Member Sequence",
+   "rendered": "nullif(trim(KEY_HASH),'')",
+   "legs": 2,
+   "views": 2,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_RISK_HEALTH_MEMBER_MEDICAL.Condition Code": {
+   "trap": "SAT_RISK_HEALTH_MEMBER_MEDICAL.Condition Code",
+   "rendered": "nullif(trim(DISEASE),'')",
+   "legs": 10,
+   "views": 2,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_CLAIM_INVESTIGATION_FINDING.Finding Sequence": {
+   "trap": "SAT_CLAIM_INVESTIGATION_FINDING.Finding Sequence",
+   "rendered": "nullif(trim(INVESTIGATION_NUMBER),'')",
+   "legs": 1,
+   "views": 1,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_CLAIM_RESERVE_HEAD.Reserve Head Code": {
+   "trap": "SAT_CLAIM_RESERVE_HEAD.Reserve Head Code",
+   "rendered": "nullif(trim('LOSS' || '#' || coalesce(nullif(trim(COVER_CODE),''),'')), 'LOSS#')",
+   "legs": 2,
+   "views": 1,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_DOCUMENT_CHECKLIST.Required Document Type": {
+   "trap": "SAT_DOCUMENT_CHECKLIST.Required Document Type",
+   "rendered": "nullif(trim(REQUIREMENT_TYPE_NAME),'')",
+   "legs": 4,
+   "views": 1,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_QUOTE_PREMIUM_HEAD.Coverage Reference": {
+   "trap": "SAT_QUOTE_PREMIUM_HEAD.Coverage Reference",
+   "rendered": "nullif(trim(spine[PARENT_KEY_HASH -> NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY -> NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER -> NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST].POL_RISK_ID),'') || '#' || nullif(trim(spine[PARENT_KEY_HASH -> NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY -> NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER].COVER_CODE),'')",
+   "legs": 3,
+   "views": 1,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_QUOTE_COVER_DETAIL.Coverage Reference": {
+   "trap": "SAT_QUOTE_COVER_DETAIL.Coverage Reference",
+   "rendered": "'RISK:' || nullif(trim(spine[PARENT_KEY_HASH -> NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY -> NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER -> NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST].POL_RISK_ID), '') || '#' || nullif(trim(spine[PARENT_KEY_HASH -> NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY -> NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER].COVER_CODE), '')",
+   "legs": 15,
+   "views": 1,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_QUOTE_COVER_DETAIL.Coverage Sequence": {
+   "trap": "SAT_QUOTE_COVER_DETAIL.Coverage Sequence",
+   "rendered": "1",
+   "legs": 15,
+   "views": 1,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  },
+  "SAT_POLICY_DOCUMENT_DISPATCH.Dispatch Serial Number": {
+   "trap": "SAT_POLICY_DOCUMENT_DISPATCH.Dispatch Serial Number",
+   "rendered": "nullif(trim(SERIAL_NO),'')",
+   "legs": 11,
+   "views": 1,
+   "why": "this leg renders to ONE value across every view and row that carries it, so it cannot separate the instances it is the discriminator for"
+  }
+ },
+ "collapse_trap_note": "20 (satellite, leg) pairs whose rendered discriminator is ONE value across every view and row that carries it. The previous profile listed 10; all 10 are inside this 20. The extra 10 are legs derived from a source COLUMN that happens to be constant because only one view carries the leg - a weaker signal than a literal constant, but the consequence is the same: the leg cannot separate the instances it is the discriminator for. IDENTICAL at the baseline snapshot, so this is a detector widening, not a bundle change. The spec builder must assert no key expression references any of the 20.",
+ "collapse_traps_per_view": 61,
+ "renumbering_ordinals": [
+  "SERIAL_NO",
+  "SRL_NO",
+  "SEQUENCE_NUMBER",
+  "PARAM_SEQ",
+  "RISK_SERIAL_NUMBER",
+  "RISK_SERIAL_NO",
+  "SR_NUMBER"
+ ],
+ "renumbering_ordinals_reaching_a_key": {},
+ "renumbering_ordinals_reaching_a_child_key_leg": {
+  "SERIAL_NO": 11
+ },
+ "renumbering_ordinal_note": "Seven spellings re-enumerated from 00_tables_index.json this run BY SHAPE, not by lookup: PARAM_SEQ, RISK_SERIAL_NO, RISK_SERIAL_NUMBER, SEQUENCE_NUMBER, SERIAL_NO, SRL_NO, SR_NUMBER. ZERO reach a resolved_key expression. SERIAL_NO reaches 11 child-key legs, all on SAT_POLICY_DOCUMENT_DISPATCH. Identical on the rev-3 baseline and the current map. BILL_NO reaches 29 legs and TRIP_NO reaches 12 key expressions; both are ordinal-SHAPED and are deliberately NOT classified as ordinals - see ordinal_shaped_names_not_classified_as_ordinals. The index file is byte-identical to rev 3, so this census cannot have moved.",
+ "ordinal_shaped_names_not_classified_as_ordinals": {
+  "BILL_NO": "reaches 29 child-key legs as 'Bill Number'. Classified NOT an ordinal: an invoice/bill number is a document identifier, not a per-parent sequence. UNPROVEN - there is no sample data in this run.",
+  "TRIP_NO": "reaches 12 HUB_RISK_OBJECT key rows as the FALLBACK operand of \"'TRIP:' || coalesce(nullif(trim(PNR),''), nullif(trim(TRIP_NO),''))\". If TRIP_NO is a per-policy ordinal rather than a global trip identifier, every policy's first trip keys to 'TRIP:1' and the hub merges unrelated trips. UNPROVEN - no sample data. See open item TRIPNO-FALLBACK."
+ },
+ "layers": [
+  "layer-1 casts",
+  "walk-only casts",
+  "resolvers",
+  "unpivot",
+  "wide stage",
+  "hub feed",
+  "hubs",
+  "links",
+  "satellites",
+  "augmented"
+ ],
+ "layer_sizing": {
+  "views_in_index": 126,
+  "views_carrying_map_rows": 62,
+  "views_touched_by_a_walk_including_expanded_skipped_levels": 105,
+  "distinct_walk_destinations": 52,
+  "intervening_views_added_by_level_skips": 36,
+  "total_views_needing_a_cast": 115,
+  "walk_only_casts_required": 51,
+  "longest_name_source": 138,
+  "hub_key_rows_blocks": {
+   "HUB_PARTY": 499,
+   "HUB_CLAIM": 408,
+   "HUB_POLICY": 384,
+   "HUB_QUOTE": 357,
+   "HUB_RISK_OBJECT": 227,
+   "HUB_LOCATION": 119,
+   "HUB_FINANCIAL_TRANSACTION": 108,
+   "HUB_DOCUMENT": 64,
+   "HUB_COVERAGE": 55,
+   "HUB_PRODUCT": 25,
+   "HUB_ORG_UNIT": 24,
+   "LNK_PARTY_ROLE": 20,
+   "HUB_LOSS_EVENT": 16,
+   "HUB_DISTRIBUTION_CHANNEL": 15,
+   "LNK_PARTY_LOCATION": 11,
+   "LNK_CLAIM_PARTY": 10,
+   "LNK_POLICY_PARTY": 10,
+   "HUB_ASSESSMENT": 7,
+   "HUB_PAYMENT_INSTRUMENT": 7
+  },
+  "hub_key_rows_with_an_expression": {
+   "HUB_PARTY": 499,
+   "HUB_CLAIM": 408,
+   "HUB_POLICY": 384,
+   "HUB_QUOTE": 357,
+   "HUB_RISK_OBJECT": 227,
+   "HUB_LOCATION": 119,
+   "HUB_FINANCIAL_TRANSACTION": 86,
+   "HUB_DOCUMENT": 64,
+   "HUB_COVERAGE": 55,
+   "HUB_PRODUCT": 25,
+   "HUB_ORG_UNIT": 24,
+   "LNK_PARTY_ROLE": 20,
+   "HUB_LOSS_EVENT": 16,
+   "HUB_DISTRIBUTION_CHANNEL": 15,
+   "LNK_PARTY_LOCATION": 11,
+   "LNK_CLAIM_PARTY": 10,
+   "LNK_POLICY_PARTY": 10,
+   "HUB_ASSESSMENT": 7,
+   "HUB_PAYMENT_INSTRUMENT": 7
+  },
+  "link_hubs": [
+   "LNK_PARTY_ROLE",
+   "LNK_PARTY_LOCATION",
+   "LNK_CLAIM_PARTY",
+   "LNK_POLICY_PARTY"
+  ],
+  "note": "51 of the 113 casts are for views that are NEVER a row table_name - 45 percent of the cast surface exists for views nothing maps. 36 of those exist only because a hop skips a level. Byte-identical to the baseline snapshot under the same measurement.",
+  "distinct_walk_destination_tokens": 60,
+  "method_delta_note": "115 this run versus 113 in rev 3. My expansion adds EVERY view that is a proper name-prefix of a needed view; rev 3 added only the levels lying between a walk's endpoints. 00_tables_index.json is byte-identical to rev 3, so the view set cannot have changed - this is a definition difference and stage 1 must not read it as a bundle change. Build to 115; the 2 extra casts are ancestors that already have to exist."
+ },
+ "bespoke_layers": [
+  {
+   "name": "augmented-track alignment shim",
+   "reason": "OPUS travel_dv_dbt already builds 12 SAT_AUG_* satellites. 94 augmentation rows land on 9 concepts OPUS already augments, so they must be emitted INTO the OPUS-named SAT_AUG_<X> with OPUS's src_pk, single-active grain and bare HASHDIFF, extending its payload, rather than into a Maximus-side second satellite. The standard augmented layer builds per-map and cannot express that; declared exception under BUILD_RULES.md 6.5, required by 7.7."
+  },
+  {
+   "name": "EAV instance fan-out driven by a literal leg",
+   "reason": "593 child-key legs are pure literals naming a column-as-instance inside a pivot view. The unpivot layer must fan one parent row into N instance rows keyed by the LEG LITERAL, which has no source column to unpivot from - the literal IS the instance name. 39 of these legs carry no 'expression' field at all and the generator must synthesise the quoted literal from 'value'."
+  }
+ ],
+ "prefix": "mtv2",
+ "source_view_prefixes": {
+  "NONHLTH_TRV_CLM_VW_DATA": 29,
+  "NONHLTH_TRV_UWR_VW_DATA": 84
+ },
+ "abbr_seed": [
+  [
+   "NONHLTH_TRV_UWR_VW_DATA",
+   "uwr"
+  ],
+  [
+   "NONHLTH_TRV_CLM_VW_DATA",
+   "clm"
+  ],
+  [
+   "PREVIOUS_POLICY_DETAILS",
+   "prevpol"
+  ],
+  [
+   "POLICY_DETAILS",
+   "pol"
+  ],
+  [
+   "QUOTE_PARAM_DETAILS",
+   "qpd"
+  ],
+  [
+   "PREMIUM_DETAILS",
+   "prem"
+  ],
+  [
+   "CLAIM_DETAILS",
+   "clmd"
+  ],
+  [
+   "INSURED_DETAILS",
+   "ins"
+  ],
+  [
+   "MEMBER_DETAILS",
+   "mbr"
+  ],
+  [
+   "PROPOSER_DETAILS",
+   "prp"
+  ],
+  [
+   "OFFICE_DETAILS",
+   "off"
+  ],
+  [
+   "DISPATCH_DETAILS",
+   "disp"
+  ],
+  [
+   "DOCUMENT_DETAILS",
+   "doc"
+  ],
+  [
+   "ENDORSEMENT_DETAILS",
+   "endt"
+  ],
+  [
+   "COVER_DETAILS",
+   "cov"
+  ],
+  [
+   "TELE_VERIFICATION_DETAILS",
+   "tele"
+  ],
+  [
+   "WORK_ITEM_DETAILS",
+   "wrk"
+  ],
+  [
+   "PARTY_PROPERTY",
+   "pp"
+  ],
+  [
+   "POLICY_PROPERTY",
+   "polp"
+  ],
+  [
+   "RISK_PROPERTY",
+   "rskp"
+  ],
+  [
+   "COVER_PROPERTY",
+   "covp"
+  ],
+  [
+   "INPUT_MULTI_SET_DETAIL",
+   "imsd"
+  ],
+  [
+   "MULTI_SET_PROPERTY",
+   "msp"
+  ],
+  [
+   "MULTI_SET_DETAIL",
+   "msd"
+  ],
+  [
+   "SIMPLE_PROPERTY",
+   "sp"
+  ],
+  [
+   "INPUT_PROPERTY",
+   "inp"
+  ],
+  [
+   "RULE_LIST",
+   "rl"
+  ],
+  [
+   "RISK_LIST",
+   "rskl"
+  ],
+  [
+   "RISK_COVER",
+   "rskc"
+  ],
+  [
+   "CLAIM_ATTRIBUTE_PROPERTIES",
+   "clmap"
+  ],
+  [
+   "CLAIM_ATTRIBUTE",
+   "clma"
+  ],
+  [
+   "CLAIM_PAYMENT",
+   "clmpay"
+  ],
+  [
+   "PAYMENTPROPERTY",
+   "payp"
+  ],
+  [
+   "CLAIM_RISK",
+   "clmrsk"
+  ],
+  [
+   "RISK_ATTRIBUTE",
+   "rska"
+  ],
+  [
+   "CLAIM_PARTY",
+   "clmpty"
+  ],
+  [
+   "CLAIM_REQUIREMENT",
+   "clmreq"
+  ],
+  [
+   "CLAIM_COVER",
+   "clmcov"
+  ],
+  [
+   "PARTY_ADDRESS",
+   "pa"
+  ],
+  [
+   "OFFICE_ADDRESS",
+   "oa"
+  ],
+  [
+   "PROPERTY",
+   "prop"
+  ],
+  [
+   "DETAILS",
+   "d"
+  ],
+  [
+   "PIVOT_VW",
+   "pv"
+  ],
+  [
+   "_VW",
+   ""
+  ]
+ ],
+ "name_injective": true,
+ "names_generated": 115,
+ "name_collisions": 0,
+ "longest_name": 41,
+ "longest_name_example_note": "mtv2_clm_clmd_clmrsk_rska_msp_msd_prop_pv",
+ "longest_source_view_name": 138,
+ "name_injectivity_note": "Re-proved this run: the 44-entry abbreviation vocabulary applied to all 115 views needing a cast yields 115 DISTINCT names, 0 collisions, longest 41 characters against Snowflake's 63-character identifier limit, and 0 names over 63. The longest source view name is 138 characters, so the abbreviation is not optional.",
+ "child_key_leg_hazards": {
+  "legs_with_no_expression_field": 45,
+  "their_leg_backing": {
+   "literal": 44,
+   "unresolved": 1
+  },
+  "synthesis_rule": "For the 44 literal legs the generator must synthesise a quoted SQL literal from `value`; there is no expression to copy.",
+  "PROSE_PLACEHOLDER_IN_A_VALUE_FIELD": {
+   "count": 1,
+   "table": "..._CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+   "column": "SUPPORTING_DOCUMENT_FOR_BANK_DETAILS",
+   "satellite_leg": "SAT_CLAIM_EVIDENCE.'Media Reference'",
+   "leg_backing": "unresolved",
+   "value": "'<not on this view - no media / document identifier on this view>'",
+   "why": "The ONE leg whose leg_backing is `unresolved` carries no expression and a `value` that is an ALREADY-QUOTED English sentence. A generator that synthesises a literal from `value` - which is the correct rule for the other 44 - writes that sentence into the child key. It must be refused at build time as a sentinel, not rendered. This leg is also one of the 20 collapse traps.",
+   "routing": "mapper",
+   "severity": "blocker-if-built"
+  }
+ },
+ "build_directives": [
+  {
+   "bundle_item": "KEY_FUNCTIONS.md section 7 / 12_round1_fixes.json items 1a and 1b",
+   "directive_note": "The separator-degeneration guard is ALREADY IN THE MAP on all 185 degenerating concats and it fires. The build must copy it through and must not add a second one.",
+   "mechanism": "Emit resolved_key.expression and child_key_components[].expression verbatim. Assert as a gate that every concat which evaluates to a non-empty constant on an all-blank row is enclosed by a nullif whose second operand equals that constant - the same probe used here, reusable as a build-side check."
+  },
+  {
+   "bundle_item": "BUILD_INSTRUCTIONS 2.1, the 103 / 19 guard idioms",
+   "directive_note": "Do NOT normalise either hash-operand guard idiom. Both are correct in context and the mapper has asked twice that they be left alone.",
+   "mechanism": "Copy content-hash expressions through unchanged; add NO coalesce-placement rewrite rule anywhere in the generator chain."
+  },
+  {
+   "bundle_item": "KEY_FUNCTIONS.md section 5",
+   "directive_note": "normalise(x) = collapse_internal_whitespace(upper(trim(x))), NULL in NULL out, applied to the whole concatenation and NOT per component. It KEEPS the empty slot rather than dropping nulls before concat.",
+   "mechanism": "One function in mtv2_keyrules.py emitting upper + trim + regexp_replace(x,'\\\\s+',' '). Never substitute a hash whose NULL handling differs. Implement md5(NULL) -> NULL explicitly rather than relying on the warehouse."
+  },
+  {
+   "bundle_item": "STAGE-0 finding: 10 rows use md5(upper(trim(...)))",
+   "directive_note": "A second, undeclared canonicalisation exists on the 'NOMINEE:' party keys. upper+trim does not collapse internal whitespace, so it is NOT the same key space as normalise.",
+   "mechanism": "Emit those 10 verbatim as mapped - changing them would re-key a hub on my own authority - and raise the divergence to the mapper. Record the two canonicalisations in BUILD_STATUS.json so the split is visible."
+  },
+  {
+   "bundle_item": "KEY_FUNCTIONS.md section 8.2",
+   "directive_note": "Resolve an abbreviated spine destination ONLY against the start view's own ancestor chain, longest matching prefix wins; if a token still matches more than one ancestor, STOP.",
+   "mechanism": "The resolver takes the start view, walks parent_table_candidate from 00_tables_index.json and matches suffixes on that chain only. Verified here to resolve all 297 abbreviated hops with 0 ambiguity and 0 misses."
+  },
+  {
+   "bundle_item": "KEY_FUNCTIONS.md section 8.1",
+   "directive_note": "The spine operator is an LCA cross, not a climb. 2 arrows reach a sibling.",
+   "mechanism": "Resolve every hop as lowest-common-ancestor; a climb-only resolver silently returns nothing for PREMIUM_DETAILS -> POLICY_DETAILS and the miss reads as a source gap."
+  },
+  {
+   "bundle_item": "STAGE-0 finding: 787 arrows skip levels",
+   "directive_note": "787 of 5496 arrows skip 1 to 4 levels; every intervening view must be expanded into the join chain.",
+   "mechanism": "Expand each hop through the parent chain before emitting joins. This is what makes 14 of the 51 walk-only casts necessary; sizing the cast layer from named destinations alone under-builds it."
+  },
+  {
+   "bundle_item": "BUILD_INSTRUCTIONS 2.3 / KEY_FUNCTIONS.md section 9",
+   "directive_note": "A link leg must be byte-identical to the key of the hub it references; a disagreeing leg produces an empty join, which reads as sparse source data rather than an error.",
+   "mechanism": "25 of 51 LNK call sites are POSITIONAL and 11 have a single leg, so leg identity CANNOT be recovered from a name on those. Match each leg's expression STRING against the set of hub key expressions resolved on the same view (BUILD_RULES.md 4). Assert every LNK leg string appears verbatim as some hub's resolved_key.expression on that view; raise on any that does not."
+  },
+  {
+   "bundle_item": "BUILD_INSTRUCTIONS 2.4 and 5",
+   "directive_note": "Build HUB_RISK_OBJECT in the QUALIFIED <root>#POL_RISK_ID form and expect TWO namespaces ('RISK:' 215 rows, 'TRIP:' 12) until the source answers. Unchanged by this re-issue - verified identical old and new.",
+   "mechanism": "Isolate the '#' qualifier in ONE function so a source answer drops it across all 210 rows in a single edit. Count rows per namespace prefix into BUILD_STATUS.json."
+  },
+  {
+   "bundle_item": "MESSAGE_TO_BUILDER.md item 4",
+   "directive_note": "Do NOT collapse SAT_POLICY_DOCUMENT_DISPATCH (11 rows) into SAT_POLICY_DELIVERY.",
+   "mechanism": "Build them as two satellites. SAT_POLICY_DELIVERY is single-active SCD2 on HUB_POLICY; the dispatch source is a depth-2 shred child and all 11 rows declare multi_active with child key 'Dispatch Serial Number'."
+  },
+  {
+   "bundle_item": "augmentation.child_key_stability (NEW, 11 rows)",
+   "directive_note": "The mapper declares the SERIAL_NO child key a positional ordinal and a source gap, but did NOT re-key it. The build receives an unstable child-key leg.",
+   "mechanism": "Build the 11 rows as mapped, and emit the declaration into BUILD_STATUS.json as a known-unstable child key. Do NOT silently substitute POD_NUMBER - the mapper named it a candidate, not a decision (BUILD_RULES.md 5.7)."
+  },
+  {
+   "bundle_item": "augmentation.child_key_legs_missing (NEW, 39 rows)",
+   "directive_note": "39 augmentation rows declare a compound child key and supply only some of its legs - e.g. SAT_POLICY_PREMIUM_HEAD declares 4 legs and 5 rows supply 1. Rows sharing the supplied legs collide on the missing ones.",
+   "mechanism": "Do not invent the missing legs. Within one satellite the child key must be ONE leg set; SAT_POLICY_PREMIUM_HEAD currently carries three different sets across its rows. Build only the rows that supply the satellite's full declared set and list the rest in accepted_uncovered.txt with the mapper's own 'declared, NOT invented' wording."
+  },
+  {
+   "bundle_item": "augmentation.child_key_components_gap (NEW, 2 rows)",
+   "directive_note": "2 rows on SAT_CLAIM_EVIDENCE carry a child_key_value that names no leg while the satellite declares 2 legs; the mapper refused to guess the pairing.",
+   "mechanism": "Leave both unbuilt; accepted_uncovered with the mapper's reason."
+  },
+  {
+   "bundle_item": "STAGE-0 finding on the 281 emitted components",
+   "directive_note": "Augmentation multi-active rows with a rendering-only child key fell 283 -> 2. Nothing in the build may parse child_key_value prose.",
+   "mechanism": "Read child_key_components[] only. If a generator branch exists that parses child_key_value, delete it - it now has 2 live inputs and both are declared gaps."
+  },
+  {
+   "bundle_item": "STAGE-0 finding on Source-Target.'Source Column'",
+   "directive_note": "Seven source column names begin with a digit (1ST_REMINDER_DATE, 2ND_REMINDER_DATE, 3RD_REMINDER_DATE, 64_VB_STATUS).",
+   "mechanism": "Double-quote every source column identifier in emitted SQL. An unquoted 1ST_REMINDER_DATE is a Snowflake syntax error that the static gates will not catch because dbt is out of scope."
+  },
+  {
+   "bundle_item": "BUILD_RULES.md 7.2 / 7.7 and the OPUS build",
+   "directive_note": "OPUS's contract on its 12 SAT_AUG_* satellites is absolute: single-active, no child key, bare HASHDIFF, src_pk a HUB key - including the two LNK_-named ones, which key on PARTY_HKEY, not a link key.",
+   "mechanism": "Emit the 94 same-concept rows into the OPUS-named SAT_AUG_<X> under OPUS's contract. The 16 SAT_PARTY_BANKING rows that declare multi-active CANNOT be honoured as multi-active without breaking that contract - build them single-active and raise the grain divergence (see open item AUG-GRAIN-BANKING)."
+  },
+  {
+   "bundle_item": "profile STEP 2 / component kind census",
+   "directive_note": "The single leg_backing='unresolved' leg carries a quoted prose sentinel in `value` and no expression.",
+   "mechanism": "Treat leg_backing=unresolved as a HARD SENTINEL: refuse the row at build time and report it as an unbuilt item, never synthesise a literal from its `value`."
+  },
+  {
+   "bundle_item": "KEY_FUNCTIONS.md 8.2 scoping rule",
+   "directive_note": "297 abbreviated spine destinations, of which PARTY_PROPERTY (145 hops) matches two tables globally.",
+   "mechanism": "Resolve an abbreviated destination ONLY against the start view's own ancestor chain, longest matching prefix. Verified to resolve all 297 uniquely; resolved globally, 67 hops cross from the proposer branch into the member branch."
+  },
+  {
+   "bundle_item": "BUILD_INSTRUCTIONS 2.3 / KEY_FUNCTIONS 9",
+   "directive_note": "A link leg must equal the key of the hub it references.",
+   "mechanism": "Emit the hub key expression for the leg by construction, so the two cannot diverge. 7 value-changing divergences exist in the map today."
+  },
+  {
+   "bundle_item": "map field resolved_key.degenerate_verdict (NEW in rev 4)",
+   "directive_note": "degenerate_value is JSON null on all 2344 blocks and degenerate_verdict is 'null_on_blank_row' on all 2344. The field is executable again: a generator may now read it. It carries exactly one of three tokens and only one of the three occurs.",
+   "mechanism": "Read degenerate_verdict, not degenerate_value, and not the CSV's `verdict` column (different vocabulary). Build the null_on_blank_row branch - reject the row. Make empty_on_blank_row and constant_on_blank_row RAISE, because this bundle contains zero examples of either and an untested branch that silently writes a key is the defect the whole contract exists to prevent."
+  },
+  {
+   "bundle_item": "KEY_FUNCTIONS.md 'Function census (generated)' and scripts/check_key_function_census.py",
+   "directive_note": "The generated census covers only resolved_key.expression (2344). The build executes 3418 live expressions; the other 1074 are child_key_components[].expression and they are NOT policed by the allowlist.",
+   "mechanism": "Use the ALL-LIVE figures (trim 5094 / nullif 5084 / coalesce 1783 / spine[] 2390 / md5 138 / normalise 128 / lnk 51 / upper 19) in any build-side assertion, and add a build-side allowlist check that sweeps BOTH expression fields. Report the gap to the mapper rather than editing their script."
+  },
+  {
+   "bundle_item": "Workbook 'Key Derivations' sheet, column 'Degenerate Value (all-blank row)'",
+   "directive_note": "Now empty on all 2366 rows and the workbook carries no verdict column at all.",
+   "mechanism": "Do not read the workbook for the degenerate contract. The map is the only artifact that carries the machine token."
+  },
+  {
+   "bundle_item": "Source column names 1ST_/2ND_/3RD_REMINDER_DATE and 64_VB_STATUS (21 row instances)",
+   "directive_note": "Four source column names begin with a digit and are not legal bare SQL identifiers.",
+   "mechanism": "Quote every source column reference in generated SQL unconditionally, rather than special-casing these four."
+  }
+ ],
+ "open_items": [
+  {
+   "id": "DOC-INSTANCE-COLLISION",
+   "summary_note": "CONFIRMED STILL OPEN. On NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW two DISTINCT HUB_DOCUMENT instances - target.instance null (5 rows) and 'claim-inward-document-set' (1 row) - resolve to ONE expression, the INWARD prefix concatenated with nullif(trim(INWARD_NUMBER)). They collapse onto one parent. This is the 8th warn (resolved_key_sound). It was MADE VISIBLE, not introduced, by 18_hub_document_fix.json, which normalised 33 rows by removing the space before the second nullif argument: the two instances previously differed only by that space, so the soundness check could not see they were the same key.",
+   "routing": "mapper",
+   "blocking": false,
+   "proposed_default": "Build as mapped - both instances key the same hub row, which is what the source implies with no other discriminator on the view - and emit the collision count into BUILD_STATUS.json. Do NOT invent a discriminator: minting one on the build's own authority splits a hub the mapper has not agreed to split."
+  },
+  {
+   "id": "FK-ROUNDTRIP",
+   "summary_note": "733 rows (875 key expressions reference FOREIGN_KEY, 863 through a spine walk) depend on the FK round-trip to the root business number, and it is UNPROVEN - this run has no sample data.",
+   "routing": "source",
+   "blocking": false,
+   "proposed_default": "Build the walk as mapped with the null-safe FK fallback, and emit a build-side reconciliation count so the first real load falsifies it cheaply."
+  },
+  {
+   "id": "CLAIMRESERVE-LEG",
+   "summary_note": "HUB_CLAIM on ..._CLAIM_DETAILS_CLAIM_RESERVE: the hub key walks on FOREIGN_KEY, the link leg walks on PARENT_KEY_HASH. The leg rides the unproven FK round-trip and the hub does not.",
+   "routing": "mapper",
+   "blocking": false,
+   "proposed_default": "Emit both as mapped and assert a non-zero join cardinality at build time. CONFIRMED STILL OPEN - byte-identical to the rev-3 baseline; the pre_legfix snapshot changed nothing."
+  },
+  {
+   "id": "EMP-ORPHAN-LEG",
+   "summary_note": "HUB_PARTY leg \"'EMP:' || nullif(trim(BAGIC_RM_ECODE),'')\" on two views. No HUB_PARTY key anywhere is built from BAGIC_RM_ECODE; the only 'EMP:' keys come from BAGIC_EMPLOYEE_CODE.",
+   "routing": "mapper",
+   "blocking": false,
+   "proposed_default": "Emit as mapped; the link will be empty until the mapper answers. CONFIRMED STILL OPEN - unchanged."
+  },
+  {
+   "id": "ORGUNIT-NAMESPACE",
+   "summary_note": "BRANCH_CODE (4), LOCATION_CODE (1) and STORED_COMPANY_CODE (1) share ONE unprefixed HUB_ORG_UNIT namespace. Three different populations, one key space.",
+   "routing": "mapper",
+   "blocking": false,
+   "proposed_default": "Emit as mapped. Do not prefix them on the build's own authority - splitting is recoverable, merging is not, and they are already merged. CONFIRMED STILL OPEN - unchanged."
+  },
+  {
+   "id": "UNRESOLVED-LEG-SENTENCE",
+   "summary_note": "The one child-key leg with leg_backing='unresolved' carries no expression and a `value` that is an already-quoted English sentence: '<not on this view - no media / document identifier on this view>' (SAT_CLAIM_EVIDENCE.'Media Reference').",
+   "routing": "mapper",
+   "blocking": false,
+   "proposed_default": "REFUSE it at build time as a sentinel. The literal-synthesis rule that is correct for the other 44 literal legs writes that sentence into a child key. CONFIRMED STILL OPEN - explicitly not patched, unchanged from rev 3."
+  },
+  {
+   "id": "RISKOBJ-TWO-NAMESPACES",
+   "summary_note": "HUB_RISK_OBJECT carries 'RISK:' (215) and 'TRIP:' (12) both writing SAT_RISK_PERSON_TRAVEL.",
+   "routing": "source",
+   "blocking": false,
+   "proposed_default": "Build both populations as mapped and record the split in BUILD_STATUS.json. UNCHANGED, row for row."
+  },
+  {
+   "id": "SPINE-WALK-DISAGREEMENT",
+   "summary_note": "11 (view, join column, token) groups give PARENT_KEY_HASH two different first hops across 872 expression slots. KEY_FUNCTIONS 8.3 calls this a round-2 blocker and it is NOT fixed in this pass.",
+   "routing": "source",
+   "blocking": false,
+   "proposed_default": "Build the dominant walk per group and emit the minority as a named exception list. One source answer normalises all 11."
+  },
+  {
+   "id": "QUOTE-BRANCH-DOC",
+   "summary_note": "CONFIRMED STILL OPEN after a rewrite of the very file that contains it. KEY_FUNCTIONS.md section 10 still asserts SAT_QUOTE_RATING alongside SAT_QUOTE_HEADER under an 'as-built' heading, and still renders the HUB_QUOTE NK without the parentheses the sibling actually uses.",
+   "routing": "mapper",
+   "blocking": false,
+   "proposed_default": "Treat the BUILD as authoritative: hub_quote + sat_quote_header only, NK \"'HUB_QUOTE|' || (quote_no)\"."
+  },
+  {
+   "id": "DEGENERATE-VERDICT-VOCAB",
+   "summary_note": "Three artifacts render the degenerate contract three ways; the machine token 'null_on_blank_row' exists only in the map, the CSV carries an English sentence, the workbook carries nothing.",
+   "routing": "mapper",
+   "blocking": false,
+   "proposed_default": "Read the map only. Ask the mapper to emit the same token in all three."
+  },
+  {
+   "id": "BUNDLE-WRITTEN-MID-RUN",
+   "summary_note": "The mapper has committed to announcing writes and this re-issue WAS announced. Verified: the live bundle is byte-identical to what the build consumed, so nothing moved unannounced during or after the build. Downgraded to info - but keep the digest check on every re-entry, because it is the only thing that makes the commitment checkable.",
+   "routing": "mapper",
+   "blocking": false,
+   "proposed_default": "Profile the frozen snapshot and re-verify at the end, which is what was done: 10/10 digests unchanged on re-check. Ask the mapper to declare a bundle FROZEN before handing it over."
+  },
+  {
+   "id": "SUBLIMIT-GRAIN",
+   "summary_note": "SAT_COVERAGE_SUBLIMIT_SCHEDULE catalogue-grain violation, 21 rows, PROPOSED not applied - needs the modeller.",
+   "routing": "modeller",
+   "blocking": false,
+   "proposed_default": "Build as mapped; do not apply the proposed grain change."
+  },
+  {
+   "id": "MONETARY-GRAIN",
+   "summary_note": "274 monetary rows sit on SAT_POLICY_* (115) / SAT_QUOTE_* (123) / other (36) and ZERO on SAT_FINTXN_*. OPUS puts them on SAT_FINTXN_*. The largest alignment divergence, kept deliberately.",
+   "routing": "modeller",
+   "blocking": false,
+   "proposed_default": "Accept the Maximus homes. The Maximus views carry no financial-transaction identifier, so moving them fabricates a key. UNCHANGED, row for row."
+  },
+  {
+   "id": "DISPATCH-NO-COLLAPSE",
+   "summary_note": "SAT_POLICY_DOCUMENT_DISPATCH (11 rows) must NOT be collapsed into SAT_POLICY_DELIVERY.",
+   "routing": "modeller",
+   "blocking": false,
+   "proposed_default": "Build separately as instructed."
+  },
+  {
+   "id": "WARN-COUNT-PROSE-SAYS-7",
+   "summary_note": "BUILD_INSTRUCTIONS section 1 and MESSAGE_TO_BUILDER still state 7 warns; the gate, 08_handoff_facts.json and 09_validation_report.json all state 8. The 8th (resolved_key_sound on HUB_DOCUMENT) is named in neither document.",
+   "routing": "mapper",
+   "blocking": false,
+   "proposed_default": "Treat 8 as the true figure and DOC-INSTANCE-COLLISION as its cause. Do not treat the delta as a build regression."
+  },
+  {
+   "id": "TRANSFORMATION-KIND-CLASSIFIER-ORDER",
+   "summary_note": "The travel executable count of 3 is correct, but it is correct because no travel prose value contains a function-call parenthesis, not because the classifier is ordered specific-before-general. The ordering was not verified in the shipped script - only its output was.",
+   "routing": "mapper",
+   "blocking": false,
+   "proposed_default": "Build the 3 as refusals regardless. Re-derive the classification independently on every re-issue rather than trusting transformation_kind, which costs one pass and catches a precedence regression for free."
+  }
+ ],
+ "undetermined": [
+  {
+   "what": "The rev-3 baseline map digest stated in the task, 4e7323178068844d18d7c429.",
+   "why": "It matches no artifact in the bundle under six digest schemes (sha256/sha1/md5 of raw bytes, and sha256/md5 of canonical JSON, whole document and columns array) across all 16 04_column_map*.json snapshots.",
+   "consequence": "The baseline was identified by MARKERS instead - 04_column_map.pre_degenfix.json is the unique snapshot with rows 2639, 2344 resolved_key expressions, 1074 child-key expressions, degenerate_value prose on all 2344, NO degenerate_verdict, trim 5094 and 6 HUB_DOCUMENT key forms. The diff is therefore reproducible, but the stated digest is not, and the exact byte state rev 3 profiled was never snapshotted."
+  },
+  {
+   "what": "What changed in KEY_DEGENERATE_VALUES.csv when it was rewritten mid-run.",
+   "why": "The old bytes were overwritten before a copy could be taken. The pre-change census had already been computed and every measurable property is identical: 2366 rows, 10 columns, 173 distinct expressions, the same top-4 expression counts (338/281/107/101), the same 2 verdicts, the same block split. The file is now CRLF and 26,035 bytes larger.",
+   "consequence": "The change is almost certainly a serialisation/line-ending rewrite, but that is an inference, not a measurement."
+  },
+  {
+   "what": "Whether TRIP_NO is a global trip identifier or a per-policy ordinal.",
+   "why": "No sample data anywhere in this run. It is the fallback operand of 12 HUB_RISK_OBJECT keys.",
+   "consequence": "If it is an ordinal, every policy's first trip keys to 'TRIP:1' and the hub merges unrelated trips."
+  },
+  {
+   "what": "Whether BILL_NO is a document identifier or a per-parent ordinal.",
+   "why": "No sample data. It backs 29 child-key legs.",
+   "consequence": "If it renumbers, 29 child keys are unstable - a child-key leg needs hub-grade stability."
+  },
+  {
+   "what": "Whether the 58 bare instance tokens in 'Instance / Child Key' are a closed vocabulary.",
+   "why": "They are enumerated but nothing in the bundle declares the set.",
+   "consequence": "A generator branching on that column needs the closed set or it must fall through to the map, which is authoritative anyway."
+  },
+  {
+   "what": "The exact population the mapper meant by '733 rows depend on the FK round-trip'.",
+   "why": "Measured here as 875 key expressions referencing FOREIGN_KEY, 863 of them through a spine walk. Neither figure is 733.",
+   "consequence": "The risk is the same shape whichever denominator is right; the count in the covering note should not be quoted downstream."
+  },
+  {
+   "what": "Whether POL_RISK_ID is globally unique.",
+   "why": "Open with the source team; 215 rows carry the qualified '<root>#POL_RISK_ID' form on the splitting-is-recoverable rule.",
+   "consequence": "If it is unique, 210+ rows drop the qualifier in one pass and every key changes."
+  },
+  {
+   "what": "Whether a PNR-trip is the same risk object as a POL_RISK_ID-risk.",
+   "why": "Needs a source answer; both namespaces write SAT_RISK_PERSON_TRAVEL.",
+   "consequence": "Two populations in one hub until answered."
+  },
+  {
+   "what": "Whether the 11 spine-walk disagreement groups resolve to the view's own base node or its parent.",
+   "why": "KEY_FUNCTIONS 8.3 declares it a round-2 blocker and it is not fixed.",
+   "consequence": "872 expression slots key on one of two walks; the wrong choice silently returns nothing."
+  },
+  {
+   "what": "Whether rev-4's 20 collapse traps and this run's 18 are the same legs under a different satellite-naming rule.",
+   "why": "My detector keys a trap on (satellite, leg name) and resolves the satellite as target.satellite else augmentation.best_home_satellite. On target rows whose kind is a hub key, satellite is null, so three traps group under a 'None.' key and two rev-4 entries do not appear under their satellite name. The leg populations look the same; only the label differs.",
+   "consequence": "Cosmetic for the spec builder as long as it asserts on the LEG, not on the label. The decisive fact is independent of the detector: the exhaustive leaf diff shows NO .child_key_components path changed anywhere in the map, so the traps cannot have changed. Carry rev-4's list of 20."
+  },
+  {
+   "what": "What else changed inside KEY_FUNCTIONS.md besides the census block and section 10's non-repair.",
+   "why": "The mapper keeps pre_ snapshots of 04_column_map.json but keeps none of KEY_FUNCTIONS.md, so there is no pre-image to byte-diff. The change was identified by digest and by comparing the published figures against what rev 4 recorded.",
+   "consequence": "A prose change elsewhere in that file - for example to the section 8.2 abbreviated-destination scoping rule or the section 8.3 round-2 blocker - would not be detected by this profile. The function census, the section 8.1 hop figures (5496 arrow hops, 863 via FOREIGN_KEY, 1527 via PARENT_KEY_HASH) and the section 10 text were each re-verified against the map or the sibling directly, so those are covered; the rest of the file is not."
+  }
+ ],
+ "bundle_digests": {
+  "method_note": "sha256 of file bytes, first 24 hex. Bundle state identified by CONTENT, never mtime.",
+  "04_column_map.json": "bdb1f3fea01475fbe25b5c3c",
+  "00_tables_index.json": "34b2e1ad079c427ee07604c0",
+  "KEY_DEGENERATE_VALUES.csv": "19e9aab6ac6d61a3cbf9beaf",
+  "KEY_FUNCTIONS.md": "7ef3230f7697e54f7178a3c1",
+  "BUILD_INSTRUCTIONS_TRAVEL_V2.md": "ebe9a44c4ce0efa863bdb325",
+  "MESSAGE_TO_BUILDER.md": "0f676d53869d32e35176752a",
+  "Travel_V2_SourceToModel_Mapping.xlsx": "1dcdc949b034101cd46d292c",
+  "CHILDKEY_GAPS.csv": "6344d8e2904ddbb50ed40601",
+  "18_hub_document_fix.json": "41422b834dd99cd98277a71b",
+  "20_build_directives.json": "4af35d693f487f6b339b3a89",
+  "09_validation_report.json": "1cb40598ba8b6b7fa44c5d80",
+  "08_handoff_facts.json": "3fe28c734d577386cc6e5d28",
+  "modeler_feedback.json": "15cae28cbf9b6505b735ec06",
+  "09_validator_findings.json": "de59c17d579a54094d8dc16d",
+  "12_round1_fixes.json": "f5d7387bc3894ebf00621937",
+  "changed_since_rev4": [
+   "04_column_map.json (9243f6c5 -> bdb1f3fe)",
+   "KEY_FUNCTIONS.md (d62e136c -> 7ef3230f)"
+  ],
+  "unchanged_since_rev4": [
+   "00_tables_index.json",
+   "KEY_DEGENERATE_VALUES.csv",
+   "BUILD_INSTRUCTIONS_TRAVEL_V2.md",
+   "MESSAGE_TO_BUILDER.md",
+   "Travel_V2_SourceToModel_Mapping.xlsx",
+   "CHILDKEY_GAPS.csv",
+   "18_hub_document_fix.json"
+  ],
+  "new_in_this_snapshot": [
+   "20_build_directives.json"
+  ],
+  "re_verified_at_end_of_run": true
+ },
+ "keynorm_census": {
+  "blocks": 1444,
+  "with_stage": 1424,
+  "with_class": 1424,
+  "with_reason": 53,
+  "with_previous_expression": 1444,
+  "stage": {
+   "4b": 1391,
+   "4e": 33,
+   "<absent>": 20
+  },
+  "class": {
+   "bare_fk_to_spine": 432,
+   "whitespace": 429,
+   "chain_to_fkjoin": 301,
+   "prefix_add": 121,
+   "prefix_strip": 107,
+   "hub_key_namespace": 33,
+   "unstable_ordinal": 1,
+   "<absent>": 20
+  },
+  "baseline_rev3": {
+   "blocks": 1411,
+   "with_stage": 1391,
+   "with_class": 1391,
+   "with_reason": 20
+  },
+  "question_answered": "The 33 blocks stamped by the HUB_DOCUMENT fix carry `reason` ALONGSIDE stage='4e' and class='hub_key_namespace'. The pre-existing 20 reason-bearing blocks carry neither. Rev 3 was right about its own population; it is not right about the map as it now stands.",
+  "previous_expression_warning": "present on all 1444 and is HISTORY - it must never be parsed as a live expression."
+ },
+ "grammar_hop_census": {
+  "1_hop": 956,
+  "2_hops": 423,
+  "3_hops": 545,
+  "4_hops": 271,
+  "5_hops": 195,
+  "arrow_hops_total": 5496,
+  "spine_occurrences": 2390,
+  "cross_check_note": "5496 arrows independently reproduces the 5,496 stated in KEY_FUNCTIONS.md section 8.1. Identical to the rev-3 measurement; no spine-bearing expression changed in this re-issue."
+ },
+ "grammar_lnk_census": {
+  "LNK(... = ...)": 23,
+  "LNK(... positional ...)": 19,
+  "LNK(... : ...)": 9,
+  "lnk_calls": 51,
+  "legs_total": 91
+ },
+ "function_census_by_population": {
+  "A_resolved_key_expression_ONLY": {
+   "expressions": 2344,
+   "trim": 4415,
+   "nullif": 4405,
+   "spine[]": 2052,
+   "coalesce": 1704,
+   "md5": 138,
+   "normalise": 128,
+   "lnk": 51,
+   "upper": 19
+  },
+  "B_child_key_components_expression_ONLY": {
+   "expressions": 1074,
+   "trim": 679,
+   "nullif": 679,
+   "spine[]": 338,
+   "coalesce": 79
+  },
+  "A_plus_B_ALL_LIVE": {
+   "expressions": 3418,
+   "trim": 5094,
+   "nullif": 5084,
+   "spine[]": 2390,
+   "coalesce": 1783,
+   "md5": 138,
+   "normalise": 128,
+   "lnk": 51,
+   "upper": 19
+  },
+  "arithmetic_proof": "4415+679=5094 trim; 4405+679=5084 nullif; 1704+79=1783 coalesce; 2052+338=2390 spine[]."
+ },
+ "prose_round_trip_proofs": {
+  "Augmentation::Child Key": {
+   "class": "list",
+   "delimiter": " + ",
+   "non_conforming_values": 0,
+   "longest": "Premium Head Code + Coverage Reference + Section + Adjusted Indicator",
+   "parts": [
+    "Premium Head Code",
+    "Coverage Reference",
+    "Section",
+    "Adjusted Indicator"
+   ]
+  },
+  "Key Derivations::Expression Source Columns": {
+   "class": "list",
+   "delimiter": ", ",
+   "non_conforming_values": 0,
+   "parts_of_longest": 8,
+   "first_parts": [
+    "PARENT_KEY_HASH",
+    "CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_1",
+    "CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_2"
+   ]
+  },
+  "Source-Target::Instance / Child Key": {
+   "class": "map, with a declared second branch",
+   "delimiter": " | ",
+   "pair_form": "<Leg Name> = <rendered value>",
+   "values_on_the_map_branch": "all but 58",
+   "values_on_the_instance-token_branch": 58,
+   "instance_token_examples": [
+    "dealer",
+    "linked-claim",
+    "stored-country",
+    "master-policy",
+    "service-partner"
+   ],
+   "verdict": "NOT prose. The header names two contracts and the column honours both: a bare instance token, or a |-delimited list of 'name = value'. Declared here so no reader mistakes the 58 single tokens for malformed pairs."
+  },
+  "Key Derivations::Resolved Key Expression": {
+   "class": "expression (SQL under the KEY_FUNCTIONS grammar)",
+   "values": 2344,
+   "residue_after_stripping_spine_spans": 0,
+   "unratified_calls": 0,
+   "unbalanced_parentheses": 0,
+   "verdict": "machine-usable and PROVED by parsing, not asserted. It is not prose merely because it is not an identifier."
+  },
+  "KEY_DEGENERATE_VALUES.csv::verdict": {
+   "class": "enum",
+   "members": {
+    "NULL - correctly rejected on an all-blank row": 2344,
+    "NO KEY EXPRESSION - nothing to evaluate": 22
+   },
+   "verdict": "a closed 2-value set, machine-usable - but its vocabulary is NOT the map's degenerate_verdict vocabulary."
+  }
+ },
+ "source_column_names_that_are_not_bare_sql_identifiers": {
+  "distinct": 4,
+  "row_instances": 21,
+  "names": {
+   "1ST_REMINDER_DATE": 6,
+   "2ND_REMINDER_DATE": 6,
+   "3RD_REMINDER_DATE": 6,
+   "64_VB_STATUS": 3
+  },
+  "consequence": "These are real source columns whose names start with a digit. Every reference to them in generated SQL must be double-quoted or Snowflake rejects the model. Unchanged from rev 3; restated because it is a build directive, not a prose finding."
+ },
+ "collapse_traps_verified": {
+  "count": 20,
+  "leg_instances": 189,
+  "baseline_identical": true,
+  "method": "(satellite, leg name) pairs whose rendered discriminator (expression, else value) is ONE distinct string across every view and row that carries it.",
+  "verdict": "UNCHANGED - the same 20 pairs, element for element, on the rev-3 baseline and on the current map. This is PROVEN independently of the census by the exhaustive leaf diff: no .child_key_components path changed anywhere in the map.",
+  "strict_variant_note": "Requiring more than one occurrence drops 3 single-occurrence pairs (SAT_CLAIM_EVIDENCE x2, SAT_CLAIM_INVESTIGATION_FINDING x1) and yields 17. Both counts describe the same map."
+ },
+ "transformation_contract": {
+  "field": "columns[].target.transformation",
+  "kind_field": "columns[].target.transformation_kind",
+  "directive_field": "columns[].target.build_directive",
+  "directive_note_field": "build_note",
+  "containers_with_the_field": 1265,
+  "null_valued": 1202,
+  "non_empty": 63,
+  "distinct_values": 15,
+  "kind_census": {
+   "synonym_note": 38,
+   "reference_decode": 12,
+   "provenance_note": 6,
+   "derivation_note": 4,
+   "executable_expression": 3
+  },
+  "claimed_census": {
+   "synonym_note": 38,
+   "reference_decode": 12,
+   "provenance_note": 6,
+   "derivation_note": 4,
+   "executable_expression": 3
+  },
+  "claimed_matches_measured": true,
+  "rows_with_a_value_but_no_kind": 0,
+  "kinds_outside_the_declared_five": 0,
+  "kind_present_on_a_null_transformation": 0,
+  "build_directive_true_rows": 3,
+  "build_directive_present_on_any_other_row": 0,
+  "build_directive_agrees_with_kind": true,
+  "independent_reclassification": {
+   "method_note": "Re-derived from the 63 values alone, SPECIFIC BEFORE GENERAL: exact 'synonym'; then prefix 'code->decode'; then prefix 'traversal via'; then prefix 'derived:' split by whether the BODY after the colon contains a function call. The mapper's kind field was not consulted until after classifying.",
+   "disagreements": 0,
+   "positive_controls_note": "6 probes, 6 correct, including a required decline ('banana' -> UNCLASSIFIED).",
+   "precedence_bug_exposure_note": "NONE ON THIS LOB. Running the SAME rules general-first - the health defect, testing the function-call pattern before the prefixes - produces the IDENTICAL 38/12/6/4/3. Travel is immune because no travel prose value contains a function-call parenthesis at all: exactly 3 of the 63 values contain an opening parenthesis and all 3 are the executable rows, and 'decode (' occurs 0 times. The bug itself was reproduced on a synthetic probe - 'code->decode (see lookup)' classifies as executable_expression general-first and reference_decode specific-first - so the probe fires and the zero is a judged zero. Travel's 3 is correct, but it is correct because of the data, not because the classifier is ordered right."
+  },
+  "derived_prefix_is_not_a_marker": {
+   "rows_beginning_derived_colon": 7,
+   "executable": 3,
+   "prose": 4,
+   "prose_kind": "derivation_note",
+   "confirmed": true,
+   "discriminator_note": "Within the 7 the separator is whether the body after 'derived:' contains a function call. The 4 prose ones also happen to have a space after the colon and the 3 executable ones do not, but do NOT build on that - it is an artefact of how they were typed, not a contract."
+  },
+  "executable_rows": [
+   {
+    "table": "NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW",
+    "column": "POLICY_RISK_COVER_LIST",
+    "target": "SAT_POLICY_COVERAGE_SCHEDULE.Coverage Reference",
+    "transformation": "derived:split(POLICY_RISK_COVER_LIST) -> one active row per coverage code"
+   },
+   {
+    "table": "NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "column": "DATEOFBIRTH",
+    "target": "SAT_RISK_PERSON_INSURED.Age At Entry",
+    "transformation": "derived:Age At Entry = floor(months_between(COVER_INCEPTION_DATE, DATEOFBIRTH)/12)"
+   },
+   {
+    "table": "NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW",
+    "column": "DATEOFBIRTH",
+    "target": "SAT_RISK_PERSON_INSURED.Age At Entry",
+    "transformation": "derived:Age At Entry = floor(months_between(COVER_INCEPTION_DATE, DATEOFBIRTH)/12)"
+   }
+  ],
+  "bundle_crosscheck": {
+   "file": "20_build_directives.json",
+   "declared_rows": 3,
+   "listed": 3,
+   "map_rows": 3,
+   "agreement": "IDENTICAL row-for-row on table, column, target and transformation",
+   "only_in_bundle": [],
+   "only_in_map": []
+  },
+  "mechanism": "REFUSE all 3 and report them as unbuilt with the directive quoted. The build already does exactly this and cross-checks itself against 20_build_directives.json (theirs 3, mine 3, IDENTICAL). Refusing is correct; emitting the raw column would be wrong data, not absent data, and every gate would pass."
+ },
+ "gate_status": {
+  "validate_mapping": {
+   "gate": "PASS",
+   "blockers": 0,
+   "warn": 8,
+   "info": 0,
+   "rerun_this_run": true,
+   "by_check": {
+    "resolved_key_sound": 1,
+    "resolved_key_expression_missing": 6,
+    "child_key_resolved": 1
+   }
+  },
+  "check_collapse": {
+   "status": "clean",
+   "violations": 0,
+   "dangling_redundant_of": 0,
+   "augmentation_fanin_groups": 0,
+   "strict_augmentation_also_clean": true
+  },
+  "check_key_function_census": {
+   "exit": 0,
+   "expressions": 2843,
+   "slots": {
+    "resolved_key.expression": 2344,
+    "child_key_components": 499
+   },
+   "verdict": "all ratified, document agrees"
+  },
+  "side_effect_note": "validate_mapping.py writes 09_validation_report.json RELATIVE TO CWD. Run from the bundle's parent it would WRITE INTO THE READ-ONLY BUNDLE. It must be run from the scratchpad. One invocation from the wrong cwd created SourceMapping_Skill/outputs/09_validation_report.json - this run's travel report landing in the legacy health directory; it was removed immediately, and the bundle's own 09_validation_report.json was digest-verified unchanged at 1cb40598ba8b6b7fa44c5d80 before and after. check_collapse.py and check_key_function_census.py without --write write nothing."
+ },
+ "census_exploit_retest": {
+  "previously_note": "rev 4 proved the allowlist gate was blind to child_key_components: weirdfn planted there exited 0 while the same call in resolved_key.expression exited 1. 1074 of 3418 live expressions (31.4%) were unpoliced.",
+  "now": "CLOSED",
+  "probes": [
+   {
+    "slot": "child_key_components.expression",
+    "exit": 1,
+    "unratified_reported": true
+   },
+   {
+    "slot": "child_key_components.raw",
+    "exit": 1,
+    "unratified_reported": true
+   },
+   {
+    "slot": "resolved_key.expression",
+    "exit": 1,
+    "unratified_reported": true
+   },
+   {
+    "slot": "resolved_key.legs.<HUB>",
+    "exit": 1,
+    "unratified_reported": true
+   }
+  ],
+  "negative_control": {
+   "map": "unmodified copy",
+   "exit": 0,
+   "message": "[census] OK -- 8 functions over 2843 expressions in 2 slots, all ratified, document agrees"
+  },
+  "method_note": "All four probes were run on COPIES in the scratchpad. The bundle was never written.",
+  "legs_scope_caveat_note": "The resolved_key.legs.<HUB> slot is inside the checker's scope but has ZERO natural occurrences in this map - no resolved_key anywhere carries a legs dict, on either track. Its coverage was proved by SYNTHESISING one, not by observing one. Link legs on this LOB live inside the LNK(...) text of resolved_key.expression, which the expression slot already covers. Do not read the legs coverage as evidence about this map; read it as insurance for the next one."
+ },
+ "function_census_verified_per_slot": {
+  "target.resolved_key.expression": {
+   "slots": 1258,
+   "trim": 2525,
+   "nullif": 2515,
+   "coalesce": 1113,
+   "md5": 133,
+   "normalise": 123,
+   "lnk": 48,
+   "upper": 19,
+   "spine[]": 919
+  },
+  "augmentation.resolved_key.expression": {
+   "slots": 1086,
+   "trim": 1890,
+   "nullif": 1890,
+   "coalesce": 591,
+   "md5": 5,
+   "normalise": 5,
+   "lnk": 3,
+   "upper": 0,
+   "spine[]": 1133
+  },
+  "target.child_key_components[].expression": {
+   "slots": 647,
+   "trim": 358,
+   "nullif": 358,
+   "coalesce": 79,
+   "spine[]": 151
+  },
+  "augmentation.child_key_components[].expression": {
+   "slots": 427,
+   "trim": 321,
+   "nullif": 321,
+   "coalesce": 0,
+   "spine[]": 187
+  },
+  "zero_bearing_slots": {
+   "child_key_components[].value": 653,
+   "augmentation.child_key_components[].value": 466,
+   "augmentation.key_derivation": 624,
+   "child_key_components[].column": 1
+  }
+ },
+ "function_allowlist_coverage_gap_RESOLVED": {
+  "severity": "info",
+  "routing": "mapper",
+  "status": "CLOSED this run",
+  "was": "1074 of 3418 live expressions (31.4%) outside the gate's scope",
+  "now_note": "0. The gate now enumerates resolved_key.expression, resolved_key.legs.<HUB>, child_key_components.expression and child_key_components.raw, and all four were re-proved to exit 1 on a planted unratified call."
+ },
+ "doc_vs_bundle_contradictions": {
+  "method_note": "Each claim re-checked against the live bundle bytes and, where it is an as-built claim, against the sibling project on disk.",
+  "items": [
+   {
+    "id": "WARN-COUNT-STILL-7",
+    "claim_asked_to_confirm": "BUILD_INSTRUCTIONS section 1 and MESSAGE_TO_BUILDER now say 8 warns and frame the 8th as a pre-existing collapse made visible, not a regression",
+    "verdict": "NOT DONE",
+    "severity": "warn",
+    "routing": "mapper",
+    "evidence_note": "Both files are UNCHANGED since the rev-4 profile - BUILD_INSTRUCTIONS ebe9a44c4ce0efa863bdb325 and MESSAGE_TO_BUILDER 0f676d53869d32e35176752a, byte-identical. BUILD_INSTRUCTIONS line 14 still reads 'PASS - 0 blockers / 7 warns / 0 info' and line 22 still reads 'The 7 surviving warns are byte-identical to the pre-remediation baseline ... 6 resolved_key_expression_missing and 1 child_key_resolved'. MESSAGE_TO_BUILDER line 10 still reads '0 blockers / 7 warns'. The string '8 warn' occurs in no top-level .md or .json in the bundle. The strings 'resolved_key_sound' and 'HUB_DOCUMENT' occur in neither document. The re-gate this run returns warn=8, and 08_handoff_facts.json and 09_validation_report.json BOTH say 8. The machine-readable artifacts say 8; the two human-readable ones say 7.",
+    "consequence_note": "A reader who trusts the prose will believe the 8th warn was introduced by the build rather than surfaced by the mapper's own whitespace normalisation in 18_hub_document_fix.json."
+   },
+   {
+    "id": "QUOTE-BRANCH-DOC-STILL-OPEN",
+    "claim_asked_to_confirm": "KEY_FUNCTIONS.md section 10 no longer names SAT_QUOTE_RATING as built",
+    "verdict": "NOT DONE",
+    "severity": "warn",
+    "routing": "mapper",
+    "evidence_note": "KEY_FUNCTIONS.md WAS rewritten in this window (d62e136c -> 7ef3230f): the census block was regenerated and a scope paragraph added. Section 10 is untouched and still reads that the earlier travel OPUS build has hub_quote.sql with natural key 'HUB_QUOTE|' || quote_no, and that SAT_QUOTE_HEADER / SAT_QUOTE_RATING are present in every version of the OPUS map - under the heading 'As-built key contracts this build must not break'. Verified against the sibling on disk: travel_dv_dbt contains hub_quote.sql and sat_quote_header.sql and NO sat_quote_rating.sql among 33 satellites carrying a payload. BUILD_INSTRUCTIONS section 4 and MESSAGE_TO_BUILDER both state plainly that SAT_QUOTE_RATING is NOT built. The third document contradicts them.",
+    "second_defect_note": "The same sentence renders the NK without parentheses. The sibling's staging model derives PARENT_NK as 'HUB_QUOTE|' || (quote_no) WITH them, and MESSAGE_TO_BUILDER quotes the parenthesised form. Since this is presented as a byte-exact as-built contract, the rendering matters.",
+    "aggravation_note": "rev 4 raised this against the exact same sentence. The mapper edited that file and did not fix it."
+   }
+  ]
+ },
+ "stage1_field_knowledge_note": "BUILD_RULES 2.4 note. generators/build_mtv2_spec.py reads columns[].target.transformation_kind, columns[].target.build_directive and the bundle file 20_build_directives.json BY NAME - three map field spellings that the rev-4 profile, the profile it was built against, never declared. The build's handling is CORRECT: it refuses all 3 and cross-checks itself against the bundle file (theirs 3, mine 3, IDENTICAL). But it knew the spellings before Stage 0 published them. This profile now declares all three, which puts the contract back where it belongs. Flagged so the ordering is not repeated, not as a defect in the output.",
+ "carried_forward_with_digest_proof_note": "These were NOT re-derived from scratch because the artifact they derive from is byte-identical to the rev-4 snapshot, which is a stronger proof than re-deriving: spreadsheet_columns / prose_round_trip_proofs / prose_columns_that_are_findings (workbook 1dcdc949 and CHILDKEY_GAPS.csv 6344d8e2 both unchanged); degenerate_value_contract and key_guard_sweep (KEY_DEGENERATE_VALUES.csv 19e9aab6 unchanged AND no resolved_key leaf changed); layers / layer_sizing / abbr_seed / name_injective / longest_name (00_tables_index.json 34b2e1ad unchanged). Spot-re-derived anyway and confirmed identical: the seven renumbering ordinal spellings, re-enumerated BY SHAPE from the 1544 distinct source columns in the index - PARAM_SEQ, RISK_SERIAL_NO, RISK_SERIAL_NUMBER, SEQUENCE_NUMBER, SERIAL_NO, SRL_NO, SR_NUMBER, exactly seven with no eighth; the 2639 row count; the 5496 arrow hops; and the FOREIGN_KEY population.",
+ "foreign_key_population": {
+  "rows_referencing_FOREIGN_KEY_in_a_key_surface": 875,
+  "target_track": 335,
+  "augmentation_track": 540,
+  "expression_slots_using_spine_FOREIGN_KEY": 863,
+  "expression_slots_with_a_bare_FOREIGN_KEY_fallback": 861,
+  "unchanged_since_rev4": true,
+  "do_not_quote_733_note": "BUILD_INSTRUCTIONS section 2.2 and MESSAGE_TO_BUILDER both say '733 rows depend on the FK round-trip'. 733 is not reproducible as any population in this map: not rows (875), not target rows (335), not augmentation rows (540), not spine-FK slots (863), not bare-FK fallback slots (861). Quote 875 rows / 863 spine-FK slots and say which you mean. Both documents are unchanged since rev 4, so this figure has survived four re-issues uncorrected."
+ },
+ "hub_risk_object": {
+  "key_rows": 227,
+  "namespaces": {
+   "RISK": 215,
+   "TRIP": 12
+  },
+  "both_write": "SAT_RISK_PERSON_TRAVEL (66 rows)",
+  "unchanged_since_rev4": true,
+  "status_note": "CONFIRMED STILL OPEN. Two namespaces that are not string-comparable feed one hub and one satellite: a TRIP prefix over coalesce(PNR, TRIP_NO) on 12 rows, and a RISK prefix over root#POL_RISK_ID on 215. Build the qualified form as instructed and expect two populations until the source answers whether a PNR-trip is the same risk object as a POL_RISK_ID-risk."
+ },
+ "still_open_reconfirmed": {
+  "method_note": "Each re-derived from the live map this run, not carried from rev 4.",
+  "HUB_CLAIM_vs_CLAIM_RESERVE_leg": {
+   "status": "OPEN",
+   "detail_note": "SAT_CLAIM_RESERVE and SAT_CLAIM_RESERVE_HEAD key HUB_CLAIM through spine[FOREIGN_KEY -> NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS].CLAIMNO, while the LNK_CLAIM_PARTY leg on the same reserve view names HUB_CLAIM through spine[PARENT_KEY_HASH -> NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS].CLAIMNO. Different join column, so the leg is not byte-identical to the hub key it references. Per KEY_FUNCTIONS section 9 that produces an EMPTY JOIN, not an error, and reads downstream as sparse source data."
+  },
+  "EMP_orphan_leg": {
+   "status": "OPEN",
+   "rows": 2,
+   "detail_note": "LNK(HUB_PARTY = 'EMP:' || nullif(trim(BAGIC_RM_ECODE),'')) appears on 2 rows, as a SINGLE-leg LNK. The only rows that MINT an EMP-prefixed HUB_PARTY key use a different column, BAGIC_EMPLOYEE_CODE, on a different view (the PROPOSER branch). No hub row is minted from BAGIC_RM_ECODE anywhere in the map, so the leg points into an empty key space. 4 rows in total carry the EMP prefix: 2 hub keys from BAGIC_EMPLOYEE_CODE and 2 orphan legs from BAGIC_RM_ECODE."
+  },
+  "ORG_UNIT_shared_unprefixed_namespace": {
+   "status": "OPEN",
+   "detail_note": "BRANCH_CODE (4 key uses), LOCATION_CODE (1) and STORED_COMPANY_CODE (1) all key HUB_ORG_UNIT with NO namespace prefix, so three different code systems share one hub key space and a branch code equal to a location code silently merges. 6 rows."
+  },
+  "leg_backing_unresolved_sentinel": {
+   "status": "OPEN",
+   "occurrences": 1,
+   "full_census": {
+    "literal": 593,
+    "template": 443,
+    "spine": 55,
+    "column_as_instance": 27,
+    "unresolved": 1
+   },
+   "detail_note": "Exactly one child-key leg carries leg_backing='unresolved' and no expression. It is a PLACEHOLDER, not a value, and must be refused at build time rather than rendered."
+  }
+ }
+}

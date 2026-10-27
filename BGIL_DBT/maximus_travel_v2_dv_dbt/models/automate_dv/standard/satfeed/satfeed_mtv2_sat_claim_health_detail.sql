@@ -1,0 +1,74 @@
+{{ config(materialized='view') }}
+
+-- FEED for SAT_CLAIM_HEALTH_DETAIL (target track): unions 4 feeder(s).
+--
+-- Payload is the union over ALL feeders, null-padded to the SATELLITE -- not to any one
+-- feeder group (BUILD_RULES 6). 9 payload column(s), 0 child-key column(s).
+--
+-- The hashdiff is renamed here from the wide stage's HASHDIFF_CLAIM_HEALTH_DETAIL to the bare HASHDIFF the sibling
+-- writes on all 45 of its satellites. The wide stage cannot use the bare name because
+-- 27 views feed more than one sibling-built satellite (BD7 / BUILD_RULES 12).
+
+    select
+        CLAIM_HKEY as CLAIM_HKEY,
+        ADMISSION_DATE as ADMISSION_DATE,
+        AILMENT_DESCRIPTION as AILMENT_DESCRIPTION,
+        DISCHARGE_DATE as DISCHARGE_DATE,
+        HEALTH_CLAIM_REMARKS as HEALTH_CLAIM_REMARKS,
+        ICD_CODE as ICD_CODE,
+        LENGTH_OF_STAY as LENGTH_OF_STAY,
+        PRE_EXISTING_DISEASE_RELATED_INDICATOR as PRE_EXISTING_DISEASE_RELATED_INDICATOR,
+        TREATING_DOCTOR_NAME as TREATING_DOCTOR_NAME,
+        TREATMENT_TYPE as TREATMENT_TYPE,
+        HASHDIFF_CLAIM_HEALTH_DETAIL as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__clm_clmd_clma_msp_msd_prop_pv') }}
+    where CLAIM_HKEY is not null
+union all
+    select
+        CLAIM_HKEY as CLAIM_HKEY,
+        ADMISSION_DATE as ADMISSION_DATE,
+        AILMENT_DESCRIPTION as AILMENT_DESCRIPTION,
+        DISCHARGE_DATE as DISCHARGE_DATE,
+        HEALTH_CLAIM_REMARKS as HEALTH_CLAIM_REMARKS,
+        ICD_CODE as ICD_CODE,
+        LENGTH_OF_STAY as LENGTH_OF_STAY,
+        PRE_EXISTING_DISEASE_RELATED_INDICATOR as PRE_EXISTING_DISEASE_RELATED_INDICATOR,
+        TREATING_DOCTOR_NAME as TREATING_DOCTOR_NAME,
+        TREATMENT_TYPE as TREATMENT_TYPE,
+        HASHDIFF_CLAIM_HEALTH_DETAIL as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__clm_clmd_clmap_pv') }}
+    where CLAIM_HKEY is not null
+union all
+    select
+        CLAIM_HKEY as CLAIM_HKEY,
+        ADMISSION_DATE as ADMISSION_DATE,
+        AILMENT_DESCRIPTION as AILMENT_DESCRIPTION,
+        DISCHARGE_DATE as DISCHARGE_DATE,
+        HEALTH_CLAIM_REMARKS as HEALTH_CLAIM_REMARKS,
+        ICD_CODE as ICD_CODE,
+        LENGTH_OF_STAY as LENGTH_OF_STAY,
+        PRE_EXISTING_DISEASE_RELATED_INDICATOR as PRE_EXISTING_DISEASE_RELATED_INDICATOR,
+        TREATING_DOCTOR_NAME as TREATING_DOCTOR_NAME,
+        TREATMENT_TYPE as TREATMENT_TYPE,
+        HASHDIFF_CLAIM_HEALTH_DETAIL as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__clm_clmd_clmrsk_rska_msp_msd_prop_pv') }}
+    where CLAIM_HKEY is not null
+union all
+    select
+        CLAIM_HKEY as CLAIM_HKEY,
+        ADMISSION_DATE as ADMISSION_DATE,
+        AILMENT_DESCRIPTION as AILMENT_DESCRIPTION,
+        DISCHARGE_DATE as DISCHARGE_DATE,
+        HEALTH_CLAIM_REMARKS as HEALTH_CLAIM_REMARKS,
+        ICD_CODE as ICD_CODE,
+        LENGTH_OF_STAY as LENGTH_OF_STAY,
+        PRE_EXISTING_DISEASE_RELATED_INDICATOR as PRE_EXISTING_DISEASE_RELATED_INDICATOR,
+        TREATING_DOCTOR_NAME as TREATING_DOCTOR_NAME,
+        TREATMENT_TYPE as TREATMENT_TYPE,
+        HASHDIFF_CLAIM_HEALTH_DETAIL as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__clm_clmd_clmrsk_rska_properties_pv') }}
+    where CLAIM_HKEY is not null

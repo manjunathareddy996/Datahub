@@ -1,0 +1,457 @@
+version: 2
+
+# Guardrails for the spine-join key layer. The two failures here are both SILENT: a
+# duplicate join hash fans every child join out, and a child that finds no parent
+# drops out of its satellite and reads as 'no data'. Documented per walk so the next
+# reader can see what each column is supposed to reach.
+
+models:
+  - name: resolved_mtv2__clm_clmd_clma_msp_msd_prop_pv
+    description: >
+      1 walk column(s) onto clm_clmd_clma_msp_msd_prop_pv.
+    columns:
+      - name: w0_claimno
+        description: >
+          fk_join hop to clm_clmd.CLAIMNO
+  - name: resolved_mtv2__clm_clmd_clmap_pv
+    description: >
+      4 walk column(s) onto clm_clmd_clmap_pv.
+    columns:
+      - name: w0_claimno
+        description: >
+          fk_join hop to clm_clmd.CLAIMNO
+      - name: w1_policyno
+        description: >
+          fk_join hop to clm_clmd.POLICYNO
+      - name: w2_claimno
+        description: >
+          climb hop to clm_clmd.CLAIMNO
+      - name: w3_policyno
+        description: >
+          climb hop to clm_clmd.POLICYNO
+  - name: resolved_mtv2__clm_clmd_clmcov_msd_prop_pv
+    description: >
+      1 walk column(s) onto clm_clmd_clmcov_msd_prop_pv.
+    columns:
+      - name: w0_claimno
+        description: >
+          fk_join hop to clm_clmd.CLAIMNO
+  - name: resolved_mtv2__clm_clmd_claim_event_followup
+    description: >
+      1 walk column(s) onto clm_clmd_claim_event_followup.
+    columns:
+      - name: w0_claimno
+        description: >
+          fk_join hop to clm_clmd.CLAIMNO
+  - name: resolved_mtv2__clm_clmd_claim_history
+    description: >
+      1 walk column(s) onto clm_clmd_claim_history.
+    columns:
+      - name: w0_claimno
+        description: >
+          fk_join hop to clm_clmd.CLAIMNO
+  - name: resolved_mtv2__clm_clmd_clmpty
+    description: >
+      1 walk column(s) onto clm_clmd_clmpty.
+    columns:
+      - name: w0_claimno
+        description: >
+          fk_join hop to clm_clmd.CLAIMNO
+  - name: resolved_mtv2__clm_clmd_clmpay
+    description: >
+      1 walk column(s) onto clm_clmd_clmpay.
+    columns:
+      - name: w0_claimno
+        description: >
+          fk_join hop to clm_clmd.CLAIMNO
+  - name: resolved_mtv2__clm_clmd_clmpay_payp_pv
+    description: >
+      3 walk column(s) onto clm_clmd_clmpay_payp_pv.
+    columns:
+      - name: w0_claimno
+        description: >
+          fk_join hop to clm_clmd.CLAIMNO
+      - name: w1_claimpaymentid
+        description: >
+          climb hop to clm_clmd_clmpay.CLAIMPAYMENTID
+      - name: w2_payreservetypre
+        description: >
+          climb hop to clm_clmd_clmpay.PAYRESERVETYPRE
+  - name: resolved_mtv2__clm_clmd_claim_reserve
+    description: >
+      2 walk column(s) onto clm_clmd_claim_reserve.
+    columns:
+      - name: w0_claimno
+        description: >
+          fk_join hop to clm_clmd.CLAIMNO
+      - name: w1_claimno
+        description: >
+          climb hop to clm_clmd.CLAIMNO
+  - name: resolved_mtv2__clm_clmd_clmrsk
+    description: >
+      1 walk column(s) onto clm_clmd_clmrsk.
+    columns:
+      - name: w0_policyno
+        description: >
+          climb hop to clm_clmd.POLICYNO
+  - name: resolved_mtv2__clm_clmd_clmrsk_party
+    description: >
+      1 walk column(s) onto clm_clmd_clmrsk_party.
+    columns:
+      - name: w0_claimno
+        description: >
+          fk_join hop to clm_clmd.CLAIMNO
+  - name: resolved_mtv2__clm_clmd_clmrsk_rska_msp_msd_prop_pv
+    description: >
+      2 walk column(s) onto clm_clmd_clmrsk_rska_msp_msd_prop_pv.
+    columns:
+      - name: w0_claimno
+        description: >
+          fk_join hop to clm_clmd.CLAIMNO
+      - name: w1_policyno
+        description: >
+          fk_join hop to clm_clmd.POLICYNO
+  - name: resolved_mtv2__clm_clmd_clmrsk_rska_properties_pv
+    description: >
+      1 walk column(s) onto clm_clmd_clmrsk_rska_properties_pv.
+    columns:
+      - name: w0_claimno
+        description: >
+          fk_join hop to clm_clmd.CLAIMNO
+  - name: resolved_mtv2__uwr_pol_disp
+    description: >
+      1 walk column(s) onto uwr_pol_disp.
+    columns:
+      - name: w0_policy_number
+        description: >
+          fk_join hop to uwr_pol.POLICY_NUMBER
+  - name: resolved_mtv2__uwr_pol_endt
+    description: >
+      1 walk column(s) onto uwr_pol_endt.
+    columns:
+      - name: w0_policy_number
+        description: >
+          fk_join hop to uwr_pol.POLICY_NUMBER
+  - name: resolved_mtv2__uwr_pol_ins
+    description: >
+      1 walk column(s) onto uwr_pol_ins.
+    columns:
+      - name: w0_policy_number
+        description: >
+          fk_join hop to uwr_pol.POLICY_NUMBER
+  - name: resolved_mtv2__uwr_pol_ins_cov
+    description: >
+      2 walk column(s) onto uwr_pol_ins_cov.
+    columns:
+      - name: w0_policy_number
+        description: >
+          fk_join hop to uwr_pol.POLICY_NUMBER
+      - name: w1_pol_risk_id
+        description: >
+          climb hop to uwr_pol_ins.POL_RISK_ID
+  - name: resolved_mtv2__uwr_pol_ins_cov_covp_msp_msd_prop_pv
+    description: >
+      1 walk column(s) onto uwr_pol_ins_cov_covp_msp_msd_prop_pv.
+    columns:
+      - name: w0_cover_code
+        description: >
+          climb hop to uwr_pol_ins_cov.COVER_CODE
+  - name: resolved_mtv2__uwr_pol_ins_cov_covp_sp_pv
+    description: >
+      3 walk column(s) onto uwr_pol_ins_cov_covp_sp_pv.
+    columns:
+      - name: w0_policy_number
+        description: >
+          fk_join hop to uwr_pol.POLICY_NUMBER
+      - name: w1_pol_risk_id
+        description: >
+          climb hop to uwr_pol_ins.POL_RISK_ID
+      - name: w2_cover_code
+        description: >
+          climb hop to uwr_pol_ins_cov.COVER_CODE
+  - name: resolved_mtv2__uwr_pol_ins_mbr
+    description: >
+      1 walk column(s) onto uwr_pol_ins_mbr.
+    columns:
+      - name: w0_policy_number
+        description: >
+          climb hop to uwr_pol.POLICY_NUMBER
+  - name: resolved_mtv2__uwr_pol_ins_mbr_pa
+    description: >
+      1 walk column(s) onto uwr_pol_ins_mbr_pa.
+    columns:
+      - name: w0_party_code
+        description: >
+          climb hop to uwr_pol_ins_mbr.PARTY_CODE
+  - name: resolved_mtv2__uwr_pol_ins_mbr_pa_address_prop_pv
+    description: >
+      1 walk column(s) onto uwr_pol_ins_mbr_pa_address_prop_pv.
+    columns:
+      - name: w0_party_code
+        description: >
+          climb hop to uwr_pol_ins_mbr.PARTY_CODE
+  - name: resolved_mtv2__uwr_pol_ins_mbr_pp_msp_msd_prop_pv
+    description: >
+      1 walk column(s) onto uwr_pol_ins_mbr_pp_msp_msd_prop_pv.
+    columns:
+      - name: w0_party_code
+        description: >
+          climb hop to uwr_pol_ins_mbr.PARTY_CODE
+  - name: resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv
+    description: >
+      2 walk column(s) onto uwr_pol_ins_mbr_pp_sp_pv.
+    columns:
+      - name: w0_party_code
+        description: >
+          climb hop to uwr_pol_ins_mbr.PARTY_CODE
+      - name: w1_quotation_number
+        description: >
+          climb hop to uwr_pol.QUOTATION_NUMBER
+  - name: resolved_mtv2__uwr_pol_ins_mbr_party_relation
+    description: >
+      1 walk column(s) onto uwr_pol_ins_mbr_party_relation.
+    columns:
+      - name: w0_party_code
+        description: >
+          climb hop to uwr_pol_ins_mbr.PARTY_CODE
+  - name: resolved_mtv2__uwr_pol_ins_rskp_msp_msd_prop_pv
+    description: >
+      2 walk column(s) onto uwr_pol_ins_rskp_msp_msd_prop_pv.
+    columns:
+      - name: w0_policy_number
+        description: >
+          fk_join hop to uwr_pol.POLICY_NUMBER
+      - name: w1_pol_risk_id
+        description: >
+          climb hop to uwr_pol_ins.POL_RISK_ID
+  - name: resolved_mtv2__uwr_pol_ins_rskp_sp_pv
+    description: >
+      4 walk column(s) onto uwr_pol_ins_rskp_sp_pv.
+    columns:
+      - name: w0_policy_number
+        description: >
+          fk_join hop to uwr_pol.POLICY_NUMBER
+      - name: w1_pol_risk_id
+        description: >
+          climb hop to uwr_pol_ins.POL_RISK_ID
+      - name: w2_policy_holder_code
+        description: >
+          climb hop to uwr_pol.POLICY_HOLDER_CODE
+      - name: w3_product_code
+        description: >
+          climb hop to uwr_pol.PRODUCT_CODE
+  - name: resolved_mtv2__uwr_pol_off_oa
+    description: >
+      1 walk column(s) onto uwr_pol_off_oa.
+    columns:
+      - name: w0_office_code
+        description: >
+          climb hop to uwr_pol_off.OFFICE_CODE
+  - name: resolved_mtv2__uwr_pol_off_oa_address_prop_pv
+    description: >
+      7 walk column(s) onto uwr_pol_off_oa_address_prop_pv.
+    columns:
+      - name: w0_address1
+        description: >
+          climb hop to uwr_pol_off_oa.ADDRESS1
+      - name: w1_address2
+        description: >
+          climb hop to uwr_pol_off_oa.ADDRESS2
+      - name: w2_address3
+        description: >
+          climb hop to uwr_pol_off_oa.ADDRESS3
+      - name: w3_city
+        description: >
+          climb hop to uwr_pol_off_oa.CITY
+      - name: w4_state
+        description: >
+          climb hop to uwr_pol_off_oa.STATE
+      - name: w5_pincode
+        description: >
+          climb hop to uwr_pol_off_oa.PINCODE
+      - name: w6_office_code
+        description: >
+          climb hop to uwr_pol_off.OFFICE_CODE
+  - name: resolved_mtv2__uwr_pol_polp_msp_msd_prop_pv
+    description: >
+      1 walk column(s) onto uwr_pol_polp_msp_msd_prop_pv.
+    columns:
+      - name: w0_policy_number
+        description: >
+          fk_join hop to uwr_pol.POLICY_NUMBER
+  - name: resolved_mtv2__uwr_pol_polp_sp_pv
+    description: >
+      4 walk column(s) onto uwr_pol_polp_sp_pv.
+    columns:
+      - name: w0_policy_number
+        description: >
+          fk_join hop to uwr_pol.POLICY_NUMBER
+      - name: w1_policy_number
+        description: >
+          climb hop to uwr_pol.POLICY_NUMBER
+      - name: w2_product_code
+        description: >
+          climb hop to uwr_pol.PRODUCT_CODE
+      - name: w3_policy_holder_code
+        description: >
+          climb hop to uwr_pol.POLICY_HOLDER_CODE
+  - name: resolved_mtv2__uwr_pol_policy_relation
+    description: >
+      1 walk column(s) onto uwr_pol_policy_relation.
+    columns:
+      - name: w0_policy_number
+        description: >
+          fk_join hop to uwr_pol.POLICY_NUMBER
+  - name: resolved_mtv2__uwr_pol_prp
+    description: >
+      1 walk column(s) onto uwr_pol_prp.
+    columns:
+      - name: w0_policy_number
+        description: >
+          climb hop to uwr_pol.POLICY_NUMBER
+  - name: resolved_mtv2__uwr_pol_prp_pa
+    description: >
+      1 walk column(s) onto uwr_pol_prp_pa.
+    columns:
+      - name: w0_party_code
+        description: >
+          climb hop to uwr_pol_prp.PARTY_CODE
+  - name: resolved_mtv2__uwr_pol_prp_pa_address_prop_pv
+    description: >
+      1 walk column(s) onto uwr_pol_prp_pa_address_prop_pv.
+    columns:
+      - name: w0_party_code
+        description: >
+          climb hop to uwr_pol_prp.PARTY_CODE
+  - name: resolved_mtv2__uwr_pol_prp_pp_msp_msd_prop_pv
+    description: >
+      1 walk column(s) onto uwr_pol_prp_pp_msp_msd_prop_pv.
+    columns:
+      - name: w0_party_code
+        description: >
+          climb hop to uwr_pol_prp.PARTY_CODE
+  - name: resolved_mtv2__uwr_pol_prp_pp_sp_pv
+    description: >
+      1 walk column(s) onto uwr_pol_prp_pp_sp_pv.
+    columns:
+      - name: w0_party_code
+        description: >
+          climb hop to uwr_pol_prp.PARTY_CODE
+  - name: resolved_mtv2__uwr_pol_prp_party_relation
+    description: >
+      1 walk column(s) onto uwr_pol_prp_party_relation.
+    columns:
+      - name: w0_party_code
+        description: >
+          climb hop to uwr_pol_prp.PARTY_CODE
+  - name: resolved_mtv2__uwr_pol_wrk
+    description: >
+      1 walk column(s) onto uwr_pol_wrk.
+    columns:
+      - name: w0_policy_number
+        description: >
+          fk_join hop to uwr_pol.POLICY_NUMBER
+  - name: resolved_mtv2__uwr_prem
+    description: >
+      1 walk column(s) onto uwr_prem.
+    columns:
+      - name: w0_policy_number
+        description: >
+          fk_join hop to uwr_pol.POLICY_NUMBER
+  - name: resolved_mtv2__uwr_qpd_polp
+    description: >
+      1 walk column(s) onto uwr_qpd_polp.
+    columns:
+      - name: w0_policy_quote_number
+        description: >
+          climb hop to uwr_qpd.POLICY_QUOTE_NUMBER
+  - name: resolved_mtv2__uwr_qpd_polp_msp_imsd_inp_pv
+    description: >
+      1 walk column(s) onto uwr_qpd_polp_msp_imsd_inp_pv.
+    columns:
+      - name: w0_policy_quote_number
+        description: >
+          climb hop to uwr_qpd.POLICY_QUOTE_NUMBER
+  - name: resolved_mtv2__uwr_qpd_polp_rl_pv
+    description: >
+      3 walk column(s) onto uwr_qpd_polp_rl_pv.
+    columns:
+      - name: w0_policy_quote_number
+        description: >
+          climb hop to uwr_qpd.POLICY_QUOTE_NUMBER
+      - name: w1_product_code
+        description: >
+          climb hop to uwr_qpd.PRODUCT_CODE
+      - name: w2_policy_holder_code
+        description: >
+          climb hop to uwr_qpd.POLICY_HOLDER_CODE
+  - name: resolved_mtv2__uwr_qpd_rskl
+    description: >
+      1 walk column(s) onto uwr_qpd_rskl.
+    columns:
+      - name: w0_policy_quote_number
+        description: >
+          climb hop to uwr_qpd.POLICY_QUOTE_NUMBER
+  - name: resolved_mtv2__uwr_qpd_rskl_msp_imsd_inp_pv
+    description: >
+      2 walk column(s) onto uwr_qpd_rskl_msp_imsd_inp_pv.
+    columns:
+      - name: w0_policy_quote_number
+        description: >
+          climb hop to uwr_qpd.POLICY_QUOTE_NUMBER
+      - name: w1_pol_risk_id
+        description: >
+          climb hop to uwr_qpd_rskl.POL_RISK_ID
+  - name: resolved_mtv2__uwr_qpd_rskl_rskc
+    description: >
+      2 walk column(s) onto uwr_qpd_rskl_rskc.
+    columns:
+      - name: w0_policy_quote_number
+        description: >
+          climb hop to uwr_qpd.POLICY_QUOTE_NUMBER
+      - name: w1_pol_risk_id
+        description: >
+          climb hop to uwr_qpd_rskl.POL_RISK_ID
+  - name: resolved_mtv2__uwr_qpd_rskl_rskc_rskc_prop
+    description: >
+      1 walk column(s) onto uwr_qpd_rskl_rskc_rskc_prop.
+    columns:
+      - name: w0_policy_quote_number
+        description: >
+          climb hop to uwr_qpd.POLICY_QUOTE_NUMBER
+  - name: resolved_mtv2__uwr_qpd_rskl_rskc_rskc_prop_rl_pv
+    description: >
+      3 walk column(s) onto uwr_qpd_rskl_rskc_rskc_prop_rl_pv.
+    columns:
+      - name: w0_policy_quote_number
+        description: >
+          climb hop to uwr_qpd.POLICY_QUOTE_NUMBER
+      - name: w1_pol_risk_id
+        description: >
+          climb hop to uwr_qpd_rskl.POL_RISK_ID
+      - name: w2_cover_code
+        description: >
+          climb hop to uwr_qpd_rskl_rskc.COVER_CODE
+  - name: resolved_mtv2__uwr_qpd_rskl_rskp
+    description: >
+      1 walk column(s) onto uwr_qpd_rskl_rskp.
+    columns:
+      - name: w0_policy_quote_number
+        description: >
+          climb hop to uwr_qpd.POLICY_QUOTE_NUMBER
+  - name: resolved_mtv2__uwr_qpd_rskl_rskp_rl_pv
+    description: >
+      4 walk column(s) onto uwr_qpd_rskl_rskp_rl_pv.
+    columns:
+      - name: w0_policy_quote_number
+        description: >
+          climb hop to uwr_qpd.POLICY_QUOTE_NUMBER
+      - name: w1_pol_risk_id
+        description: >
+          climb hop to uwr_qpd_rskl.POL_RISK_ID
+      - name: w2_policy_holder_code
+        description: >
+          climb hop to uwr_qpd.POLICY_HOLDER_CODE
+      - name: w3_product_code
+        description: >
+          climb hop to uwr_qpd.PRODUCT_CODE

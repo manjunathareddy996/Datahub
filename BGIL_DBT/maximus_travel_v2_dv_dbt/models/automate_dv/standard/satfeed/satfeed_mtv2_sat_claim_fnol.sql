@@ -1,0 +1,38 @@
+{{ config(materialized='view') }}
+
+-- FEED for SAT_CLAIM_FNOL (target track): unions 2 feeder(s).
+--
+-- Payload is the union over ALL feeders, null-padded to the SATELLITE -- not to any one
+-- feeder group (BUILD_RULES 6). 7 payload column(s), 0 child-key column(s).
+--
+-- The hashdiff is renamed here from the wide stage's HASHDIFF_CLAIM_FNOL to the bare HASHDIFF the sibling
+-- writes on all 45 of its satellites. The wide stage cannot use the bare name because
+-- 27 views feed more than one sibling-built satellite (BD7 / BUILD_RULES 12).
+
+    select
+        CLAIM_HKEY as CLAIM_HKEY,
+        FNOL_CHANNEL as FNOL_CHANNEL,
+        FNOL_TIME as FNOL_TIME,
+        PRELIMINARY_LOSS_DESCRIPTION as PRELIMINARY_LOSS_DESCRIPTION,
+        PRELIMINARY_LOSS_ESTIMATE as PRELIMINARY_LOSS_ESTIMATE,
+        REPORTED_BY_CONTACT as REPORTED_BY_CONTACT,
+        REPORTED_BY_NAME as REPORTED_BY_NAME,
+        SELF_SERVICE_INDICATOR as SELF_SERVICE_INDICATOR,
+        HASHDIFF_CLAIM_FNOL as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__clm_clmd') }}
+    where CLAIM_HKEY is not null
+union all
+    select
+        CLAIM_HKEY as CLAIM_HKEY,
+        FNOL_CHANNEL as FNOL_CHANNEL,
+        FNOL_TIME as FNOL_TIME,
+        PRELIMINARY_LOSS_DESCRIPTION as PRELIMINARY_LOSS_DESCRIPTION,
+        PRELIMINARY_LOSS_ESTIMATE as PRELIMINARY_LOSS_ESTIMATE,
+        REPORTED_BY_CONTACT as REPORTED_BY_CONTACT,
+        REPORTED_BY_NAME as REPORTED_BY_NAME,
+        SELF_SERVICE_INDICATOR as SELF_SERVICE_INDICATOR,
+        HASHDIFF_CLAIM_FNOL as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__clm_clmd_clmap_pv') }}
+    where CLAIM_HKEY is not null

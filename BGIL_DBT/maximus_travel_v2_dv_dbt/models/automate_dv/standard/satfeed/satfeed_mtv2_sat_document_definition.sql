@@ -1,0 +1,140 @@
+{{ config(materialized='view') }}
+
+-- FEED for SAT_DOCUMENT_DEFINITION (target track): unions 10 feeder(s).
+--
+-- Payload is the union over ALL feeders, null-padded to the SATELLITE -- not to any one
+-- feeder group (BUILD_RULES 6). 6 payload column(s), 0 child-key column(s).
+--
+-- The hashdiff is renamed here from the wide stage's HASHDIFF_DOCUMENT_DEFINITION to the bare HASHDIFF the sibling
+-- writes on all 45 of its satellites. The wide stage cannot use the bare name because
+-- 27 views feed more than one sibling-built satellite (BD7 / BUILD_RULES 12).
+
+    select
+        DOCUMENT_HKEY__CLAIM_INWARD_DOCUMENT_SET as DOCUMENT_HKEY,
+        DOCUMENT_NAME as DOCUMENT_NAME,
+        DOCUMENT_REFERENCE_NUMBER as DOCUMENT_REFERENCE_NUMBER,
+        DOCUMENT_TYPE as DOCUMENT_TYPE,
+        ISSUE_DATE as ISSUE_DATE,
+        RECEIVED_DATE as RECEIVED_DATE,
+        SOURCE_CHANNEL as SOURCE_CHANNEL,
+        HASHDIFF_DOCUMENT_DEFINITION as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__clm_clmd_clma_msp_msd_prop_pv') }}
+    where DOCUMENT_HKEY__CLAIM_INWARD_DOCUMENT_SET is not null
+union all
+    select
+        DOCUMENT_HKEY__CLAIM_INWARD_DOCUMENT_SET as DOCUMENT_HKEY,
+        DOCUMENT_NAME as DOCUMENT_NAME,
+        DOCUMENT_REFERENCE_NUMBER as DOCUMENT_REFERENCE_NUMBER,
+        DOCUMENT_TYPE as DOCUMENT_TYPE,
+        ISSUE_DATE as ISSUE_DATE,
+        RECEIVED_DATE as RECEIVED_DATE,
+        SOURCE_CHANNEL as SOURCE_CHANNEL,
+        HASHDIFF_DOCUMENT_DEFINITION as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__clm_clmd_clmap_pv') }}
+    where DOCUMENT_HKEY__CLAIM_INWARD_DOCUMENT_SET is not null
+union all
+    select
+        DOCUMENT_HKEY as DOCUMENT_HKEY,
+        DOCUMENT_NAME as DOCUMENT_NAME,
+        DOCUMENT_REFERENCE_NUMBER as DOCUMENT_REFERENCE_NUMBER,
+        DOCUMENT_TYPE as DOCUMENT_TYPE,
+        ISSUE_DATE as ISSUE_DATE,
+        RECEIVED_DATE as RECEIVED_DATE,
+        SOURCE_CHANNEL as SOURCE_CHANNEL,
+        HASHDIFF_DOCUMENT_DEFINITION as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__clm_clmd_clmcov_msd_prop_pv') }}
+    where DOCUMENT_HKEY is not null
+union all
+    select
+        DOCUMENT_HKEY as DOCUMENT_HKEY,
+        DOCUMENT_NAME as DOCUMENT_NAME,
+        DOCUMENT_REFERENCE_NUMBER as DOCUMENT_REFERENCE_NUMBER,
+        DOCUMENT_TYPE as DOCUMENT_TYPE,
+        ISSUE_DATE as ISSUE_DATE,
+        RECEIVED_DATE as RECEIVED_DATE,
+        SOURCE_CHANNEL as SOURCE_CHANNEL,
+        HASHDIFF_DOCUMENT_DEFINITION as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__clm_clmd_doc') }}
+    where DOCUMENT_HKEY is not null
+union all
+    select
+        DOCUMENT_HKEY as DOCUMENT_HKEY,
+        DOCUMENT_NAME as DOCUMENT_NAME,
+        DOCUMENT_REFERENCE_NUMBER as DOCUMENT_REFERENCE_NUMBER,
+        DOCUMENT_TYPE as DOCUMENT_TYPE,
+        ISSUE_DATE as ISSUE_DATE,
+        RECEIVED_DATE as RECEIVED_DATE,
+        SOURCE_CHANNEL as SOURCE_CHANNEL,
+        HASHDIFF_DOCUMENT_DEFINITION as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__uwr_pol_doc') }}
+    where DOCUMENT_HKEY is not null
+union all
+    select
+        DOCUMENT_HKEY as DOCUMENT_HKEY,
+        DOCUMENT_NAME as DOCUMENT_NAME,
+        DOCUMENT_REFERENCE_NUMBER as DOCUMENT_REFERENCE_NUMBER,
+        DOCUMENT_TYPE as DOCUMENT_TYPE,
+        ISSUE_DATE as ISSUE_DATE,
+        RECEIVED_DATE as RECEIVED_DATE,
+        SOURCE_CHANNEL as SOURCE_CHANNEL,
+        HASHDIFF_DOCUMENT_DEFINITION as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__uwr_pol_ins_doc') }}
+    where DOCUMENT_HKEY is not null
+union all
+    select
+        DOCUMENT_HKEY as DOCUMENT_HKEY,
+        DOCUMENT_NAME as DOCUMENT_NAME,
+        DOCUMENT_REFERENCE_NUMBER as DOCUMENT_REFERENCE_NUMBER,
+        DOCUMENT_TYPE as DOCUMENT_TYPE,
+        ISSUE_DATE as ISSUE_DATE,
+        RECEIVED_DATE as RECEIVED_DATE,
+        SOURCE_CHANNEL as SOURCE_CHANNEL,
+        HASHDIFF_DOCUMENT_DEFINITION as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__uwr_pol_ins_mbr_document_detail') }}
+    where DOCUMENT_HKEY is not null
+union all
+    select
+        DOCUMENT_HKEY as DOCUMENT_HKEY,
+        DOCUMENT_NAME as DOCUMENT_NAME,
+        DOCUMENT_REFERENCE_NUMBER as DOCUMENT_REFERENCE_NUMBER,
+        DOCUMENT_TYPE as DOCUMENT_TYPE,
+        ISSUE_DATE as ISSUE_DATE,
+        RECEIVED_DATE as RECEIVED_DATE,
+        SOURCE_CHANNEL as SOURCE_CHANNEL,
+        HASHDIFF_DOCUMENT_DEFINITION as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__uwr_pol_polp_sp_pv') }}
+    where DOCUMENT_HKEY is not null
+union all
+    select
+        DOCUMENT_HKEY as DOCUMENT_HKEY,
+        DOCUMENT_NAME as DOCUMENT_NAME,
+        DOCUMENT_REFERENCE_NUMBER as DOCUMENT_REFERENCE_NUMBER,
+        DOCUMENT_TYPE as DOCUMENT_TYPE,
+        ISSUE_DATE as ISSUE_DATE,
+        RECEIVED_DATE as RECEIVED_DATE,
+        SOURCE_CHANNEL as SOURCE_CHANNEL,
+        HASHDIFF_DOCUMENT_DEFINITION as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__uwr_pol_prp_document_detail') }}
+    where DOCUMENT_HKEY is not null
+union all
+    select
+        DOCUMENT_HKEY as DOCUMENT_HKEY,
+        DOCUMENT_NAME as DOCUMENT_NAME,
+        DOCUMENT_REFERENCE_NUMBER as DOCUMENT_REFERENCE_NUMBER,
+        DOCUMENT_TYPE as DOCUMENT_TYPE,
+        ISSUE_DATE as ISSUE_DATE,
+        RECEIVED_DATE as RECEIVED_DATE,
+        SOURCE_CHANNEL as SOURCE_CHANNEL,
+        HASHDIFF_DOCUMENT_DEFINITION as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2__uwr_qpd_polp_rl_pv') }}
+    where DOCUMENT_HKEY is not null

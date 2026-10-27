@@ -1,0 +1,1168 @@
+{
+ "stage": "1",
+ "status": "complete",
+ "lob": "maximus_travel_v2",
+ "profile_revision": 6,
+ "counts": {
+  "generators": 19,
+  "models": 1040,
+  "unresolved_keys": 3,
+  "skipped": 60
+ },
+ "numbers_live_in": "build_artifacts/BUILD_STATUS.json (referenced, never retyped)",
+ "self_checks": [
+  {
+   "check": "every pattern in this file fires on a probe and stays silent on a known-good input, and COVERAGE IS TOTAL",
+   "result": "pass",
+   "detail": "8 of 8 fire, 8 of 8 silent, over 8 module-level pattern(s) -- coverage ASSERTED total, so an unprobed pattern raises rather than passing for free. Failing: none"
+  },
+  {
+   "check": "no control byte in any generator or emitted model",
+   "result": "pass",
+   "detail": "1062 generator/model file(s) scanned, 0 carrying a control byte"
+  },
+  {
+   "check": "zero mapper-notation residue in emitted SQL (non-comment lines)",
+   "result": "pass",
+   "detail": "1040 model(s) scanned; residue in 0 line(s)"
+  },
+  {
+   "check": "the residue check can FAIL",
+   "result": "pass",
+   "detail": "planted 'spine[A -> B].C' is detected; the zero above is a judged zero"
+  },
+  {
+   "check": "every ref() resolves to a model in this project",
+   "result": "pass",
+   "detail": "441 distinct ref target(s); 0 unresolved"
+  },
+  {
+   "check": "every source() table is declared in _mtv2_sources.yml",
+   "result": "pass",
+   "detail": "115 used, 116 declared, 0 undeclared"
+  },
+  {
+   "check": "the augmented generator and the alignment shim partition the augmented satellites",
+   "result": "pass",
+   "detail": "131 augmented satellite model(s), 9 of them the OPUS-named SAT_AUG_* the shim owns"
+  },
+  {
+   "check": "no satellite declares a payload attribute that is cast(null) in EVERY feeder (a declaration is not a data path)",
+   "result": "pass",
+   "detail": "234 satellite model(s), 1355 declared payload attribute(s), 0 with no live feeder"
+  },
+  {
+   "check": "the dead-path reader reads the VALUE, not just the key",
+   "result": "pass",
+   "detail": "fires on a cast-null YAML value, silent on a real one -- the defect BUILD_RULES 12 records inside the check written to enforce 8.3"
+  },
+  {
+   "check": "no satellite was BUILT on a child key composed only of collapse-trap legs",
+   "result": "pass",
+   "detail": "20 collapse trap(s) in the profile; 2 satellite(s) refused for using them alone, and none of those was built"
+  },
+  {
+   "check": "no satellite payload attribute shares a name with a child-key leg",
+   "result": "pass",
+   "detail": "237 satellite(s) checked, 0 clash(es)"
+  },
+  {
+   "check": "every multi-active satellite carries a child key",
+   "result": "pass",
+   "detail": "59 multi-active satellite(s), 0 without a discriminator"
+  },
+  {
+   "check": "parse residue is zero, over 3418 live expression(s)",
+   "result": "pass",
+   "detail": "3418 expression(s) parsed, 0 failure(s), 0 residue"
+  },
+  {
+   "check": "no generator wrote into a read-only input",
+   "result": "pass",
+   "detail": "1041 output path(s) checked against 4 read-only root(s)"
+  },
+  {
+   "check": "BD13 negative control FIRES, and on the expected finding",
+   "result": "pass",
+   "detail": "control 04_column_map.pre_docfix.json (sha256 81cd1f46a6fb6248, the recorded digest) reports 1 split namespace(s) including HUB_DOCUMENT.DOCUMENT_ID ['(NO PREFIX)', 'DOC:']; the live map reports 0. The control is chosen by CONTENT -- the recorded digest; EXCLUDED as byte-identical to the live map: 04_column_map.pre_degenfix.json -- and is asserted to differ from the live map, which is exactly the failure that made the previous control useless."
+  },
+  {
+   "check": "one-column-two-key-spaces: the live ZERO is judged",
+   "result": "pass",
+   "detail": "live map 0, a control that fires 1. The zero is judged, not assumed."
+  },
+  {
+   "check": "renumbering ordinals in an emitted child key are found BY SHAPE, and agree with the spec",
+   "result": "pass",
+   "detail": "1 child-key column(s) in the emitted models resolve to a source column of ordinal SHAPE (SAT_AUG_POLICY_DOCUMENT_DISPATCH.DISPATCH_SERIAL_NUMBER from SERIAL_NO); the spec declares 1. Detected by resolving satellite src_cdk through the feed to the stage expression -- never by a name shape such as a _CK suffix, which this build does not use and which is how a check returns a clean zero it cannot earn. A further 26 child-key column(s) are ordinal-SHAPED but backed by no source column of that shape (SAT_AUG_CLAIM_DOCUMENT_REMINDER.REMINDER_SEQUENCE, SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE.ACTIVE_SEQUENCE_NUMBER, SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER.REMINDER_SEQUENCE, SAT_AUG_POLICY_COVERAGE_SCHEDULE.COVERAGE_SEQUENCE, SAT_AUG_QUOTE_COVER_DETAIL.COVERAGE_SEQUENCE, SAT_CLAIM_INVESTIGATION_FINDING.FINDING_SEQUENCE, SAT_CLAIM_NOTE.NOTE_SEQUENCE, SAT_COVERAGE_SUBLIMIT_SCHEDULE.ACTIVE_SEQUENCE_NUMBER, SAT_LNK_PARTY_ROLE_CORE.ROLE_SEQUENCE, SAT_LNK_POLICY_PARTY_ROLE.ROLE_SEQUENCE, SAT_POLICY_COVERAGE_SCHEDULE.COVERAGE_SEQUENCE, SAT_RISK_PERSON_MEMBER.MEMBER_SEQUENCE): reported, not counted as ordinals."
+  },
+  {
+   "check": "the ordinal detector over the emitted models CAN fire",
+   "result": "pass",
+   "detail": "it fires on the real tree"
+  },
+  {
+   "check": "the ordinal spellings declared to reach NO child key reach none, and the one declared to reach a leg does",
+   "result": "pass",
+   "detail": "7 ordinal spelling(s) exist in this source; the EMITTED child-key surface is reached by ['SERIAL_NO'] over 1 leg(s) on 1 satellite(s). DECLARED ABSENT (6): PARAM_SEQ, RISK_SERIAL_NO, RISK_SERIAL_NUMBER, SEQUENCE_NUMBER, SRL_NO, SR_NUMBER -- violations: none. DECLARED PRESENT (1): SERIAL_NO -- missing: none. A further 26 child-key column(s) are ordinal-SHAPED but backed by no source column of that shape, and are reported rather than counted."
+  },
+  {
+   "check": "key selection reads a DECLARED slot set, and no keynorm slot is in it",
+   "result": "pass",
+   "detail": "slots read: expression, hub, instance, source_columns, tier. The history slot the profile names is 'keynorm.previous_expression', and both 'keynorm' and 'previous_expression' are on NEVER_READ_FIELDS, so adding a reader for one is fatal rather than quiet. keynorm slots in the read set: 0."
+  },
+  {
+   "check": "the keynorm SHAPE guard fires on an unknown field set and is silent on a known one",
+   "result": "pass",
+   "detail": "fires on a planted extra keynorm field, silent on the map's own commonest shape. The full containment proof -- all 1444 archived values poisoned, whole spec rebuilt, zero occurrences, with the search proved by poisoning a LIVE expression -- is generators/probe_mtv2_keynorm.py and its result is in build_artifacts/keynorm_probe.json."
+  },
+  {
+   "check": "every coverage exemption this build generated is present in vault_tools/accepted_uncovered.txt",
+   "result": "pass",
+   "detail": "17 generated line(s), 17 present in the shared file, 0 missing. An exemption the gate cannot see leaves a recorded decision reading as novel silence (BUILD_RULES 8.2)."
+  },
+  {
+   "check": "the preserved verification block still describes THIS tree",
+   "result": "pass",
+   "detail": "preserved key(s): carried_debt, clauses, counts, done, done_reason, findings, gates, input_digest_verified_before_and_after, outcome_vocabulary_note, schema_warning, verified_by. every preserved count that overlaps a stage-1 fact still agrees"
+  },
+  {
+   "check": "every digest this build emits is full length and names its algorithm",
+   "result": "pass",
+   "detail": "3 artifact(s) swept, 0 violation(s). Proved able to fire on the real 32-char value that shipped under a field named sha256 (fires=True) and silent at 64 (silent=True)."
+  },
+  {
+   "check": "keynorm containment probe: injection: an unrecognised keynorm shape is REFUSED",
+   "result": "pass",
+   "detail": "planted one extra keynorm field in a scratch copy of the map; the guard refused and NAMED the shape: REFUSING TO BUILD: keynorm carries 1 field-set shape(s) this build does not recognise: {('class', 'previous_expression', 'stage', 'superseded_by'): 1}. Nothing reads a keynorm value, but an unrecognised shape means the map grew a field nobo"
+  },
+  {
+   "check": "keynorm containment probe: control: the UNMODIFIED map is accepted",
+   "result": "pass",
+   "detail": "the same code over an unmodified scratch copy returns the shape census {'class + previous_expression + stage': 1391, 'class + previous_expression + reason + stage': 33, 'previous_expression + reason': 20} and does not refuse, so the refusal above is caused by the planted field and not by the guard being unconditional"
+  },
+  {
+   "check": "keynorm containment probe: containment: no archived previous_expression reaches the spec",
+   "result": "pass",
+   "detail": "every one of the 1444 archived previous_expression values in a scratch copy was replaced with a poison token and the WHOLE SPEC was rebuilt from that map: 0 occurrence(s) of the token in the spec."
+  },
+  {
+   "check": "keynorm containment probe: the containment search CAN find the token",
+   "result": "pass",
+   "detail": "poisoning ONE LIVE resolved_key.expression instead puts the token into the spec 2 time(s), so the zero above is a judged zero and not a search that cannot match"
+  },
+  {
+   "check": "keynorm containment probe: the key-selection slot SET excludes every keynorm slot",
+   "result": "pass",
+   "detail": "key selection reads exactly these resolved_key slots: expression, hub, instance, source_columns, tier. The map's own history slot is 'keynorm.previous_expression' and it is on mtv2_names.NEVER_READ_FIELDS (True), so a reader for it is fatal rather than quiet. Slots read that are keynorm slots: 0."
+  }
+ ],
+ "keynorm_probe": {
+  "probe": "keynorm history containment",
+  "keynorm_blocks": 1444,
+  "blocks_with_previous_expression": 1444,
+  "scratch_directory": "C:/Users/KAMALJ~1.SIN/AppData/Local/Temp/claude/C--Users-kamaljeet-singh-OneDrive---Crisp-Analytics-Private-Limited-Documents-dev-Health-DBTModel/7667403c-4085-4282-92c2-e44620043cb9/scratchpad/remediate/keynorm",
+  "bundle_written": false,
+  "checks": [
+   {
+    "check": "injection: an unrecognised keynorm shape is REFUSED",
+    "result": "pass",
+    "detail": "planted one extra keynorm field in a scratch copy of the map; the guard refused and NAMED the shape: REFUSING TO BUILD: keynorm carries 1 field-set shape(s) this build does not recognise: {('class', 'previous_expression', 'stage', 'superseded_by'): 1}. Nothing reads a keynorm value, but an unrecognised shape means the map grew a field nobo"
+   },
+   {
+    "check": "control: the UNMODIFIED map is accepted",
+    "result": "pass",
+    "detail": "the same code over an unmodified scratch copy returns the shape census {'class + previous_expression + stage': 1391, 'class + previous_expression + reason + stage': 33, 'previous_expression + reason': 20} and does not refuse, so the refusal above is caused by the planted field and not by the guard being unconditional"
+   },
+   {
+    "check": "containment: no archived previous_expression reaches the spec",
+    "result": "pass",
+    "detail": "every one of the 1444 archived previous_expression values in a scratch copy was replaced with a poison token and the WHOLE SPEC was rebuilt from that map: 0 occurrence(s) of the token in the spec."
+   },
+   {
+    "check": "the containment search CAN find the token",
+    "result": "pass",
+    "detail": "poisoning ONE LIVE resolved_key.expression instead puts the token into the spec 2 time(s), so the zero above is a judged zero and not a search that cannot match"
+   },
+   {
+    "check": "the key-selection slot SET excludes every keynorm slot",
+    "result": "pass",
+    "detail": "key selection reads exactly these resolved_key slots: expression, hub, instance, source_columns, tier. The map's own history slot is 'keynorm.previous_expression' and it is on mtv2_names.NEVER_READ_FIELDS (True), so a reader for it is fatal rather than quiet. Slots read that are keynorm slots: 0."
+   }
+  ]
+ },
+ "reproducibility": {
+  "produced_by": "generators/prove_mtv2_reproducibility.py -- this file. The digest and the method are emitted together by the script that computed them (BUILD_RULES 9.3, 11.7); no digest in this project is typed by hand.",
+  "digest_method": "sha256 of each file's bytes, then sha256 over the sorted lines '<relative path> <per-file digest>'. A rename, an addition, a deletion and a content change are each visible.",
+  "named_file_set": "every file under models/, plus dbt_project.yml and packages.yml",
+  "files": 1044,
+  "deleted_before_the_proof": [
+   "models",
+   "dbt_project.yml",
+   "packages.yml",
+   "generators/README.md",
+   "build_artifacts/mtv2_spec.json",
+   "build_artifacts/accepted_uncovered.mtv2.txt"
+  ],
+  "never_deleted": "build_artifacts/reports/ -- not deleted and not backed up (BUILD_RULES 9.3). BUILD_STATUS.json is also not deleted: it carries another stage's clause block, it is not in the digested set, and selfcheck_mtv2.py rewrites every key it owns and fails on a preserved count that no longer describes the tree.",
+  "reports_before": {
+   "stage0_reentry2_report.json": "318dd84be8c466a5006472ce36819634a626124034a591e369076b704b639724",
+   "stage0_reentry3_report.json": "4ced71558d3e6def794d6f783b6867e26f9e608894281b166e04e5f3bdd3c0b1",
+   "stage0_reentry4_report.json": "2dc6f9aa0fc51ff835e21facf388ebac6bab2e81d7a8b6cafd26df8546b64d9f",
+   "stage0_reentry6_report.json": "0745eeaa2e6a0f89c8fba3ceb8191377cfe18f71d2e210f8cc905ed013d5cf86",
+   "stage1_report.json": "3f1958fc6aeb6a40f4d1a0ac74f175ccaadc09bc00fbf54c0e58f55786fc8ed5",
+   "stage1_report.prev.json": "8e5a375d525d5d05098e6414120fcd7ac48fc853e34acdc98f995b6fd1c42ee5",
+   "stage1_report.prev10.json": "a7d840d1212c47ef666c9622b3151f9c55310fbe04ec0c6f9776b1318eb0b5a2",
+   "stage1_report.prev11.json": "78f5c1fad63cdff7dc5dfe49791eff3afc78c11ba5883c1e35c9570fad6490ef",
+   "stage1_report.prev12.json": "cf0edfb73617a656741a22d5fca9c34363c2e05229b791b82fb787f32516ff83",
+   "stage1_report.prev13.json": "f4ba5628ab8e49b41c7b7a1bab4f1194e2838d7f0c334a1da2d899d3c403e8e5",
+   "stage1_report.prev14.json": "a0eb28c77b21f386a0a2bb57f5dcd13f608fca91f0cfe46f6e1587d3d6921839",
+   "stage1_report.prev2.json": "270c69a9b7088d201a18ad021372c2297fed349d194e60dfe4c65858478b8e4c",
+   "stage1_report.prev3.json": "b080a69fabf65014c8b72febf918a62bf9fe3b2dd5f731f744ba23ef57d9721e",
+   "stage1_report.prev4.json": "5e5f8a550ce8154689c4a537c2da527792092a22f399e9e9bd74d9c265830227",
+   "stage1_report.prev5.json": "acfd60769a66e6f330e9f2ec60dde1a80a4015a7273ad57905a7cefec089c104",
+   "stage1_report.prev6.json": "16f540cf315ccaee7f84eb50381ea7f0b9c2ecdf956b5370581f23125f902caf",
+   "stage1_report.prev7.json": "cc2016fe147bc622b7e59cda94c42ac8abd1cb760e03150a053480eab181c4c5",
+   "stage1_report.prev8.json": "a7d840d1212c47ef666c9622b3151f9c55310fbe04ec0c6f9776b1318eb0b5a2",
+   "stage1_report.prev9.json": "ce58187e2532a8de5b51b89cf9383ec2d40a23a5fa71ffac15e53667830cc6ca",
+   "stage2_report.json": "ca0c7b3d52fb5f03ddea886efa8b400e97ece2fdc28aff2d0e2a34dcc4ba73ea",
+   "stage2_report.prev.json": "1c859d6e1e39582cad5cb4ba935681b36ccfe03155f9df8502c81b33a938d4ef",
+   "stage2_report.prev2.json": "6800aff9385430eeec1e994bebb19bce17f74176a8fa90c4091b9f5c3a113aba",
+   "stage3_report.json": "c94d7e5327e949aefed3eac810b6fe8f45f2cb434f94508c52b0d32cb71ff7e8"
+  },
+  "reports_after": {
+   "stage0_reentry2_report.json": "318dd84be8c466a5006472ce36819634a626124034a591e369076b704b639724",
+   "stage0_reentry3_report.json": "4ced71558d3e6def794d6f783b6867e26f9e608894281b166e04e5f3bdd3c0b1",
+   "stage0_reentry4_report.json": "2dc6f9aa0fc51ff835e21facf388ebac6bab2e81d7a8b6cafd26df8546b64d9f",
+   "stage0_reentry6_report.json": "0745eeaa2e6a0f89c8fba3ceb8191377cfe18f71d2e210f8cc905ed013d5cf86",
+   "stage1_report.json": "f6e7982c903b7937e9eab5515895d25994468222a2ffd3b9ba52ffee6b01d4c1",
+   "stage1_report.prev.json": "3f1958fc6aeb6a40f4d1a0ac74f175ccaadc09bc00fbf54c0e58f55786fc8ed5",
+   "stage1_report.prev10.json": "ce58187e2532a8de5b51b89cf9383ec2d40a23a5fa71ffac15e53667830cc6ca",
+   "stage1_report.prev11.json": "a7d840d1212c47ef666c9622b3151f9c55310fbe04ec0c6f9776b1318eb0b5a2",
+   "stage1_report.prev12.json": "78f5c1fad63cdff7dc5dfe49791eff3afc78c11ba5883c1e35c9570fad6490ef",
+   "stage1_report.prev13.json": "cf0edfb73617a656741a22d5fca9c34363c2e05229b791b82fb787f32516ff83",
+   "stage1_report.prev14.json": "f4ba5628ab8e49b41c7b7a1bab4f1194e2838d7f0c334a1da2d899d3c403e8e5",
+   "stage1_report.prev15.json": "a0eb28c77b21f386a0a2bb57f5dcd13f608fca91f0cfe46f6e1587d3d6921839",
+   "stage1_report.prev2.json": "8e5a375d525d5d05098e6414120fcd7ac48fc853e34acdc98f995b6fd1c42ee5",
+   "stage1_report.prev3.json": "270c69a9b7088d201a18ad021372c2297fed349d194e60dfe4c65858478b8e4c",
+   "stage1_report.prev4.json": "b080a69fabf65014c8b72febf918a62bf9fe3b2dd5f731f744ba23ef57d9721e",
+   "stage1_report.prev5.json": "5e5f8a550ce8154689c4a537c2da527792092a22f399e9e9bd74d9c265830227",
+   "stage1_report.prev6.json": "acfd60769a66e6f330e9f2ec60dde1a80a4015a7273ad57905a7cefec089c104",
+   "stage1_report.prev7.json": "16f540cf315ccaee7f84eb50381ea7f0b9c2ecdf956b5370581f23125f902caf",
+   "stage1_report.prev8.json": "cc2016fe147bc622b7e59cda94c42ac8abd1cb760e03150a053480eab181c4c5",
+   "stage1_report.prev9.json": "a7d840d1212c47ef666c9622b3151f9c55310fbe04ec0c6f9776b1318eb0b5a2",
+   "stage2_report.json": "ca0c7b3d52fb5f03ddea886efa8b400e97ece2fdc28aff2d0e2a34dcc4ba73ea",
+   "stage2_report.prev.json": "1c859d6e1e39582cad5cb4ba935681b36ccfe03155f9df8502c81b33a938d4ef",
+   "stage2_report.prev2.json": "6800aff9385430eeec1e994bebb19bce17f74176a8fa90c4091b9f5c3a113aba",
+   "stage3_report.json": "c94d7e5327e949aefed3eac810b6fe8f45f2cb434f94508c52b0d32cb71ff7e8"
+  },
+  "reports_intact": true,
+  "reports_detail": {
+   "files_before": 23,
+   "files_after": 24,
+   "lost": [],
+   "changed_outside_the_chain_written_set": [],
+   "chain_written": [
+    "stage1_report.json",
+    "stage1_report.prev.json",
+    "stage1_report.prev10.json",
+    "stage1_report.prev11.json",
+    "stage1_report.prev12.json",
+    "stage1_report.prev13.json",
+    "stage1_report.prev14.json",
+    "stage1_report.prev15.json",
+    "stage1_report.prev2.json",
+    "stage1_report.prev3.json",
+    "stage1_report.prev4.json",
+    "stage1_report.prev5.json",
+    "stage1_report.prev6.json",
+    "stage1_report.prev7.json",
+    "stage1_report.prev8.json",
+    "stage1_report.prev9.json"
+   ],
+   "added_by_the_cascade": [
+    "stage1_report.prev15.json"
+   ],
+   "rule": "LOST is fatal. A new .prevN slot is the cascade doing its job -- the chain is shifted, nothing is overwritten and nothing is deleted (BUILD_RULES 9.3, 9.7)."
+  },
+  "wipe_order_proof": {
+   "layer_directories": 13,
+   "stale_models_planted": 13,
+   "stale_models_surviving_the_re_run": [],
+   "every_layer_wiped_by_its_first_writer": true,
+   "digest_after": "2eafd451b630bd4c90bfedb19674fed31340c36189b0521be3bf2622808b38dc",
+   "digest_returned_to_the_proved_value": true,
+   "files": 1044
+  },
+  "foreign_block_preservation_proof": {
+   "foreign_block_survived_a_chain_re_run": true,
+   "named_in_preserved_from_a_previous_writer": [
+    "a_later_stage_block_PROBE",
+    "carried_debt",
+    "clauses",
+    "counts",
+    "done",
+    "done_reason",
+    "findings",
+    "gates",
+    "input_digest_verified_before_and_after",
+    "outcome_vocabulary_note",
+    "schema_warning",
+    "verified_by"
+   ],
+   "note": "stage 2's clause block is written into this same file. A re-run used to discard it; it is preserved now, and selfcheck FAILS if a preserved count no longer describes the tree, which was proved separately by planting one."
+  },
+  "combined_sha256_shipped_tree": "2eafd451b630bd4c90bfedb19674fed31340c36189b0521be3bf2622808b38dc",
+  "combined_sha256_run1_from_empty": "2eafd451b630bd4c90bfedb19674fed31340c36189b0521be3bf2622808b38dc",
+  "combined_sha256_run2_over_populated": "2eafd451b630bd4c90bfedb19674fed31340c36189b0521be3bf2622808b38dc",
+  "identical": true,
+  "only_in_the_shipped_tree": [],
+  "only_in_the_rebuilt_tree": [],
+  "differing": [],
+  "profile_revision_built_against": 6,
+  "ran_against_the_project_profile": true
+ },
+ "findings": [
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD1-FK-HOP-IS-ONE-JOIN -- spine[FOREIGN_KEY -> V].COL emits ONE join on the document handle (v.foreign_key = b.foreign_key), not a per-level climb through the parent chain. WHY: The map's own keynorm log shows the mapper COLLAPSED multi-hop PARENT_KEY_HASH climbs into this one-hop form (class 'chain_to_fkjoin'); expanding it back into a climb would undo the mapper's normalisation, which the builder does not do (BUILD_RULES 5.7). COST: If FOREIGN_KEY is a file/batch handle rather than a document handle, the join fans out and every key built on it is WRONG rather than empty. Open item P6-FK-ROUNDTRIP; 863 spine occurrences depend on it and there is no sample data in this run. The per-view diagnostic in audit_mtv2_fk_roundtrip falsifies it before any load. TO OVERRULE: set FK_HOP_MODE = 'parent_chain' in mtv2_keyrules.py"
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD2-FK-INTERVENING-CASTS-PROVISIONED -- The cast layer covers every view on the PARENT CHAIN between a hop's start and its named destination, including the levels a FOREIGN_KEY hop skips and therefore never joins under BD1. WHY: BUILD_RULES 6.1 sizes the cast layer by whether a view is on a walk, and the profile sizes it the same way (97 destinations-only -> 113 expanded). Provisioning them also makes BD1 reversible without adding a model. COST: A handful of cast models are referenced by no resolver while FK_HOP_MODE is 'document_handle'. They are counted and named in the build report so they are not mistaken for dead models. TO OVERRULE: set CAST_COVERAGE = 'joined_only' in mtv2_keyrules.py"
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD3-PIVOT-PARENT-IS-THE-BASE-NODE -- On a *_PIVOT_VW, PARENT_KEY_HASH is resolved to the view's own BASE NODE (the index's parent_table_candidate), and every hop is then expanded through that chain. WHY: Open item SPINE-WALK-DISAGREEMENT. 00_tables_index.json is the only physical statement available -- sample_data_available is false -- and it makes the pivot's parent its base node. Expanding every hop through the chain makes the two readings agree for the 697 arrows that NAME the base node; only the first hop of the others is in question. COST: If PARENT_KEY_HASH actually points past the base node, up to 1464 spine slots resolve one level short and mint a second population in HUB_RISK_OBJECT / HUB_PARTY / HUB_POLICY. audit_mtv2_spine_variants counts rows reached by each variant per (view, join column) so one source answer applies in one pass. TO OVERRULE: set PIVOT_PARENT = 'grandparent' in mtv2_keyrules.py"
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD4-LNK-LEG-CORROBORATION-IS-REPORTED-NOT-FATAL -- A LNK leg is rendered by the SAME render_key() as a hub key, so it is byte-identical by construction. Where the leg's expression is ALSO used as a standalone hub key on the same view the binding is corroborated; where it is not, the leg is still built and the absence is REPORTED. WHY: The profile's mechanism says 'assert every LNK leg string appears verbatim as some hub resolved_key.expression on that view; raise on any that does not'. Measured: 62 of 91 legs corroborate, 8 are pure role-code literals (not hub keys at all), 21 have no on-view hub key to compare against. Raising would drop 21 real link legs and the loss would read as a source gap -- the exact failure BUILD_RULES 2 documents. COST: 21 legs are built on the mapper's word alone. They are listed individually in the build report, routed to the mapper. TO OVERRULE: set LNK_LEG_UNCORROBORATED = 'fatal' in mtv2_keyrules.py"
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD5-ROLE-CODE-IS-A-DEGENERATE-LINK-LEG -- LNK_PARTY_ROLE's second leg is a role CODE ('NOMINEE', 'CUSTOMER', ...), not a hub key -- data_7.js gives LNK_PARTY_ROLE hubs=['HUB_PARTY']. It is carried into the link as a degenerate leg so the link grain is party x role. WHY: Dropping it collapses every role a party plays onto one link row; minting a hub for it invents a hub the model does not have (BUILD_RULES 7.4). COST: The role column in the link table is not a hash key; a consumer joining it to a hub finds none. It IS part of the link hash, so the grain is right. TO OVERRULE: set LINK_DEGENERATE_LEG = 'drop' in mtv2_keyrules.py"
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD6-MULTI-ACTIVE-WITHOUT-A-DISCRIMINATOR-IS-SINGLE-ACTIVE -- 277 augmentation rows declare multi_active with no child key in either form. They are built SINGLE-ACTIVE in the augmented track. WHY: A multi-active satellite with no discriminator IS single-active; inventing a child key is model invention (BUILD_RULES 7.4). Leaving them unbuilt would lose 277 of 1291 augmentation rows to a naming gap. COST: If the rows really are multi-valued per parent, the satellite keeps only the last-loaded row per hub key. Every one of the 277 is listed with its proposed child-key NAME in the build report, routed to the mapper. TO OVERRULE: set MA_WITHOUT_CDK = 'unbuilt' in mtv2_keyrules.py"
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD7-HASHDIFF-FOLLOWS-THE-SIBLING -- Satellites are written with a BARE HASHDIFF, matching travel_dv_dbt on both tracks (45 of 45, counted). The wide stage still needs a unique name per satellite, so the rename happens in the satfeed view. WHY: BUILD_RULES 7.2/7.7 make the sibling's contract absolute for a satellite it already builds, and 12's shared-vault divergence is exactly what HASHDIFF_<SAT> would re-open here. 27 views feed more than one sibling-built satellite (max 11), so a bare name cannot come from the wide stage itself. COST: One satfeed view per satellite -- a model per satellite that the Maximus house pattern does not have. In exchange BUILD_RULES 12 does not apply to this build. TO OVERRULE: set HASHDIFF_POLICY = 'maximus_house' in mtv2_names.py"
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD8-TWO-CONTENT-HASH-CANONICALISATIONS-EMITTED-AS-WRITTEN -- md5(normalise(...)) (128 rows) and md5(upper(trim(...))) (10 rows) are both emitted exactly as mapped. They are NOT unified. WHY: They are used on DISJOINT hubs for different kinds of value -- normalise on HUB_LOCATION (117) and LNK_PARTY_LOCATION (11), all addresses; upper+trim on HUB_PARTY (2) and LNK_PARTY_ROLE (6) nominee NAMES and HUB_ORG_UNIT (2) branch NAMES. Verified: zero hubs carry both forms. Unifying them would re-key a hub on the builder's authority (BUILD_RULES 5.7). COST: For a hand-typed nominee name 'AB  CD' and 'AB CD' stay two parties under the name form and would be one under normalise. That is a modeller call on a hub OPUS also writes, not a build call. Reported, open item MD5-TWO-CANONICALISATIONS. TO OVERRULE: set CONTENT_HASH_UNIFY = True in mtv2_keyrules.py"
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD9-DEGENERATE-KEYS-REJECTED-BY-SHAPE-NEVER-BY-CONSTANT -- Every hub and link key is wrapped in a CASE over 'coalesce(<guarded operands>) is not null', then nullif(trim(...),''). An outer nullif(key,'<constant>') is added ONLY where the constant is statically computable. No predicate compares a key to a value from KEY_DEGENERATE_VALUES.csv. WHY: Under Snowflake semantics every one of the map's 2344 key expressions evaluates to NULL on an all-blank row -- including the 369 the CSV calls NON-EMPTY CONSTANT. A predicate key = 'RISK:' can never fire and would read exactly like a working guard. Third instance of that failure in this engagement. COST: None measured. The static-constant branch fires 0 times on this map, and zero is reported as zero -- a guard that never fires proves something about this map, not about the build. TO OVERRULE: set DEGENERATE_OUTER_NULLIF = False in mtv2_keyrules.py"
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD10-PURE-LITERAL-KEY-IS-CONSTANT-BY-CONSTRUCTION -- A key expression with no non-literal operand at all is ACCEPTED and emitted as that literal, counted separately. WHY: KEYING.md 9.5 as amended: constant by construction is not degeneration -- there is no operand that can go blank. Refusing it would drop rows for being deterministic. COST: Every row on that view keys to one hub row. That is correct for a single-population namespace and wrong for anything else; the count is printed per hub so it cannot hide. TO OVERRULE: set ACCEPT_CONSTANT_KEY = False in mtv2_keyrules.py"
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD11-ANCHOR-ONLY-ROWS-BIND-TO-THE-MAP-S-OWN-KEY -- 190 blocks carry an ANCHOR but no resolved_key at all. They are bound to the key slot the MAP ITSELF resolved for that anchor on the SAME VIEW -- by instance where the row names one, by the satellite's own placement next, by the single candidate next, and by the DOMINANT instance last. WHY: Dropping them is a silence no other check can see: the attribute is never in coverage's denominator, so coverage reads complete over an attribute that was never built (BUILD_RULES 8.1). No key is invented -- every slot used was resolved by the mapper for that anchor on that view. COST: The last rule is an assumption. On one view 101 augmentation attributes name HUB_PARTY with no instance while the map resolves a proposer key (129 rows), a bagic-employee key (2) and a parent-party key (1); they bind to proposer. If that is wrong the attribute attaches to the wrong party. Every such binding is listed with its vote in the build report, routed to the mapper, and the rows are augmentation-track and per-column reversible. TO OVERRULE: set ANCHOR_AMBIGUOUS = 'unbuilt' in mtv2_keyrules.py"
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD12-LINK-LEG-BUILT-AS-MAPPED-DIVERGENCE-MEASURED -- Where a LNK leg's expression differs from the hub key the same view resolves for that hub, the leg is built AS MAPPED and the divergence is counted at run time by audit_mtv2_link_leg_divergence. WHY: The directive asks for the hub key to be emitted for the leg 'by construction'. Doing that silently substitutes one key expression for another, which is correcting the mapping (BUILD_RULES 5.7). The two that matter are not cosmetic: on CLAIM_RESERVE the hub key walks FOREIGN_KEY and the leg walks PARENT_KEY_HASH, so choosing either changes WHICH claim the link attaches to; and 'EMP:' || BAGIC_RM_ECODE is an orphan leg no hub key anywhere produces. COST: 7 value-changing legs join to nothing until the mapper rules. That failure is silent by nature -- an empty join reads as sparse source data -- so the audit model counts legs with no matching hub row per link per view, which makes it visible without guessing. 9 further disagreements are whitespace-only and are already neutralised: render_key() normalises them to the same SQL. TO OVERRULE: set LINK_LEG_SOURCE = 'hub_key' in mtv2_keyrules.py"
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD13-HUB-DOCUMENT-TWO-KEY-FORMS-BUILT-AS-MAPPED -- Where one source column keys one hub both with a namespace prefix and bare, BOTH forms are built exactly as mapped and the split is COUNTED per hub per prefix from the map in hand -- never asserted from the profile. WHY: One identifier in two key spaces is two hub rows for one document. Picking one merges populations the source has not been asked about, and merging is the unrecoverable direction by the mapper's own rule. No sample data exists to settle whether they are one population. COST: The hub carries two rows for any identifier that appears in both forms. The measured split per hub per prefix is in BUILD_STATUS.json .hub_key_forms; a zero there is a measured zero, not evidence the check works. One mapper answer collapses it. TO OVERRULE: set HUB_DOCUMENT_PREFIX = 'bare' in mtv2_keyrules.py"
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD14-CHILD-KEY-COMPONENT-READER-ACCEPTS-EVERY-DECLARED-SPELLING -- The child_key_components reader accepts ALL leg-name spellings {name, leg, component, maps_to} and ALL value spellings {value, expression, raw, column, source_column}, in the profile-declared order first, and refuses `role` as a name key. Two spellings for one role on one element with DIFFERENT values is fatal. WHY: CONV-CKC-SHAPES in CONVENTIONS.json is RATIFIED and says the element shape is not fixed across runs. The profile records this build's own honouring of it as NO, and stage 0 routed the choice here: widen the reader, or state in the profile that it deliberately does not. Widening is the cheaper of the two and it is the one the declaration asks for. COST: NOTHING ON THIS MAP, and that is stated rather than implied: only name, value, leg_backing, expression, resolved_on_view, note and one `column` occur, so every new branch has ZERO live occurrences and is exercised only by the reader's own divergence probe. ck_spelling_census() prints which spellings were actually read and which were merely accepted, so the widening can never be mistaken for evidence about this bundle. The mapping side has ENDED, so no re-issue can ever exercise it either -- it is insurance with no remaining policy term, and it is implemented because a reader correct only for the bytes in front of it is the defect, not the accident. TO OVERRULE: set CK_LEG_NAME_SPELLINGS = [LEG_NAME_FIELD] (and the two sibling lists) in mtv2_keyrules.py"
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD15-LINK-LEG-NAME-READER-SWEEPS-BOTH-SEPARATORS -- A LNK leg's hub name is recognised before EITHER separator, '=' or ':'. The census reports which separator named each leg, and every published link-leg figure states WHICH QUESTION it answers -- names a hub, binds to a hub, or is positional -- beside its population. WHY: MEASURED over 51 LNK( occurrences and 91 legs: 39 legs name a hub, 34 of them with '=' and 5 with ':'; 52 name no hub. An EQUALS-ONLY reader measures 34 and 57, which is where the figure '34 name a hub, 57 do not' comes from -- it is a reader defect, not a map fact, and the profile's own grammar_lnk_census declares 9 colon-form call sites that such a reader contradicts. A separate distinct-site population (30 sites, 57 legs, 23 naming a hub) supplies the SAME two digits from a third scope, which is how they were transposed onto the 91 denominator. COST: None to the build: the shipped parser already accepted both separators, so no emitted SQL changes. The cost is to the REPORT -- the published figure moves from an instructed 34/57 to a measured 39/52, and every prior figure (4, 34, 52-as-a-bare-number, 57) is listed with the scope that produced it so the next reader can tell which question each answered (BUILD_RULES 11.8). TO OVERRULE: set LNK_LEG_NAME_SEPARATORS = ('=',) in mtv2_keyrules.py and re-run; the census will report 34/57 and say so"
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD16-A-PROFILE-FIGURE-IS-CROSS-CHECKED-ON-ITS-LOAD-BEARING-HALF-ONLY -- Where a profile figure is measured over a form this build does not emit, the build asserts the load-bearing property and REPORTS the arithmetic rather than asserting equality. Applied to longest_source_view_cast_name (41), to prose_test_counts.prose_columns_covered (7), and to the collapse-trap scope figures (18 / 9 / 20). WHY: An equality assertion against a figure measured over a different population is a gate that fires on correct data, and a gate that fires on correct data gets switched off (BUILD_RULES 1.12). 41 is PREFIX+stem and not the emitted model name, and it is the tied-SECOND longest even in its own form; 7 cannot be re-derived without reading the entry keys as English, which BUILD_RULES 3 forbids; the collapse-trap figures differ by SCOPE, not by fact. COST: Three profile figures are carried rather than checked, and each says so at the point of use with the population beside it. What IS asserted in their place is load-bearing: that the abbreviation vocabulary still derives the profile's example stem, that every emitted name is inside the budget, that the prose entry COUNT and its `kind` split reproduce, and that collapse-trap scope B is a subset of scope A. TO OVERRULE: in mtv2_names._probe() and build_mtv2_spec.collapse_trap_scope_reconciliation(), turn the reported comparison back into an equality check"
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "2",
+   "detail": "CLAUSE 10, re-measured by stage 0 and ROUTED here rather than carried: prior result 'fail', re-measured 'PRIOR_EVIDENCE_NOW_STALE', outcome 'PASS_ON_THE_MEASURABLE_PART'. What the clause ASSERTS is the BUILD_RULES 10 sequence verify -> handback -> done. The handback now exists and its prose gate passes. The clause cannot be declared PASS by stage 0 because 'done' also requires the other clauses; it can be declared that ITS OWN stated blocker has been cleared. Re-judged: clause 10 is no longer blocked on the absence of a handback. Routed to stage 2 to re-issue the verdict."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "modeller",
+   "detail": "CLAUSE 9, re-measured by stage 0 and ROUTED here rather than carried: prior result 'fail', re-measured 'AGREES_ON_THE_FACT_DISAGREES_ON_THE_SEVERITY', outcome 'FAIL_AS_WRITTEN_BUT_THE_SEVERITY_IS_WRONG'. ONE item, not eleven: a modeller question about a PROPOSED satellite's grain, carrying a stability caveat. Not a build blocker. Three further facts support this and none of them was on either side's statement: the map already declares it a routed source gap in augmentation.child_key_stability on all 11 rows, with candidate_stable_key POD_NUMBER and a question_for_source; augmentation.applied is false on all 11; and the emitted SQL already carries '** UNSTABLE CHILD KEY (BUILD_RULES 5.2)' in both the satellite and the staging model. The build is behaving correctly under BUILD_RULES 5.7 -- built as mapped, annotated, routed. DENOMINATOR ASSERTED, not transcribed: 1 satellite(s), 1 view(s), 11 map row(s); this build independently measures 1 satellite(s) and 1 view(s). THE CAVEAT IS IN THE MODEL (BUILD_RULES 9.8): the satellite and its staging model carry the UNSTABLE CHILD KEY marker, the SOLE-LEG fact, the map's own source-gap routing, and the ONE question that settles it, naming the candidate stable key only because it was verified to be a real column on that view."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "2",
+   "detail": "CLAUSE 1, re-measured by stage 0 and ROUTED here rather than carried: prior result 'fail', re-measured 'UNCHANGED', outcome 'FAIL'. Gate re-run this session: python3 vault_tools/check_vault_alignment.py maximus_travel_v2_dv_dbt travel_dv_dbt <map> -> EXIT 1, \"FAIL 1. payload column is not the canonical rendering: 13\". Checks 2 through 7 report 0; dead data paths 0; coverage 425 of 442 (96.2%) with 17 accepted. The 13 were then RE-DERIVED independently, not read from the gate's truncated 5-line print, by importing the gate's own canonical()/read_sats()/detect_convention() and re-running check 1's logic. Result: 13."
+  },
+  {
+   "kind": "collapse_trap",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "22_ordinal_child_keys.json (8461 bytes, sha256 f7f6f74cf8fac343..., ASSERTED against the live bundle file at import) claims 'There is NO bare-ordinal keying in this map -- every one is a leg of a compound', and that claim is REFUTED: 11 sole leg(s), 0 compound(s). THIS BUILD FOLLOWS THE ARTIFACT'S OWN FINDINGS AND NOT ITS READING RULE -- the one emitted ordinal child-key leg is the SOLE leg of its child key, over 1 satellite(s) and 1 view(s) measured here. The mapping side has ENDED, so the contradiction cannot be corrected at source and ships as a permanent caveat: a future reader of that artifact must read its findings, never its reading_rules.corrected_count."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "3",
+   "detail": "LINK-LEG FIGURE, CORRECTED AND RE-DERIVED INDEPENDENTLY THIS RUN. Population: 91 legs over 51 LNK( OCCURRENCES. Every figure below is over THIS population unless it names another. MEASURED: 39 of 91 legs NAME a hub and 52 do NOT, swept over BOTH declared name separators (34 with '=', 5 with ':'). THE INSTRUCTED FIGURE OF '34 name a hub, 57 do not' DOES NOT REPRODUCE and is a FOURTH wrong version, not a correction: 34/57 is what an EQUALS-ONLY name reader measures over this same 91-leg population, and 34 and 57 are ALSO both true of a different population -- the 30 distinct (view, expression) call sites carry 57 legs of which 34 name no hub. The two were fused. 19 IS NOT REPRODUCED AND IS NOT GUESSED AT: BUILD_STATUS.counts records it as link_legs_not_bound_to_any_hub_by_name_or_expression_match, a THIRD question that credits a name match as well as an expression match, and this build does not measure that question -- it measures 21 unbound by EXPRESSION match (13 with no on-view hub key, 8 pure literals with no hub to bind to), which agrees with its own counters and with an independent re-derivation. The previously withdrawn 52 is CORRECT and is restored. Every figure with its scope is in BUILD_STATUS.json .link_leg_census, keys THE_THREE_QUESTIONS and FIGURES_PUBLISHED_ON_THIS_PROJECT_AND_WHAT_EACH_ANSWERED. STAGE 3 MUST QUOTE THE QUESTION BESIDE THE NUMBER; a bare link-leg count is unusable on this LOB."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "3",
+   "detail": "THE HANDBACK'S LINK-LEG REFERENCE DOES NOT RESOLVE. BUILDER_ASKS_MAXIMUS_TRAVEL_V2.md section X2 points at `.counts.link_legs_naming_no_hub` of BUILD_STATUS.json, and NO SUCH KEY EXISTS: `counts` is written by stage 2 and preserved unchanged by this writer, and it spells the figure three ways -- link_legs_naming_no_hub_verifier_measurement, link_legs_naming_a_hub_verifier_measurement and link_legs_naming_no_hub_AS_PUBLISHED_DOES_NOT_REPRODUCE -- none of them the name the handback uses. A reader following the handback gets nothing, which is worse than a wrong number because it looks like an omission in the build. THIS STAGE DID NOT EDIT THE PRESERVED BLOCK: `counts` belongs to stage 2 and rewriting another writer's key is the defect that lost stage 2's clause block once already. The key that DOES resolve, and which the handback should name, is `.link_leg_census.not_named_for_a_hub`; the question it answers is in `.link_leg_census.THE_THREE_QUESTIONS`."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "COVERAGE, TWO FIGURES, BOTH WITH THEIR POPULATION. Against vault_tools/check_vault_alignment.py AS IT STANDS -- check 6 compares src_payload ALONE -- 425 of 442 mapped columns reach a payload, with 17 accepted exemptions. Under src_payload UNION src_cdk the figure is 437 of 442, because 12 of those exemptions are columns THE BUILD EMITS as child-key legs, not gaps. The residual 5 are genuine: build_directive_refused 1, satellite_not_built 4. vault_tools was NOT edited and NO exemption was written to work around the gate (BUILD_RULES 8.2): the shared gate is read by other builds and its two recorded defects belong to whoever owns them."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "2",
+   "detail": "GATE SCOPE LIMIT, MEASURED BY INJECTION, NOT INFERRED. vault_tools/check_internal.py resolves dangling edges from ref('...') CALLS only. It skips a `source_model:` entry naming a model that is not in the file set, with the comment 'a dangling ref, already reported above' -- but on this project a satellite model carries a source_model list and NO ref() call at all, so nothing reports it. Planting a nonexistent source_model entry leaves the gate at EXIT 0. This is a THIRD gate defect, alongside the two already recorded (check 6 comparing src_payload alone, and check 1 examining only the canonical satellites). vault_tools was not edited. Whoever owns the shared gates should add the source_model surface to the dangling check.",
+   "population": "satellite models carrying a source_model list and no ref() call: 234 of 237 satellites in this build"
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "3",
+   "detail": "ONE STAGE-1 REPORT WAS LOST BY THIS RUN, before the defect that caused it was fixed. The cascade preserved the previous report only when stage1_report.prev.json did not already exist; on a re-entry it always exists, so the first chain run of this session overwrote stage1_report.json and kept nothing. Its sha256 is recorded in build_artifacts/reproducibility.json .reports_before; its content is NOT recoverable. The cascade is now a true shift -- prev -> prev2 -> prev3 -- that never deletes and never overwrites, and it fires only when the report's SUBSTANCE (stage, status, counts, findings) changes, so the deletion proof's five chain invocations no longer grow the chain by a near-duplicate each. The chain's current shape, with a digest per slot and the slots that share a substance, is in this report at .report_chain."
+  },
+  {
+   "kind": "profile_field_unrecognised",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "TWO PROFILE KEYS HOLD THE OPPOSITE OF WHAT THEY ARE NAMED, and both are consumed for what they CONTAIN rather than renamed here. longest_source_view_cast_name holds an INTEGER (a length) and longest_source_view_cast_example_note holds an IDENTIFIER (a name). A reader taking either at its name gets the other. Additionally the value 41 measures PREFIX+stem, a form this build does not emit -- the emitted cast model name carries the layer prefix -- and it is the TIED-SECOND longest even in its own form, where the maximum is 42. The build asserts the load-bearing half instead: that the abbreviation vocabulary still derives that exact stem for that exact view, and that every emitted name is inside the budget. The mapping side has ENDED, so this is a permanent caveat on the profile rather than a request."
+  },
+  {
+   "kind": "profile_field_unrecognised",
+   "severity": "warn",
+   "for_stage": "3",
+   "detail": "THE REV-6 BLOCKER WAS NOT ONLY THE 15 TOP-LEVEL KEYS. sibling.payload_convention was renamed to sibling.payload_convention_token (plus _status and _note) INSIDE a block that kept its own name, so the top-level key guard stayed silent and the build died on a KeyError 700 lines into a naming function -- a worse failure than a refusal, because it names no cause. A nested rename table now refuses an old inner spelling with a stated reason, and every `sibling` spelling this build reads is declared and asserted present at import. The comparator reads the _token and never the _note (BUILD_RULES 1.21), and the class-to-token mapping is declared rather than substring-matched: 'UPPER_SNAKE' does not appear in 'UPPER_SNAKE_PHYSICAL' under a split, and would wrongly match a future 'NOT_UPPER_SNAKE'."
+  },
+  {
+   "kind": "bespoke_layer",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "augmented-track alignment shim -- implemented and named. OPUS travel_dv_dbt already builds 12 SAT_AUG_* satellites. 94 augmentation rows land on 9 concepts OPUS already augments, so they must be emitted INTO the OPUS-named SAT_AUG_<X> with OPUS's src_pk, single-active grain and bare HASHDIFF, extending its payload, rather than into a Maximus-side second satellite. The standard augmented layer builds per-map and cannot express that; declared exception under BUILD_RULES.md 6.5, required by 7.7."
+  },
+  {
+   "kind": "bespoke_layer",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "EAV instance fan-out driven by a literal leg -- implemented and named. 593 child-key legs are pure literals naming a column-as-instance inside a pivot view. The unpivot layer must fan one parent row into N instance rows keyed by the LEG LITERAL, which has no source column to unpivot from - the literal IS the instance name. 39 of these legs carry no 'expression' field at all and the generator must synthesise the quoted literal from 'value'."
+  },
+  {
+   "kind": "unresolved_key",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "child_leg_unresolved_sentinel: leg 'Media Reference' carries leg_backing='unresolved': a placeholder, not a value. Refused at build time and reported unbuilt; its `value` is NEVER synthesised into a literal.. Built as mapped where it could be built, otherwise left unbuilt with the reason in build_artifacts/mtv2_spec.json. Stage 3 must put this to the mapper; the build does not correct a mapping (BUILD_RULES 5.7)."
+  },
+  {
+   "kind": "unresolved_key",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "collapse_trap_only: SAT_CLAIM_EVIDENCE child key is composed ONLY of literal legs with no operand (['Evidence Type']): it cannot discriminate anything and would collapse every instance onto one row. Built as mapped where it could be built, otherwise left unbuilt with the reason in build_artifacts/mtv2_spec.json. Stage 3 must put this to the mapper; the build does not correct a mapping (BUILD_RULES 5.7)."
+  },
+  {
+   "kind": "unresolved_key",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "collapse_trap_only: SAT_PARTY_DIGITAL_IDENTITY child key is composed ONLY of literal legs with no operand (['Active Sequence Number']): it cannot discriminate anything and would collapse every instance onto one row. Built as mapped where it could be built, otherwise left unbuilt with the reason in build_artifacts/mtv2_spec.json. Stage 3 must put this to the mapper; the build does not correct a mapping (BUILD_RULES 5.7)."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "1 row(s)/item(s) NOT BUILT: SAT_CLAIM_EVIDENCE: child key composed only of no-operand constant legs ['Evidence Type'] (SAT_CLAIM_EVIDENCE) -- every surviving leg of the child key is a cons Example: SAT_CLAIM_EVIDENCE. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "1 row(s)/item(s) NOT BUILT: SAT_PARTY_DIGITAL_IDENTITY: child key composed only of no-operand constant legs ['Active Sequence Number'] (SAT_PARTY_DIGITAL_IDENTITY) -- every surviving leg o Example: SAT_PARTY_DIGITAL_IDENTITY. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "15 row(s)/item(s) NOT BUILT: a payload attribute shares its name with a child-key leg; the payload write would land second and overwrite the null-safe rendering (BUILD_RULES 5.4). Kept as t Example: SAT_POLICY_SUM_INSURED_BREAKUP payload ['SUM_INSURED_HEAD']. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "34 row(s)/item(s) NOT BUILT: row supplies child-key legs [('Coverage Reference', 'Premium Head Code')], the satellite's declared set is ['Adjusted Indicator', 'Coverage Reference', 'Premium Example: SAT_POLICY_PREMIUM_HEAD rows on uwr_pol_ins_cov_covp_sp_pv. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "10 row(s)/item(s) NOT BUILT: row supplies child-key legs [('Coverage Reference',)], the satellite's declared set is ['Coverage Reference', 'Coverage Sequence']. Within one satellite the chi Example: SAT_POLICY_COVERAGE_SCHEDULE rows on uwr_pol_polp_msp_msd_prop_pv. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "5 row(s)/item(s) NOT BUILT: row supplies child-key legs [('Premium Head Code',)], the satellite's declared set is ['Adjusted Indicator', 'Coverage Reference', 'Premium Head Code', 'Section Example: SAT_POLICY_PREMIUM_HEAD rows on uwr_pol_polp_msp_msd_prop_pv. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "9 row(s)/item(s) NOT BUILT: row supplies child-key legs [(), ('Coverage Reference', 'Premium Head Code')], the satellite's declared set is ['Premium Head Code']. Within one satellite the c Example: SAT_QUOTE_PREMIUM_HEAD rows on uwr_qpd_rskl_rskc_rskc_prop_rl_pv. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "8 row(s)/item(s) NOT BUILT: row supplies child-key legs [()], the satellite's declared set is ['Contact Point Type']. Within one satellite the child key must be ONE leg set; the missing le Example: SAT_ORG_UNIT_CONTACT rows on uwr_pol_off_oa. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "1 row(s)/item(s) NOT BUILT: row supplies child-key legs [()], the satellite's declared set is ['Endorsement Number']. Within one satellite the child key must be ONE leg set; the missing le Example: SAT_POLICY_ENDORSEMENT rows on uwr_pol_polp_msp_msd_prop_pv. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "1 row(s)/item(s) NOT BUILT: row supplies child-key legs [()], the satellite's declared set is ['Exclusion Set Code']. Within one satellite the child key must be ONE leg set; the missing le Example: SAT_CLAIM_EXCLUSION_APPLIED rows on clm_clmd_clmap_pv. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "3 row(s)/item(s) NOT BUILT: row supplies child-key legs [()], the satellite's declared set is ['Rating Input Code']. Within one satellite the child key must be ONE leg set; the missing leg Example: SAT_RISK_TRAVEL_RATING_INPUT rows on uwr_qpd_rskl_msp_imsd_inp_pv. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "22 row(s)/item(s) NOT BUILT: row supplies child-key legs [()], the satellite's declared set is ['Sub Cover Code']. Within one satellite the child key must be ONE leg set; the missing legs a Example: SAT_RISK_TRAVEL_COVER_TERMS rows on uwr_qpd_rskl_msp_imsd_inp_pv. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "1 row(s)/item(s) NOT BUILT: row supplies child-key legs [()], the satellite's declared set is ['Sum Insured Head']. Within one satellite the child key must be ONE leg set; the missing legs Example: SAT_QUOTE_SUM_INSURED_BREAKUP rows on uwr_qpd_polp_msp_imsd_inp_pv. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "2 row(s)/item(s) NOT BUILT: the row carries no resolved_key and 2 distinct LNK_PARTY_LOCATION key slots exist on this view (instances ['proposer@correspondence-local', 'proposer@permanent- Example: LNK_PARTY_LOCATION on uwr_pol_prp_pp_sp_pv.FLAG_INDICATING_IF_CURRENT_PERMANENT_OVERSEAS_ADDRESS_IS_SAME_AS_CORRESPONDENCE_LOCAL_ADDRESS. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "1 row(s)/item(s) NOT BUILT: the row carries no resolved_key and no other row resolves 'HUB_PRODUCT' on this view, so there is no key the MAP has already resolved to attach it to. Not inven Example: HUB_PRODUCT on uwr_pol_prp_pp_sp_pv.PRODUCT_DETAILS. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "1 row(s)/item(s) NOT BUILT: the row carries no resolved_key and no other row resolves 'HUB_QUOTE' on this view, so there is no key the MAP has already resolved to attach it to. Not invente Example: HUB_QUOTE on uwr_pol_prp_pp_sp_pv.CALCULATOR_URN_NUMBER. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "2 row(s)/item(s) NOT BUILT: the row carries no resolved_key and no other row resolves None on this view, so there is no key the MAP has already resolved to attach it to. Not invented (BUIL Example: (no anchor) on uwr_pol_polp_sp_pv.AMOUNT_RECEVIED. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "3 row(s)/item(s) NOT BUILT: transformation_kind=executable_expression with build_directive=true. The map DECLARES this attribute requires a derivation this build does not implement: 'deriv Example: SAT_RISK_PERSON_INSURED.Age At Entry from uwr_qpd_rskl_rskp_rl_pv.DATEOFBIRTH. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "source",
+   "detail": "22 row(s)/item(s) NOT BUILT: resolved_key.expression is empty -- no identifier for this hub exists on this view. Not invented (BUILD_RULES 5.6). Example: HUB_FINANCIAL_TRANSACTION key on NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW.UPDATE_FOREX_RATE. Stage 3 must either accept these into accepted_uncovered.txt with this reason, or return an answer that lets them be built."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "All 23 build directives in the profile are implemented and each is NAMED in the generator that implements it; generators/README.md emits the bundle-item -> mechanism -> module table from the code. No directive was declined."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "3",
+   "detail": "UNDETERMINED, carried forward: Which collapse-trap scope the rev-5 figure of 20 used. -- Rev 5 states 20 without a definition. My two stated scopes give 18 (multi-row) and 9 (multi-view) over a denominator of 58 (satellite, leg) pairs. The map is byte-identical, so nothing changed -- the scopes differ. CONSEQUENCE: Clause 9's '9 of 20' cannot be re-judged on its collapse-trap half from stage 0. Stage 1 must state the scope it used before anyone compares the numbers. Do NOT read 18-vs-20 as a regression."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "3",
+   "detail": "UNDETERMINED, carried forward: Whether the residual phrase-token class CONVENTIONS routes to source occurs in this map. -- A single-word brace token naming a real SCALAR column on its own view is indistinguishable from a correct leg from this side, by construction. All three instruments the mapper tried are blind to it and so is any instrument I can build here. CONSEQUENCE: If such a leg exists it will render as a plausible child key and pass every gate. Only source can close it. travel_occurrences is 0 for the MULTI-WORD half, which I verified; the single-word half is unmeasurable, not zero."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "3",
+   "detail": "UNDETERMINED, carried forward: Whether the 12 check-1 satellites are genuinely populated in the physical vault. -- Everything here is static: ma_sat materialises src_cdk by contract, and the feeders are live and non-null. Nothing in this workspace runs dbt or reads Snowflake, so the physical table is never observed. CONSEQUENCE: The gate-scope diagnosis rests on a contract reading, not on an observed column. Strong, but not the same thing. If AutomateDV's ma_sat behaviour differs from the contract, 12 attributes are missing and the gate was right."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "3",
+   "detail": "UNDETERMINED, carried forward: Whether CONVENTIONS.json's outer RECOMMENDED_NOT_RATIFIED or its inner RATIFIED tokens govern. -- The artifact states both and states no precedence rule. CONSEQUENCE: This build adopted the inner blocks. If the mapper intended the outer token to govern, a recommendation has been consumed as settled -- the precise defect CONVENTIONS exists to prevent, committed against CONVENTIONS."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "3",
+   "detail": "UNDETERMINED, carried forward: Why there is no stage0_reentry5_report.json. -- build_profile rev 5 exists and is dated 2026-09-24, but build_artifacts/reports/ holds reentry2, 3 and 4 only. I did not write rev 5 and cannot say whether its report was never written or written elsewhere. CONSEQUENCE: The stage-0 audit trail has a hole at rev 5. Anything rev 5 learned and did not put in the profile is lost. This report is numbered 6 to match the profile revision, not the report series."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "3",
+   "detail": "UNDETERMINED, carried forward: Whether resolved_key.legs will ever be populated on this LOB. -- ZERO occurrences in this map on either track. Its coverage in the census-exploit probe was proved by SYNTHESISING an instance, never by observing one. CONSEQUENCE: Read the legs-slot PASS as insurance for a future bundle, never as evidence about this one. Link legs on this LOB live inside LNK(...) text, which the expression slot already covers."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "3",
+   "detail": "TWO content-hash canonicalisations, used on DISJOINT hubs: md5(normalise(...)) on HUB_LOCATION and LNK_PARTY_LOCATION (ADDRESSES -- internal whitespace collapsed) and md5(upper(trim(...))) on HUB_PARTY, LNK_PARTY_ROLE and HUB_ORG_UNIT (nominee and branch NAMES -- ends trimmed only). Verified: ZERO hubs carry both form. This is NOT a split key space within one hub. Both are emitted exactly as mapped and the split is in BUILD_STATUS.json .content_hash_canonicalisations. The open question -- whether a hand-typed nominee name should collapse internal whitespace too, so that 'AB  CD' and 'AB CD' are one party -- is a modeller decision on a hub OPUS also writes, not a build decision."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "THE DEGENERATE CONTRACT IS ASSERTED, NOT CONSUMED. degenerate_value is JSON null on all 2344 blocks and is NEVER read as a value or as a guard operand -- it is type-checked and nothing else. degenerate_verdict is read ONCE: {'null_on_blank_row': 2344}. The other two branches (empty_on_blank_row, constant_on_blank_row) have ZERO rows, so this build ships NO code path for them and RAISES if one appears. A branch with no rows is not a tested branch, and two untested branches in the guard would be exactly the defect this corpus is built around."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "keynorm grew a THIRD field-set shape in rev 4. Nothing here reads a keynorm value -- previous_expression is history on all 1444 blocks and parsing it would re-key hubs to a superseded walk -- but the SHAPES are asserted and an unrecognised one stops the build. Measured: {'class + previous_expression + stage': 1391, 'class + previous_expression + reason + stage': 33, 'previous_expression + reason': 20}. A reader iterating by `stage` would silently skip 20 blocks."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "KEY REJECTION: the mechanism is by SHAPE -- a CASE over coalesce(<guarded operands>) is not null, then nullif(trim(key),''). The outer nullif(key,'<constant>') branch exists but FIRED ZERO TIMES on this map, and zero is reported as zero: under Snowflake semantics every one of the map's key expressions is NULL on an all-blank row, so there is no statically computable constant to compare against. A predicate built from KEY_DEGENERATE_VALUES.csv's 369 'non-empty constants' could never fire while reading exactly like a working guard. Per-hub per-feeder drop counts are measured at RUN time by audit_mtv2_key_rejections, not asserted here."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "13 LNK leg(s) are not ALSO used as a standalone hub key on their own view, so the directive's 'assert the leg appears verbatim as some hub resolved_key.expression' has nothing to compare against there. They are BUILT -- every leg goes through the same render_key(), so a leg and its hub key are byte-identical by construction -- and listed individually in mtv2_spec.json census.link_legs_uncorroborated. Raising instead would have dropped them and the loss would read as a source gap."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "source",
+   "detail": "A RENUMBERING ORDINAL still reaches a child key on SAT_POLICY_DOCUMENT_DISPATCH (11 leg occurrence(s)). All SEVEN spellings in the profile were swept as a class, not matched as tokens. Built AS MAPPED with the mapper's own 'declared source gap, not re-keyed' disposition; POD_NUMBER was named a candidate, not a decision, and the build does not substitute it (BUILD_RULES 5.7). A dispatch line inserted or removed re-attaches the history of the rest."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "modeller",
+   "detail": "GRAIN DIVERGENCE on SAT_PARTY_BANKING: this map declares multi_active=True with child key ['ACCOUNT_NUMBER_MASKED']; the OPUS sibling builds it single-active. Built under the SIBLING's contract (BUILD_RULES 7.2) and reported. 16 row(s) affected."
+  },
+  {
+   "kind": "note",
+   "severity": "blocker",
+   "for_stage": "3",
+   "detail": "SHARED-VAULT HASHDIFF: NARROWED, NOT RETIRED, and the earlier scope was wrong. MEASURED THIS RUN against the sibling BUILD, satellite by satellite: 234 satellites here and 45 in travel_dv_dbt; 35 are written by BOTH -- not the 9 the previous report counted, which took only the OPUS-named SAT_AUG_* nine and understated the shared surface by the standard-track satellites. RETIRED on the COLUMN NAME: 234 of 234 bare HASHDIFF here, 45 of 45 on the sibling, 0 name disagreement(s) across the shared set. NOT RETIRED, and this is the worse half: the hashdiff INPUT LIST differs on 34 of the 35 shared satellites. Same column name, different contents -- a row written by one project and read by the other still compares as CHANGED, and the name agreeing is what hides it. Input list here means the satellite's src_payload plus its src_cdk -- the columns each project's stage hashes into the hashdiff. Per-satellite detail is in BUILD_STATUS.json .sibling.shared_surface.hashdiff_input_list_detail. Reconciling the lists re-grains a shared table and is a MODELLER decision; this build does not take it."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "20 augmentation attribute(s) carry an ANCHOR and no resolved_key, and their anchor has several key slots on their view with no instance named. They are bound to the DOMINANT instance -- the one the map itself uses for most rows on that view, vote {'proposer': 129, 'bagic-employee': 2, 'parent-party': 1, 'proposer@correspondence-local': 1, 'proposer@permanent-overseas': 1} -- rather than dropped. Dropping them would be a silence coverage cannot see (BUILD_RULES 8.1). Every binding is listed in mtv2_spec.json census.anchor_bound_by_assumption; one mapper answer settles all of them."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "mapper",
+   "detail": "ONE SOURCE COLUMN IN TWO KEY SPACES, swept across EVERY hub rather than confirmed on the instance the mapper found: 0. HUB_DOCUMENT's DOCUMENT_ID is unified on 'DOC:' in the map I built from (INWARD: 38 / DOC: 22 / COI: 4, no bare form), so the finding the profile raises is CLOSED in this map. The detector is proved able to fire by the companion sweep in the same pass, which finds 7 hubs with several single-operand bare keys -- so this zero is a MEASURED zero, not a check that cannot fail."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "source",
+   "detail": "7 hub(s) have several SINGLE-OPERAND bare keys -- different source columns each keying the hub alone with no namespace. Whether that is ONE code system reached by several column names, which is what a canonical hub is FOR, or SEVERAL systems that must not merge, is a SOURCE question this build cannot answer and does not guess. Reported as a CENSUS, not as 7 findings. The mapper flags HUB_ORG_UNIT: HUB_ORG_UNIT(BRANCH_CODE, LOCATION_CODE, STORED_COMPANY_CODE). Built as mapped; merging is the unrecoverable direction, so nothing was merged."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "COLLAPSE TRAPS: the profile's list widened 10 -> 20 by adding legs that render to one value only because ONE view carries them. 2 satellite(s) were REFUSED -- every leg of their child key is a literal with NO OPERAND and can never discriminate. 11 were BUILT with a warning: every leg is on the 20-list but is backed by a source COLUMN and will discriminate per row at load time. Refusing those too would have withheld 11 satellites on a signal the profile itself calls weaker (BUILD_RULES 11.8). The 11 are in mtv2_spec.json census.collapse_trap_warnings."
+  },
+  {
+   "kind": "note",
+   "severity": "blocker",
+   "for_stage": "mapper",
+   "detail": "leg_backing='unresolved' is now a HARD SENTINEL. The one leg that carries it (SAT_CLAIM_EVIDENCE.'Media Reference') has no expression and a `value` that is an already-quoted English sentence. The synthesis rule that is correct for the other 44 expression-less legs would have written that sentence into a child key, past every gate, because a quoted string is valid SQL. It is REFUSED before anything reads `value`, and a renderable-token test now guards the other 44 as well -- so a future re-issue that moves prose into a `value` under a different leg_backing is refused too, rather than relying on this one kind staying labelled. The row is unbuilt and listed."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "LINK LEG vs HUB KEY: {'VALUE_CHANGING': 4, 'ORPHAN_LEG': 9}. Built AS MAPPED (BD12) -- substituting the hub's expression for the leg's is the build correcting the mapping (BUILD_RULES 5.7), and on CLAIM_RESERVE the two are not cosmetic: the hub key walks FOREIGN_KEY and the leg walks PARENT_KEY_HASH, so the leg rides the UNPROVEN FK round-trip while the hub does not. The orphan 'EMP:' || BAGIC_RM_ECODE leg mints a party no hub key anywhere produces. The cost is SILENT -- an empty join reads as sparse source data -- so audit_mtv2_link_leg_divergence counts legs reaching no hub row per link per hub per feeder. VALUE_CHANGING HUB_PARTY on clm_clmd_clmap_pv; ORPHAN_LEG HUB_POLICY on uwr_pol_ins_mbr_party_relation; ORPHAN_LEG HUB_PARTY on uwr_pol_ins_mbr_party_relation; ORPHAN_LEG HUB_POLICY on uwr_pol_prp_party_relation; ORPHAN_LEG HUB_PARTY on uwr_pol_prp_party_relation; ORPHAN_LEG HUB_POLICY on uwr_pol_policy_relation"
+  },
+  {
+   "kind": "note",
+   "severity": "blocker",
+   "for_stage": "3",
+   "detail": "COVERAGE LIMIT ON MY OWN LINK CHECK, RESTATED OVER THE RIGHT POPULATION. Previously reported as 4, which counted only legs that were BOTH positional AND uncorroborated -- a subset of a subset -- in the same sentence as a claim that more than half the link surface is unverified. The two halves contradicted each other and the smaller number is the one a reader quotes (BUILD_RULES 11.8). MEASURED THIS RUN from the live map with the build's own balanced-paren splitter: 91 legs over 51 LNK call sites; 39 NAMED for a hub (HUB_CLAIM 1, HUB_LOCATION 4, HUB_PARTY 26, HUB_POLICY 8); 1 named for a non-hub role; 51 carrying NO name token, of which 8 are pure literals. THE FIGURE TO QUOTE IS 52 of 91 legs (57.1 percent) that name no hub: on those the leg and the hub key come from the SAME render_key() and agree BY CONSTRUCTION, so audit_mtv2_link_leg_divergence cannot see a mis-bound leg there. RECONCILING THE THREE PUBLISHED FIGURES: legs total agrees everywhere; this build and build_profile.json agree that 40 legs carry a name token and 51 carry none -- the profile's own 'named/positional' split; stage 2's re-derivation of 34 named counts only legs naming a HUB_ and reached 5 fewer than this build does, differing on HUB_PARTY and HUB_LOCATION. The build's splitter is the one that parses the whole map with zero residue, so 'named for a hub' here is 39."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "15 payload column name(s) were renamed with a satellite suffix in a wide stage because two satellites on one view derive the same name from different sources. The satfeed renames them back, so the satellite's declared payload is unchanged. Stage 2 should expect the suffixed names in the STAGE layer only."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "16 cast model(s) are PROVISIONED and joined by no resolver: they are the parent-chain levels a FOREIGN_KEY hop's named destination skips, and they are the reversal path for BD1. They are not dead models. They are named in gen_mtv2_hopviews' output and in mtv2_spec.json provisioned_not_joined."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "MY DEFECT, caught and fixed before delivery: the sibling-contract lookup fell back from a STANDARD satellite to the sibling's SAT_AUG_* of the same concept, then re-grained the satellite to the augmented contract and filtered its rows by the new grain. SAT_PARTY_BANKING lost all 44 of its rows and vanished from the build. Fixed by scoping the lookup to the track and by never letting a contract change WHICH ROWS are built."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "MY DEFECT, caught and fixed: 50 of the 51 LNK() expressions in this bundle are SATELLITE ATTRIBUTE rows, not link-key rows. The first link pass consumed them and never created a satellite row, so seven link satellites were silently absent."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "MY DEFECT, caught and fixed: a key slot was identified by the EXPRESSION STRING, so one party key written once with abbreviated destination tokens and once with full names became two key columns on one view -- two hub populations for one party. Slot identity is now the RENDERED KEY."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "MY DEFECT, caught and fixed: the sibling src_pk re-point matched LOCATION_HKEY against LOCATION_HKEY__<instance> by prefix and collapsed three distinct addresses onto one. The sibling's contract is about which HUB, not which instance of it."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "MY DEFECT, caught by my own dead-path check and fixed: the wide stage's column-claim pass did not include the columns a satellite NULL-PADS, so a null-padded column took the plain name and blocked the satellite that actually fed it -- a live attribute rendered dead while still declared. It also pooled both tracks into one namespace."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "MY DEFECT, caught and fixed: the augmented stage passed a CTE name as source_model. automate_dv.stage resolves that with ref(), so it would not have compiled -- and nothing in this workspace runs dbt, so no gate here would have caught it."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "MY DEFECT in the CHECK, caught and fixed twice: the dead-path check first read the SPEC's payload rather than what was built, then required an ' as ' alias the satfeed does not always write. The two versions reported 6 and then 929 false positives. It now reads src_payload from the satellite model and follows each satfeed branch to its stage."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "MY DEFECT, caught by the deletion proof: FOUR layers never wiped. Only the vault and augmented layers emptied their directories, so the cast, resolver, unpivot and stage layers kept any model a previous run had produced and this one no longer does. Refusing one feeder removed two models from the output and a run over a populated tree still shipped them -- a model nobody generates any more, indistinguishable from a live one. Every layer is now wiped by its FIRST writer (two directories have two writers each, so the order is load-bearing and is documented in run_all.sh). The proof now returns byte-identical."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "MY DEFECT, avoided only because the coordinator corrected me: I first refused all 7 rows whose transformation begins 'derived:'. Four of those are prose, so a prefix test would have withheld four real attributes -- the same over-refusal shape as the collapse-trap list earlier in this run. The fix is not a better pattern: it is to stop pattern-matching a field the map already classifies."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "MY DEFECT, found by the coordinator and not by me: target.transformation was read ZERO times across four runs. On this LOB it carries executable derivations on 7 rows, two of which were emitting WRONG data. My never-read list was assembled from what looked like prose without testing whether anything on it was load-bearing, and `transformation` was never on any list at all -- it was simply never consumed. The generalised fix is the value-shape classifier: no field that can carry an instruction is now allowed to be absent-by-omission."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "MY DEFECT this run, caught by my own negative control: the BD13 prefix-split probe flagged a column keyed under SEVERAL DIFFERENT prefixes as a hazard. That is the opposite of the hazard -- different prefixes are deliberate separation. It reported HUB_FINANCIAL_TRANSACTION.PARENT_KEY_HASH under PAY:/POLPREM:/QUOTEPREM:, three transaction types correctly held apart. Narrowed to prefixed-AND-bare, which is the real two-key-spaces case."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "MY DEFECT this run, caught and narrowed before delivery: I let the profile's widened 20-item collapse-trap list refuse satellites outright, taking refusals from 2 to 13. Eleven of those have a child key backed by a real source COLUMN that renders to one value only because one view carries the leg; they discriminate per row at load time. Refusing them would have withheld eleven satellites on a signal the profile itself calls weaker, and would have got the two REAL refusals discounted along with them."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "MY DEFECT this run, caught and narrowed: my shared-bare-namespace detector flagged any hub with more than one unprefixed source column, which reported 7 hubs including HUB_LOCATION's 56 address COMPONENTS -- the operands of ONE content hash, not 56 code systems. Narrowed to several SINGLE-OPERAND bare keys, and reported as a census rather than a verdict, because distinguishing one code system from several is a source fact I do not have."
+  },
+  {
+   "kind": "note",
+   "severity": "blocker",
+   "for_stage": "3",
+   "detail": "MY DEFECT, NOT RECOVERABLE BY ME: I destroyed this project's stage-0 completion reports. build_artifacts/reports/stage0_report.json and stage0_reentry_report.json are GONE from local disk. Cause: my first reproducibility script followed BUILD_RULES 9.3 by backing the reports up and then deleting build_artifacts; on a second invocation its own cleanup of the backup directory ran BEFORE the copy, so the backup was emptied and the originals were then deleted. This is precisely the amendment 9.3 already carries, and I reproduced it. FIXED FOR THE FUTURE: the proof now deletes only what the chain rewrites and asserts build_artifacts/reports survived; that assertion passes on the run that produced this report. RECOVERY: the project lives under OneDrive, so the deletes should be in the OneDrive cloud recycle bin (30-day retention) for 'Documents/dev/Health_DBTModel/maximus_travel_v2_dv_dbt/build_artifacts/reports' -- please restore from there, or re-run stage 0, which regenerates them. The build itself does not depend on them; stage 2 and stage 3 do. No mapper artifact and no bundle file was touched: the read-only assertion over the whole input set passes on every run."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "vault_tools/check_patterns.py reads the FIRST ARGUMENT of .search()/.match() as a PATTERN. That is right for a pattern and wrong for a SUBJECT: it reported two probe subjects in mtv2_names.py as uncompilable regexes, and warned that a POSIX character class in a third was a nested set. I restructured my probes to build their subjects in variables rather than weaken a shared gate -- the gate now passes -- but the blind spot is real and will fire on any project that probes a pattern with a literal subject. Owner: builder. Not fixed by me: vault_tools is shared by every project."
+  },
+  {
+   "kind": "note",
+   "severity": "blocker",
+   "for_stage": "mapper",
+   "detail": "target.transformation CARRIES EXECUTABLE DERIVATIONS ON THIS LOB AND WAS READ ZERO TIMES until this run. 3 attribute(s) are REFUSED rather than emitted from their raw column, selected on build_directive == true -- the map's own declaration. Emitted raw they are WRONG data, not missing data: SAT_RISK_PERSON_INSURED.'Age At Entry' would receive a raw DATE OF BIRTH, and SAT_POLICY_COVERAGE_SCHEDULE.'Coverage Reference' a whole delimited list as ONE value on a multi-active satellite that should fan out to one row per coverage code. Both pass every gate: outcome=mapped, SQL well-formed, column populated. The derivations are NOT implemented -- floor, months_between and split are unratified in KEY_FUNCTIONS.md, the age calculation needs COVER_INCEPTION_DATE on the same view (unverified), and split-to-rows is a bespoke FAN-OUT LAYER (BUILD_RULES 6.5), not an expression to improvise. Cross-checked against the bundle's own 20_build_directives.json: IDENTICAL (mine 3, theirs 3). || SAT_POLICY_COVERAGE_SCHEDULE.Coverage Reference <- POLICY_RISK_COVER_LIST : derived:split(POLICY_RISK_COVER_LIST) -> one active row per coverage code || SAT_RISK_PERSON_INSURED.Age At Entry <- DATEOFBIRTH : derived:Age At Entry = floor(months_between(COVER_INCEPTION_DATE, DATEOFBIRTH)/12) || SAT_RISK_PERSON_INSURED.Age At Entry <- DATEOFBIRTH : derived:Age At Entry = floor(months_between(COVER_INCEPTION_DATE, DATEOFBIRTH)/12)"
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "transformation is classified by the DECLARED transformation_kind, never by the value's shape, and can never be silently ignored: {'absent': 2366, 'prose': 60, 'refuse': 3}. Five kinds exist on this LOB and only executable_expression refuses; an unrecognised kind, a populated value with no kind, or a kind that disagrees with build_directive all STOP the build rather than defaulting to prose (BUILD_RULES 2.2). TEST THE SPECIFIC BEFORE THE GENERAL: 7 rows begin 'derived:' and only 3 are executable, so a prefix test would have withheld 4 real attributes -- and the mapper's own classifier proved the same trap in the other direction by matching 'decode (' inside 'code->decode (repository code ...)'."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "3",
+   "detail": "NOT FINAL. This build is against build_profile.json revision 6 and the map as it stood at the digest recorded in BUILD_STATUS.json .input_digest. A further re-issue has already been announced. Nothing here should be read as 'the map is settled'; the generators are the durable artifact and re-running them is cheap."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "3",
+   "detail": "THE BUNDLE MOVED UNDER THIS RUN, measured not assumed. The profile's field census and the map on disk disagree on two fields, both of which are on the never-read list: (1) resolved_key.degenerate_value is JSON null on all 2344 rows with a NEW sibling field degenerate_verdict='null_on_blank_row', where the profile describes it as the English sentence 'NULL (row correctly rejected on an all-blank source row)'; (2) 33 keynorm blocks (27 target, 6 augmentation) carry `reason` ALONGSIDE stage and class, where the profile states that reason-bearing blocks carry neither. EVERYTHING LOAD-BEARING IS BYTE-STABLE against the profile: rows 2639, resolved_key blocks 2366, expressions 2344, child_key_components 1119, live expressions 3418, and the FULL function census including trim=5094. So no key, leg, satellite or attribute this build emits is affected. Stage 1 identified bundle state by CONTENT DIGEST, never by mtime, as the re-entry report asks -- the digest over the named input set is in BUILD_STATUS.json .input_digest."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "THE BUNDLE'S OWN ALLOWLIST GATE IS BLIND TO A THIRD OF THE LIVE EXPRESSIONS. check_key_function_census.py polices resolved_key expressions only -- 2344 of the 3418 live expressions -- so an unratified function can accumulate in child_key_components[].expression without the allowlist noticing. My census covers all 3418 (the profile's own A+B split proves the arithmetic: 4415+679=5094 trim). Scope stated with every number."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "GATE IS AT 8 WARNS, NOT 7, and the covering documents still say 7. The 8th is resolved_key_sound on HUB_DOCUMENT. State it as a PRE-EXISTING COLLAPSE NOW VISIBLE, not as a regression: the two instances previously differed by one whitespace character, which changes no SQL value, so they always collapsed onto one hub row. The fix merely made the collapse visible to a string-comparing gate. Nothing about the emitted keys changed."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "KEY_FUNCTIONS.md section 10 still names SAT_QUOTE_RATING as an as-built contract. VERIFIED INDEPENDENTLY against travel_dv_dbt this run, not taken from a document: 295 SQL models, zero matching *quote_rating*, and sat_quote_header.sql is the only quote satellite. The OPUS quote branch is MINIMAL. This build matches the as-built natural key form, parentheses included."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "3",
+   "detail": "FK ROUND-TRIP EXPOSURE, quoted WITH ITS SCOPE: 875 live key expressions reference FOREIGN_KEY, of which 863 do so through a spine walk. The figure '733 rows' that circulates in the covering documents reproduces as neither and is not quoted here. The round-trip itself remains UNPROVEN -- 00_tables_index.json still carries sample_data_available=false -- and audit_mtv2_fk_roundtrip falsifies it before any load."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "TWO PROFILE NUMBERS MOVED FOR METHOD REASONS, NOT BUNDLE REASONS, and are NOT drift: casts 113 -> 115 (rev 4 expands every prefix-ancestor; rev 3 expanded only the levels between a walk's endpoints, against a byte-identical 00_tables_index.json) and link-leg disagreements 16 -> 12 (rev 4 compares whitespace-canonical token streams, absorbing the 9 whitespace-only cases). This build follows rev 4's method and emits 115 casts; the 2 extra are ancestors that have to exist anyway."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "BUNDLE DIGEST CHECK, run against the profile's own bundle_digests: 8 of 9 files match byte for byte, INCLUDING 04_column_map.json. The one that moved is KEY_FUNCTIONS.md (d62e136c -> 7ef3230f). Consequence: NONE for this build, because nothing here validates against that document -- the function census is taken over the MAP. That is the whole value of not reading a governance artifact as an allowlist."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "KEY_FUNCTIONS.md's function table is the declared ALLOWLIST and has been stale twice in this engagement. This build validates the census against the MAP, never against that table, and reports a divergence instead of failing closed against it. Measured this run: the map's function census reproduces the PROFILE's exactly, trim included."
+  },
+  {
+   "kind": "collapse_trap",
+   "severity": "blocker",
+   "for_stage": "modeller",
+   "detail": "A RENUMBERING ORDINAL IS CARRYING A CHILD KEY. SAT_POLICY_DOCUMENT_DISPATCH declares child key DISPATCH_SERIAL_NUMBER and its stage defines that column from SERIAL_NO on uwr_pol_disp -- 11 map leg row(s) collapse to ONE child-key column in ONE stage, so both figures are true of different scopes. BUILD_RULES 5.2: an ordinal is never a discriminator and a child-key leg needs hub-grade stability; a dispatch line inserted or removed renumbers the rest and re-attaches their history, exactly as a renumbered hub key would. BUILT AS MAPPED (5.7) -- the build does not re-key a satellite -- and made LOUD: the satellite model and the stage that defines the column both carry the warning in their header. The ordinal CLASS is re-derived BY SHAPE from 00_tables_index.json and reconciled with the profile, so an eighth spelling stops the build rather than being missed; detection in the emitted models resolves src_cdk through the feed to the stage expression and never looks for a name shape such as a _CK suffix, which is how a check returns a clean zero it cannot earn. THE QUESTION THE BUILD CANNOT ANSWER: is SERIAL_NO stable per row, and if not, what identifies one?"
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "26 child-key column(s) are ORDINAL-SHAPED but backed by no source column of that shape -- on this build they are unpivot instance labels or literals, which discriminate stably. They are reported rather than counted as ordinals, because the shape alone is not the test and a reader seeing the name would ask: SAT_AUG_CLAIM_DOCUMENT_REMINDER.REMINDER_SEQUENCE, SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE.ACTIVE_SEQUENCE_NUMBER, SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER.REMINDER_SEQUENCE, SAT_AUG_POLICY_COVERAGE_SCHEDULE.COVERAGE_SEQUENCE, SAT_AUG_QUOTE_COVER_DETAIL.COVERAGE_SEQUENCE, SAT_CLAIM_INVESTIGATION_FINDING.FINDING_SEQUENCE, SAT_CLAIM_NOTE.NOTE_SEQUENCE, SAT_COVERAGE_SUBLIMIT_SCHEDULE.ACTIVE_SEQUENCE_NUMBER, SAT_LNK_PARTY_ROLE_CORE.ROLE_SEQUENCE, SAT_LNK_POLICY_PARTY_ROLE.ROLE_SEQUENCE, SAT_POLICY_COVERAGE_SCHEDULE.COVERAGE_SEQUENCE, SAT_RISK_PERSON_MEMBER.MEMBER_SEQUENCE. Detail at BUILD_STATUS.json .ordinal_child_keys.ordinal_shaped_but_not_source_backed."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "2",
+   "detail": "check_vault_alignment PASSES (exit 0) as it stands -- the verdict is READ from build_artifacts/gate_verification.json, not asserted. THE SCOPE ISSUE IS UNCHANGED and survives the pass: 12 of check 1's original findings are a GATE SCOPE issue, not a build defect: the canonical rendering IS present in the model, as the satellite's src_cdk, and check 1 compares only against src_payload. Putting the same name in both would violate BUILD_RULES 5.4 and produce a column selected twice, which check 5 would then fail. The build cannot satisfy check 1 for these without breaking 5.4. ROUTE TO vault_tools: check 1 should compare against src_payload UNION src_cdk. The 12 affected: SAT_CLAIM_BENEFIT_HEAD.BENEFIT_HEAD_CODE, SAT_CLAIM_PAYMENT_TRANCHE.TRANCHE_NUMBER, SAT_CLAIM_PROVIDER_BILLING.BILL_NUMBER, SAT_CLAIM_RESERVE.RESERVE_HEAD, SAT_LNK_PARTY_ROLE_CORE.ROLE_CODE, SAT_LNK_POLICY_PARTY_ROLE.PARTY_ROLE_TYPE, SAT_PARTY_BANKING.ACCOUNT_NUMBER_MASKED, SAT_PARTY_CONTACT_ADDRESS_LINK.ADDRESS_USAGE_TYPE, SAT_PARTY_IDENTIFICATION.IDENTIFICATION_TYPE_CODE, SAT_POLICY_COVERAGE_SCHEDULE.COVERAGE_REFERENCE, SAT_POLICY_ENDORSEMENT.ENDORSEMENT_NUMBER, SAT_POLICY_SUM_INSURED_BREAKUP.SUM_INSURED_HEAD. The remaining finding is SAT_RISK_PERSON_INSURED.AGE_AT_ENTRY, which is a real absence -- the refused build directive below. The gate is green today only because 12 exemption lines suppress a NON-gap; the exemption is the right mechanism for a real gap and the wrong one for a column the build emits, so the scope fix is still owed."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "COVERAGE NOW HAS SANCTIONED EXEMPTIONS (BUILD_RULES 8.2), one per uncovered column, GENERATED from the build's own coverage census rather than typed: 425 of 442 mapped columns reach a payload and the 17 that do not are {'carried_as_cdk': 12, 'satellite_not_built': 4, 'build_directive_refused': 1}. gen_mtv2_exemptions.py writes build_artifacts/accepted_uncovered.mtv2.txt and selfcheck asserts vault_tools/accepted_uncovered.txt carries exactly those lines; the generator does not write into vault_tools, because that file is shared by every project here. check 6 of the shared gate now passes with the gaps COUNTED and REASONED rather than silent. Each still needs a mapper answer: a different payload name, or a ruling that the attribute is the child key and nothing else."
+  },
+  {
+   "kind": "profile_field_unrecognised",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "THE BUILD NOW RUNS AGAINST ITS OWN PROFILE. run_all.sh refused at the first generator on 11 keys revision 5 added, which was CORRECT (BUILD_RULES 2.2) and meant the project could not be rebuilt from its own directory; reproducibility could only be proved by substituting revision 4. Each of the 11 is now disposed of deliberately in mtv2_names.PROFILE_KEY_DISPOSITION -- carried_forward_with_digest_proof_note: acknowledged; census_exploit_retest: acknowledged; doc_vs_bundle_contradictions: acknowledged; foreign_key_population: consumed; function_allowlist_coverage_gap_RESOLVED: acknowledged; function_census_verified_per_slot: consumed; gate_status: consumed; hub_risk_object: consumed; stage1_field_knowledge_note: acknowledged; still_open_reconfirmed: consumed; transformation_contract: consumed -- and the guard is NOT widened: an unknown key is still fatal. One key was RENAMED (function_allowlist_coverage_gap to ..._RESOLVED); the old spelling stays RECOGNISED so an older profile is refused with a reason, and carrying both is fatal. The five CONSUMED keys are cross-checked against what the build measures and a disagreement on an identically defined population stops the build: see BUILD_STATUS.json .profile_crosschecks."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "PROFILE DIRECTIVE CARRIED, NOT QUOTED: build_profile.json foreign_key_population says the figure the covering documents use for the FK round-trip population is not reproducible as any population in this map. This build quotes neither figure; it reports the spine-FOREIGN_KEY slot count it measured, which agrees with the profile's, at BUILD_STATUS.json .grammar.fk_hops."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "mapper",
+   "detail": "MAPPER-FACING CONTRADICTIONS ARE CARRIED, NOT ADJUDICATED. build_profile.json doc_vs_bundle_contradictions records claims about the bundle's PROSE that its JSON contradicts. This build takes no instruction from prose (BUILD_RULES 3) and makes no claim about what any covering document currently says -- the previous report did, and the claim went stale. Stage 3 should read the profile's items directly rather than repeat any count from here."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "SUPERSEDED KEY HISTORY CANNOT REACH A MODEL, PROVED RATHER THAN ASSERTED. The map archives the prior text of every normalised key in resolved_key.keynorm.previous_expression: 1444 blocks, 1444 carrying the archived text, all valid grammar and shape-identical to live expressions. A selector matching the word 'expression' would build the OLD key on every one of them and no gate here could tell. generators/probe_mtv2_keynorm.py: injection: an unrecognised keynorm shape is REFUSED = pass; control: the UNMODIFIED map is accepted = pass; containment: no archived previous_expression reaches the spec = pass; the containment search CAN find the token = pass; the key-selection slot SET excludes every keynorm slot = pass. Result artifact: build_artifacts/keynorm_probe.json. The cheap half -- the shape guard firing, and the declared slot set excluding every keynorm slot -- runs in EVERY build, because this project has already shipped a control that silently stopped working."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "REPRODUCIBLE FROM EMPTY, proved by DELETION (BUILD_RULES 9.3) and by a SCRIPT that is in this repository: generators/prove_mtv2_reproducibility.py -- this file. The d. 1044 file(s) in the named set 'every file under models/, plus dbt_project.yml and packages.yml'. shipped=2eafd451b630bd4c run1=2eafd451b630bd4c run2=2eafd451b630bd4c, identical=True, files only in one tree: 0 / 0, differing: 0. COMBINING METHOD: sha256 of each file's bytes, then sha256 over the sorted lines '<relative path> <per-file digest>'. A rename, an addition, a deletion and a content change are each visible.. build_artifacts/reports/ was not deleted and not backed up; its contents were recorded before and after and are intact=True. No digest in this report is typed: every one is read from the artifact the script wrote."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "TWO PROPERTIES IDENTICAL DIGESTS CANNOT PROVE, injected in the same script. WIPE ORDER: a stale model was planted in all 13 layer directories and the chain re-run; survivors [], digest returned to the proved value = True. A model nobody generates any more would otherwise sit through every run and the digests would agree with each other while disagreeing with the generators. PRESERVATION: BUILD_STATUS.json has two writers (BUILD_RULES 10) and a chain re-run used to discard stage 2's clause half; a foreign block was planted and survived = True, named at .preserved_from_a_previous_writer ['a_later_stage_block_PROBE', 'carried_debt', 'clauses', 'counts', 'done', 'done_reason', 'findings', 'gates', 'input_digest_verified_before_and_after', 'outcome_vocabulary_note', 'schema_warning', 'verified_by']. A preserved count that no longer describes the tree FAILS the build -- proved by planting one. NOTE FOR STAGE 2: the clause block written in the previous verification is GONE from BUILD_STATUS.json. It was destroyed by this remediation's first deletion proof, before the proof stopped deleting that file. It is not restored here, because every clause it recorded was judged against a tree and a profile revision that have since changed, and a stale verdict republished by the build would read as current. build_artifacts/reports/stage2_report.json is intact."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "2",
+   "detail": "GATE VERIFICATION recorded a FAIL: GATE SCOPE LIMIT: check_internal cannot see a source_model entry naming a model that does not exist. See build_artifacts/gate_verification.json for the measurement and the population. vault_tools was NOT edited and no exemption was written to work around it."
+  }
+ ],
+ "report_chain": {
+  "slots": [
+   {
+    "file": "stage1_report.json",
+    "bytes": 107641,
+    "sha256": "f6e7982c903b7937e9eab5515895d25994468222a2ffd3b9ba52ffee6b01d4c1",
+    "substance_sha256": "e9e231bd4fd407977ad16b32954851e372ea074fdb74378b5c631ef24837b151"
+   },
+   {
+    "file": "stage1_report.prev.json",
+    "bytes": 107393,
+    "sha256": "3f1958fc6aeb6a40f4d1a0ac74f175ccaadc09bc00fbf54c0e58f55786fc8ed5",
+    "substance_sha256": "e9e231bd4fd407977ad16b32954851e372ea074fdb74378b5c631ef24837b151"
+   },
+   {
+    "file": "stage1_report.prev10.json",
+    "bytes": 89133,
+    "sha256": "ce58187e2532a8de5b51b89cf9383ec2d40a23a5fa71ffac15e53667830cc6ca",
+    "substance_sha256": "ab430705d30931910df20eb0659a614b4c31673518fb70b299a0acbe609c6ab0"
+   },
+   {
+    "file": "stage1_report.prev11.json",
+    "bytes": 89133,
+    "sha256": "a7d840d1212c47ef666c9622b3151f9c55310fbe04ec0c6f9776b1318eb0b5a2",
+    "substance_sha256": "ab430705d30931910df20eb0659a614b4c31673518fb70b299a0acbe609c6ab0"
+   },
+   {
+    "file": "stage1_report.prev12.json",
+    "bytes": 88976,
+    "sha256": "78f5c1fad63cdff7dc5dfe49791eff3afc78c11ba5883c1e35c9570fad6490ef",
+    "substance_sha256": "ab430705d30931910df20eb0659a614b4c31673518fb70b299a0acbe609c6ab0"
+   },
+   {
+    "file": "stage1_report.prev13.json",
+    "bytes": 85448,
+    "sha256": "cf0edfb73617a656741a22d5fca9c34363c2e05229b791b82fb787f32516ff83",
+    "substance_sha256": "7e42e1a828bcc8dedd9dd81c913525d34ee3f679d61371383eaf7c85c0779836"
+   },
+   {
+    "file": "stage1_report.prev14.json",
+    "bytes": 84540,
+    "sha256": "f4ba5628ab8e49b41c7b7a1bab4f1194e2838d7f0c334a1da2d899d3c403e8e5",
+    "substance_sha256": "7e42e1a828bcc8dedd9dd81c913525d34ee3f679d61371383eaf7c85c0779836"
+   },
+   {
+    "file": "stage1_report.prev15.json",
+    "bytes": 59306,
+    "sha256": "a0eb28c77b21f386a0a2bb57f5dcd13f608fca91f0cfe46f6e1587d3d6921839",
+    "substance_sha256": "065f23d52b674a1a80771ee9d455a99da130d92badf75fd6d7ca256d0d283854"
+   },
+   {
+    "file": "stage1_report.prev2.json",
+    "bytes": 106555,
+    "sha256": "8e5a375d525d5d05098e6414120fcd7ac48fc853e34acdc98f995b6fd1c42ee5",
+    "substance_sha256": "e87a56e491d70a34d1f21fd0a8870b11adfd2acad0f0f1d6fb4f70bf715281e6"
+   },
+   {
+    "file": "stage1_report.prev3.json",
+    "bytes": 104077,
+    "sha256": "270c69a9b7088d201a18ad021372c2297fed349d194e60dfe4c65858478b8e4c",
+    "substance_sha256": "be279b03e49cb1b15a7d079116e35d7adc90ceeb4808ec5c57c058e432bcfb3c"
+   },
+   {
+    "file": "stage1_report.prev4.json",
+    "bytes": 101751,
+    "sha256": "b080a69fabf65014c8b72febf918a62bf9fe3b2dd5f731f744ba23ef57d9721e",
+    "substance_sha256": "16e430274cec531b0bb962e90c16088b4953ae7a30d4fde599768ae8b4d55075"
+   },
+   {
+    "file": "stage1_report.prev5.json",
+    "bytes": 101885,
+    "sha256": "5e5f8a550ce8154689c4a537c2da527792092a22f399e9e9bd74d9c265830227",
+    "substance_sha256": "e5d1d909b628d9b1b053655b3cb57c20dffaafb1d0a8b00f0f7041ddfebc1ee0"
+   },
+   {
+    "file": "stage1_report.prev6.json",
+    "bytes": 95961,
+    "sha256": "acfd60769a66e6f330e9f2ec60dde1a80a4015a7273ad57905a7cefec089c104",
+    "substance_sha256": "2f8b6b0428396a051ffa30bc0e8c569b4a3bab5543f25f2bdc1ce15cfb8a6584"
+   },
+   {
+    "file": "stage1_report.prev7.json",
+    "bytes": 94851,
+    "sha256": "16f540cf315ccaee7f84eb50381ea7f0b9c2ecdf956b5370581f23125f902caf",
+    "substance_sha256": "78a5d827bb3a9e74e03f756988fd86f8642ea4ea0e7b7e2219c587215f8858b2"
+   },
+   {
+    "file": "stage1_report.prev8.json",
+    "bytes": 89160,
+    "sha256": "cc2016fe147bc622b7e59cda94c42ac8abd1cb760e03150a053480eab181c4c5",
+    "substance_sha256": "ab430705d30931910df20eb0659a614b4c31673518fb70b299a0acbe609c6ab0"
+   },
+   {
+    "file": "stage1_report.prev9.json",
+    "bytes": 89133,
+    "sha256": "a7d840d1212c47ef666c9622b3151f9c55310fbe04ec0c6f9776b1318eb0b5a2",
+    "substance_sha256": "ab430705d30931910df20eb0659a614b4c31673518fb70b299a0acbe609c6ab0"
+   }
+  ],
+  "distinct_by_substance": 10,
+  "slots_sharing_a_substance": {
+   "e9e231bd4fd407977ad16b32954851e372ea074fdb74378b5c631ef24837b151": [
+    "stage1_report.json",
+    "stage1_report.prev.json"
+   ],
+   "ab430705d30931910df20eb0659a614b4c31673518fb70b299a0acbe609c6ab0": [
+    "stage1_report.prev10.json",
+    "stage1_report.prev11.json",
+    "stage1_report.prev12.json",
+    "stage1_report.prev8.json",
+    "stage1_report.prev9.json"
+   ],
+   "7e42e1a828bcc8dedd9dd81c913525d34ee3f679d61371383eaf7c85c0779836": [
+    "stage1_report.prev13.json",
+    "stage1_report.prev14.json"
+   ]
+  },
+  "note": "The chain is SHIFTED, never overwritten and never deleted (BUILD_RULES 9.3, 9.7). Slots sharing a substance digest were produced by the cascade defect this run fixed -- the deletion proof invokes the chain five times and plants a probe key on one of them, which cascaded a near-duplicate each time. The DEEPEST slot is the oldest. One earlier stage-1 report WAS lost, before the fix: the previous cascade preserved the report only when .prev.json did not already exist, so on a re-entry it overwrote and kept nothing. Its digest is recorded in build_artifacts/reproducibility.json .reports_before; its content is not recoverable."
+ },
+ "gate_verification": {
+  "artifact": "build_artifacts/gate_verification.json",
+  "produced_by": "generators/verify_mtv2_gates.py (on demand, not in the chain)",
+  "gates": {
+   "check_internal": {
+    "argv": [
+     "maximus_travel_v2_dv_dbt"
+    ],
+    "clean_exit": 0,
+    "verdict": "PASS"
+   },
+   "check_patterns": {
+    "argv": [
+     "maximus_travel_v2_dv_dbt"
+    ],
+    "clean_exit": 0,
+    "verdict": "PASS"
+   },
+   "check_prose_counts": {
+    "argv": [
+     "maximus_travel_v2_dv_dbt"
+    ],
+    "clean_exit": 0,
+    "verdict": "PASS"
+   },
+   "check_prose_shape": {
+    "argv": [
+     "maximus_travel_v2_dv_dbt"
+    ],
+    "clean_exit": 0,
+    "verdict": "PASS"
+   },
+   "check_vault_alignment": {
+    "argv": [
+     "maximus_travel_v2_dv_dbt",
+     "travel_dv_dbt",
+     "../SourceMapping_Skill/maximus travel mapping v2/outputs/04_column_map.json"
+    ],
+    "clean_exit": 0,
+    "verdict": "PASS"
+   }
+  },
+  "checks_total": 19,
+  "failed": [
+   "GATE SCOPE LIMIT: check_internal cannot see a source_model entry naming a model that does not exist"
+  ],
+  "not_run": [],
+  "note": "Every verdict is the GATE's own subprocess returncode; nothing is read through a pipe. Every gate is PROVED able to fail by injection, and the tree is asserted byte-identical to its baseline afterwards in BINARY."
+ }
+}

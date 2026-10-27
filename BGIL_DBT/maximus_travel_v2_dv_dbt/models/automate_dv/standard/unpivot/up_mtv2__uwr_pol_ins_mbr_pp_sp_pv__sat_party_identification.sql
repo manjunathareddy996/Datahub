@@ -1,0 +1,707 @@
+{{ config(materialized='view') }}
+
+-- UNPIVOT for SAT_PARTY_IDENTIFICATION from
+--   NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+-- one row PER INSTANCE: 21 branch(es).
+--
+-- Each branch below is ONE instance of the satellite, carrying all of its own
+-- attributes on a single row and discriminated by IDENTIFICATION_TYPE_CODE.
+-- The hash is taken once, downstream, by stg2_mtv2_up__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification.
+--
+-- Payload is null-padded to the SATELLITE's full payload (25 column(s)), not to this
+-- feeder's columns, so every feeder of SAT_PARTY_IDENTIFICATION is union-compatible (BUILD_RULES 6).
+--
+-- Instances on this view:
+--   base                                     2 attribute(s)
+--   aadhaar                                  2 attribute(s)
+--   aadhaar_enrolment                        1 attribute(s)
+--   aadhaar_vid                              1 attribute(s)
+--   abha                                     1 attribute(s)
+--   age_proof                                1 attribute(s)
+--   cin                                      1 attribute(s)
+--   ckyc                                     1 attribute(s)
+--   driving_licence                          5 attribute(s)
+--   eia                                      3 attribute(s)
+--   form_60                                  1 attribute(s)
+--   generic_declared_id                      1 attribute(s)
+--   gstin                                    4 attribute(s)
+--   nrega_job_card                           2 attribute(s)
+--   pan                                      2 attribute(s)
+--   passport                                 1 attribute(s)
+--   proof_of_address                         2 attribute(s)
+--   proof_of_identity                        1 attribute(s)
+--   sez_registration                         2 attribute(s)
+--   tan                                      1 attribute(s)
+--   voter_id                                 1 attribute(s)
+
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        coalesce(nullif(trim(identification_proof), ''),'') as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        identification_proof_effective_date as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        id_number as IDENTIFICATION_NUMBER,
+        cast(null as varchar) as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where id_number is not null or identification_proof_effective_date is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'AADHAAR' as IDENTIFICATION_TYPE_CODE,
+        coalesce(aadhaar_number, uid) as AADHAAR_NUMBER,
+        poa_aadhar_card_status as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        cast(null as varchar) as IDENTIFICATION_NUMBER,
+        cast(null as varchar) as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where aadhaar_number is not null or poa_aadhar_card_status is not null or uid is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'AADHAAR_ENROLMENT' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        aadhaar_enrollment_no as IDENTIFICATION_NUMBER,
+        cast(null as varchar) as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where aadhaar_enrollment_no is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'AADHAAR_VID' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        vid as IDENTIFICATION_NUMBER,
+        cast(null as varchar) as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where vid is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'ABHA' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        abha_id as IDENTIFICATION_NUMBER,
+        cast(null as varchar) as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where abha_id is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'AGE_PROOF' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        dob_proof as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        cast(null as varchar) as IDENTIFICATION_NUMBER,
+        cast(null as varchar) as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where dob_proof is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'CIN' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cin_number as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        cast(null as varchar) as IDENTIFICATION_NUMBER,
+        cast(null as varchar) as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where cin_number is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'CKYC' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        coalesce(ckyc_number, claim_ckyc_number) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        cast(null as varchar) as IDENTIFICATION_NUMBER,
+        cast(null as varchar) as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where ckyc_number is not null or claim_ckyc_number is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'DRIVING_LICENCE' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        driving_license_expiry_date as DRIVING_LICENCE_EXPIRY_DATE,
+        driving_license_number as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        driving_license_issue_date as IDENTIFICATION_ISSUE_DATE,
+        driving_license_place_of_issue as IDENTIFICATION_ISSUING_AUTHORITY,
+        cast(null as varchar) as IDENTIFICATION_NUMBER,
+        poa_driving_license_status as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where driving_license_expiry_date is not null or driving_license_issue_date is not null or driving_license_number is not null or driving_license_place_of_issue is not null or poa_driving_license_status is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'EIA' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        eia_number as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        cast(null as varchar) as IDENTIFICATION_NUMBER,
+        e_insurance_demat_account_verified as IDENTIFICATION_VERIFIED_INDICATOR,
+        insurance_repository_code as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where e_insurance_demat_account_verified is not null or eia_number is not null or insurance_repository_code is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'FORM_60' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        cast(null as varchar) as IDENTIFICATION_NUMBER,
+        poi_form_60_status as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where poi_form_60_status is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'GENERIC_DECLARED_ID' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        expiry_date as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        cast(null as varchar) as IDENTIFICATION_NUMBER,
+        cast(null as varchar) as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where expiry_date is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'GSTIN' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        coalesce(gstinuin, gstn_number) as GSTIN,
+        coalesce(gstn_regn_status, gstn_status) as GST_REGISTRATION_STATUS,
+        gstn_taxpayer_type as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        gstin_issuance_dt as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        cast(null as varchar) as IDENTIFICATION_NUMBER,
+        cast(null as varchar) as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where gstin_issuance_dt is not null or gstinuin is not null or gstn_number is not null or gstn_regn_status is not null or gstn_status is not null or gstn_taxpayer_type is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'NREGA_JOB_CARD' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        cast(null as varchar) as IDENTIFICATION_NUMBER,
+        poa_nrega_job_card_status as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        nrega_job_card as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where nrega_job_card is not null or poa_nrega_job_card_status is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'PAN' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        cast(null as varchar) as IDENTIFICATION_NUMBER,
+        cast(null as varchar) as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        pan_number as PAN_NUMBER,
+        poi_pan_card_status as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where pan_number is not null or poi_pan_card_status is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'PASSPORT' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        cast(null as varchar) as IDENTIFICATION_NUMBER,
+        poa_passport_status as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where poa_passport_status is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'PROOF_OF_ADDRESS' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        cast(null as varchar) as IDENTIFICATION_NUMBER,
+        poa_document_status as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        proof_of_address_submitted_for_current_permanent_overseas_address as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where poa_document_status is not null or proof_of_address_submitted_for_current_permanent_overseas_address is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'PROOF_OF_IDENTITY' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        cast(null as varchar) as IDENTIFICATION_NUMBER,
+        poi_document_status as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where poi_document_status is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'SEZ_REGISTRATION' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        sez_registration_date as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        sez_registration_no as IDENTIFICATION_NUMBER,
+        cast(null as varchar) as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where sez_registration_date is not null or sez_registration_no is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'TAN' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        cast(null as varchar) as IDENTIFICATION_NUMBER,
+        cast(null as varchar) as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        tan_number as TAN_NUMBER,
+        cast(null as varchar) as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where tan_number is not null
+union all
+    select
+        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        'VOTER_ID' as IDENTIFICATION_TYPE_CODE,
+        cast(null as varchar) as AADHAAR_NUMBER,
+        cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
+        cast(null as varchar) as AGE_PROOF_TYPE,
+        cast(null as varchar) as CIN_NUMBER,
+        cast(null as varchar) as CKYC_NUMBER,
+        cast(null as varchar) as DRIVING_LICENCE_EXPIRY_DATE,
+        cast(null as varchar) as DRIVING_LICENCE_NUMBER,
+        cast(null as varchar) as EIA_NUMBER,
+        cast(null as varchar) as GSTIN,
+        cast(null as varchar) as GST_REGISTRATION_STATUS,
+        cast(null as varchar) as GST_TAXPAYER_TYPE,
+        cast(null as varchar) as IDENTIFICATION_EXPIRY_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
+        cast(null as varchar) as IDENTIFICATION_ISSUING_AUTHORITY,
+        cast(null as varchar) as IDENTIFICATION_NUMBER,
+        cast(null as varchar) as IDENTIFICATION_VERIFIED_INDICATOR,
+        cast(null as varchar) as INSURANCE_REPOSITORY_NAME,
+        cast(null as varchar) as NREGA_CARD_NUMBER,
+        cast(null as varchar) as OVD_CATEGORY,
+        cast(null as varchar) as PAN_NUMBER,
+        cast(null as varchar) as PAN_VERIFICATION_STATUS,
+        cast(null as varchar) as PASSPORT_EXPIRY_DATE,
+        cast(null as varchar) as PASSPORT_NUMBER,
+        cast(null as varchar) as TAN_NUMBER,
+        voter_id as VOTER_ID_NUMBER,
+        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+    from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pp_sp_pv') }}
+    where voter_id is not null

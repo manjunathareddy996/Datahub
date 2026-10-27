@@ -1,0 +1,66 @@
+{{ config(materialized='view') }}
+
+-- AUGMENTED FEED for SAT_AUG_PARTY_IDENTITY: unions 5 per-view stage model(s).
+-- Payload null-padded to the SATELLITE, and the hashdiff renamed to the bare HASHDIFF the
+-- sibling writes on its augmented track too -- both of its tracks use the bare name,
+-- counted 12 of 12 (BD7 / BUILD_RULES 7.7).
+
+    select
+        PARTY_HKEY__CLAIMANT as PARTY_HKEY,
+        CREATED_BY_USER_REFERENCE,
+        GUARDIAN_NAME,
+        PARTY_COUNTRY,
+        RECORD_LAST_MODIFIED_DATE,
+        SOURCE_REFERENCE_CODE,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2_aug__clm_clmd_clmrsk_rska_msp_msd_prop_pv__sat_aug_party_identity') }}
+    where PARTY_HKEY__CLAIMANT is not null
+union all
+    select
+        PARTY_HKEY__INSURED_MEMBER as PARTY_HKEY,
+        CREATED_BY_USER_REFERENCE,
+        GUARDIAN_NAME,
+        PARTY_COUNTRY,
+        RECORD_LAST_MODIFIED_DATE,
+        SOURCE_REFERENCE_CODE,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2_aug__uwr_pol_ins_mbr__sat_aug_party_identity') }}
+    where PARTY_HKEY__INSURED_MEMBER is not null
+union all
+    select
+        PARTY_HKEY__INSURED_MEMBER as PARTY_HKEY,
+        CREATED_BY_USER_REFERENCE,
+        GUARDIAN_NAME,
+        PARTY_COUNTRY,
+        RECORD_LAST_MODIFIED_DATE,
+        SOURCE_REFERENCE_CODE,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2_aug__uwr_pol_ins_mbr_pp_sp_pv__sat_aug_party_identity') }}
+    where PARTY_HKEY__INSURED_MEMBER is not null
+union all
+    select
+        PARTY_HKEY__PROPOSER as PARTY_HKEY,
+        CREATED_BY_USER_REFERENCE,
+        GUARDIAN_NAME,
+        PARTY_COUNTRY,
+        RECORD_LAST_MODIFIED_DATE,
+        SOURCE_REFERENCE_CODE,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2_aug__uwr_pol_prp__sat_aug_party_identity') }}
+    where PARTY_HKEY__PROPOSER is not null
+union all
+    select
+        PARTY_HKEY__PROPOSER as PARTY_HKEY,
+        CREATED_BY_USER_REFERENCE,
+        GUARDIAN_NAME,
+        PARTY_COUNTRY,
+        RECORD_LAST_MODIFIED_DATE,
+        SOURCE_REFERENCE_CODE,
+        HASHDIFF_PARTY_IDENTITY as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mtv2_aug__uwr_pol_prp_pp_sp_pv__sat_aug_party_identity') }}
+    where PARTY_HKEY__PROPOSER is not null
