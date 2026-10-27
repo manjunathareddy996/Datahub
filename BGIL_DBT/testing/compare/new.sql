@@ -321,7 +321,7 @@ source_deduped AS (
 object_rows AS (
     SELECT
         sdd.{{ src_pk }},
-        sdd.SOURCE_GROUP AS {{ src_source }},
+        sdd.SOURCE_GROUP || '_MULTI' AS {{ src_source }},
         {%- for col in object_cols %}
         OBJECT_AGG(sdd.SOURCE_TABLE, TO_VARIANT(sdd.{{ col }})) AS {{ col }},
         {%- endfor %}
