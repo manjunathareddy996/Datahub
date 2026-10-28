@@ -4,6 +4,16 @@ Running log of pushes to this repo. Newest first.
 
 ---
 
+## 2026-10-28 — Round-2 single-source satellite collapse (travel)
+
+**Target:** `main` (`ede6885`)
+**What:** 155 single-item `source_model` YAML lists collapsed to scalar form across both
+travel projects. These were newly-visible files in the merged tree (mostly augmented
+satellites that came along with the restoration push). Multi-item lists untouched.
+Count by project: `opus_travel_dv_dbt` 3, `maximus_travel_v2_dv_dbt` 152.
+
+---
+
 ## 2026-10-28 — Restore maximus_travel_v2_dv_dbt files lost in merge
 
 **Target:** `main` (`fae3e0a`)
