@@ -951,6 +951,24 @@ is missing or not a mapping — and uses it to scope the per-source-group `MAX(D
 - Mandatory staging column: `inc_job_updated_at` is present on every source table and must be
   pulled through in every `stg_` model — it is the load/CDC watermark the incremental layer and
   the multi-source satellite macros filter on. No fallback; a `stg_` model without it is a defect.
+  **The column name is per-project** — confirm from a sibling LOB's `stg_` files before writing
+  new ones. Observed per-project names:
+    - `opus_partner_dv_dbt`, `opus_travel_dv_dbt`:   `inc_job_updated_at`
+    - `maximus_travel_v2_dv_dbt`:                    `rec_refresh_at`
+  Whichever name the project uses, every `stg_` model must select it and every stg2 derived
+  column must wire it as the `LOAD_DATETIME` (see next bullet).
+- **`LOAD_DATETIME` in every `stg2_*` must reference the project's CDC watermark column, not
+  `!CURRENT_TIMESTAMP()`.** `automate_dv.stage()` reads `LOAD_DATETIME` as a derived column; the
+  `!` prefix tells `stage()` to insert the string **verbatim**, so `'!CURRENT_TIMESTAMP()'`
+  stores the literal text `CURRENT_TIMESTAMP()` as a VARCHAR, not the function result — the
+  downstream `src_ldts` filter then has no real timestamp to compare against, and the T-1
+  incremental window silently degrades to "load everything each run". Point `LOAD_DATETIME` at
+  the project's CDC column instead (no `!` prefix, so `stage()` resolves it as a column
+  reference). Observed project settings:
+    - `opus_partner_dv_dbt`, `opus_travel_dv_dbt`:   `LOAD_DATETIME: 'INC_JOB_UPDATED_AT'`
+    - `maximus_travel_v2_dv_dbt`:                    `LOAD_DATETIME: 'REC_REFRESH_AT'`
+  This is the stg2-layer counterpart of the stg1 mandatory-column rule: the two must line up
+  (same column flowing through both layers), or the watermark breaks on the join.
 - Stitch watermark column: `gg_change_date` here (a CDC timestamp from the replication tool, not
   a business date). Confirm the project's column name and that *every* intended source exposes
   it before configuring `stitch_incremental`.

@@ -45,7 +45,7 @@ derived_columns:
   RECREATIONAL_DRUG_USE_INDICATOR: 'do_you_do_recreational_drug_use'
   RELATIONSHIP_TO_PRIMARY_INSURED: 'relationship_to_insured'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

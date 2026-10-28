@@ -89,7 +89,7 @@ derived_columns:
   REPORTED_BY_CONTACT: 'cast(null as varchar)'
   REPORTED_BY_NAME: 'cast(null as varchar)'
   SELF_SERVICE_INDICATOR: 'cast(null as varchar)'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS'
 {%- endset -%}
 

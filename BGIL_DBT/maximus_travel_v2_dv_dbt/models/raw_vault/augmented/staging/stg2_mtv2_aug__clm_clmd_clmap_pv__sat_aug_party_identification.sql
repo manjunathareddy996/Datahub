@@ -52,7 +52,7 @@ derived_columns:
   PROOF_OF_ADDRESS_OTHER_DESCRIPTION: 'cast(null as varchar)'
   STATE_WISE_GSTIN_REGISTRATION_DETAILS: 'cast(null as varchar)'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

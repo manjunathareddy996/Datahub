@@ -26,7 +26,7 @@ derived_columns:
   SUM_INSURED_HEAD: 'SUM_INSURED_HEAD'
   SUM_INSURED_AMOUNT: 'SUM_INSURED_AMOUNT'
   RECORD_SOURCE: 'record_source'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

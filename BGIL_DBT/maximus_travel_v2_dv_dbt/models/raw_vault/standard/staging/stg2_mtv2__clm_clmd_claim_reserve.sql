@@ -59,7 +59,7 @@ derived_columns:
   RESERVE_HEAD: "coalesce(nullif(trim(reservetype), ''),'')"
   RESERVE_TYPE: 'reservetypedesc'
   ROLE_SEQUENCE: "'1'"
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE'
 {%- endset -%}
 

@@ -39,7 +39,7 @@ derived_columns:
   ISSUE_DATE: 'document_generation_date'
   RECEIVED_DATE: 'cast(null as varchar)'
   SOURCE_CHANNEL: 'cast(null as varchar)'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS'
 {%- endset -%}
 

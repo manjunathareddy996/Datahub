@@ -24,7 +24,7 @@ derived_columns:
   PROVIDER_EMAIL_ADDRESS: 'cast(null as varchar)'
   VENDOR_PERFORMANCE_SCORE: 'vendor_score'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

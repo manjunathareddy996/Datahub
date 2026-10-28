@@ -24,7 +24,7 @@ derived_columns:
   SUM_INSURED_HEAD: "'RISK:' || nullif(trim(w1_pol_risk_id), '') || '#' || nullif(trim(w2_cover_code), '') || '#' || 'BREAK_UP'"
   SUM_INSURED_BREAK_UP_DETAIL: 'sum_insured_break_up'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

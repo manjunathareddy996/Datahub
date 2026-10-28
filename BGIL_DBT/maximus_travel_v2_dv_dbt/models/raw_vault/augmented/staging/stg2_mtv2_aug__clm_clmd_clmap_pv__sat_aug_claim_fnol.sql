@@ -34,7 +34,7 @@ derived_columns:
   REPORTED_BY_EMAIL: 'caller_email_id'
   THIRD_PARTY_INVOLVEMENT_INDICATOR: 'do_you_want_third_party_involvemnt'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

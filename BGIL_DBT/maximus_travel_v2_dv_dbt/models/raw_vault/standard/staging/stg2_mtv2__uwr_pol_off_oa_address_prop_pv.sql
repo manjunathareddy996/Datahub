@@ -71,7 +71,7 @@ derived_columns:
   STATE_CODE: 'cast(null as varchar)'
   STATE_NAME: 'cast(null as varchar)'
   STREET_NAME: 'cast(null as varchar)'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW'
 {%- endset -%}
 

@@ -293,7 +293,7 @@ derived_columns:
   TRIP_START_DATE: 'cast(null as varchar)'
   TRIP_TYPE: 'coalesce(trip_typeace, journey_typeace)'
   UIN: 'cast(null as varchar)'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
 {%- endset -%}
 

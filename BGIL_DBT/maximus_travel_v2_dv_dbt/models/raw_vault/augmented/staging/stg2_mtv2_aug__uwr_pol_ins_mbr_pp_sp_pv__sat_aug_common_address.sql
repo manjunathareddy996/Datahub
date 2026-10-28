@@ -22,7 +22,7 @@ derived_columns:
   LOCATION_NK__PERMANENT_OVERSEAS: "'HUB_LOCATION|' || (nullif(trim(case when coalesce(nullif(trim(current_permanent_overseas_address_line_1),''), nullif(trim(current_permanent_overseas_address_line_2),''), nullif(trim(current_permanent_overseas_address_line_3),''), nullif(trim(current_permanent_overseas_address_city_town_village),''), nullif(trim(current_permanent_overseas_address_state_ut),''), nullif(trim(current_permanent_overseas_address_country),''), nullif(trim(current_permanent_overseas_address_pin_code),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim(current_permanent_overseas_address_line_1), ''), '') || '|' || coalesce(nullif(trim(current_permanent_overseas_address_line_2), ''), '') || '|' || coalesce(nullif(trim(current_permanent_overseas_address_line_3), ''), '') || '|' || coalesce(nullif(trim(current_permanent_overseas_address_city_town_village), ''), '') || '|' || coalesce(nullif(trim(current_permanent_overseas_address_state_ut), ''), '') || '|' || coalesce(nullif(trim(current_permanent_overseas_address_country), ''), '') || '|' || coalesce(nullif(trim(current_permanent_overseas_address_pin_code), ''), '')), '||||||')), '[[:space:]]+', ' '))) end),''))"
   FULL_ADDRESS_TEXT: 'current_permanent_overseas_address_'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -54,7 +54,7 @@ derived_columns:
   PROOF_OF_DELIVERY_NUMBER: 'pod_number'
   RECIPIENT_NAME: 'recipient_name'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

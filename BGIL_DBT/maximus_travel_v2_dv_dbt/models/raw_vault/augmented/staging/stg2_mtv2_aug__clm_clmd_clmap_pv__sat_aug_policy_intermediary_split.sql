@@ -26,7 +26,7 @@ derived_columns:
   COMMISSION_CHANGE_EFFECTIVE_DATE: 'cast(null as varchar)'
   SUB_CHANNEL_NAME: 'subchannel_name'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

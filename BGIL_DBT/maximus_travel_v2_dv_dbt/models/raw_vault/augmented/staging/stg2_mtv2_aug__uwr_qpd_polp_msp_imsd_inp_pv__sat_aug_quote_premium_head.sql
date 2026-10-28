@@ -28,7 +28,7 @@ derived_columns:
   BASE_AMOUNT: 'BASE_AMOUNT'
   NET_HEAD_PREMIUM: 'NET_HEAD_PREMIUM'
   RECORD_SOURCE: 'record_source'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

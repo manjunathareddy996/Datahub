@@ -44,7 +44,7 @@ derived_columns:
   TAX_RATE: 'TAX_RATE'
   TDS_AMOUNT: 'TDS_AMOUNT'
   TDS_RATE: 'TDS_RATE'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: 'record_source'
 {%- endset -%}
 

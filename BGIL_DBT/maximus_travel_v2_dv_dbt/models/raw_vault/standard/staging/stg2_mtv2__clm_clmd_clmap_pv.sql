@@ -639,7 +639,7 @@ derived_columns:
   TREATMENT_TYPE: 'cast(null as varchar)'
   UIN: 'cast(null as varchar)'
   VALUE_BAND: 'cast(null as varchar)'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'
 {%- endset -%}
 

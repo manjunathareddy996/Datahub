@@ -79,7 +79,7 @@ derived_columns:
   ROLE_END_DATE: 'cast(null as varchar)'
   ROLE_SEQUENCE: "'1'"
   SALUTATION: 'cast(null as varchar)'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION'
 {%- endset -%}
 

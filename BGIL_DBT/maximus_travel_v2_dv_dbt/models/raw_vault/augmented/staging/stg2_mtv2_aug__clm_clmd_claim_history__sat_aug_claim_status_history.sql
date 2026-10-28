@@ -52,7 +52,7 @@ derived_columns:
   SCRUTINY_STATUS: 'scrutiny_status'
   SURVEY_REPORT_STATUS: 'survey_report_status'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

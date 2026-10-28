@@ -28,7 +28,7 @@ derived_columns:
   RETAINED_ADMIN_CHARGES_AMOUNT: 'retained_admin_charges'
   UNEXPIRED_PERIOD_PREMIUM_AMOUNT: 'calculated_amount_for_remaining_period'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

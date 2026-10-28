@@ -30,7 +30,7 @@ derived_columns:
   STAMP_DUTY_RECEIPT_NUMBER: 'stamp_receipt_no'
   TOTAL_TAX_AMOUNT: 'total_taxes'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

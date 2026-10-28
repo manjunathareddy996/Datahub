@@ -26,7 +26,7 @@ derived_columns:
   CO_INSURANCE_LOSS_RESERVE_AMOUNT: 'coinsurance_loss_reserve_inr'
   CO_INSURANCE_TYPE: 'cast(null as varchar)'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

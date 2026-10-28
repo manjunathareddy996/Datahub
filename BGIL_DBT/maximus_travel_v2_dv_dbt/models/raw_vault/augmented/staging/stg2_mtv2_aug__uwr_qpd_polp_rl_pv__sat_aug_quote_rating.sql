@@ -122,7 +122,7 @@ derived_columns:
   UTGST_AMOUNT: 'utgst_amount'
   WRITE_OFF_WAIVER_INDICATOR: 'writeoff_waiver_flag'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

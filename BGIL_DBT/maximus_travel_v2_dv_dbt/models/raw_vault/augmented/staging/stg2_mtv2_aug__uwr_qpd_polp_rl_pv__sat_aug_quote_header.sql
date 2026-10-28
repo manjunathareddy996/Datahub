@@ -148,7 +148,7 @@ derived_columns:
   TRANSIT_JOURNEY_COVER: 'transit_journey_cover'
   UNDERWRITING_REFERRAL_REQUIRED_INDICATOR: 'underwriting_rqrd_flag'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

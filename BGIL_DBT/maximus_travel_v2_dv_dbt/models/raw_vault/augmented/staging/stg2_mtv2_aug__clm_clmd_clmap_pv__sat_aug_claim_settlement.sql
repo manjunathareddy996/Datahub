@@ -26,7 +26,7 @@ derived_columns:
   LINKED_CLAIM_PAYABLE_AMOUNT: 'cast(null as varchar)'
   ONE_TIME_SETTLEMENT_INDICATOR: 'ots_flag'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

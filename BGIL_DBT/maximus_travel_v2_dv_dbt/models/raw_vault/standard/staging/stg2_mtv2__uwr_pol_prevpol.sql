@@ -99,7 +99,7 @@ derived_columns:
   SUM_INSURED_TOTAL: 'sum_insured'
   TOTAL_PREMIUM_COLLECTED: 'cast(null as varchar)'
   UIN: 'cast(null as varchar)'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS'
 {%- endset -%}
 

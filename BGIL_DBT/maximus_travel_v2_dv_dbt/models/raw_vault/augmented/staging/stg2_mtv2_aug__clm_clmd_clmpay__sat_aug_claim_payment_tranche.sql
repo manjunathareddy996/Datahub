@@ -54,7 +54,7 @@ derived_columns:
   PORTAL_PAYMENT_REFERENCE_NUMBER: 'cast(null as varchar)'
   RESERVE_HEAD_CODE: 'payreservetypre'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

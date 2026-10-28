@@ -32,7 +32,7 @@ derived_columns:
   DECEASED_INSURED_WITH_INSURER_INDICATOR: 'cast(null as varchar)'
   PERSONAL_ACCIDENT_CLAIMANT_REFERENCE: 'personal_accident_claim_for'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

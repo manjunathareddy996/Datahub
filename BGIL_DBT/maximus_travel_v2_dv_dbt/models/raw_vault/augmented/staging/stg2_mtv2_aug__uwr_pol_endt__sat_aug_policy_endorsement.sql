@@ -32,7 +32,7 @@ derived_columns:
   ENDORSEMENT_UNIQUE_IDENTIFICATION_CODE: 'cast(null as varchar)'
   REVISED_SUM_INSURED_AMOUNT: 'endorsement_revised_sum_insured'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

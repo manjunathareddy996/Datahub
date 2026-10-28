@@ -50,7 +50,7 @@ derived_columns:
   TRIP_DESTINATION_COUNTRY: 'cast(null as varchar)'
   WEATHER_CONDITION_AT_INCIDENT: 'cast(null as varchar)'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -30,7 +30,7 @@ derived_columns:
   RISK_EXPIRY_DATE: 'risk_expiry_date'
   RISK_INCEPTION_DATE: 'risk_inception_date'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

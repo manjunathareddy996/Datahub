@@ -26,7 +26,7 @@ derived_columns:
   INSTRUMENT_PRINT_LOCATION_CODE: 'print_location_code'
   NEFT_APPROVAL_REFERENCE: 'neft_approval'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -41,7 +41,7 @@ derived_columns:
   PREMIUM_OUTSTANDING: 'outstanding_premium'
   REFUND_AMOUNT: 'cast(null as varchar)'
   TOTAL_PREMIUM_COLLECTED: 'collected_premium'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_PREMIUM_DETAILS'
 {%- endset -%}
 

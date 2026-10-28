@@ -30,7 +30,7 @@ derived_columns:
   PREMIUM_RATE_VALUE: 'PREMIUM_RATE_VALUE'
   PREMIUM_TYPE: 'PREMIUM_TYPE'
   RECORD_SOURCE: 'record_source'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

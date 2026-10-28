@@ -26,7 +26,7 @@ derived_columns:
   EXCLUSION_SET_CODE: 'EXCLUSION_SET_CODE'
   EXCLUSION_DETAIL_TEXT: 'EXCLUSION_DETAIL_TEXT'
   RECORD_SOURCE: 'record_source'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

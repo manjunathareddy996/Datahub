@@ -30,7 +30,7 @@ derived_columns:
   MOBILE_NUMBER: 'MOBILE_NUMBER'
   SOCIAL_MEDIA_HANDLE: 'SOCIAL_MEDIA_HANDLE'
   RECORD_SOURCE: 'record_source'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

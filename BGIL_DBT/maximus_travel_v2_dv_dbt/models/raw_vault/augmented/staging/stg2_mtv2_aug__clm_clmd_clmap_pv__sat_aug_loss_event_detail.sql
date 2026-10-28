@@ -22,7 +22,7 @@ derived_columns:
   LOSS_EVENT_NK__V2: "'HUB_LOSS_EVENT|' || (nullif(trim(case when coalesce(nullif(trim(claimno),''), nullif(trim(w2_claimno),'')) is not null then 'LOSSEVT:' || coalesce(nullif(trim(claimno), ''), nullif(trim(w2_claimno), '')) end),''))"
   POLICE_REPORT_TIME: 'police_report_time'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

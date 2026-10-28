@@ -129,7 +129,7 @@ derived_columns:
   SALUTATION: 'cast(null as varchar)'
   TAN_NUMBER: 'cast(null as varchar)'
   VOTER_ID_NUMBER: 'cast(null as varchar)'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY'
 {%- endset -%}
 

@@ -34,7 +34,7 @@ derived_columns:
   PRE_EXISTING_ILLNESS_DESCRIPTION: 'preexisting_illness'
   SYSTEM_OF_MEDICINE: 'system_of_medicine'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

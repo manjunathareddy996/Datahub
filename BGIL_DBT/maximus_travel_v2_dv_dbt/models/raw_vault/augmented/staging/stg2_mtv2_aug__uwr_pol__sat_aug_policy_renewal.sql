@@ -36,7 +36,7 @@ derived_columns:
   REPLACED_POLICY_INCEPTION_DATE: 'cast(null as varchar)'
   REPLACED_POLICY_PRODUCT_CODE: 'cast(null as varchar)'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

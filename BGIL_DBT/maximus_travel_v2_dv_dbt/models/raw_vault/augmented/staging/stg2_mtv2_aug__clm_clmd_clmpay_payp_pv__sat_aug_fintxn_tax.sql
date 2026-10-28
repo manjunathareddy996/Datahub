@@ -60,7 +60,7 @@ derived_columns:
   UTGST_AMOUNT: 'UTGST_AMOUNT'
   VAT_REGISTRATION_NUMBER: 'VAT_REGISTRATION_NUMBER'
   RECORD_SOURCE: 'record_source'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

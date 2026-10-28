@@ -26,7 +26,7 @@ derived_columns:
   REMINDER_SEQUENCE: 'REMINDER_SEQUENCE'
   REMINDER_DATE: 'REMINDER_DATE'
   RECORD_SOURCE: 'record_source'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

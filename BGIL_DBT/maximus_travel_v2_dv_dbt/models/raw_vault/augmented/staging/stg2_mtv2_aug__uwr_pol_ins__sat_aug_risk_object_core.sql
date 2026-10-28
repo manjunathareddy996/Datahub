@@ -26,7 +26,7 @@ derived_columns:
   RISK_LEVEL_EXCHANGE_RATE: 'cast(null as varchar)'
   RISK_LINE_SEQUENCE_NUMBER: 'risk_serial_number'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

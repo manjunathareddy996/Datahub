@@ -26,7 +26,7 @@ derived_columns:
   SUB_COVER_CODE: 'SUB_COVER_CODE'
   SUB_COVER_APPLICABILITY: 'SUB_COVER_APPLICABILITY'
   RECORD_SOURCE: 'record_source'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

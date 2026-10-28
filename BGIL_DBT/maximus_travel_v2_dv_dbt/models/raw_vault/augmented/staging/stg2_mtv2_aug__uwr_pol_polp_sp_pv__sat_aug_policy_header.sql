@@ -66,7 +66,7 @@ derived_columns:
   SUM_INSURED_TOTAL_IN_TRANSACTION_CURRENCY: 'policy_sum_insured_in_transaction_currency'
   UNDERWRITING_REFERRAL_REQUIRED_INDICATOR: 'underwriting_rqrd_flag'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

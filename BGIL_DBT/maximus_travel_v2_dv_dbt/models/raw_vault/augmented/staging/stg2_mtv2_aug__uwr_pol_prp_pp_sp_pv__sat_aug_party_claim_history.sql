@@ -26,7 +26,7 @@ derived_columns:
   CLAIM_APPLICANT_NAME: 'claim_applicant_name'
   CLAIM_APPLICANT_SALUTATION: 'claim_applicant_name_prefix'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

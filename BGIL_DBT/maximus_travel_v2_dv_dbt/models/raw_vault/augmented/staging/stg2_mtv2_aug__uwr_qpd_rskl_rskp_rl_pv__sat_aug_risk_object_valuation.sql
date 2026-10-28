@@ -24,7 +24,7 @@ derived_columns:
   INSURED_VALUE_IN_SUM_INSURED_CURRENCY: 'sum_insured_in_si_currency'
   INSURED_VALUE_IN_TRANSACTION_CURRENCY: 'risk_sum_insured_in_transaction_currency'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -28,7 +28,7 @@ derived_columns:
   SAME_AS_CORRESPONDENCE_ADDRESS_INDICATOR: 'flag_indicating_if_current_permanent_overseas_address_is_same_as_correspondence_local_address'
   SAME_AS_POLICY_ADDRESS_INDICATOR: 'cast(null as varchar)'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

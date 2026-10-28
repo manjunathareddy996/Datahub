@@ -52,7 +52,7 @@ derived_columns:
   SECONDARY_CAUSE_OF_LOSS_CODE: 'secondarycausecode'
   SECONDARY_CAUSE_OF_LOSS_DESCRIPTION: 'secondarycausedesc'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

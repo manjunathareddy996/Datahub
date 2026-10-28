@@ -30,7 +30,7 @@ derived_columns:
   RELATIONSHIP_WITH_HNI_CUSTOMER: 'cast(null as varchar)'
   RELATIONSHIP_WITH_PRIVE_CUSTOMER: 'cast(null as varchar)'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
