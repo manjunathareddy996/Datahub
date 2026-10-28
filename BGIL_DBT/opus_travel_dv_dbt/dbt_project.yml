@@ -1,8 +1,8 @@
-name: 'travel_dv'
+name: 'opus_travel_dv_dbt'
 version: '1.0.0'
 config-version: 2
 
-profile: 'travel_dv'
+profile: 'opus_travel_dbt'
 
 model-paths: ["models"]
 analysis-paths: ["analyses"]
@@ -24,7 +24,7 @@ vars:
 
 
 models:
-  travel_dv:
+  opus_travel_dv_dbt:
     +pre-hook:
       - "{% if target.name == 'dev' %}INSERT INTO BAGIC_PREPROD_CURATED_DB.UTILS.MAXI_RAW_DBT_MODEL_RUN_LOG (model_name, status, run_id, run_start_timestamp, materialization, schema_name, target_table) SELECT '{{ this.name }}', 'RUNNING', '{{ invocation_id }}', '{{ run_started_at }}'::TIMESTAMP_NTZ, '{{ config.get(\"materialized\", \"view\") }}', '{{ this.schema }}', '{{ this.database }}.{{ this.schema }}.{{ this.name }}'{% endif %}"
     +post-hook:
@@ -34,7 +34,7 @@ models:
       +schema: BGIL_DATA_MODEL
       +tags: ["stg1"]
 
-    automate_dv:
+    raw_vault:
       standard:
         +schema: BGIL_DATA_MODEL
         stitched:

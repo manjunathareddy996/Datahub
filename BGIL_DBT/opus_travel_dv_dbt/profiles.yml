@@ -1,4 +1,4 @@
-travel_dv:
+opus_travel_dbt:
   target: dev # default
   outputs:
     dev:
