@@ -4,6 +4,24 @@ Running log of pushes to this repo. Newest first.
 
 ---
 
+## 2026-10-28 — Restore maximus_travel_v2_dv_dbt files lost in merge
+
+**Target:** `main` (`fae3e0a`)
+**What:** 543 files that were in the feature tip (`d3e2e98`) but got accidentally
+removed during the merge resolution were restored. The merge resolution step ran
+`git rm` on every DD (deleted-by-both) entry; that confirmed main's deletions of
+files the feature side wanted to keep. Affected sub-trees:
+
+- `dbt_project.yml`, `packages.yml`, `profiles.yml`
+- `macros/` (8 files incl. `sat_multi_source.sql`, `ma_sat_multi_source.sql`)
+- `models/staging/` (115 stg1 layer-1 casts + `_mtv2_sources.yml`)
+- `dbt_packages/` (350 vendored package files for dbt_utils + automate_dv)
+- `generators/`, `build_artifacts/`, `build_profile*.json`, `BUILDER_ASKS_*.md`
+
+Restored verbatim from `d3e2e98` with `git checkout d3e2e98 -- <paths>`.
+
+---
+
 ## 2026-10-28 — Merge feature/collapse-single-source-model-travel-sats into main
 
 **Target:** `main` (merge from `feature/collapse-single-source-model-travel-sats`)
