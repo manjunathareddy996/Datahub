@@ -32,7 +32,7 @@
         cast(null as varchar) as LOADING_AMOUNT,
         accidental_premiumace as NET_HEAD_PREMIUM,
         cast(null as varchar) as PREMIUM_BASIS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_ins_cov_covp_sp_pv') }}
     where accidental_premiumace is not null
 union all
@@ -46,7 +46,7 @@ union all
         cast(null as varchar) as LOADING_AMOUNT,
         cast(null as varchar) as NET_HEAD_PREMIUM,
         cast(null as varchar) as PREMIUM_BASIS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_ins_cov_covp_sp_pv') }}
     where old_premium is not null
 union all
@@ -60,7 +60,7 @@ union all
         cast(null as varchar) as LOADING_AMOUNT,
         cast(null as varchar) as NET_HEAD_PREMIUM,
         cast(null as varchar) as PREMIUM_BASIS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_ins_cov_covp_sp_pv') }}
     where premium is not null
 union all
@@ -74,7 +74,7 @@ union all
         cast(null as varchar) as LOADING_AMOUNT,
         emergency_hospitalization_for_sickness_premium as NET_HEAD_PREMIUM,
         cast(null as varchar) as PREMIUM_BASIS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_ins_cov_covp_sp_pv') }}
     where emergency_hospitalization_for_sickness_premium is not null
 union all
@@ -88,7 +88,7 @@ union all
         loading as LOADING_AMOUNT,
         cast(null as varchar) as NET_HEAD_PREMIUM,
         cast(null as varchar) as PREMIUM_BASIS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_ins_cov_covp_sp_pv') }}
     where loading is not null
 union all
@@ -102,7 +102,7 @@ union all
         cast(null as varchar) as LOADING_AMOUNT,
         net_premium as NET_HEAD_PREMIUM,
         cast(null as varchar) as PREMIUM_BASIS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_ins_cov_covp_sp_pv') }}
     where net_premium is not null
 union all
@@ -116,7 +116,7 @@ union all
         cast(null as varchar) as LOADING_AMOUNT,
         cast(null as varchar) as NET_HEAD_PREMIUM,
         cast(null as varchar) as PREMIUM_BASIS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_ins_cov_covp_sp_pv') }}
     where net_premium_without_loading_discount is not null
 union all
@@ -130,7 +130,7 @@ union all
         cast(null as varchar) as LOADING_AMOUNT,
         cast(null as varchar) as NET_HEAD_PREMIUM,
         rate_basisace_domestic as PREMIUM_BASIS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_ins_cov_covp_sp_pv') }}
     where rate_basisace_domestic is not null
 union all
@@ -144,6 +144,6 @@ union all
         cast(null as varchar) as LOADING_AMOUNT,
         cast(null as varchar) as NET_HEAD_PREMIUM,
         cast(null as varchar) as PREMIUM_BASIS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_ins_cov_covp_sp_pv') }}
     where update_cover_premium_in_base_currency is not null

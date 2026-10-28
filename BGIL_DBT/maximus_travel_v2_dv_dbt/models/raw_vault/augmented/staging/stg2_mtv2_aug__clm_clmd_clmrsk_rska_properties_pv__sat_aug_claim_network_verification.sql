@@ -23,7 +23,7 @@ derived_columns:
   CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),''))"
   PROVIDER_EMAIL_ADDRESS: 'cast(null as varchar)'
   VENDOR_PERFORMANCE_SCORE: 'vendor_score'
-  RECORD_SOURCE: '!NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
 {%- endset -%}
 

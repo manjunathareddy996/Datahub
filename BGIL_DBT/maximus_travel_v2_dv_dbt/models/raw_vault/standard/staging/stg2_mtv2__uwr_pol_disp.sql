@@ -64,7 +64,7 @@ derived_columns:
   STATE_NAME: 'state'
   STREET_NAME: 'cast(null as varchar)'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

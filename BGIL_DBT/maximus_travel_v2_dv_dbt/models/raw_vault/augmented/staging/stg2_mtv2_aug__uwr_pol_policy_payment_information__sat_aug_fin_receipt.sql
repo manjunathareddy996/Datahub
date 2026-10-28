@@ -23,7 +23,7 @@ derived_columns:
   FINANCIAL_TRANSACTION_NK: "'HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(transaction_id),'')) is not null then nullif(trim(transaction_id), '') end),''))"
   COLLECTION_DATE: 'collection_date'
   PORTAL_PAYMENT_MODE_CODE: 'cast(null as varchar)'
-  RECORD_SOURCE: '!NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
 {%- endset -%}
 

@@ -23,7 +23,7 @@ derived_columns:
   CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(claimno),''), nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(claimno), ''), nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),''))"
   SPECIAL_ENCLOSURE_DESCRIPTION: 'special_enclosures_details'
   SPECIAL_ENCLOSURE_INDICATOR: 'special_enclosures_flag'
-  RECORD_SOURCE: '!NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
 {%- endset -%}
 

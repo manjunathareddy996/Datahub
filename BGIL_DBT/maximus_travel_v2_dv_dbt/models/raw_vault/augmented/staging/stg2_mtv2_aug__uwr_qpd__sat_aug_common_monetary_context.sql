@@ -21,7 +21,7 @@ derived_columns:
   FINANCIAL_TRANSACTION_BK__QUOTE_PREMIUM: "nullif(trim(case when coalesce(nullif(trim(policy_quote_number),'')) is not null then 'QUOTEPREM:' || nullif(trim(policy_quote_number), '') end),'')"
   FINANCIAL_TRANSACTION_NK__QUOTE_PREMIUM: "'HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(policy_quote_number),'')) is not null then 'QUOTEPREM:' || nullif(trim(policy_quote_number), '') end),''))"
   BASE_CURRENCY_EXCHANGE_RATE: 'base_currency_rate'
-  RECORD_SOURCE: '!NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
 {%- endset -%}
 

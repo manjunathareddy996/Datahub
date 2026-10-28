@@ -40,7 +40,7 @@ derived_columns:
   PREMIUM_IMPACT_AMOUNT: 'endorsement_premium'
   SUM_INSURED_IMPACT_AMOUNT: 'endorsement_sum_insured'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

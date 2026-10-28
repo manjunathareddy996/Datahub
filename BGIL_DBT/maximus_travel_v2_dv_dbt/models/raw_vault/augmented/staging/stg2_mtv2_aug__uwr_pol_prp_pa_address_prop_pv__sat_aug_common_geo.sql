@@ -21,7 +21,7 @@ derived_columns:
   LOCATION_BK: "nullif(trim(case when coalesce(nullif(trim(area),''), nullif(trim(land_mark),''), nullif(trim(city),''), nullif(trim(state),''), nullif(trim(pincode),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim(area), ''), '') || '#' || coalesce(nullif(trim(land_mark), ''), '') || '#' || coalesce(nullif(trim(city), ''), '') || '#' || coalesce(nullif(trim(state), ''), '') || '#' || coalesce(nullif(trim(pincode), ''), '')), '####')), '[[:space:]]+', ' '))) end),'')"
   LOCATION_NK: "'HUB_LOCATION|' || (nullif(trim(case when coalesce(nullif(trim(area),''), nullif(trim(land_mark),''), nullif(trim(city),''), nullif(trim(state),''), nullif(trim(pincode),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim(area), ''), '') || '#' || coalesce(nullif(trim(land_mark), ''), '') || '#' || coalesce(nullif(trim(city), ''), '') || '#' || coalesce(nullif(trim(state), ''), '') || '#' || coalesce(nullif(trim(pincode), ''), '')), '####')), '[[:space:]]+', ' '))) end),''))"
   ALTITUDE: 'geo_coordinate_altitude'
-  RECORD_SOURCE: '!NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
 {%- endset -%}
 

@@ -32,7 +32,7 @@ derived_columns:
   ASSESSMENT_STATUS: 'tele_varification_status'
   REQUESTED_DATE: 'tele_varification_initiated_date'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

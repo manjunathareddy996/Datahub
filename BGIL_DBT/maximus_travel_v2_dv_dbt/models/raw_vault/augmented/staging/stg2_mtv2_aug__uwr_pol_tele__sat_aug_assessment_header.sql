@@ -23,7 +23,7 @@ derived_columns:
   ASSESSMENT_NK__TELE_VERIFICATION: "'HUB_ASSESSMENT|' || (nullif(trim(case when coalesce(nullif(trim(transaction_id),'')) is not null then 'TELEVERIF:' || nullif(trim(transaction_id), '') end),''))"
   ASSESSMENT_END_TIME: 'end_time'
   ASSESSMENT_START_TIME: 'start_time'
-  RECORD_SOURCE: '!NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
 {%- endset -%}
 

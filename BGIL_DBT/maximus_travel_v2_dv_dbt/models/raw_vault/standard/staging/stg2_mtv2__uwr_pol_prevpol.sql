@@ -100,7 +100,7 @@ derived_columns:
   TOTAL_PREMIUM_COLLECTED: 'cast(null as varchar)'
   UIN: 'cast(null as varchar)'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -24,7 +24,7 @@
         cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
         cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION,
         cast(null as varchar) as STATE_WISE_GSTIN_REGISTRATION_DETAILS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pp_sp_pv') }}
     where name_as_per_aadhaar is not null
 union all
@@ -46,7 +46,7 @@ union all
         cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
         cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION,
         cast(null as varchar) as STATE_WISE_GSTIN_REGISTRATION_DETAILS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pp_sp_pv') }}
     where name_as_per_ckyc is not null
 union all
@@ -68,7 +68,7 @@ union all
         cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
         cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION,
         cast(null as varchar) as STATE_WISE_GSTIN_REGISTRATION_DETAILS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pp_sp_pv') }}
     where driving_license_details is not null
 union all
@@ -90,7 +90,7 @@ union all
         cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
         cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION,
         cast(null as varchar) as STATE_WISE_GSTIN_REGISTRATION_DETAILS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pp_sp_pv') }}
     where eia_available is not null or eia_credit_required is not null or eia_details is not null or eia_required is not null or eia_when_linked is not null
 union all
@@ -112,7 +112,7 @@ union all
         cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
         cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION,
         statewise_gstin_details as STATE_WISE_GSTIN_REGISTRATION_DETAILS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pp_sp_pv') }}
     where statewise_gstin_details is not null
 union all
@@ -134,7 +134,7 @@ union all
         cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
         cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION,
         cast(null as varchar) as STATE_WISE_GSTIN_REGISTRATION_DETAILS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pp_sp_pv') }}
     where name_as_per_pan is not null or pan_aadhaar_linked is not null
 union all
@@ -156,7 +156,7 @@ union all
         passport_issue_country as PASSPORT_ISSUING_COUNTRY,
         cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION,
         cast(null as varchar) as STATE_WISE_GSTIN_REGISTRATION_DETAILS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pp_sp_pv') }}
     where passport_details is not null or passport_issue_country is not null
 union all
@@ -178,7 +178,7 @@ union all
         cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
         cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION,
         cast(null as varchar) as STATE_WISE_GSTIN_REGISTRATION_DETAILS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pp_sp_pv') }}
     where claim_poa_status is not null
 union all
@@ -200,7 +200,7 @@ union all
         cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
         proof_of_address_submitted_for_current_permanent_overseas_addressothers as PROOF_OF_ADDRESS_OTHER_DESCRIPTION,
         cast(null as varchar) as STATE_WISE_GSTIN_REGISTRATION_DETAILS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pp_sp_pv') }}
     where proof_of_address_submitted_for_current_permanent_overseas_addressothers is not null
 union all
@@ -222,6 +222,6 @@ union all
         cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
         cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION,
         cast(null as varchar) as STATE_WISE_GSTIN_REGISTRATION_DETAILS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pp_sp_pv') }}
     where claim_poi_status is not null

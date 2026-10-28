@@ -33,7 +33,7 @@
         cast(null as varchar) as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pa') }}
     where email_id is not null
 union all
@@ -50,7 +50,7 @@ union all
         cast(null as varchar) as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pa') }}
     where alternate_email_id is not null
 union all
@@ -67,7 +67,7 @@ union all
         cast(null as varchar) as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pa') }}
     where fax is not null
 union all
@@ -84,7 +84,7 @@ union all
         cast(null as varchar) as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         std_code as STD_CODE,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pa') }}
     where landline_no is not null or std_code is not null
 union all
@@ -101,7 +101,7 @@ union all
         cast(null as varchar) as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pa') }}
     where phone_no is not null
 union all
@@ -118,7 +118,7 @@ union all
         cast(null as varchar) as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pa') }}
     where work_no is not null
 union all
@@ -135,6 +135,6 @@ union all
         mobile_no as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_prp_pa') }}
     where mobile_no is not null

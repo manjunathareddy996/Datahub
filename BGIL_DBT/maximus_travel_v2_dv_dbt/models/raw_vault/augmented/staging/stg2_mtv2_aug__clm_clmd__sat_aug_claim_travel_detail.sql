@@ -49,7 +49,7 @@ derived_columns:
   RELEASE_TIME: 'cast(null as varchar)'
   TRIP_DESTINATION_COUNTRY: 'cast(null as varchar)'
   WEATHER_CONDITION_AT_INCIDENT: 'cast(null as varchar)'
-  RECORD_SOURCE: '!NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
 {%- endset -%}
 

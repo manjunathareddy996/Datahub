@@ -32,7 +32,7 @@
         cast(null as varchar) as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pa_address_prop_pv') }}
     where alternate_mob_numberlandline_number is not null
 union all
@@ -49,7 +49,7 @@ union all
         whatsapp_no as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pa_address_prop_pv') }}
     where whatsapp_no is not null
 union all
@@ -66,7 +66,7 @@ union all
         cast(null as varchar) as MOBILE_NUMBER,
         facebook_id as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pa_address_prop_pv') }}
     where facebook_id is not null
 union all
@@ -83,7 +83,7 @@ union all
         cast(null as varchar) as MOBILE_NUMBER,
         instagram_id as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pa_address_prop_pv') }}
     where instagram_id is not null
 union all
@@ -100,7 +100,7 @@ union all
         cast(null as varchar) as MOBILE_NUMBER,
         linked_in_id as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pa_address_prop_pv') }}
     where linked_in_id is not null
 union all
@@ -117,6 +117,6 @@ union all
         cast(null as varchar) as MOBILE_NUMBER,
         twitter_id as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_ins_mbr_pa_address_prop_pv') }}
     where twitter_id is not null

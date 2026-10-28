@@ -640,7 +640,7 @@ derived_columns:
   UIN: 'cast(null as varchar)'
   VALUE_BAND: 'cast(null as varchar)'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

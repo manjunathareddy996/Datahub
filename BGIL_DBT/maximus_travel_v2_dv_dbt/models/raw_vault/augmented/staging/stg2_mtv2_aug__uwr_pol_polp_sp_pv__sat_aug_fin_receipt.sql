@@ -23,7 +23,7 @@ derived_columns:
   FINANCIAL_TRANSACTION_NK__POLICY_PREMIUM: "'HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(w1_policy_number),''), nullif(trim(foreign_key),'')) is not null then 'POLPREM:' || coalesce(nullif(trim(w1_policy_number), ''), nullif(trim(foreign_key), '')) end),''))"
   COLLECTION_DATE: 'cast(null as varchar)'
   PORTAL_PAYMENT_MODE_CODE: 'portal_payment_mode'
-  RECORD_SOURCE: '!NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
 {%- endset -%}
 

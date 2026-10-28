@@ -23,7 +23,7 @@ derived_columns:
   PAYMENT_INSTRUMENT_NK__PAYEE_BANK_ACCOUNT: "'HUB_PAYMENT_INSTRUMENT|' || (nullif(trim(case when coalesce(nullif(trim(account_number),'')) is not null then 'ACCT:' || nullif(trim(account_number), '') end),''))"
   ACCOUNT_CATEGORY_CODE: 'account_category_code'
   BANK_BRANCH_CODE: 'branch_code'
-  RECORD_SOURCE: '!NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
 {%- endset -%}
 

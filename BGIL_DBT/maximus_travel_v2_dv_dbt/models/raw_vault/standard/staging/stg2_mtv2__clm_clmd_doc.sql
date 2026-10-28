@@ -40,7 +40,7 @@ derived_columns:
   RECEIVED_DATE: 'cast(null as varchar)'
   SOURCE_CHANNEL: 'cast(null as varchar)'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

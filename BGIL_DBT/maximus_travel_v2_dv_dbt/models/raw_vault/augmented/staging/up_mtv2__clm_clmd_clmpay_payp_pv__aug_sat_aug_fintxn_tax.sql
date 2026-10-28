@@ -27,7 +27,7 @@
         cast(null as varchar) as UGST_RATE,
         cast(null as varchar) as UTGST_AMOUNT,
         cast(null as varchar) as VAT_REGISTRATION_NUMBER,
-        'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__clm_clmd_clmpay_payp_pv') }}
     where invoice_mode is not null or invoice_no is not null
 union all
@@ -52,7 +52,7 @@ union all
         cast(null as varchar) as UGST_RATE,
         ugst_amount as UTGST_AMOUNT,
         cast(null as varchar) as VAT_REGISTRATION_NUMBER,
-        'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__clm_clmd_clmpay_payp_pv') }}
     where ugst_amount is not null
 union all
@@ -77,6 +77,6 @@ union all
         cast(null as varchar) as UGST_RATE,
         cast(null as varchar) as UTGST_AMOUNT,
         vat_number as VAT_REGISTRATION_NUMBER,
-        'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__clm_clmd_clmpay_payp_pv') }}
     where vat_number is not null

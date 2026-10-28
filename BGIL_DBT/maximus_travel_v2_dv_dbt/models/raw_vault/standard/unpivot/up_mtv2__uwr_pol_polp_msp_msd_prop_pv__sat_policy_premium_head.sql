@@ -30,7 +30,7 @@
         cast(null as varchar) as LOADING_AMOUNT,
         cast(null as varchar) as NET_HEAD_PREMIUM,
         ace_premium_type as PREMIUM_BASIS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_polp_msp_msd_prop_pv') }}
     where ace_premium_type is not null
 union all
@@ -44,7 +44,7 @@ union all
         cast(null as varchar) as LOADING_AMOUNT,
         cast(null as varchar) as NET_HEAD_PREMIUM,
         cast(null as varchar) as PREMIUM_BASIS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_polp_msp_msd_prop_pv') }}
     where fixed_one_way_premium is not null
 union all
@@ -58,7 +58,7 @@ union all
         cast(null as varchar) as LOADING_AMOUNT,
         cast(null as varchar) as NET_HEAD_PREMIUM,
         cast(null as varchar) as PREMIUM_BASIS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_polp_msp_msd_prop_pv') }}
     where fixed_round_trip_premium is not null
 union all
@@ -72,7 +72,7 @@ union all
         cast(null as varchar) as LOADING_AMOUNT,
         gross_premium as NET_HEAD_PREMIUM,
         cast(null as varchar) as PREMIUM_BASIS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_polp_msp_msd_prop_pv') }}
     where gross_premium is not null
 union all
@@ -86,7 +86,7 @@ union all
         cast(null as varchar) as LOADING_AMOUNT,
         one_way_premium as NET_HEAD_PREMIUM,
         cast(null as varchar) as PREMIUM_BASIS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_polp_msp_msd_prop_pv') }}
     where one_way_premium is not null
 union all
@@ -100,7 +100,7 @@ union all
         cast(null as varchar) as LOADING_AMOUNT,
         round_trip_premium as NET_HEAD_PREMIUM,
         cast(null as varchar) as PREMIUM_BASIS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_polp_msp_msd_prop_pv') }}
     where round_trip_premium is not null
 union all
@@ -114,6 +114,6 @@ union all
         cast(null as varchar) as LOADING_AMOUNT,
         cast(null as varchar) as NET_HEAD_PREMIUM,
         slab_ as PREMIUM_BASIS,
-        'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__uwr_pol_polp_msp_msd_prop_pv') }}
     where slab_ is not null

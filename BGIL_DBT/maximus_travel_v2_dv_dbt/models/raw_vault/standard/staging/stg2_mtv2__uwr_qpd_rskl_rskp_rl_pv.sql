@@ -220,7 +220,7 @@ derived_columns:
   TRIP_TYPE: 'coalesce(trip_typeace, journey_typeace)'
   UIN: 'cast(null as varchar)'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

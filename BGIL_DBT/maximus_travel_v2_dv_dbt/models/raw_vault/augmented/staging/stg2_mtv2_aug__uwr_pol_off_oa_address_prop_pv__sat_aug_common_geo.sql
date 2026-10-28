@@ -21,7 +21,7 @@ derived_columns:
   LOCATION_BK: "nullif(trim(case when coalesce(nullif(trim(w0_address1),''), nullif(trim(w1_address2),''), nullif(trim(w2_address3),''), nullif(trim(w3_city),''), nullif(trim(w4_state),''), nullif(trim(w5_pincode),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim(w0_address1), ''), '') || '#' || coalesce(nullif(trim(w1_address2), ''), '') || '#' || coalesce(nullif(trim(w2_address3), ''), '') || '#' || coalesce(nullif(trim(w3_city), ''), '') || '#' || coalesce(nullif(trim(w4_state), ''), '') || '#' || coalesce(nullif(trim(w5_pincode), ''), '')), '#####')), '[[:space:]]+', ' '))) end),'')"
   LOCATION_NK: "'HUB_LOCATION|' || (nullif(trim(case when coalesce(nullif(trim(w0_address1),''), nullif(trim(w1_address2),''), nullif(trim(w2_address3),''), nullif(trim(w3_city),''), nullif(trim(w4_state),''), nullif(trim(w5_pincode),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim(w0_address1), ''), '') || '#' || coalesce(nullif(trim(w1_address2), ''), '') || '#' || coalesce(nullif(trim(w2_address3), ''), '') || '#' || coalesce(nullif(trim(w3_city), ''), '') || '#' || coalesce(nullif(trim(w4_state), ''), '') || '#' || coalesce(nullif(trim(w5_pincode), ''), '')), '#####')), '[[:space:]]+', ' '))) end),''))"
   ALTITUDE: 'geo_coordinate_altitude'
-  RECORD_SOURCE: '!NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
 {%- endset -%}
 

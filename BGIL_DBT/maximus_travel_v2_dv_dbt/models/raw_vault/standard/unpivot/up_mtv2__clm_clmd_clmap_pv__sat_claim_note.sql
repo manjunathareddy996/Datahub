@@ -27,7 +27,7 @@
         'ACTION_TAKEN' as NOTE_SEQUENCE,
         action as ACTION_TAKEN,
         cast(null as varchar) as NOTE_TEXT,
-        'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__clm_clmd_clmap_pv') }}
     where action is not null
 union all
@@ -36,7 +36,7 @@ union all
         'CLAIM_CLOSURE_REMARKS' as NOTE_SEQUENCE,
         cast(null as varchar) as ACTION_TAKEN,
         claim_close_remarks as NOTE_TEXT,
-        'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__clm_clmd_clmap_pv') }}
     where claim_close_remarks is not null
 union all
@@ -45,7 +45,7 @@ union all
         'CLAIM_STATUS_REMARK' as NOTE_SEQUENCE,
         cast(null as varchar) as ACTION_TAKEN,
         claim_status_remark as NOTE_TEXT,
-        'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__clm_clmd_clmap_pv') }}
     where claim_status_remark is not null
 union all
@@ -54,7 +54,7 @@ union all
         'GENERAL_COMMENTS' as NOTE_SEQUENCE,
         cast(null as varchar) as ACTION_TAKEN,
         comments as NOTE_TEXT,
-        'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__clm_clmd_clmap_pv') }}
     where comments is not null
 union all
@@ -63,7 +63,7 @@ union all
         'INTERNAL_CLAIM_COMMENTS' as NOTE_SEQUENCE,
         cast(null as varchar) as ACTION_TAKEN,
         internal_claim_comments as NOTE_TEXT,
-        'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__clm_clmd_clmap_pv') }}
     where internal_claim_comments is not null
 union all
@@ -72,7 +72,7 @@ union all
         'OTHER_REMARKS' as NOTE_SEQUENCE,
         cast(null as varchar) as ACTION_TAKEN,
         other_remarks as NOTE_TEXT,
-        'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__clm_clmd_clmap_pv') }}
     where other_remarks is not null
 union all
@@ -81,7 +81,7 @@ union all
         'REMARKS' as NOTE_SEQUENCE,
         cast(null as varchar) as ACTION_TAKEN,
         remarks as NOTE_TEXT,
-        'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__clm_clmd_clmap_pv') }}
     where remarks is not null
 union all
@@ -90,7 +90,7 @@ union all
         'SPECIAL_REMARKS' as NOTE_SEQUENCE,
         cast(null as varchar) as ACTION_TAKEN,
         any_special_remarks as NOTE_TEXT,
-        'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__clm_clmd_clmap_pv') }}
     where any_special_remarks is not null
 union all
@@ -99,6 +99,6 @@ union all
         'TEAM_TRACKING_COMMENTS' as NOTE_SEQUENCE,
         cast(null as varchar) as ACTION_TAKEN,
         general_team_comments_tracking_comments as NOTE_TEXT,
-        'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__clm_clmd_clmap_pv') }}
     where general_team_comments_tracking_comments is not null

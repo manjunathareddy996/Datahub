@@ -70,7 +70,7 @@ derived_columns:
   STATUS: 'paymentstatus'
   TRANCHE_NUMBER: "coalesce(nullif(trim(claimpaymentid), ''),'')"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -31,7 +31,7 @@
         total_gst_percentage as TAX_RATE,
         cast(null as varchar) as TDS_AMOUNT,
         cast(null as varchar) as TDS_RATE,
-        'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__clm_clmd_clmrsk_rska_msp_msd_prop_pv') }}
     where cgst is not null or cgst_percentage is not null or gst_applicability is not null or igst is not null or igst_percentage is not null or invoice_number is not null or sgst is not null or sgst_percentage is not null or total_gst_percentage is not null
 union all
@@ -51,6 +51,6 @@ union all
         cast(null as varchar) as TAX_RATE,
         tds_amount as TDS_AMOUNT,
         tds_rate as TDS_RATE,
-        'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mtv2__clm_clmd_clmrsk_rska_msp_msd_prop_pv') }}
     where tds_amount is not null or tds_applicability is not null or tds_applicable_flag is not null or tds_rate is not null

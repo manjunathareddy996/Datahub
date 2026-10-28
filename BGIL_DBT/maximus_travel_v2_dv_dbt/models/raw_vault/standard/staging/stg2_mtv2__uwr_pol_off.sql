@@ -24,7 +24,7 @@ derived_columns:
   ORG_UNIT_BK: "nullif(trim(case when coalesce(nullif(trim(office_code),'')) is not null then 'ORGUNIT:' || nullif(trim(office_code), '') end),'')"
   ORG_UNIT_NK: "'HUB_ORG_UNIT|' || (nullif(trim(case when coalesce(nullif(trim(office_code),'')) is not null then 'ORGUNIT:' || nullif(trim(office_code), '') end),''))"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

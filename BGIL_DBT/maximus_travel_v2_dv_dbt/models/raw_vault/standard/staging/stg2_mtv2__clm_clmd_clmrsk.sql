@@ -40,7 +40,7 @@ derived_columns:
   RISK_OBJECT_REFERENCE_NUMBER: 'cast(null as varchar)'
   RISK_OBJECT_TYPE: 'cast(null as varchar)'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

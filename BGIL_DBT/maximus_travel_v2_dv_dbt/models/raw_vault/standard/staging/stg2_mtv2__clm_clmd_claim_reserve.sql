@@ -60,7 +60,7 @@ derived_columns:
   RESERVE_TYPE: 'reservetypedesc'
   ROLE_SEQUENCE: "'1'"
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

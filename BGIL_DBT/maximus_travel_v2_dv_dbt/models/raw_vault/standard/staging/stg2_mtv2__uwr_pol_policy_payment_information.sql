@@ -78,7 +78,7 @@ derived_columns:
   TRANSACTION_NUMBER: 'cast(null as varchar)'
   TRANSACTION_TYPE: 'cast(null as varchar)'
   LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
-  RECORD_SOURCE: '!NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
