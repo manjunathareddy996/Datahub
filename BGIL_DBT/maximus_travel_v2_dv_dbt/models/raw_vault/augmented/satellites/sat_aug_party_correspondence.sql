@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, PARTY_HKEY, multi-active on DISPATCH_REFERENCE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_party_correspondence'
+source_model: 'satfeed_mtv2_aug_sat_aug_party_correspondence'
 src_pk: 'PARTY_HKEY'
 src_cdk:
   - 'DISPATCH_REFERENCE'

@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, ASSESSMENT_HKEY, single-active.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_assessment_header'
+source_model: 'satfeed_mtv2_aug_sat_aug_assessment_header'
 src_pk: 'ASSESSMENT_HKEY'
 src_payload:
   - 'ASSESSMENT_END_TIME'

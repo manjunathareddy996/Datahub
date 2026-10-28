@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, CLAIM_HKEY, single-active.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_claim_tp_forensic'
+source_model: 'satfeed_mtv2_aug_sat_aug_claim_tp_forensic'
 src_pk: 'CLAIM_HKEY'
 src_payload:
   - 'FIR_TIME'

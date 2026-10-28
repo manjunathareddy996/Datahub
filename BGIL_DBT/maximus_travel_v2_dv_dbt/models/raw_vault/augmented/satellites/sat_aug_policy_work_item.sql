@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, POLICY_HKEY, single-active.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_policy_work_item'
+source_model: 'satfeed_mtv2_aug_sat_aug_policy_work_item'
 src_pk: 'POLICY_HKEY'
 src_payload:
   - 'COMPLETED_DATE'

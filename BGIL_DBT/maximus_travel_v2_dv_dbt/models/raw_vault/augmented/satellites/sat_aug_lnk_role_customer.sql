@@ -11,8 +11,7 @@
 -- in the build report -- it is not resolved here.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_lnk_role_customer'
+source_model: 'satfeed_mtv2_aug_sat_aug_lnk_role_customer'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'MEMBER_TYPE'

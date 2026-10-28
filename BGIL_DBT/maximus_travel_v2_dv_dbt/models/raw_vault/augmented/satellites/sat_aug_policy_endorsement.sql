@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, POLICY_HKEY, multi-active on ENDORSEMENT_NUMBER.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_policy_endorsement'
+source_model: 'satfeed_mtv2_aug_sat_aug_policy_endorsement'
 src_pk: 'POLICY_HKEY'
 src_cdk:
   - 'ENDORSEMENT_NUMBER'

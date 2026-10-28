@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, PAYMENT_INSTRUMENT_HKEY, single-active.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_instrument_definition'
+source_model: 'satfeed_mtv2_aug_sat_aug_instrument_definition'
 src_pk: 'PAYMENT_INSTRUMENT_HKEY'
 src_payload:
   - 'ACCOUNT_CATEGORY_CODE'

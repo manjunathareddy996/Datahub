@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, CLAIM_HKEY, multi-active on REMINDER_SEQUENCE, REQUIREMENT_TYPE_NAME.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_claim_document_reminder'
+source_model: 'satfeed_mtv2_aug_sat_aug_claim_document_reminder'
 src_pk: 'CLAIM_HKEY'
 src_cdk:
   - 'REMINDER_SEQUENCE'

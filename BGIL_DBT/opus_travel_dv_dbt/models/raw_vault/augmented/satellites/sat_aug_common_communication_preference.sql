@@ -5,8 +5,7 @@
 
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_aug_common_communication_preference_bjaz_trv_loader_data_mv_custconsent'
+source_model: 'stg2_aug_common_communication_preference_bjaz_trv_loader_data_mv_custconsent'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'CUSTOMER_CONSENT_INDICATOR'

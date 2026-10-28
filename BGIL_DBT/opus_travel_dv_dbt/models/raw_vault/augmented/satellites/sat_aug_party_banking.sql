@@ -5,8 +5,7 @@
 
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_aug_party_banking_bjaz_trv_loader_data_mv_bankcustid'
+source_model: 'stg2_aug_party_banking_bjaz_trv_loader_data_mv_bankcustid'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'BANK_CUSTOMER_IDENTIFIER'

@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, QUOTE_HKEY, multi-active on PREMIUM_HEAD_CODE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_quote_premium_head'
+source_model: 'satfeed_mtv2_aug_sat_aug_quote_premium_head'
 src_pk: 'QUOTE_HKEY'
 src_cdk:
   - 'PREMIUM_HEAD_CODE'

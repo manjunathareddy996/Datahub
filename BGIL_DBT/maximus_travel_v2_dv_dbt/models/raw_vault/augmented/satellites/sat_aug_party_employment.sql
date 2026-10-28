@@ -11,8 +11,7 @@
 -- in the build report -- it is not resolved here.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_party_employment'
+source_model: 'satfeed_mtv2_aug_sat_aug_party_employment'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'EMPLOYER_DETAILS_NARRATIVE'

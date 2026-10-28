@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, POLICY_HKEY, multi-active on ITEM_CODE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_policy_discount_loading_applied'
+source_model: 'satfeed_mtv2_aug_sat_aug_policy_discount_loading_applied'
 src_pk: 'POLICY_HKEY'
 src_cdk:
   - 'ITEM_CODE'

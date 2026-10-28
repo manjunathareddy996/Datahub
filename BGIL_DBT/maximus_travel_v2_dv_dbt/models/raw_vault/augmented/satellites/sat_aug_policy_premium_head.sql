@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, POLICY_HKEY, multi-active on ADJUSTED_INDICATOR, COVERAGE_REFERENCE, PREMIUM_HEAD_CODE, SECTION.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_policy_premium_head'
+source_model: 'satfeed_mtv2_aug_sat_aug_policy_premium_head'
 src_pk: 'POLICY_HKEY'
 src_cdk:
   - 'ADJUSTED_INDICATOR'

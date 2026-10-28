@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, ORG_UNIT_HKEY, multi-active on CONTACT_POINT_TYPE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_org_unit_contact'
+source_model: 'satfeed_mtv2_aug_sat_aug_org_unit_contact'
 src_pk: 'ORG_UNIT_HKEY'
 src_cdk:
   - 'CONTACT_POINT_TYPE'

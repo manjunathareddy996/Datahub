@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, PARTY_ROLE_HKEY, single-active.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_lnk_role_provider'
+source_model: 'satfeed_mtv2_aug_sat_aug_lnk_role_provider'
 src_pk: 'PARTY_ROLE_HKEY'
 src_payload:
   - 'NATIONAL_TIE_UP_INFORMATION'

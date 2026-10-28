@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, RISK_OBJECT_HKEY, multi-active on SUB_COVER_CODE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_risk_travel_cover_terms'
+source_model: 'satfeed_mtv2_aug_sat_aug_risk_travel_cover_terms'
 src_pk: 'RISK_OBJECT_HKEY'
 src_cdk:
   - 'SUB_COVER_CODE'

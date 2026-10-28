@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, FINANCIAL_TRANSACTION_HKEY, multi-active on TAX_TYPE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_fintxn_tax'
+source_model: 'satfeed_mtv2_aug_sat_aug_fintxn_tax'
 src_pk: 'FINANCIAL_TRANSACTION_HKEY'
 src_cdk:
   - 'TAX_TYPE'

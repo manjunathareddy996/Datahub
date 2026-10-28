@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, PARTY_HKEY, single-active.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_party_payout_profile'
+source_model: 'satfeed_mtv2_aug_sat_aug_party_payout_profile'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'FLOAT_ACCOUNT_ACCESS_INDICATOR'

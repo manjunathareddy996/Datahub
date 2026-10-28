@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, QUOTE_HKEY, multi-active on SUM_INSURED_HEAD.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_quote_sum_insured_breakup'
+source_model: 'satfeed_mtv2_aug_sat_aug_quote_sum_insured_breakup'
 src_pk: 'QUOTE_HKEY'
 src_cdk:
   - 'SUM_INSURED_HEAD'

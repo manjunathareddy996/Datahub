@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, LOCATION_HKEY, single-active.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_common_address'
+source_model: 'satfeed_mtv2_aug_sat_aug_common_address'
 src_pk: 'LOCATION_HKEY'
 src_payload:
   - 'FULL_ADDRESS_TEXT'

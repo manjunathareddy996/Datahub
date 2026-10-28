@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, CLAIM_HKEY, multi-active on EXCLUSION_SET_CODE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_claim_exclusion_applied'
+source_model: 'satfeed_mtv2_aug_sat_aug_claim_exclusion_applied'
 src_pk: 'CLAIM_HKEY'
 src_cdk:
   - 'EXCLUSION_SET_CODE'

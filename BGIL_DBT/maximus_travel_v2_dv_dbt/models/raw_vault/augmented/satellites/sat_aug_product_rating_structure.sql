@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, PRODUCT_HKEY, single-active.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_product_rating_structure'
+source_model: 'satfeed_mtv2_aug_sat_aug_product_rating_structure'
 src_pk: 'PRODUCT_HKEY'
 src_payload:
   - 'DEPOSIT_PREMIUM_BASIS'

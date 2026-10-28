@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, PARTY_HKEY, multi-active on LOYALTY_CLASSIFICATION_TYPE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_party_loyalty_classification'
+source_model: 'satfeed_mtv2_aug_sat_aug_party_loyalty_classification'
 src_pk: 'PARTY_HKEY'
 src_cdk:
   - 'LOYALTY_CLASSIFICATION_TYPE'

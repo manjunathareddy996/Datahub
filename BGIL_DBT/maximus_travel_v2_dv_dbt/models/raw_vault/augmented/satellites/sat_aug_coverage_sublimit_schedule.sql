@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, COVERAGE_HKEY, multi-active on ACTIVE_SEQUENCE_NUMBER.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_coverage_sublimit_schedule'
+source_model: 'satfeed_mtv2_aug_sat_aug_coverage_sublimit_schedule'
 src_pk: 'COVERAGE_HKEY'
 src_cdk:
   - 'ACTIVE_SEQUENCE_NUMBER'

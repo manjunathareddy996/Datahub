@@ -11,8 +11,7 @@
 -- in the build report -- it is not resolved here.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_risk_person_insured'
+source_model: 'satfeed_mtv2_aug_sat_aug_risk_person_insured'
 src_pk: 'RISK_OBJECT_HKEY'
 src_payload:
   - 'ALCOHOL_USE_INDICATOR'

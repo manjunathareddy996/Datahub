@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, RISK_OBJECT_HKEY, multi-active on RATING_INPUT_CODE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_risk_travel_rating_input'
+source_model: 'satfeed_mtv2_aug_sat_aug_risk_travel_rating_input'
 src_pk: 'RISK_OBJECT_HKEY'
 src_cdk:
   - 'RATING_INPUT_CODE'

@@ -11,8 +11,7 @@
 -- in the build report -- it is not resolved here.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_common_communication_preference'
+source_model: 'satfeed_mtv2_aug_sat_aug_common_communication_preference'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'PREFERRED_ALERT_CHANNEL'

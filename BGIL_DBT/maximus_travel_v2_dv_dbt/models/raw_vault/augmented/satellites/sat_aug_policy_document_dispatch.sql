@@ -24,8 +24,7 @@
 -- ** history at all.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_policy_document_dispatch'
+source_model: 'satfeed_mtv2_aug_sat_aug_policy_document_dispatch'
 src_pk: 'POLICY_HKEY'
 src_cdk:
   - 'DISPATCH_SERIAL_NUMBER'

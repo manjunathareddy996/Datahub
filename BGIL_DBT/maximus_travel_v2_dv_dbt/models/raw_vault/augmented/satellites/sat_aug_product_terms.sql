@@ -11,8 +11,7 @@
 -- in the build report -- it is not resolved here.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_product_terms'
+source_model: 'satfeed_mtv2_aug_sat_aug_product_terms'
 src_pk: 'PRODUCT_HKEY'
 src_payload:
   - 'CHILD_POLICY_MAXIMUM_DURATION'

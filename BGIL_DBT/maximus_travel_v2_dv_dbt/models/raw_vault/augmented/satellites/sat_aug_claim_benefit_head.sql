@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, CLAIM_HKEY, multi-active on BENEFIT_HEAD_CODE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_claim_benefit_head'
+source_model: 'satfeed_mtv2_aug_sat_aug_claim_benefit_head'
 src_pk: 'CLAIM_HKEY'
 src_cdk:
   - 'BENEFIT_HEAD_CODE'

@@ -3,8 +3,7 @@
 -- TRAVEL STANDARD-MODEL hub() for HUB_QUOTE, 1 contributing table(s).
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_hub_ba_trv_data_policy_dtls_mv__quote'
+source_model: 'stg2_hub_ba_trv_data_policy_dtls_mv__quote'
 src_pk: 'QUOTE_HKEY'
 src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'

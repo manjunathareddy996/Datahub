@@ -11,8 +11,7 @@
 -- in the build report -- it is not resolved here.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_coverage_limits'
+source_model: 'satfeed_mtv2_aug_sat_aug_coverage_limits'
 src_pk: 'COVERAGE_HKEY'
 src_payload:
   - 'PER_TRIP_DAY_LIMIT'

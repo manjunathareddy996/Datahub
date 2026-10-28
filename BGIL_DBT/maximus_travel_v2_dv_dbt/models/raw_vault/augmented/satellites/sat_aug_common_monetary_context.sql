@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, FINANCIAL_TRANSACTION_HKEY, single-active.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_common_monetary_context'
+source_model: 'satfeed_mtv2_aug_sat_aug_common_monetary_context'
 src_pk: 'FINANCIAL_TRANSACTION_HKEY'
 src_payload:
   - 'BASE_CURRENCY_EXCHANGE_RATE'

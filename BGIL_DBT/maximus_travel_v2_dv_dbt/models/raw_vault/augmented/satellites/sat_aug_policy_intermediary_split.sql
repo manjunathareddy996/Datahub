@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, POLICY_HKEY, multi-active on INTERMEDIARY_REFERENCE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_policy_intermediary_split'
+source_model: 'satfeed_mtv2_aug_sat_aug_policy_intermediary_split'
 src_pk: 'POLICY_HKEY'
 src_cdk:
   - 'INTERMEDIARY_REFERENCE'

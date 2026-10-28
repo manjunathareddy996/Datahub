@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, CLAIM_HKEY, multi-active on BILL_NUMBER.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_claim_provider_billing'
+source_model: 'satfeed_mtv2_aug_sat_aug_claim_provider_billing'
 src_pk: 'CLAIM_HKEY'
 src_cdk:
   - 'BILL_NUMBER'

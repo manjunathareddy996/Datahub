@@ -6,8 +6,7 @@
 -- sources and only the payload it populates -- it does not union the sibling's models.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'lnkfeed_mtv2_party_location'
+source_model: 'lnkfeed_mtv2_party_location'
 src_pk: 'PARTY_LOCATION_HKEY'
 src_fk:
   - 'PARTY_HKEY'

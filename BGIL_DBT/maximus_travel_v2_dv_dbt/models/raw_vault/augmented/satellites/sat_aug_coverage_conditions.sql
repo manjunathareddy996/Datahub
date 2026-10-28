@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, COVERAGE_HKEY, single-active.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_coverage_conditions'
+source_model: 'satfeed_mtv2_aug_sat_aug_coverage_conditions'
 src_pk: 'COVERAGE_HKEY'
 src_payload:
   - 'SUB_CONDITION_VALUE'

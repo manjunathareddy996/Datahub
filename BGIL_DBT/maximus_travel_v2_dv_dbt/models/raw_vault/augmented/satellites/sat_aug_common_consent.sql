@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, PARTY_HKEY, single-active.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_common_consent'
+source_model: 'satfeed_mtv2_aug_sat_aug_common_consent'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'DATA_SHARING_CONSENT_INDICATOR'

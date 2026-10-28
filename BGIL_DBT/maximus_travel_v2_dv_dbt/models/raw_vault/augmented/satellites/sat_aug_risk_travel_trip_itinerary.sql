@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, RISK_OBJECT_HKEY, single-active.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_risk_travel_trip_itinerary'
+source_model: 'satfeed_mtv2_aug_sat_aug_risk_travel_trip_itinerary'
 src_pk: 'RISK_OBJECT_HKEY'
 src_payload:
   - 'ARRIVAL_DATE'

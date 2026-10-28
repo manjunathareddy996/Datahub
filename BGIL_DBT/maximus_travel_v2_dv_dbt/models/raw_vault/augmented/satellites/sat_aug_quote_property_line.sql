@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, QUOTE_HKEY, single-active.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_quote_property_line'
+source_model: 'satfeed_mtv2_aug_sat_aug_quote_property_line'
 src_pk: 'QUOTE_HKEY'
 src_payload:
   - 'APPLICABLE_YEAR'

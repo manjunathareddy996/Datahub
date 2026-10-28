@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, PARTY_HKEY, multi-active on IDENTIFICATION_TYPE_CODE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_party_identification'
+source_model: 'satfeed_mtv2_aug_sat_aug_party_identification'
 src_pk: 'PARTY_HKEY'
 src_cdk:
   - 'IDENTIFICATION_TYPE_CODE'

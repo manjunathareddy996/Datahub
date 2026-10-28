@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, QUOTE_HKEY, multi-active on COVERAGE_REFERENCE, COVERAGE_SEQUENCE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_quote_cover_detail'
+source_model: 'satfeed_mtv2_aug_sat_aug_quote_cover_detail'
 src_pk: 'QUOTE_HKEY'
 src_cdk:
   - 'COVERAGE_REFERENCE'

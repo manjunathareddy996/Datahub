@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, FINANCIAL_TRANSACTION_HKEY, single-active.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_fin_receipt'
+source_model: 'satfeed_mtv2_aug_sat_aug_fin_receipt'
 src_pk: 'FINANCIAL_TRANSACTION_HKEY'
 src_payload:
   - 'COLLECTION_DATE'

@@ -10,8 +10,7 @@
 -- resolved_mtv2__*, so by here it is just a column.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'hubfeed_mtv2_distribution_channel'
+source_model: 'hubfeed_mtv2_distribution_channel'
 src_pk: 'DISTRIBUTION_CHANNEL_HKEY'
 src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'

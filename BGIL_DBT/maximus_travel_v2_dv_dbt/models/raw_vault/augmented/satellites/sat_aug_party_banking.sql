@@ -14,8 +14,7 @@
 -- child key ['ACCOUNT_NUMBER_MASKED']; the sibling builds it single-active.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_party_banking'
+source_model: 'satfeed_mtv2_aug_sat_aug_party_banking'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'APPROVED_OR_REJECTED_BY'

@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, PARTY_LOCATION_HKEY, multi-active on ADDRESS_USAGE_TYPE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_party_contact_address_link'
+source_model: 'satfeed_mtv2_aug_sat_aug_party_contact_address_link'
 src_pk: 'PARTY_LOCATION_HKEY'
 src_cdk:
   - 'ADDRESS_USAGE_TYPE'

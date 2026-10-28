@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, DOCUMENT_HKEY, multi-active on REQUIRED_DOCUMENT_TYPE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_document_checklist'
+source_model: 'satfeed_mtv2_aug_sat_aug_document_checklist'
 src_pk: 'DOCUMENT_HKEY'
 src_cdk:
   - 'REQUIRED_DOCUMENT_TYPE'

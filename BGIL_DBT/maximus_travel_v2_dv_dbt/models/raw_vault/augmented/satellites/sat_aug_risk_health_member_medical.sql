@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, RISK_OBJECT_HKEY, multi-active on CONDITION_CODE, MEMBER_REFERENCE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_risk_health_member_medical'
+source_model: 'satfeed_mtv2_aug_sat_aug_risk_health_member_medical'
 src_pk: 'RISK_OBJECT_HKEY'
 src_cdk:
   - 'CONDITION_CODE'

@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, POLICY_HKEY, multi-active on COVERAGE_REFERENCE, COVERAGE_SEQUENCE.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_policy_coverage_schedule'
+source_model: 'satfeed_mtv2_aug_sat_aug_policy_coverage_schedule'
 src_pk: 'POLICY_HKEY'
 src_cdk:
   - 'COVERAGE_REFERENCE'

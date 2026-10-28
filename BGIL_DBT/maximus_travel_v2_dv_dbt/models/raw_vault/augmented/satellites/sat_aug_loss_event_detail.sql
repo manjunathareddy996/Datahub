@@ -9,8 +9,7 @@
 -- (BUILD_RULES 7.3): bare HASHDIFF, LOSS_EVENT_HKEY, single-active.
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'satfeed_mtv2_aug_sat_aug_loss_event_detail'
+source_model: 'satfeed_mtv2_aug_sat_aug_loss_event_detail'
 src_pk: 'LOSS_EVENT_HKEY'
 src_payload:
   - 'POLICE_REPORT_TIME'
