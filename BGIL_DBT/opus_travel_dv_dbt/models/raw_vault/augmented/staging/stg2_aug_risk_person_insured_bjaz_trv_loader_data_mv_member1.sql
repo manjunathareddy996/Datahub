@@ -13,7 +13,7 @@ hashed_columns:
     columns:
       - 'DATE_OF_BIRTH'
 derived_columns:
-  PARENT_BK: 'policy_ref || '|member1''
+  PARENT_BK: "policy_ref || '|member1'"
   PARENT_NK: "'HUB_RISK_OBJECT|' || (policy_ref || '|member1')"
   DATE_OF_BIRTH: 'member1dob'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
