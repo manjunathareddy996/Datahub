@@ -5,8 +5,7 @@
 -- BJAZ_TRV_LOADER_LOG_TABLE_MV, had no transaction key until the degenerate key was added).
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_fintxn_header_bjaz_trv_loader_log_table_mv'
+source_model: 'stg2_fintxn_header_bjaz_trv_loader_log_table_mv'
 src_pk: 'FINANCIAL_TRANSACTION_HKEY'
 src_payload:
   - 'GROSS_AMOUNT'

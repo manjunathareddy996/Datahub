@@ -3,8 +3,7 @@
 -- TRAVEL STANDARD-MODEL sat() for SAT_QUOTE_HEADER (parent HUB_QUOTE).
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_quote_header_ba_trv_data_policy_dtls_mv'
+source_model: 'stg2_quote_header_ba_trv_data_policy_dtls_mv'
 src_pk: 'QUOTE_HKEY'
 src_payload:
   - 'QUOTE_DATE'

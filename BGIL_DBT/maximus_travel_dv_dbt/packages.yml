@@ -1,4 +1,0 @@
-packages:
-  - local: dbt_packages/dbt_utils
-
-  - local: dbt_packages/automate_dv

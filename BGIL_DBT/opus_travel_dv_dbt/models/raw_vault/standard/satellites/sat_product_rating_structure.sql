@@ -3,8 +3,7 @@
 -- TRAVEL STANDARD-MODEL sat() for SAT_PRODUCT_RATING_STRUCTURE (parent HUB_PRODUCT).
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_product_rating_structure_bjaz_trv_rate_master_mv'
+source_model: 'stg2_product_rating_structure_bjaz_trv_rate_master_mv'
 src_pk: 'PRODUCT_HKEY'
 src_payload:
   - 'PRICING_EFFECTIVE_DATE'

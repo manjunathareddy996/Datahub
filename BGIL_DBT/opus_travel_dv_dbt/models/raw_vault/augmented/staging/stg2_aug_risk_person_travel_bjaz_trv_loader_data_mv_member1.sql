@@ -16,11 +16,11 @@ hashed_columns:
       - 'MODE_OF_TRANSPORT'
       - 'ALTITUDE_LIMIT'
 derived_columns:
-  PARENT_BK: 'policy_ref || '|member1''
+  PARENT_BK: "policy_ref || '|member1'"
   PARENT_NK: "'HUB_RISK_OBJECT|' || (policy_ref || '|member1')"
   MODE_OF_TRANSPORT: 'modeoftransport'
   ALTITUDE_LIMIT: 'altitude'
-  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
   RECORD_SOURCE: '!OPUS_BJAZ_TRV_LOADER_DATA_MV'
 {%- endset -%}
 

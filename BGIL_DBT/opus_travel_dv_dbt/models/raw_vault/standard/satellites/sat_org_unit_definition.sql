@@ -3,8 +3,7 @@
 -- TRAVEL STANDARD-MODEL sat() for SAT_ORG_UNIT_DEFINITION (parent HUB_ORG_UNIT).
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_org_unit_definition_ba_trv_data_policy_dtls_mv'
+source_model: 'stg2_org_unit_definition_ba_trv_data_policy_dtls_mv'
 src_pk: 'ORG_UNIT_HKEY'
 src_payload:
   - 'COST_CENTRE_CODE'

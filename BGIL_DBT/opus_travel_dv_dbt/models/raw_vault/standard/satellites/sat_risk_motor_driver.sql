@@ -3,8 +3,7 @@
 -- TRAVEL STANDARD-MODEL sat() for SAT_RISK_MOTOR_DRIVER (parent HUB_RISK_OBJECT).
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_risk_motor_driver_bjaz_trv_loader_log_table_mv'
+source_model: 'stg2_risk_motor_driver_bjaz_trv_loader_log_table_mv'
 src_pk: 'RISK_OBJECT_HKEY'
 src_payload:
   - 'OWNER_DRIVER_INDICATOR'

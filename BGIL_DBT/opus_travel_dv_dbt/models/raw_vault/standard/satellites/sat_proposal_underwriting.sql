@@ -3,8 +3,7 @@
 -- TRAVEL STANDARD-MODEL sat() for SAT_PROPOSAL_UNDERWRITING (parent HUB_PROPOSAL).
 
 {%- set yaml_metadata -%}
-source_model:
-  - 'stg2_proposal_underwriting_ba_trv_data_policy_dtls_mv'
+source_model: 'stg2_proposal_underwriting_ba_trv_data_policy_dtls_mv'
 src_pk: 'PROPOSAL_HKEY'
 src_payload:
   - 'REFERRAL_DATE'
