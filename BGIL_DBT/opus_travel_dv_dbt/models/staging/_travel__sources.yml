@@ -19,7 +19,7 @@ sources:
       - name: BJAZ_TRV_RIDER_DTLS_MV
       - name: BJAZ_TRV_RIDER_RATE_MAST_MV
 
-  - name: travel_raw
+  - name: travel_test_raw
     description: >
       For testing
     database: "{{ var('travel_test_raw_database', 'RAW') }}"
