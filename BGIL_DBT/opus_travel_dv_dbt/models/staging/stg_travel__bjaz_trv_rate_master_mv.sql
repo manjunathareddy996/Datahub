@@ -20,7 +20,7 @@ with source as (
     "PREMIUM"::number as premium,
     nullif(trim(to_varchar("USER_TYPE")), '') as user_type,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('travel_raw', 'BJAZ_TRV_RATE_MASTER_MV') }}
+    from {{ source('travel_test_raw', 'BJAZ_TRV_RATE_MASTER_MV') }}
 
 )
 

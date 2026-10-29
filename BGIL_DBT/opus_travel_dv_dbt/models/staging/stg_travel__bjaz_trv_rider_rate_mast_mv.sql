@@ -15,7 +15,7 @@ with source as (
     nullif(trim(to_varchar("RIDER_SEQ_NO")), '') as rider_seq_no,
     "RIDER_SI"::number as rider_si,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('travel_raw', 'BJAZ_TRV_RIDER_RATE_MAST_MV') }}
+    from {{ source('travel_test_raw', 'BJAZ_TRV_RIDER_RATE_MAST_MV') }}
 
 )
 

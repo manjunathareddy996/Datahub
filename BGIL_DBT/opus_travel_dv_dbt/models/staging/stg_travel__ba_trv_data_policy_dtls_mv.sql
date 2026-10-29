@@ -75,7 +75,7 @@ with source as (
     nullif(trim(to_varchar("TYPE_OF_VISA")), '') as type_of_visa,
     nullif(trim(to_varchar("USER_TYPE")), '') as user_type,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('travel_raw', 'BA_TRV_DATA_POLICY_DTLS_MV') }}
+    from {{ source('travel_test_raw', 'BA_TRV_DATA_POLICY_DTLS_MV') }}
 
 )
 

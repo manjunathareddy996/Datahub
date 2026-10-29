@@ -126,7 +126,7 @@ with source as (
     nullif(trim(to_varchar("TRIPCURTAILMENT")), '') as tripcurtailment,
     nullif(trim(to_varchar("TRIPDELAYBYSCHEDULEDAIRCRAFT")), '') as tripdelaybyscheduledaircraft,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('travel_raw', 'BJAZ_TRV_LOADER_DATA_MV') }}
+    from {{ source('travel_test_raw', 'BJAZ_TRV_LOADER_DATA_MV') }}
 
 )
 

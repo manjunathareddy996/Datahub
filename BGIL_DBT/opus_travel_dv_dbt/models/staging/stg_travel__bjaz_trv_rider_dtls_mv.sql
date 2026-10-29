@@ -18,7 +18,7 @@ with source as (
     nullif(trim(to_varchar("STUDENT_PLAN_YN")), '') as student_plan_yn,
     nullif(trim(to_varchar("TRV_DATA_NO")), '') as trv_data_no,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('travel_raw', 'BJAZ_TRV_RIDER_DTLS_MV') }}
+    from {{ source('travel_test_raw', 'BJAZ_TRV_RIDER_DTLS_MV') }}
 
 )
 

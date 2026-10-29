@@ -82,7 +82,7 @@ with source as (
     nullif(trim(to_varchar("TRAVELPLAN")), '') as travelplan,
     nullif(trim(to_varchar("YEAROFMFG")), '') as yearofmfg,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('travel_raw', 'BJAZ_TRV_LOADER_LOG_TABLE_MV') }}
+    from {{ source('travel_test_raw', 'BJAZ_TRV_LOADER_LOG_TABLE_MV') }}
 
 )
 

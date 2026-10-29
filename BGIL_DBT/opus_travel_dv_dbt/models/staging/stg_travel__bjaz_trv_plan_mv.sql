@@ -24,7 +24,7 @@ with source as (
     "SEQUENCE_COVERS"::number as sequence_covers,
     nullif(trim(to_varchar("TYPE_OF_CLAIM")), '') as type_of_claim,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('travel_raw', 'BJAZ_TRV_PLAN_MV') }}
+    from {{ source('travel_test_raw', 'BJAZ_TRV_PLAN_MV') }}
 
 )
 

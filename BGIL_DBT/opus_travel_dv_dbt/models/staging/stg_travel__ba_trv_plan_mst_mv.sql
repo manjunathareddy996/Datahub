@@ -30,7 +30,7 @@ with source as (
     nullif(trim(to_varchar("PLAN_SUM_INSURED")), '') as plan_sum_insured,
     "PRODUCT_4DIGIT_CODE"::number as product_4digit_code,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('travel_raw', 'BA_TRV_PLAN_MST_MV') }}
+    from {{ source('travel_test_raw', 'BA_TRV_PLAN_MST_MV') }}
 
 )
 

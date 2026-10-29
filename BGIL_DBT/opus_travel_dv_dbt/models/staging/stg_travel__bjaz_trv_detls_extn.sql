@@ -24,7 +24,7 @@ with source as (
     nullif(trim(to_varchar("TRP_DLY_YN")), '') as trp_dly_yn,
     nullif(trim(to_varchar("TRV_PLAN")), '') as trv_plan,
     "INC_JOB_UPDATED_AT"::timestamp_ntz as inc_job_updated_at
-    from {{ source('travel_raw', 'BJAZ_TRV_DETLS_EXTN') }}
+    from {{ source('travel_test_raw', 'BJAZ_TRV_DETLS_EXTN') }}
 
 )
 
