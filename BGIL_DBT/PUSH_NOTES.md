@@ -37,6 +37,20 @@ environment this was prepared in. That gate is still outstanding.
 
 25 + 12 + 9 = 46 pairs, 88 + 30 + 33 = 151 columns.
 
+**Stale references outside the dbt project** — the first G7 gate only scanned
+`maximus_travel_v2_dv_dbt/models/`, so these were missed on the first pass:
+- `validation/travel/DM-H/DM-H3_MAXIMUS.sql:7237` — the documented
+  `dbt run --select ...` listed all 234 satellites. Corrected to 209; running it
+  verbatim would otherwise have failed on the 25 retired models. **Fixed here.**
+- `validation/travel/DM-H/DM-H1_MAXIMUS.sql` — four design findings (188 and
+  three others) are written against `satfeed_mtv2_aug_sat_aug_*` models that no
+  longer exist. The findings themselves still hold, but now belong to the merged
+  standard satellites. **Not hand-edited: the travel DM-H validation set is
+  generated and needs regenerating after this merge.** Open follow-up.
+
+Matches in `maximus_partner_dv_dbt` and `validation/partner/` are the partner
+project's own same-named satellites, not references to these — no action.
+
 **Not pushed.** `myrepo/main` is still at `5bc9980`.
 
 ---
