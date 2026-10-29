@@ -29,7 +29,10 @@ REPO = subprocess.check_output(['git', 'rev-parse', '--show-toplevel'],
                                cwd=HERE, text=True).strip()
 MODELS = os.path.join(HERE, 'models', 'raw_vault')
 REL = os.path.relpath(HERE, REPO)
-BASE = 'main'
+# The pre-merge baseline. NOT a branch name: once the merge lands on main,
+# 'main' IS the merged state and every gate would pass over zero pairs -- a
+# green light that means nothing. Pass a different commit as argv[1] if needed.
+BASE = '5bc9980'
 
 sys.path.insert(0, HERE)
 import merge_high_pairs as M  # noqa: E402
@@ -50,6 +53,10 @@ def rp(abspath):
 
 
 def main():
+    global BASE
+    args = [a for a in sys.argv[1:] if not a.startswith('-')]
+    if args:
+        BASE = args[0]
     fails, checked = [], 0
     pre_aug = {}
     pre_std = {}
@@ -72,6 +79,10 @@ def main():
         pre_std[std_sat] = M.payload_list(base_txt)
         pairs.append((std_sat, aug_sat, aug_cols))
 
+    if not pairs:
+        print('NOTHING VERIFIED: no merged pair found between %s and the working '
+              'tree. Check the baseline commit.' % BASE)
+        return 1
     print('pairs verified against %s: %d' % (BASE, len(pairs)))
 
     for std_sat, aug_sat, aug_cols in pairs:
