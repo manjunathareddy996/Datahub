@@ -1,4 +1,4 @@
-maximus_travel_dv:
+maximus_travel_dbt:
   target: dev # default
   outputs:
     dev:

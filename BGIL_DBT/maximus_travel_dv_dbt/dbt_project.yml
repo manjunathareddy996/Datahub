@@ -1,12 +1,14 @@
-name: 'maximus_travel_dv'
+name: 'maximus_travel_dv_dbt'
 version: '1.0.0'
 config-version: 2
 
-profile: 'maximus_travel_dv'
+profile: 'maximus_travel_dbt'
 
 model-paths: ["models"]
 macro-paths: ["macros"]
 test-paths: ["tests"]
+seed-paths: ["seeds"]
+snapshot-paths: ["snapshots"]
 
 clean-targets:
   - "target"
@@ -18,60 +20,83 @@ vars:
 
 # SHARED VAULT TABLES
 # -------------------
-# This project is Maximus Travel. The OPUS build travel_dv_dbt writes the SAME physical
-# hub / link / satellite tables. Hubs, links and satellites are incremental, so each
-# project appends only its own rows and they stay distinguishable by hub key and
-# RECORD_SOURCE.
+# This project is Maximus Travel. The OPUS build opus_travel_dv_dbt writes the SAME
+# physical hub / link / satellite tables. Hubs, links and satellites are incremental,
+# so each project appends only its own rows and they stay distinguishable by hub key
+# and RECORD_SOURCE.
 #
-# maximus_travel_dv_dbt is SUPERSEDED. Its mapping is ignored entirely and the generators
-# refuse to read it (mt_names.READ_NEVER).
+# Consequences, learned the hard way on maximus_health:
+#   * every vault model is incremental and append-only. NEVER --full-refresh a shared
+#     vault table: it drops the other project's rows, and only its own pipeline will
+#     put them back.
+#   * +on_schema_change: append_new_columns is REQUIRED. Each project declares only
+#     the payload it populates, so the other's columns must survive a run rather than
+#     be dropped.
+#   * a hub's src_nk column name must match what opus_travel_dv_dbt already writes
+#     (PARENT_BK), or both projects populate different columns of the same table.
+#     See models/.../hubfeed/.
 #
-# The staging schema is this project's own: the intermediate views carry the mt infix so
-# they cannot materialise over the sibling's views of the same source.
-#
-# on_schema_change: append_new_columns is REQUIRED, not cosmetic -- this build declares
-# payload columns the sibling does not, and dbt's default ('ignore') would silently drop
-# them on insert. That is a dead data path created by configuration.
-#
-# NEVER run --full-refresh against a shared vault table from either project: it rebuilds
-# from that project's sources only and discards the other's rows.
+# Intermediate (stg1, stg2, hubfeed, lnkfeed, satfeed, resolvers, unpivot, audit) views
+# carry the `mt` infix so they cannot materialise over the sibling's views of the same
+# source table. All layers land in BGIL_DATA_MODEL -- the shared raw-vault schema.
 
 models:
-  maximus_travel_dv:
+  maximus_travel_dv_dbt:
+    +pre-hook:
+      - "{% if target.name == 'dev' %}INSERT INTO BAGIC_PREPROD_CURATED_DB.UTILS.MAXI_RAW_DBT_MODEL_RUN_LOG (model_name, status, run_id, run_start_timestamp, materialization, schema_name, target_table) SELECT '{{ this.name }}', 'RUNNING', '{{ invocation_id }}', '{{ run_started_at }}'::TIMESTAMP_NTZ, '{{ config.get(\"materialized\", \"view\") }}', '{{ this.schema }}', '{{ this.database }}.{{ this.schema }}.{{ this.name }}'{% endif %}"
+    +post-hook:
+      - "{% if target.name == 'dev' %}UPDATE BAGIC_PREPROD_CURATED_DB.UTILS.MAXI_RAW_DBT_MODEL_RUN_LOG SET status = 'SUCCESS' WHERE model_name = '{{ this.name }}' AND run_id = '{{ invocation_id }}' AND status = 'RUNNING'{% endif %}"
+
     staging:
-      maximus_travel:
-        +materialized: view
-        +schema: stg_maximus_travel
-    automate_dv:
+      +materialized: view
+      +schema: BGIL_DATA_MODEL
+      +tags: ["stg1"]
+
+    raw_vault:
       standard:
-        +schema: std_automate_dv          # shared with travel_dv_dbt
-        audit:
+        +schema: BGIL_DATA_MODEL
+        staging:
           +materialized: view
+          +tags: ["standard_stg2"]
+        unpivot:
+          +materialized: view
+          +tags: ["unpivot"]
+        resolvers:
+          +materialized: view
+          +tags: ["resolver"]
         hubfeed:
           +materialized: view
+          +tags: ["hubfeed"]
+        satfeed:
+          +materialized: view
+          +tags: ["satfeed"]
+        audit:
+          +materialized: view
+          +tags: ["audit"]
         hubs:
           +materialized: incremental
+          +tags: ["hub"]
           +on_schema_change: append_new_columns
         links:
           +materialized: incremental
+          +tags: ["lnk"]
           +on_schema_change: append_new_columns
-        resolvers:
-          +materialized: view
         satellites:
           +materialized: incremental
+          +tags: ["standard_sat"]
+          +incremental_strategy: append
           +on_schema_change: append_new_columns
-        satfeed:
-          +materialized: view
-        staging:
-          +materialized: view
-        unpivot:
-          +materialized: view
       augmented:
-        +schema: aug_automate_dv          # shared with travel_dv_dbt
-        satellites:
-          +materialized: incremental
-          +on_schema_change: append_new_columns
-        satfeed:
-          +materialized: view
+        +schema: BGIL_DATA_MODEL
+        +tags: ["aug"]
         staging:
           +materialized: view
+          +tags: ["aug_stg2"]
+        satfeed:
+          +materialized: view
+          +tags: ["aug_satfeed"]
+        satellites:
+          +materialized: incremental
+          +tags: ["aug_sat"]
+          +incremental_strategy: append
+          +on_schema_change: append_new_columns
