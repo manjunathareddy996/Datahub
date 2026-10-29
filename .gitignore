@@ -7,3 +7,6 @@ LUMIQ-AI-checks/
 # Saved work chats used for the Amp self-assessment (redact before use, never commit)
 amp-chats/
 *amp_chat*.md
+
+# dbt shared environment file (no secrets, but keep local-only to avoid drift)
+BGIL_DBT/.env
