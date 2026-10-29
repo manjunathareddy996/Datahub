@@ -28,8 +28,8 @@ hashed_columns:
       - 'REPLY_DATE_TIME'
       - 'SERVICE_REQUEST_NUMBER'
 derived_columns:
-  QUOTE_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
-  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
+  QUOTE_BK: "nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
+  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
   QUERY_CODE: 'query_code'
   QUERY_DESCRIPTION: 'query_details'
   QUERY_REPLY_TEXT: 'query_reply'

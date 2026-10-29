@@ -19,8 +19,8 @@ hashed_columns:
       - 'COLLECTION_DATE'
       - 'PORTAL_PAYMENT_MODE_CODE'
 derived_columns:
-  FINANCIAL_TRANSACTION_BK: "nullif(trim(case when coalesce(nullif(trim(transaction_id),'')) is not null then nullif(trim(transaction_id), '') end),'')"
-  FINANCIAL_TRANSACTION_NK: "'HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(transaction_id),'')) is not null then nullif(trim(transaction_id), '') end),''))"
+  FINANCIAL_TRANSACTION_BK: "nullif(trim(case when nullif(trim(transaction_id),'') is not null then nullif(trim(transaction_id), '') end),'')"
+  FINANCIAL_TRANSACTION_NK: "'HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(transaction_id),'') is not null then nullif(trim(transaction_id), '') end),''))"
   COLLECTION_DATE: 'collection_date'
   PORTAL_PAYMENT_MODE_CODE: 'cast(null as varchar)'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION'

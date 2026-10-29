@@ -24,8 +24,8 @@ hashed_columns:
       - 'COVERAGE_PLAN_VARIANT'
       - 'LEADING_COVER_INDICATOR'
 derived_columns:
-  COVERAGE_BK: "nullif(trim(case when coalesce(nullif(trim(w2_cover_code),'')) is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')"
-  COVERAGE_NK: "'HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(w2_cover_code),'')) is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),''))"
+  COVERAGE_BK: "nullif(trim(case when nullif(trim(w2_cover_code),'') is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')"
+  COVERAGE_NK: "'HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w2_cover_code),'') is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),''))"
   COVERAGE_PLAN_VARIANT: 'cover_plan'
   LEADING_COVER_INDICATOR: 'cast(null as varchar)'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW'

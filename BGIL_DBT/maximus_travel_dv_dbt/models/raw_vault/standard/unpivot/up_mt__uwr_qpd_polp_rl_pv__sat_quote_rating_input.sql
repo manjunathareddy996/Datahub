@@ -38,7 +38,7 @@
 --   type_of_loading                          1 attribute(s)
 
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'ADJUSTMENT_VALUE' as FACTOR_CODE,
         cast(null as varchar) as FACTOR_VALUE,
         adjustment_value as PREMIUM_IMPACT,
@@ -48,7 +48,7 @@
     where adjustment_value is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'ALTITUDE' as FACTOR_CODE,
         altitude as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,
@@ -58,7 +58,7 @@ union all
     where altitude is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'BAGGAGE_TRACKING_SERVICE_APPLICABLE' as FACTOR_CODE,
         baggage_tracking_service_applicable as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,
@@ -68,7 +68,7 @@ union all
     where baggage_tracking_service_applicable is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'CLAIMS_EXPERIENCE_DISCOUNT' as FACTOR_CODE,
         cast(null as varchar) as FACTOR_VALUE,
         claims_experience_discount as PREMIUM_IMPACT,
@@ -78,7 +78,7 @@ union all
     where claims_experience_discount is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'CLAIMS_EXPERIENCE_LOADING' as FACTOR_CODE,
         cast(null as varchar) as FACTOR_VALUE,
         claims_experience_loading as PREMIUM_IMPACT,
@@ -88,7 +88,7 @@ union all
     where claims_experience_loading is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'CLU_DISCOUNT' as FACTOR_CODE,
         cast(null as varchar) as FACTOR_VALUE,
         clu_discount as PREMIUM_IMPACT,
@@ -98,7 +98,7 @@ union all
     where clu_discount is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'COUNTRY' as FACTOR_CODE,
         country as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,
@@ -108,7 +108,7 @@ union all
     where country is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'CRUISE' as FACTOR_CODE,
         cruise as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,
@@ -118,7 +118,7 @@ union all
     where cruise is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'CRUISE_DAYS' as FACTOR_CODE,
         cruise_days as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,
@@ -128,7 +128,7 @@ union all
     where cruise_days is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'DESTINATION_DETAILS' as FACTOR_CODE,
         destination_details as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,
@@ -138,7 +138,7 @@ union all
     where destination_details is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'EMPLOYEE_DISCOUNT' as FACTOR_CODE,
         cast(null as varchar) as FACTOR_VALUE,
         employee_discount as PREMIUM_IMPACT,
@@ -148,7 +148,7 @@ union all
     where employee_discount is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'GEOGRAPHICAL_COVERAGE' as FACTOR_CODE,
         geographical_coverage as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,
@@ -158,7 +158,7 @@ union all
     where geographical_coverage is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'GROUP_DISCOUNT' as FACTOR_CODE,
         cast(null as varchar) as FACTOR_VALUE,
         group_discount as PREMIUM_IMPACT,
@@ -168,7 +168,7 @@ union all
     where group_discount is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'HOURS_COVERED' as FACTOR_CODE,
         hours_covered as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,
@@ -178,7 +178,7 @@ union all
     where hours_covered is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'MODE_OF_TRANSPORT' as FACTOR_CODE,
         mode_of_transport as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,
@@ -188,7 +188,7 @@ union all
     where mode_of_transport is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'MULTIPLE_CITY' as FACTOR_CODE,
         multiple_city as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,
@@ -198,7 +198,7 @@ union all
     where multiple_city is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'NIL_COMMISSION_DISCOUNT' as FACTOR_CODE,
         cast(null as varchar) as FACTOR_VALUE,
         nil_commission_discount as PREMIUM_IMPACT,
@@ -208,7 +208,7 @@ union all
     where nil_commission_discount is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'ONLINE_DISCOUNT' as FACTOR_CODE,
         cast(null as varchar) as FACTOR_VALUE,
         online_discount as PREMIUM_IMPACT,
@@ -218,7 +218,7 @@ union all
     where online_discount is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'OTHER_DISCOUNT' as FACTOR_CODE,
         cast(null as varchar) as FACTOR_VALUE,
         other_discount as PREMIUM_IMPACT,
@@ -228,7 +228,7 @@ union all
     where other_discount is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'PREMIUM_ADJUSTMENT' as FACTOR_CODE,
         cast(null as varchar) as FACTOR_VALUE,
         premium_adjustment as PREMIUM_IMPACT,
@@ -238,7 +238,7 @@ union all
     where premium_adjustment is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'STUDENT_DISCOUNT' as FACTOR_CODE,
         cast(null as varchar) as FACTOR_VALUE,
         student_discount as PREMIUM_IMPACT,
@@ -248,7 +248,7 @@ union all
     where student_discount is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'TRAVELLING_COMPANION_DISCOUNT' as FACTOR_CODE,
         cast(null as varchar) as FACTOR_VALUE,
         travelling_companion_discount as PREMIUM_IMPACT,
@@ -258,7 +258,7 @@ union all
     where travelling_companion_discount is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'TYPE_OF_DISCOUNT' as FACTOR_CODE,
         type_of_discount as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,
@@ -268,7 +268,7 @@ union all
     where type_of_discount is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'TYPE_OF_LOADING' as FACTOR_CODE,
         type_of_loading as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,

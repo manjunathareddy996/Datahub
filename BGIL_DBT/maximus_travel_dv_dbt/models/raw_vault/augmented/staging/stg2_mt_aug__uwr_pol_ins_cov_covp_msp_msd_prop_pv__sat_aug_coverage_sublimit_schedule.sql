@@ -35,8 +35,8 @@ hashed_columns:
       - 'TRIP_TYPE_FOR_INCONVENIENCE_COVER'
       - 'TRIP_TYPE_FOR_TRIP_CALCULATION'
 derived_columns:
-  COVERAGE_BK: "nullif(trim(case when coalesce(nullif(trim(w0_cover_code),'')) is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'')"
-  COVERAGE_NK: "'HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(w0_cover_code),'')) is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),''))"
+  COVERAGE_BK: "nullif(trim(case when nullif(trim(w0_cover_code),'') is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'')"
+  COVERAGE_NK: "'HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w0_cover_code),'') is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),''))"
   ACTIVE_SEQUENCE_NUMBER: "coalesce(nullif(trim(sublimit_name), ''),'')"
   BENEFIT_AMOUNT: 'benefit_amount'
   DELAY_THRESHOLD_EXCEEDED: 'delay_exceeding'

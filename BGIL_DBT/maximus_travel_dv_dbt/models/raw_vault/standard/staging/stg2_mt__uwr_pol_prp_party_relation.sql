@@ -34,12 +34,12 @@ hashed_columns:
       - 'ROLE_END_DATE'
       - 'ROLE_SEQUENCE'
 derived_columns:
-  PARTY_BK__PROPOSER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
-  POLICY_BK__PROPOSER: "nullif(trim(case when coalesce(nullif(trim(foreign_key),'')) is not null then nullif(trim(foreign_key), '') end),'')"
-  POLICY_NK__PROPOSER: "'HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(foreign_key),'')) is not null then nullif(trim(foreign_key), '') end),''))"
-  POLICY_PARTY_BK__PROPOSER: "coalesce(nullif(trim(case when coalesce(nullif(trim(foreign_key),'')) is not null then nullif(trim(foreign_key), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''),'')"
-  POLICY_PARTY_NK__PROPOSER: "'LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(foreign_key),'')) is not null then nullif(trim(foreign_key), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''),''))"
+  PARTY_BK__PROPOSER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
+  POLICY_BK__PROPOSER: "nullif(trim(case when nullif(trim(foreign_key),'') is not null then nullif(trim(foreign_key), '') end),'')"
+  POLICY_NK__PROPOSER: "'HUB_POLICY|' || (nullif(trim(case when nullif(trim(foreign_key),'') is not null then nullif(trim(foreign_key), '') end),''))"
+  POLICY_PARTY_BK__PROPOSER: "coalesce(nullif(trim(case when nullif(trim(foreign_key),'') is not null then nullif(trim(foreign_key), '') end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'')"
+  POLICY_PARTY_NK__PROPOSER: "'LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when nullif(trim(foreign_key),'') is not null then nullif(trim(foreign_key), '') end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),''))"
   ATTRIBUTION_PERCENTAGE: 'cast(null as varchar)'
   PARTY_ROLE_TYPE: "coalesce(nullif(trim(stake_name), ''),'')"
   ROLE_EFFECTIVE_DATE: 'start_date'

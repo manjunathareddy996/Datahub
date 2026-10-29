@@ -22,8 +22,8 @@ hashed_columns:
       - 'RELATIONSHIP_WITH_HNI_CUSTOMER'
       - 'RELATIONSHIP_WITH_PRIVE_CUSTOMER'
 derived_columns:
-  PARTY_BK__PROPOSER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__PROPOSER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   EXISTING_CUSTOMER_DECLARED_INDICATOR: 'are_you_an_existing_bajaj_allianz_customer'
   RELATED_PARTY_REFERENCE: 'cast(null as varchar)'
   RELATIONSHIP_WITH_EMPLOYEE: 'relationship_with_employee'

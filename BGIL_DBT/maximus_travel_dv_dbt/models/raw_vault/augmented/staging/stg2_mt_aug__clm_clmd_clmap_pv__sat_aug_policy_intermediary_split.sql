@@ -20,8 +20,8 @@ hashed_columns:
       - 'INTERMEDIARY_REFERENCE'
       - 'SUB_CHANNEL_NAME'
 derived_columns:
-  POLICY_BK: "nullif(trim(case when coalesce(nullif(trim(w1_policyno),'')) is not null then nullif(trim(w1_policyno), '') end),'')"
-  POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w1_policyno),'')) is not null then nullif(trim(w1_policyno), '') end),''))"
+  POLICY_BK: "nullif(trim(case when nullif(trim(w1_policyno),'') is not null then nullif(trim(w1_policyno), '') end),'')"
+  POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when nullif(trim(w1_policyno),'') is not null then nullif(trim(w1_policyno), '') end),''))"
   INTERMEDIARY_REFERENCE: "coalesce(nullif(trim(sub_imd_code), ''),'')"
   COMMISSION_CHANGE_EFFECTIVE_DATE: 'cast(null as varchar)'
   SUB_CHANNEL_NAME: 'subchannel_name'

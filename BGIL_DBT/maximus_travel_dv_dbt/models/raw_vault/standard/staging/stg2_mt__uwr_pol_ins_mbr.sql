@@ -85,14 +85,14 @@ hashed_columns:
       - 'REGISTERED_COMPANY_DECLARED_INDICATOR'
       - 'TRADE_NAME'
 derived_columns:
-  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when coalesce(nullif(trim(party_code),'')) is not null then nullif(trim(party_code), '') end),'')"
-  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(party_code),'')) is not null then nullif(trim(party_code), '') end),''))"
-  PARTY_BK__PARENT_PARTY: "nullif(trim(case when coalesce(nullif(trim(parent_party_code),'')) is not null then nullif(trim(parent_party_code), '') end),'')"
-  PARTY_NK__PARENT_PARTY: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(parent_party_code),'')) is not null then nullif(trim(parent_party_code), '') end),''))"
-  POLICY_BK__INSURED_MEMBER: "nullif(trim(case when coalesce(nullif(trim(w0_policy_number),'')) is not null then nullif(trim(w0_policy_number), '') end),'')"
-  POLICY_NK__INSURED_MEMBER: "'HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),'')) is not null then nullif(trim(w0_policy_number), '') end),''))"
-  POLICY_PARTY_BK__INSURED_MEMBER: "coalesce(nullif(trim(case when coalesce(nullif(trim(w0_policy_number),'')) is not null then nullif(trim(w0_policy_number), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim(party_code),'')) is not null then nullif(trim(party_code), '') end),''),'')"
-  POLICY_PARTY_NK__INSURED_MEMBER: "'LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_policy_number),'')) is not null then nullif(trim(w0_policy_number), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim(party_code),'')) is not null then nullif(trim(party_code), '') end),''),''))"
+  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when nullif(trim(party_code),'') is not null then nullif(trim(party_code), '') end),'')"
+  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(party_code),'') is not null then nullif(trim(party_code), '') end),''))"
+  PARTY_BK__PARENT_PARTY: "nullif(trim(case when nullif(trim(parent_party_code),'') is not null then nullif(trim(parent_party_code), '') end),'')"
+  PARTY_NK__PARENT_PARTY: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(parent_party_code),'') is not null then nullif(trim(parent_party_code), '') end),''))"
+  POLICY_BK__INSURED_MEMBER: "nullif(trim(case when nullif(trim(w0_policy_number),'') is not null then nullif(trim(w0_policy_number), '') end),'')"
+  POLICY_NK__INSURED_MEMBER: "'HUB_POLICY|' || (nullif(trim(case when nullif(trim(w0_policy_number),'') is not null then nullif(trim(w0_policy_number), '') end),''))"
+  POLICY_PARTY_BK__INSURED_MEMBER: "coalesce(nullif(trim(case when nullif(trim(w0_policy_number),'') is not null then nullif(trim(w0_policy_number), '') end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim(party_code),'') is not null then nullif(trim(party_code), '') end),''),'')"
+  POLICY_PARTY_NK__INSURED_MEMBER: "'LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when nullif(trim(w0_policy_number),'') is not null then nullif(trim(w0_policy_number), '') end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim(party_code),'') is not null then nullif(trim(party_code), '') end),''),''))"
   AGE: 'cast(null as varchar)'
   ANNUAL_TURNOVER: 'cast(null as varchar)'
   ATTRIBUTION_PERCENTAGE: 'cast(null as varchar)'

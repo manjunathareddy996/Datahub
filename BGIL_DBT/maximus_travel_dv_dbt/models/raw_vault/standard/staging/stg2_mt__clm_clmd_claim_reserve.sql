@@ -47,10 +47,10 @@ derived_columns:
   CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),''))"
   CLAIM_BK__V2: "nullif(trim(case when coalesce(nullif(trim(w1_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w1_claimno), ''), nullif(trim(foreign_key), '')) end),'')"
   CLAIM_NK__V2: "'HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w1_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w1_claimno), ''), nullif(trim(foreign_key), '')) end),''))"
-  CLAIM_PARTY_BK: "coalesce(nullif(trim(case when coalesce(nullif(trim(w1_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w1_claimno), ''), nullif(trim(foreign_key), '')) end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim(reservparty),'')) is not null then nullif(trim(reservparty), '') end),''),'')"
-  CLAIM_PARTY_NK: "'LNK_CLAIM_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w1_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w1_claimno), ''), nullif(trim(foreign_key), '')) end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim(reservparty),'')) is not null then nullif(trim(reservparty), '') end),''),''))"
-  PARTY_BK: "nullif(trim(case when coalesce(nullif(trim(reservparty),'')) is not null then nullif(trim(reservparty), '') end),'')"
-  PARTY_NK: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(reservparty),'')) is not null then nullif(trim(reservparty), '') end),''))"
+  CLAIM_PARTY_BK: "coalesce(nullif(trim(case when coalesce(nullif(trim(w1_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w1_claimno), ''), nullif(trim(foreign_key), '')) end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim(reservparty),'') is not null then nullif(trim(reservparty), '') end),''),'')"
+  CLAIM_PARTY_NK: "'LNK_CLAIM_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w1_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w1_claimno), ''), nullif(trim(foreign_key), '')) end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim(reservparty),'') is not null then nullif(trim(reservparty), '') end),''),''))"
+  PARTY_BK: "nullif(trim(case when nullif(trim(reservparty),'') is not null then nullif(trim(reservparty), '') end),'')"
+  PARTY_NK: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(reservparty),'') is not null then nullif(trim(reservparty), '') end),''))"
   CURRENT_RESERVE_AMOUNT: 'reserveamount'
   INITIAL_RESERVE_AMOUNT: 'cast(null as varchar)'
   OUTSTANDING_RESERVE_AMOUNT: 'pendingamount'

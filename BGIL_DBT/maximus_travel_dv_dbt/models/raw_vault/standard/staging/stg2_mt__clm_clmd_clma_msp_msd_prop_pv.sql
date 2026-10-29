@@ -129,8 +129,8 @@ hashed_columns:
 derived_columns:
   CLAIM_BK: "nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),'')"
   CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),''))"
-  DOCUMENT_BK__CLAIM_INWARD_DOCUMENT_SET: "nullif(trim(case when coalesce(nullif(trim(inward_number),'')) is not null then 'INWARD:' || nullif(trim(inward_number), '') end),'')"
-  DOCUMENT_NK__CLAIM_INWARD_DOCUMENT_SET: "'HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(inward_number),'')) is not null then 'INWARD:' || nullif(trim(inward_number), '') end),''))"
+  DOCUMENT_BK__CLAIM_INWARD_DOCUMENT_SET: "nullif(trim(case when nullif(trim(inward_number),'') is not null then 'INWARD:' || nullif(trim(inward_number), '') end),'')"
+  DOCUMENT_NK__CLAIM_INWARD_DOCUMENT_SET: "'HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(inward_number),'') is not null then 'INWARD:' || nullif(trim(inward_number), '') end),''))"
   LOCATION_BK__DOCUMENT_INWARD_ORIGIN_ADDRESS: "nullif(trim(case when coalesce(nullif(trim(city),''), nullif(trim(state),''), nullif(trim(pin_code),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim(city), ''), '') || '|' || coalesce(nullif(trim(state), ''), '') || '|' || coalesce(nullif(trim(pin_code), ''), '')), '||')), '[[:space:]]+', ' '))) end),'')"
   LOCATION_NK__DOCUMENT_INWARD_ORIGIN_ADDRESS: "'HUB_LOCATION|' || (nullif(trim(case when coalesce(nullif(trim(city),''), nullif(trim(state),''), nullif(trim(pin_code),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim(city), ''), '') || '|' || coalesce(nullif(trim(state), ''), '') || '|' || coalesce(nullif(trim(pin_code), ''), '')), '||')), '[[:space:]]+', ' '))) end),''))"
   ADDRESS_LINE_1: 'cast(null as varchar)'

@@ -52,8 +52,8 @@ hashed_columns:
 derived_columns:
   LOCATION_BK: "nullif(trim(case when coalesce(nullif(trim(w0_address1),''), nullif(trim(w1_address2),''), nullif(trim(w2_address3),''), nullif(trim(w3_city),''), nullif(trim(w4_state),''), nullif(trim(w5_pincode),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim(w0_address1), ''), '') || '#' || coalesce(nullif(trim(w1_address2), ''), '') || '#' || coalesce(nullif(trim(w2_address3), ''), '') || '#' || coalesce(nullif(trim(w3_city), ''), '') || '#' || coalesce(nullif(trim(w4_state), ''), '') || '#' || coalesce(nullif(trim(w5_pincode), ''), '')), '#####')), '[[:space:]]+', ' '))) end),'')"
   LOCATION_NK: "'HUB_LOCATION|' || (nullif(trim(case when coalesce(nullif(trim(w0_address1),''), nullif(trim(w1_address2),''), nullif(trim(w2_address3),''), nullif(trim(w3_city),''), nullif(trim(w4_state),''), nullif(trim(w5_pincode),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim(w0_address1), ''), '') || '#' || coalesce(nullif(trim(w1_address2), ''), '') || '#' || coalesce(nullif(trim(w2_address3), ''), '') || '#' || coalesce(nullif(trim(w3_city), ''), '') || '#' || coalesce(nullif(trim(w4_state), ''), '') || '#' || coalesce(nullif(trim(w5_pincode), ''), '')), '#####')), '[[:space:]]+', ' '))) end),''))"
-  ORG_UNIT_BK: "nullif(trim(case when coalesce(nullif(trim(w6_office_code),'')) is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'')"
-  ORG_UNIT_NK: "'HUB_ORG_UNIT|' || (nullif(trim(case when coalesce(nullif(trim(w6_office_code),'')) is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),''))"
+  ORG_UNIT_BK: "nullif(trim(case when nullif(trim(w6_office_code),'') is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'')"
+  ORG_UNIT_NK: "'HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim(w6_office_code),'') is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),''))"
   ADDRESS_LINE_1: 'cast(null as varchar)'
   ADDRESS_LINE_2: 'cast(null as varchar)'
   ADDRESS_LINE_3: 'cast(null as varchar)'

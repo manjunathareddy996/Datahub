@@ -82,10 +82,10 @@ hashed_columns:
 derived_columns:
   CLAIM_BK: "nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),'')"
   CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),''))"
-  CLAIM_PARTY_BK: "coalesce(nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim(partycode),'')) is not null then nullif(trim(partycode), '') end),''),'')"
-  CLAIM_PARTY_NK: "'LNK_CLAIM_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim(partycode),'')) is not null then nullif(trim(partycode), '') end),''),''))"
-  PARTY_BK: "nullif(trim(case when coalesce(nullif(trim(partycode),'')) is not null then nullif(trim(partycode), '') end),'')"
-  PARTY_NK: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(partycode),'')) is not null then nullif(trim(partycode), '') end),''))"
+  CLAIM_PARTY_BK: "coalesce(nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim(partycode),'') is not null then nullif(trim(partycode), '') end),''),'')"
+  CLAIM_PARTY_NK: "'LNK_CLAIM_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim(partycode),'') is not null then nullif(trim(partycode), '') end),''),''))"
+  PARTY_BK: "nullif(trim(case when nullif(trim(partycode),'') is not null then nullif(trim(partycode), '') end),'')"
+  PARTY_NK: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(partycode),'') is not null then nullif(trim(partycode), '') end),''))"
   AADHAAR_NUMBER: 'cast(null as varchar)'
   AADHAAR_VERIFICATION_STATUS: 'cast(null as varchar)'
   AGE: 'cast(null as varchar)'

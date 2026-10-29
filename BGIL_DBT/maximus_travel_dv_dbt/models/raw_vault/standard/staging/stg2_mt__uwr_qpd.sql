@@ -69,20 +69,20 @@ hashed_columns:
       - 'NET_PREMIUM'
       - 'PREMIUM_FREQUENCY'
 derived_columns:
-  DISTRIBUTION_CHANNEL_BK: "nullif(trim(case when coalesce(nullif(trim(agent_code),'')) is not null then nullif(trim(agent_code), '') end),'')"
-  DISTRIBUTION_CHANNEL_NK: "'HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when coalesce(nullif(trim(agent_code),'')) is not null then nullif(trim(agent_code), '') end),''))"
-  DOCUMENT_BK: "nullif(trim(case when coalesce(nullif(trim(document_id),'')) is not null then 'DOC:' || nullif(trim(document_id), '') end),'')"
-  DOCUMENT_NK: "'HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(document_id),'')) is not null then 'DOC:' || nullif(trim(document_id), '') end),''))"
-  FINANCIAL_TRANSACTION_BK__QUOTE_PREMIUM: "nullif(trim(case when coalesce(nullif(trim(policy_quote_number),'')) is not null then 'QUOTEPREM:' || nullif(trim(policy_quote_number), '') end),'')"
-  FINANCIAL_TRANSACTION_NK__QUOTE_PREMIUM: "'HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(policy_quote_number),'')) is not null then 'QUOTEPREM:' || nullif(trim(policy_quote_number), '') end),''))"
-  ORG_UNIT_BK__POLICY_ISSUING_BRANCH: "nullif(trim(case when coalesce(nullif(trim(policy_branch_name),'')) is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim(policy_branch_name), '')))) end),'')"
-  ORG_UNIT_NK__POLICY_ISSUING_BRANCH: "'HUB_ORG_UNIT|' || (nullif(trim(case when coalesce(nullif(trim(policy_branch_name),'')) is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim(policy_branch_name), '')))) end),''))"
-  PARTY_BK__POLICYHOLDER: "nullif(trim(case when coalesce(nullif(trim(policy_holder_code),'')) is not null then nullif(trim(policy_holder_code), '') end),'')"
-  PARTY_NK__POLICYHOLDER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(policy_holder_code),'')) is not null then nullif(trim(policy_holder_code), '') end),''))"
-  PRODUCT_BK: "nullif(trim(case when coalesce(nullif(trim(product_code),'')) is not null then 'PROD:' || nullif(trim(product_code), '') end),'')"
-  PRODUCT_NK: "'HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(product_code),'')) is not null then 'PROD:' || nullif(trim(product_code), '') end),''))"
-  QUOTE_BK: "nullif(trim(case when coalesce(nullif(trim(policy_quote_number),'')) is not null then nullif(trim(policy_quote_number), '') end),'')"
-  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(policy_quote_number),'')) is not null then nullif(trim(policy_quote_number), '') end),''))"
+  DISTRIBUTION_CHANNEL_BK: "nullif(trim(case when nullif(trim(agent_code),'') is not null then nullif(trim(agent_code), '') end),'')"
+  DISTRIBUTION_CHANNEL_NK: "'HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when nullif(trim(agent_code),'') is not null then nullif(trim(agent_code), '') end),''))"
+  DOCUMENT_BK: "nullif(trim(case when nullif(trim(document_id),'') is not null then 'DOC:' || nullif(trim(document_id), '') end),'')"
+  DOCUMENT_NK: "'HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(document_id),'') is not null then 'DOC:' || nullif(trim(document_id), '') end),''))"
+  FINANCIAL_TRANSACTION_BK__QUOTE_PREMIUM: "nullif(trim(case when nullif(trim(policy_quote_number),'') is not null then 'QUOTEPREM:' || nullif(trim(policy_quote_number), '') end),'')"
+  FINANCIAL_TRANSACTION_NK__QUOTE_PREMIUM: "'HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(policy_quote_number),'') is not null then 'QUOTEPREM:' || nullif(trim(policy_quote_number), '') end),''))"
+  ORG_UNIT_BK__POLICY_ISSUING_BRANCH: "nullif(trim(case when nullif(trim(policy_branch_name),'') is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim(policy_branch_name), '')))) end),'')"
+  ORG_UNIT_NK__POLICY_ISSUING_BRANCH: "'HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim(policy_branch_name),'') is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim(policy_branch_name), '')))) end),''))"
+  PARTY_BK__POLICYHOLDER: "nullif(trim(case when nullif(trim(policy_holder_code),'') is not null then nullif(trim(policy_holder_code), '') end),'')"
+  PARTY_NK__POLICYHOLDER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(policy_holder_code),'') is not null then nullif(trim(policy_holder_code), '') end),''))"
+  PRODUCT_BK: "nullif(trim(case when nullif(trim(product_code),'') is not null then 'PROD:' || nullif(trim(product_code), '') end),'')"
+  PRODUCT_NK: "'HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(product_code),'') is not null then 'PROD:' || nullif(trim(product_code), '') end),''))"
+  QUOTE_BK: "nullif(trim(case when nullif(trim(policy_quote_number),'') is not null then nullif(trim(policy_quote_number), '') end),'')"
+  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when nullif(trim(policy_quote_number),'') is not null then nullif(trim(policy_quote_number), '') end),''))"
   BASE_CURRENCY_CODE: 'base_currency'
   BASE_PREMIUM: 'cast(null as varchar)'
   COST_CENTRE_CODE: 'cast(null as varchar)'

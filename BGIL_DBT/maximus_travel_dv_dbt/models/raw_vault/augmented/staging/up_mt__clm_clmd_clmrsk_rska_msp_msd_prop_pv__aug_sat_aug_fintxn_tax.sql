@@ -7,7 +7,7 @@
 -- Payload null-padded to the SATELLITE, not to a branch (BUILD_RULES 6).
 
     select
-        nullif(trim(case when coalesce(nullif(trim(payment_id),'')) is not null then 'PAY:' || nullif(trim(payment_id), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
+        nullif(trim(case when nullif(trim(payment_id),'') is not null then 'PAY:' || nullif(trim(payment_id), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
         'TDS' as TAX_TYPE,
         cast(null as varchar) as INVOICE_MODE,
         cast(null as varchar) as SUPPLIER_INVOICE_NUMBER,
@@ -32,7 +32,7 @@
     where tds_certificate is not null or tds_dd_payable_at is not null or tds_dd_state is not null or tds_maximus_reference_no is not null or tds_mode_of_payment is not null or tds_nondeduction_flag is not null or tds_nondeduction_reason is not null or tds_portal_payment_reference_number is not null or tds_separate_cheque_flag is not null or tds_separate_payment_flag is not null or tds_waived_flag is not null or tds_waived_reason is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(invoice_number),'')) is not null then 'INV:' || nullif(trim(invoice_number), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_BILL_INVOICE,
+        nullif(trim(case when nullif(trim(invoice_number),'') is not null then 'INV:' || nullif(trim(invoice_number), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_BILL_INVOICE,
         'UGST' as TAX_TYPE,
         cast(null as varchar) as INVOICE_MODE,
         cast(null as varchar) as SUPPLIER_INVOICE_NUMBER,

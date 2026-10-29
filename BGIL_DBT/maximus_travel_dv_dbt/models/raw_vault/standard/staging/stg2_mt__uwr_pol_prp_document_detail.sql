@@ -38,8 +38,8 @@ hashed_columns:
       - 'SPECIAL_ENCLOSURES_DETAILS'
       - 'SPECIAL_ENCLOSURES_INDICATOR'
 derived_columns:
-  DOCUMENT_BK: "nullif(trim(case when coalesce(nullif(trim(document_id),'')) is not null then 'DOC:' || nullif(trim(document_id), '') end),'')"
-  DOCUMENT_NK: "'HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(document_id),'')) is not null then 'DOC:' || nullif(trim(document_id), '') end),''))"
+  DOCUMENT_BK: "nullif(trim(case when nullif(trim(document_id),'') is not null then 'DOC:' || nullif(trim(document_id), '') end),'')"
+  DOCUMENT_NK: "'HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(document_id),'') is not null then 'DOC:' || nullif(trim(document_id), '') end),''))"
   DOCUMENT_NAME: 'document_name'
   DOCUMENT_REFERENCE_NUMBER: 'cast(null as varchar)'
   DOCUMENT_TYPE: 'document_type'

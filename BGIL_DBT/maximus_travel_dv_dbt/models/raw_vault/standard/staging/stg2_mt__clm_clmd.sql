@@ -69,10 +69,10 @@ hashed_columns:
     columns:
       - 'LAST_ACTION_DATE'
 derived_columns:
-  CLAIM_BK: "nullif(trim(case when coalesce(nullif(trim(claimno),'')) is not null then nullif(trim(claimno), '') end),'')"
-  CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(claimno),'')) is not null then nullif(trim(claimno), '') end),''))"
-  POLICY_BK: "nullif(trim(case when coalesce(nullif(trim(policyno),'')) is not null then nullif(trim(policyno), '') end),'')"
-  POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(policyno),'')) is not null then nullif(trim(policyno), '') end),''))"
+  CLAIM_BK: "nullif(trim(case when nullif(trim(claimno),'') is not null then nullif(trim(claimno), '') end),'')"
+  CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when nullif(trim(claimno),'') is not null then nullif(trim(claimno), '') end),''))"
+  POLICY_BK: "nullif(trim(case when nullif(trim(policyno),'') is not null then nullif(trim(policyno), '') end),'')"
+  POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when nullif(trim(policyno),'') is not null then nullif(trim(policyno), '') end),''))"
   CATASTROPHE_CODE: 'cast(null as varchar)'
   CLAIM_CATEGORY: 'claim_bucket'
   CLAIM_HANDLER_REFERENCE: 'cast(null as varchar)'

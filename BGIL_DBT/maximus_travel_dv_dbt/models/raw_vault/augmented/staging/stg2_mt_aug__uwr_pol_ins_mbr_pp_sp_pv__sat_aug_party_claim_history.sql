@@ -20,8 +20,8 @@ hashed_columns:
       - 'CLAIM_APPLICANT_NAME'
       - 'CLAIM_APPLICANT_SALUTATION'
 derived_columns:
-  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   CLAIM_APPLICANT_DATE_OF_BIRTH: 'claim_applicant_dob'
   CLAIM_APPLICANT_NAME: 'claim_applicant_name'
   CLAIM_APPLICANT_SALUTATION: 'claim_applicant_name_prefix'

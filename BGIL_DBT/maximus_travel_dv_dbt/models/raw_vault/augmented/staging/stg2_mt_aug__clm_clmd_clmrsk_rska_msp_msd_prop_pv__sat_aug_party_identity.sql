@@ -22,8 +22,8 @@ hashed_columns:
       - 'RECORD_LAST_MODIFIED_DATE'
       - 'SOURCE_REFERENCE_CODE'
 derived_columns:
-  PARTY_BK__CLAIMANT: "nullif(trim(case when coalesce(nullif(trim(claimant_party_code),'')) is not null then nullif(trim(claimant_party_code), '') end),'')"
-  PARTY_NK__CLAIMANT: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(claimant_party_code),'')) is not null then nullif(trim(claimant_party_code), '') end),''))"
+  PARTY_BK__CLAIMANT: "nullif(trim(case when nullif(trim(claimant_party_code),'') is not null then nullif(trim(claimant_party_code), '') end),'')"
+  PARTY_NK__CLAIMANT: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(claimant_party_code),'') is not null then nullif(trim(claimant_party_code), '') end),''))"
   CREATED_BY_USER_REFERENCE: 'cast(null as varchar)'
   GUARDIAN_NAME: 'guardian_name'
   PARTY_COUNTRY: 'cast(null as varchar)'

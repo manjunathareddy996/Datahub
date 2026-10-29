@@ -33,8 +33,8 @@ hashed_columns:
       - 'SECONDARY_CAUSE_OF_LOSS_CODE'
       - 'SECONDARY_CAUSE_OF_LOSS_DESCRIPTION'
 derived_columns:
-  CLAIM_BK: "nullif(trim(case when coalesce(nullif(trim(claimno),'')) is not null then nullif(trim(claimno), '') end),'')"
-  CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(claimno),'')) is not null then nullif(trim(claimno), '') end),''))"
+  CLAIM_BK: "nullif(trim(case when nullif(trim(claimno),'') is not null then nullif(trim(claimno), '') end),'')"
+  CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when nullif(trim(claimno),'') is not null then nullif(trim(claimno), '') end),''))"
   ADD_ON_COVERS_CLAIMED: 'cast(null as varchar)'
   CERTIFICATE_OF_INSURANCE_STATUS: 'cast(null as varchar)'
   CLAIM_CLOSE_REASON: 'cast(null as varchar)'

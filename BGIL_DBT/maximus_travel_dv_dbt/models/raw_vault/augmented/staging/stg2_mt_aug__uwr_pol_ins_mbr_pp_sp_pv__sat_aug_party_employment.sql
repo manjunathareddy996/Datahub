@@ -26,8 +26,8 @@ hashed_columns:
       - 'PRIMARY_PROFESSION'
       - 'USED_CAR_DEALER_OCCUPATION_INDICATOR'
 derived_columns:
-  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   EMPLOYER_DETAILS_NARRATIVE: 'employers_details'
   PRIMARY_PROFESSION: 'cast(null as varchar)'
   USED_CAR_DEALER_OCCUPATION_INDICATOR: 'cast(null as varchar)'

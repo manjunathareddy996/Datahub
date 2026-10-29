@@ -40,8 +40,8 @@ hashed_columns:
       - 'SUM_INSURED_TOTAL_IN_TRANSACTION_CURRENCY'
       - 'UNDERWRITING_REFERRAL_REQUIRED_INDICATOR'
 derived_columns:
-  POLICY_BK: "nullif(trim(case when coalesce(nullif(trim(w1_policyno),'')) is not null then nullif(trim(w1_policyno), '') end),'')"
-  POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w1_policyno),'')) is not null then nullif(trim(w1_policyno), '') end),''))"
+  POLICY_BK: "nullif(trim(case when nullif(trim(w1_policyno),'') is not null then nullif(trim(w1_policyno), '') end),'')"
+  POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when nullif(trim(w1_policyno),'') is not null then nullif(trim(w1_policyno), '') end),''))"
   CBM_REFERENCE_NUMBER: 'cast(null as varchar)'
   COVER_LEVEL_SUM_INSURED_TRANSACTION_CURRENCY_CODE: 'cast(null as varchar)'
   CRM_REFERENCE_NUMBER: 'cast(null as varchar)'

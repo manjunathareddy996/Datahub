@@ -196,14 +196,14 @@ hashed_columns:
       - 'TRIP_START_DATE'
       - 'TRIP_TYPE'
 derived_columns:
-  COVERAGE_BK: "nullif(trim(case when coalesce(nullif(trim(cover_code),'')) is not null then 'COV:' || nullif(trim(cover_code), '') end),'')"
-  COVERAGE_NK: "'HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(cover_code),'')) is not null then 'COV:' || nullif(trim(cover_code), '') end),''))"
-  PARTY_BK__POLICYHOLDER: "nullif(trim(case when coalesce(nullif(trim(w2_policy_holder_code),'')) is not null then nullif(trim(w2_policy_holder_code), '') end),'')"
-  PARTY_NK__POLICYHOLDER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w2_policy_holder_code),'')) is not null then nullif(trim(w2_policy_holder_code), '') end),''))"
+  COVERAGE_BK: "nullif(trim(case when nullif(trim(cover_code),'') is not null then 'COV:' || nullif(trim(cover_code), '') end),'')"
+  COVERAGE_NK: "'HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(cover_code),'') is not null then 'COV:' || nullif(trim(cover_code), '') end),''))"
+  PARTY_BK__POLICYHOLDER: "nullif(trim(case when nullif(trim(w2_policy_holder_code),'') is not null then nullif(trim(w2_policy_holder_code), '') end),'')"
+  PARTY_NK__POLICYHOLDER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w2_policy_holder_code),'') is not null then nullif(trim(w2_policy_holder_code), '') end),''))"
   POLICY_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),'')"
   POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),''))"
-  PRODUCT_BK: "nullif(trim(case when coalesce(nullif(trim(w3_product_code),'')) is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')"
-  PRODUCT_NK: "'HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(w3_product_code),'')) is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),''))"
+  PRODUCT_BK: "nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')"
+  PRODUCT_NK: "'HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),''))"
   RISK_OBJECT_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),''), nullif(trim(w1_pol_risk_id),'')) is not null then 'RISK:' || coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) || '#' || nullif(trim(w1_pol_risk_id), '') end),'')"
   RISK_OBJECT_NK: "'HUB_RISK_OBJECT|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),''), nullif(trim(w1_pol_risk_id),'')) is not null then 'RISK:' || coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) || '#' || nullif(trim(w1_pol_risk_id), '') end),''))"
   RISK_OBJECT_BK__INSURED_TRAVELLER_RISK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),''), nullif(trim(w1_pol_risk_id),'')) is not null then 'RISK:' || coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) || '#' || nullif(trim(w1_pol_risk_id), '') end),'')"

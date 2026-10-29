@@ -35,8 +35,8 @@ hashed_columns:
       - 'RELATIONSHIP_TO_PRIMARY_INSURED'
       - 'YEAR_OF_PASSING_QUALIFICATION'
 derived_columns:
-  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   AGE_BAND: 'cast(null as varchar)'
   BASIC_QUALIFICATION_BOARD_NAME: 'cast(null as varchar)'
   BASIC_QUALIFICATION_DETAILS: 'cast(null as varchar)'

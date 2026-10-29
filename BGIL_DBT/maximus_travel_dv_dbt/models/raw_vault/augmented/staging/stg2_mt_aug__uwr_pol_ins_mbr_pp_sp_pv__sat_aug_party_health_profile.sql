@@ -20,8 +20,8 @@ hashed_columns:
       - 'ICD_DIAGNOSIS_CODE'
       - 'SURGERY_HISTORY_DESCRIPTION'
 derived_columns:
-  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   DISABILITY_BODY_LOCATION: 'location_of_disability'
   ICD_DIAGNOSIS_CODE: 'icd'
   SURGERY_HISTORY_DESCRIPTION: 'surgery_details'

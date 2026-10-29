@@ -7,7 +7,7 @@
 -- Payload null-padded to the SATELLITE, not to a branch (BUILD_RULES 6).
 
     select
-        nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
+        nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
         'GST' as TAX_TYPE,
         invoice_mode as INVOICE_MODE,
         invoice_no as SUPPLIER_INVOICE_NUMBER,
@@ -32,7 +32,7 @@
     where invoice_mode is not null or invoice_no is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
+        nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
         'UGST' as TAX_TYPE,
         cast(null as varchar) as INVOICE_MODE,
         cast(null as varchar) as SUPPLIER_INVOICE_NUMBER,
@@ -57,7 +57,7 @@ union all
     where ugst_amount is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
+        nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
         'VAT' as TAX_TYPE,
         cast(null as varchar) as INVOICE_MODE,
         cast(null as varchar) as SUPPLIER_INVOICE_NUMBER,

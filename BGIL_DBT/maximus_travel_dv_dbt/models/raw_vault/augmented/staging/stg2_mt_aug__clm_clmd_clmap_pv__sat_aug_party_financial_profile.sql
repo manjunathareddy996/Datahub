@@ -27,8 +27,8 @@ hashed_columns:
       - 'LOWER_TDS_CERTIFICATE_REFERENCE'
       - 'MONTHLY_INCOME_DECLARED'
 derived_columns:
-  PARTY_BK__CLAIMANT_CUSTOMER: "nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),'')"
-  PARTY_NK__CLAIMANT_CUSTOMER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),''))"
+  PARTY_BK__CLAIMANT_CUSTOMER: "nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'')"
+  PARTY_NK__CLAIMANT_CUSTOMER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),''))"
   BANKING_DETAILS_NARRATIVE: 'cast(null as varchar)'
   CHEQUE_RECEIPTING_BLOCKED_INDICATOR: 'cast(null as varchar)'
   CHEQUE_RECEIPTING_BLOCK_REASON: 'cast(null as varchar)'

@@ -29,8 +29,8 @@ hashed_columns:
       - 'SUB_LIMIT_AMOUNT'
       - 'SUB_LIMIT_ITEM'
 derived_columns:
-  COVERAGE_BK: "nullif(trim(case when coalesce(nullif(trim(w0_cover_code),'')) is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'')"
-  COVERAGE_NK: "'HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(w0_cover_code),'')) is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),''))"
+  COVERAGE_BK: "nullif(trim(case when nullif(trim(w0_cover_code),'') is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'')"
+  COVERAGE_NK: "'HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w0_cover_code),'') is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),''))"
   ACTIVE_SEQUENCE_NUMBER: "coalesce(nullif(trim(sublimit_name), ''),'')"
   ITEM_DESCRIPTION: 'items_covered'
   SUB_LIMIT_AMOUNT: 'sum_insured'

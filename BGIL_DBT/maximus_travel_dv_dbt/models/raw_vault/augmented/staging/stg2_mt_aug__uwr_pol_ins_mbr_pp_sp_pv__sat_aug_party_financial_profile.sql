@@ -27,8 +27,8 @@ hashed_columns:
       - 'LOWER_TDS_CERTIFICATE_REFERENCE'
       - 'MONTHLY_INCOME_DECLARED'
 derived_columns:
-  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   BANKING_DETAILS_NARRATIVE: 'banking_details'
   CHEQUE_RECEIPTING_BLOCKED_INDICATOR: 'cast(null as varchar)'
   CHEQUE_RECEIPTING_BLOCK_REASON: 'cast(null as varchar)'

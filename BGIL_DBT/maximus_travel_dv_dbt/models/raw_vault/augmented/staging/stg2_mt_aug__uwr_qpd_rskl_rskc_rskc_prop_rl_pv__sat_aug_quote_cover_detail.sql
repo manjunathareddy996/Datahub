@@ -34,8 +34,8 @@ hashed_columns:
       - 'TOTAL_COVER_SUM_INSURED'
       - 'TRIP_DELAY_OPTION'
 derived_columns:
-  QUOTE_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
-  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
+  QUOTE_BK: "nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
+  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
   COVERAGE_REFERENCE: "'RISK:' || nullif(trim(w1_pol_risk_id), '') || '#' || nullif(trim(w2_cover_code), '')"
   COVERAGE_SEQUENCE: "'1'"
   BENEFIT_UNIT_IN_HOURS: 'unit_in_hours'

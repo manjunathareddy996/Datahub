@@ -20,8 +20,8 @@ hashed_columns:
       - 'TRANSFER_CASE_REFERENCE'
       - 'TRANSFER_INDICATOR'
 derived_columns:
-  PARTY_BK__PROPOSER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__PROPOSER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   SERVICING_BRANCH_REFERENCE: 'branch'
   TRANSFER_CASE_REFERENCE: 'transfer_case'
   TRANSFER_INDICATOR: 'transfer'

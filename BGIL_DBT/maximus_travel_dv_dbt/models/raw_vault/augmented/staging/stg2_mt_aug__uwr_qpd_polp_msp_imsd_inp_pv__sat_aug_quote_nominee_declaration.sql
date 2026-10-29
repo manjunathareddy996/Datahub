@@ -21,8 +21,8 @@ hashed_columns:
       - 'NOMINEE_NAME'
       - 'RELATIONSHIP_TO_INSURED'
 derived_columns:
-  QUOTE_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
-  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
+  QUOTE_BK: "nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
+  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
   APPOINTEE_NAME: 'appointee_name'
   NOMINATION_PERCENTAGE: 'allocation_percentage'
   NOMINEE_NAME: 'nominee_name'

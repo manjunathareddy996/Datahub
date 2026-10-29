@@ -26,7 +26,7 @@
 --   mobile_registered_1                      1 attribute(s)
 
     select
-        nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
+        nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
         'EMAIL' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,
@@ -43,7 +43,7 @@
     where email is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
+        nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
         'EMAIL_COMMUNICATION' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,
@@ -60,7 +60,7 @@ union all
     where communication_email_id is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
+        nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
         'EMAIL_INSURED' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,
@@ -128,7 +128,7 @@ union all
     where mobile_number is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
+        nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
         'MOBILE_ALTERNATE' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,
@@ -145,7 +145,7 @@ union all
     where alternate_mobile_number_belongs_to is not null or alternate_mobile_numberclaims is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
+        nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
         'MOBILE_COMMUNICATION' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,
@@ -162,7 +162,7 @@ union all
     where communication_contact_number is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
+        nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
         'MOBILE_INSURED' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,
@@ -179,7 +179,7 @@ union all
     where insured_mobile_number is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
+        nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
         'MOBILE_INSURED_CONTACT' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,
@@ -196,7 +196,7 @@ union all
     where insured_contact_number is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
+        nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
         'MOBILE_KEY_CONTACT' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,

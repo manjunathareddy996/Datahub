@@ -26,8 +26,8 @@ hashed_columns:
       - 'TRIP_TYPE_ON_COVER'
       - 'TRIP_TYPE_ON_TRIP_CALCULATOR'
 derived_columns:
-  QUOTE_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
-  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
+  QUOTE_BK: "nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
+  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
   PASSENGER_NAME_RECORD: 'pnr'
   TRIP_COVER_PERIOD: 'period'
   TRIP_DURATION_DAYS: 'trip_duration_in_days'

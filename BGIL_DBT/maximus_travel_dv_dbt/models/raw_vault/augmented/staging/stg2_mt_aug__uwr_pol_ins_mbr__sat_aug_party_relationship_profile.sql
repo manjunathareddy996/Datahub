@@ -22,8 +22,8 @@ hashed_columns:
       - 'RELATIONSHIP_WITH_HNI_CUSTOMER'
       - 'RELATIONSHIP_WITH_PRIVE_CUSTOMER'
 derived_columns:
-  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when coalesce(nullif(trim(party_code),'')) is not null then nullif(trim(party_code), '') end),'')"
-  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(party_code),'')) is not null then nullif(trim(party_code), '') end),''))"
+  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when nullif(trim(party_code),'') is not null then nullif(trim(party_code), '') end),'')"
+  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(party_code),'') is not null then nullif(trim(party_code), '') end),''))"
   EXISTING_CUSTOMER_DECLARED_INDICATOR: 'cast(null as varchar)'
   RELATED_PARTY_REFERENCE: 'related_party'
   RELATIONSHIP_WITH_EMPLOYEE: 'cast(null as varchar)'

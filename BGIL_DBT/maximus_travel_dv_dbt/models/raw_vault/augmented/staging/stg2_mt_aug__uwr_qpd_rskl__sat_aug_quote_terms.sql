@@ -28,8 +28,8 @@ hashed_columns:
       - 'MANDATORY_QUESTIONNAIRE_INDICATOR'
       - 'UNDERWRITING_RULES_BYPASSED_INDICATOR'
 derived_columns:
-  QUOTE_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
-  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
+  QUOTE_BK: "nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
+  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
   CANCELLATION_PREMIUM_BASIS: 'cast(null as varchar)'
   CHILD_POLICY_PLAN_CODE: 'cast(null as varchar)'
   CO_INSURANCE_INDICATOR: 'cast(null as varchar)'

@@ -7,7 +7,7 @@
 -- Payload null-padded to the SATELLITE, not to a branch (BUILD_RULES 6).
 
     select
-        nullif(trim(case when coalesce(nullif(trim(w6_office_code),'')) is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'') as ORG_UNIT_BK,
+        nullif(trim(case when nullif(trim(w6_office_code),'') is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'') as ORG_UNIT_BK,
         'LANDLINE' as CONTACT_POINT_TYPE,
         alternate_mob_numberlandline_number as ALTERNATE_MOBILE_NUMBER,
         cast(null as varchar) as MOBILE_NUMBER,
@@ -17,7 +17,7 @@
     where alternate_mob_numberlandline_number is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w6_office_code),'')) is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'') as ORG_UNIT_BK,
+        nullif(trim(case when nullif(trim(w6_office_code),'') is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'') as ORG_UNIT_BK,
         'MOBILE_WHATSAPP' as CONTACT_POINT_TYPE,
         cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
         whatsapp_no as MOBILE_NUMBER,
@@ -27,7 +27,7 @@ union all
     where whatsapp_no is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w6_office_code),'')) is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'') as ORG_UNIT_BK,
+        nullif(trim(case when nullif(trim(w6_office_code),'') is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'') as ORG_UNIT_BK,
         'SOCIAL_FACEBOOK' as CONTACT_POINT_TYPE,
         cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
         cast(null as varchar) as MOBILE_NUMBER,
@@ -37,7 +37,7 @@ union all
     where facebook_id is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w6_office_code),'')) is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'') as ORG_UNIT_BK,
+        nullif(trim(case when nullif(trim(w6_office_code),'') is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'') as ORG_UNIT_BK,
         'SOCIAL_INSTAGRAM' as CONTACT_POINT_TYPE,
         cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
         cast(null as varchar) as MOBILE_NUMBER,
@@ -47,7 +47,7 @@ union all
     where instagram_id is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w6_office_code),'')) is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'') as ORG_UNIT_BK,
+        nullif(trim(case when nullif(trim(w6_office_code),'') is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'') as ORG_UNIT_BK,
         'SOCIAL_LINKEDIN' as CONTACT_POINT_TYPE,
         cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
         cast(null as varchar) as MOBILE_NUMBER,
@@ -57,7 +57,7 @@ union all
     where linked_in_id is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w6_office_code),'')) is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'') as ORG_UNIT_BK,
+        nullif(trim(case when nullif(trim(w6_office_code),'') is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'') as ORG_UNIT_BK,
         'SOCIAL_TWITTER' as CONTACT_POINT_TYPE,
         cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
         cast(null as varchar) as MOBILE_NUMBER,

@@ -63,8 +63,8 @@ hashed_columns:
       - 'TAN_NUMBER'
       - 'VOTER_ID_NUMBER'
 derived_columns:
-  PARTY_BK__PROPOSER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__PROPOSER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   AADHAAR_NUMBER: 'cast(null as varchar)'
   AADHAAR_VERIFICATION_STATUS: 'cast(null as varchar)'
   ACCOUNT_HOLDER_NAME: 'name_as_per_bank_ac'

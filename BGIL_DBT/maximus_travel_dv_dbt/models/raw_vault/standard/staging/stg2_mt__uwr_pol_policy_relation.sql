@@ -53,12 +53,12 @@ hashed_columns:
       - 'PARTY_TYPE_CODE'
       - 'SALUTATION'
 derived_columns:
-  PARTY_BK: "nullif(trim(case when coalesce(nullif(trim(party_code),'')) is not null then nullif(trim(party_code), '') end),'')"
-  PARTY_NK: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(party_code),'')) is not null then nullif(trim(party_code), '') end),''))"
+  PARTY_BK: "nullif(trim(case when nullif(trim(party_code),'') is not null then nullif(trim(party_code), '') end),'')"
+  PARTY_NK: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(party_code),'') is not null then nullif(trim(party_code), '') end),''))"
   POLICY_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),'')"
   POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),''))"
-  POLICY_PARTY_BK: "coalesce(nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim(party_code),'')) is not null then nullif(trim(party_code), '') end),''),'')"
-  POLICY_PARTY_NK: "'LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim(party_code),'')) is not null then nullif(trim(party_code), '') end),''),''))"
+  POLICY_PARTY_BK: "coalesce(nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim(party_code),'') is not null then nullif(trim(party_code), '') end),''),'')"
+  POLICY_PARTY_NK: "'LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim(party_code),'') is not null then nullif(trim(party_code), '') end),''),''))"
   AGE: 'cast(null as varchar)'
   ATTRIBUTION_PERCENTAGE: 'party_share_percentage'
   COUNTRY_OF_BIRTH: 'cast(null as varchar)'

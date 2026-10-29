@@ -21,8 +21,8 @@ hashed_columns:
       - 'EXTERNAL_REFERENCE_TYPE'
       - 'LINE_SEQUENCE_NUMBER'
 derived_columns:
-  QUOTE_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
-  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
+  QUOTE_BK: "nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
+  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
   APPLICABLE_YEAR: 'year'
   EXTERNAL_REFERENCE_NUMBER: 'reference_number'
   EXTERNAL_REFERENCE_TYPE: 'ref_type'

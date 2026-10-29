@@ -22,7 +22,7 @@
 --   slab                                     1 attribute(s)
 
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'LOADING_ACE' as FACTOR_CODE,
         cast(null as varchar) as FACTOR_VALUE,
         loading_ace as PREMIUM_IMPACT,
@@ -32,7 +32,7 @@
     where loading_ace is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'LOADING_ACE_FOR_MAIN_SUB_COVER' as FACTOR_CODE,
         cast(null as varchar) as FACTOR_VALUE,
         loading_ace_for_main_sub_cover as PREMIUM_IMPACT,
@@ -42,7 +42,7 @@ union all
     where loading_ace_for_main_sub_cover is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'OFFICE_PREMIUM_PER_MILLE_PA' as FACTOR_CODE,
         office_premium_per_mille_pa as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,
@@ -52,7 +52,7 @@ union all
     where office_premium_per_mille_pa is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'OFFICE_PREMIUM_PER_MILLE_PER_TRIP' as FACTOR_CODE,
         office_premium_per_mille_per_trip as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,
@@ -62,7 +62,7 @@ union all
     where office_premium_per_mille_per_trip is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'PREMIUM_RATE' as FACTOR_CODE,
         premium_rate as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,
@@ -72,7 +72,7 @@ union all
     where premium_rate is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'RATE_PER_TRIP_PER_MILLE' as FACTOR_CODE,
         rate_per_trip_per_mille as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,
@@ -82,7 +82,7 @@ union all
     where rate_per_trip_per_mille is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'RATE_PER_TRIP_PER_MILLE_FOR_MAIN_SUB_COVER' as FACTOR_CODE,
         rate_per_trip_per_mille_for_main_sub_cover as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,
@@ -92,7 +92,7 @@ union all
     where rate_per_trip_per_mille_for_main_sub_cover is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'SLAB' as FACTOR_CODE,
         slab_ as FACTOR_VALUE,
         cast(null as varchar) as PREMIUM_IMPACT,

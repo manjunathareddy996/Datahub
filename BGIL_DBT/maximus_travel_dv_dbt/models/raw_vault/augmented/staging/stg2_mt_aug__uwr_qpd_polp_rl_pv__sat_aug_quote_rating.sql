@@ -68,8 +68,8 @@ hashed_columns:
       - 'UTGST_AMOUNT'
       - 'WRITE_OFF_WAIVER_INDICATOR'
 derived_columns:
-  QUOTE_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
-  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
+  QUOTE_BK: "nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
+  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
   ADDITIONAL_PREMIUM_AMOUNT: 'additional_premium'
   ADMINISTRATION_CHARGES_AMOUNT: 'admin_charges'
   AMOUNT_RECEIVED: 'amount_recevied'

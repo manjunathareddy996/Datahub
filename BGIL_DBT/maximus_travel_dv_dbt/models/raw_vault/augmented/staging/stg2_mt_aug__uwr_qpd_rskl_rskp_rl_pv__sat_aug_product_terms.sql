@@ -23,8 +23,8 @@ hashed_columns:
     columns:
       - 'CHILD_POLICY_MAXIMUM_DURATION'
 derived_columns:
-  PRODUCT_BK: "nullif(trim(case when coalesce(nullif(trim(w3_product_code),'')) is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')"
-  PRODUCT_NK: "'HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(w3_product_code),'')) is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),''))"
+  PRODUCT_BK: "nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')"
+  PRODUCT_NK: "'HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),''))"
   CHILD_POLICY_MAXIMUM_DURATION: 'child_policy_max_duration'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW'
   LOAD_DATETIME: 'REC_REFRESH_AT'

@@ -35,7 +35,7 @@
 --   voter_id                                 1 attribute(s)
 
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         coalesce(nullif(trim(identification_proof), ''),'') as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -67,7 +67,7 @@
     where id_number is not null or identification_proof_effective_date is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'AADHAAR' as IDENTIFICATION_TYPE_CODE,
         coalesce(aadhaar_number, uid) as AADHAAR_NUMBER,
         poa_aadhar_card_status as AADHAAR_VERIFICATION_STATUS,
@@ -99,7 +99,7 @@ union all
     where aadhaar_number is not null or poa_aadhar_card_status is not null or uid is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'AADHAAR_ENROLMENT' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -131,7 +131,7 @@ union all
     where aadhaar_enrollment_no is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'AADHAAR_VID' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -163,7 +163,7 @@ union all
     where vid is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'ABHA' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -195,7 +195,7 @@ union all
     where abha_id is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'AGE_PROOF' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -227,7 +227,7 @@ union all
     where dob_proof is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'CIN' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -259,7 +259,7 @@ union all
     where cin_number is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'CKYC' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -291,7 +291,7 @@ union all
     where ckyc_number is not null or claim_ckyc_number is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'DRIVING_LICENCE' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -323,7 +323,7 @@ union all
     where driving_license_expiry_date is not null or driving_license_issue_date is not null or driving_license_number is not null or driving_license_place_of_issue is not null or poa_driving_license_status is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'EIA' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -355,7 +355,7 @@ union all
     where e_insurance_demat_account_verified is not null or eia_number is not null or insurance_repository_code is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'FORM_60' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -387,7 +387,7 @@ union all
     where poi_form_60_status is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'GENERIC_DECLARED_ID' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -419,7 +419,7 @@ union all
     where expiry_date is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'GSTIN' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -451,7 +451,7 @@ union all
     where gstin_issuance_dt is not null or gstinuin is not null or gstn_number is not null or gstn_regn_status is not null or gstn_status is not null or gstn_taxpayer_type is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'NREGA_JOB_CARD' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -483,7 +483,7 @@ union all
     where nrega_job_card is not null or poa_nrega_job_card_status is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'PAN' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -515,7 +515,7 @@ union all
     where pan_number is not null or poi_pan_card_status is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'PASSPORT' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -547,7 +547,7 @@ union all
     where poa_passport_status is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'PROOF_OF_ADDRESS' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -579,7 +579,7 @@ union all
     where poa_document_status is not null or proof_of_address_submitted_for_current_permanent_overseas_address is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'PROOF_OF_IDENTITY' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -611,7 +611,7 @@ union all
     where poi_document_status is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'SEZ_REGISTRATION' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -643,7 +643,7 @@ union all
     where sez_registration_date is not null or sez_registration_no is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'TAN' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -675,7 +675,7 @@ union all
     where tan_number is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'VOTER_ID' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,

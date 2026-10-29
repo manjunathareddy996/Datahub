@@ -16,7 +16,7 @@
 --   tds                                      3 attribute(s)
 
     select
-        nullif(trim(case when coalesce(nullif(trim(invoice_number),'')) is not null then 'INV:' || nullif(trim(invoice_number), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_BILL_INVOICE,
+        nullif(trim(case when nullif(trim(invoice_number),'') is not null then 'INV:' || nullif(trim(invoice_number), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_BILL_INVOICE,
         'GST' as TAX_TYPE,
         cgst as CGST_AMOUNT,
         cgst_percentage as CGST_RATE,
@@ -36,7 +36,7 @@
     where cgst is not null or cgst_percentage is not null or gst_applicability is not null or igst is not null or igst_percentage is not null or invoice_number is not null or sgst is not null or sgst_percentage is not null or total_gst_percentage is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(payment_id),'')) is not null then 'PAY:' || nullif(trim(payment_id), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
+        nullif(trim(case when nullif(trim(payment_id),'') is not null then 'PAY:' || nullif(trim(payment_id), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
         'TDS' as TAX_TYPE,
         cast(null as varchar) as CGST_AMOUNT,
         cast(null as varchar) as CGST_RATE,

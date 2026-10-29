@@ -23,8 +23,8 @@ hashed_columns:
       - 'SPECIAL_ENCLOSURES_DESCRIPTION'
       - 'SPECIAL_ENCLOSURES_INDICATOR'
 derived_columns:
-  DOCUMENT_BK: "nullif(trim(case when coalesce(nullif(trim(inward_number),'')) is not null then 'INWARD:' || nullif(trim(inward_number), '') end),'')"
-  DOCUMENT_NK: "'HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(inward_number),'')) is not null then 'INWARD:' || nullif(trim(inward_number), '') end),''))"
+  DOCUMENT_BK: "nullif(trim(case when nullif(trim(inward_number),'') is not null then 'INWARD:' || nullif(trim(inward_number), '') end),'')"
+  DOCUMENT_NK: "'HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(inward_number),'') is not null then 'INWARD:' || nullif(trim(inward_number), '') end),''))"
   COURIER_NAME: 'courier_name'
   INWARD_DATE: 'inward_date'
   PROOF_OF_DELIVERY_NUMBER: 'pod_number'

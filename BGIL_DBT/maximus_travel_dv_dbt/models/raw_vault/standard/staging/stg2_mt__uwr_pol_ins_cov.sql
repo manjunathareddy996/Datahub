@@ -56,8 +56,8 @@ hashed_columns:
       - 'PREMIUM_HEAD_CODE'
       - 'SECTION'
 derived_columns:
-  COVERAGE_BK: "nullif(trim(case when coalesce(nullif(trim(cover_code),'')) is not null then 'COV:' || nullif(trim(cover_code), '') end),'')"
-  COVERAGE_NK: "'HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(cover_code),'')) is not null then 'COV:' || nullif(trim(cover_code), '') end),''))"
+  COVERAGE_BK: "nullif(trim(case when nullif(trim(cover_code),'') is not null then 'COV:' || nullif(trim(cover_code), '') end),'')"
+  COVERAGE_NK: "'HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(cover_code),'') is not null then 'COV:' || nullif(trim(cover_code), '') end),''))"
   POLICY_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),'')"
   POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),''))"
   ADJUSTED_INDICATOR: "'N'"

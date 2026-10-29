@@ -7,7 +7,7 @@
 -- Payload null-padded to the SATELLITE, not to a branch (BUILD_RULES 6).
 
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'ACE' as COVERAGE_REFERENCE,
         ace_duration as COVERAGE_DURATION,
         cast(null as varchar) as DEDUCTIBLE_AMOUNT,
@@ -23,7 +23,7 @@
     where ace_duration is not null or ace_premium_type is not null or delay_exceeding_ace is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'AMBULANCE' as COVERAGE_REFERENCE,
         cast(null as varchar) as COVERAGE_DURATION,
         cast(null as varchar) as DEDUCTIBLE_AMOUNT,
@@ -39,7 +39,7 @@ union all
     where ambulance_sub_cover is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'BASE' as COVERAGE_REFERENCE,
         cast(null as varchar) as COVERAGE_DURATION,
         deductible_value_sublimit as DEDUCTIBLE_AMOUNT,
@@ -55,7 +55,7 @@ union all
     where deductible_value_sublimit is not null or excluded_countries is not null or excluded_events is not null or items_covered is not null or limit_sum_insured is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'BENEFIT' as COVERAGE_REFERENCE,
         cast(null as varchar) as COVERAGE_DURATION,
         cast(null as varchar) as DEDUCTIBLE_AMOUNT,
@@ -71,7 +71,7 @@ union all
     where benefit_amount is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'TRAVEL_INCONVENIENCE' as COVERAGE_REFERENCE,
         cast(null as varchar) as COVERAGE_DURATION,
         cast(null as varchar) as DEDUCTIBLE_AMOUNT,
@@ -87,7 +87,7 @@ union all
     where inconvenience_sub_cover is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'TRIP_CANCELLATION' as COVERAGE_REFERENCE,
         cast(null as varchar) as COVERAGE_DURATION,
         cast(null as varchar) as DEDUCTIBLE_AMOUNT,
@@ -103,7 +103,7 @@ union all
     where cancellation_sub_cover is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'TRIP_CANCELLATION_MAIN' as COVERAGE_REFERENCE,
         cast(null as varchar) as COVERAGE_DURATION,
         cast(null as varchar) as DEDUCTIBLE_AMOUNT,
@@ -119,7 +119,7 @@ union all
     where cancellation_main_sub_cover is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'TRIP_DELAY' as COVERAGE_REFERENCE,
         cast(null as varchar) as COVERAGE_DURATION,
         cast(null as varchar) as DEDUCTIBLE_AMOUNT,

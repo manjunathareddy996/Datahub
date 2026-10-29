@@ -21,8 +21,8 @@ hashed_columns:
       - 'REQUIREMENT_SOUGHT_FROM'
       - 'REQUIREMENT_STATUS'
 derived_columns:
-  DOCUMENT_BK__CLAIM_INWARD_DOCUMENT_SET: "nullif(trim(case when coalesce(nullif(trim(inward_number),'')) is not null then 'INWARD:' || nullif(trim(inward_number), '') end),'')"
-  DOCUMENT_NK__CLAIM_INWARD_DOCUMENT_SET: "'HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(inward_number),'')) is not null then 'INWARD:' || nullif(trim(inward_number), '') end),''))"
+  DOCUMENT_BK__CLAIM_INWARD_DOCUMENT_SET: "nullif(trim(case when nullif(trim(inward_number),'') is not null then 'INWARD:' || nullif(trim(inward_number), '') end),'')"
+  DOCUMENT_NK__CLAIM_INWARD_DOCUMENT_SET: "'HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(inward_number),'') is not null then 'INWARD:' || nullif(trim(inward_number), '') end),''))"
   REQUIRED_DOCUMENT_TYPE: "coalesce(nullif(trim(requirement_type_name), ''),'')"
   REQUIREMENT_RESPONSE_TEXT: 'response'
   REQUIREMENT_SOUGHT_FROM: 'required_from'

@@ -26,8 +26,8 @@ hashed_columns:
       - 'PRIMARY_PROFESSION'
       - 'USED_CAR_DEALER_OCCUPATION_INDICATOR'
 derived_columns:
-  PARTY_BK__PROPOSER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__PROPOSER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   EMPLOYER_DETAILS_NARRATIVE: 'employers_details'
   PRIMARY_PROFESSION: 'primary_profession'
   USED_CAR_DEALER_OCCUPATION_INDICATOR: 'used_car_dealer'

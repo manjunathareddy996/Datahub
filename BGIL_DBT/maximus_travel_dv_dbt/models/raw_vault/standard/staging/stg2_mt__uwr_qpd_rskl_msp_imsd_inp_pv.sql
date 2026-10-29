@@ -88,13 +88,13 @@ hashed_columns:
       - 'TRIP_START_DATE'
       - 'TRIP_TYPE'
 derived_columns:
-  PARTY_BK__NOMINEE: "nullif(trim(case when coalesce(nullif(trim(nominee_name),'')) is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim(nominee_name), '')))) end),'')"
-  PARTY_NK__NOMINEE: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nominee_name),'')) is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim(nominee_name), '')))) end),''))"
-  PARTY_ROLE_BK__NOMINEE: "coalesce(nullif(trim(case when coalesce(nullif(trim(nominee_name),'')) is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim(nominee_name), '')))) end),''),'') || '|' || coalesce('NOMINEE','')"
-  PARTY_ROLE_NK__NOMINEE: "'LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(nominee_name),'')) is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim(nominee_name), '')))) end),''),'') || '|' || coalesce('NOMINEE',''))"
+  PARTY_BK__NOMINEE: "nullif(trim(case when nullif(trim(nominee_name),'') is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim(nominee_name), '')))) end),'')"
+  PARTY_NK__NOMINEE: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(nominee_name),'') is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim(nominee_name), '')))) end),''))"
+  PARTY_ROLE_BK__NOMINEE: "coalesce(nullif(trim(case when nullif(trim(nominee_name),'') is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim(nominee_name), '')))) end),''),'') || '|' || coalesce('NOMINEE','')"
+  PARTY_ROLE_NK__NOMINEE: "'LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when nullif(trim(nominee_name),'') is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim(nominee_name), '')))) end),''),'') || '|' || coalesce('NOMINEE',''))"
   PARTY_ROLE_ROLE: "'NOMINEE'"
-  QUOTE_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
-  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
+  QUOTE_BK: "nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
+  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
   RISK_OBJECT_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),''), nullif(trim(w1_pol_risk_id),'')) is not null then 'RISK:' || nullif(trim(w0_policy_quote_number), '') || '#' || nullif(trim(w1_pol_risk_id), '') end),'')"
   RISK_OBJECT_NK: "'HUB_RISK_OBJECT|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),''), nullif(trim(w1_pol_risk_id),'')) is not null then 'RISK:' || nullif(trim(w0_policy_quote_number), '') || '#' || nullif(trim(w1_pol_risk_id), '') end),''))"
   AGE: 'cast(null as varchar)'

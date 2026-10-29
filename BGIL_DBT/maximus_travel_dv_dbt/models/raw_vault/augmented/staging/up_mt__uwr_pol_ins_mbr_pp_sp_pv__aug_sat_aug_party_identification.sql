@@ -7,7 +7,7 @@
 -- Payload null-padded to the SATELLITE, not to a branch (BUILD_RULES 6).
 
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'AADHAAR' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as EIA_CREDIT_REQUIRED_INDICATOR,
         cast(null as varchar) as EIA_DETAILS_NARRATIVE,
@@ -29,7 +29,7 @@
     where name_as_per_aadhaar is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'CKYC' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as EIA_CREDIT_REQUIRED_INDICATOR,
         cast(null as varchar) as EIA_DETAILS_NARRATIVE,
@@ -51,7 +51,7 @@ union all
     where name_as_per_ckyc is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'DRIVING_LICENCE' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as EIA_CREDIT_REQUIRED_INDICATOR,
         cast(null as varchar) as EIA_DETAILS_NARRATIVE,
@@ -73,7 +73,7 @@ union all
     where driving_license_details is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'EIA' as IDENTIFICATION_TYPE_CODE,
         eia_credit_required as EIA_CREDIT_REQUIRED_INDICATOR,
         eia_details as EIA_DETAILS_NARRATIVE,
@@ -95,7 +95,7 @@ union all
     where eia_available is not null or eia_credit_required is not null or eia_details is not null or eia_required is not null or eia_when_linked is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'GSTIN' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as EIA_CREDIT_REQUIRED_INDICATOR,
         cast(null as varchar) as EIA_DETAILS_NARRATIVE,
@@ -117,7 +117,7 @@ union all
     where statewise_gstin_details is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'PAN' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as EIA_CREDIT_REQUIRED_INDICATOR,
         cast(null as varchar) as EIA_DETAILS_NARRATIVE,
@@ -139,7 +139,7 @@ union all
     where name_as_per_pan is not null or pan_aadhaar_linked is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'PASSPORT' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as EIA_CREDIT_REQUIRED_INDICATOR,
         cast(null as varchar) as EIA_DETAILS_NARRATIVE,
@@ -161,7 +161,7 @@ union all
     where passport_details is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'PROOF_OF_ADDRESS' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as EIA_CREDIT_REQUIRED_INDICATOR,
         cast(null as varchar) as EIA_DETAILS_NARRATIVE,
@@ -183,7 +183,7 @@ union all
     where claim_poa_status is not null or proof_of_address_submitted_for_current_permanent_overseas_addressothers is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'PROOF_OF_IDENTITY' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as EIA_CREDIT_REQUIRED_INDICATOR,
         cast(null as varchar) as EIA_DETAILS_NARRATIVE,

@@ -7,7 +7,7 @@
 -- Payload null-padded to the SATELLITE, not to a branch (BUILD_RULES 6).
 
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'GROSS' as PREMIUM_HEAD_CODE,
         cast(null as varchar) as BASE_AMOUNT,
         gross_premium as NET_HEAD_PREMIUM,
@@ -16,7 +16,7 @@
     where gross_premium is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'ONE_WAY_FIXED' as PREMIUM_HEAD_CODE,
         fixed_one_way_premium as BASE_AMOUNT,
         cast(null as varchar) as NET_HEAD_PREMIUM,
@@ -25,7 +25,7 @@ union all
     where fixed_one_way_premium is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'ONE_WAY_TRIP' as PREMIUM_HEAD_CODE,
         cast(null as varchar) as BASE_AMOUNT,
         one_way_premium as NET_HEAD_PREMIUM,
@@ -34,7 +34,7 @@ union all
     where one_way_premium is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'ROUND_TRIP' as PREMIUM_HEAD_CODE,
         cast(null as varchar) as BASE_AMOUNT,
         round_trip_premium as NET_HEAD_PREMIUM,
@@ -43,7 +43,7 @@ union all
     where round_trip_premium is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
+        nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'') as QUOTE_BK,
         'ROUND_TRIP_FIXED' as PREMIUM_HEAD_CODE,
         fixed_round_trip_premium as BASE_AMOUNT,
         cast(null as varchar) as NET_HEAD_PREMIUM,

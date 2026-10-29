@@ -106,18 +106,18 @@ hashed_columns:
       - 'PRODUCT_NAME'
       - 'UIN'
 derived_columns:
-  ORG_UNIT_BK: "nullif(trim(case when coalesce(nullif(trim(policy_branch_name),'')) is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim(policy_branch_name), '')))) end),'')"
-  ORG_UNIT_NK: "'HUB_ORG_UNIT|' || (nullif(trim(case when coalesce(nullif(trim(policy_branch_name),'')) is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim(policy_branch_name), '')))) end),''))"
-  PARTY_BK__AGENT: "nullif(trim(case when coalesce(nullif(trim(agent_code),'')) is not null then 'AGENT:' || nullif(trim(agent_code), '') end),'')"
-  PARTY_NK__AGENT: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(agent_code),'')) is not null then 'AGENT:' || nullif(trim(agent_code), '') end),''))"
-  PARTY_BK__POLICYHOLDER: "nullif(trim(case when coalesce(nullif(trim(policy_holder_code),'')) is not null then nullif(trim(policy_holder_code), '') end),'')"
-  PARTY_NK__POLICYHOLDER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(policy_holder_code),'')) is not null then nullif(trim(policy_holder_code), '') end),''))"
-  POLICY_BK: "nullif(trim(case when coalesce(nullif(trim(policy_number),'')) is not null then nullif(trim(policy_number), '') end),'')"
-  POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(policy_number),'')) is not null then nullif(trim(policy_number), '') end),''))"
-  PRODUCT_BK: "nullif(trim(case when coalesce(nullif(trim(product_code),'')) is not null then 'PROD:' || nullif(trim(product_code), '') end),'')"
-  PRODUCT_NK: "'HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(product_code),'')) is not null then 'PROD:' || nullif(trim(product_code), '') end),''))"
-  QUOTE_BK: "nullif(trim(case when coalesce(nullif(trim(quotation_number),'')) is not null then nullif(trim(quotation_number), '') end),'')"
-  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(quotation_number),'')) is not null then nullif(trim(quotation_number), '') end),''))"
+  ORG_UNIT_BK: "nullif(trim(case when nullif(trim(policy_branch_name),'') is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim(policy_branch_name), '')))) end),'')"
+  ORG_UNIT_NK: "'HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim(policy_branch_name),'') is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim(policy_branch_name), '')))) end),''))"
+  PARTY_BK__AGENT: "nullif(trim(case when nullif(trim(agent_code),'') is not null then 'AGENT:' || nullif(trim(agent_code), '') end),'')"
+  PARTY_NK__AGENT: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(agent_code),'') is not null then 'AGENT:' || nullif(trim(agent_code), '') end),''))"
+  PARTY_BK__POLICYHOLDER: "nullif(trim(case when nullif(trim(policy_holder_code),'') is not null then nullif(trim(policy_holder_code), '') end),'')"
+  PARTY_NK__POLICYHOLDER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(policy_holder_code),'') is not null then nullif(trim(policy_holder_code), '') end),''))"
+  POLICY_BK: "nullif(trim(case when nullif(trim(policy_number),'') is not null then nullif(trim(policy_number), '') end),'')"
+  POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when nullif(trim(policy_number),'') is not null then nullif(trim(policy_number), '') end),''))"
+  PRODUCT_BK: "nullif(trim(case when nullif(trim(product_code),'') is not null then 'PROD:' || nullif(trim(product_code), '') end),'')"
+  PRODUCT_NK: "'HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(product_code),'') is not null then 'PROD:' || nullif(trim(product_code), '') end),''))"
+  QUOTE_BK: "nullif(trim(case when nullif(trim(quotation_number),'') is not null then nullif(trim(quotation_number), '') end),'')"
+  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when nullif(trim(quotation_number),'') is not null then nullif(trim(quotation_number), '') end),''))"
   BASE_PREMIUM: 'cast(null as varchar)'
   CESS_AMOUNT: 'cast(null as varchar)'
   CGST_AMOUNT: 'cast(null as varchar)'

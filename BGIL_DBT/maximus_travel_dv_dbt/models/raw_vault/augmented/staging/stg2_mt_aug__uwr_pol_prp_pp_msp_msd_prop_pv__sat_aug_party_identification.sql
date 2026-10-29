@@ -33,8 +33,8 @@ hashed_columns:
       - 'PROOF_OF_ADDRESS_OTHER_DESCRIPTION'
       - 'STATE_WISE_GSTIN_REGISTRATION_DETAILS'
 derived_columns:
-  PARTY_BK__PROPOSER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__PROPOSER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   IDENTIFICATION_TYPE_CODE: "'PASSPORT'"
   EIA_CREDIT_REQUIRED_INDICATOR: 'cast(null as varchar)'
   EIA_DETAILS_NARRATIVE: 'cast(null as varchar)'

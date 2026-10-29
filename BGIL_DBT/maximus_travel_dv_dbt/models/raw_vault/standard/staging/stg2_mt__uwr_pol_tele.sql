@@ -29,8 +29,8 @@ hashed_columns:
       - 'ASSESSMENT_STATUS'
       - 'REQUESTED_DATE'
 derived_columns:
-  ASSESSMENT_BK__TELE_VERIFICATION: "nullif(trim(case when coalesce(nullif(trim(transaction_id),'')) is not null then 'TELEVERIF:' || nullif(trim(transaction_id), '') end),'')"
-  ASSESSMENT_NK__TELE_VERIFICATION: "'HUB_ASSESSMENT|' || (nullif(trim(case when coalesce(nullif(trim(transaction_id),'')) is not null then 'TELEVERIF:' || nullif(trim(transaction_id), '') end),''))"
+  ASSESSMENT_BK__TELE_VERIFICATION: "nullif(trim(case when nullif(trim(transaction_id),'') is not null then 'TELEVERIF:' || nullif(trim(transaction_id), '') end),'')"
+  ASSESSMENT_NK__TELE_VERIFICATION: "'HUB_ASSESSMENT|' || (nullif(trim(case when nullif(trim(transaction_id),'') is not null then 'TELEVERIF:' || nullif(trim(transaction_id), '') end),''))"
   ASSESSMENT_STATUS: 'tele_varification_status'
   REQUESTED_DATE: 'tele_varification_initiated_date'
   ASSESSMENT_END_TIME: 'end_time'

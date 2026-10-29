@@ -27,8 +27,8 @@ hashed_columns:
       - 'LOWER_TDS_CERTIFICATE_REFERENCE'
       - 'MONTHLY_INCOME_DECLARED'
 derived_columns:
-  PARTY_BK__PROPOSER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__PROPOSER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   BANKING_DETAILS_NARRATIVE: 'banking_details'
   CHEQUE_RECEIPTING_BLOCKED_INDICATOR: 'cheque_receipting_blocked'
   CHEQUE_RECEIPTING_BLOCK_REASON: 'remarks_for_cheque_receipting_blocked'

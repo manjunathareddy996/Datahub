@@ -18,7 +18,7 @@
 --   vat                                      1 attribute(s)
 
     select
-        nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
+        nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
         'GST' as TAX_TYPE,
         cgst_amount as CGST_AMOUNT,
         cast(null as varchar) as CGST_RATE,
@@ -38,7 +38,7 @@
     where cgst_amount is not null or gst_percentage is not null or igst_amount is not null or payment_state is not null or sgst_amount is not null or tax_invoice_date is not null or tax_invoice_number is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
+        nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
         'TDS' as TAX_TYPE,
         cast(null as varchar) as CGST_AMOUNT,
         cast(null as varchar) as CGST_RATE,
@@ -58,7 +58,7 @@ union all
     where tds_amount is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
+        nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
         'TDS_ON_INTEREST' as TAX_TYPE,
         cast(null as varchar) as CGST_AMOUNT,
         cast(null as varchar) as CGST_RATE,
@@ -78,7 +78,7 @@ union all
     where tds_on_interest is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
+        nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'') as FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT,
         'VAT' as TAX_TYPE,
         cast(null as varchar) as CGST_AMOUNT,
         cast(null as varchar) as CGST_RATE,

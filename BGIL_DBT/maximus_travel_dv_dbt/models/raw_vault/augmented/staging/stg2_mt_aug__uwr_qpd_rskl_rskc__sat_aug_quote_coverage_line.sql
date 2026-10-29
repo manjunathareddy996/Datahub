@@ -50,8 +50,8 @@ hashed_columns:
       - 'TRAVEL_INCONVENIENCE_SUB_COVER_VALUE'
       - 'TRIP_CANCELLATION_SUB_COVER_VALUE'
 derived_columns:
-  QUOTE_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
-  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
+  QUOTE_BK: "nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
+  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
   ACE_VARIANT_DEDUCTIBLE_AMOUNT: 'cast(null as varchar)'
   AMBULANCE_SUB_COVER_VALUE: 'cast(null as varchar)'
   COMMON_CARRIER_TYPE: 'cast(null as varchar)'

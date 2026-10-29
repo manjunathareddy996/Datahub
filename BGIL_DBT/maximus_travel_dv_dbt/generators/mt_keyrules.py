@@ -958,7 +958,12 @@ def render_key(expression, view, where, kind="hub", alias_of_walk=None):
         PARSE_STATS["child_leg_rendered"] += 1
         return RenderedKey(assert_no_prose(sql, where), walks, guarded, None, shape, columns)
 
-    guard = "coalesce(%s) is not null" % ", ".join(guarded)
+    # Snowflake rejects COALESCE() with a single argument, so the guard degenerates
+    # to a plain IS NOT NULL whenever only one operand survived guarding (BUILD_RULES 2).
+    if len(guarded) == 1:
+        guard = "%s is not null" % guarded[0]
+    else:
+        guard = "coalesce(%s) is not null" % ", ".join(guarded)
     sql = "nullif(trim(case when %s then %s end),'')" % (guard, body)
     degenerate = None
     if DEGENERATE_OUTER_NULLIF and isinstance(static, str) and static != "":

@@ -32,8 +32,8 @@ hashed_columns:
       - 'TRIP_DESTINATION_COUNTRY'
       - 'WEATHER_CONDITION_AT_INCIDENT'
 derived_columns:
-  CLAIM_BK: "nullif(trim(case when coalesce(nullif(trim(claimno),'')) is not null then nullif(trim(claimno), '') end),'')"
-  CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(claimno),'')) is not null then nullif(trim(claimno), '') end),''))"
+  CLAIM_BK: "nullif(trim(case when nullif(trim(claimno),'') is not null then nullif(trim(claimno), '') end),'')"
+  CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when nullif(trim(claimno),'') is not null then nullif(trim(claimno), '') end),''))"
   ACCIDENTAL_INDICATOR: 'cast(null as varchar)'
   AFFECTED_ITEMS_DESCRIPTION: 'cast(null as varchar)'
   BAGGAGE_DELIVERY_DATE: 'cast(null as varchar)'

@@ -99,10 +99,10 @@ hashed_columns:
 derived_columns:
   CLAIM_BK: "nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),'')"
   CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),''))"
-  FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT: "nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')"
-  FINANCIAL_TRANSACTION_NK__CLAIM_PAYMENT: "'HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),''))"
-  PAYMENT_INSTRUMENT_BK__PAYEE_BANK_ACCOUNT: "nullif(trim(case when coalesce(nullif(trim(account_number),'')) is not null then 'ACCT:' || nullif(trim(account_number), '') end),'')"
-  PAYMENT_INSTRUMENT_NK__PAYEE_BANK_ACCOUNT: "'HUB_PAYMENT_INSTRUMENT|' || (nullif(trim(case when coalesce(nullif(trim(account_number),'')) is not null then 'ACCT:' || nullif(trim(account_number), '') end),''))"
+  FINANCIAL_TRANSACTION_BK__CLAIM_PAYMENT: "nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')"
+  FINANCIAL_TRANSACTION_NK__CLAIM_PAYMENT: "'HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),''))"
+  PAYMENT_INSTRUMENT_BK__PAYEE_BANK_ACCOUNT: "nullif(trim(case when nullif(trim(account_number),'') is not null then 'ACCT:' || nullif(trim(account_number), '') end),'')"
+  PAYMENT_INSTRUMENT_NK__PAYEE_BANK_ACCOUNT: "'HUB_PAYMENT_INSTRUMENT|' || (nullif(trim(case when nullif(trim(account_number),'') is not null then 'ACCT:' || nullif(trim(account_number), '') end),''))"
   ACCOUNT_TYPE: 'account_type'
   APPROVAL_REFERENCE: 'cast(null as varchar)'
   APPROVED_AMOUNT: 'cast(null as varchar)'

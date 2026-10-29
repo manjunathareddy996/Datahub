@@ -23,8 +23,8 @@ hashed_columns:
       - 'TDS_CODE_DESCRIPTION'
       - 'TDS_DETAILS_DESCRIPTION'
 derived_columns:
-  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   FLOAT_ACCOUNT_ACCESS_INDICATOR: 'cast(null as varchar)'
   LOWER_TDS_CERTIFICATE_REFERENCE: 'cast(null as varchar)'
   REWARD_ELIGIBLE_INDICATOR: 'cast(null as varchar)'

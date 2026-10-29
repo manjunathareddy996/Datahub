@@ -16,7 +16,7 @@
 --   1                                        0 attribute(s)
 
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__PROPOSER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__PROPOSER,
         'INTERMEDIARY' as ROLE_CODE,
         '1' as ROLE_SEQUENCE,
         intermediary_type as ROLE_TYPE,
@@ -25,7 +25,7 @@
     where intermediary_type is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__PROPOSER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__PROPOSER,
         coalesce(nullif(trim(party_function), ''),'') as ROLE_CODE,
         '1' as ROLE_SEQUENCE,
         cast(null as varchar) as ROLE_TYPE,

@@ -81,8 +81,8 @@ hashed_columns:
       - 'TRANSIT_JOURNEY_COVER'
       - 'UNDERWRITING_REFERRAL_REQUIRED_INDICATOR'
 derived_columns:
-  QUOTE_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
-  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
+  QUOTE_BK: "nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
+  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
   ACTION_REASON_TEXT: 'cast(null as varchar)'
   BANCASSURANCE_SOURCED_INDICATOR: 'cast(null as varchar)'
   BILLING_STAKE_CODE: 'cast(null as varchar)'

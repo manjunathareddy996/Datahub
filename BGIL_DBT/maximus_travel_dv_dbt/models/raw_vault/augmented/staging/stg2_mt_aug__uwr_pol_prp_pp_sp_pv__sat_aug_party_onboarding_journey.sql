@@ -31,8 +31,8 @@ hashed_columns:
       - 'RESIGNATION_ACCEPTANCE_DATE'
       - 'RESIGNATION_SUBMISSION_DATE'
 derived_columns:
-  PARTY_BK__PROPOSER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__PROPOSER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   APPLICATION_REJECTION_REASON: 'rejected_reason'
   APPOINTMENT_CATEGORY: 'category_of_appointment'
   APPOINTMENT_ISSUE_DATE: 'date_of_issue_of_appointment'

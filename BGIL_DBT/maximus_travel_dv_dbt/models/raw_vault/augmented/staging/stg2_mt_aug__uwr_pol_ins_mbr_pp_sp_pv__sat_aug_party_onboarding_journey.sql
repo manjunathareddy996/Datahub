@@ -31,8 +31,8 @@ hashed_columns:
       - 'RESIGNATION_ACCEPTANCE_DATE'
       - 'RESIGNATION_SUBMISSION_DATE'
 derived_columns:
-  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   APPLICATION_REJECTION_REASON: 'rejected_reason'
   APPOINTMENT_CATEGORY: 'cast(null as varchar)'
   APPOINTMENT_ISSUE_DATE: 'cast(null as varchar)'

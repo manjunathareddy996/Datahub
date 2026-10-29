@@ -20,8 +20,8 @@ hashed_columns:
       - 'CLAIMS_PAID_AMOUNT'
       - 'CLAIM_EXPENSES_AMOUNT'
 derived_columns:
-  QUOTE_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
-  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
+  QUOTE_BK: "nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
+  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
   CLAIMS_OUTSTANDING_AMOUNT: 'claim_outstanding'
   CLAIMS_PAID_AMOUNT: 'claims_paid'
   CLAIM_EXPENSES_AMOUNT: 'claim_expenses'

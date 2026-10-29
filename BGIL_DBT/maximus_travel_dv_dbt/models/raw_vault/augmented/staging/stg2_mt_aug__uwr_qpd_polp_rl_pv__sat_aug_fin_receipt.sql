@@ -19,8 +19,8 @@ hashed_columns:
       - 'COLLECTION_DATE'
       - 'PORTAL_PAYMENT_MODE_CODE'
 derived_columns:
-  FINANCIAL_TRANSACTION_BK__QUOTE_PREMIUM: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),'')"
-  FINANCIAL_TRANSACTION_NK__QUOTE_PREMIUM: "'HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),''))"
+  FINANCIAL_TRANSACTION_BK__QUOTE_PREMIUM: "nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),'')"
+  FINANCIAL_TRANSACTION_NK__QUOTE_PREMIUM: "'HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),''))"
   COLLECTION_DATE: 'cast(null as varchar)'
   PORTAL_PAYMENT_MODE_CODE: 'portal_payment_mode'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW'

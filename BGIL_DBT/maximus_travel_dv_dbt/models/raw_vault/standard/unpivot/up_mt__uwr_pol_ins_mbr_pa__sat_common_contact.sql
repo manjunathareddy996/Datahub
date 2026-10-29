@@ -21,7 +21,7 @@
 --   mobile_1                                 1 attribute(s)
 
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'EMAIL' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,
@@ -38,7 +38,7 @@
     where email_id is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'EMAIL_ALTERNATE' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         alternate_email_id as ALTERNATE_EMAIL_ADDRESS,
@@ -55,7 +55,7 @@ union all
     where alternate_email_id is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'FAX' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,
@@ -72,7 +72,7 @@ union all
     where fax is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'LANDLINE' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,
@@ -89,7 +89,7 @@ union all
     where landline_no is not null or std_code is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'LANDLINE_PHONE' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,
@@ -106,7 +106,7 @@ union all
     where phone_no is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'LANDLINE_WORK' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,
@@ -123,7 +123,7 @@ union all
     where work_no is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'MOBILE' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,

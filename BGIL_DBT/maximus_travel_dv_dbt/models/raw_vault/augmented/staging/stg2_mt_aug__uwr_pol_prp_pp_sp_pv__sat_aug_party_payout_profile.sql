@@ -23,8 +23,8 @@ hashed_columns:
       - 'TDS_CODE_DESCRIPTION'
       - 'TDS_DETAILS_DESCRIPTION'
 derived_columns:
-  PARTY_BK__PROPOSER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__PROPOSER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   FLOAT_ACCOUNT_ACCESS_INDICATOR: 'agent_float_access'
   LOWER_TDS_CERTIFICATE_REFERENCE: 'lower_tds_certificate'
   REWARD_ELIGIBLE_INDICATOR: 'applicable_for_reward'

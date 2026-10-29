@@ -22,8 +22,8 @@ hashed_columns:
       - 'RECORD_LAST_MODIFIED_DATE'
       - 'SOURCE_REFERENCE_CODE'
 derived_columns:
-  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when coalesce(nullif(trim(party_code),'')) is not null then nullif(trim(party_code), '') end),'')"
-  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(party_code),'')) is not null then nullif(trim(party_code), '') end),''))"
+  PARTY_BK__INSURED_MEMBER: "nullif(trim(case when nullif(trim(party_code),'') is not null then nullif(trim(party_code), '') end),'')"
+  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(party_code),'') is not null then nullif(trim(party_code), '') end),''))"
   CREATED_BY_USER_REFERENCE: 'created_by'
   GUARDIAN_NAME: 'cast(null as varchar)'
   PARTY_COUNTRY: 'cast(null as varchar)'

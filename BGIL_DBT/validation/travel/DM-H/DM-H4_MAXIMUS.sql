@@ -4811,7 +4811,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CATEGORY")), ''))) as CATEGORY_CODE,
                to_varchar((nullif(trim(to_varchar("PROFILE")), ''))) as SEGMENT_NAME,
@@ -4863,7 +4863,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CATEGORY")), ''))) as CATEGORY_CODE,
                to_varchar((nullif(trim(to_varchar("PROFILE")), ''))) as SEGMENT_NAME
@@ -4955,7 +4955,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ISSUE_ALL_POLICIES_IN_ELECTRONIC_FORMAT")), ''))) as GO_GREEN_OPT_IN_INDICATOR,
                to_varchar((nullif(trim(to_varchar("PREFERRED_MODE_OF_COMMUNICATION")), ''))) as PREFERRED_CHANNEL_CODE,
@@ -5000,7 +5000,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_polp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w3_policy_holder_code),'')) is not null then nullif(trim(w3_policy_holder_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w3_policy_holder_code),'') is not null then nullif(trim(w3_policy_holder_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SMS_COMMUNICATION")), ''))) as SMS_OPT_IN_INDICATOR
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -5035,7 +5035,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ISSUE_ALL_POLICIES_IN_ELECTRONIC_FORMAT")), ''))) as GO_GREEN_OPT_IN_INDICATOR,
                to_varchar((nullif(trim(to_varchar("PREFERRED_MODE_OF_COMMUNICATION")), ''))) as PREFERRED_CHANNEL_CODE,
@@ -5080,7 +5080,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w2_policy_holder_code),'')) is not null then nullif(trim(w2_policy_holder_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w2_policy_holder_code),'') is not null then nullif(trim(w2_policy_holder_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SMS_COMMUNICATION")), ''))) as SMS_OPT_IN_INDICATOR
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
@@ -5207,7 +5207,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_CONSENT")), ''))) as CONSENT_GIVEN_INDICATOR,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_CONSENT_FOR_DATA_SHARING")), ''))) as DATA_SHARING_CONSENT_INDICATOR
@@ -5246,7 +5246,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_CONSENT")), ''))) as CONSENT_GIVEN_INDICATOR
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -5593,7 +5593,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_pol_ins_mbr_pa__sat_common_contact#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('EMAIL') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5607,7 +5607,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("EMAIL_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa__sat_common_contact#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('EMAIL_ALTERNATE') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5621,7 +5621,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ALTERNATE_EMAIL_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa__sat_common_contact#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('FAX') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5635,7 +5635,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("FAX")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa__sat_common_contact#4
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('LANDLINE') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5649,7 +5649,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("LANDLINE_NO")), '')) is not null or (nullif(trim(to_varchar("STD_CODE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa__sat_common_contact#5
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('LANDLINE_PHONE') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5663,7 +5663,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("PHONE_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa__sat_common_contact#6
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('LANDLINE_WORK') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5677,7 +5677,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("WORK_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa__sat_common_contact#7
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5747,7 +5747,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_pol_ins_mbr_pa_address_prop_pv__sat_common_contact#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE_ALTERNATE') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5758,7 +5758,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ALTERNATE_MOB_NUMBERLANDLINE_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa_address_prop_pv__sat_common_contact#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE_WHATSAPP') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5769,7 +5769,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("WHATSAPP_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa_address_prop_pv__sat_common_contact#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SOCIAL_FACEBOOK') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5780,7 +5780,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("FACEBOOK_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa_address_prop_pv__sat_common_contact#4
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SOCIAL_INSTAGRAM') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5791,7 +5791,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("INSTAGRAM_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa_address_prop_pv__sat_common_contact#5
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SOCIAL_LINKEDIN') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5802,7 +5802,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("LINKED_IN_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa_address_prop_pv__sat_common_contact#6
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SOCIAL_TWITTER') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5852,7 +5852,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_common_contact#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE_CLAIM') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5861,7 +5861,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CLAIM_MOBILE_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_common_contact#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE_KYC') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5904,7 +5904,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_pol_prp_pa__sat_common_contact#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('EMAIL') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5918,7 +5918,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("EMAIL_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa__sat_common_contact#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('EMAIL_ALTERNATE') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5932,7 +5932,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ALTERNATE_EMAIL_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa__sat_common_contact#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('FAX') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5946,7 +5946,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("FAX")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa__sat_common_contact#4
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('LANDLINE') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5960,7 +5960,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("LANDLINE_NO")), '')) is not null or (nullif(trim(to_varchar("STD_CODE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa__sat_common_contact#5
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('LANDLINE_PHONE') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5974,7 +5974,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("PHONE_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa__sat_common_contact#6
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('LANDLINE_WORK') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5988,7 +5988,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("WORK_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa__sat_common_contact#7
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -6058,7 +6058,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_pol_prp_pa_address_prop_pv__sat_common_contact#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE_ALTERNATE') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -6069,7 +6069,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ALTERNATE_MOB_NUMBERLANDLINE_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa_address_prop_pv__sat_common_contact#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE_WHATSAPP') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -6080,7 +6080,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("WHATSAPP_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa_address_prop_pv__sat_common_contact#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SOCIAL_FACEBOOK') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -6091,7 +6091,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("FACEBOOK_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa_address_prop_pv__sat_common_contact#4
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SOCIAL_INSTAGRAM') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -6102,7 +6102,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("INSTAGRAM_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa_address_prop_pv__sat_common_contact#5
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SOCIAL_LINKEDIN') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -6113,7 +6113,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("LINKED_IN_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa_address_prop_pv__sat_common_contact#6
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SOCIAL_TWITTER') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -6164,7 +6164,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_common_contact#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE_ALTERNATE') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -6174,7 +6174,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ALTERNATE_MOB_NUMBERLANDLINE_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_common_contact#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE_CLAIM') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -6184,7 +6184,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CLAIM_MOBILE_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_common_contact#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE_KYC') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -6677,7 +6677,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("POLICY_LEVEL_BASE_CURRENCY")), ''))) as BASE_CURRENCY_CODE,
                to_varchar((nullif(trim(to_varchar("POLICY_LEVEL_TRANSACTION_CURRENCY")), ''))) as CURRENCY_CODE,
@@ -6880,7 +6880,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_cov_covp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(w2_cover_code),'')) is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w2_cover_code),'') is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUB_CONDITION1")), ''))) as CONDITION_DESCRIPTION
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -6946,7 +6946,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskc_rskc_prop_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(w2_cover_code),'')) is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w2_cover_code),'') is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUB_CONDITION1")), ''))) as CONDITION_DESCRIPTION
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
@@ -7109,7 +7109,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_cov_covp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(w2_cover_code),'')) is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w2_cover_code),'') is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_DESCRIPTION")), ''))) as COVERAGE_DESCRIPTION
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -7182,7 +7182,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskc_rskc_prop_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(w2_cover_code),'')) is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w2_cover_code),'') is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_DESCRIPTION")), ''))) as COVERAGE_DESCRIPTION
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
@@ -7327,7 +7327,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_cov_covp_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(w0_cover_code),'')) is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w0_cover_code),'') is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("SUBLIMIT_NAME")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ITEMS_COVERED")), ''))) as ITEM_DESCRIPTION,
@@ -8045,7 +8045,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmpay_payp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CLAIM_PAYMENT_VOUCHER")), ''))) as VOUCHER_NUMBER
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
@@ -8108,7 +8108,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmpay_payp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CHEQUE_DATE")), ''))) as CHEQUE_DATE,
                to_varchar((nullif(trim(to_varchar("CHEQUE_NUMBER")), ''))) as CHEQUE_NUMBER,
@@ -8214,7 +8214,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmpay_payp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("REFERENCE_ID")), ''))) as SOURCE_REFERENCE_NUMBER,
                to_varchar((nullif(trim(to_varchar("REFERENCE_TYPE")), ''))) as SOURCE_REFERENCE_TYPE,
@@ -8345,7 +8345,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TRANSACTION_ID")), ''))) as TRANSACTION_NUMBER
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
@@ -8503,7 +8503,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MODE_OF_PAYMENT")), ''))) as COLLECTION_MODE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
@@ -8594,7 +8594,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__clm_clmd_clmpay_payp_pv__sat_fintxn_tax#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('GST') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("CGST_AMOUNT")), '')))) as CGST_AMOUNT,
@@ -8610,7 +8610,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CGST_AMOUNT")), '')) is not null or (nullif(trim(to_varchar("GST_PERCENTAGE")), '')) is not null or (nullif(trim(to_varchar("IGST_AMOUNT")), '')) is not null or (nullif(trim(to_varchar("PAYMENT_STATE")), '')) is not null or (nullif(trim(to_varchar("SGST_AMOUNT")), '')) is not null or (nullif(trim(to_varchar("TAX_INVOICE_DATE")), '')) is not null or (nullif(trim(to_varchar("TAX_INVOICE_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmpay_payp_pv__sat_fintxn_tax#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('TDS') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as CGST_AMOUNT,
@@ -8626,7 +8626,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("TDS_AMOUNT")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmpay_payp_pv__sat_fintxn_tax#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('TDS_ON_INTEREST') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as CGST_AMOUNT,
@@ -8642,7 +8642,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("TDS_ON_INTEREST")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmpay_payp_pv__sat_fintxn_tax#4
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('VAT') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as CGST_AMOUNT,
@@ -8980,7 +8980,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PGTRANSACTION_ID")), ''))) as PAYMENT_GATEWAY_REFERENCE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
@@ -9186,7 +9186,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_FUNCTION")), ''))), ''),'')) as cdk_1,
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
@@ -9223,7 +9223,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_lnk_party_role_core#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('INTERMEDIARY') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -9232,7 +9232,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("INTERMEDIARY_TYPE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_lnk_party_role_core#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar((coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_FUNCTION")), ''))), ''),''))) as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -9312,7 +9312,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_policy_number),'')) is not null then nullif(trim(w0_policy_number), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when nullif(trim(w0_policy_number),'') is not null then nullif(trim(w0_policy_number), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('INSURED_MEMBER') as cdk_1,
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
@@ -9355,7 +9355,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_party_relation
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim("FOREIGN_KEY"),'')) is not null then nullif(trim("FOREIGN_KEY"), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim("FOREIGN_KEY"),'')) is not null then nullif(trim("FOREIGN_KEY"), '') end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("STAKE_NAME")), ''))), ''),'')) as cdk_1,
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
@@ -9430,7 +9430,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_policy_number),'')) is not null then nullif(trim(w0_policy_number), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when nullif(trim(w0_policy_number),'') is not null then nullif(trim(w0_policy_number), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('PROPOSER') as cdk_1,
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
@@ -9473,7 +9473,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_party_relation
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim("FOREIGN_KEY"),'')) is not null then nullif(trim("FOREIGN_KEY"), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim("FOREIGN_KEY"),'')) is not null then nullif(trim("FOREIGN_KEY"), '') end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("STAKE_NAME")), ''))), ''),'')) as cdk_1,
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
@@ -9583,7 +9583,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("IRDA_CODE")), ''))) as AGENT_CODE,
                to_varchar((nullif(trim(to_varchar("LICENSE_NUMBER")), ''))) as IRDAI_AGENT_LICENCE_NUMBER,
@@ -9691,7 +9691,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_polp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w3_policy_holder_code),'')) is not null then nullif(trim(w3_policy_holder_code), '') end),''),'') || '|' || coalesce('CUSTOMER','')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when nullif(trim(w3_policy_holder_code),'') is not null then nullif(trim(w3_policy_holder_code), '') end),''),'') || '|' || coalesce('CUSTOMER','')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PRIVE_FLAG")), ''))) as PREFERRED_CUSTOMER_INDICATOR
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -9725,7 +9725,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_CONSENT_FOR_DATA_SHARING")), ''))) as CONSENT_FOR_DATA_SHARING_INDICATOR,
                to_varchar((nullif(trim(to_varchar("PRIVE_FLAG")), ''))) as VIP_INDICATOR
@@ -9764,7 +9764,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w2_policy_holder_code),'')) is not null then nullif(trim(w2_policy_holder_code), '') end),''),'') || '|' || coalesce('CUSTOMER','')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when nullif(trim(w2_policy_holder_code),'') is not null then nullif(trim(w2_policy_holder_code), '') end),''),'') || '|' || coalesce('CUSTOMER','')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PRIVE_FLAG")), ''))) as PREFERRED_CUSTOMER_INDICATOR
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
@@ -9848,7 +9848,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''),'') || '|' || coalesce(coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_FUNCTION")), ''))), ''),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'') || '|' || coalesce(coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_FUNCTION")), ''))), ''),''),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("STAFF_NUMBER")), ''))) as EMPLOYEE_CODE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -9914,7 +9914,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("STAFF_NUMBER")), ''))) as EMPLOYEE_CODE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -10597,7 +10597,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("AML_VERIFICATION_STATUS")), '')), (nullif(trim(to_varchar("CLAIM_AML_VERIFICATION_STATUS")), '')))) as SCREENING_STATUS
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -10630,7 +10630,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("AML_VERIFICATION_STATUS")), '')), (nullif(trim(to_varchar("CLAIM_AML_VERIFICATION_STATUS")), '')))) as SCREENING_STATUS
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -10780,7 +10780,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("BANK_ACCOUNT_NUMBER")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NAME_AS_PER_BANK_AC")), ''))) as ACCOUNT_HOLDER_NAME,
@@ -10857,7 +10857,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("BANK_ACCOUNT_NUMBER")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NAME_AS_PER_BANK_AC")), ''))) as ACCOUNT_HOLDER_NAME,
@@ -11041,7 +11041,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_LOCATION|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_1")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_2")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_3")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_CITY_TOWN_VILLAGE")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_STATE")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_COUNTRY")), ''))),''), nullif(trim((nullif(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE")), ''))),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_1")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_2")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_3")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_CITY_TOWN_VILLAGE")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_STATE")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_COUNTRY")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE")), ''))), ''), '')), '|||||||')), '[[:space:]]+', ' '))) end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_LOCATION|' || (coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_1")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_2")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_3")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_CITY_TOWN_VILLAGE")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_STATE")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_COUNTRY")), ''))),''), nullif(trim((nullif(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE")), ''))),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_1")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_2")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_3")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_CITY_TOWN_VILLAGE")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_STATE")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_COUNTRY")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE")), ''))), ''), '')), '|||||||')), '[[:space:]]+', ' '))) end),''),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_TYPE")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ADDRESS_PROOF")), ''))) as ADDRESS_PROOF_TYPE
@@ -11076,7 +11076,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_LOCATION|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_1")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_2")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_3")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_CITY_TOWN_VILLAGE")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_STATE")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_COUNTRY")), ''))),''), nullif(trim((nullif(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE")), ''))),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_1")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_2")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_3")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_CITY_TOWN_VILLAGE")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_STATE")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_COUNTRY")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE")), ''))), ''), '')), '|||||||')), '[[:space:]]+', ' '))) end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_LOCATION|' || (coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_1")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_2")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_3")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_CITY_TOWN_VILLAGE")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_STATE")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_COUNTRY")), ''))),''), nullif(trim((nullif(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE")), ''))),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_1")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_2")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_3")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_CITY_TOWN_VILLAGE")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_STATE")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_COUNTRY")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE")), ''))), ''), '')), '|||||||')), '[[:space:]]+', ' '))) end),''),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_TYPE")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ADDRESS_PROOF")), ''))) as ADDRESS_PROOF_TYPE
@@ -11184,7 +11184,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EMPLOYER_NAME")), ''))) as EMPLOYER_NAME,
                to_varchar((nullif(trim(to_varchar("OCCUPATION")), ''))) as OCCUPATION_DESCRIPTION,
@@ -11265,7 +11265,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EMPLOYER_NAME")), ''))) as EMPLOYER_NAME,
                to_varchar((nullif(trim(to_varchar("OCCUPATION_LIST")), ''))) as OCCUPATION_CODE,
@@ -11407,7 +11407,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("INCOME_SOURCE")), ''))) as INCOME_SOURCE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -11479,7 +11479,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DATE_OF_BLACKLISTING")), ''))) as NEGATIVE_LIST_DATE,
                to_varchar((nullif(trim(to_varchar("BLACKLISTED")), ''))) as NEGATIVE_LIST_INDICATOR,
@@ -11533,7 +11533,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DATE_OF_BLACKLISTING")), ''))) as NEGATIVE_LIST_DATE,
                to_varchar((nullif(trim(to_varchar("BLACKLISTED")), ''))) as NEGATIVE_LIST_INDICATOR,
@@ -11625,7 +11625,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MEDICINE_NAME")), ''))) as CURRENT_MEDICATION_DETAIL,
                to_varchar((nullif(trim(to_varchar("PHYSICALLY_CHALLENGED")), ''))) as DISABILITY_INDICATOR,
@@ -11693,7 +11693,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MEDICINE_NAME")), ''))) as CURRENT_MEDICATION_DETAIL,
                to_varchar((nullif(trim(to_varchar("PHYSICALLY_CHALLENGED")), ''))) as DISABILITY_INDICATOR,
@@ -12087,7 +12087,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('PASSPORT') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PASSPORT_ISSUE_DATE")), ''))) as IDENTIFICATION_ISSUE_DATE,
@@ -12156,7 +12156,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar((coalesce(nullif(trim((nullif(trim(to_varchar("IDENTIFICATION_PROOF")), ''))), ''),''))) as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("IDENTIFICATION_PROOF_EFFECTIVE_DATE")), '')))) as IDENTIFICATION_ISSUE_DATE,
@@ -12186,7 +12186,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ID_NUMBER")), '')) is not null or (nullif(trim(to_varchar("IDENTIFICATION_PROOF_EFFECTIVE_DATE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('AADHAAR') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12216,7 +12216,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("AADHAAR_NUMBER")), '')) is not null or (nullif(trim(to_varchar("POA_AADHAR_CARD_STATUS")), '')) is not null or (nullif(trim(to_varchar("UID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('AADHAAR_ENROLMENT') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12246,7 +12246,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("AADHAAR_ENROLLMENT_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#4
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('AADHAAR_VID') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12276,7 +12276,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("VID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#5
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('ABHA') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12306,7 +12306,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ABHA_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#6
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('AGE_PROOF') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12336,7 +12336,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("DOB_PROOF")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#7
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('CIN') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12366,7 +12366,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CIN_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#8
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('CKYC') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12396,7 +12396,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CKYC_NUMBER")), '')) is not null or (nullif(trim(to_varchar("CLAIM_CKYC_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#9
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('DRIVING_LICENCE') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("DRIVING_LICENSE_ISSUE_DATE")), '')))) as IDENTIFICATION_ISSUE_DATE,
@@ -12426,7 +12426,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("DRIVING_LICENSE_EXPIRY_DATE")), '')) is not null or (nullif(trim(to_varchar("DRIVING_LICENSE_ISSUE_DATE")), '')) is not null or (nullif(trim(to_varchar("DRIVING_LICENSE_NUMBER")), '')) is not null or (nullif(trim(to_varchar("DRIVING_LICENSE_PLACE_OF_ISSUE")), '')) is not null or (nullif(trim(to_varchar("POA_DRIVING_LICENSE_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#10
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('EIA') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12456,7 +12456,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("E_INSURANCE_DEMAT_ACCOUNT_VERIFIED")), '')) is not null or (nullif(trim(to_varchar("EIA_NUMBER")), '')) is not null or (nullif(trim(to_varchar("INSURANCE_REPOSITORY_CODE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#11
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('FORM_60') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12486,7 +12486,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("POI_FORM_60_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#12
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('GENERIC_DECLARED_ID') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12516,7 +12516,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("EXPIRY_DATE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#13
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('GSTIN') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("GSTIN_ISSUANCE_DT")), '')))) as IDENTIFICATION_ISSUE_DATE,
@@ -12546,7 +12546,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("GSTIN_ISSUANCE_DT")), '')) is not null or (nullif(trim(to_varchar("GSTINUIN")), '')) is not null or (nullif(trim(to_varchar("GSTN_NUMBER")), '')) is not null or (nullif(trim(to_varchar("GSTN_REGN_STATUS")), '')) is not null or (nullif(trim(to_varchar("GSTN_STATUS")), '')) is not null or (nullif(trim(to_varchar("GSTN_TAXPAYER_TYPE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#14
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('NREGA_JOB_CARD') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12576,7 +12576,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("NREGA_JOB_CARD")), '')) is not null or (nullif(trim(to_varchar("POA_NREGA_JOB_CARD_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#15
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PAN') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12606,7 +12606,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("PAN_NUMBER")), '')) is not null or (nullif(trim(to_varchar("POI_PAN_CARD_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#16
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PASSPORT') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12636,7 +12636,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("POA_PASSPORT_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#17
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PROOF_OF_ADDRESS') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12666,7 +12666,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("POA_DOCUMENT_STATUS")), '')) is not null or (nullif(trim(to_varchar("PROOF_OF_ADDRESS_SUBMITTED_FOR_CURRENT_PERMANENT_OVERSEAS_ADDRESS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#18
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PROOF_OF_IDENTITY') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12696,7 +12696,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("POI_DOCUMENT_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#19
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SEZ_REGISTRATION') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("SEZ_REGISTRATION_DATE")), '')))) as IDENTIFICATION_ISSUE_DATE,
@@ -12726,7 +12726,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("SEZ_REGISTRATION_DATE")), '')) is not null or (nullif(trim(to_varchar("SEZ_REGISTRATION_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#20
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('TAN') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12756,7 +12756,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("TAN_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#21
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('VOTER_ID') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -12926,7 +12926,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('PASSPORT') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PASSPORT_ISSUE_DATE")), ''))) as IDENTIFICATION_ISSUE_DATE,
@@ -12995,7 +12995,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar((coalesce(nullif(trim((nullif(trim(to_varchar("IDENTIFICATION_PROOF")), ''))), ''),''))) as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("IDENTIFICATION_PROOF_EFFECTIVE_DATE")), '')))) as IDENTIFICATION_ISSUE_DATE,
@@ -13025,7 +13025,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ID_NUMBER")), '')) is not null or (nullif(trim(to_varchar("ID_PROOF")), '')) is not null or (nullif(trim(to_varchar("IDENTIFICATION_PROOF")), '')) is not null or (nullif(trim(to_varchar("IDENTIFICATION_PROOF_EFFECTIVE_DATE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('AADHAAR') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13055,7 +13055,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("AADHAAR_NUMBER")), '')) is not null or (nullif(trim(to_varchar("AADHAR_NO")), '')) is not null or (nullif(trim(to_varchar("POA_AADHAR_CARD_STATUS")), '')) is not null or (nullif(trim(to_varchar("UID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('AADHAAR_ENROLMENT') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13085,7 +13085,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("AADHAAR_ENROLLMENT_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#4
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('AADHAAR_VID') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13115,7 +13115,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("VID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#5
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('ABHA') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13145,7 +13145,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ABHA_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#6
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('AGE_PROOF') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13175,7 +13175,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("DOB_PROOF")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#7
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('CIN') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13205,7 +13205,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CIN_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#8
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('CKYC') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13235,7 +13235,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CKYC_NUMBER")), '')) is not null or (nullif(trim(to_varchar("CLAIM_CKYC_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#9
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('DRIVING_LICENCE') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("DRIVING_LICENSE_ISSUE_DATE")), '')))) as IDENTIFICATION_ISSUE_DATE,
@@ -13265,7 +13265,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("DRIVING_LICENSE_EXPIRY_DATE")), '')) is not null or (nullif(trim(to_varchar("DRIVING_LICENSE_ISSUE_DATE")), '')) is not null or (nullif(trim(to_varchar("DRIVING_LICENSE_NUMBER")), '')) is not null or (nullif(trim(to_varchar("DRIVING_LICENSE_PLACE_OF_ISSUE")), '')) is not null or (nullif(trim(to_varchar("POA_DRIVING_LICENSE_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#10
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('EIA') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13295,7 +13295,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("E_INSURANCE_DEMAT_ACCOUNT_VERIFIED")), '')) is not null or (nullif(trim(to_varchar("EIA_NUMBER")), '')) is not null or (nullif(trim(to_varchar("INSURANCE_REPOSITORY_CODE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#11
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('FORM_60') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13325,7 +13325,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("POI_FORM_60_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#12
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('GENERIC_DECLARED_ID') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13355,7 +13355,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("EXPIRY_DATE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#13
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('GSTIN') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("GSTIN_ISSUANCE_DT")), '')))) as IDENTIFICATION_ISSUE_DATE,
@@ -13385,7 +13385,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("GSTIN_ISSUANCE_DT")), '')) is not null or (nullif(trim(to_varchar("GSTINUIN")), '')) is not null or (nullif(trim(to_varchar("GSTN_NUMBER")), '')) is not null or (nullif(trim(to_varchar("GSTN_REGN_STATUS")), '')) is not null or (nullif(trim(to_varchar("GSTN_STATUS")), '')) is not null or (nullif(trim(to_varchar("GSTN_TAXPAYER_TYPE")), '')) is not null or (nullif(trim(to_varchar("TAXPAYER_TYPE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#14
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('NREGA_JOB_CARD') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13415,7 +13415,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("NREGA_JOB_CARD")), '')) is not null or (nullif(trim(to_varchar("POA_NREGA_JOB_CARD_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#15
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PAN') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13445,7 +13445,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("PAN_NO")), '')) is not null or (nullif(trim(to_varchar("PAN_NUMBER")), '')) is not null or (nullif(trim(to_varchar("POI_PAN_CARD_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#16
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PASSPORT') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13475,7 +13475,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("POA_PASSPORT_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#17
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PROOF_OF_ADDRESS') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13505,7 +13505,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("POA_DOCUMENT_STATUS")), '')) is not null or (nullif(trim(to_varchar("PROOF_OF_ADDRESS_SUBMITTED_FOR_CURRENT_PERMANENT_OVERSEAS_ADDRESS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#18
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PROOF_OF_IDENTITY') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13535,7 +13535,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("POI_DOCUMENT_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#19
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SEPZ_REGISTRATION') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("SEPZ_REGISTRATION_DATE")), '')))) as IDENTIFICATION_ISSUE_DATE,
@@ -13565,7 +13565,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("SEPZ_REGISTRATION_DATE")), '')) is not null or (nullif(trim(to_varchar("SEPZ_REGISTRATION_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#20
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SERVICE_TAX_REGISTRATION') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13595,7 +13595,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("SERVICE_TAX")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#21
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SEZ_REGISTRATION') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("SEZ_REGISTRATION_DATE")), '')))) as IDENTIFICATION_ISSUE_DATE,
@@ -13625,7 +13625,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("SEZ_EXPIRY_DATE")), '')) is not null or (nullif(trim(to_varchar("SEZ_REGISTRATION_DATE")), '')) is not null or (nullif(trim(to_varchar("SEZ_REGISTRATION_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#22
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('TAN') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -13655,7 +13655,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("TAN_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#23
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('VOTER_ID') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as IDENTIFICATION_ISSUE_DATE,
@@ -14258,7 +14258,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("AGE")), ''))) as AGE,
                to_varchar((nullif(trim(to_varchar("COUNTRY_OF_BIRTH")), ''))) as COUNTRY_OF_BIRTH,
@@ -14360,7 +14360,7 @@ e9 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_rskp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w2_policy_holder_code),'')) is not null then nullif(trim(w2_policy_holder_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w2_policy_holder_code),'') is not null then nullif(trim(w2_policy_holder_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_CLIENT")), ''))) as PARTY_TYPE_CODE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -14531,7 +14531,7 @@ e12 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("AGE")), ''))) as AGE,
                to_varchar((nullif(trim(to_varchar("COUNTRY_OF_BIRTH")), ''))) as COUNTRY_OF_BIRTH,
@@ -14651,7 +14651,7 @@ e14 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w2_policy_holder_code),'')) is not null then nullif(trim(w2_policy_holder_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w2_policy_holder_code),'') is not null then nullif(trim(w2_policy_holder_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_CLIENT")), ''))) as PARTY_TYPE_CODE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
@@ -14855,7 +14855,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EDUCATION")), ''))) as EDUCATIONAL_QUALIFICATION,
                to_varchar((nullif(trim(to_varchar("FATHER_NAME")), ''))) as FATHER_NAME,
@@ -14911,7 +14911,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("EDUCATION")), '')), (nullif(trim(to_varchar("EDUCATIONAL_QUALIFICATION")), '')))) as EDUCATIONAL_QUALIFICATION,
                to_varchar((nullif(trim(to_varchar("FATHER_NAME")), ''))) as FATHER_NAME,
@@ -15016,7 +15016,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("CKYC_DETAILS")), '')), (nullif(trim(to_varchar("CLAIM_CKYC_DETAILS")), '')))) as CKYC_DETAILS_NARRATIVE,
                to_varchar((nullif(trim(to_varchar("DO_YOU_HAVE_CKYC_NUMBER")), ''))) as CKYC_NUMBER_HELD_DECLARED_INDICATOR,
@@ -15091,7 +15091,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("CKYC_DETAILS")), '')), (nullif(trim(to_varchar("CLAIM_CKYC_DETAILS")), '')))) as CKYC_DETAILS_NARRATIVE,
                to_varchar((nullif(trim(to_varchar("DO_YOU_HAVE_CKYC_NUMBER")), ''))) as CKYC_NUMBER_HELD_DECLARED_INDICATOR,
@@ -15199,7 +15199,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_kyc_reference#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PROOF_OF_ADDRESS') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("POA_STATUS")), '')))) as VERIFICATION_STATUS
@@ -15207,7 +15207,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("POA_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_kyc_reference#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PROOF_OF_IDENTITY') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("POI_STATUS")), '')))) as VERIFICATION_STATUS
@@ -15243,7 +15243,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_kyc_reference#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PROOF_OF_ADDRESS') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("POA_STATUS")), '')))) as VERIFICATION_STATUS
@@ -15251,7 +15251,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("POA_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_kyc_reference#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PROOF_OF_IDENTITY') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("POI_STATUS")), '')))) as VERIFICATION_STATUS
@@ -15323,7 +15323,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EXAM_DETAILS")), ''))) as EXAMINATION_REFERENCE,
                to_varchar((nullif(trim(to_varchar("APPLICATION_DATE")), ''))) as ONBOARDING_START_DATE,
@@ -15462,7 +15462,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ANNUAL_TURNOVER")), ''))) as ANNUAL_TURNOVER,
                to_varchar((nullif(trim(to_varchar("DATE_OF_REGISTRATION")), ''))) as BUSINESS_REGISTRATION_DATE,
@@ -15637,7 +15637,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ANNUAL_TURNOVER")), ''))) as ANNUAL_TURNOVER,
                to_varchar((nullif(trim(to_varchar("DATE_OF_REGISTRATION")), ''))) as BUSINESS_REGISTRATION_DATE,
@@ -15828,7 +15828,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("GST_PAYMENT_FLAG")), ''))) as GST_APPLICABLE_INDICATOR
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -16192,7 +16192,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w1_policyno),'')) is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(w1_policyno),'') is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('TYPE_OF_BUSINESS') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BUSINESS_TYPE")), ''))) as CLASSIFICATION_VALUE
@@ -16389,7 +16389,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w1_policyno),'')) is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(w1_policyno),'') is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('PA') as cdk_1,
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
@@ -17350,7 +17350,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w1_policyno),'')) is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(w1_policyno),'') is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("POLICY_STATUS")), ''))) as POLICY_STATUS,
                to_varchar((nullif(trim(to_varchar("POLICY_EXPIRY_DATE")), ''))) as RISK_EXPIRY_DATE,
@@ -17396,7 +17396,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w1_policyno),'')) is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(w1_policyno),'') is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TOTAL_SI_POLICY_CURRENCY")), ''))) as CURRENCY_CODE,
                to_varchar((nullif(trim(to_varchar("TOTAL_SI_AMOUNT_IN_POLICY_SI_CURRENCY")), ''))) as SUM_INSURED_TOTAL
@@ -18875,7 +18875,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w1_policyno),'')) is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(w1_policyno),'') is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BREAK_IN")), ''))) as BREAK_IN_INDICATOR,
                to_varchar((nullif(trim(to_varchar("RENEWAL_DATE")), ''))) as RENEWAL_DUE_DATE
@@ -18937,7 +18937,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w1_policyno),'')) is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(w1_policyno),'') is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("POLICY_BRANCH")), ''))) as SERVICING_ORG_UNIT_CODE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
@@ -19606,7 +19606,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_rskp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(w3_product_code),'')) is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CATEGORY_NAME")), ''))) as PRODUCT_CATEGORY,
                to_varchar((nullif(trim(to_varchar("MASTER_PLAN_NAME")), ''))) as PRODUCT_NAME
@@ -19646,7 +19646,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_polp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(w2_product_code),'')) is not null then 'PROD:' || nullif(trim(w2_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w2_product_code),'') is not null then 'PROD:' || nullif(trim(w2_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PLAN_CATEGORY")), ''))) as PRODUCT_CATEGORY,
                to_varchar((nullif(trim(to_varchar("UIN")), ''))) as UIN
@@ -19719,7 +19719,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(w1_product_code),'')) is not null then 'PROD:' || nullif(trim(w1_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w1_product_code),'') is not null then 'PROD:' || nullif(trim(w1_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PLAN_CATEGORY")), ''))) as PRODUCT_CATEGORY,
                to_varchar((nullif(trim(to_varchar("UIN")), ''))) as UIN
@@ -19759,7 +19759,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(w3_product_code),'')) is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CATEGORY_NAME")), ''))) as PRODUCT_CATEGORY,
                to_varchar((nullif(trim(to_varchar("MASTER_PLAN_NAME")), ''))) as PRODUCT_NAME
@@ -19890,7 +19890,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_rskp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(w3_product_code),'')) is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MINIMUM_DEPOSIT_PREMIUM_APPLICABLE")), ''))) as DEPOSIT_PREMIUM_INDICATOR,
                to_varchar((nullif(trim(to_varchar("MODE_OF_PREMIUM_CALCULATION")), ''))) as RATE_BASIS
@@ -19930,7 +19930,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(w3_product_code),'')) is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MINIMUM_DEPOSIT_PREMIUM_APPLICABLE")), ''))) as DEPOSIT_PREMIUM_INDICATOR,
                to_varchar((nullif(trim(to_varchar("MODE_OF_PREMIUM_CALCULATION")), ''))) as RATE_BASIS
@@ -20005,7 +20005,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_rskp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(w3_product_code),'')) is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("FREE_CANCELLATION_PERIOD")), ''))) as FREE_LOOK_PERIOD
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -20038,7 +20038,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(w3_product_code),'')) is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("FREE_CANCELLATION_PERIOD")), ''))) as FREE_LOOK_PERIOD
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
@@ -20168,7 +20168,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CRM_REFERENCE_NUMBER")), ''))) as LEAD_REFERENCE,
                to_varchar((nullif(trim(to_varchar("POLICY_HOLDER")), ''))) as PROSPECT_REFERENCE,
@@ -20239,7 +20239,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DATA_SOURCE")), ''))) as QUOTE_SOURCE,
                to_varchar((nullif(trim(to_varchar("POLICY_INCEPTION_DATE")), ''))) as REQUESTED_COVER_START_DATE,
@@ -20383,7 +20383,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BASE_PREMIUM")), ''))) as BASE_PREMIUM,
                to_varchar((nullif(trim(to_varchar("GROSS_PREMIUM")), ''))) as GROSS_PREMIUM,
@@ -20440,7 +20440,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PREMIUM")), ''))) as BASE_PREMIUM
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
@@ -20529,7 +20529,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__sat_quote_rating_input#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('LOADING_ACE') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("LOADING_ACE")), '')))) as PREMIUM_IMPACT,
@@ -20538,7 +20538,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("LOADING_ACE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__sat_quote_rating_input#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('LOADING_ACE_FOR_MAIN_SUB_COVER') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("LOADING_ACE_FOR_MAIN_SUB_COVER")), '')))) as PREMIUM_IMPACT,
@@ -20547,7 +20547,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("LOADING_ACE_FOR_MAIN_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__sat_quote_rating_input#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('OFFICE_PREMIUM_PER_MILLE_PA') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20556,7 +20556,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__sat_quote_rating_input#4
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('OFFICE_PREMIUM_PER_MILLE_PER_TRIP') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20565,7 +20565,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PER_TRIP")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__sat_quote_rating_input#5
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PREMIUM_RATE') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20574,7 +20574,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("PREMIUM_RATE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__sat_quote_rating_input#6
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('RATE_PER_TRIP_PER_MILLE') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20583,7 +20583,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("RATE_PER_TRIP_PER_MILLE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__sat_quote_rating_input#7
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('RATE_PER_TRIP_PER_MILLE_FOR_MAIN_SUB_COVER') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20592,7 +20592,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("RATE_PER_TRIP_PER_MILLE_FOR_MAIN_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__sat_quote_rating_input#8
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SLAB') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20635,7 +20635,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('ADJUSTMENT_VALUE') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("ADJUSTMENT_VALUE")), '')))) as PREMIUM_IMPACT,
@@ -20644,7 +20644,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ADJUSTMENT_VALUE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('ALTITUDE') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20653,7 +20653,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ALTITUDE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('BAGGAGE_TRACKING_SERVICE_APPLICABLE') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20662,7 +20662,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("BAGGAGE_TRACKING_SERVICE_APPLICABLE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#4
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('CLAIMS_EXPERIENCE_DISCOUNT') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("CLAIMS_EXPERIENCE_DISCOUNT")), '')))) as PREMIUM_IMPACT,
@@ -20671,7 +20671,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CLAIMS_EXPERIENCE_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#5
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('CLAIMS_EXPERIENCE_LOADING') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("CLAIMS_EXPERIENCE_LOADING")), '')))) as PREMIUM_IMPACT,
@@ -20680,7 +20680,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CLAIMS_EXPERIENCE_LOADING")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#6
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('CLU_DISCOUNT') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("CLU_DISCOUNT")), '')))) as PREMIUM_IMPACT,
@@ -20689,7 +20689,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CLU_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#7
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('COUNTRY') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20698,7 +20698,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("COUNTRY")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#8
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('CRUISE') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20707,7 +20707,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CRUISE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#9
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('CRUISE_DAYS') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20716,7 +20716,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CRUISE_DAYS")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#10
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('DESTINATION_DETAILS') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20725,7 +20725,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("DESTINATION_DETAILS")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#11
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('EMPLOYEE_DISCOUNT') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("EMPLOYEE_DISCOUNT")), '')))) as PREMIUM_IMPACT,
@@ -20734,7 +20734,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("EMPLOYEE_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#12
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('GEOGRAPHICAL_COVERAGE') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20743,7 +20743,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("GEOGRAPHICAL_COVERAGE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#13
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('GROUP_DISCOUNT') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("GROUP_DISCOUNT")), '')))) as PREMIUM_IMPACT,
@@ -20752,7 +20752,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("GROUP_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#14
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('HOURS_COVERED') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20761,7 +20761,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("HOURS_COVERED")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#15
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MODE_OF_TRANSPORT') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20770,7 +20770,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("MODE_OF_TRANSPORT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#16
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MULTIPLE_CITY') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20779,7 +20779,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("MULTIPLE_CITY")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#17
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('NIL_COMMISSION_DISCOUNT') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("NIL_COMMISSION_DISCOUNT")), '')))) as PREMIUM_IMPACT,
@@ -20788,7 +20788,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("NIL_COMMISSION_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#18
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('ONLINE_DISCOUNT') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("ONLINE_DISCOUNT")), '')))) as PREMIUM_IMPACT,
@@ -20797,7 +20797,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ONLINE_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#19
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('OTHER_DISCOUNT') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("OTHER_DISCOUNT")), '')))) as PREMIUM_IMPACT,
@@ -20806,7 +20806,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("OTHER_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#20
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PREMIUM_ADJUSTMENT') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("PREMIUM_ADJUSTMENT")), '')))) as PREMIUM_IMPACT,
@@ -20815,7 +20815,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("PREMIUM_ADJUSTMENT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#21
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('STUDENT_DISCOUNT') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("STUDENT_DISCOUNT")), '')))) as PREMIUM_IMPACT,
@@ -20824,7 +20824,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("STUDENT_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#22
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('TRAVELLING_COMPANION_DISCOUNT') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("TRAVELLING_COMPANION_DISCOUNT")), '')))) as PREMIUM_IMPACT,
@@ -20833,7 +20833,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("TRAVELLING_COMPANION_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#23
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('TYPE_OF_DISCOUNT') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20842,7 +20842,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("TYPE_OF_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#24
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('TYPE_OF_LOADING') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
@@ -20885,7 +20885,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_msp_imsd_inp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim(coalesce(nullif(trim(w1_pol_risk_id), ''), '') || '#' || 'ONE_WAY_PREMIUM'), '#ONE_WAY_PREMIUM'),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("PREMIUM_RATE")), '')), (nullif(trim(to_varchar("RATE_PER_TRIP_PER_MILLE")), '')), (nullif(trim(to_varchar("RATE_PER_TRIP_PER_MILLE_FOR_MAIN_SUB_COVER")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PER_TRIP")), '')), (nullif(trim(to_varchar("SLAB_")), '')), (nullif(trim(to_varchar("ACE_PREMIUM_TYPE")), '')))) as FACTOR_VALUE,
@@ -20927,7 +20927,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskc_rskc_prop_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(nullif(trim(coalesce(nullif(trim(w1_pol_risk_id), ''), '') || '#' || coalesce(nullif(trim(w2_cover_code), ''), '') || '#' || 'BASE_AMT_ON_CURRENT_PMM_SLAB'), '##BASE_AMT_ON_CURRENT_PMM_SLAB')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("BASE_AMT_ON_CURRENT_PMM_SLAB")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILE")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILELOADING")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_ACCIDENT_ONLY")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_EMERGENCY_OPD_EXPENSES_FOR_SICKNESS")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_ACCIDENT_ONLY")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_AIR_AMBULANCE")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_DEATH")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_FOR_SICKNESS_ONLY")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_FRACTURE_CARE_BENEFIT")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_PPD")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_PTD")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_REPATRIATION_OF_MORTAL_REMAINS")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_REPLACEMENT_AND_REARRANGEMENT_OF_STAFF")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_ROAD")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PER_TRIP")), '')), (nullif(trim(to_varchar("PMM_ADJ_FACTOR_FOR_PRD_ELAPSED")), '')), (nullif(trim(to_varchar("PMM_ADJ_FACTOR_FOR_PRD_REMAIN")), '')), (nullif(trim(to_varchar("PMM_ADJ_FACTOR_FOR_PRODUCT_REMAIN")), '')), (nullif(trim(to_varchar("RELATIVITYACE")), '')), (nullif(trim(to_varchar("RISK_FACTORACE")), '')), (nullif(trim(to_varchar("RISK_LOAD_FACTORACE")), '')), (nullif(trim(to_varchar("SHORT_TERM_FACTORACE")), '')), (nullif(trim(to_varchar("RATE")), '')), (nullif(trim(to_varchar("RATEACE_DOMESTIC")), '')), (nullif(trim(to_varchar("RATE_FOR_DAILY_ALLOWANCE_PA")), '')), (nullif(trim(to_varchar("PREMIUM_PER_DAY")), '')), (nullif(trim(to_varchar("RATE_BASISACE_DOMESTIC")), '')), (nullif(trim(to_varchar("SLAB_DETAILS")), '')))) as FACTOR_VALUE,
@@ -20970,7 +20970,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim(coalesce(nullif(trim(w1_pol_risk_id), ''), '') || '#' || 'RATE_PERCENTAGE'), '#RATE_PERCENTAGE'),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("RATE_PERCENTAGE")), '')), (nullif(trim(to_varchar("IS_CONSUMER_LOADING_APPLICABLE")), '')), (nullif(trim(to_varchar("PLAN_DISCOUNT_PERCENTAGE")), '')))) as FACTOR_VALUE,
@@ -26592,7 +26592,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PREFERRED_MODE_OF_ALERT")), ''))) as PREFERRED_ALERT_CHANNEL
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -26625,7 +26625,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PREFERRED_MODE_OF_ALERT")), ''))) as PREFERRED_ALERT_CHANNEL
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -26800,7 +26800,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_cov_covp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(w2_cover_code),'')) is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w2_cover_code),'') is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_PLAN")), ''))) as COVERAGE_PLAN_VARIANT
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -26873,7 +26873,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskc_rskc_prop_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(w2_cover_code),'')) is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w2_cover_code),'') is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_PLAN")), ''))) as COVERAGE_PLAN_VARIANT
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
@@ -27123,7 +27123,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_cov_covp_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(w0_cover_code),'')) is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w0_cover_code),'') is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("SUBLIMIT_NAME")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BENEFIT_AMOUNT")), ''))) as BENEFIT_AMOUNT,
@@ -27279,7 +27279,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_pol_ins_cov_covp_msp_msd_prop_pv__aug_sat_aug_coverage_sub_cover_element#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_cover_code),'')) is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (((nullif(trim(case when nullif(trim(w0_cover_code),'') is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('AMBULANCE') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("AMBULANCE_SUB_COVER")), '')))) as SUB_COVER_APPLICABILITY
@@ -27287,7 +27287,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("AMBULANCE_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_cov_covp_msp_msd_prop_pv__aug_sat_aug_coverage_sub_cover_element#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_cover_code),'')) is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (((nullif(trim(case when nullif(trim(w0_cover_code),'') is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('TRAVEL_INCONVENIENCE') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("INCONVENIENCE_SUB_COVER")), '')))) as SUB_COVER_APPLICABILITY
@@ -27295,7 +27295,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("INCONVENIENCE_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_cov_covp_msp_msd_prop_pv__aug_sat_aug_coverage_sub_cover_element#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_cover_code),'')) is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (((nullif(trim(case when nullif(trim(w0_cover_code),'') is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('TRIP_CANCELLATION') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("CANCELLATION_SUB_COVER")), '')))) as SUB_COVER_APPLICABILITY
@@ -27303,7 +27303,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CANCELLATION_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_cov_covp_msp_msd_prop_pv__aug_sat_aug_coverage_sub_cover_element#4
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_cover_code),'')) is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (((nullif(trim(case when nullif(trim(w0_cover_code),'') is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('TRIP_CANCELLATION_MAIN') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("CANCELLATION_MAIN_SUB_COVER")), '')))) as SUB_COVER_APPLICABILITY
@@ -27611,7 +27611,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__clm_clmd_clmpay_payp_pv__aug_sat_aug_fintxn_tax#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('GST') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("INVOICE_MODE")), '')))) as INVOICE_MODE,
@@ -27622,7 +27622,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("INVOICE_MODE")), '')) is not null or (nullif(trim(to_varchar("INVOICE_NO")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmpay_payp_pv__aug_sat_aug_fintxn_tax#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('UGST') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as INVOICE_MODE,
@@ -27633,7 +27633,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("UGST_AMOUNT")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmpay_payp_pv__aug_sat_aug_fintxn_tax#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when coalesce(nullif(trim(w1_claimpaymentid),'')) is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('VAT') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as INVOICE_MODE,
@@ -27937,7 +27937,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PORTAL_PAYMENT_MODE")), ''))) as PORTAL_PAYMENT_MODE_CODE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
@@ -28015,7 +28015,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MEMBER_TYPE")), ''))) as MEMBER_TYPE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -28072,7 +28072,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NATIONAL_TIEUP_INFORMATION")), ''))) as NATIONAL_TIE_UP_INFORMATION,
                to_varchar((nullif(trim(to_varchar("TASK_THRESHOLD")), ''))) as TASK_ALLOCATION_THRESHOLD
@@ -28139,7 +28139,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_pol_off_oa_address_prop_pv__aug_sat_aug_org_unit_contact#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (((nullif(trim(case when coalesce(nullif(trim(w6_office_code),'')) is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (((nullif(trim(case when nullif(trim(w6_office_code),'') is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('LANDLINE') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("ALTERNATE_MOB_NUMBERLANDLINE_NUMBER")), '')))) as ALTERNATE_MOBILE_NUMBER,
@@ -28149,7 +28149,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ALTERNATE_MOB_NUMBERLANDLINE_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_off_oa_address_prop_pv__aug_sat_aug_org_unit_contact#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (((nullif(trim(case when coalesce(nullif(trim(w6_office_code),'')) is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (((nullif(trim(case when nullif(trim(w6_office_code),'') is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE_WHATSAPP') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
@@ -28159,7 +28159,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("WHATSAPP_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_off_oa_address_prop_pv__aug_sat_aug_org_unit_contact#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (((nullif(trim(case when coalesce(nullif(trim(w6_office_code),'')) is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (((nullif(trim(case when nullif(trim(w6_office_code),'') is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SOCIAL_FACEBOOK') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
@@ -28169,7 +28169,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("FACEBOOK_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_off_oa_address_prop_pv__aug_sat_aug_org_unit_contact#4
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (((nullif(trim(case when coalesce(nullif(trim(w6_office_code),'')) is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (((nullif(trim(case when nullif(trim(w6_office_code),'') is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SOCIAL_INSTAGRAM') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
@@ -28179,7 +28179,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("INSTAGRAM_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_off_oa_address_prop_pv__aug_sat_aug_org_unit_contact#5
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (((nullif(trim(case when coalesce(nullif(trim(w6_office_code),'')) is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (((nullif(trim(case when nullif(trim(w6_office_code),'') is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SOCIAL_LINKEDIN') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
@@ -28189,7 +28189,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("LINKED_IN_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_off_oa_address_prop_pv__aug_sat_aug_org_unit_contact#6
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (((nullif(trim(case when coalesce(nullif(trim(w6_office_code),'')) is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (((nullif(trim(case when nullif(trim(w6_office_code),'') is not null then 'ORGUNIT:' || nullif(trim(w6_office_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('SOCIAL_TWITTER') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
@@ -28271,7 +28271,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("APPROVEDREJECTED_BY")), ''))) as APPROVED_OR_REJECTED_BY,
                to_varchar((nullif(trim(to_varchar("APPROVEDREJECTED_DATE")), ''))) as APPROVED_OR_REJECTED_DATE,
@@ -28340,7 +28340,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("REFUND_TO_PID_OF_BG_HOLDER_AC")), ''))) as REFUND_TO_BANK_GUARANTEE_HOLDER_ACCOUNT_REFERENCE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -28379,7 +28379,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("APPROVEDREJECTED_BY")), ''))) as APPROVED_OR_REJECTED_BY,
                to_varchar((nullif(trim(to_varchar("APPROVEDREJECTED_DATE")), ''))) as APPROVED_OR_REJECTED_DATE,
@@ -28448,7 +28448,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("REFUND_TO_PID_OF_BG_HOLDER_AC")), ''))) as REFUND_TO_BANK_GUARANTEE_HOLDER_ACCOUNT_REFERENCE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -28541,7 +28541,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CLAIM_APPLICANT_DOB")), ''))) as CLAIM_APPLICANT_DATE_OF_BIRTH,
                to_varchar((nullif(trim(to_varchar("CLAIM_APPLICANT_NAME")), ''))) as CLAIM_APPLICANT_NAME,
@@ -28588,7 +28588,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CLAIM_APPLICANT_DOB")), ''))) as CLAIM_APPLICANT_DATE_OF_BIRTH,
                to_varchar((nullif(trim(to_varchar("CLAIM_APPLICANT_NAME")), ''))) as CLAIM_APPLICANT_NAME,
@@ -28669,7 +28669,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EMANDATE_DETAILS")), ''))) as MANDATE_DETAILS_NARRATIVE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -28702,7 +28702,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EMANDATE_DETAILS")), ''))) as MANDATE_DETAILS_NARRATIVE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -28810,7 +28810,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_LOCATION|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_1")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_2")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_3")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_CITY_TOWN_VILLAGE")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_STATE")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_COUNTRY")), ''))),''), nullif(trim((nullif(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE")), ''))),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_1")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_2")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_3")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_CITY_TOWN_VILLAGE")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_STATE")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_COUNTRY")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE")), ''))), ''), '')), '|||||||')), '[[:space:]]+', ' '))) end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_LOCATION|' || (coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_1")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_2")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_3")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_CITY_TOWN_VILLAGE")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_STATE")), ''))),''), nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_COUNTRY")), ''))),''), nullif(trim((nullif(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE")), ''))),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_1")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_2")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_LINE_3")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_CITY_TOWN_VILLAGE")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_STATE")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_COUNTRY")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE")), ''))), ''), '')), '|||||||')), '[[:space:]]+', ' '))) end),''),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_TYPE")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ADDRESS_PROOF_EFFECTIVE_DATE")), ''))) as ADDRESS_PROOF_EFFECTIVE_DATE,
@@ -28946,7 +28946,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EMPLOYERS_DETAILS")), ''))) as EMPLOYER_DETAILS_NARRATIVE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -28981,7 +28981,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EMPLOYERS_DETAILS")), ''))) as EMPLOYER_DETAILS_NARRATIVE,
                to_varchar((nullif(trim(to_varchar("PRIMARY_PROFESSION")), ''))) as PRIMARY_PROFESSION,
@@ -29102,7 +29102,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BANKING_DETAILS")), ''))) as BANKING_DETAILS_NARRATIVE,
                to_varchar((nullif(trim(to_varchar("CREDIT_CARD_DETAILS")), ''))) as CREDIT_CARD_DETAILS_NARRATIVE,
@@ -29172,7 +29172,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BANKING_DETAILS")), ''))) as BANKING_DETAILS_NARRATIVE,
                to_varchar((nullif(trim(to_varchar("CHEQUE_RECEIPTING_BLOCKED")), ''))) as CHEQUE_RECEIPTING_BLOCKED_INDICATOR,
@@ -29292,7 +29292,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("GROUP_BUFFER")), ''))) as GROUP_BUFFER_AMOUNT
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -29352,7 +29352,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("LOCATION_OF_DISABILITY")), ''))) as DISABILITY_BODY_LOCATION,
                to_varchar((nullif(trim(to_varchar("ICD")), ''))) as ICD_DIAGNOSIS_CODE,
@@ -29399,7 +29399,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("LOCATION_OF_DISABILITY")), ''))) as DISABILITY_BODY_LOCATION,
                to_varchar((nullif(trim(to_varchar("ICD")), ''))) as ICD_DIAGNOSIS_CODE,
@@ -29480,7 +29480,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BRANCH")), ''))) as SERVICING_BRANCH_REFERENCE,
                to_varchar((nullif(trim(to_varchar("TRANSFER_CASE")), ''))) as TRANSFER_CASE_REFERENCE,
@@ -29595,7 +29595,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('PASSPORT') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PASSPORT_FILE_NO")), ''))) as PASSPORT_FILE_NUMBER,
@@ -29647,7 +29647,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('AADHAAR') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("NAME_AS_PER_AADHAAR")), '')))) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -29666,7 +29666,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("NAME_AS_PER_AADHAAR")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('CKYC') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("NAME_AS_PER_CKYC")), '')))) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -29685,7 +29685,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("NAME_AS_PER_CKYC")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('DRIVING_LICENCE') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -29704,7 +29704,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("DRIVING_LICENSE_DETAILS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#4
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('EIA') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -29723,7 +29723,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("EIA_AVAILABLE")), '')) is not null or (nullif(trim(to_varchar("EIA_CREDIT_REQUIRED")), '')) is not null or (nullif(trim(to_varchar("EIA_DETAILS")), '')) is not null or (nullif(trim(to_varchar("EIA_REQUIRED")), '')) is not null or (nullif(trim(to_varchar("EIA_WHEN_LINKED")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#5
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('GSTIN') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -29742,7 +29742,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("STATEWISE_GSTIN_DETAILS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#6
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PAN') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("NAME_AS_PER_PAN")), '')))) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -29761,7 +29761,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("NAME_AS_PER_PAN")), '')) is not null or (nullif(trim(to_varchar("PAN_AADHAAR_LINKED")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#7
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PASSPORT') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -29780,7 +29780,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("PASSPORT_DETAILS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#8
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PROOF_OF_ADDRESS') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -29799,7 +29799,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CLAIM_POA_STATUS")), '')) is not null or (nullif(trim(to_varchar("PROOF_OF_ADDRESS_SUBMITTED_FOR_CURRENT_PERMANENT_OVERSEAS_ADDRESSOTHERS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#9
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PROOF_OF_IDENTITY') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -29902,7 +29902,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('PASSPORT') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PASSPORT_FILE_NO")), ''))) as PASSPORT_FILE_NUMBER,
@@ -29955,7 +29955,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('AADHAAR') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("NAME_AS_PER_AADHAAR")), '')))) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -29975,7 +29975,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("NAME_AS_PER_AADHAAR")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('CKYC') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("NAME_AS_PER_CKYC")), '')))) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -29995,7 +29995,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("NAME_AS_PER_CKYC")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('DRIVING_LICENCE') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -30015,7 +30015,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("DRIVING_LICENSE_DETAILS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#4
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('EIA') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -30035,7 +30035,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("EIA_AVAILABLE")), '')) is not null or (nullif(trim(to_varchar("EIA_CREDIT_REQUIRED")), '')) is not null or (nullif(trim(to_varchar("EIA_DETAILS")), '')) is not null or (nullif(trim(to_varchar("EIA_REQUIRED")), '')) is not null or (nullif(trim(to_varchar("EIA_WHEN_LINKED")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#5
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('GSTIN_STATEWISE') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -30055,7 +30055,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("STATEWISE_GSTIN_DETAILS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#6
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PAN') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("NAME_AS_PER_PAN")), '')))) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -30075,7 +30075,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("NAME_AS_PER_PAN")), '')) is not null or (nullif(trim(to_varchar("PAN_AADHAAR_LINKED")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#7
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PASSPORT') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -30095,7 +30095,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("PASSPORT_DETAILS")), '')) is not null or (nullif(trim(to_varchar("PASSPORT_ISSUE_COUNTRY")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#8
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PROOF_OF_ADDRESS') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -30115,7 +30115,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CLAIM_POA_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#9
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PROOF_OF_ADDRESS_OTHER') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -30135,7 +30135,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("PROOF_OF_ADDRESS_SUBMITTED_FOR_CURRENT_PERMANENT_OVERSEAS_ADDRESSOTHERS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#10
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PROOF_OF_IDENTITY') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as NAME_AS_PER_IDENTIFICATION_DOCUMENT,
@@ -30390,7 +30390,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COUNTRY")), ''))) as PARTY_COUNTRY,
                to_varchar((nullif(trim(to_varchar("REFERENCE_CODE")), ''))) as SOURCE_REFERENCE_CODE
@@ -30469,7 +30469,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COUNTRY")), ''))) as PARTY_COUNTRY
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -30612,7 +30612,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DATE_OF_MARRIAGE")), ''))) as DATE_OF_MARRIAGE,
                to_varchar(coalesce((nullif(trim(to_varchar("MOTHERS_MAIDEN_NAME")), '')), (nullif(trim(to_varchar("MOTHER_MAIDEN_NAME")), '')))) as MOTHER_MAIDEN_NAME,
@@ -30697,7 +30697,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BOARD_NAME_FOR_BASIC_QUALIFICATION")), ''))) as BASIC_QUALIFICATION_BOARD_NAME,
                to_varchar((nullif(trim(to_varchar("BASIC_QUALIFICATIONS_DETAILS")), ''))) as BASIC_QUALIFICATION_DETAILS,
@@ -30951,7 +30951,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("REJECTED_REASON")), ''))) as APPLICATION_REJECTION_REASON,
                to_varchar((nullif(trim(to_varchar("DECLARATION")), ''))) as PARTY_DECLARATION_TEXT
@@ -31003,7 +31003,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("REJECTED_REASON")), ''))) as APPLICATION_REJECTION_REASON,
                to_varchar((nullif(trim(to_varchar("CATEGORY_OF_APPOINTMENT")), ''))) as APPOINTMENT_CATEGORY,
@@ -31151,7 +31151,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TDS_CODE")), ''))) as TDS_CODE,
                to_varchar((nullif(trim(to_varchar("TDS_CODE_DESC")), ''))) as TDS_CODE_DESCRIPTION
@@ -31195,7 +31195,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("AGENT_FLOAT_ACCESS")), ''))) as FLOAT_ACCOUNT_ACCESS_INDICATOR,
                to_varchar((nullif(trim(to_varchar("LOWER_TDS_CERTIFICATE")), ''))) as LOWER_TDS_CERTIFICATE_REFERENCE,
@@ -31295,7 +31295,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EPOLICY_REQUIRED")), ''))) as ELECTRONIC_POLICY_REQUIRED_INDICATOR,
                to_varchar((nullif(trim(to_varchar("UPDATE_CONTACT_DETAILS_IN_ALL_POLICIES")), ''))) as PROPAGATE_CONTACT_UPDATE_TO_ALL_POLICIES_INDICATOR
@@ -31335,7 +31335,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EPOLICY_REQUIRED")), ''))) as ELECTRONIC_POLICY_REQUIRED_INDICATOR,
                to_varchar((nullif(trim(to_varchar("UPDATE_CONTACT_DETAILS_IN_ALL_POLICIES")), ''))) as PROPAGATE_CONTACT_UPDATE_TO_ALL_POLICIES_INDICATOR
@@ -31449,7 +31449,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ARE_YOU_AN_EXISTING_BAJAJ_ALLIANZ_CUSTOMER")), ''))) as EXISTING_CUSTOMER_DECLARED_INDICATOR,
                to_varchar((nullif(trim(to_varchar("RELATIONSHIP_WITH_EMPLOYEE")), ''))) as RELATIONSHIP_WITH_EMPLOYEE,
@@ -31536,7 +31536,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ARE_YOU_AN_EXISTING_BAJAJ_ALLIANZ_CUSTOMER")), ''))) as EXISTING_CUSTOMER_DECLARED_INDICATOR,
                to_varchar((nullif(trim(to_varchar("RELATIONSHIP_WITH_EMPLOYEE")), ''))) as RELATIONSHIP_WITH_EMPLOYEE,
@@ -32329,7 +32329,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w1_policyno),'')) is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(w1_policyno),'') is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CHANNEL_NAME")), ''))) as DISTRIBUTION_CHANNEL_NAME
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
@@ -32802,7 +32802,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w1_policyno),'')) is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(w1_policyno),'') is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("SUB_IMD_CODE")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUBCHANNEL_NAME")), ''))) as SUB_CHANNEL_NAME
@@ -34097,7 +34097,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_rskp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(w3_product_code),'')) is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MINIMUM_DEPOSIT_PREMIUM_TYPE")), ''))) as DEPOSIT_PREMIUM_BASIS
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -34130,7 +34130,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(w3_product_code),'')) is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MINIMUM_DEPOSIT_PREMIUM_TYPE")), ''))) as DEPOSIT_PREMIUM_BASIS
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
@@ -34199,7 +34199,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_rskp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(w3_product_code),'')) is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CHILD_POLICY_MAX_DURATION")), ''))) as CHILD_POLICY_MAXIMUM_DURATION
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -34232,7 +34232,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(w3_product_code),'')) is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CHILD_POLICY_MAX_DURATION")), ''))) as CHILD_POLICY_MAXIMUM_DURATION
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
@@ -34301,7 +34301,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CLAIM_OUTSTANDING")), ''))) as CLAIMS_OUTSTANDING_AMOUNT,
                to_varchar((nullif(trim(to_varchar("CLAIMS_PAID")), ''))) as CLAIMS_PAID_AMOUNT,
@@ -34373,7 +34373,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskc
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_EXPIRY_DATE")), ''))) as COVERAGE_END_DATE,
                to_varchar((nullif(trim(to_varchar("COVER_INCEPTION_DATE")), ''))) as COVERAGE_START_DATE
@@ -34440,7 +34440,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskc_rskc_prop_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DEDUCTIBLEACE")), ''))) as ACE_VARIANT_DEDUCTIBLE_AMOUNT,
                to_varchar((nullif(trim(to_varchar("AMBULANCE_SUBCOVER")), ''))) as AMBULANCE_SUB_COVER_VALUE,
@@ -34653,7 +34653,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_LEVEL_BASE_CURRENCY")), ''))) as COVERAGE_BASE_CURRENCY_CODE,
                to_varchar((nullif(trim(to_varchar("COVER_EXPIRY_DATE")), ''))) as COVERAGE_END_DATE,
@@ -34814,7 +34814,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_coverage_schedule#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('ACE') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("ACE_DURATION")), '')))) as COVERAGE_DURATION,
@@ -34830,7 +34830,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ACE_DURATION")), '')) is not null or (nullif(trim(to_varchar("ACE_PREMIUM_TYPE")), '')) is not null or (nullif(trim(to_varchar("DELAY_EXCEEDING_ACE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_coverage_schedule#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('AMBULANCE') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as COVERAGE_DURATION,
@@ -34846,7 +34846,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("AMBULANCE_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_coverage_schedule#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('BASE') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as COVERAGE_DURATION,
@@ -34862,7 +34862,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("DEDUCTIBLE_VALUE_SUBLIMIT")), '')) is not null or (nullif(trim(to_varchar("EXCLUDED_COUNTRIES")), '')) is not null or (nullif(trim(to_varchar("EXCLUDED_EVENTS")), '')) is not null or (nullif(trim(to_varchar("ITEMS_COVERED")), '')) is not null or (nullif(trim(to_varchar("LIMIT_SUM_INSURED")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_coverage_schedule#4
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('BENEFIT') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as COVERAGE_DURATION,
@@ -34878,7 +34878,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("BENEFIT_AMOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_coverage_schedule#5
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('TRAVEL_INCONVENIENCE') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as COVERAGE_DURATION,
@@ -34894,7 +34894,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("INCONVENIENCE_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_coverage_schedule#6
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('TRIP_CANCELLATION') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as COVERAGE_DURATION,
@@ -34910,7 +34910,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CANCELLATION_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_coverage_schedule#7
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('TRIP_CANCELLATION_MAIN') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as COVERAGE_DURATION,
@@ -34926,7 +34926,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("CANCELLATION_MAIN_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_coverage_schedule#8
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('TRIP_DELAY') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as COVERAGE_DURATION,
@@ -35050,7 +35050,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskc_rskc_prop_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('RISK:' || nullif(trim(w1_pol_risk_id), '') || '#' || nullif(trim(w2_cover_code), '')) as cdk_1,
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
@@ -35203,7 +35203,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w1_quotation_number),'')) is not null then nullif(trim(w1_quotation_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w1_quotation_number),'') is not null then nullif(trim(w1_quotation_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CALCULATOR_URN_NUMBER")), ''))) as PREMIUM_CALCULATOR_URN
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -35304,7 +35304,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BUSINESS_EVENT")), ''))) as BUSINESS_EVENT_TYPE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY
@@ -35337,7 +35337,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ENDORSEMENT_TYPE")), ''))) as ENDORSEMENT_TYPE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
@@ -35420,7 +35420,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("REASON")), ''))) as ACTION_REASON_TEXT,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_BUSINESS")), ''))) as BUSINESS_TYPE_CODE,
@@ -35753,7 +35753,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("POLICY_ID")), ''))) as SOURCE_POLICY_IDENTIFIER
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
@@ -35786,7 +35786,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskc_rskc_prop
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EVENT_CODE")), ''))) as QUOTE_CAPTURE_EVENT_CODE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY
@@ -35819,7 +35819,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EVENT_CODE")), ''))) as QUOTE_CAPTURE_EVENT_CODE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY
@@ -35860,7 +35860,7 @@ e9 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BANCA_POLICY")), ''))) as BANCASSURANCE_SOURCED_INDICATOR,
                to_varchar((nullif(trim(to_varchar("POLICY_REFERENCE_NUMBER")), ''))) as POLICY_REFERENCE_NUMBER,
@@ -36053,7 +36053,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PED_MONTH")), ''))) as PRE_EXISTING_DISEASE_ONSET_MONTH,
                to_varchar((nullif(trim(to_varchar("PED_YEAR")), ''))) as PRE_EXISTING_DISEASE_ONSET_YEAR
@@ -36119,7 +36119,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("AGE_GROUP")), ''))) as AGE_BAND,
                to_varchar((nullif(trim(to_varchar("CURRENT_MEDICATION")), ''))) as CURRENT_MEDICATION_DETAIL,
@@ -36202,7 +36202,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("APPOINTEE_NAME")), ''))) as APPOINTEE_NAME,
                to_varchar((nullif(trim(to_varchar("ALLOCATION_PERCENTAGE")), ''))) as NOMINATION_PERCENTAGE,
@@ -36280,7 +36280,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_premium_head#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('GROSS') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("GROSS_PREMIUM")), '')))) as NET_HEAD_PREMIUM,
@@ -36289,7 +36289,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("GROSS_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_premium_head#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('ONE_WAY_FIXED') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as NET_HEAD_PREMIUM,
@@ -36298,7 +36298,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("FIXED_ONE_WAY_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_premium_head#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('ONE_WAY_TRIP') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("ONE_WAY_PREMIUM")), '')))) as NET_HEAD_PREMIUM,
@@ -36307,7 +36307,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ONE_WAY_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_premium_head#4
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('ROUND_TRIP') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("ROUND_TRIP_PREMIUM")), '')))) as NET_HEAD_PREMIUM,
@@ -36316,7 +36316,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ROUND_TRIP_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_premium_head#5
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('ROUND_TRIP_FIXED') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as NET_HEAD_PREMIUM,
@@ -36383,7 +36383,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("YEAR")), ''))) as APPLICABLE_YEAR,
                to_varchar((nullif(trim(to_varchar("REFERENCE_NUMBER")), ''))) as EXTERNAL_REFERENCE_NUMBER,
@@ -36545,7 +36545,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ADDITIONAL_PREMIUM")), ''))) as ADDITIONAL_PREMIUM_AMOUNT,
                to_varchar((nullif(trim(to_varchar("ADMIN_CHARGES")), ''))) as ADMINISTRATION_CHARGES_AMOUNT,
@@ -36816,7 +36816,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PREMIUM_ADJUSTMENT")), ''))) as PREMIUM_ADJUSTMENT_AMOUNT,
                to_varchar((nullif(trim(to_varchar("PREMIUM_ADJUSTMENT_TYPE")), ''))) as PREMIUM_ADJUSTMENT_TYPE,
@@ -36957,7 +36957,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BILLING_STAKE")), ''))) as BILLING_STAKE_CODE,
                to_varchar((nullif(trim(to_varchar("DISCOUNT")), ''))) as DISCOUNT_AMOUNT,
@@ -37040,7 +37040,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_sum_insured_breakup#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('ACE') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar((coalesce((nullif(trim(to_varchar("SUM_INSURED_ACE")), '')), (nullif(trim(to_varchar("SUM_INSUREDACE")), ''))))) as SUM_INSURED_AMOUNT
@@ -37048,7 +37048,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("SUM_INSURED_ACE")), '')) is not null or (nullif(trim(to_varchar("SUM_INSUREDACE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_sum_insured_breakup#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('ACE_MAIN_SUB_COVER') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("SUM_INSURED_ACE_FOR_MAIN_SUB_COVER")), '')))) as SUM_INSURED_AMOUNT
@@ -37056,7 +37056,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("SUM_INSURED_ACE_FOR_MAIN_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_sum_insured_breakup#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (((nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('LINE_SUM_INSURED') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("SUM_INSURED")), '')))) as SUM_INSURED_AMOUNT
@@ -37123,7 +37123,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CANCELLATION_BASIS")), ''))) as CANCELLATION_PREMIUM_BASIS,
                to_varchar((nullif(trim(to_varchar("CHILD_POLICY_PLAN")), ''))) as CHILD_POLICY_PLAN_CODE,
@@ -37210,7 +37210,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("POLICY_COUNTRY")), ''))) as JURISDICTION_COUNTRY_CODE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
@@ -37288,7 +37288,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ARRIVAL_COUNTRY")), ''))) as ARRIVAL_COUNTRY,
                to_varchar((nullif(trim(to_varchar("ARRIVAL_DATE")), ''))) as ARRIVAL_DATE,
@@ -37418,7 +37418,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PNR")), ''))) as PASSENGER_NAME_RECORD,
                to_varchar((nullif(trim(to_varchar("PERIOD")), ''))) as TRIP_COVER_PERIOD,
@@ -37532,7 +37532,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("QUERY_CODE")), ''))) as QUERY_CODE,
                to_varchar((nullif(trim(to_varchar("QUERY_DETAILS")), ''))) as QUERY_DESCRIPTION,

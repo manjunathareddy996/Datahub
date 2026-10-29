@@ -22,8 +22,8 @@ hashed_columns:
       - 'RECORD_LAST_MODIFIED_DATE'
       - 'SOURCE_REFERENCE_CODE'
 derived_columns:
-  PARTY_BK__PROPOSER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__PROPOSER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   CREATED_BY_USER_REFERENCE: 'cast(null as varchar)'
   GUARDIAN_NAME: 'cast(null as varchar)'
   PARTY_COUNTRY: 'country'

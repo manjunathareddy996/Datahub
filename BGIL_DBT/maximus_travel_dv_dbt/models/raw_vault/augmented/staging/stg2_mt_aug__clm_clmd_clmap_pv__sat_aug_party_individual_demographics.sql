@@ -35,8 +35,8 @@ hashed_columns:
       - 'RELATIONSHIP_TO_PRIMARY_INSURED'
       - 'YEAR_OF_PASSING_QUALIFICATION'
 derived_columns:
-  PARTY_BK__CLAIMANT_CUSTOMER: "nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),'')"
-  PARTY_NK__CLAIMANT_CUSTOMER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),''))"
+  PARTY_BK__CLAIMANT_CUSTOMER: "nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'')"
+  PARTY_NK__CLAIMANT_CUSTOMER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),''))"
   AGE_BAND: 'customer_age_slab'
   BASIC_QUALIFICATION_BOARD_NAME: 'cast(null as varchar)'
   BASIC_QUALIFICATION_DETAILS: 'cast(null as varchar)'

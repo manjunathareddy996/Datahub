@@ -17,7 +17,7 @@
 --   mobile_kyc_1                             1 attribute(s)
 
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__PROPOSER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__PROPOSER,
         'MOBILE_ALTERNATE' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,
@@ -34,7 +34,7 @@
     where alternate_mob_numberlandline_number is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__PROPOSER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__PROPOSER,
         'MOBILE_CLAIM' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,
@@ -51,7 +51,7 @@ union all
     where claim_mobile_number is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__PROPOSER,
+        nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__PROPOSER,
         'MOBILE_KYC' as CONTACT_POINT_TYPE,
         '1' as CONTACT_PRIORITY_ORDER,
         cast(null as varchar) as ALTERNATE_EMAIL_ADDRESS,

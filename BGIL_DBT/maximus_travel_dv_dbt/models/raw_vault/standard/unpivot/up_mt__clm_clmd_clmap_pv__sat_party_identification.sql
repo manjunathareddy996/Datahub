@@ -22,7 +22,7 @@
 --   voter_id                                 1 attribute(s)
 
     select
-        nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
+        nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
         'AADHAAR' as IDENTIFICATION_TYPE_CODE,
         insured_aadhar_number as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -54,7 +54,7 @@
     where insured_aadhar_number is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
+        nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
         'CKYC' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -86,7 +86,7 @@ union all
     where enter_ckyc_no is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
+        nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
         'GENERIC_DECLARED_ID' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -118,7 +118,7 @@ union all
     where identification_number is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
+        nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
         'GSTIN' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -182,7 +182,7 @@ union all
     where pan_number is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
+        nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
         'PAN_INSURED' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,
@@ -246,7 +246,7 @@ union all
     where passport_number is not null
 union all
     select
-        nullif(trim(case when coalesce(nullif(trim(customerid),'')) is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
+        nullif(trim(case when nullif(trim(customerid),'') is not null then nullif(trim(customerid), '') end),'') as PARTY_BK__CLAIMANT_CUSTOMER,
         'VOTER_ID' as IDENTIFICATION_TYPE_CODE,
         cast(null as varchar) as AADHAAR_NUMBER,
         cast(null as varchar) as AADHAAR_VERIFICATION_STATUS,

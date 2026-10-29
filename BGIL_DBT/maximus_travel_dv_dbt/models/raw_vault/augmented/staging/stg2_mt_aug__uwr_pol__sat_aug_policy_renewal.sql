@@ -25,8 +25,8 @@ hashed_columns:
       - 'REPLACED_POLICY_INCEPTION_DATE'
       - 'REPLACED_POLICY_PRODUCT_CODE'
 derived_columns:
-  POLICY_BK: "nullif(trim(case when coalesce(nullif(trim(policy_number),'')) is not null then nullif(trim(policy_number), '') end),'')"
-  POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(policy_number),'')) is not null then nullif(trim(policy_number), '') end),''))"
+  POLICY_BK: "nullif(trim(case when nullif(trim(policy_number),'') is not null then nullif(trim(policy_number), '') end),'')"
+  POLICY_NK: "'HUB_POLICY|' || (nullif(trim(case when nullif(trim(policy_number),'') is not null then nullif(trim(policy_number), '') end),''))"
   EXPIRING_POLICY_INSURER_NAME: 'cast(null as varchar)'
   RENEWAL_APPLICABLE_INDICATOR: 'cast(null as varchar)'
   RENEWAL_INDICATOR: 'renewal_flag'

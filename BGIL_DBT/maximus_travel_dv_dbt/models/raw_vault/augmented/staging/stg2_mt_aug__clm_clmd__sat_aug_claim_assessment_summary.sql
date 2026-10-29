@@ -27,8 +27,8 @@ hashed_columns:
       - 'SPOT_SURVEY_INDICATOR'
       - 'SURVEY_REQUIRED_INDICATOR'
 derived_columns:
-  CLAIM_BK: "nullif(trim(case when coalesce(nullif(trim(claimno),'')) is not null then nullif(trim(claimno), '') end),'')"
-  CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(claimno),'')) is not null then nullif(trim(claimno), '') end),''))"
+  CLAIM_BK: "nullif(trim(case when nullif(trim(claimno),'') is not null then nullif(trim(claimno), '') end),'')"
+  CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when nullif(trim(claimno),'') is not null then nullif(trim(claimno), '') end),''))"
   ADVISORY_COMMITTEE_REFERRAL_INDICATOR: 'cast(null as varchar)'
   AT_FAULT_PARTY_DESCRIPTION: 'cast(null as varchar)'
   LIVE_VIDEO_SURVEY_INDICATOR: 'cast(null as varchar)'

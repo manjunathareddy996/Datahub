@@ -19,8 +19,8 @@ hashed_columns:
       - 'ELECTRONIC_POLICY_REQUIRED_INDICATOR'
       - 'PROPAGATE_CONTACT_UPDATE_TO_ALL_POLICIES_INDICATOR'
 derived_columns:
-  PARTY_BK__PROPOSER: "nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),'')"
-  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(w0_party_code),'')) is not null then nullif(trim(w0_party_code), '') end),''))"
+  PARTY_BK__PROPOSER: "nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')"
+  PARTY_NK__PROPOSER: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''))"
   ELECTRONIC_POLICY_REQUIRED_INDICATOR: 'epolicy_required'
   PROPAGATE_CONTACT_UPDATE_TO_ALL_POLICIES_INDICATOR: 'update_contact_details_in_all_policies'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'

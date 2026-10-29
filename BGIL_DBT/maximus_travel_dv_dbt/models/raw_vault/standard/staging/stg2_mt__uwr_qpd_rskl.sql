@@ -78,18 +78,18 @@ hashed_columns:
       - 'INSURED_VALUE_IN_SUM_INSURED_CURRENCY'
       - 'INSURED_VALUE_IN_TRANSACTION_CURRENCY'
 derived_columns:
-  DOCUMENT_BK: "nullif(trim(case when coalesce(nullif(trim(document_id),'')) is not null then 'DOC:' || nullif(trim(document_id), '') end),'')"
-  DOCUMENT_NK: "'HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(document_id),'')) is not null then 'DOC:' || nullif(trim(document_id), '') end),''))"
+  DOCUMENT_BK: "nullif(trim(case when nullif(trim(document_id),'') is not null then 'DOC:' || nullif(trim(document_id), '') end),'')"
+  DOCUMENT_NK: "'HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(document_id),'') is not null then 'DOC:' || nullif(trim(document_id), '') end),''))"
   FINANCIAL_TRANSACTION_BK__QUOTE_RISK_PREMIUM: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),''), nullif(trim(pol_risk_id),'')) is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') || '#' || nullif(trim(pol_risk_id), '') end),'')"
   FINANCIAL_TRANSACTION_NK__QUOTE_RISK_PREMIUM: "'HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),''), nullif(trim(pol_risk_id),'')) is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') || '#' || nullif(trim(pol_risk_id), '') end),''))"
   LOCATION_BK: "nullif(trim(case when coalesce(nullif(trim(addr1),''), nullif(trim(addr2),''), nullif(trim(addr3),''), nullif(trim(city_code),''), nullif(trim(state_code),''), nullif(trim(postal_code),''), nullif(trim(country_code),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim(addr1), ''), '') || '#' || coalesce(nullif(trim(addr2), ''), '') || '#' || coalesce(nullif(trim(addr3), ''), '') || '#' || coalesce(nullif(trim(city_code), ''), '') || '#' || coalesce(nullif(trim(state_code), ''), '') || '#' || coalesce(nullif(trim(postal_code), ''), '') || '#' || coalesce(nullif(trim(country_code), ''), '')), '######')), '[[:space:]]+', ' '))) end),'')"
   LOCATION_NK: "'HUB_LOCATION|' || (nullif(trim(case when coalesce(nullif(trim(addr1),''), nullif(trim(addr2),''), nullif(trim(addr3),''), nullif(trim(city_code),''), nullif(trim(state_code),''), nullif(trim(postal_code),''), nullif(trim(country_code),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim(addr1), ''), '') || '#' || coalesce(nullif(trim(addr2), ''), '') || '#' || coalesce(nullif(trim(addr3), ''), '') || '#' || coalesce(nullif(trim(city_code), ''), '') || '#' || coalesce(nullif(trim(state_code), ''), '') || '#' || coalesce(nullif(trim(postal_code), ''), '') || '#' || coalesce(nullif(trim(country_code), ''), '')), '######')), '[[:space:]]+', ' '))) end),''))"
-  PARTY_BK: "nullif(trim(case when coalesce(nullif(trim(party_code),'')) is not null then nullif(trim(party_code), '') end),'')"
-  PARTY_NK: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(party_code),'')) is not null then nullif(trim(party_code), '') end),''))"
-  PARTY_BK__ADDITIONAL_PARTY: "nullif(trim(case when coalesce(nullif(trim(additional_party_code),'')) is not null then nullif(trim(additional_party_code), '') end),'')"
-  PARTY_NK__ADDITIONAL_PARTY: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(additional_party_code),'')) is not null then nullif(trim(additional_party_code), '') end),''))"
-  QUOTE_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
-  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
+  PARTY_BK: "nullif(trim(case when nullif(trim(party_code),'') is not null then nullif(trim(party_code), '') end),'')"
+  PARTY_NK: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(party_code),'') is not null then nullif(trim(party_code), '') end),''))"
+  PARTY_BK__ADDITIONAL_PARTY: "nullif(trim(case when nullif(trim(additional_party_code),'') is not null then nullif(trim(additional_party_code), '') end),'')"
+  PARTY_NK__ADDITIONAL_PARTY: "'HUB_PARTY|' || (nullif(trim(case when nullif(trim(additional_party_code),'') is not null then nullif(trim(additional_party_code), '') end),''))"
+  QUOTE_BK: "nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
+  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
   RISK_OBJECT_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),''), nullif(trim(pol_risk_id),'')) is not null then 'RISK:' || nullif(trim(w0_policy_quote_number), '') || '#' || nullif(trim(pol_risk_id), '') end),'')"
   RISK_OBJECT_NK: "'HUB_RISK_OBJECT|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),''), nullif(trim(pol_risk_id),'')) is not null then 'RISK:' || nullif(trim(w0_policy_quote_number), '') || '#' || nullif(trim(pol_risk_id), '') end),''))"
   ADDRESS_LINE_1: 'addr1'

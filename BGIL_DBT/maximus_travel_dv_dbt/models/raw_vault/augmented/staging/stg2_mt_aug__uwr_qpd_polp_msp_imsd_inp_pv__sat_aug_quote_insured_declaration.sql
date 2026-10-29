@@ -22,8 +22,8 @@ hashed_columns:
       - 'PRE_EXISTING_DISEASE_CODE'
       - 'PRE_EXISTING_DISEASE_DESCRIPTION'
 derived_columns:
-  QUOTE_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
-  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),'')) is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
+  QUOTE_BK: "nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')"
+  QUOTE_NK: "'HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),''))"
   AGE_BAND: 'age_group'
   CURRENT_MEDICATION_DETAIL: 'current_medication'
   DATE_OF_BIRTH: 'date_of_birth'

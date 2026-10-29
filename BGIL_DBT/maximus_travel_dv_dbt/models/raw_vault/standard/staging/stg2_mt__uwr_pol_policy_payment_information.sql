@@ -58,10 +58,10 @@ hashed_columns:
       - 'BANK_NAME'
       - 'INSTRUMENT_STATUS'
 derived_columns:
-  FINANCIAL_TRANSACTION_BK: "nullif(trim(case when coalesce(nullif(trim(transaction_id),'')) is not null then nullif(trim(transaction_id), '') end),'')"
-  FINANCIAL_TRANSACTION_NK: "'HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(transaction_id),'')) is not null then nullif(trim(transaction_id), '') end),''))"
-  PAYMENT_INSTRUMENT_BK: "nullif(trim(case when coalesce(nullif(trim(cheque_number),'')) is not null then 'CHEQUE:' || nullif(trim(cheque_number), '') end),'')"
-  PAYMENT_INSTRUMENT_NK: "'HUB_PAYMENT_INSTRUMENT|' || (nullif(trim(case when coalesce(nullif(trim(cheque_number),'')) is not null then 'CHEQUE:' || nullif(trim(cheque_number), '') end),''))"
+  FINANCIAL_TRANSACTION_BK: "nullif(trim(case when nullif(trim(transaction_id),'') is not null then nullif(trim(transaction_id), '') end),'')"
+  FINANCIAL_TRANSACTION_NK: "'HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(transaction_id),'') is not null then nullif(trim(transaction_id), '') end),''))"
+  PAYMENT_INSTRUMENT_BK: "nullif(trim(case when nullif(trim(cheque_number),'') is not null then 'CHEQUE:' || nullif(trim(cheque_number), '') end),'')"
+  PAYMENT_INSTRUMENT_NK: "'HUB_PAYMENT_INSTRUMENT|' || (nullif(trim(case when nullif(trim(cheque_number),'') is not null then 'CHEQUE:' || nullif(trim(cheque_number), '') end),''))"
   ACCOUNT_TYPE: 'cast(null as varchar)'
   AMOUNT_RECEIVED: 'collection_amount'
   BANK_NAME: 'cast(null as varchar)'

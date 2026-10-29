@@ -65,10 +65,10 @@ hashed_columns:
       - 'PRODUCT_NAME'
       - 'UIN'
 derived_columns:
-  POLICY_BK__PREVIOUS_POLICY: "nullif(trim(case when coalesce(nullif(trim(policy_number),'')) is not null then nullif(trim(policy_number), '') end),'')"
-  POLICY_NK__PREVIOUS_POLICY: "'HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(policy_number),'')) is not null then nullif(trim(policy_number), '') end),''))"
-  PRODUCT_BK: "nullif(trim(case when coalesce(nullif(trim(product_code),'')) is not null then 'PROD:' || nullif(trim(product_code), '') end),'')"
-  PRODUCT_NK: "'HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(product_code),'')) is not null then 'PROD:' || nullif(trim(product_code), '') end),''))"
+  POLICY_BK__PREVIOUS_POLICY: "nullif(trim(case when nullif(trim(policy_number),'') is not null then nullif(trim(policy_number), '') end),'')"
+  POLICY_NK__PREVIOUS_POLICY: "'HUB_POLICY|' || (nullif(trim(case when nullif(trim(policy_number),'') is not null then nullif(trim(policy_number), '') end),''))"
+  PRODUCT_BK: "nullif(trim(case when nullif(trim(product_code),'') is not null then 'PROD:' || nullif(trim(product_code), '') end),'')"
+  PRODUCT_NK: "'HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(product_code),'') is not null then 'PROD:' || nullif(trim(product_code), '') end),''))"
   BASE_PREMIUM: 'cast(null as varchar)'
   CO_INSURANCE_INDICATOR: 'cast(null as varchar)'
   CURRENCY_CODE: 'cast(null as varchar)'
