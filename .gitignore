@@ -9,4 +9,4 @@ amp-chats/
 *amp_chat*.md
 
 # dbt shared environment file (no secrets, but keep local-only to avoid drift)
-BGIL_DBT/.env
+#BGIL_DBT/.env
