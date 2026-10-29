@@ -15,8 +15,8 @@ clean-targets:
   - "dbt_packages"
 
 vars:
-  mt_raw_database: RAW
-  mt_raw_schema: MAXIMUS_TRAVEL
+  mt_raw_database: BAGIC_PROD_MIRROR_DB
+  mt_raw_schema: MAXI_RAW
 
 # SHARED VAULT TABLES
 # -------------------
