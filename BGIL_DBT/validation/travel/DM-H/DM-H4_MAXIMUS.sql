@@ -2,6 +2,7 @@
    DM-H4  |  History - Current-view Correctness (Travel LOB)  (MAXIMUS)
    Latest satellite row per key matches the latest source record.
 
+   MEMBER SPLIT: sections 1..234 assigned M1 x 78, M2 x 78, M3 x 78 -- contiguous thirds in listed order.
    Check ID: DM-H4
    Category: History checks
    Sign-off criterion: Current-view correctness
@@ -36,7 +37,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]
+-- 1. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -98,7 +99,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]
+-- 2. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -313,7 +314,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
+-- 3. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -368,7 +369,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Implemented]
+-- 4. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -621,7 +622,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]
+-- 5. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -730,7 +731,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]
+-- 6. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -873,7 +874,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]
+-- 7. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1109,7 +1110,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]
+-- 8. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1453,7 +1454,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]
+-- 9. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1724,7 +1725,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]
+-- 10. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1784,7 +1785,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]
+-- 11. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1893,7 +1894,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — SAT_CLAIM_NOTE   [Implemented]
+-- 12. MAXIMUS — SAT_CLAIM_NOTE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2097,7 +2098,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]
+-- 13. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2335,7 +2336,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]
+-- 14. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2398,7 +2399,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Implemented]
+-- 15. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2487,7 +2488,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 16. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]
+-- 16. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2543,7 +2544,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 17. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]
+-- 17. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2645,7 +2646,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 18. MAXIMUS — SAT_CLAIM_RESERVE   [Implemented]
+-- 18. MAXIMUS — SAT_CLAIM_RESERVE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2778,7 +2779,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 19. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Implemented]
+-- 19. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2845,7 +2846,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 20. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]
+-- 20. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2901,7 +2902,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 21. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]
+-- 21. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2956,7 +2957,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 22. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]
+-- 22. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -3019,7 +3020,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 23. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]
+-- 23. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -3209,7 +3210,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 24. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]
+-- 24. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -4417,7 +4418,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 25. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]
+-- 25. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -4501,7 +4502,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 26. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]
+-- 26. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -4617,7 +4618,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 27. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 27. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -4793,7 +4794,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 28. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 28. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -5015,7 +5016,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 29. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]
+-- 29. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -5163,7 +5164,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]
+-- 30. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -6165,7 +6166,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 31. MAXIMUS — SAT_COMMON_GEO   [Implemented]
+-- 31. MAXIMUS — SAT_COMMON_GEO   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -6334,7 +6335,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 32. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]
+-- 32. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -6390,7 +6391,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 33. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]
+-- 33. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -6629,7 +6630,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 34. MAXIMUS — SAT_COMMON_STATUS   [Implemented]
+-- 34. MAXIMUS — SAT_COMMON_STATUS   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -6685,7 +6686,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 35. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]
+-- 35. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -6879,7 +6880,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 36. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]
+-- 36. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -7133,7 +7134,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 37. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
+-- 37. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -7207,7 +7208,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 38. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]
+-- 38. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -7793,7 +7794,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 39. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]
+-- 39. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -7849,7 +7850,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 40. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]
+-- 40. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -7933,7 +7934,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 41. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]
+-- 41. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -8161,7 +8162,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 42. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]
+-- 42. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -8308,7 +8309,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 43. MAXIMUS — SAT_FINTXN_TAX   [Implemented]
+-- 43. MAXIMUS — SAT_FINTXN_TAX   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -8610,7 +8611,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 44. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]
+-- 44. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -8785,7 +8786,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 45. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]
+-- 45. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -8893,7 +8894,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 46. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 46. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -9015,7 +9016,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 47. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Implemented]
+-- 47. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -9288,7 +9289,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 48. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]
+-- 48. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -9379,7 +9380,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 49. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]
+-- 49. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -9534,7 +9535,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 50. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]
+-- 50. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -9728,7 +9729,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 51. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 51. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -9858,7 +9859,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 52. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]
+-- 52. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -9956,7 +9957,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 53. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]
+-- 53. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -10012,7 +10013,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 54. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Implemented]
+-- 54. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -10089,7 +10090,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 55. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
+-- 55. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -10280,7 +10281,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 56. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]
+-- 56. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -10382,7 +10383,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 57. MAXIMUS — SAT_PARTY_BANKING   [Implemented]
+-- 57. MAXIMUS — SAT_PARTY_BANKING   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -10657,7 +10658,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 58. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]
+-- 58. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -10713,7 +10714,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 59. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 59. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -10829,7 +10830,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 60. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 60. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -11057,7 +11058,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 61. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]
+-- 61. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -11159,7 +11160,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 62. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]
+-- 62. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -11275,7 +11276,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 63. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 63. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -11447,7 +11448,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 64. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 64. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -13579,7 +13580,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 65. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]
+-- 65. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -14507,7 +14508,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 66. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 66. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -14665,7 +14666,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 67. MAXIMUS — SAT_PARTY_KYC   [Implemented]
+-- 67. MAXIMUS — SAT_PARTY_KYC   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -14795,7 +14796,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 68. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Implemented]
+-- 68. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -14921,7 +14922,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 69. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]
+-- 69. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -14998,7 +14999,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 70. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 70. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -15338,7 +15339,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 71. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]
+-- 71. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -15394,7 +15395,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 72. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]
+-- 72. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -15450,7 +15451,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 73. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]
+-- 73. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -15506,7 +15507,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 74. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]
+-- 74. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -15562,7 +15563,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 75. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]
+-- 75. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -15618,7 +15619,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 76. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Implemented]
+-- 76. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -15808,7 +15809,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 77. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]
+-- 77. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -16189,7 +16190,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 78. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]
+-- 78. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M1]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -16483,7 +16484,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 79. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Implemented]
+-- 79. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -16618,7 +16619,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 80. MAXIMUS — SAT_POLICY_GROUP   [Implemented]
+-- 80. MAXIMUS — SAT_POLICY_GROUP   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -16674,7 +16675,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 81. MAXIMUS — SAT_POLICY_HEADER   [Implemented]
+-- 81. MAXIMUS — SAT_POLICY_HEADER   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -17220,7 +17221,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 82. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]
+-- 82. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -17326,7 +17327,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 83. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]
+-- 83. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -17382,7 +17383,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 84. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Implemented]
+-- 84. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -17917,7 +17918,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 85. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
+-- 85. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -18209,7 +18210,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 86. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]
+-- 86. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -18272,7 +18273,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 87. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]
+-- 87. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -18328,7 +18329,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 88. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]
+-- 88. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -18484,7 +18485,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 89. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]
+-- 89. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -18606,7 +18607,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 90. MAXIMUS — SAT_POLICY_TAX_HEAD   [Implemented]
+-- 90. MAXIMUS — SAT_POLICY_TAX_HEAD   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -18760,7 +18761,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 91. MAXIMUS — SAT_POLICY_TERMS   [Implemented]
+-- 91. MAXIMUS — SAT_POLICY_TERMS   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -18816,7 +18817,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 92. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]
+-- 92. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -19180,7 +19181,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 93. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
+-- 93. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -19296,7 +19297,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 94. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]
+-- 94. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -19398,7 +19399,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 95. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]
+-- 95. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -19622,7 +19623,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 96. MAXIMUS — SAT_QUOTE_RATING   [Implemented]
+-- 96. MAXIMUS — SAT_QUOTE_RATING   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -19811,7 +19812,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 97. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Implemented]
+-- 97. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -20376,7 +20377,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 98. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]
+-- 98. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -20488,7 +20489,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 99. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]
+-- 99. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -20839,7 +20840,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 100. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]
+-- 100. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -21030,7 +21031,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 101. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]
+-- 101. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -21188,7 +21189,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 102. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Implemented]
+-- 102. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -21296,7 +21297,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 103. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
+-- 103. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -21754,7 +21755,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 104. MAXIMUS — SAT_AUG_ASSESSMENT_HEADER   [Implemented]
+-- 104. MAXIMUS — SAT_AUG_ASSESSMENT_HEADER   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -21816,7 +21817,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 105. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]
+-- 105. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -22009,7 +22010,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 106. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
+-- 106. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -22205,7 +22206,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 107. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]
+-- 107. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -22452,7 +22453,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 108. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]
+-- 108. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -22561,7 +22562,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 109. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]
+-- 109. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -22617,7 +22618,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 110. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]
+-- 110. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -22698,7 +22699,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 111. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]
+-- 111. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -22789,7 +22790,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 112. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]
+-- 112. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -22852,7 +22853,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 113. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]
+-- 113. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -22953,7 +22954,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 114. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]
+-- 114. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -23086,7 +23087,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 115. MAXIMUS — SAT_AUG_CLAIM_FNOL   [Implemented]
+-- 115. MAXIMUS — SAT_AUG_CLAIM_FNOL   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -23184,7 +23185,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 116. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]
+-- 116. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -23323,7 +23324,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 117. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]
+-- 117. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -23615,7 +23616,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 118. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]
+-- 118. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -23853,7 +23854,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 119. MAXIMUS — SAT_AUG_CLAIM_HEALTH_DETAIL   [Implemented]
+-- 119. MAXIMUS — SAT_AUG_CLAIM_HEALTH_DETAIL   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -24089,7 +24090,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 120. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]
+-- 120. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -24300,7 +24301,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 121. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]
+-- 121. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -24402,7 +24403,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 122. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]
+-- 122. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -24647,7 +24648,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 123. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]
+-- 123. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -24777,7 +24778,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 124. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]
+-- 124. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -24990,7 +24991,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 125. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]
+-- 125. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25046,7 +25047,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 126. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]
+-- 126. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25148,7 +25149,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 127. MAXIMUS — SAT_AUG_CLAIM_REPUDIATION   [Implemented]
+-- 127. MAXIMUS — SAT_AUG_CLAIM_REPUDIATION   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25204,7 +25205,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 128. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]
+-- 128. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25352,7 +25353,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 129. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]
+-- 129. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25517,7 +25518,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 130. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]
+-- 130. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25677,7 +25678,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 131. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]
+-- 131. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25733,7 +25734,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 132. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]
+-- 132. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25796,7 +25797,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 133. MAXIMUS — SAT_AUG_CLAIM_TP_FORENSIC   [Implemented]
+-- 133. MAXIMUS — SAT_AUG_CLAIM_TP_FORENSIC   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25852,7 +25853,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 134. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]
+-- 134. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26044,7 +26045,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 135. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]
+-- 135. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26205,7 +26206,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 136. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]
+-- 136. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26307,7 +26308,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 137. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 137. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26409,7 +26410,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 138. MAXIMUS — SAT_AUG_COMMON_CONSENT   [Implemented]
+-- 138. MAXIMUS — SAT_AUG_COMMON_CONSENT   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26465,7 +26466,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 139. MAXIMUS — SAT_AUG_COMMON_GEO   [Implemented]
+-- 139. MAXIMUS — SAT_AUG_COMMON_GEO   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26613,7 +26614,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 140. MAXIMUS — SAT_AUG_COMMON_MONETARY_CONTEXT   [Implemented]
+-- 140. MAXIMUS — SAT_AUG_COMMON_MONETARY_CONTEXT   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26668,7 +26669,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 141. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]
+-- 141. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26770,7 +26771,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 142. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
+-- 142. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26978,7 +26979,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 143. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
+-- 143. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -27080,7 +27081,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 144. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
+-- 144. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -27252,7 +27253,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 145. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]
+-- 145. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -27337,7 +27338,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 146. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]
+-- 146. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -27411,7 +27412,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 147. MAXIMUS — SAT_AUG_DOCUMENT_DEFINITION   [Implemented]
+-- 147. MAXIMUS — SAT_AUG_DOCUMENT_DEFINITION   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -27562,7 +27563,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 148. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]
+-- 148. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -27653,7 +27654,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 149. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]
+-- 149. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -27730,7 +27731,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 150. MAXIMUS — SAT_AUG_FINTXN_CLAIM_PAYMENT   [Implemented]
+-- 150. MAXIMUS — SAT_AUG_FINTXN_CLAIM_PAYMENT   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -27800,7 +27801,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 151. MAXIMUS — SAT_AUG_FINTXN_TAX   [Implemented]
+-- 151. MAXIMUS — SAT_AUG_FINTXN_TAX   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28065,7 +28066,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 152. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]
+-- 152. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28212,7 +28213,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 153. MAXIMUS — SAT_AUG_INSTRUMENT_DEFINITION   [Implemented]
+-- 153. MAXIMUS — SAT_AUG_INSTRUMENT_DEFINITION   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28275,7 +28276,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 154. MAXIMUS — SAT_AUG_LNK_ROLE_AGENT   [Implemented]
+-- 154. MAXIMUS — SAT_AUG_LNK_ROLE_AGENT   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28345,7 +28346,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 155. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 155. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28401,7 +28402,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 156. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
+-- 156. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]  [M2]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28464,7 +28465,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 157. MAXIMUS — SAT_AUG_LOSS_EVENT_DETAIL   [Implemented]
+-- 157. MAXIMUS — SAT_AUG_LOSS_EVENT_DETAIL   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28520,7 +28521,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 158. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Implemented]
+-- 158. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28645,7 +28646,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 159. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]
+-- 159. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28923,7 +28924,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 160. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]
+-- 160. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -29053,7 +29054,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 161. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]
+-- 161. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -29155,7 +29156,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 162. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 162. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -29270,7 +29271,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 163. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]
+-- 163. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -29330,7 +29331,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 164. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
+-- 164. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -29446,7 +29447,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 165. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]
+-- 165. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -29678,7 +29679,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 166. MAXIMUS — SAT_AUG_PARTY_FRAUD_PROFILE   [Implemented]
+-- 166. MAXIMUS — SAT_AUG_PARTY_FRAUD_PROFILE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -29794,7 +29795,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 167. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]
+-- 167. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -29850,7 +29851,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 168. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]
+-- 168. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -29980,7 +29981,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 169. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]
+-- 169. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -30050,7 +30051,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 170. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]
+-- 170. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -30811,7 +30812,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 171. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]
+-- 171. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -31071,7 +31072,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 172. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 172. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -31373,7 +31374,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 173. MAXIMUS — SAT_AUG_PARTY_KYC   [Implemented]
+-- 173. MAXIMUS — SAT_AUG_PARTY_KYC   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -31517,7 +31518,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 174. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]
+-- 174. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -31594,7 +31595,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 175. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]
+-- 175. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -31794,7 +31795,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 176. MAXIMUS — SAT_AUG_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 176. MAXIMUS — SAT_AUG_PARTY_ORGANISATION_PROFILE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -31973,7 +31974,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 177. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]
+-- 177. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -32117,7 +32118,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 178. MAXIMUS — SAT_AUG_PARTY_PORTFOLIO_SUMMARY   [Implemented]
+-- 178. MAXIMUS — SAT_AUG_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -32215,7 +32216,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 179. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]
+-- 179. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -32331,7 +32332,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 180. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]
+-- 180. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -32566,7 +32567,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 181. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]
+-- 181. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -32622,7 +32623,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 182. MAXIMUS — SAT_AUG_POLICY_CANCELLATION   [Implemented]
+-- 182. MAXIMUS — SAT_AUG_POLICY_CANCELLATION   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -32699,7 +32700,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 183. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]
+-- 183. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -32769,7 +32770,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 184. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]
+-- 184. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -33148,7 +33149,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 185. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]
+-- 185. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -33204,7 +33205,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 186. MAXIMUS — SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]
+-- 186. MAXIMUS — SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -33277,7 +33278,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 187. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]
+-- 187. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -33398,7 +33399,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 188. MAXIMUS — SAT_AUG_POLICY_ENDORSEMENT   [Implemented]
+-- 188. MAXIMUS — SAT_AUG_POLICY_ENDORSEMENT   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -33526,7 +33527,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 189. MAXIMUS — SAT_AUG_POLICY_GROUP   [Implemented]
+-- 189. MAXIMUS — SAT_AUG_POLICY_GROUP   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -33617,7 +33618,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 190. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]
+-- 190. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -33942,7 +33943,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 191. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]
+-- 191. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -34005,7 +34006,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 192. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]
+-- 192. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -34089,7 +34090,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 193. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]
+-- 193. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -34197,7 +34198,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 194. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]
+-- 194. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -34274,7 +34275,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 195. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]
+-- 195. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -34394,7 +34395,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 196. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]
+-- 196. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -34629,7 +34630,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 197. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]
+-- 197. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -34706,7 +34707,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 198. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]
+-- 198. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -34849,7 +34850,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 199. MAXIMUS — SAT_AUG_POLICY_SUM_INSURED_BREAKUP   [Implemented]
+-- 199. MAXIMUS — SAT_AUG_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -34909,7 +34910,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 200. MAXIMUS — SAT_AUG_POLICY_TAX_BREAKUP   [Implemented]
+-- 200. MAXIMUS — SAT_AUG_POLICY_TAX_BREAKUP   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -34993,7 +34994,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 201. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]
+-- 201. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -35091,7 +35092,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 202. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]
+-- 202. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -35203,7 +35204,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 203. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]
+-- 203. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -35315,7 +35316,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 204. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]
+-- 204. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -35441,7 +35442,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 205. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]
+-- 205. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -35531,7 +35532,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 206. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]
+-- 206. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -35633,7 +35634,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 207. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
+-- 207. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -35735,7 +35736,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 208. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]
+-- 208. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -35805,7 +35806,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 209. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]
+-- 209. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -36239,7 +36240,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 210. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]
+-- 210. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -36468,7 +36469,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 211. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]
+-- 211. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -36628,7 +36629,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 212. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]
+-- 212. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -37488,7 +37489,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 213. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]
+-- 213. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -37551,7 +37552,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 214. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]
+-- 214. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -37635,7 +37636,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 215. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]
+-- 215. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -37712,7 +37713,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 216. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]
+-- 216. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -37816,7 +37817,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 217. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]
+-- 217. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -37893,7 +37894,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 218. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]
+-- 218. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -38390,7 +38391,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 219. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]
+-- 219. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -38473,7 +38474,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 220. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]
+-- 220. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -38550,7 +38551,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 221. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]
+-- 221. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -38713,7 +38714,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 222. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]
+-- 222. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -38846,7 +38847,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 223. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]
+-- 223. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -38958,7 +38959,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 224. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]
+-- 224. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -39084,7 +39085,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 225. MAXIMUS — SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]
+-- 225. MAXIMUS — SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -39238,7 +39239,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 226. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]
+-- 226. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -39399,7 +39400,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 227. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]
+-- 227. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -39461,7 +39462,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 228. MAXIMUS — SAT_AUG_RISK_OBJECT_VALUATION   [Implemented]
+-- 228. MAXIMUS — SAT_AUG_RISK_OBJECT_VALUATION   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -39577,7 +39578,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 229. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
+-- 229. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -39805,7 +39806,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 230. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
+-- 230. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -40361,7 +40362,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 231. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]
+-- 231. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -40599,7 +40600,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 232. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]
+-- 232. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -40784,7 +40785,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 233. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]
+-- 233. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -40900,7 +40901,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 234. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]
+-- 234. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]  [M3]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,

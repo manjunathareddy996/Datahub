@@ -2,6 +2,7 @@
    DM-R1  |  Referential Integrity - No Orphan Satellite Rows (Travel LOB)  (MAXIMUS)
    Every satellite row references a valid hub (or link) key. Pass criterion: 0 orphan rows.
 
+   MEMBER SPLIT: sections 1..235 assigned M1 x 79, M2 x 78, M3 x 78 -- contiguous thirds in listed order.
    Check ID: DM-R1
    Category: Referential integrity
    Sign-off criterion: No orphan satellite rows
@@ -35,7 +36,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. MAXIMUS — Summary: all MAXIMUS satellites in one query   [Implemented]
+-- 1. MAXIMUS — Summary: all MAXIMUS satellites in one query   [Implemented]  [M1]
 -- One row per satellite (no RECORD_SOURCE split) -- quick evidence for the whole
 -- project. The per-satellite sections below give the RECORD_SOURCE breakdown and orphan
 -- examples.
@@ -1452,7 +1453,7 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]
+-- 2. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]  [M1]
 -- Parent hub HUB_ASSESSMENT (src_pk ASSESSMENT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1480,7 +1481,7 @@ select 'MAXIMUS' as project, 'SAT_ASSESSMENT_HEADER' as satellite, 'HUB_ASSESSME
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]
+-- 3. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]  [M1]
 -- Parent hub HUB_DISTRIBUTION_CHANNEL (src_pk DISTRIBUTION_CHANNEL_HKEY); checked across
 -- all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -1515,7 +1516,7 @@ select 'MAXIMUS' as project, 'SAT_CHANNEL_DEFINITION' as satellite, 'HUB_DISTRIB
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
+-- 4. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1543,7 +1544,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_ASSESSMENT_SUMMARY' as satellite, 'HUB_C
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Implemented]
+-- 5. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1580,7 +1581,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_BENEFIT_HEAD' as satellite, 'HUB_CLAIM' 
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]
+-- 6. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1611,7 +1612,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_CO_RI_SHARE' as satellite, 'HUB_CLAIM' a
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]
+-- 7. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1641,7 +1642,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_FNOL' as satellite, 'HUB_CLAIM' as paren
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]
+-- 8. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1676,7 +1677,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_FRAUD' as satellite, 'HUB_CLAIM' as pare
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]
+-- 9. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1712,7 +1713,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEADER' as satellite, 'HUB_CLAIM' as par
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]
+-- 10. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1747,7 +1748,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEALTH_DETAIL' as satellite, 'HUB_CLAIM'
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]
+-- 11. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1778,7 +1779,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_INVESTIGATION_FINDING' as satellite, 'HU
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]
+-- 12. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1809,7 +1810,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_LITIGATION' as satellite, 'HUB_CLAIM' as
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — SAT_CLAIM_NOTE   [Implemented]
+-- 13. MAXIMUS — SAT_CLAIM_NOTE   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1841,7 +1842,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_NOTE' as satellite, 'HUB_CLAIM' as paren
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]
+-- 14. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1874,7 +1875,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PAYMENT_TRANCHE' as satellite, 'HUB_CLAI
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]
+-- 15. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1903,7 +1904,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PA_DETAIL' as satellite, 'HUB_CLAIM' as 
 
 
 ----------------------------------------------------------------------------------------
--- 16. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Implemented]
+-- 16. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1935,7 +1936,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PROVIDER_BILLING' as satellite, 'HUB_CLA
 
 
 ----------------------------------------------------------------------------------------
--- 17. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]
+-- 17. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1964,7 +1965,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RECOVERY_SALVAGE' as satellite, 'HUB_CLA
 
 
 ----------------------------------------------------------------------------------------
--- 18. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]
+-- 18. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1995,7 +1996,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_REPUDIATION' as satellite, 'HUB_CLAIM' a
 
 
 ----------------------------------------------------------------------------------------
--- 19. MAXIMUS — SAT_CLAIM_RESERVE   [Implemented]
+-- 19. MAXIMUS — SAT_CLAIM_RESERVE   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2025,7 +2026,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RESERVE' as satellite, 'HUB_CLAIM' as pa
 
 
 ----------------------------------------------------------------------------------------
--- 20. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Implemented]
+-- 20. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2056,7 +2057,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RESERVE_HEAD' as satellite, 'HUB_CLAIM' 
 
 
 ----------------------------------------------------------------------------------------
--- 21. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]
+-- 21. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2085,7 +2086,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_SETTLEMENT' as satellite, 'HUB_CLAIM' as
 
 
 ----------------------------------------------------------------------------------------
--- 22. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]
+-- 22. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2113,7 +2114,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_SLA_TRACKING' as satellite, 'HUB_CLAIM' 
 
 
 ----------------------------------------------------------------------------------------
--- 23. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]
+-- 23. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2142,7 +2143,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_TP_FORENSIC' as satellite, 'HUB_CLAIM' a
 
 
 ----------------------------------------------------------------------------------------
--- 24. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]
+-- 24. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]  [M1]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2175,7 +2176,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_TRAVEL_DETAIL' as satellite, 'HUB_CLAIM'
 
 
 ----------------------------------------------------------------------------------------
--- 25. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]
+-- 25. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
 -- Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2229,7 +2230,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'HUB_LOCATION' a
 
 
 ----------------------------------------------------------------------------------------
--- 26. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]
+-- 26. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]  [M1]
 -- Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2258,7 +2259,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADMIN_GEOGRAPHY' as satellite, 'HUB_LOC
 
 
 ----------------------------------------------------------------------------------------
--- 27. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]
+-- 27. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]  [M1]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2289,7 +2290,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_BUSINESS_AUDIT' as satellite, 'HUB_POLI
 
 
 ----------------------------------------------------------------------------------------
--- 28. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 28. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2322,7 +2323,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'HUB_PART
 
 
 ----------------------------------------------------------------------------------------
--- 29. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 29. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2357,7 +2358,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]
+-- 30. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2390,7 +2391,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONSENT' as satellite, 'HUB_PARTY' as p
 
 
 ----------------------------------------------------------------------------------------
--- 31. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]
+-- 31. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2435,7 +2436,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'HUB_PARTY' as p
 
 
 ----------------------------------------------------------------------------------------
--- 32. MAXIMUS — SAT_COMMON_GEO   [Implemented]
+-- 32. MAXIMUS — SAT_COMMON_GEO   [Implemented]  [M1]
 -- Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2468,7 +2469,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_GEO' as satellite, 'HUB_LOCATION' as pa
 
 
 ----------------------------------------------------------------------------------------
--- 33. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]
+-- 33. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]  [M1]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2497,7 +2498,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_LIFECYCLE' as satellite, 'HUB_POLICY' a
 
 
 ----------------------------------------------------------------------------------------
--- 34. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]
+-- 34. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -2528,7 +2529,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_MONETARY_CONTEXT' as satellite, 'HUB_FI
 
 
 ----------------------------------------------------------------------------------------
--- 35. MAXIMUS — SAT_COMMON_STATUS   [Implemented]
+-- 35. MAXIMUS — SAT_COMMON_STATUS   [Implemented]  [M1]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2557,7 +2558,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_STATUS' as satellite, 'HUB_POLICY' as p
 
 
 ----------------------------------------------------------------------------------------
--- 36. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]
+-- 36. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2592,7 +2593,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite, 'HUB_COVERA
 
 
 ----------------------------------------------------------------------------------------
--- 37. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]
+-- 37. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2629,7 +2630,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'HUB_COVERA
 
 
 ----------------------------------------------------------------------------------------
--- 38. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
+-- 38. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M1]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2660,7 +2661,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_SUBLIMIT_SCHEDULE' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 39. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]
+-- 39. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]  [M1]
 -- Parent hub HUB_DOCUMENT (src_pk DOCUMENT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2704,7 +2705,7 @@ select 'MAXIMUS' as project, 'SAT_DOCUMENT_DEFINITION' as satellite, 'HUB_DOCUME
 
 
 ----------------------------------------------------------------------------------------
--- 40. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]
+-- 40. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -2733,7 +2734,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_ACCOUNTING' as satellite, 'HUB_FINANCIA
 
 
 ----------------------------------------------------------------------------------------
--- 41. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]
+-- 41. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -2762,7 +2763,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_CLAIM_PAYMENT' as satellite, 'HUB_FINAN
 
 
 ----------------------------------------------------------------------------------------
--- 42. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]
+-- 42. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -2796,7 +2797,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_HEADER' as satellite, 'HUB_FINANCIAL_TR
 
 
 ----------------------------------------------------------------------------------------
--- 43. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]
+-- 43. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -2828,7 +2829,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'HUB_FINANCIAL_T
 
 
 ----------------------------------------------------------------------------------------
--- 44. MAXIMUS — SAT_FINTXN_TAX   [Implemented]
+-- 44. MAXIMUS — SAT_FINTXN_TAX   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -2861,7 +2862,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_TAX' as satellite, 'HUB_FINANCIAL_TRANS
 
 
 ----------------------------------------------------------------------------------------
--- 45. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]
+-- 45. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -2893,7 +2894,7 @@ select 'MAXIMUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'HUB_FINANCIAL_TRAN
 
 
 ----------------------------------------------------------------------------------------
--- 46. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]
+-- 46. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]  [M1]
 -- Parent hub HUB_PAYMENT_INSTRUMENT (src_pk PAYMENT_INSTRUMENT_HKEY); checked across all
 -- rows of the parent (shared vault: the key may have been loaded by the other project).
 -- Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -2923,7 +2924,7 @@ select 'MAXIMUS' as project, 'SAT_INSTRUMENT_DEFINITION' as satellite, 'HUB_PAYM
 
 
 ----------------------------------------------------------------------------------------
--- 47. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 47. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2956,7 +2957,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_PARTY_ROLE_CORE' as satellite, 'HUB_PARTY'
 
 
 ----------------------------------------------------------------------------------------
--- 48. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Implemented]
+-- 48. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Implemented]  [M1]
 -- Parent hub LINK_POLICY_PARTY (src_pk POLICY_PARTY_HKEY); checked across all rows of
 -- the parent (shared vault: the key may have been loaded by the other project).
 -- Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -2992,7 +2993,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_POLICY_PARTY_ROLE' as satellite, 'LINK_POL
 
 
 ----------------------------------------------------------------------------------------
--- 49. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]
+-- 49. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]  [M1]
 -- Parent hub LINK_PARTY_ROLE (src_pk PARTY_ROLE_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3021,7 +3022,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_AGENT' as satellite, 'LINK_PARTY_ROLE
 
 
 ----------------------------------------------------------------------------------------
--- 50. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]
+-- 50. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]  [M1]
 -- Parent hub LINK_PARTY_ROLE (src_pk PARTY_ROLE_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3054,7 +3055,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_CUSTOMER' as satellite, 'LINK_PARTY_R
 
 
 ----------------------------------------------------------------------------------------
--- 51. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]
+-- 51. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]  [M1]
 -- Parent hub LINK_PARTY_ROLE (src_pk PARTY_ROLE_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3089,7 +3090,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_EMPLOYEE' as satellite, 'LINK_PARTY_R
 
 
 ----------------------------------------------------------------------------------------
--- 52. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 52. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3120,7 +3121,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 53. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]
+-- 53. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]  [M1]
 -- Parent hub HUB_LOSS_EVENT (src_pk LOSS_EVENT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3149,7 +3150,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_DETAIL' as satellite, 'HUB_LOSS_EVE
 
 
 ----------------------------------------------------------------------------------------
--- 54. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]
+-- 54. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]  [M1]
 -- Parent hub HUB_LOSS_EVENT (src_pk LOSS_EVENT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3178,7 +3179,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_NOTIFICATION' as satellite, 'HUB_LO
 
 
 ----------------------------------------------------------------------------------------
--- 55. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Implemented]
+-- 55. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Implemented]  [M1]
 -- Parent hub HUB_LOSS_EVENT (src_pk LOSS_EVENT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3207,7 +3208,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_LOCATION_ADDRESS' as satellite, 'HUB_LOSS
 
 
 ----------------------------------------------------------------------------------------
--- 56. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
+-- 56. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
 -- Parent hub HUB_ORG_UNIT (src_pk ORG_UNIT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3239,7 +3240,7 @@ select 'MAXIMUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite, 'HUB_ORG_UN
 
 
 ----------------------------------------------------------------------------------------
--- 57. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]
+-- 57. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3270,7 +3271,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_AML_SCREENING' as satellite, 'HUB_PARTY'
 
 
 ----------------------------------------------------------------------------------------
--- 58. MAXIMUS — SAT_PARTY_BANKING   [Implemented]
+-- 58. MAXIMUS — SAT_PARTY_BANKING   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3305,7 +3306,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_BANKING' as satellite, 'HUB_PARTY' as pa
 
 
 ----------------------------------------------------------------------------------------
--- 59. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]
+-- 59. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3334,7 +3335,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite, 'HUB_PARTY'
 
 
 ----------------------------------------------------------------------------------------
--- 60. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 60. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M1]
 -- Parent hub LINK_PARTY_LOCATION (src_pk PARTY_LOCATION_HKEY); checked across all rows
 -- of the parent (shared vault: the key may have been loaded by the other project).
 -- Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -3375,7 +3376,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite, 'LIN
 
 
 ----------------------------------------------------------------------------------------
--- 61. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 61. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3409,7 +3410,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY' as
 
 
 ----------------------------------------------------------------------------------------
--- 62. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]
+-- 62. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3440,7 +3441,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FINANCIAL_PROFILE' as satellite, 'HUB_PA
 
 
 ----------------------------------------------------------------------------------------
--- 63. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]
+-- 63. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3471,7 +3472,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FRAUD_PROFILE' as satellite, 'HUB_PARTY'
 
 
 ----------------------------------------------------------------------------------------
--- 64. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 64. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3502,7 +3503,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'HUB_PARTY
 
 
 ----------------------------------------------------------------------------------------
--- 65. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 65. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3544,7 +3545,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'HUB_PARTY
 
 
 ----------------------------------------------------------------------------------------
--- 66. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]
+-- 66. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3593,7 +3594,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'HUB_PARTY' as p
 
 
 ----------------------------------------------------------------------------------------
--- 67. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 67. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3624,7 +3625,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 68. MAXIMUS — SAT_PARTY_KYC   [Implemented]
+-- 68. MAXIMUS — SAT_PARTY_KYC   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3655,7 +3656,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC' as satellite, 'HUB_PARTY' as parent
 
 
 ----------------------------------------------------------------------------------------
--- 69. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Implemented]
+-- 69. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3688,7 +3689,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC_REFERENCE' as satellite, 'HUB_PARTY'
 
 
 ----------------------------------------------------------------------------------------
--- 70. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]
+-- 70. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3717,7 +3718,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ONBOARDING_JOURNEY' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 71. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 71. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3751,7 +3752,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ORGANISATION_PROFILE' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 72. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]
+-- 72. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3780,7 +3781,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PAYOUT_PROFILE' as satellite, 'HUB_PARTY
 
 
 ----------------------------------------------------------------------------------------
--- 73. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]
+-- 73. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3809,7 +3810,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_POLICY_HISTORY' as satellite, 'HUB_PARTY
 
 
 ----------------------------------------------------------------------------------------
--- 74. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]
+-- 74. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3838,7 +3839,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PORTFOLIO_SUMMARY' as satellite, 'HUB_PA
 
 
 ----------------------------------------------------------------------------------------
--- 75. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]
+-- 75. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3867,7 +3868,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_RELATIONSHIP_PROFILE' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 76. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]
+-- 76. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]  [M1]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3896,7 +3897,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite, 'HUB_POLICY
 
 
 ----------------------------------------------------------------------------------------
--- 77. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Implemented]
+-- 77. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Implemented]  [M1]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3931,7 +3932,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'HUB_POLI
 
 
 ----------------------------------------------------------------------------------------
--- 78. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]
+-- 78. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M1]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3971,7 +3972,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_COVERAGE_SCHEDULE' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 79. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]
+-- 79. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M1]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4005,7 +4006,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_DISCOUNT_LOADING_APPLIED' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 80. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Implemented]
+-- 80. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4037,7 +4038,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_ENDORSEMENT' as satellite, 'HUB_POLICY'
 
 
 ----------------------------------------------------------------------------------------
--- 81. MAXIMUS — SAT_POLICY_GROUP   [Implemented]
+-- 81. MAXIMUS — SAT_POLICY_GROUP   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4066,7 +4067,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_GROUP' as satellite, 'HUB_POLICY' as pa
 
 
 ----------------------------------------------------------------------------------------
--- 82. MAXIMUS — SAT_POLICY_HEADER   [Implemented]
+-- 82. MAXIMUS — SAT_POLICY_HEADER   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4104,7 +4105,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_HEADER' as satellite, 'HUB_POLICY' as p
 
 
 ----------------------------------------------------------------------------------------
--- 83. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]
+-- 83. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4135,7 +4136,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_INTERMEDIARY_SPLIT' as satellite, 'HUB_
 
 
 ----------------------------------------------------------------------------------------
--- 84. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]
+-- 84. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4164,7 +4165,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PORTABILITY_MIGRATION' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 85. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Implemented]
+-- 85. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4201,7 +4202,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PREMIUM_HEAD' as satellite, 'HUB_POLICY
 
 
 ----------------------------------------------------------------------------------------
--- 86. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
+-- 86. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4234,7 +4235,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PREMIUM_SUMMARY' as satellite, 'HUB_POL
 
 
 ----------------------------------------------------------------------------------------
--- 87. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]
+-- 87. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4263,7 +4264,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_RENEWAL' as satellite, 'HUB_POLICY' as 
 
 
 ----------------------------------------------------------------------------------------
--- 88. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]
+-- 88. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4292,7 +4293,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SERVICING_SUMMARY' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 89. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]
+-- 89. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4327,7 +4328,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SUM_INSURED_BREAKUP' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 90. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]
+-- 90. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4357,7 +4358,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TAX_BREAKUP' as satellite, 'HUB_POLICY'
 
 
 ----------------------------------------------------------------------------------------
--- 91. MAXIMUS — SAT_POLICY_TAX_HEAD   [Implemented]
+-- 91. MAXIMUS — SAT_POLICY_TAX_HEAD   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4390,7 +4391,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TAX_HEAD' as satellite, 'HUB_POLICY' as
 
 
 ----------------------------------------------------------------------------------------
--- 92. MAXIMUS — SAT_POLICY_TERMS   [Implemented]
+-- 92. MAXIMUS — SAT_POLICY_TERMS   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4419,7 +4420,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TERMS' as satellite, 'HUB_POLICY' as pa
 
 
 ----------------------------------------------------------------------------------------
--- 93. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]
+-- 93. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4457,7 +4458,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'HUB_PRODUCT
 
 
 ----------------------------------------------------------------------------------------
--- 94. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
+-- 94. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4488,7 +4489,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 95. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]
+-- 95. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4519,7 +4520,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'HUB_PRODUCT' as 
 
 
 ----------------------------------------------------------------------------------------
--- 96. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]
+-- 96. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4551,7 +4552,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_HEADER' as satellite, 'HUB_QUOTE' as par
 
 
 ----------------------------------------------------------------------------------------
--- 97. MAXIMUS — SAT_QUOTE_RATING   [Implemented]
+-- 97. MAXIMUS — SAT_QUOTE_RATING   [Implemented]  [M2]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4583,7 +4584,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING' as satellite, 'HUB_QUOTE' as par
 
 
 ----------------------------------------------------------------------------------------
--- 98. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Implemented]
+-- 98. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Implemented]  [M2]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4621,7 +4622,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING_INPUT' as satellite, 'HUB_QUOTE' 
 
 
 ----------------------------------------------------------------------------------------
--- 99. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]
+-- 99. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M2]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4654,7 +4655,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_HEALTH_MEMBER_MEDICAL' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 100. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]
+-- 100. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M2]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4688,7 +4689,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite, 'HUB_RISK_OBJE
 
 
 ----------------------------------------------------------------------------------------
--- 101. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]
+-- 101. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]  [M2]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4720,7 +4721,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_VALUATION' as satellite, 'HUB_RISK
 
 
 ----------------------------------------------------------------------------------------
--- 102. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]
+-- 102. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M2]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4751,7 +4752,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, 'HUB_RISK_O
 
 
 ----------------------------------------------------------------------------------------
--- 103. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Implemented]
+-- 103. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Implemented]  [M2]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4784,7 +4785,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_MEMBER' as satellite, 'HUB_RISK_OB
 
 
 ----------------------------------------------------------------------------------------
--- 104. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
+-- 104. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M2]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4825,7 +4826,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'HUB_RISK_OB
 
 
 ----------------------------------------------------------------------------------------
--- 105. MAXIMUS — SAT_AUG_ASSESSMENT_HEADER   [Implemented]
+-- 105. MAXIMUS — SAT_AUG_ASSESSMENT_HEADER   [Implemented]  [M2]
 -- Parent hub HUB_ASSESSMENT (src_pk ASSESSMENT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -4853,7 +4854,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_ASSESSMENT_HEADER' as satellite, 'HUB_ASSE
 
 
 ----------------------------------------------------------------------------------------
--- 106. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]
+-- 106. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -4884,7 +4885,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_APPROVAL_ACTION' as satellite, 'HUB_
 
 
 ----------------------------------------------------------------------------------------
--- 107. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
+-- 107. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -4916,7 +4917,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_ASSESSMENT_SUMMARY' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 108. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]
+-- 108. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -4951,7 +4952,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_BENEFIT_HEAD' as satellite, 'HUB_CLA
 
 
 ----------------------------------------------------------------------------------------
--- 109. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]
+-- 109. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -4982,7 +4983,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_CO_RI_SHARE' as satellite, 'HUB_CLAI
 
 
 ----------------------------------------------------------------------------------------
--- 110. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]
+-- 110. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5011,7 +5012,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DEDUCTION_WAIVER' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 111. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]
+-- 111. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5042,7 +5043,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DOCUMENT_REMINDER' as satellite, 'HU
 
 
 ----------------------------------------------------------------------------------------
--- 112. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]
+-- 112. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5071,7 +5072,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 113. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]
+-- 113. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5100,7 +5101,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EVIDENCE' as satellite, 'HUB_CLAIM' 
 
 
 ----------------------------------------------------------------------------------------
--- 114. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]
+-- 114. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5131,7 +5132,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EXCLUSION_APPLIED' as satellite, 'HU
 
 
 ----------------------------------------------------------------------------------------
--- 115. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]
+-- 115. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5160,7 +5161,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EXPENSE_LINE' as satellite, 'HUB_CLA
 
 
 ----------------------------------------------------------------------------------------
--- 116. MAXIMUS — SAT_AUG_CLAIM_FNOL   [Implemented]
+-- 116. MAXIMUS — SAT_AUG_CLAIM_FNOL   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5189,7 +5190,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FNOL' as satellite, 'HUB_CLAIM' as p
 
 
 ----------------------------------------------------------------------------------------
--- 117. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]
+-- 117. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5217,7 +5218,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FOLLOWUP_TASK' as satellite, 'HUB_CL
 
 
 ----------------------------------------------------------------------------------------
--- 118. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]
+-- 118. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5252,7 +5253,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FRAUD' as satellite, 'HUB_CLAIM' as 
 
 
 ----------------------------------------------------------------------------------------
--- 119. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]
+-- 119. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5284,7 +5285,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_HEADER' as satellite, 'HUB_CLAIM' as
 
 
 ----------------------------------------------------------------------------------------
--- 120. MAXIMUS — SAT_AUG_CLAIM_HEALTH_DETAIL   [Implemented]
+-- 120. MAXIMUS — SAT_AUG_CLAIM_HEALTH_DETAIL   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5319,7 +5320,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_HEALTH_DETAIL' as satellite, 'HUB_CL
 
 
 ----------------------------------------------------------------------------------------
--- 121. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]
+-- 121. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5352,7 +5353,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_LITIGATION' as satellite, 'HUB_CLAIM
 
 
 ----------------------------------------------------------------------------------------
--- 122. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]
+-- 122. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5383,7 +5384,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_NETWORK_VERIFICATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 123. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]
+-- 123. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5416,7 +5417,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PAYMENT_TRANCHE' as satellite, 'HUB_
 
 
 ----------------------------------------------------------------------------------------
--- 124. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]
+-- 124. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5447,7 +5448,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PA_DETAIL' as satellite, 'HUB_CLAIM'
 
 
 ----------------------------------------------------------------------------------------
--- 125. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]
+-- 125. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5477,7 +5478,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PROVIDER_BILLING' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 126. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]
+-- 126. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5506,7 +5507,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_QUALITY_AUDIT' as satellite, 'HUB_CL
 
 
 ----------------------------------------------------------------------------------------
--- 127. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]
+-- 127. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5537,7 +5538,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_RECOVERY_SALVAGE' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 128. MAXIMUS — SAT_AUG_CLAIM_REPUDIATION   [Implemented]
+-- 128. MAXIMUS — SAT_AUG_CLAIM_REPUDIATION   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5566,7 +5567,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_REPUDIATION' as satellite, 'HUB_CLAI
 
 
 ----------------------------------------------------------------------------------------
--- 129. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]
+-- 129. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5599,7 +5600,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SETTLEMENT' as satellite, 'HUB_CLAIM
 
 
 ----------------------------------------------------------------------------------------
--- 130. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]
+-- 130. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5630,7 +5631,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SLA_TRACKING' as satellite, 'HUB_CLA
 
 
 ----------------------------------------------------------------------------------------
--- 131. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]
+-- 131. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5658,7 +5659,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_STATUS_HISTORY' as satellite, 'HUB_C
 
 
 ----------------------------------------------------------------------------------------
--- 132. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]
+-- 132. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5687,7 +5688,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SURVEY_APPOINTMENT' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 133. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]
+-- 133. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5716,7 +5717,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TPA_INTERACTION' as satellite, 'HUB_
 
 
 ----------------------------------------------------------------------------------------
--- 134. MAXIMUS — SAT_AUG_CLAIM_TP_FORENSIC   [Implemented]
+-- 134. MAXIMUS — SAT_AUG_CLAIM_TP_FORENSIC   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5745,7 +5746,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TP_FORENSIC' as satellite, 'HUB_CLAI
 
 
 ----------------------------------------------------------------------------------------
--- 135. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]
+-- 135. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5775,7 +5776,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TRAVEL_DETAIL' as satellite, 'HUB_CL
 
 
 ----------------------------------------------------------------------------------------
--- 136. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]
+-- 136. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]  [M2]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5804,7 +5805,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TRAVEL_SECTOR' as satellite, 'HUB_CL
 
 
 ----------------------------------------------------------------------------------------
--- 137. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]
+-- 137. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]  [M2]
 -- Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5835,7 +5836,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_ADDRESS' as satellite, 'HUB_LOCATIO
 
 
 ----------------------------------------------------------------------------------------
--- 138. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 138. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M2]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5866,7 +5867,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satell
 
 
 ----------------------------------------------------------------------------------------
--- 139. MAXIMUS — SAT_AUG_COMMON_CONSENT   [Implemented]
+-- 139. MAXIMUS — SAT_AUG_COMMON_CONSENT   [Implemented]  [M2]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5895,7 +5896,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_CONSENT' as satellite, 'HUB_PARTY' 
 
 
 ----------------------------------------------------------------------------------------
--- 140. MAXIMUS — SAT_AUG_COMMON_GEO   [Implemented]
+-- 140. MAXIMUS — SAT_AUG_COMMON_GEO   [Implemented]  [M2]
 -- Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5928,7 +5929,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_GEO' as satellite, 'HUB_LOCATION' a
 
 
 ----------------------------------------------------------------------------------------
--- 141. MAXIMUS — SAT_AUG_COMMON_MONETARY_CONTEXT   [Implemented]
+-- 141. MAXIMUS — SAT_AUG_COMMON_MONETARY_CONTEXT   [Implemented]  [M2]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE.
@@ -5956,7 +5957,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_MONETARY_CONTEXT' as satellite, 'HU
 
 
 ----------------------------------------------------------------------------------------
--- 142. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]
+-- 142. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]  [M2]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5987,7 +5988,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_CONDITIONS' as satellite, 'HUB_CO
 
 
 ----------------------------------------------------------------------------------------
--- 143. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
+-- 143. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M2]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6022,7 +6023,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite, 'HUB_CO
 
 
 ----------------------------------------------------------------------------------------
--- 144. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
+-- 144. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M2]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6053,7 +6054,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, 'HUB_COVERA
 
 
 ----------------------------------------------------------------------------------------
--- 145. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
+-- 145. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M2]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6084,7 +6085,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 146. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]
+-- 146. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]  [M2]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6115,7 +6116,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_SUB_COVER_ELEMENT' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 147. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]
+-- 147. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]  [M2]
 -- Parent hub HUB_DOCUMENT (src_pk DOCUMENT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6146,7 +6147,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_CHECKLIST' as satellite, 'HUB_DOC
 
 
 ----------------------------------------------------------------------------------------
--- 148. MAXIMUS — SAT_AUG_DOCUMENT_DEFINITION   [Implemented]
+-- 148. MAXIMUS — SAT_AUG_DOCUMENT_DEFINITION   [Implemented]  [M2]
 -- Parent hub HUB_DOCUMENT (src_pk DOCUMENT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6177,7 +6178,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_DEFINITION' as satellite, 'HUB_DO
 
 
 ----------------------------------------------------------------------------------------
--- 149. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]
+-- 149. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]  [M2]
 -- Parent hub HUB_DOCUMENT (src_pk DOCUMENT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6206,7 +6207,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_DISPATCH' as satellite, 'HUB_DOCU
 
 
 ----------------------------------------------------------------------------------------
--- 150. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]
+-- 150. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]  [M2]
 -- Parent hub HUB_DOCUMENT (src_pk DOCUMENT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6237,7 +6238,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER' as satellit
 
 
 ----------------------------------------------------------------------------------------
--- 151. MAXIMUS — SAT_AUG_FINTXN_CLAIM_PAYMENT   [Implemented]
+-- 151. MAXIMUS — SAT_AUG_FINTXN_CLAIM_PAYMENT   [Implemented]  [M2]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE.
@@ -6267,7 +6268,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_FINTXN_CLAIM_PAYMENT' as satellite, 'HUB_F
 
 
 ----------------------------------------------------------------------------------------
--- 152. MAXIMUS — SAT_AUG_FINTXN_TAX   [Implemented]
+-- 152. MAXIMUS — SAT_AUG_FINTXN_TAX   [Implemented]  [M2]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE.
@@ -6300,7 +6301,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_FINTXN_TAX' as satellite, 'HUB_FINANCIAL_T
 
 
 ----------------------------------------------------------------------------------------
--- 153. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]
+-- 153. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]  [M2]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE.
@@ -6333,7 +6334,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_FIN_RECEIPT' as satellite, 'HUB_FINANCIAL_
 
 
 ----------------------------------------------------------------------------------------
--- 154. MAXIMUS — SAT_AUG_INSTRUMENT_DEFINITION   [Implemented]
+-- 154. MAXIMUS — SAT_AUG_INSTRUMENT_DEFINITION   [Implemented]  [M2]
 -- Parent hub HUB_PAYMENT_INSTRUMENT (src_pk PAYMENT_INSTRUMENT_HKEY); checked across all
 -- rows of the parent (shared vault: the key may have been loaded by the other project).
 -- Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented
@@ -6362,7 +6363,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_INSTRUMENT_DEFINITION' as satellite, 'HUB_
 
 
 ----------------------------------------------------------------------------------------
--- 155. MAXIMUS — SAT_AUG_LNK_ROLE_AGENT   [Implemented]
+-- 155. MAXIMUS — SAT_AUG_LNK_ROLE_AGENT   [Implemented]  [M2]
 -- Parent hub LINK_PARTY_ROLE (src_pk PARTY_ROLE_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6391,7 +6392,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_AGENT' as satellite, 'LINK_PARTY_
 
 
 ----------------------------------------------------------------------------------------
--- 156. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 156. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M2]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6420,7 +6421,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'HUB_PART
 
 
 ----------------------------------------------------------------------------------------
--- 157. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
+-- 157. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]  [M2]
 -- Parent hub LINK_PARTY_ROLE (src_pk PARTY_ROLE_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6449,7 +6450,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite, 'LINK_PAR
 
 
 ----------------------------------------------------------------------------------------
--- 158. MAXIMUS — SAT_AUG_LOSS_EVENT_DETAIL   [Implemented]
+-- 158. MAXIMUS — SAT_AUG_LOSS_EVENT_DETAIL   [Implemented]  [M3]
 -- Parent hub HUB_LOSS_EVENT (src_pk LOSS_EVENT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6478,7 +6479,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LOSS_EVENT_DETAIL' as satellite, 'HUB_LOSS
 
 
 ----------------------------------------------------------------------------------------
--- 159. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Implemented]
+-- 159. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Implemented]  [M3]
 -- Parent hub HUB_ORG_UNIT (src_pk ORG_UNIT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6509,7 +6510,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_ORG_UNIT_CONTACT' as satellite, 'HUB_ORG_U
 
 
 ----------------------------------------------------------------------------------------
--- 160. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]
+-- 160. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6544,7 +6545,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite, 'HUB_PARTY' a
 
 
 ----------------------------------------------------------------------------------------
--- 161. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]
+-- 161. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6575,7 +6576,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CLAIM_HISTORY' as satellite, 'HUB_PA
 
 
 ----------------------------------------------------------------------------------------
--- 162. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]
+-- 162. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6606,7 +6607,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONSENT_MANDATE' as satellite, 'HUB_
 
 
 ----------------------------------------------------------------------------------------
--- 163. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 163. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M3]
 -- Parent hub LINK_PARTY_LOCATION (src_pk PARTY_LOCATION_HKEY); checked across all rows
 -- of the parent (shared vault: the key may have been loaded by the other project).
 -- Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented
@@ -6639,7 +6640,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONTACT_ADDRESS_LINK' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 164. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]
+-- 164. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6670,7 +6671,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CORRESPONDENCE' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 165. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
+-- 165. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6701,7 +6702,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY
 
 
 ----------------------------------------------------------------------------------------
--- 166. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]
+-- 166. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6734,7 +6735,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_FINANCIAL_PROFILE' as satellite, 'HU
 
 
 ----------------------------------------------------------------------------------------
--- 167. MAXIMUS — SAT_AUG_PARTY_FRAUD_PROFILE   [Implemented]
+-- 167. MAXIMUS — SAT_AUG_PARTY_FRAUD_PROFILE   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6765,7 +6766,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_FRAUD_PROFILE' as satellite, 'HUB_PA
 
 
 ----------------------------------------------------------------------------------------
--- 168. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]
+-- 168. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6794,7 +6795,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_GROUP_SCHEME' as satellite, 'HUB_PAR
 
 
 ----------------------------------------------------------------------------------------
--- 169. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]
+-- 169. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6825,7 +6826,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HEALTH_PROFILE' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 170. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]
+-- 170. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6854,7 +6855,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HIERARCHY' as satellite, 'HUB_PARTY'
 
 
 ----------------------------------------------------------------------------------------
--- 171. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]
+-- 171. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6893,7 +6894,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_IDENTIFICATION' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 172. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]
+-- 172. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6929,7 +6930,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_IDENTITY' as satellite, 'HUB_PARTY' 
 
 
 ----------------------------------------------------------------------------------------
--- 173. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 173. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6962,7 +6963,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellit
 
 
 ----------------------------------------------------------------------------------------
--- 174. MAXIMUS — SAT_AUG_PARTY_KYC   [Implemented]
+-- 174. MAXIMUS — SAT_AUG_PARTY_KYC   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6993,7 +6994,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_KYC' as satellite, 'HUB_PARTY' as pa
 
 
 ----------------------------------------------------------------------------------------
--- 175. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]
+-- 175. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7024,7 +7025,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_LOYALTY_CLASSIFICATION' as satellite
 
 
 ----------------------------------------------------------------------------------------
--- 176. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]
+-- 176. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7055,7 +7056,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_ONBOARDING_JOURNEY' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 177. MAXIMUS — SAT_AUG_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 177. MAXIMUS — SAT_AUG_PARTY_ORGANISATION_PROFILE   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7086,7 +7087,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_ORGANISATION_PROFILE' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 178. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]
+-- 178. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7117,7 +7118,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PAYOUT_PROFILE' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 179. MAXIMUS — SAT_AUG_PARTY_PORTFOLIO_SUMMARY   [Implemented]
+-- 179. MAXIMUS — SAT_AUG_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7146,7 +7147,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PORTFOLIO_SUMMARY' as satellite, 'HU
 
 
 ----------------------------------------------------------------------------------------
--- 180. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]
+-- 180. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7177,7 +7178,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PREFERENCE_PROFILE' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 181. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]
+-- 181. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7211,7 +7212,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RELATIONSHIP_PROFILE' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 182. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]
+-- 182. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7240,7 +7241,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RISK_ANALYTICS' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 183. MAXIMUS — SAT_AUG_POLICY_CANCELLATION   [Implemented]
+-- 183. MAXIMUS — SAT_AUG_POLICY_CANCELLATION   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7269,7 +7270,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_CANCELLATION' as satellite, 'HUB_PO
 
 
 ----------------------------------------------------------------------------------------
--- 184. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]
+-- 184. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7298,7 +7299,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_CLAIM_EXPERIENCE' as satellite, 'HU
 
 
 ----------------------------------------------------------------------------------------
--- 185. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]
+-- 185. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7333,7 +7334,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_COVERAGE_SCHEDULE' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 186. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]
+-- 186. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7362,7 +7363,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DELIVERY' as satellite, 'HUB_POLICY
 
 
 ----------------------------------------------------------------------------------------
--- 187. MAXIMUS — SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]
+-- 187. MAXIMUS — SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7392,7 +7393,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED' as satell
 
 
 ----------------------------------------------------------------------------------------
--- 188. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]
+-- 188. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7421,7 +7422,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DOCUMENT_DISPATCH' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 189. MAXIMUS — SAT_AUG_POLICY_ENDORSEMENT   [Implemented]
+-- 189. MAXIMUS — SAT_AUG_POLICY_ENDORSEMENT   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7453,7 +7454,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_ENDORSEMENT' as satellite, 'HUB_POL
 
 
 ----------------------------------------------------------------------------------------
--- 190. MAXIMUS — SAT_AUG_POLICY_GROUP   [Implemented]
+-- 190. MAXIMUS — SAT_AUG_POLICY_GROUP   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7482,7 +7483,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_GROUP' as satellite, 'HUB_POLICY' a
 
 
 ----------------------------------------------------------------------------------------
--- 191. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]
+-- 191. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7515,7 +7516,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_HEADER' as satellite, 'HUB_POLICY' 
 
 
 ----------------------------------------------------------------------------------------
--- 192. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]
+-- 192. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7544,7 +7545,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_HEALTH_DECLARATION' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 193. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]
+-- 193. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7573,7 +7574,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_INSURED_DECLARATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 194. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]
+-- 194. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7606,7 +7607,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_INTERMEDIARY_SPLIT' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 195. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]
+-- 195. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7635,7 +7636,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_NOMINEE_DECLARATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 196. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]
+-- 196. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7668,7 +7669,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PREMIUM_HEAD' as satellite, 'HUB_PO
 
 
 ----------------------------------------------------------------------------------------
--- 197. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]
+-- 197. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7699,7 +7700,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PREMIUM_SUMMARY' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 198. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]
+-- 198. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7728,7 +7729,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PROPERTY_LINE' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 199. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]
+-- 199. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7758,7 +7759,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_RENEWAL' as satellite, 'HUB_POLICY'
 
 
 ----------------------------------------------------------------------------------------
--- 200. MAXIMUS — SAT_AUG_POLICY_SUM_INSURED_BREAKUP   [Implemented]
+-- 200. MAXIMUS — SAT_AUG_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7789,7 +7790,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_SUM_INSURED_BREAKUP' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 201. MAXIMUS — SAT_AUG_POLICY_TAX_BREAKUP   [Implemented]
+-- 201. MAXIMUS — SAT_AUG_POLICY_TAX_BREAKUP   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7818,7 +7819,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TAX_BREAKUP' as satellite, 'HUB_POL
 
 
 ----------------------------------------------------------------------------------------
--- 202. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]
+-- 202. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7847,7 +7848,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TERMS' as satellite, 'HUB_POLICY' a
 
 
 ----------------------------------------------------------------------------------------
--- 203. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]
+-- 203. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7876,7 +7877,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TRAVEL_TERMS' as satellite, 'HUB_PO
 
 
 ----------------------------------------------------------------------------------------
--- 204. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]
+-- 204. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7905,7 +7906,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 205. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]
+-- 205. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7934,7 +7935,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_UW_QUERY' as satellite, 'HUB_POLICY
 
 
 ----------------------------------------------------------------------------------------
--- 206. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]
+-- 206. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]  [M3]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7962,7 +7963,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_WORK_ITEM' as satellite, 'HUB_POLIC
 
 
 ----------------------------------------------------------------------------------------
--- 207. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]
+-- 207. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]  [M3]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7993,7 +7994,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PRODUCT_RATING_STRUCTURE' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 208. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
+-- 208. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8024,7 +8025,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'HUB_PRODUCT'
 
 
 ----------------------------------------------------------------------------------------
--- 209. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]
+-- 209. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8053,7 +8054,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_CLAIM_EXPERIENCE' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 210. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]
+-- 210. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8085,7 +8086,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_LINE' as satellite, 'HUB_QU
 
 
 ----------------------------------------------------------------------------------------
--- 211. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]
+-- 211. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8116,7 +8117,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_SCHEDULE' as satellite, 'HU
 
 
 ----------------------------------------------------------------------------------------
--- 212. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]
+-- 212. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8147,7 +8148,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVER_DETAIL' as satellite, 'HUB_QUO
 
 
 ----------------------------------------------------------------------------------------
--- 213. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]
+-- 213. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8187,7 +8188,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_HEADER' as satellite, 'HUB_QUOTE' as
 
 
 ----------------------------------------------------------------------------------------
--- 214. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]
+-- 214. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8216,7 +8217,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_HEALTH_DECLARATION' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 215. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]
+-- 215. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8245,7 +8246,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_INSURED_DECLARATION' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 216. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]
+-- 216. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8274,7 +8275,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_NOMINEE_DECLARATION' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 217. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]
+-- 217. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8305,7 +8306,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_PREMIUM_HEAD' as satellite, 'HUB_QUO
 
 
 ----------------------------------------------------------------------------------------
--- 218. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]
+-- 218. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8334,7 +8335,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_PROPERTY_LINE' as satellite, 'HUB_QU
 
 
 ----------------------------------------------------------------------------------------
--- 219. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]
+-- 219. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8366,7 +8367,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RATING' as satellite, 'HUB_QUOTE' as
 
 
 ----------------------------------------------------------------------------------------
--- 220. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]
+-- 220. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8394,7 +8395,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RISK_LINE' as satellite, 'HUB_QUOTE'
 
 
 ----------------------------------------------------------------------------------------
--- 221. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]
+-- 221. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8425,7 +8426,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_SUM_INSURED_BREAKUP' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 222. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]
+-- 222. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8454,7 +8455,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TERMS' as satellite, 'HUB_QUOTE' as 
 
 
 ----------------------------------------------------------------------------------------
--- 223. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]
+-- 223. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8483,7 +8484,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TRAVEL_TRIP' as satellite, 'HUB_QUOT
 
 
 ----------------------------------------------------------------------------------------
--- 224. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]
+-- 224. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8512,7 +8513,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 225. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]
+-- 225. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]  [M3]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8541,7 +8542,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_UW_QUERY' as satellite, 'HUB_QUOTE' 
 
 
 ----------------------------------------------------------------------------------------
--- 226. MAXIMUS — SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]
+-- 226. MAXIMUS — SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8574,7 +8575,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 227. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]
+-- 227. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8606,7 +8607,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_CORE' as satellite, 'HUB_RISK_
 
 
 ----------------------------------------------------------------------------------------
--- 228. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]
+-- 228. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8634,7 +8635,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_PREMIUM' as satellite, 'HUB_RI
 
 
 ----------------------------------------------------------------------------------------
--- 229. MAXIMUS — SAT_AUG_RISK_OBJECT_VALUATION   [Implemented]
+-- 229. MAXIMUS — SAT_AUG_RISK_OBJECT_VALUATION   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8665,7 +8666,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_VALUATION' as satellite, 'HUB_
 
 
 ----------------------------------------------------------------------------------------
--- 230. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
+-- 230. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8696,7 +8697,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite, 'HUB_RI
 
 
 ----------------------------------------------------------------------------------------
--- 231. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
+-- 231. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8737,7 +8738,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, 'HUB_RIS
 
 
 ----------------------------------------------------------------------------------------
--- 232. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]
+-- 232. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8770,7 +8771,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_COVER_TERMS' as satellite, 'HU
 
 
 ----------------------------------------------------------------------------------------
--- 233. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]
+-- 233. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8801,7 +8802,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_RATING_INPUT' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 234. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]
+-- 234. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8832,7 +8833,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_SPONSOR' as satellite, 'HUB_RI
 
 
 ----------------------------------------------------------------------------------------
--- 235. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]
+-- 235. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,

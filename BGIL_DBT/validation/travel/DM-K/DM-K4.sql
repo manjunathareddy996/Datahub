@@ -2,6 +2,7 @@
    DM-K4  |  Key Checks - Business Key Uniqueness (Travel LOB)
    Hub grain integrity: no duplicate business keys. Pass criterion: 0 rows returned.
 
+   MEMBER SPLIT: sections 1..19 assigned M1 x 7, M2 x 6, M3 x 6 -- contiguous thirds in listed order.
    Check ID: DM-K4
    Category: Key checks
    Sign-off criterion: Business key uniqueness
@@ -31,7 +32,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. SHARED — HUB_PARTY   [Implemented]
+-- 1. SHARED — HUB_PARTY   [Implemented]  [M1]
 -- (hash key PARTY_HKEY, business key PARENT_BK). Loaded by: MAXIMUS, OPUS.
 ----------------------------------------------------------------------------------------
 select 'HUB_PARTY' as hub, PARTY_HKEY as hash_key,
@@ -45,7 +46,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 2. SHARED — HUB_POLICY   [Implemented]
+-- 2. SHARED — HUB_POLICY   [Implemented]  [M1]
 -- (hash key POLICY_HKEY, business key PARENT_BK). Loaded by: MAXIMUS, OPUS.
 ----------------------------------------------------------------------------------------
 select 'HUB_POLICY' as hub, POLICY_HKEY as hash_key,
@@ -59,7 +60,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 3. SHARED — HUB_PRODUCT   [Implemented]
+-- 3. SHARED — HUB_PRODUCT   [Implemented]  [M1]
 -- (hash key PRODUCT_HKEY, business key PARENT_BK). Loaded by: MAXIMUS, OPUS.
 ----------------------------------------------------------------------------------------
 select 'HUB_PRODUCT' as hub, PRODUCT_HKEY as hash_key,
@@ -73,7 +74,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 4. SHARED — HUB_COVERAGE   [Implemented]
+-- 4. SHARED — HUB_COVERAGE   [Implemented]  [M1]
 -- (hash key COVERAGE_HKEY, business key PARENT_BK). Loaded by: MAXIMUS, OPUS.
 ----------------------------------------------------------------------------------------
 select 'HUB_COVERAGE' as hub, COVERAGE_HKEY as hash_key,
@@ -87,7 +88,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 5. SHARED — HUB_LOCATION   [Implemented]
+-- 5. SHARED — HUB_LOCATION   [Implemented]  [M1]
 -- (hash key LOCATION_HKEY, business key PARENT_BK). Loaded by: MAXIMUS, OPUS.
 ----------------------------------------------------------------------------------------
 select 'HUB_LOCATION' as hub, LOCATION_HKEY as hash_key,
@@ -101,7 +102,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 6. SHARED — HUB_ORG_UNIT   [Implemented]
+-- 6. SHARED — HUB_ORG_UNIT   [Implemented]  [M1]
 -- (hash key ORG_UNIT_HKEY, business key PARENT_BK). Loaded by: MAXIMUS, OPUS.
 ----------------------------------------------------------------------------------------
 select 'HUB_ORG_UNIT' as hub, ORG_UNIT_HKEY as hash_key,
@@ -115,7 +116,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 7. SHARED — HUB_DISTRIBUTION_CHANNEL   [Implemented]
+-- 7. SHARED — HUB_DISTRIBUTION_CHANNEL   [Implemented]  [M1]
 -- (hash key DISTRIBUTION_CHANNEL_HKEY, business key PARENT_BK). Loaded by: MAXIMUS,
 -- OPUS.
 ----------------------------------------------------------------------------------------
@@ -130,7 +131,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 8. SHARED — HUB_FINANCIAL_TRANSACTION   [Implemented]
+-- 8. SHARED — HUB_FINANCIAL_TRANSACTION   [Implemented]  [M2]
 -- (hash key FINANCIAL_TRANSACTION_HKEY, business key PARENT_BK). Loaded by: MAXIMUS,
 -- OPUS.
 ----------------------------------------------------------------------------------------
@@ -145,7 +146,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 9. SHARED — HUB_ASSESSMENT   [Implemented]
+-- 9. SHARED — HUB_ASSESSMENT   [Implemented]  [M2]
 -- (hash key ASSESSMENT_HKEY, business key PARENT_BK). Loaded by: MAXIMUS, OPUS.
 ----------------------------------------------------------------------------------------
 select 'HUB_ASSESSMENT' as hub, ASSESSMENT_HKEY as hash_key,
@@ -159,7 +160,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 10. SHARED — HUB_QUOTE   [Implemented]
+-- 10. SHARED — HUB_QUOTE   [Implemented]  [M2]
 -- (hash key QUOTE_HKEY, business key PARENT_BK). Loaded by: MAXIMUS, OPUS.
 ----------------------------------------------------------------------------------------
 select 'HUB_QUOTE' as hub, QUOTE_HKEY as hash_key,
@@ -173,7 +174,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 11. SHARED — HUB_RISK_OBJECT   [Implemented]
+-- 11. SHARED — HUB_RISK_OBJECT   [Implemented]  [M2]
 -- (hash key RISK_OBJECT_HKEY, business key PARENT_BK). Loaded by: MAXIMUS, OPUS.
 ----------------------------------------------------------------------------------------
 select 'HUB_RISK_OBJECT' as hub, RISK_OBJECT_HKEY as hash_key,
@@ -187,7 +188,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 12. SHARED — HUB_CLAIM   [Implemented]
+-- 12. SHARED — HUB_CLAIM   [Implemented]  [M2]
 -- (hash key CLAIM_HKEY, business key PARENT_BK). Loaded by: MAXIMUS.
 ----------------------------------------------------------------------------------------
 select 'HUB_CLAIM' as hub, CLAIM_HKEY as hash_key,
@@ -201,7 +202,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 13. SHARED — HUB_DOCUMENT   [Implemented]
+-- 13. SHARED — HUB_DOCUMENT   [Implemented]  [M2]
 -- (hash key DOCUMENT_HKEY, business key PARENT_BK). Loaded by: MAXIMUS.
 ----------------------------------------------------------------------------------------
 select 'HUB_DOCUMENT' as hub, DOCUMENT_HKEY as hash_key,
@@ -215,7 +216,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 14. SHARED — HUB_LOSS_EVENT   [Implemented]
+-- 14. SHARED — HUB_LOSS_EVENT   [Implemented]  [M3]
 -- (hash key LOSS_EVENT_HKEY, business key PARENT_BK). Loaded by: MAXIMUS.
 ----------------------------------------------------------------------------------------
 select 'HUB_LOSS_EVENT' as hub, LOSS_EVENT_HKEY as hash_key,
@@ -229,7 +230,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 15. SHARED — HUB_PAYMENT_INSTRUMENT   [Implemented]
+-- 15. SHARED — HUB_PAYMENT_INSTRUMENT   [Implemented]  [M3]
 -- (hash key PAYMENT_INSTRUMENT_HKEY, business key PARENT_BK). Loaded by: MAXIMUS.
 ----------------------------------------------------------------------------------------
 select 'HUB_PAYMENT_INSTRUMENT' as hub, PAYMENT_INSTRUMENT_HKEY as hash_key,
@@ -243,7 +244,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 16. SHARED — HUB_FINANCIAL_ACCOUNT   [Implemented]
+-- 16. SHARED — HUB_FINANCIAL_ACCOUNT   [Implemented]  [M3]
 -- (hash key FINANCIAL_ACCOUNT_HKEY, business key PARENT_BK). Loaded by: OPUS.
 ----------------------------------------------------------------------------------------
 select 'HUB_FINANCIAL_ACCOUNT' as hub, FINANCIAL_ACCOUNT_HKEY as hash_key,
@@ -257,7 +258,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 17. SHARED — HUB_AGREEMENT   [Implemented]
+-- 17. SHARED — HUB_AGREEMENT   [Implemented]  [M3]
 -- (hash key AGREEMENT_HKEY, business key PARENT_BK). Loaded by: OPUS.
 ----------------------------------------------------------------------------------------
 select 'HUB_AGREEMENT' as hub, AGREEMENT_HKEY as hash_key,
@@ -271,7 +272,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 18. SHARED — HUB_PROPOSAL   [Implemented]
+-- 18. SHARED — HUB_PROPOSAL   [Implemented]  [M3]
 -- (hash key PROPOSAL_HKEY, business key PARENT_BK). Loaded by: OPUS.
 ----------------------------------------------------------------------------------------
 select 'HUB_PROPOSAL' as hub, PROPOSAL_HKEY as hash_key,
@@ -285,7 +286,7 @@ having count(*) > 1
 
 
 ----------------------------------------------------------------------------------------
--- 19. SHARED — Same business key under more than one hash key   [Informational]
+-- 19. SHARED — Same business key under more than one hash key   [Informational]  [M3]
 -- Not part of the K4 pass criterion. The hash is UPPER(TRIM(<NK>)), so case variants
 -- already collapse; a hit means two loaders hash the SAME business key with a different
 -- NK prefix (e.g. a double-prefixed NK), which splits one entity across hub rows in the

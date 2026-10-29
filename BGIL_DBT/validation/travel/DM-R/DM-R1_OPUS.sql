@@ -2,6 +2,7 @@
    DM-R1  |  Referential Integrity - No Orphan Satellite Rows (Travel LOB)  (OPUS)
    Every satellite row references a valid hub (or link) key. Pass criterion: 0 orphan rows.
 
+   MEMBER SPLIT: sections 1..46 assigned M1 x 16, M2 x 15, M3 x 15 -- contiguous thirds in listed order.
    Check ID: DM-R1
    Category: Referential integrity
    Sign-off criterion: No orphan satellite rows
@@ -34,7 +35,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. OPUS — Summary: all OPUS satellites in one query   [Implemented]
+-- 1. OPUS — Summary: all OPUS satellites in one query   [Implemented]  [M1]
 -- One row per satellite (no RECORD_SOURCE split) -- quick evidence for the whole
 -- project. The per-satellite sections below give the RECORD_SOURCE breakdown and orphan
 -- examples.
@@ -317,7 +318,7 @@ select 'OPUS' as project, satellite, parent_table, sat_rows, orphan_or_null_rows
 
 
 ----------------------------------------------------------------------------------------
--- 2. OPUS — SAT_COMMON_ADDRESS   [Implemented]
+-- 2. OPUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
 -- Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -349,7 +350,7 @@ select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'HUB_LOCATION' as p
 
 
 ----------------------------------------------------------------------------------------
--- 3. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 3. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -377,7 +378,7 @@ select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'HUB_PARTY' 
 
 
 ----------------------------------------------------------------------------------------
--- 4. OPUS — SAT_COMMON_CONTACT   [Implemented]
+-- 4. OPUS — SAT_COMMON_CONTACT   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -432,7 +433,7 @@ select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'HUB_PARTY' as pare
 
 
 ----------------------------------------------------------------------------------------
--- 5. OPUS — SAT_COVERAGE_CONDITIONS   [Implemented]
+-- 5. OPUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat;
@@ -459,7 +460,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite, 'HUB_COVERAGE'
 
 
 ----------------------------------------------------------------------------------------
--- 6. OPUS — SAT_COVERAGE_DEFINITION   [Implemented]
+-- 6. OPUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -563,7 +564,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'HUB_COVERAGE'
 
 
 ----------------------------------------------------------------------------------------
--- 7. OPUS — SAT_COVERAGE_LIMITS   [Implemented]
+-- 7. OPUS — SAT_COVERAGE_LIMITS   [Implemented]  [M1]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -598,7 +599,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'HUB_COVERAGE' as 
 
 
 ----------------------------------------------------------------------------------------
--- 8. OPUS — SAT_FINTXN_COMMISSION   [Implemented]
+-- 8. OPUS — SAT_FINTXN_COMMISSION   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard
@@ -632,7 +633,7 @@ select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'HUB_FINANCIAL_T
 
 
 ----------------------------------------------------------------------------------------
--- 9. OPUS — SAT_FINTXN_HEADER   [Implemented]
+-- 9. OPUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard
@@ -660,7 +661,7 @@ select 'OPUS' as project, 'SAT_FINTXN_HEADER' as satellite, 'HUB_FINANCIAL_TRANS
 
 
 ----------------------------------------------------------------------------------------
--- 10. OPUS — SAT_FINTXN_PREMIUM   [Implemented]
+-- 10. OPUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard
@@ -699,7 +700,7 @@ select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'HUB_FINANCIAL_TRAN
 
 
 ----------------------------------------------------------------------------------------
--- 11. OPUS — SAT_FINTXN_TAX   [Implemented]
+-- 11. OPUS — SAT_FINTXN_TAX   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard
@@ -736,7 +737,7 @@ select 'OPUS' as project, 'SAT_FINTXN_TAX' as satellite, 'HUB_FINANCIAL_TRANSACT
 
 
 ----------------------------------------------------------------------------------------
--- 12. OPUS — SAT_FIN_CHARGE_RATE   [Implemented]
+-- 12. OPUS — SAT_FIN_CHARGE_RATE   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard
@@ -773,7 +774,7 @@ select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite, 'HUB_FINANCIAL_TRA
 
 
 ----------------------------------------------------------------------------------------
--- 13. OPUS — SAT_FIN_RECEIPT   [Implemented]
+-- 13. OPUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard
@@ -808,7 +809,7 @@ select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'HUB_FINANCIAL_TRANSAC
 
 
 ----------------------------------------------------------------------------------------
--- 14. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 14. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -836,7 +837,7 @@ select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'HUB_
 
 
 ----------------------------------------------------------------------------------------
--- 15. OPUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
+-- 15. OPUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
 -- Parent hub HUB_ORG_UNIT (src_pk ORG_UNIT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat;
@@ -864,7 +865,7 @@ select 'OPUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite, 'HUB_ORG_UNIT'
 
 
 ----------------------------------------------------------------------------------------
--- 16. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 16. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -896,7 +897,7 @@ select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY' as pa
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 17. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M2]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -924,7 +925,7 @@ select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'HUB_PARTY' a
 
 
 ----------------------------------------------------------------------------------------
--- 18. OPUS — SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 18. OPUS — SAT_PARTY_IDENTIFICATION   [Implemented]  [M2]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -973,7 +974,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'HUB_PARTY' a
 
 
 ----------------------------------------------------------------------------------------
--- 19. OPUS — SAT_PARTY_IDENTITY   [Implemented]
+-- 19. OPUS — SAT_PARTY_IDENTITY   [Implemented]  [M2]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1018,7 +1019,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'HUB_PARTY' as pare
 
 
 ----------------------------------------------------------------------------------------
--- 20. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 20. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M2]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1046,7 +1047,7 @@ select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 21. OPUS — SAT_POLICY_CLASSIFICATION   [Implemented]
+-- 21. OPUS — SAT_POLICY_CLASSIFICATION   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1076,7 +1077,7 @@ select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'HUB_POLICY'
 
 
 ----------------------------------------------------------------------------------------
--- 22. OPUS — SAT_POLICY_HEADER   [Implemented]
+-- 22. OPUS — SAT_POLICY_HEADER   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1123,7 +1124,7 @@ select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'HUB_POLICY' as pare
 
 
 ----------------------------------------------------------------------------------------
--- 23. OPUS — SAT_POLICY_TERMS   [Implemented]
+-- 23. OPUS — SAT_POLICY_TERMS   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1152,7 +1153,7 @@ select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite, 'HUB_POLICY' as paren
 
 
 ----------------------------------------------------------------------------------------
--- 24. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]
+-- 24. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1189,7 +1190,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'HUB_PRODUCT' a
 
 
 ----------------------------------------------------------------------------------------
--- 25. OPUS — SAT_PRODUCT_RATING_FACTOR   [Implemented]
+-- 25. OPUS — SAT_PRODUCT_RATING_FACTOR   [Implemented]  [M2]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1222,7 +1223,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_RATING_FACTOR' as satellite, 'HUB_PRODUCT
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
+-- 26. OPUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat;
@@ -1249,7 +1250,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite, 'HUB_PROD
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — SAT_PRODUCT_TERMS   [Implemented]
+-- 27. OPUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1281,7 +1282,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'HUB_PRODUCT' as par
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — SAT_PROPOSAL_UNDERWRITING   [Implemented]
+-- 28. OPUS — SAT_PROPOSAL_UNDERWRITING   [Implemented]  [M2]
 -- Parent hub HUB_PROPOSAL (src_pk PROPOSAL_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat;
@@ -1309,7 +1310,7 @@ select 'OPUS' as project, 'SAT_PROPOSAL_UNDERWRITING' as satellite, 'HUB_PROPOSA
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — SAT_QUOTE_HEADER   [Implemented]
+-- 29. OPUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat;
@@ -1336,7 +1337,7 @@ select 'OPUS' as project, 'SAT_QUOTE_HEADER' as satellite, 'HUB_QUOTE' as parent
 
 
 ----------------------------------------------------------------------------------------
--- 30. OPUS — SAT_RISK_MOTOR_DRIVER   [Implemented]
+-- 30. OPUS — SAT_RISK_MOTOR_DRIVER   [Implemented]  [M2]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1364,7 +1365,7 @@ select 'OPUS' as project, 'SAT_RISK_MOTOR_DRIVER' as satellite, 'HUB_RISK_OBJECT
 
 
 ----------------------------------------------------------------------------------------
--- 31. OPUS — SAT_RISK_MOTOR_VEHICLE   [Implemented]
+-- 31. OPUS — SAT_RISK_MOTOR_VEHICLE   [Implemented]  [M2]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1392,7 +1393,7 @@ select 'OPUS' as project, 'SAT_RISK_MOTOR_VEHICLE' as satellite, 'HUB_RISK_OBJEC
 
 
 ----------------------------------------------------------------------------------------
--- 32. OPUS — SAT_RISK_OBJECT_CORE   [Implemented]
+-- 32. OPUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1420,7 +1421,7 @@ select 'OPUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite, 'HUB_RISK_OBJECT'
 
 
 ----------------------------------------------------------------------------------------
--- 33. OPUS — SAT_RISK_PERSON_INSURED   [Implemented]
+-- 33. OPUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1448,7 +1449,7 @@ select 'OPUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, 'HUB_RISK_OBJE
 
 
 ----------------------------------------------------------------------------------------
--- 34. OPUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
+-- 34. OPUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1481,7 +1482,7 @@ select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'HUB_RISK_OBJEC
 
 
 ----------------------------------------------------------------------------------------
--- 35. OPUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 35. OPUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -1509,7 +1510,7 @@ select 'OPUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satellite
 
 
 ----------------------------------------------------------------------------------------
--- 36. OPUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
+-- 36. OPUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M3]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -1540,7 +1541,7 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite, 'HUB_COVER
 
 
 ----------------------------------------------------------------------------------------
--- 37. OPUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
+-- 37. OPUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M3]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -1575,7 +1576,7 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, 'HUB_COVERAGE'
 
 
 ----------------------------------------------------------------------------------------
--- 38. OPUS — SAT_AUG_COVERAGE_RATING   [Implemented]
+-- 38. OPUS — SAT_AUG_COVERAGE_RATING   [Implemented]  [M3]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -1625,7 +1626,7 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'HUB_COVERAGE'
 
 
 ----------------------------------------------------------------------------------------
--- 39. OPUS — SAT_AUG_FINTXN_PREMIUM   [Implemented]
+-- 39. OPUS — SAT_AUG_FINTXN_PREMIUM   [Implemented]  [M3]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented
@@ -1666,7 +1667,7 @@ select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'HUB_FINANCIAL_
 
 
 ----------------------------------------------------------------------------------------
--- 40. OPUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 40. OPUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -1694,7 +1695,7 @@ select 'OPUS' as project, 'SAT_AUG_LNK_PARTY_ROLE_CORE' as satellite, 'HUB_PARTY
 
 
 ----------------------------------------------------------------------------------------
--- 41. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 41. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -1722,7 +1723,7 @@ select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'HUB_PARTY' 
 
 
 ----------------------------------------------------------------------------------------
--- 42. OPUS — SAT_AUG_PARTY_BANKING   [Implemented]
+-- 42. OPUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -1750,7 +1751,7 @@ select 'OPUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite, 'HUB_PARTY' as p
 
 
 ----------------------------------------------------------------------------------------
--- 43. OPUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
+-- 43. OPUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -1779,7 +1780,7 @@ select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY' a
 
 
 ----------------------------------------------------------------------------------------
--- 44. OPUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
+-- 44. OPUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -1830,7 +1831,7 @@ select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'HUB_PRODUCT' as
 
 
 ----------------------------------------------------------------------------------------
--- 45. OPUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
+-- 45. OPUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -1858,7 +1859,7 @@ select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite, 'HUB_RISK_
 
 
 ----------------------------------------------------------------------------------------
--- 46. OPUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
+-- 46. OPUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,

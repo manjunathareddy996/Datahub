@@ -2,6 +2,7 @@
    DM-T1  |  Load Audit - Load Metadata Populated (Travel LOB)  (MAXIMUS)
    Load date/timestamp and record source populated and correct. Pass criterion: 0 rows with missing metadata.
 
+   MEMBER SPLIT: sections 1..254 assigned M1 x 85, M2 x 85, M3 x 84 -- contiguous thirds in listed order.
    Check ID: DM-T1
    Category: Load audit
    Sign-off criterion: Load metadata populated
@@ -34,7 +35,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. MAXIMUS — Summary: every MAXIMUS hub, link and satellite in one query   [Implemented]
+-- 1. MAXIMUS — Summary: every MAXIMUS hub, link and satellite in one query   [Implemented]  [M1]
 -- The same per-table query as the sections below, unioned -- run this for the evidence
 -- and use the sections to drill into a FAIL.
 ----------------------------------------------------------------------------------------
@@ -4092,7 +4093,7 @@ order by iff(status = 'FAIL', 0, 1), table_type, table_name;
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — HUB  HUB_ASSESSMENT   [Implemented]
+-- 2. MAXIMUS — HUB  HUB_ASSESSMENT   [Implemented]  [M1]
 -- hub HUB_ASSESSMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS',
@@ -4122,7 +4123,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_ASSESSMENT' as table_name
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — HUB  HUB_CLAIM   [Implemented]
+-- 3. MAXIMUS — HUB  HUB_CLAIM   [Implemented]  [M1]
 -- hub HUB_CLAIM; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -4164,7 +4165,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_CLAIM' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — HUB  HUB_COVERAGE   [Implemented]
+-- 4. MAXIMUS — HUB  HUB_COVERAGE   [Implemented]  [M1]
 -- hub HUB_COVERAGE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS',
@@ -4202,7 +4203,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_COVERAGE' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — HUB  HUB_DISTRIBUTION_CHANNEL   [Implemented]
+-- 5. MAXIMUS — HUB  HUB_DISTRIBUTION_CHANNEL   [Implemented]  [M1]
 -- hub HUB_DISTRIBUTION_CHANNEL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -4238,7 +4239,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_DISTRIBUTION_CHANNEL' as 
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — HUB  HUB_DOCUMENT   [Implemented]
+-- 6. MAXIMUS — HUB  HUB_DOCUMENT   [Implemented]  [M1]
 -- hub HUB_DOCUMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -4280,7 +4281,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_DOCUMENT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — HUB  HUB_FINANCIAL_TRANSACTION   [Implemented]
+-- 7. MAXIMUS — HUB  HUB_FINANCIAL_TRANSACTION   [Implemented]  [M1]
 -- hub HUB_FINANCIAL_TRANSACTION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -4317,7 +4318,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_TRANSACTION' as
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — HUB  HUB_LOCATION   [Implemented]
+-- 8. MAXIMUS — HUB  HUB_LOCATION   [Implemented]  [M1]
 -- hub HUB_LOCATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -4362,7 +4363,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_LOCATION' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — HUB  HUB_LOSS_EVENT   [Implemented]
+-- 9. MAXIMUS — HUB  HUB_LOSS_EVENT   [Implemented]  [M1]
 -- hub HUB_LOSS_EVENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -4388,7 +4389,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_LOSS_EVENT' as table_name
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — HUB  HUB_ORG_UNIT   [Implemented]
+-- 10. MAXIMUS — HUB  HUB_ORG_UNIT   [Implemented]  [M1]
 -- hub HUB_ORG_UNIT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
@@ -4427,7 +4428,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_ORG_UNIT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — HUB  HUB_PARTY   [Implemented]
+-- 11. MAXIMUS — HUB  HUB_PARTY   [Implemented]  [M1]
 -- hub HUB_PARTY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY',
@@ -4486,7 +4487,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_PARTY' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — HUB  HUB_PAYMENT_INSTRUMENT   [Implemented]
+-- 12. MAXIMUS — HUB  HUB_PAYMENT_INSTRUMENT   [Implemented]  [M1]
 -- hub HUB_PAYMENT_INSTRUMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION'). Expected
@@ -4514,7 +4515,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_PAYMENT_INSTRUMENT' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — HUB  HUB_POLICY   [Implemented]
+-- 13. MAXIMUS — HUB  HUB_POLICY   [Implemented]  [M1]
 -- hub HUB_POLICY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -4563,7 +4564,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_POLICY' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — HUB  HUB_PRODUCT   [Implemented]
+-- 14. MAXIMUS — HUB  HUB_PRODUCT   [Implemented]  [M1]
 -- hub HUB_PRODUCT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
@@ -4601,7 +4602,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_PRODUCT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — HUB  HUB_QUOTE   [Implemented]
+-- 15. MAXIMUS — HUB  HUB_QUOTE   [Implemented]  [M1]
 -- hub HUB_QUOTE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -4643,7 +4644,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_QUOTE' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 16. MAXIMUS — HUB  HUB_RISK_OBJECT   [Implemented]
+-- 16. MAXIMUS — HUB  HUB_RISK_OBJECT   [Implemented]  [M1]
 -- hub HUB_RISK_OBJECT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK',
@@ -4685,7 +4686,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_RISK_OBJECT' as table_nam
 
 
 ----------------------------------------------------------------------------------------
--- 17. MAXIMUS — LINK  LINK_CLAIM_PARTY   [Implemented]
+-- 17. MAXIMUS — LINK  LINK_CLAIM_PARTY   [Implemented]  [M1]
 -- link LINK_CLAIM_PARTY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -4721,7 +4722,7 @@ select 'MAXIMUS' as project, 'link' as table_type, 'LINK_CLAIM_PARTY' as table_n
 
 
 ----------------------------------------------------------------------------------------
--- 18. MAXIMUS — LINK  LINK_PARTY_LOCATION   [Implemented]
+-- 18. MAXIMUS — LINK  LINK_PARTY_LOCATION   [Implemented]  [M1]
 -- link LINK_PARTY_LOCATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -4758,7 +4759,7 @@ select 'MAXIMUS' as project, 'link' as table_type, 'LINK_PARTY_LOCATION' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 19. MAXIMUS — LINK  LINK_PARTY_ROLE   [Implemented]
+-- 19. MAXIMUS — LINK  LINK_PARTY_ROLE   [Implemented]  [M1]
 -- link LINK_PARTY_ROLE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW',
@@ -4792,7 +4793,7 @@ select 'MAXIMUS' as project, 'link' as table_type, 'LINK_PARTY_ROLE' as table_na
 
 
 ----------------------------------------------------------------------------------------
--- 20. MAXIMUS — LINK  LINK_POLICY_PARTY   [Implemented]
+-- 20. MAXIMUS — LINK  LINK_POLICY_PARTY   [Implemented]  [M1]
 -- link LINK_POLICY_PARTY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION',
@@ -4826,7 +4827,7 @@ select 'MAXIMUS' as project, 'link' as table_type, 'LINK_POLICY_PARTY' as table_
 
 
 ----------------------------------------------------------------------------------------
--- 21. MAXIMUS — SATELLITE  SAT_ASSESSMENT_HEADER   [Implemented]
+-- 21. MAXIMUS — SATELLITE  SAT_ASSESSMENT_HEADER   [Implemented]  [M1]
 -- satellite SAT_ASSESSMENT_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS'). Expected
 -- RECORD_SOURCE:
@@ -4852,7 +4853,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_ASSESSMENT_HEADER' 
 
 
 ----------------------------------------------------------------------------------------
--- 22. MAXIMUS — SATELLITE  SAT_AUG_ASSESSMENT_HEADER   [Implemented]
+-- 22. MAXIMUS — SATELLITE  SAT_AUG_ASSESSMENT_HEADER   [Implemented]  [M1]
 -- satellite SAT_AUG_ASSESSMENT_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS'). Expected
 -- RECORD_SOURCE:
@@ -4878,7 +4879,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_ASSESSMENT_HEAD
 
 
 ----------------------------------------------------------------------------------------
--- 23. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]
+-- 23. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_APPROVAL_ACTION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
@@ -4906,7 +4907,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_APPROVAL_
 
 
 ----------------------------------------------------------------------------------------
--- 24. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
+-- 24. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_ASSESSMENT_SUMMARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -4935,7 +4936,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_ASSESSMEN
 
 
 ----------------------------------------------------------------------------------------
--- 25. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]
+-- 25. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_BENEFIT_HEAD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -4965,7 +4966,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_BENEFIT_H
 
 
 ----------------------------------------------------------------------------------------
--- 26. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]
+-- 26. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_CO_RI_SHARE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -4993,7 +4994,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_CO_RI_SHA
 
 
 ----------------------------------------------------------------------------------------
--- 27. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]
+-- 27. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_DEDUCTION_WAIVER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5019,7 +5020,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_DEDUCTION
 
 
 ----------------------------------------------------------------------------------------
--- 28. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]
+-- 28. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_DOCUMENT_REMINDER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5045,7 +5046,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_DOCUMENT_
 
 
 ----------------------------------------------------------------------------------------
--- 29. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]
+-- 29. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5071,7 +5072,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_DOCUMENT_
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EVIDENCE   [Implemented]
+-- 30. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EVIDENCE   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_EVIDENCE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5097,7 +5098,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_EVIDENCE'
 
 
 ----------------------------------------------------------------------------------------
--- 31. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]
+-- 31. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_EXCLUSION_APPLIED; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5123,7 +5124,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_EXCLUSION
 
 
 ----------------------------------------------------------------------------------------
--- 32. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]
+-- 32. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_EXPENSE_LINE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5149,7 +5150,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_EXPENSE_L
 
 
 ----------------------------------------------------------------------------------------
--- 33. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_FNOL   [Implemented]
+-- 33. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_FNOL   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_FNOL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5175,7 +5176,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_FNOL' as 
 
 
 ----------------------------------------------------------------------------------------
--- 34. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]
+-- 34. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_FOLLOWUP_TASK; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP'). Expected
 -- RECORD_SOURCE: MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP. No
@@ -5200,7 +5201,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_FOLLOWUP_
 
 
 ----------------------------------------------------------------------------------------
--- 35. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_FRAUD   [Implemented]
+-- 35. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_FRAUD   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_FRAUD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -5232,7 +5233,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_FRAUD' as
 
 
 ----------------------------------------------------------------------------------------
--- 36. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_HEADER   [Implemented]
+-- 36. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_HEADER   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -5261,7 +5262,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_HEADER' a
 
 
 ----------------------------------------------------------------------------------------
--- 37. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_HEALTH_DETAIL   [Implemented]
+-- 37. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_HEALTH_DETAIL   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_HEALTH_DETAIL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -5293,7 +5294,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_HEALTH_DE
 
 
 ----------------------------------------------------------------------------------------
--- 38. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_LITIGATION   [Implemented]
+-- 38. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_LITIGATION   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_LITIGATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -5323,7 +5324,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_LITIGATIO
 
 
 ----------------------------------------------------------------------------------------
--- 39. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]
+-- 39. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_NETWORK_VERIFICATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -5351,7 +5352,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_NETWORK_V
 
 
 ----------------------------------------------------------------------------------------
--- 40. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]
+-- 40. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_PAYMENT_TRANCHE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
@@ -5380,7 +5381,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_PAYMENT_T
 
 
 ----------------------------------------------------------------------------------------
--- 41. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PA_DETAIL   [Implemented]
+-- 41. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PA_DETAIL   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_PA_DETAIL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -5408,7 +5409,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_PA_DETAIL
 
 
 ----------------------------------------------------------------------------------------
--- 42. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]
+-- 42. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_PROVIDER_BILLING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5434,7 +5435,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_PROVIDER_
 
 
 ----------------------------------------------------------------------------------------
--- 43. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]
+-- 43. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_QUALITY_AUDIT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5460,7 +5461,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_QUALITY_A
 
 
 ----------------------------------------------------------------------------------------
--- 44. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]
+-- 44. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_RECOVERY_SALVAGE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
@@ -5488,7 +5489,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_RECOVERY_
 
 
 ----------------------------------------------------------------------------------------
--- 45. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_REPUDIATION   [Implemented]
+-- 45. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_REPUDIATION   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_REPUDIATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5514,7 +5515,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_REPUDIATI
 
 
 ----------------------------------------------------------------------------------------
--- 46. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SETTLEMENT   [Implemented]
+-- 46. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SETTLEMENT   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_SETTLEMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -5544,7 +5545,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_SETTLEMEN
 
 
 ----------------------------------------------------------------------------------------
--- 47. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]
+-- 47. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_SLA_TRACKING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -5572,7 +5573,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_SLA_TRACK
 
 
 ----------------------------------------------------------------------------------------
--- 48. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]
+-- 48. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_STATUS_HISTORY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY'). Expected
 -- RECORD_SOURCE: MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY. No
@@ -5597,7 +5598,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_STATUS_HI
 
 
 ----------------------------------------------------------------------------------------
--- 49. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]
+-- 49. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_SURVEY_APPOINTMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5623,7 +5624,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_SURVEY_AP
 
 
 ----------------------------------------------------------------------------------------
--- 50. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]
+-- 50. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_TPA_INTERACTION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5649,7 +5650,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_TPA_INTER
 
 
 ----------------------------------------------------------------------------------------
--- 51. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TP_FORENSIC   [Implemented]
+-- 51. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TP_FORENSIC   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_TP_FORENSIC; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5675,7 +5676,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_TP_FORENS
 
 
 ----------------------------------------------------------------------------------------
--- 52. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]
+-- 52. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_TRAVEL_DETAIL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -5702,7 +5703,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_TRAVEL_DE
 
 
 ----------------------------------------------------------------------------------------
--- 53. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]
+-- 53. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]  [M1]
 -- satellite SAT_AUG_CLAIM_TRAVEL_SECTOR; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5728,7 +5729,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_TRAVEL_SE
 
 
 ----------------------------------------------------------------------------------------
--- 54. MAXIMUS — SATELLITE  SAT_AUG_COMMON_ADDRESS   [Implemented]
+-- 54. MAXIMUS — SATELLITE  SAT_AUG_COMMON_ADDRESS   [Implemented]  [M1]
 -- satellite SAT_AUG_COMMON_ADDRESS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -5756,7 +5757,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_ADDRESS'
 
 
 ----------------------------------------------------------------------------------------
--- 55. MAXIMUS — SATELLITE  SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 55. MAXIMUS — SATELLITE  SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M1]
 -- satellite SAT_AUG_COMMON_COMMUNICATION_PREFERENCE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -5784,7 +5785,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_COMMUNIC
 
 
 ----------------------------------------------------------------------------------------
--- 56. MAXIMUS — SATELLITE  SAT_AUG_COMMON_CONSENT   [Implemented]
+-- 56. MAXIMUS — SATELLITE  SAT_AUG_COMMON_CONSENT   [Implemented]  [M1]
 -- satellite SAT_AUG_COMMON_CONSENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5810,7 +5811,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_CONSENT'
 
 
 ----------------------------------------------------------------------------------------
--- 57. MAXIMUS — SATELLITE  SAT_AUG_COMMON_GEO   [Implemented]
+-- 57. MAXIMUS — SATELLITE  SAT_AUG_COMMON_GEO   [Implemented]  [M1]
 -- satellite SAT_AUG_COMMON_GEO; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW',
@@ -5840,7 +5841,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_GEO' as 
 
 
 ----------------------------------------------------------------------------------------
--- 58. MAXIMUS — SATELLITE  SAT_AUG_COMMON_MONETARY_CONTEXT   [Implemented]
+-- 58. MAXIMUS — SATELLITE  SAT_AUG_COMMON_MONETARY_CONTEXT   [Implemented]  [M1]
 -- satellite SAT_AUG_COMMON_MONETARY_CONTEXT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS'). Expected RECORD_SOURCE:
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS. No DBT_RUN_TS column on this
@@ -5865,7 +5866,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_MONETARY
 
 
 ----------------------------------------------------------------------------------------
--- 59. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_CONDITIONS   [Implemented]
+-- 59. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_CONDITIONS   [Implemented]  [M1]
 -- satellite SAT_AUG_COVERAGE_CONDITIONS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -5893,7 +5894,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_CONDIT
 
 
 ----------------------------------------------------------------------------------------
--- 60. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_DEFINITION   [Implemented]
+-- 60. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M1]
 -- satellite SAT_AUG_COVERAGE_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -5925,7 +5926,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_DEFINI
 
 
 ----------------------------------------------------------------------------------------
--- 61. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_LIMITS   [Implemented]
+-- 61. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M1]
 -- satellite SAT_AUG_COVERAGE_LIMITS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -5953,7 +5954,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_LIMITS
 
 
 ----------------------------------------------------------------------------------------
--- 62. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
+-- 62. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M1]
 -- satellite SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5979,7 +5980,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_SUBLIM
 
 
 ----------------------------------------------------------------------------------------
--- 63. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]
+-- 63. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]  [M1]
 -- satellite SAT_AUG_COVERAGE_SUB_COVER_ELEMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6005,7 +6006,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_SUB_CO
 
 
 ----------------------------------------------------------------------------------------
--- 64. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]
+-- 64. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]  [M1]
 -- satellite SAT_AUG_DOCUMENT_CHECKLIST; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6031,7 +6032,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_DOCUMENT_CHECKL
 
 
 ----------------------------------------------------------------------------------------
--- 65. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_DEFINITION   [Implemented]
+-- 65. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_DEFINITION   [Implemented]  [M1]
 -- satellite SAT_AUG_DOCUMENT_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -6059,7 +6060,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_DOCUMENT_DEFINI
 
 
 ----------------------------------------------------------------------------------------
--- 66. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_DISPATCH   [Implemented]
+-- 66. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_DISPATCH   [Implemented]  [M1]
 -- satellite SAT_AUG_DOCUMENT_DISPATCH; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6085,7 +6086,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_DOCUMENT_DISPAT
 
 
 ----------------------------------------------------------------------------------------
--- 67. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]
+-- 67. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]  [M1]
 -- satellite SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6111,7 +6112,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_DOCUMENT_REQUIR
 
 
 ----------------------------------------------------------------------------------------
--- 68. MAXIMUS — SATELLITE  SAT_AUG_FINTXN_CLAIM_PAYMENT   [Implemented]
+-- 68. MAXIMUS — SATELLITE  SAT_AUG_FINTXN_CLAIM_PAYMENT   [Implemented]  [M1]
 -- satellite SAT_AUG_FINTXN_CLAIM_PAYMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6137,7 +6138,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_FINTXN_CLAIM_PA
 
 
 ----------------------------------------------------------------------------------------
--- 69. MAXIMUS — SATELLITE  SAT_AUG_FINTXN_TAX   [Implemented]
+-- 69. MAXIMUS — SATELLITE  SAT_AUG_FINTXN_TAX   [Implemented]  [M1]
 -- satellite SAT_AUG_FINTXN_TAX; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
@@ -6165,7 +6166,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_FINTXN_TAX' as 
 
 
 ----------------------------------------------------------------------------------------
--- 70. MAXIMUS — SATELLITE  SAT_AUG_FIN_RECEIPT   [Implemented]
+-- 70. MAXIMUS — SATELLITE  SAT_AUG_FIN_RECEIPT   [Implemented]  [M1]
 -- satellite SAT_AUG_FIN_RECEIPT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -6195,7 +6196,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_FIN_RECEIPT' as
 
 
 ----------------------------------------------------------------------------------------
--- 71. MAXIMUS — SATELLITE  SAT_AUG_INSTRUMENT_DEFINITION   [Implemented]
+-- 71. MAXIMUS — SATELLITE  SAT_AUG_INSTRUMENT_DEFINITION   [Implemented]  [M1]
 -- satellite SAT_AUG_INSTRUMENT_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6221,7 +6222,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_INSTRUMENT_DEFI
 
 
 ----------------------------------------------------------------------------------------
--- 72. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_AGENT   [Implemented]
+-- 72. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_AGENT   [Implemented]  [M1]
 -- satellite SAT_AUG_LNK_ROLE_AGENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6247,7 +6248,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_AGENT'
 
 
 ----------------------------------------------------------------------------------------
--- 73. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 73. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M1]
 -- satellite SAT_AUG_LNK_ROLE_CUSTOMER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6273,7 +6274,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_CUSTOM
 
 
 ----------------------------------------------------------------------------------------
--- 74. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
+-- 74. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]  [M1]
 -- satellite SAT_AUG_LNK_ROLE_PROVIDER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6299,7 +6300,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_PROVID
 
 
 ----------------------------------------------------------------------------------------
--- 75. MAXIMUS — SATELLITE  SAT_AUG_LOSS_EVENT_DETAIL   [Implemented]
+-- 75. MAXIMUS — SATELLITE  SAT_AUG_LOSS_EVENT_DETAIL   [Implemented]  [M1]
 -- satellite SAT_AUG_LOSS_EVENT_DETAIL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6325,7 +6326,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LOSS_EVENT_DETA
 
 
 ----------------------------------------------------------------------------------------
--- 76. MAXIMUS — SATELLITE  SAT_AUG_ORG_UNIT_CONTACT   [Implemented]
+-- 76. MAXIMUS — SATELLITE  SAT_AUG_ORG_UNIT_CONTACT   [Implemented]  [M1]
 -- satellite SAT_AUG_ORG_UNIT_CONTACT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6351,7 +6352,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_ORG_UNIT_CONTAC
 
 
 ----------------------------------------------------------------------------------------
--- 77. MAXIMUS — SATELLITE  SAT_AUG_PARTY_BANKING   [Implemented]
+-- 77. MAXIMUS — SATELLITE  SAT_AUG_PARTY_BANKING   [Implemented]  [M1]
 -- satellite SAT_AUG_PARTY_BANKING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -6383,7 +6384,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_BANKING' 
 
 
 ----------------------------------------------------------------------------------------
--- 78. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]
+-- 78. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]  [M1]
 -- satellite SAT_AUG_PARTY_CLAIM_HISTORY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6411,7 +6412,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CLAIM_HIS
 
 
 ----------------------------------------------------------------------------------------
--- 79. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]
+-- 79. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]  [M1]
 -- satellite SAT_AUG_PARTY_CONSENT_MANDATE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6439,7 +6440,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CONSENT_M
 
 
 ----------------------------------------------------------------------------------------
--- 80. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 80. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M1]
 -- satellite SAT_AUG_PARTY_CONTACT_ADDRESS_LINK; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6467,7 +6468,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CONTACT_A
 
 
 ----------------------------------------------------------------------------------------
--- 81. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]
+-- 81. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]  [M1]
 -- satellite SAT_AUG_PARTY_CORRESPONDENCE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6493,7 +6494,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CORRESPON
 
 
 ----------------------------------------------------------------------------------------
--- 82. MAXIMUS — SATELLITE  SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
+-- 82. MAXIMUS — SATELLITE  SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M1]
 -- satellite SAT_AUG_PARTY_EMPLOYMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6521,7 +6522,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_EMPLOYMEN
 
 
 ----------------------------------------------------------------------------------------
--- 83. MAXIMUS — SATELLITE  SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]
+-- 83. MAXIMUS — SATELLITE  SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]  [M1]
 -- satellite SAT_AUG_PARTY_FINANCIAL_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -6551,7 +6552,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_FINANCIAL
 
 
 ----------------------------------------------------------------------------------------
--- 84. MAXIMUS — SATELLITE  SAT_AUG_PARTY_FRAUD_PROFILE   [Implemented]
+-- 84. MAXIMUS — SATELLITE  SAT_AUG_PARTY_FRAUD_PROFILE   [Implemented]  [M1]
 -- satellite SAT_AUG_PARTY_FRAUD_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6579,7 +6580,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_FRAUD_PRO
 
 
 ----------------------------------------------------------------------------------------
--- 85. MAXIMUS — SATELLITE  SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]
+-- 85. MAXIMUS — SATELLITE  SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]  [M1]
 -- satellite SAT_AUG_PARTY_GROUP_SCHEME; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6605,7 +6606,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_GROUP_SCH
 
 
 ----------------------------------------------------------------------------------------
--- 86. MAXIMUS — SATELLITE  SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]
+-- 86. MAXIMUS — SATELLITE  SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]  [M2]
 -- satellite SAT_AUG_PARTY_HEALTH_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6633,7 +6634,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_HEALTH_PR
 
 
 ----------------------------------------------------------------------------------------
--- 87. MAXIMUS — SATELLITE  SAT_AUG_PARTY_HIERARCHY   [Implemented]
+-- 87. MAXIMUS — SATELLITE  SAT_AUG_PARTY_HIERARCHY   [Implemented]  [M2]
 -- satellite SAT_AUG_PARTY_HIERARCHY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6659,7 +6660,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_HIERARCHY
 
 
 ----------------------------------------------------------------------------------------
--- 88. MAXIMUS — SATELLITE  SAT_AUG_PARTY_IDENTIFICATION   [Implemented]
+-- 88. MAXIMUS — SATELLITE  SAT_AUG_PARTY_IDENTIFICATION   [Implemented]  [M2]
 -- satellite SAT_AUG_PARTY_IDENTIFICATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -6693,7 +6694,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_IDENTIFIC
 
 
 ----------------------------------------------------------------------------------------
--- 89. MAXIMUS — SATELLITE  SAT_AUG_PARTY_IDENTITY   [Implemented]
+-- 89. MAXIMUS — SATELLITE  SAT_AUG_PARTY_IDENTITY   [Implemented]  [M2]
 -- satellite SAT_AUG_PARTY_IDENTITY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS',
@@ -6727,7 +6728,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_IDENTITY'
 
 
 ----------------------------------------------------------------------------------------
--- 90. MAXIMUS — SATELLITE  SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 90. MAXIMUS — SATELLITE  SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M2]
 -- satellite SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -6757,7 +6758,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_INDIVIDUA
 
 
 ----------------------------------------------------------------------------------------
--- 91. MAXIMUS — SATELLITE  SAT_AUG_PARTY_KYC   [Implemented]
+-- 91. MAXIMUS — SATELLITE  SAT_AUG_PARTY_KYC   [Implemented]  [M2]
 -- satellite SAT_AUG_PARTY_KYC; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6785,7 +6786,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_KYC' as t
 
 
 ----------------------------------------------------------------------------------------
--- 92. MAXIMUS — SATELLITE  SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]
+-- 92. MAXIMUS — SATELLITE  SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]  [M2]
 -- satellite SAT_AUG_PARTY_LOYALTY_CLASSIFICATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6811,7 +6812,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_LOYALTY_C
 
 
 ----------------------------------------------------------------------------------------
--- 93. MAXIMUS — SATELLITE  SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]
+-- 93. MAXIMUS — SATELLITE  SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M2]
 -- satellite SAT_AUG_PARTY_ONBOARDING_JOURNEY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6839,7 +6840,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_ONBOARDIN
 
 
 ----------------------------------------------------------------------------------------
--- 94. MAXIMUS — SATELLITE  SAT_AUG_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 94. MAXIMUS — SATELLITE  SAT_AUG_PARTY_ORGANISATION_PROFILE   [Implemented]  [M2]
 -- satellite SAT_AUG_PARTY_ORGANISATION_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6867,7 +6868,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_ORGANISAT
 
 
 ----------------------------------------------------------------------------------------
--- 95. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]
+-- 95. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]  [M2]
 -- satellite SAT_AUG_PARTY_PAYOUT_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6895,7 +6896,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_PAYOUT_PR
 
 
 ----------------------------------------------------------------------------------------
--- 96. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PORTFOLIO_SUMMARY   [Implemented]
+-- 96. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M2]
 -- satellite SAT_AUG_PARTY_PORTFOLIO_SUMMARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6921,7 +6922,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_PORTFOLIO
 
 
 ----------------------------------------------------------------------------------------
--- 97. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]
+-- 97. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]  [M2]
 -- satellite SAT_AUG_PARTY_PREFERENCE_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6949,7 +6950,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_PREFERENC
 
 
 ----------------------------------------------------------------------------------------
--- 98. MAXIMUS — SATELLITE  SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]
+-- 98. MAXIMUS — SATELLITE  SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M2]
 -- satellite SAT_AUG_PARTY_RELATIONSHIP_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -6981,7 +6982,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_RELATIONS
 
 
 ----------------------------------------------------------------------------------------
--- 99. MAXIMUS — SATELLITE  SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]
+-- 99. MAXIMUS — SATELLITE  SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]  [M2]
 -- satellite SAT_AUG_PARTY_RISK_ANALYTICS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7007,7 +7008,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_RISK_ANAL
 
 
 ----------------------------------------------------------------------------------------
--- 100. MAXIMUS — SATELLITE  SAT_AUG_POLICY_CANCELLATION   [Implemented]
+-- 100. MAXIMUS — SATELLITE  SAT_AUG_POLICY_CANCELLATION   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_CANCELLATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7033,7 +7034,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_CANCELLA
 
 
 ----------------------------------------------------------------------------------------
--- 101. MAXIMUS — SATELLITE  SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]
+-- 101. MAXIMUS — SATELLITE  SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_CLAIM_EXPERIENCE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7059,7 +7060,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_CLAIM_EX
 
 
 ----------------------------------------------------------------------------------------
--- 102. MAXIMUS — SATELLITE  SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]
+-- 102. MAXIMUS — SATELLITE  SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_COVERAGE_SCHEDULE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -7089,7 +7090,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_COVERAGE
 
 
 ----------------------------------------------------------------------------------------
--- 103. MAXIMUS — SATELLITE  SAT_AUG_POLICY_DELIVERY   [Implemented]
+-- 103. MAXIMUS — SATELLITE  SAT_AUG_POLICY_DELIVERY   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_DELIVERY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7115,7 +7116,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_DELIVERY
 
 
 ----------------------------------------------------------------------------------------
--- 104. MAXIMUS — SATELLITE  SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]
+-- 104. MAXIMUS — SATELLITE  SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7141,7 +7142,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_DISCOUNT
 
 
 ----------------------------------------------------------------------------------------
--- 105. MAXIMUS — SATELLITE  SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]
+-- 105. MAXIMUS — SATELLITE  SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_DOCUMENT_DISPATCH; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS'). Expected
 -- RECORD_SOURCE: MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS. No
@@ -7166,7 +7167,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_DOCUMENT
 
 
 ----------------------------------------------------------------------------------------
--- 106. MAXIMUS — SATELLITE  SAT_AUG_POLICY_ENDORSEMENT   [Implemented]
+-- 106. MAXIMUS — SATELLITE  SAT_AUG_POLICY_ENDORSEMENT   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_ENDORSEMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -7194,7 +7195,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_ENDORSEM
 
 
 ----------------------------------------------------------------------------------------
--- 107. MAXIMUS — SATELLITE  SAT_AUG_POLICY_GROUP   [Implemented]
+-- 107. MAXIMUS — SATELLITE  SAT_AUG_POLICY_GROUP   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_GROUP; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7220,7 +7221,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_GROUP' a
 
 
 ----------------------------------------------------------------------------------------
--- 108. MAXIMUS — SATELLITE  SAT_AUG_POLICY_HEADER   [Implemented]
+-- 108. MAXIMUS — SATELLITE  SAT_AUG_POLICY_HEADER   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
@@ -7252,7 +7253,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_HEADER' 
 
 
 ----------------------------------------------------------------------------------------
--- 109. MAXIMUS — SATELLITE  SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]
+-- 109. MAXIMUS — SATELLITE  SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_HEALTH_DECLARATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7278,7 +7279,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_HEALTH_D
 
 
 ----------------------------------------------------------------------------------------
--- 110. MAXIMUS — SATELLITE  SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]
+-- 110. MAXIMUS — SATELLITE  SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_INSURED_DECLARATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7304,7 +7305,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_INSURED_
 
 
 ----------------------------------------------------------------------------------------
--- 111. MAXIMUS — SATELLITE  SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]
+-- 111. MAXIMUS — SATELLITE  SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_INTERMEDIARY_SPLIT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -7332,7 +7333,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_INTERMED
 
 
 ----------------------------------------------------------------------------------------
--- 112. MAXIMUS — SATELLITE  SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]
+-- 112. MAXIMUS — SATELLITE  SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_NOMINEE_DECLARATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7358,7 +7359,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_NOMINEE_
 
 
 ----------------------------------------------------------------------------------------
--- 113. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]
+-- 113. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_PREMIUM_HEAD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -7386,7 +7387,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_PREMIUM_
 
 
 ----------------------------------------------------------------------------------------
--- 114. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]
+-- 114. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_PREMIUM_SUMMARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -7414,7 +7415,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_PREMIUM_
 
 
 ----------------------------------------------------------------------------------------
--- 115. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]
+-- 115. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_PROPERTY_LINE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7440,7 +7441,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_PROPERTY
 
 
 ----------------------------------------------------------------------------------------
--- 116. MAXIMUS — SATELLITE  SAT_AUG_POLICY_RENEWAL   [Implemented]
+-- 116. MAXIMUS — SATELLITE  SAT_AUG_POLICY_RENEWAL   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_RENEWAL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -7467,7 +7468,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_RENEWAL'
 
 
 ----------------------------------------------------------------------------------------
--- 117. MAXIMUS — SATELLITE  SAT_AUG_POLICY_SUM_INSURED_BREAKUP   [Implemented]
+-- 117. MAXIMUS — SATELLITE  SAT_AUG_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_SUM_INSURED_BREAKUP; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7493,7 +7494,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_SUM_INSU
 
 
 ----------------------------------------------------------------------------------------
--- 118. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TAX_BREAKUP   [Implemented]
+-- 118. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TAX_BREAKUP   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_TAX_BREAKUP; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7519,7 +7520,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_TAX_BREA
 
 
 ----------------------------------------------------------------------------------------
--- 119. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TERMS   [Implemented]
+-- 119. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TERMS   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_TERMS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7545,7 +7546,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_TERMS' a
 
 
 ----------------------------------------------------------------------------------------
--- 120. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]
+-- 120. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_TRAVEL_TERMS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7571,7 +7572,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_TRAVEL_T
 
 
 ----------------------------------------------------------------------------------------
--- 121. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]
+-- 121. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7597,7 +7598,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_TRAVEL_T
 
 
 ----------------------------------------------------------------------------------------
--- 122. MAXIMUS — SATELLITE  SAT_AUG_POLICY_UW_QUERY   [Implemented]
+-- 122. MAXIMUS — SATELLITE  SAT_AUG_POLICY_UW_QUERY   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_UW_QUERY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7623,7 +7624,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_UW_QUERY
 
 
 ----------------------------------------------------------------------------------------
--- 123. MAXIMUS — SATELLITE  SAT_AUG_POLICY_WORK_ITEM   [Implemented]
+-- 123. MAXIMUS — SATELLITE  SAT_AUG_POLICY_WORK_ITEM   [Implemented]  [M2]
 -- satellite SAT_AUG_POLICY_WORK_ITEM; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_WORK_ITEM_DETAILS'). Expected
 -- RECORD_SOURCE: MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_WORK_ITEM_DETAILS. No
@@ -7648,7 +7649,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_WORK_ITE
 
 
 ----------------------------------------------------------------------------------------
--- 124. MAXIMUS — SATELLITE  SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]
+-- 124. MAXIMUS — SATELLITE  SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
 -- satellite SAT_AUG_PRODUCT_RATING_STRUCTURE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -7676,7 +7677,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PRODUCT_RATING_
 
 
 ----------------------------------------------------------------------------------------
--- 125. MAXIMUS — SATELLITE  SAT_AUG_PRODUCT_TERMS   [Implemented]
+-- 125. MAXIMUS — SATELLITE  SAT_AUG_PRODUCT_TERMS   [Implemented]  [M2]
 -- satellite SAT_AUG_PRODUCT_TERMS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -7704,7 +7705,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PRODUCT_TERMS' 
 
 
 ----------------------------------------------------------------------------------------
--- 126. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]
+-- 126. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_CLAIM_EXPERIENCE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7730,7 +7731,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_CLAIM_EXP
 
 
 ----------------------------------------------------------------------------------------
--- 127. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]
+-- 127. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_COVERAGE_LINE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW',
@@ -7760,7 +7761,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_COVERAGE_
 
 
 ----------------------------------------------------------------------------------------
--- 128. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]
+-- 128. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_COVERAGE_SCHEDULE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7786,7 +7787,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_COVERAGE_
 
 
 ----------------------------------------------------------------------------------------
--- 129. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]
+-- 129. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_COVER_DETAIL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7812,7 +7813,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_COVER_DET
 
 
 ----------------------------------------------------------------------------------------
--- 130. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_HEADER   [Implemented]
+-- 130. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_HEADER   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS',
@@ -7851,7 +7852,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_HEADER' a
 
 
 ----------------------------------------------------------------------------------------
--- 131. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]
+-- 131. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_HEALTH_DECLARATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7877,7 +7878,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_HEALTH_DE
 
 
 ----------------------------------------------------------------------------------------
--- 132. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]
+-- 132. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_INSURED_DECLARATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7903,7 +7904,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_INSURED_D
 
 
 ----------------------------------------------------------------------------------------
--- 133. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]
+-- 133. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_NOMINEE_DECLARATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7929,7 +7930,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_NOMINEE_D
 
 
 ----------------------------------------------------------------------------------------
--- 134. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]
+-- 134. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_PREMIUM_HEAD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7955,7 +7956,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_PREMIUM_H
 
 
 ----------------------------------------------------------------------------------------
--- 135. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]
+-- 135. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_PROPERTY_LINE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7981,7 +7982,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_PROPERTY_
 
 
 ----------------------------------------------------------------------------------------
--- 136. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_RATING   [Implemented]
+-- 136. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_RATING   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_RATING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW',
@@ -8010,7 +8011,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_RATING' a
 
 
 ----------------------------------------------------------------------------------------
--- 137. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_RISK_LINE   [Implemented]
+-- 137. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_RISK_LINE   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_RISK_LINE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST'). Expected
 -- RECORD_SOURCE: MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST. No
@@ -8035,7 +8036,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_RISK_LINE
 
 
 ----------------------------------------------------------------------------------------
--- 138. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]
+-- 138. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_SUM_INSURED_BREAKUP; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8061,7 +8062,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_SUM_INSUR
 
 
 ----------------------------------------------------------------------------------------
--- 139. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TERMS   [Implemented]
+-- 139. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TERMS   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_TERMS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST'). Expected
@@ -8089,7 +8090,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_TERMS' as
 
 
 ----------------------------------------------------------------------------------------
--- 140. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]
+-- 140. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_TRAVEL_TRIP; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8115,7 +8116,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_TRAVEL_TR
 
 
 ----------------------------------------------------------------------------------------
--- 141. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]
+-- 141. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8141,7 +8142,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_TRAVEL_TR
 
 
 ----------------------------------------------------------------------------------------
--- 142. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_UW_QUERY   [Implemented]
+-- 142. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_UW_QUERY   [Implemented]  [M2]
 -- satellite SAT_AUG_QUOTE_UW_QUERY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8167,7 +8168,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_UW_QUERY'
 
 
 ----------------------------------------------------------------------------------------
--- 143. MAXIMUS — SATELLITE  SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]
+-- 143. MAXIMUS — SATELLITE  SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M2]
 -- satellite SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
@@ -8195,7 +8196,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_HEALTH_MEM
 
 
 ----------------------------------------------------------------------------------------
--- 144. MAXIMUS — SATELLITE  SAT_AUG_RISK_OBJECT_CORE   [Implemented]
+-- 144. MAXIMUS — SATELLITE  SAT_AUG_RISK_OBJECT_CORE   [Implemented]  [M2]
 -- satellite SAT_AUG_RISK_OBJECT_CORE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -8225,7 +8226,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_OBJECT_COR
 
 
 ----------------------------------------------------------------------------------------
--- 145. MAXIMUS — SATELLITE  SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]
+-- 145. MAXIMUS — SATELLITE  SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]  [M2]
 -- satellite SAT_AUG_RISK_OBJECT_PREMIUM; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS'). Expected
 -- RECORD_SOURCE: MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS. No
@@ -8250,7 +8251,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_OBJECT_PRE
 
 
 ----------------------------------------------------------------------------------------
--- 146. MAXIMUS — SATELLITE  SAT_AUG_RISK_OBJECT_VALUATION   [Implemented]
+-- 146. MAXIMUS — SATELLITE  SAT_AUG_RISK_OBJECT_VALUATION   [Implemented]  [M2]
 -- satellite SAT_AUG_RISK_OBJECT_VALUATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -8278,7 +8279,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_OBJECT_VAL
 
 
 ----------------------------------------------------------------------------------------
--- 147. MAXIMUS — SATELLITE  SAT_AUG_RISK_PERSON_INSURED   [Implemented]
+-- 147. MAXIMUS — SATELLITE  SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M2]
 -- satellite SAT_AUG_RISK_PERSON_INSURED; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -8306,7 +8307,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_INS
 
 
 ----------------------------------------------------------------------------------------
--- 148. MAXIMUS — SATELLITE  SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
+-- 148. MAXIMUS — SATELLITE  SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M2]
 -- satellite SAT_AUG_RISK_PERSON_TRAVEL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -8343,7 +8344,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_TRA
 
 
 ----------------------------------------------------------------------------------------
--- 149. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]
+-- 149. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]  [M2]
 -- satellite SAT_AUG_RISK_TRAVEL_COVER_TERMS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
@@ -8371,7 +8372,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_TRAVEL_COV
 
 
 ----------------------------------------------------------------------------------------
--- 150. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]
+-- 150. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]  [M2]
 -- satellite SAT_AUG_RISK_TRAVEL_RATING_INPUT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8397,7 +8398,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_TRAVEL_RAT
 
 
 ----------------------------------------------------------------------------------------
--- 151. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]
+-- 151. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]  [M2]
 -- satellite SAT_AUG_RISK_TRAVEL_SPONSOR; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -8425,7 +8426,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_TRAVEL_SPO
 
 
 ----------------------------------------------------------------------------------------
--- 152. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]
+-- 152. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]  [M2]
 -- satellite SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
@@ -8453,7 +8454,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_TRAVEL_TRI
 
 
 ----------------------------------------------------------------------------------------
--- 153. MAXIMUS — SATELLITE  SAT_CHANNEL_DEFINITION   [Implemented]
+-- 153. MAXIMUS — SATELLITE  SAT_CHANNEL_DEFINITION   [Implemented]  [M2]
 -- satellite SAT_CHANNEL_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -8485,7 +8486,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CHANNEL_DEFINITION'
 
 
 ----------------------------------------------------------------------------------------
--- 154. MAXIMUS — SATELLITE  SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
+-- 154. MAXIMUS — SATELLITE  SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M2]
 -- satellite SAT_CLAIM_ASSESSMENT_SUMMARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS'). Expected RECORD_SOURCE:
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS. No DBT_RUN_TS column on this table.
@@ -8509,7 +8510,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_ASSESSMENT_SU
 
 
 ----------------------------------------------------------------------------------------
--- 155. MAXIMUS — SATELLITE  SAT_CLAIM_BENEFIT_HEAD   [Implemented]
+-- 155. MAXIMUS — SATELLITE  SAT_CLAIM_BENEFIT_HEAD   [Implemented]  [M2]
 -- satellite SAT_CLAIM_BENEFIT_HEAD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -8541,7 +8542,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_BENEFIT_HEAD'
 
 
 ----------------------------------------------------------------------------------------
--- 156. MAXIMUS — SATELLITE  SAT_CLAIM_CO_RI_SHARE   [Implemented]
+-- 156. MAXIMUS — SATELLITE  SAT_CLAIM_CO_RI_SHARE   [Implemented]  [M2]
 -- satellite SAT_CLAIM_CO_RI_SHARE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
@@ -8569,7 +8570,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_CO_RI_SHARE' 
 
 
 ----------------------------------------------------------------------------------------
--- 157. MAXIMUS — SATELLITE  SAT_CLAIM_FNOL   [Implemented]
+-- 157. MAXIMUS — SATELLITE  SAT_CLAIM_FNOL   [Implemented]  [M2]
 -- satellite SAT_CLAIM_FNOL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -8596,7 +8597,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_FNOL' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 158. MAXIMUS — SATELLITE  SAT_CLAIM_FRAUD   [Implemented]
+-- 158. MAXIMUS — SATELLITE  SAT_CLAIM_FRAUD   [Implemented]  [M2]
 -- satellite SAT_CLAIM_FRAUD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -8628,7 +8629,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_FRAUD' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 159. MAXIMUS — SATELLITE  SAT_CLAIM_HEADER   [Implemented]
+-- 159. MAXIMUS — SATELLITE  SAT_CLAIM_HEADER   [Implemented]  [M2]
 -- satellite SAT_CLAIM_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -8661,7 +8662,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_HEADER' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 160. MAXIMUS — SATELLITE  SAT_CLAIM_HEALTH_DETAIL   [Implemented]
+-- 160. MAXIMUS — SATELLITE  SAT_CLAIM_HEALTH_DETAIL   [Implemented]  [M2]
 -- satellite SAT_CLAIM_HEALTH_DETAIL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -8693,7 +8694,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_HEALTH_DETAIL
 
 
 ----------------------------------------------------------------------------------------
--- 161. MAXIMUS — SATELLITE  SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]
+-- 161. MAXIMUS — SATELLITE  SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]  [M2]
 -- satellite SAT_CLAIM_INVESTIGATION_FINDING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8719,7 +8720,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_INVESTIGATION
 
 
 ----------------------------------------------------------------------------------------
--- 162. MAXIMUS — SATELLITE  SAT_CLAIM_LITIGATION   [Implemented]
+-- 162. MAXIMUS — SATELLITE  SAT_CLAIM_LITIGATION   [Implemented]  [M2]
 -- satellite SAT_CLAIM_LITIGATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
@@ -8747,7 +8748,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_LITIGATION' a
 
 
 ----------------------------------------------------------------------------------------
--- 163. MAXIMUS — SATELLITE  SAT_CLAIM_NOTE   [Implemented]
+-- 163. MAXIMUS — SATELLITE  SAT_CLAIM_NOTE   [Implemented]  [M2]
 -- satellite SAT_CLAIM_NOTE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -8775,7 +8776,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_NOTE' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 164. MAXIMUS — SATELLITE  SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]
+-- 164. MAXIMUS — SATELLITE  SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M2]
 -- satellite SAT_CLAIM_PAYMENT_TRANCHE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
@@ -8804,7 +8805,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_PAYMENT_TRANC
 
 
 ----------------------------------------------------------------------------------------
--- 165. MAXIMUS — SATELLITE  SAT_CLAIM_PA_DETAIL   [Implemented]
+-- 165. MAXIMUS — SATELLITE  SAT_CLAIM_PA_DETAIL   [Implemented]  [M2]
 -- satellite SAT_CLAIM_PA_DETAIL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8830,7 +8831,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_PA_DETAIL' as
 
 
 ----------------------------------------------------------------------------------------
--- 166. MAXIMUS — SATELLITE  SAT_CLAIM_PROVIDER_BILLING   [Implemented]
+-- 166. MAXIMUS — SATELLITE  SAT_CLAIM_PROVIDER_BILLING   [Implemented]  [M2]
 -- satellite SAT_CLAIM_PROVIDER_BILLING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
@@ -8858,7 +8859,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_PROVIDER_BILL
 
 
 ----------------------------------------------------------------------------------------
--- 167. MAXIMUS — SATELLITE  SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]
+-- 167. MAXIMUS — SATELLITE  SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M2]
 -- satellite SAT_CLAIM_RECOVERY_SALVAGE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8884,7 +8885,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_RECOVERY_SALV
 
 
 ----------------------------------------------------------------------------------------
--- 168. MAXIMUS — SATELLITE  SAT_CLAIM_REPUDIATION   [Implemented]
+-- 168. MAXIMUS — SATELLITE  SAT_CLAIM_REPUDIATION   [Implemented]  [M2]
 -- satellite SAT_CLAIM_REPUDIATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -8912,7 +8913,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_REPUDIATION' 
 
 
 ----------------------------------------------------------------------------------------
--- 169. MAXIMUS — SATELLITE  SAT_CLAIM_RESERVE   [Implemented]
+-- 169. MAXIMUS — SATELLITE  SAT_CLAIM_RESERVE   [Implemented]  [M2]
 -- satellite SAT_CLAIM_RESERVE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE'). Expected
@@ -8940,7 +8941,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_RESERVE' as t
 
 
 ----------------------------------------------------------------------------------------
--- 170. MAXIMUS — SATELLITE  SAT_CLAIM_RESERVE_HEAD   [Implemented]
+-- 170. MAXIMUS — SATELLITE  SAT_CLAIM_RESERVE_HEAD   [Implemented]  [M2]
 -- satellite SAT_CLAIM_RESERVE_HEAD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8966,7 +8967,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_RESERVE_HEAD'
 
 
 ----------------------------------------------------------------------------------------
--- 171. MAXIMUS — SATELLITE  SAT_CLAIM_SETTLEMENT   [Implemented]
+-- 171. MAXIMUS — SATELLITE  SAT_CLAIM_SETTLEMENT   [Implemented]  [M3]
 -- satellite SAT_CLAIM_SETTLEMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8992,7 +8993,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_SETTLEMENT' a
 
 
 ----------------------------------------------------------------------------------------
--- 172. MAXIMUS — SATELLITE  SAT_CLAIM_SLA_TRACKING   [Implemented]
+-- 172. MAXIMUS — SATELLITE  SAT_CLAIM_SLA_TRACKING   [Implemented]  [M3]
 -- satellite SAT_CLAIM_SLA_TRACKING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS'). Expected RECORD_SOURCE:
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS. No DBT_RUN_TS column on this table.
@@ -9016,7 +9017,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_SLA_TRACKING'
 
 
 ----------------------------------------------------------------------------------------
--- 173. MAXIMUS — SATELLITE  SAT_CLAIM_TP_FORENSIC   [Implemented]
+-- 173. MAXIMUS — SATELLITE  SAT_CLAIM_TP_FORENSIC   [Implemented]  [M3]
 -- satellite SAT_CLAIM_TP_FORENSIC; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9042,7 +9043,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_TP_FORENSIC' 
 
 
 ----------------------------------------------------------------------------------------
--- 174. MAXIMUS — SATELLITE  SAT_CLAIM_TRAVEL_DETAIL   [Implemented]
+-- 174. MAXIMUS — SATELLITE  SAT_CLAIM_TRAVEL_DETAIL   [Implemented]  [M3]
 -- satellite SAT_CLAIM_TRAVEL_DETAIL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -9072,7 +9073,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_TRAVEL_DETAIL
 
 
 ----------------------------------------------------------------------------------------
--- 175. MAXIMUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]
+-- 175. MAXIMUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]  [M3]
 -- satellite SAT_COMMON_ADDRESS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -9117,7 +9118,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_ADDRESS' as 
 
 
 ----------------------------------------------------------------------------------------
--- 176. MAXIMUS — SATELLITE  SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]
+-- 176. MAXIMUS — SATELLITE  SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]  [M3]
 -- satellite SAT_COMMON_ADMIN_GEOGRAPHY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9143,7 +9144,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_ADMIN_GEOGRA
 
 
 ----------------------------------------------------------------------------------------
--- 177. MAXIMUS — SATELLITE  SAT_COMMON_BUSINESS_AUDIT   [Implemented]
+-- 177. MAXIMUS — SATELLITE  SAT_COMMON_BUSINESS_AUDIT   [Implemented]  [M3]
 -- satellite SAT_COMMON_BUSINESS_AUDIT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -9171,7 +9172,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_BUSINESS_AUD
 
 
 ----------------------------------------------------------------------------------------
--- 178. MAXIMUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 178. MAXIMUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]  [M3]
 -- satellite SAT_COMMON_CLASSIFICATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9201,7 +9202,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_CLASSIFICATI
 
 
 ----------------------------------------------------------------------------------------
--- 179. MAXIMUS — SATELLITE  SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 179. MAXIMUS — SATELLITE  SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M3]
 -- satellite SAT_COMMON_COMMUNICATION_PREFERENCE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9233,7 +9234,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_COMMUNICATIO
 
 
 ----------------------------------------------------------------------------------------
--- 180. MAXIMUS — SATELLITE  SAT_COMMON_CONSENT   [Implemented]
+-- 180. MAXIMUS — SATELLITE  SAT_COMMON_CONSENT   [Implemented]  [M3]
 -- satellite SAT_COMMON_CONSENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9263,7 +9264,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONSENT' as 
 
 
 ----------------------------------------------------------------------------------------
--- 181. MAXIMUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]
+-- 181. MAXIMUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]  [M3]
 -- satellite SAT_COMMON_CONTACT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -9301,7 +9302,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONTACT' as 
 
 
 ----------------------------------------------------------------------------------------
--- 182. MAXIMUS — SATELLITE  SAT_COMMON_GEO   [Implemented]
+-- 182. MAXIMUS — SATELLITE  SAT_COMMON_GEO   [Implemented]  [M3]
 -- satellite SAT_COMMON_GEO; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW',
@@ -9331,7 +9332,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_GEO' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 183. MAXIMUS — SATELLITE  SAT_COMMON_LIFECYCLE   [Implemented]
+-- 183. MAXIMUS — SATELLITE  SAT_COMMON_LIFECYCLE   [Implemented]  [M3]
 -- satellite SAT_COMMON_LIFECYCLE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9357,7 +9358,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_LIFECYCLE' a
 
 
 ----------------------------------------------------------------------------------------
--- 184. MAXIMUS — SATELLITE  SAT_COMMON_MONETARY_CONTEXT   [Implemented]
+-- 184. MAXIMUS — SATELLITE  SAT_COMMON_MONETARY_CONTEXT   [Implemented]  [M3]
 -- satellite SAT_COMMON_MONETARY_CONTEXT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS',
@@ -9389,7 +9390,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_MONETARY_CON
 
 
 ----------------------------------------------------------------------------------------
--- 185. MAXIMUS — SATELLITE  SAT_COMMON_STATUS   [Implemented]
+-- 185. MAXIMUS — SATELLITE  SAT_COMMON_STATUS   [Implemented]  [M3]
 -- satellite SAT_COMMON_STATUS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9415,7 +9416,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_STATUS' as t
 
 
 ----------------------------------------------------------------------------------------
--- 186. MAXIMUS — SATELLITE  SAT_COVERAGE_CONDITIONS   [Implemented]
+-- 186. MAXIMUS — SATELLITE  SAT_COVERAGE_CONDITIONS   [Implemented]  [M3]
 -- satellite SAT_COVERAGE_CONDITIONS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9447,7 +9448,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_CONDITIONS
 
 
 ----------------------------------------------------------------------------------------
--- 187. MAXIMUS — SATELLITE  SAT_COVERAGE_DEFINITION   [Implemented]
+-- 187. MAXIMUS — SATELLITE  SAT_COVERAGE_DEFINITION   [Implemented]  [M3]
 -- satellite SAT_COVERAGE_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9481,7 +9482,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_DEFINITION
 
 
 ----------------------------------------------------------------------------------------
--- 188. MAXIMUS — SATELLITE  SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
+-- 188. MAXIMUS — SATELLITE  SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M3]
 -- satellite SAT_COVERAGE_SUBLIMIT_SCHEDULE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9507,7 +9508,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_SUBLIMIT_S
 
 
 ----------------------------------------------------------------------------------------
--- 189. MAXIMUS — SATELLITE  SAT_DOCUMENT_DEFINITION   [Implemented]
+-- 189. MAXIMUS — SATELLITE  SAT_DOCUMENT_DEFINITION   [Implemented]  [M3]
 -- satellite SAT_DOCUMENT_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -9547,7 +9548,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_DOCUMENT_DEFINITION
 
 
 ----------------------------------------------------------------------------------------
--- 190. MAXIMUS — SATELLITE  SAT_FINTXN_ACCOUNTING   [Implemented]
+-- 190. MAXIMUS — SATELLITE  SAT_FINTXN_ACCOUNTING   [Implemented]  [M3]
 -- satellite SAT_FINTXN_ACCOUNTING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9573,7 +9574,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FINTXN_ACCOUNTING' 
 
 
 ----------------------------------------------------------------------------------------
--- 191. MAXIMUS — SATELLITE  SAT_FINTXN_CLAIM_PAYMENT   [Implemented]
+-- 191. MAXIMUS — SATELLITE  SAT_FINTXN_CLAIM_PAYMENT   [Implemented]  [M3]
 -- satellite SAT_FINTXN_CLAIM_PAYMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9599,7 +9600,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FINTXN_CLAIM_PAYMEN
 
 
 ----------------------------------------------------------------------------------------
--- 192. MAXIMUS — SATELLITE  SAT_FINTXN_HEADER   [Implemented]
+-- 192. MAXIMUS — SATELLITE  SAT_FINTXN_HEADER   [Implemented]  [M3]
 -- satellite SAT_FINTXN_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION',
@@ -9631,7 +9632,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FINTXN_HEADER' as t
 
 
 ----------------------------------------------------------------------------------------
--- 193. MAXIMUS — SATELLITE  SAT_FINTXN_PREMIUM   [Implemented]
+-- 193. MAXIMUS — SATELLITE  SAT_FINTXN_PREMIUM   [Implemented]  [M3]
 -- satellite SAT_FINTXN_PREMIUM; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9661,7 +9662,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FINTXN_PREMIUM' as 
 
 
 ----------------------------------------------------------------------------------------
--- 194. MAXIMUS — SATELLITE  SAT_FINTXN_TAX   [Implemented]
+-- 194. MAXIMUS — SATELLITE  SAT_FINTXN_TAX   [Implemented]  [M3]
 -- satellite SAT_FINTXN_TAX; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
@@ -9689,7 +9690,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FINTXN_TAX' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 195. MAXIMUS — SATELLITE  SAT_FIN_RECEIPT   [Implemented]
+-- 195. MAXIMUS — SATELLITE  SAT_FIN_RECEIPT   [Implemented]  [M3]
 -- satellite SAT_FIN_RECEIPT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9719,7 +9720,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FIN_RECEIPT' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 196. MAXIMUS — SATELLITE  SAT_INSTRUMENT_DEFINITION   [Implemented]
+-- 196. MAXIMUS — SATELLITE  SAT_INSTRUMENT_DEFINITION   [Implemented]  [M3]
 -- satellite SAT_INSTRUMENT_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION'). Expected
@@ -9747,7 +9748,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_INSTRUMENT_DEFINITI
 
 
 ----------------------------------------------------------------------------------------
--- 197. MAXIMUS — SATELLITE  SAT_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 197. MAXIMUS — SATELLITE  SAT_LNK_PARTY_ROLE_CORE   [Implemented]  [M3]
 -- satellite SAT_LNK_PARTY_ROLE_CORE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -9775,7 +9776,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_PARTY_ROLE_CORE
 
 
 ----------------------------------------------------------------------------------------
--- 198. MAXIMUS — SATELLITE  SAT_LNK_POLICY_PARTY_ROLE   [Implemented]
+-- 198. MAXIMUS — SATELLITE  SAT_LNK_POLICY_PARTY_ROLE   [Implemented]  [M3]
 -- satellite SAT_LNK_POLICY_PARTY_ROLE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION',
@@ -9809,7 +9810,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_POLICY_PARTY_RO
 
 
 ----------------------------------------------------------------------------------------
--- 199. MAXIMUS — SATELLITE  SAT_LNK_ROLE_AGENT   [Implemented]
+-- 199. MAXIMUS — SATELLITE  SAT_LNK_ROLE_AGENT   [Implemented]  [M3]
 -- satellite SAT_LNK_ROLE_AGENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9835,7 +9836,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_AGENT' as 
 
 
 ----------------------------------------------------------------------------------------
--- 200. MAXIMUS — SATELLITE  SAT_LNK_ROLE_CUSTOMER   [Implemented]
+-- 200. MAXIMUS — SATELLITE  SAT_LNK_ROLE_CUSTOMER   [Implemented]  [M3]
 -- satellite SAT_LNK_ROLE_CUSTOMER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9865,7 +9866,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_CUSTOMER' 
 
 
 ----------------------------------------------------------------------------------------
--- 201. MAXIMUS — SATELLITE  SAT_LNK_ROLE_EMPLOYEE   [Implemented]
+-- 201. MAXIMUS — SATELLITE  SAT_LNK_ROLE_EMPLOYEE   [Implemented]  [M3]
 -- satellite SAT_LNK_ROLE_EMPLOYEE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9897,7 +9898,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_EMPLOYEE' 
 
 
 ----------------------------------------------------------------------------------------
--- 202. MAXIMUS — SATELLITE  SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 202. MAXIMUS — SATELLITE  SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M3]
 -- satellite SAT_LNK_ROLE_NOMINEE_BENEFICIARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
@@ -9925,7 +9926,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_NOMINEE_BE
 
 
 ----------------------------------------------------------------------------------------
--- 203. MAXIMUS — SATELLITE  SAT_LOSS_EVENT_DETAIL   [Implemented]
+-- 203. MAXIMUS — SATELLITE  SAT_LOSS_EVENT_DETAIL   [Implemented]  [M3]
 -- satellite SAT_LOSS_EVENT_DETAIL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9951,7 +9952,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LOSS_EVENT_DETAIL' 
 
 
 ----------------------------------------------------------------------------------------
--- 204. MAXIMUS — SATELLITE  SAT_LOSS_EVENT_NOTIFICATION   [Implemented]
+-- 204. MAXIMUS — SATELLITE  SAT_LOSS_EVENT_NOTIFICATION   [Implemented]  [M3]
 -- satellite SAT_LOSS_EVENT_NOTIFICATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9977,7 +9978,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LOSS_EVENT_NOTIFICA
 
 
 ----------------------------------------------------------------------------------------
--- 205. MAXIMUS — SATELLITE  SAT_LOSS_LOCATION_ADDRESS   [Implemented]
+-- 205. MAXIMUS — SATELLITE  SAT_LOSS_LOCATION_ADDRESS   [Implemented]  [M3]
 -- satellite SAT_LOSS_LOCATION_ADDRESS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10003,7 +10004,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LOSS_LOCATION_ADDRE
 
 
 ----------------------------------------------------------------------------------------
--- 206. MAXIMUS — SATELLITE  SAT_ORG_UNIT_DEFINITION   [Implemented]
+-- 206. MAXIMUS — SATELLITE  SAT_ORG_UNIT_DEFINITION   [Implemented]  [M3]
 -- satellite SAT_ORG_UNIT_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -10034,7 +10035,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_ORG_UNIT_DEFINITION
 
 
 ----------------------------------------------------------------------------------------
--- 207. MAXIMUS — SATELLITE  SAT_PARTY_AML_SCREENING   [Implemented]
+-- 207. MAXIMUS — SATELLITE  SAT_PARTY_AML_SCREENING   [Implemented]  [M3]
 -- satellite SAT_PARTY_AML_SCREENING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10062,7 +10063,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_AML_SCREENING
 
 
 ----------------------------------------------------------------------------------------
--- 208. MAXIMUS — SATELLITE  SAT_PARTY_BANKING   [Implemented]
+-- 208. MAXIMUS — SATELLITE  SAT_PARTY_BANKING   [Implemented]  [M3]
 -- satellite SAT_PARTY_BANKING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -10092,7 +10093,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_BANKING' as t
 
 
 ----------------------------------------------------------------------------------------
--- 209. MAXIMUS — SATELLITE  SAT_PARTY_CLAIM_HISTORY   [Implemented]
+-- 209. MAXIMUS — SATELLITE  SAT_PARTY_CLAIM_HISTORY   [Implemented]  [M3]
 -- satellite SAT_PARTY_CLAIM_HISTORY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10118,7 +10119,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_CLAIM_HISTORY
 
 
 ----------------------------------------------------------------------------------------
--- 210. MAXIMUS — SATELLITE  SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
+-- 210. MAXIMUS — SATELLITE  SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M3]
 -- satellite SAT_PARTY_CONTACT_ADDRESS_LINK; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW',
@@ -10154,7 +10155,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_CONTACT_ADDRE
 
 
 ----------------------------------------------------------------------------------------
--- 211. MAXIMUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 211. MAXIMUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]  [M3]
 -- satellite SAT_PARTY_EMPLOYMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -10186,7 +10187,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_EMPLOYMENT' a
 
 
 ----------------------------------------------------------------------------------------
--- 212. MAXIMUS — SATELLITE  SAT_PARTY_FINANCIAL_PROFILE   [Implemented]
+-- 212. MAXIMUS — SATELLITE  SAT_PARTY_FINANCIAL_PROFILE   [Implemented]  [M3]
 -- satellite SAT_PARTY_FINANCIAL_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10214,7 +10215,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_FINANCIAL_PRO
 
 
 ----------------------------------------------------------------------------------------
--- 213. MAXIMUS — SATELLITE  SAT_PARTY_FRAUD_PROFILE   [Implemented]
+-- 213. MAXIMUS — SATELLITE  SAT_PARTY_FRAUD_PROFILE   [Implemented]  [M3]
 -- satellite SAT_PARTY_FRAUD_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10242,7 +10243,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_FRAUD_PROFILE
 
 
 ----------------------------------------------------------------------------------------
--- 214. MAXIMUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 214. MAXIMUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M3]
 -- satellite SAT_PARTY_HEALTH_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10270,7 +10271,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_HEALTH_PROFIL
 
 
 ----------------------------------------------------------------------------------------
--- 215. MAXIMUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 215. MAXIMUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]  [M3]
 -- satellite SAT_PARTY_IDENTIFICATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY',
@@ -10308,7 +10309,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTIFICATIO
 
 
 ----------------------------------------------------------------------------------------
--- 216. MAXIMUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]
+-- 216. MAXIMUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]  [M3]
 -- satellite SAT_PARTY_IDENTITY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY',
@@ -10352,7 +10353,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTITY' as 
 
 
 ----------------------------------------------------------------------------------------
--- 217. MAXIMUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 217. MAXIMUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M3]
 -- satellite SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10380,7 +10381,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_INDIVIDUAL_DE
 
 
 ----------------------------------------------------------------------------------------
--- 218. MAXIMUS — SATELLITE  SAT_PARTY_KYC   [Implemented]
+-- 218. MAXIMUS — SATELLITE  SAT_PARTY_KYC   [Implemented]  [M3]
 -- satellite SAT_PARTY_KYC; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10408,7 +10409,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_KYC' as table
 
 
 ----------------------------------------------------------------------------------------
--- 219. MAXIMUS — SATELLITE  SAT_PARTY_KYC_REFERENCE   [Implemented]
+-- 219. MAXIMUS — SATELLITE  SAT_PARTY_KYC_REFERENCE   [Implemented]  [M3]
 -- satellite SAT_PARTY_KYC_REFERENCE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10436,7 +10437,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_KYC_REFERENCE
 
 
 ----------------------------------------------------------------------------------------
--- 220. MAXIMUS — SATELLITE  SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]
+-- 220. MAXIMUS — SATELLITE  SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M3]
 -- satellite SAT_PARTY_ONBOARDING_JOURNEY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10462,7 +10463,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_ONBOARDING_JO
 
 
 ----------------------------------------------------------------------------------------
--- 221. MAXIMUS — SATELLITE  SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 221. MAXIMUS — SATELLITE  SAT_PARTY_ORGANISATION_PROFILE   [Implemented]  [M3]
 -- satellite SAT_PARTY_ORGANISATION_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -10494,7 +10495,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_ORGANISATION_
 
 
 ----------------------------------------------------------------------------------------
--- 222. MAXIMUS — SATELLITE  SAT_PARTY_PAYOUT_PROFILE   [Implemented]
+-- 222. MAXIMUS — SATELLITE  SAT_PARTY_PAYOUT_PROFILE   [Implemented]  [M3]
 -- satellite SAT_PARTY_PAYOUT_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10520,7 +10521,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_PAYOUT_PROFIL
 
 
 ----------------------------------------------------------------------------------------
--- 223. MAXIMUS — SATELLITE  SAT_PARTY_POLICY_HISTORY   [Implemented]
+-- 223. MAXIMUS — SATELLITE  SAT_PARTY_POLICY_HISTORY   [Implemented]  [M3]
 -- satellite SAT_PARTY_POLICY_HISTORY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10546,7 +10547,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_POLICY_HISTOR
 
 
 ----------------------------------------------------------------------------------------
--- 224. MAXIMUS — SATELLITE  SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]
+-- 224. MAXIMUS — SATELLITE  SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M3]
 -- satellite SAT_PARTY_PORTFOLIO_SUMMARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10572,7 +10573,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_PORTFOLIO_SUM
 
 
 ----------------------------------------------------------------------------------------
--- 225. MAXIMUS — SATELLITE  SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]
+-- 225. MAXIMUS — SATELLITE  SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M3]
 -- satellite SAT_PARTY_RELATIONSHIP_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10598,7 +10599,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_RELATIONSHIP_
 
 
 ----------------------------------------------------------------------------------------
--- 226. MAXIMUS — SATELLITE  SAT_POLICY_CANCELLATION   [Implemented]
+-- 226. MAXIMUS — SATELLITE  SAT_POLICY_CANCELLATION   [Implemented]  [M3]
 -- satellite SAT_POLICY_CANCELLATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10624,7 +10625,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_CANCELLATION
 
 
 ----------------------------------------------------------------------------------------
--- 227. MAXIMUS — SATELLITE  SAT_POLICY_CLASSIFICATION   [Implemented]
+-- 227. MAXIMUS — SATELLITE  SAT_POLICY_CLASSIFICATION   [Implemented]  [M3]
 -- satellite SAT_POLICY_CLASSIFICATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -10654,7 +10655,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_CLASSIFICATI
 
 
 ----------------------------------------------------------------------------------------
--- 228. MAXIMUS — SATELLITE  SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]
+-- 228. MAXIMUS — SATELLITE  SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M3]
 -- satellite SAT_POLICY_COVERAGE_SCHEDULE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS',
@@ -10690,7 +10691,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_COVERAGE_SCH
 
 
 ----------------------------------------------------------------------------------------
--- 229. MAXIMUS — SATELLITE  SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]
+-- 229. MAXIMUS — SATELLITE  SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M3]
 -- satellite SAT_POLICY_DISCOUNT_LOADING_APPLIED; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -10720,7 +10721,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_DISCOUNT_LOA
 
 
 ----------------------------------------------------------------------------------------
--- 230. MAXIMUS — SATELLITE  SAT_POLICY_ENDORSEMENT   [Implemented]
+-- 230. MAXIMUS — SATELLITE  SAT_POLICY_ENDORSEMENT   [Implemented]  [M3]
 -- satellite SAT_POLICY_ENDORSEMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10748,7 +10749,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_ENDORSEMENT'
 
 
 ----------------------------------------------------------------------------------------
--- 231. MAXIMUS — SATELLITE  SAT_POLICY_GROUP   [Implemented]
+-- 231. MAXIMUS — SATELLITE  SAT_POLICY_GROUP   [Implemented]  [M3]
 -- satellite SAT_POLICY_GROUP; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10774,7 +10775,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_GROUP' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 232. MAXIMUS — SATELLITE  SAT_POLICY_HEADER   [Implemented]
+-- 232. MAXIMUS — SATELLITE  SAT_POLICY_HEADER   [Implemented]  [M3]
 -- satellite SAT_POLICY_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -10811,7 +10812,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_HEADER' as t
 
 
 ----------------------------------------------------------------------------------------
--- 233. MAXIMUS — SATELLITE  SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]
+-- 233. MAXIMUS — SATELLITE  SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M3]
 -- satellite SAT_POLICY_INTERMEDIARY_SPLIT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10838,7 +10839,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_INTERMEDIARY
 
 
 ----------------------------------------------------------------------------------------
--- 234. MAXIMUS — SATELLITE  SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]
+-- 234. MAXIMUS — SATELLITE  SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]  [M3]
 -- satellite SAT_POLICY_PORTABILITY_MIGRATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10864,7 +10865,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_PORTABILITY_
 
 
 ----------------------------------------------------------------------------------------
--- 235. MAXIMUS — SATELLITE  SAT_POLICY_PREMIUM_HEAD   [Implemented]
+-- 235. MAXIMUS — SATELLITE  SAT_POLICY_PREMIUM_HEAD   [Implemented]  [M3]
 -- satellite SAT_POLICY_PREMIUM_HEAD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -10896,7 +10897,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_PREMIUM_HEAD
 
 
 ----------------------------------------------------------------------------------------
--- 236. MAXIMUS — SATELLITE  SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
+-- 236. MAXIMUS — SATELLITE  SAT_POLICY_PREMIUM_SUMMARY   [Implemented]  [M3]
 -- satellite SAT_POLICY_PREMIUM_SUMMARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -10928,7 +10929,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_PREMIUM_SUMM
 
 
 ----------------------------------------------------------------------------------------
--- 237. MAXIMUS — SATELLITE  SAT_POLICY_RENEWAL   [Implemented]
+-- 237. MAXIMUS — SATELLITE  SAT_POLICY_RENEWAL   [Implemented]  [M3]
 -- satellite SAT_POLICY_RENEWAL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10954,7 +10955,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_RENEWAL' as 
 
 
 ----------------------------------------------------------------------------------------
--- 238. MAXIMUS — SATELLITE  SAT_POLICY_SERVICING_SUMMARY   [Implemented]
+-- 238. MAXIMUS — SATELLITE  SAT_POLICY_SERVICING_SUMMARY   [Implemented]  [M3]
 -- satellite SAT_POLICY_SERVICING_SUMMARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10980,7 +10981,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_SERVICING_SU
 
 
 ----------------------------------------------------------------------------------------
--- 239. MAXIMUS — SATELLITE  SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]
+-- 239. MAXIMUS — SATELLITE  SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M3]
 -- satellite SAT_POLICY_SUM_INSURED_BREAKUP; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -11010,7 +11011,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_SUM_INSURED_
 
 
 ----------------------------------------------------------------------------------------
--- 240. MAXIMUS — SATELLITE  SAT_POLICY_TAX_BREAKUP   [Implemented]
+-- 240. MAXIMUS — SATELLITE  SAT_POLICY_TAX_BREAKUP   [Implemented]  [M3]
 -- satellite SAT_POLICY_TAX_BREAKUP; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -11037,7 +11038,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_TAX_BREAKUP'
 
 
 ----------------------------------------------------------------------------------------
--- 241. MAXIMUS — SATELLITE  SAT_POLICY_TAX_HEAD   [Implemented]
+-- 241. MAXIMUS — SATELLITE  SAT_POLICY_TAX_HEAD   [Implemented]  [M3]
 -- satellite SAT_POLICY_TAX_HEAD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -11066,7 +11067,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_TAX_HEAD' as
 
 
 ----------------------------------------------------------------------------------------
--- 242. MAXIMUS — SATELLITE  SAT_POLICY_TERMS   [Implemented]
+-- 242. MAXIMUS — SATELLITE  SAT_POLICY_TERMS   [Implemented]  [M3]
 -- satellite SAT_POLICY_TERMS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -11092,7 +11093,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_TERMS' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 243. MAXIMUS — SATELLITE  SAT_PRODUCT_DEFINITION   [Implemented]
+-- 243. MAXIMUS — SATELLITE  SAT_PRODUCT_DEFINITION   [Implemented]  [M3]
 -- satellite SAT_PRODUCT_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
@@ -11129,7 +11130,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_DEFINITION'
 
 
 ----------------------------------------------------------------------------------------
--- 244. MAXIMUS — SATELLITE  SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
+-- 244. MAXIMUS — SATELLITE  SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M3]
 -- satellite SAT_PRODUCT_RATING_STRUCTURE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -11157,7 +11158,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_RATING_STRU
 
 
 ----------------------------------------------------------------------------------------
--- 245. MAXIMUS — SATELLITE  SAT_PRODUCT_TERMS   [Implemented]
+-- 245. MAXIMUS — SATELLITE  SAT_PRODUCT_TERMS   [Implemented]  [M3]
 -- satellite SAT_PRODUCT_TERMS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -11185,7 +11186,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_TERMS' as t
 
 
 ----------------------------------------------------------------------------------------
--- 246. MAXIMUS — SATELLITE  SAT_QUOTE_HEADER   [Implemented]
+-- 246. MAXIMUS — SATELLITE  SAT_QUOTE_HEADER   [Implemented]  [M3]
 -- satellite SAT_QUOTE_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW',
@@ -11214,7 +11215,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_QUOTE_HEADER' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 247. MAXIMUS — SATELLITE  SAT_QUOTE_RATING   [Implemented]
+-- 247. MAXIMUS — SATELLITE  SAT_QUOTE_RATING   [Implemented]  [M3]
 -- satellite SAT_QUOTE_RATING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW',
@@ -11243,7 +11244,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_QUOTE_RATING' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 248. MAXIMUS — SATELLITE  SAT_QUOTE_RATING_INPUT   [Implemented]
+-- 248. MAXIMUS — SATELLITE  SAT_QUOTE_RATING_INPUT   [Implemented]  [M3]
 -- satellite SAT_QUOTE_RATING_INPUT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW',
@@ -11277,7 +11278,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_QUOTE_RATING_INPUT'
 
 
 ----------------------------------------------------------------------------------------
--- 249. MAXIMUS — SATELLITE  SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]
+-- 249. MAXIMUS — SATELLITE  SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M3]
 -- satellite SAT_RISK_HEALTH_MEMBER_MEDICAL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
@@ -11305,7 +11306,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_RISK_HEALTH_MEMBER_
 
 
 ----------------------------------------------------------------------------------------
--- 250. MAXIMUS — SATELLITE  SAT_RISK_OBJECT_CORE   [Implemented]
+-- 250. MAXIMUS — SATELLITE  SAT_RISK_OBJECT_CORE   [Implemented]  [M3]
 -- satellite SAT_RISK_OBJECT_CORE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK',
@@ -11341,7 +11342,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_RISK_OBJECT_CORE' a
 
 
 ----------------------------------------------------------------------------------------
--- 251. MAXIMUS — SATELLITE  SAT_RISK_OBJECT_VALUATION   [Implemented]
+-- 251. MAXIMUS — SATELLITE  SAT_RISK_OBJECT_VALUATION   [Implemented]  [M3]
 -- satellite SAT_RISK_OBJECT_VALUATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -11373,7 +11374,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_RISK_OBJECT_VALUATI
 
 
 ----------------------------------------------------------------------------------------
--- 252. MAXIMUS — SATELLITE  SAT_RISK_PERSON_INSURED   [Implemented]
+-- 252. MAXIMUS — SATELLITE  SAT_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- satellite SAT_RISK_PERSON_INSURED; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -11401,7 +11402,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_RISK_PERSON_INSURED
 
 
 ----------------------------------------------------------------------------------------
--- 253. MAXIMUS — SATELLITE  SAT_RISK_PERSON_MEMBER   [Implemented]
+-- 253. MAXIMUS — SATELLITE  SAT_RISK_PERSON_MEMBER   [Implemented]  [M3]
 -- satellite SAT_RISK_PERSON_MEMBER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
@@ -11429,7 +11430,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_RISK_PERSON_MEMBER'
 
 
 ----------------------------------------------------------------------------------------
--- 254. MAXIMUS — SATELLITE  SAT_RISK_PERSON_TRAVEL   [Implemented]
+-- 254. MAXIMUS — SATELLITE  SAT_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- satellite SAT_RISK_PERSON_TRAVEL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',

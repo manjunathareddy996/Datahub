@@ -2,6 +2,7 @@
    DM-H2  |  History - No Change Creates No New Row (Travel LOB)  (OPUS)
    An unchanged record creates no new satellite row.
 
+   MEMBER SPLIT: sections 1..46 assigned M1 x 16, M2 x 15, M3 x 15 -- contiguous thirds in listed order.
    Check ID: DM-H2
    Category: History checks
    Sign-off criterion: No change creates no new row
@@ -37,7 +38,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. OPUS — SAT_COMMON_ADDRESS   [Implemented]
+-- 1. OPUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -73,7 +74,7 @@ select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 2. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 2. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -105,7 +106,7 @@ select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 3. OPUS — SAT_COMMON_CONTACT   [Implemented]
+-- 3. OPUS — SAT_COMMON_CONTACT   [Implemented]  [M1]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- ma_sat_multi_source; PK PARTY_HKEY, child key CONTACT_POINT_TYPE,
@@ -158,7 +159,7 @@ select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 4. OPUS — SAT_COVERAGE_CONDITIONS   [Implemented]
+-- 4. OPUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -189,7 +190,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 5. OPUS — SAT_COVERAGE_DEFINITION   [Implemented]
+-- 5. OPUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -296,7 +297,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 6. OPUS — SAT_COVERAGE_LIMITS   [Implemented]
+-- 6. OPUS — SAT_COVERAGE_LIMITS   [Implemented]  [M1]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -335,7 +336,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 7. OPUS — SAT_FINTXN_COMMISSION   [Implemented]
+-- 7. OPUS — SAT_FINTXN_COMMISSION   [Implemented]  [M1]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key COMMISSION_TYPE_CK; 2
@@ -366,7 +367,7 @@ select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 8. OPUS — SAT_FINTXN_HEADER   [Implemented]
+-- 8. OPUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -398,7 +399,7 @@ select 'OPUS' as project, 'SAT_FINTXN_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 9. OPUS — SAT_FINTXN_PREMIUM   [Implemented]
+-- 9. OPUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -441,7 +442,7 @@ select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 10. OPUS — SAT_FINTXN_TAX   [Implemented]
+-- 10. OPUS — SAT_FINTXN_TAX   [Implemented]  [M1]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key TAX_TYPE; 2
@@ -476,7 +477,7 @@ select 'OPUS' as project, 'SAT_FINTXN_TAX' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 11. OPUS — SAT_FIN_CHARGE_RATE   [Implemented]
+-- 11. OPUS — SAT_FIN_CHARGE_RATE   [Implemented]  [M1]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key CHARGE_TYPE_CK; 2
@@ -511,7 +512,7 @@ select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 12. OPUS — SAT_FIN_RECEIPT   [Implemented]
+-- 12. OPUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -550,7 +551,7 @@ select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 13. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 13. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -582,7 +583,7 @@ select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 14. OPUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
+-- 14. OPUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -613,7 +614,7 @@ select 'OPUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 15. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 15. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M1]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -649,7 +650,7 @@ select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 16. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 16. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M1]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -681,7 +682,7 @@ select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 17. OPUS — SAT_PARTY_IDENTIFICATION   [Implemented]  [M2]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- ma_sat_multi_source; PK PARTY_HKEY, child key IDENTIFICATION_TYPE_CODE; 3
@@ -728,7 +729,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 18. OPUS — SAT_PARTY_IDENTITY   [Implemented]
+-- 18. OPUS — SAT_PARTY_IDENTITY   [Implemented]  [M2]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -776,7 +777,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 19. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 19. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M2]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -808,7 +809,7 @@ select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 20. OPUS — SAT_POLICY_CLASSIFICATION   [Implemented]
+-- 20. OPUS — SAT_POLICY_CLASSIFICATION   [Implemented]  [M2]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- ma_sat_multi_source; PK POLICY_HKEY, child key CLASSIFICATION_TYPE; 3 RECORD_SOURCE
@@ -836,7 +837,7 @@ select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 21. OPUS — SAT_POLICY_HEADER   [Implemented]
+-- 21. OPUS — SAT_POLICY_HEADER   [Implemented]  [M2]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -886,7 +887,7 @@ select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 22. OPUS — SAT_POLICY_TERMS   [Implemented]
+-- 22. OPUS — SAT_POLICY_TERMS   [Implemented]  [M2]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -918,7 +919,7 @@ select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 23. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]
+-- 23. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -958,7 +959,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 24. OPUS — SAT_PRODUCT_RATING_FACTOR   [Implemented]
+-- 24. OPUS — SAT_PRODUCT_RATING_FACTOR   [Implemented]  [M2]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- ma_sat_multi_source; PK PRODUCT_HKEY, child key ACTIVE_SEQUENCE_NUMBER; 1
@@ -989,7 +990,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_RATING_FACTOR' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 25. OPUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
+-- 25. OPUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1020,7 +1021,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — SAT_PRODUCT_TERMS   [Implemented]
+-- 26. OPUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1056,7 +1057,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — SAT_PROPOSAL_UNDERWRITING   [Implemented]
+-- 27. OPUS — SAT_PROPOSAL_UNDERWRITING   [Implemented]  [M2]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1087,7 +1088,7 @@ select 'OPUS' as project, 'SAT_PROPOSAL_UNDERWRITING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — SAT_QUOTE_HEADER   [Implemented]
+-- 28. OPUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1118,7 +1119,7 @@ select 'OPUS' as project, 'SAT_QUOTE_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — SAT_RISK_MOTOR_DRIVER   [Implemented]
+-- 29. OPUS — SAT_RISK_MOTOR_DRIVER   [Implemented]  [M2]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1150,7 +1151,7 @@ select 'OPUS' as project, 'SAT_RISK_MOTOR_DRIVER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 30. OPUS — SAT_RISK_MOTOR_VEHICLE   [Implemented]
+-- 30. OPUS — SAT_RISK_MOTOR_VEHICLE   [Implemented]  [M2]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1182,7 +1183,7 @@ select 'OPUS' as project, 'SAT_RISK_MOTOR_VEHICLE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 31. OPUS — SAT_RISK_OBJECT_CORE   [Implemented]
+-- 31. OPUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M2]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1214,7 +1215,7 @@ select 'OPUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 32. OPUS — SAT_RISK_PERSON_INSURED   [Implemented]
+-- 32. OPUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1245,7 +1246,7 @@ select 'OPUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 33. OPUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
+-- 33. OPUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1282,7 +1283,7 @@ select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 34. OPUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 34. OPUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M3]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1313,7 +1314,7 @@ select 'OPUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satellite
 
 
 ----------------------------------------------------------------------------------------
--- 35. OPUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
+-- 35. OPUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M3]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1348,7 +1349,7 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 36. OPUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
+-- 36. OPUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M3]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1387,7 +1388,7 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 37. OPUS — SAT_AUG_COVERAGE_RATING   [Implemented]
+-- 37. OPUS — SAT_AUG_COVERAGE_RATING   [Implemented]  [M3]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1441,7 +1442,7 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 38. OPUS — SAT_AUG_FINTXN_PREMIUM   [Implemented]
+-- 38. OPUS — SAT_AUG_FINTXN_PREMIUM   [Implemented]  [M3]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1485,7 +1486,7 @@ select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 39. OPUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 39. OPUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]  [M3]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1516,7 +1517,7 @@ select 'OPUS' as project, 'SAT_AUG_LNK_PARTY_ROLE_CORE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 40. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 40. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M3]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1548,7 +1549,7 @@ select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 41. OPUS — SAT_AUG_PARTY_BANKING   [Implemented]
+-- 41. OPUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1579,7 +1580,7 @@ select 'OPUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 42. OPUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
+-- 42. OPUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1611,7 +1612,7 @@ select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 43. OPUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
+-- 43. OPUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1666,7 +1667,7 @@ select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 44. OPUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
+-- 44. OPUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1697,7 +1698,7 @@ select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 45. OPUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
+-- 45. OPUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1728,7 +1729,7 @@ select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 46. OPUS — CDC result (all satellites)   [Implemented]
+-- 46. OPUS — CDC result (all satellites)   [Implemented]  [M3]
 -- Joins the BEFORE and AFTER captures of the same run id. raw_changed compares the
 -- normalised RAW payload hash (same UPPER/TRIM/NULL rules as the HASHDIFF, so a
 -- case-only RAW edit is not a change); new_rows = satellite rows added for the key

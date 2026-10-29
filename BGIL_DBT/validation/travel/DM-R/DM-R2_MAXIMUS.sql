@@ -2,6 +2,7 @@
    DM-R2  |  Referential Integrity - Links Reconcile (Travel LOB)  (MAXIMUS)
    Every valid source relationship exists as a link row; no orphan links.
 
+   MEMBER SPLIT: sections 1..12 assigned M1 x 4, M2 x 4, M3 x 4 -- contiguous thirds in listed order.
    Check ID: DM-R2
    Category: Referential integrity
    Sign-off criterion: Relationships / links reconcile
@@ -35,7 +36,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. MAXIMUS — LINK_CLAIM_PARTY -- (a) missing links (RAW -> link)   [Implemented]
+-- 1. MAXIMUS — LINK_CLAIM_PARTY -- (a) missing links (RAW -> link)   [Implemented]  [M1]
 -- 10 RAW feed(s): lnkfeed_mtv2_claim_party <- stg2_mtv2__clm_clmd_clmap_pv,
 -- lnkfeed_mtv2_claim_party <- stg2_mtv2__clm_clmd_clmrsk_rska_msp_msd_prop_pv,
 -- lnkfeed_mtv2_claim_party <- stg2_mtv2__clm_clmd_clmrsk_rska_msp_msd_prop_pv,
@@ -277,7 +278,7 @@ select 'MAXIMUS' as project, 'LINK_CLAIM_PARTY' as link, src_feed, to_varchar(li
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — LINK_CLAIM_PARTY -- (b) orphan links (link FK -> hub)   [Implemented]
+-- 2. MAXIMUS — LINK_CLAIM_PARTY -- (b) orphan links (link FK -> hub)   [Implemented]  [M1]
 -- Link rows scoped to RECORD_SOURCE 'MAXIMUS_%'; every FK must exist in its hub (any
 -- project's rows -- shared vault). FKs: CLAIM_HKEY -> HUB_CLAIM, PARTY_HKEY ->
 -- HUB_PARTY. Link rows scoped by RECORD_SOURCE value set (6 travel feeds) rather than
@@ -307,7 +308,7 @@ order by fk_column;
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — LINK_CLAIM_PARTY -- (c) unexpected links (link -> RAW)   [Informational]
+-- 3. MAXIMUS — LINK_CLAIM_PARTY -- (c) unexpected links (link -> RAW)   [Informational]  [M1]
 -- Not part of the pass criterion: link rows of this project whose relationship is no
 -- longer in RAW. Link rows scoped by RECORD_SOURCE value set (6 travel feeds) rather
 -- than the shared 'MAXIMUS_' prefix.
@@ -416,7 +417,7 @@ select 'MAXIMUS' as project, 'LINK_CLAIM_PARTY' as link, l.RECORD_SOURCE,
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — LINK_PARTY_LOCATION -- (a) missing links (RAW -> link)   [Implemented]
+-- 4. MAXIMUS — LINK_PARTY_LOCATION -- (a) missing links (RAW -> link)   [Implemented]  [M1]
 -- 9 RAW feed(s): lnkfeed_mtv2_party_location <- stg2_mtv2__clm_clmd_clmap_pv,
 -- lnkfeed_mtv2_party_location <- stg2_mtv2__uwr_pol_prp_pp_sp_pv,
 -- lnkfeed_mtv2_party_location <- stg2_mtv2__uwr_pol_prp_pp_sp_pv,
@@ -637,7 +638,7 @@ select 'MAXIMUS' as project, 'LINK_PARTY_LOCATION' as link, src_feed, to_varchar
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — LINK_PARTY_LOCATION -- (b) orphan links (link FK -> hub)   [Implemented]
+-- 5. MAXIMUS — LINK_PARTY_LOCATION -- (b) orphan links (link FK -> hub)   [Implemented]  [M2]
 -- Link rows scoped to RECORD_SOURCE 'MAXIMUS_%'; every FK must exist in its hub (any
 -- project's rows -- shared vault). FKs: PARTY_HKEY -> HUB_PARTY, LOCATION_HKEY ->
 -- HUB_LOCATION. Link rows scoped by RECORD_SOURCE value set (7 travel feeds) rather than
@@ -667,7 +668,7 @@ order by fk_column;
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — LINK_PARTY_LOCATION -- (c) unexpected links (link -> RAW)   [Informational]
+-- 6. MAXIMUS — LINK_PARTY_LOCATION -- (c) unexpected links (link -> RAW)   [Informational]  [M2]
 -- Not part of the pass criterion: link rows of this project whose relationship is no
 -- longer in RAW. Link rows scoped by RECORD_SOURCE value set (7 travel feeds) rather
 -- than the shared 'MAXIMUS_' prefix.
@@ -767,7 +768,7 @@ select 'MAXIMUS' as project, 'LINK_PARTY_LOCATION' as link, l.RECORD_SOURCE,
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — LINK_PARTY_ROLE -- (a) missing links (RAW -> link)   [Implemented]
+-- 7. MAXIMUS — LINK_PARTY_ROLE -- (a) missing links (RAW -> link)   [Implemented]  [M2]
 -- 5 RAW feed(s): lnkfeed_mtv2_party_role <- stg2_mtv2__uwr_pol_ins_rskp_msp_msd_prop_pv,
 -- lnkfeed_mtv2_party_role <- stg2_mtv2__uwr_qpd_rskl_msp_imsd_inp_pv,
 -- lnkfeed_mtv2_party_role <- stg2_mtv2__uwr_pol_polp_sp_pv, lnkfeed_mtv2_party_role <-
@@ -935,7 +936,7 @@ select 'MAXIMUS' as project, 'LINK_PARTY_ROLE' as link, src_feed, to_varchar(lin
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — LINK_PARTY_ROLE -- (b) orphan links (link FK -> hub)   [Implemented]
+-- 8. MAXIMUS — LINK_PARTY_ROLE -- (b) orphan links (link FK -> hub)   [Implemented]  [M2]
 -- Link rows scoped to RECORD_SOURCE 'MAXIMUS_%'; every FK must exist in its hub (any
 -- project's rows -- shared vault). FKs: PARTY_HKEY -> HUB_PARTY, PARTY_ROLE_ROLE ->
 -- HUB_PARTY_ROLE_ROLE. Link rows scoped by RECORD_SOURCE value set (5 travel feeds)
@@ -965,7 +966,7 @@ order by fk_column;
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — LINK_PARTY_ROLE -- (c) unexpected links (link -> RAW)   [Informational]
+-- 9. MAXIMUS — LINK_PARTY_ROLE -- (c) unexpected links (link -> RAW)   [Informational]  [M3]
 -- Not part of the pass criterion: link rows of this project whose relationship is no
 -- longer in RAW. Link rows scoped by RECORD_SOURCE value set (5 travel feeds) rather
 -- than the shared 'MAXIMUS_' prefix.
@@ -1029,7 +1030,7 @@ select 'MAXIMUS' as project, 'LINK_PARTY_ROLE' as link, l.RECORD_SOURCE,
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — LINK_POLICY_PARTY -- (a) missing links (RAW -> link)   [Implemented]
+-- 10. MAXIMUS — LINK_POLICY_PARTY -- (a) missing links (RAW -> link)   [Implemented]  [M3]
 -- 10 RAW feed(s): lnkfeed_mtv2_policy_party <-
 -- stg2_mtv2__uwr_pol_ins_mbr_party_relation, lnkfeed_mtv2_policy_party <-
 -- stg2_mtv2__uwr_pol_ins_mbr_party_relation, lnkfeed_mtv2_policy_party <-
@@ -1270,7 +1271,7 @@ select 'MAXIMUS' as project, 'LINK_POLICY_PARTY' as link, src_feed, to_varchar(l
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — LINK_POLICY_PARTY -- (b) orphan links (link FK -> hub)   [Implemented]
+-- 11. MAXIMUS — LINK_POLICY_PARTY -- (b) orphan links (link FK -> hub)   [Implemented]  [M3]
 -- Link rows scoped to RECORD_SOURCE 'MAXIMUS_%'; every FK must exist in its hub (any
 -- project's rows -- shared vault). FKs: POLICY_HKEY -> HUB_POLICY, PARTY_HKEY ->
 -- HUB_PARTY. Link rows scoped by RECORD_SOURCE value set (5 travel feeds) rather than
@@ -1300,7 +1301,7 @@ order by fk_column;
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — LINK_POLICY_PARTY -- (c) unexpected links (link -> RAW)   [Informational]
+-- 12. MAXIMUS — LINK_POLICY_PARTY -- (c) unexpected links (link -> RAW)   [Informational]  [M3]
 -- Not part of the pass criterion: link rows of this project whose relationship is no
 -- longer in RAW. Link rows scoped by RECORD_SOURCE value set (5 travel feeds) rather
 -- than the shared 'MAXIMUS_' prefix.
