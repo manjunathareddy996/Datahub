@@ -2,7 +2,6 @@
    DM-H2  |  History - No Change Creates No New Row (Travel LOB)  (OPUS)
    An unchanged record creates no new satellite row.
 
-   MEMBER SPLIT: sections 1..46 assigned M1 x 16, M2 x 15, M3 x 15 -- contiguous thirds in listed order.
    Check ID: DM-H2
    Category: History checks
    Sign-off criterion: No change creates no new row
@@ -11,7 +10,7 @@
    Pass criteria / tolerance: No new row when unchanged
    Owner: LUMIQ
    Vault location: BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL
-   Maximus Travel V2 RAW: RAW.MAXIMUS_TRAVEL_V2
+   Maximus Travel RAW: RAW.MAXIMUS_TRAVEL
    Opus Travel RAW (prod): BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE
    Opus Travel RAW (test): BAGIC_PREPROD_CURATED_DB.UTILS
    Scope: Every standard + augmented satellite of the project; rows scoped by the
@@ -38,7 +37,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. OPUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
+-- 1. OPUS — SAT_COMMON_ADDRESS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -47,7 +46,7 @@
 -- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [6 col(s)].
 -- stg2_common_address_bjaz_trv_loader_data_mv: column(s) COUNTRY_NAME could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
 with base as (
@@ -74,7 +73,7 @@ select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 2. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
+-- 2. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -106,7 +105,7 @@ select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 3. OPUS — SAT_COMMON_CONTACT   [Implemented]  [M1]
+-- 3. OPUS — SAT_COMMON_CONTACT   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- ma_sat_multi_source; PK PARTY_HKEY, child key CONTACT_POINT_TYPE,
@@ -115,29 +114,28 @@ select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite,
 -- (key, child key); latest = max LOAD_DATETIME per member.
 -- stg2_common_contact_bjaz_trv_loader_data_mv_0: column(s) FAX_NUMBER, LANDLINE_NUMBER,
 -- MOBILE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_mv_1:
--- column(s) FAX_NUMBER, LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
--- joined-in stitch columns are not yet inlined into the sampled queries).
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_mv_1: column(s)
+-- FAX_NUMBER, LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at least one
+-- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
+-- columns are not yet inlined into the sampled queries).
 -- stg2_common_contact_bjaz_trv_loader_data_mv_2: column(s) LANDLINE_NUMBER,
 -- MOBILE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_mv_3:
--- column(s) LANDLINE_NUMBER could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
--- stg2_common_contact_bjaz_trv_loader_log_table_mv_5: column(s) FAX_NUMBER,
--- LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at least one arm --
--- excluded (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch
--- columns are not yet inlined into the sampled queries).
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_mv_3: column(s)
+-- LANDLINE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_mv_5:
+-- column(s) FAX_NUMBER, LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
+-- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_common_contact_bjaz_trv_loader_log_table_mv_6: column(s) LANDLINE_NUMBER,
 -- MOBILE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_mv_7:
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_mv_7:
 -- column(s) LANDLINE_NUMBER could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with grp as (  -- one signature per loaded group (key, RECORD_SOURCE, LOAD_DATETIME)
     select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME,
@@ -159,7 +157,7 @@ select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 4. OPUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
+-- 4. OPUS — SAT_COVERAGE_CONDITIONS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -190,7 +188,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 5. OPUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
+-- 5. OPUS — SAT_COVERAGE_DEFINITION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -199,79 +197,79 @@ select 'OPUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite,
 -- OPUS_BJAZ_TRV_RIDER_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
 -- stg2_coverage_definition_bjaz_trv_plan_mv: column(s) COVERAGE_NAME, FREE_COVER_LIMIT
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries). stg2_coverage_definition_bjaz_trv_rider_dtls_mv: column(s)
 -- COVERAGE_DESCRIPTION, FREE_COVER_LIMIT, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_acchospexp: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_adventuresportbenefit: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_bouncedhotel: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_compvisitfamilymember: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_delayofcheckedbaggage: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_emergencyhotelextension: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_emermedicalevac: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_homeburglaryinsurance: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_hospdailyallow: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_lossofbaggage: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_lossofcheckedbaggage: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_missedconnection: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_personalliability: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_repatonofremains: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_tripcancellation: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_tripcurtailment: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_tripdelaybyscheduledaircraft:
 -- column(s) COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to
--- RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mtv2__
--- views or joined-in stitch columns are not yet inlined into the sampled queries).
+-- RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views
+-- or joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with base as (
     select COVERAGE_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
@@ -297,7 +295,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 6. OPUS — SAT_COVERAGE_LIMITS   [Implemented]  [M1]
+-- 6. OPUS — SAT_COVERAGE_LIMITS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -306,11 +304,11 @@ select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite,
 -- OPUS_BJAZ_TRV_RIDER_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV [1 col(s)].
 -- stg2_coverage_limits_bjaz_trv_rider_dtls_mv: column(s) DEDUCTIBLE_AMOUNT could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). stg2_coverage_limits_bjaz_trv_rider_rate_mast_mv: column(s)
 -- DEDUCTIBLE_AMOUNT could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with base as (
     select COVERAGE_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
@@ -336,7 +334,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 7. OPUS — SAT_FINTXN_COMMISSION   [Implemented]  [M1]
+-- 7. OPUS — SAT_FINTXN_COMMISSION   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key COMMISSION_TYPE_CK; 2
@@ -344,8 +342,8 @@ select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite,
 -- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)]. Multi-active: compared per (key, child key);
 -- latest = max LOAD_DATETIME per member. stg2_fintxn_commission_bjaz_trv_loader_data_mv:
 -- column(s) COMMISSION_AMOUNT could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with grp as (  -- one signature per loaded group (key, RECORD_SOURCE, LOAD_DATETIME)
     select FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME,
@@ -367,7 +365,7 @@ select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 8. OPUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
+-- 8. OPUS — SAT_FINTXN_HEADER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -399,7 +397,7 @@ select 'OPUS' as project, 'SAT_FINTXN_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 9. OPUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
+-- 9. OPUS — SAT_FINTXN_PREMIUM   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -408,15 +406,15 @@ select 'OPUS' as project, 'SAT_FINTXN_HEADER' as satellite,
 -- [6 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [5 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV
 -- [4 col(s)]. stg2_fintxn_premium_ba_trv_data_policy_dtls_mv: column(s) BASE_PREMIUM
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries). stg2_fintxn_premium_bjaz_trv_loader_data_mv: column(s)
 -- DISCOUNT_PERCENTAGE, NET_PREMIUM could not be traced to RAW on at least one arm --
--- excluded (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch
--- columns are not yet inlined into the sampled queries).
+-- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
+-- are not yet inlined into the sampled queries).
 -- stg2_fintxn_premium_bjaz_trv_loader_log_table_mv: column(s) BASE_PREMIUM,
 -- DISCOUNT_PERCENTAGE, NET_PREMIUM could not be traced to RAW on at least one arm --
--- excluded (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch
--- columns are not yet inlined into the sampled queries).
+-- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
+-- are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with base as (
     select FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
@@ -442,7 +440,7 @@ select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 10. OPUS — SAT_FINTXN_TAX   [Implemented]  [M1]
+-- 10. OPUS — SAT_FINTXN_TAX   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key TAX_TYPE; 2
@@ -451,10 +449,10 @@ select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite,
 -- key); latest = max LOAD_DATETIME per member.
 -- stg2_fintxn_tax_ba_trv_data_policy_dtls_mv_0: column(s) SERVICE_TAX_AMOUNT could not
 -- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). stg2_fintxn_tax_bjaz_trv_loader_log_table_mv_2: column(s) CESS_AMOUNT could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
 with grp as (  -- one signature per loaded group (key, RECORD_SOURCE, LOAD_DATETIME)
@@ -477,7 +475,7 @@ select 'OPUS' as project, 'SAT_FINTXN_TAX' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 11. OPUS — SAT_FIN_CHARGE_RATE   [Implemented]  [M1]
+-- 11. OPUS — SAT_FIN_CHARGE_RATE   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key CHARGE_TYPE_CK; 2
@@ -486,11 +484,11 @@ select 'OPUS' as project, 'SAT_FINTXN_TAX' as satellite,
 -- key); latest = max LOAD_DATETIME per member.
 -- stg2_fin_charge_rate_ba_trv_data_policy_dtls_mv: column(s) ADDITIONAL_LOADING_RATE
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries). stg2_fin_charge_rate_bjaz_trv_loader_log_table_mv: column(s)
 -- ADDITIONAL_LOADING_RATE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with grp as (  -- one signature per loaded group (key, RECORD_SOURCE, LOAD_DATETIME)
     select FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME,
@@ -512,7 +510,7 @@ select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 12. OPUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
+-- 12. OPUS — SAT_FIN_RECEIPT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -521,11 +519,11 @@ select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite,
 -- [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [3 col(s)].
 -- stg2_fin_receipt_ba_trv_data_policy_dtls_mv: column(s) AMOUNT_RECEIVED,
 -- INSTRUMENT_DATE could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries). stg2_fin_receipt_bjaz_trv_loader_data_mv: column(s)
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries). stg2_fin_receipt_bjaz_trv_loader_data_mv: column(s)
 -- PAYMENT_GATEWAY_REFERENCE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with base as (
     select FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
@@ -551,7 +549,7 @@ select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 13. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
+-- 13. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -583,7 +581,7 @@ select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 14. OPUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
+-- 14. OPUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -614,7 +612,7 @@ select 'OPUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 15. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M1]
+-- 15. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -623,7 +621,7 @@ select 'OPUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite,
 -- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [2 col(s)].
 -- stg2_party_employment_bjaz_trv_loader_data_mv_payer: column(s) DESIGNATION could not
 -- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
 with base as (
@@ -650,7 +648,7 @@ select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 16. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M1]
+-- 16. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -682,7 +680,7 @@ select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — SAT_PARTY_IDENTIFICATION   [Implemented]  [M2]
+-- 17. OPUS — SAT_PARTY_IDENTIFICATION   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- ma_sat_multi_source; PK PARTY_HKEY, child key IDENTIFICATION_TYPE_CODE; 3
@@ -691,23 +689,22 @@ select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite,
 -- Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
 -- stg2_party_identification_ba_trv_data_policy_dtls_mv_0: column(s) AADHAAR_NUMBER,
 -- EIA_NUMBER, GSTIN could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 -- stg2_party_identification_bjaz_trv_loader_data_mv_1: column(s) EIA_NUMBER, GSTIN,
 -- PASSPORT_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries).
--- stg2_party_identification_bjaz_trv_loader_data_mv_2: column(s) GSTIN, PASSPORT_NUMBER
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_party_identification_bjaz_trv_loader_data_mv_3: column(s)
--- PASSPORT_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries).
--- stg2_party_identification_bjaz_trv_loader_log_table_mv_5: column(s) AADHAAR_NUMBER,
--- EIA_NUMBER, GSTIN could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries). stg2_party_identification_bjaz_trv_loader_data_mv_2:
+-- column(s) GSTIN, PASSPORT_NUMBER could not be traced to RAW on at least one arm --
+-- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
+-- are not yet inlined into the sampled queries).
+-- stg2_party_identification_bjaz_trv_loader_data_mv_3: column(s) PASSPORT_NUMBER could
+-- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). stg2_party_identification_bjaz_trv_loader_log_table_mv_5: column(s)
+-- AADHAAR_NUMBER, EIA_NUMBER, GSTIN could not be traced to RAW on at least one arm --
+-- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
+-- are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with grp as (  -- one signature per loaded group (key, RECORD_SOURCE, LOAD_DATETIME)
     select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME,
@@ -729,7 +726,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 18. OPUS — SAT_PARTY_IDENTITY   [Implemented]  [M2]
+-- 18. OPUS — SAT_PARTY_IDENTITY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -739,18 +736,18 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite,
 -- stg2_party_identity_ba_trv_data_policy_dtls_mv_payer: column(s) FIRST_NAME,
 -- GENDER_CODE, LAST_NAME, MIDDLE_NAME, PARTY_FULL_NAME, PARTY_LEGAL_NAME, TITLE_CODE
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries). stg2_party_identity_ba_trv_data_policy_dtls_mv_agent: column(s)
 -- FIRST_NAME, GENDER_CODE, LAST_NAME, MIDDLE_NAME, PARTY_LEGAL_NAME, TITLE_CODE could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). stg2_party_identity_bjaz_trv_loader_data_mv_payer: column(s) AGE,
 -- PARTY_FULL_NAME, TITLE_CODE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 -- stg2_party_identity_bjaz_trv_loader_log_table_mv_payer: column(s) PARTY_FULL_NAME
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries).
 ----------------------------------------------------------------------------------------
 with base as (
@@ -777,7 +774,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 19. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M2]
+-- 19. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -809,7 +806,7 @@ select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 20. OPUS — SAT_POLICY_CLASSIFICATION   [Implemented]  [M2]
+-- 20. OPUS — SAT_POLICY_CLASSIFICATION   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- ma_sat_multi_source; PK POLICY_HKEY, child key CLASSIFICATION_TYPE; 3 RECORD_SOURCE
@@ -837,7 +834,7 @@ select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 21. OPUS — SAT_POLICY_HEADER   [Implemented]  [M2]
+-- 21. OPUS — SAT_POLICY_HEADER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -846,22 +843,22 @@ select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite,
 -- OPUS_BJAZ_TRV_LOADER_DATA_MV [2 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [8 col(s)],
 -- OPUS_BJAZ_TRV_RIDER_DTLS_MV [2 col(s)]. stg2_policy_header_ba_trv_data_policy_dtls_mv:
 -- column(s) POLICY_TYPE, SUM_INSURED_TOTAL could not be traced to RAW on at least one
--- arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or joined-in
--- stitch columns are not yet inlined into the sampled queries).
+-- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
+-- columns are not yet inlined into the sampled queries).
 -- stg2_policy_header_bjaz_trv_loader_data_mv: column(s) COVER_NOTE_DATE,
 -- COVER_NOTE_REFERENCE, ISSUE_DATE, MASTER_POLICY_REFERENCE, POLICY_NUMBER, POLICY_TYPE,
 -- RISK_EXPIRY_DATE, RISK_INCEPTION_DATE, SUM_INSURED_TOTAL could not be traced to RAW on
--- at least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_policy_header_bjaz_trv_loader_log_table_mv: column(s) NUMBER_OF_LIVES_COVERED,
 -- POLICY_NUMBER, POLICY_TYPE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries). stg2_policy_header_bjaz_trv_rider_dtls_mv:
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries). stg2_policy_header_bjaz_trv_rider_dtls_mv:
 -- column(s) COVER_NOTE_DATE, COVER_NOTE_REFERENCE, ISSUE_DATE, MASTER_POLICY_REFERENCE,
 -- POLICY_NUMBER, RISK_EXPIRY_DATE, RISK_INCEPTION_DATE, RURAL_SECTOR_POLICY_INDICATOR,
 -- SUM_INSURED_TOTAL could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with base as (
     select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
@@ -887,7 +884,7 @@ select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 22. OPUS — SAT_POLICY_TERMS   [Implemented]  [M2]
+-- 22. OPUS — SAT_POLICY_TERMS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -919,7 +916,7 @@ select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 23. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
+-- 23. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -928,12 +925,11 @@ select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite,
 -- OPUS_BA_TRV_PLAN_MST_MV [5 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
 -- stg2_product_definition_ba_trv_data_policy_dtls_mv: column(s) PRODUCT_DISPLAY_NAME,
 -- PRODUCT_STATUS could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries). stg2_product_definition_bjaz_trv_loader_data_mv:
--- column(s) PRODUCT_CODE, PRODUCT_DISPLAY_NAME, PRODUCT_NAME, PRODUCT_STATUS could not
--- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries).
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries). stg2_product_definition_bjaz_trv_loader_data_mv: column(s)
+-- PRODUCT_CODE, PRODUCT_DISPLAY_NAME, PRODUCT_NAME, PRODUCT_STATUS could not be traced
+-- to RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__
+-- views or joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with base as (
     select PRODUCT_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
@@ -959,7 +955,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 24. OPUS — SAT_PRODUCT_RATING_FACTOR   [Implemented]  [M2]
+-- 24. OPUS — SAT_PRODUCT_RATING_FACTOR   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- ma_sat_multi_source; PK PRODUCT_HKEY, child key ACTIVE_SEQUENCE_NUMBER; 1
@@ -967,7 +963,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite,
 -- compared per (key, child key); latest = max LOAD_DATETIME per member.
 -- stg2_product_rating_factor_bjaz_trv_rate_master_mv_0: column(s) VALUE_RANGE_TO could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
 with grp as (  -- one signature per loaded group (key, RECORD_SOURCE, LOAD_DATETIME)
@@ -990,7 +986,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_RATING_FACTOR' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 25. OPUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
+-- 25. OPUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1021,7 +1017,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
+-- 26. OPUS — SAT_PRODUCT_TERMS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1030,8 +1026,8 @@ select 'OPUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite,
 -- OPUS_BJAZ_TRV_PLAN_MV [1 col(s)]. stg2_product_terms_bjaz_trv_plan_mv: column(s)
 -- FAMILY_DEFINITION, GEOGRAPHY_RESTRICTION, MAXIMUM_ENTRY_AGE, MINIMUM_ENTRY_AGE,
 -- MINIMUM_POLICY_TERM could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with base as (
     select PRODUCT_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
@@ -1057,7 +1053,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — SAT_PROPOSAL_UNDERWRITING   [Implemented]  [M2]
+-- 27. OPUS — SAT_PROPOSAL_UNDERWRITING   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1088,7 +1084,7 @@ select 'OPUS' as project, 'SAT_PROPOSAL_UNDERWRITING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
+-- 28. OPUS — SAT_QUOTE_HEADER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1119,7 +1115,7 @@ select 'OPUS' as project, 'SAT_QUOTE_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — SAT_RISK_MOTOR_DRIVER   [Implemented]  [M2]
+-- 29. OPUS — SAT_RISK_MOTOR_DRIVER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1151,7 +1147,7 @@ select 'OPUS' as project, 'SAT_RISK_MOTOR_DRIVER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 30. OPUS — SAT_RISK_MOTOR_VEHICLE   [Implemented]  [M2]
+-- 30. OPUS — SAT_RISK_MOTOR_VEHICLE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1183,7 +1179,7 @@ select 'OPUS' as project, 'SAT_RISK_MOTOR_VEHICLE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 31. OPUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M2]
+-- 31. OPUS — SAT_RISK_OBJECT_CORE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1215,7 +1211,7 @@ select 'OPUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 32. OPUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M3]
+-- 32. OPUS — SAT_RISK_PERSON_INSURED   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1246,7 +1242,7 @@ select 'OPUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 33. OPUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M3]
+-- 33. OPUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1256,7 +1252,7 @@ select 'OPUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite,
 -- stg2_risk_person_travel_bjaz_trv_loader_log_table_mv: column(s) PASSPORT_NUMBER,
 -- TRIP_DURATION, TRIP_END_DATE, TRIP_START_DATE, TRIP_TYPE, VISA_TYPE could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
 with base as (
@@ -1283,7 +1279,7 @@ select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 34. OPUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M3]
+-- 34. OPUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1314,7 +1310,7 @@ select 'OPUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satellite
 
 
 ----------------------------------------------------------------------------------------
--- 35. OPUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M3]
+-- 35. OPUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1322,7 +1318,7 @@ select 'OPUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satellite
 -- COVERAGE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN_MV [2 col(s)].
 -- stg2_aug_coverage_definition_bjaz_trv_plan_mv_eff_date: column(s) COVERAGE_SEQUENCE
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries).
 ----------------------------------------------------------------------------------------
 with base as (
@@ -1349,7 +1345,7 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 36. OPUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M3]
+-- 36. OPUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1357,11 +1353,11 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite,
 -- COVERAGE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN_MV [3 col(s)].
 -- stg2_aug_coverage_limits_bjaz_trv_plan_mv_currency: column(s) DEDUCTIBLE_DESCRIPTION,
 -- LIMIT_DESCRIPTION could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 -- stg2_aug_coverage_limits_bjaz_trv_plan_mv_deductible_desc: column(s) LIMIT_DESCRIPTION
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries).
 ----------------------------------------------------------------------------------------
 with base as (
@@ -1388,7 +1384,7 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 37. OPUS — SAT_AUG_COVERAGE_RATING   [Implemented]  [M3]
+-- 37. OPUS — SAT_AUG_COVERAGE_RATING   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1398,25 +1394,25 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite,
 -- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_nb_prm_excluding_st: column(s)
 -- EXTENSION_PREMIUM_EXCLUDING_ST, MINIMUM_EXTENSION_PREMIUM,
 -- MINIMUM_NEW_BUSINESS_PREMIUM, RIDER_PREMIUM could not be traced to RAW on at least one
--- arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or joined-in
--- stitch columns are not yet inlined into the sampled queries).
+-- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
+-- columns are not yet inlined into the sampled queries).
 -- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_extn_prm_excluding_st: column(s)
 -- MINIMUM_EXTENSION_PREMIUM, MINIMUM_NEW_BUSINESS_PREMIUM, RIDER_PREMIUM could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_min_extn_prm: column(s)
 -- MINIMUM_NEW_BUSINESS_PREMIUM, RIDER_PREMIUM could not be traced to RAW on at least one
--- arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or joined-in
--- stitch columns are not yet inlined into the sampled queries).
+-- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
+-- columns are not yet inlined into the sampled queries).
 -- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_min_nb_prm: column(s)
 -- RIDER_PREMIUM could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries).
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries).
 -- stg2_aug_coverage_rating_bjaz_trv_rider_dtls_mv_rider_premium: column(s)
 -- EXTENSION_PREMIUM_EXCLUDING_ST, MINIMUM_EXTENSION_PREMIUM,
 -- MINIMUM_NEW_BUSINESS_PREMIUM, NEW_BUSINESS_PREMIUM_EXCLUDING_ST could not be traced to
--- RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mtv2__
--- views or joined-in stitch columns are not yet inlined into the sampled queries).
+-- RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views
+-- or joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with base as (
     select COVERAGE_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
@@ -1442,7 +1438,7 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 38. OPUS — SAT_AUG_FINTXN_PREMIUM   [Implemented]  [M3]
+-- 38. OPUS — SAT_AUG_FINTXN_PREMIUM   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1451,16 +1447,16 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite,
 -- [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV
 -- [1 col(s)]. stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_mv_sp_discount_per:
 -- column(s) SPECIAL_DISCOUNT_AMOUNT could not be traced to RAW on at least one arm --
--- excluded (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch
--- columns are not yet inlined into the sampled queries).
+-- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
+-- are not yet inlined into the sampled queries).
 -- stg2_aug_fintxn_premium_bjaz_trv_loader_data_mv_spdiscount: column(s)
 -- SPECIAL_DISCOUNT_PERCENTAGE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 -- stg2_aug_fintxn_premium_bjaz_trv_loader_log_table_mv_spdiscount: column(s)
 -- SPECIAL_DISCOUNT_PERCENTAGE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with base as (
     select FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME, HASHDIFF,
@@ -1486,7 +1482,7 @@ select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 39. OPUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]  [M3]
+-- 39. OPUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1517,7 +1513,7 @@ select 'OPUS' as project, 'SAT_AUG_LNK_PARTY_ROLE_CORE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 40. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M3]
+-- 40. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1549,7 +1545,7 @@ select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 41. OPUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
+-- 41. OPUS — SAT_AUG_PARTY_BANKING   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1580,7 +1576,7 @@ select 'OPUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 42. OPUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
+-- 42. OPUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1612,7 +1608,7 @@ select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 43. OPUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
+-- 43. OPUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1622,25 +1618,25 @@ select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite,
 -- stg2_aug_product_terms_ba_trv_plan_mst_mv_multi_year_yn: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, CFT_ELIGIBLE_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). stg2_aug_product_terms_ba_trv_plan_mst_mv_age_bypass_yn: column(s)
 -- CFT_ELIGIBLE_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could not be traced to RAW on at least
--- one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or joined-in
+-- one arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in
 -- stitch columns are not yet inlined into the sampled queries).
 -- stg2_aug_product_terms_ba_trv_plan_mst_mv_cft_yn: column(s) PLAN_GEOGRAPHICAL_ZONE
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries). stg2_aug_product_terms_bjaz_trv_rate_master_mv_cft_yn: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, MULTI_YEAR_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). stg2_aug_product_terms_bjaz_trv_plan_mv_area: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, CFT_ELIGIBLE_INDICATOR, MULTI_YEAR_INDICATOR could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). stg2_aug_product_terms_bjaz_trv_rate_master_mv_area: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, MULTI_YEAR_INDICATOR could not be traced to RAW on
--- at least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with base as (
@@ -1667,7 +1663,7 @@ select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 44. OPUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
+-- 44. OPUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1698,7 +1694,7 @@ select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 45. OPUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
+-- 45. OPUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1729,7 +1725,7 @@ select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 46. OPUS — CDC result (all satellites)   [Implemented]  [M3]
+-- 46. OPUS — CDC result (all satellites)   [Implemented]
 -- Joins the BEFORE and AFTER captures of the same run id. raw_changed compares the
 -- normalised RAW payload hash (same UPPER/TRIM/NULL rules as the HASHDIFF, so a
 -- case-only RAW edit is not a change); new_rows = satellite rows added for the key

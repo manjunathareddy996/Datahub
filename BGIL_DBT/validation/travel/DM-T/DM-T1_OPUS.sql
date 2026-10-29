@@ -2,7 +2,6 @@
    DM-T1  |  Load Audit - Load Metadata Populated (Travel LOB)  (OPUS)
    Load date/timestamp and record source populated and correct. Pass criterion: 0 rows with missing metadata.
 
-   MEMBER SPLIT: sections 1..60 assigned M1 x 20, M2 x 20, M3 x 20 -- contiguous thirds in listed order.
    Check ID: DM-T1
    Category: Load audit
    Sign-off criterion: Load metadata populated
@@ -11,7 +10,7 @@
    Pass criteria / tolerance: 0 rows with missing metadata
    Owner: LUMIQ
    Vault location: BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL
-   Maximus Travel V2 RAW: RAW.MAXIMUS_TRAVEL_V2
+   Maximus Travel RAW: RAW.MAXIMUS_TRAVEL
    Opus Travel RAW (prod): BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE
    Opus Travel RAW (test): BAGIC_PREPROD_CURATED_DB.UTILS
    Scope: Every hub, link and satellite the project's travel models load. Rows scoped
@@ -35,7 +34,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. OPUS — Summary: every OPUS hub, link and satellite in one query   [Implemented]  [M1]
+-- 1. OPUS — Summary: every OPUS hub, link and satellite in one query   [Implemented]
 -- The same per-table query as the sections below, unioned -- run this for the evidence
 -- and use the sections to drill into a FAIL.
 ----------------------------------------------------------------------------------------
@@ -989,7 +988,7 @@ order by iff(status = 'FAIL', 0, 1), table_type, table_name;
 
 
 ----------------------------------------------------------------------------------------
--- 2. OPUS — HUB  HUB_AGREEMENT   [Implemented]  [M1]
+-- 2. OPUS — HUB  HUB_AGREEMENT   [Implemented]
 -- hub HUB_AGREEMENT; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV',
 -- 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN',
 -- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV'). Expected
@@ -1016,7 +1015,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_AGREEMENT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 3. OPUS — HUB  HUB_ASSESSMENT   [Implemented]  [M1]
+-- 3. OPUS — HUB  HUB_ASSESSMENT   [Implemented]
 -- hub HUB_ASSESSMENT; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected
 -- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV. No
@@ -1041,7 +1040,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_ASSESSMENT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 4. OPUS — HUB  HUB_COVERAGE   [Implemented]  [M1]
+-- 4. OPUS — HUB  HUB_COVERAGE   [Implemented]
 -- hub HUB_COVERAGE; rows scoped to RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV',
 -- 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV',
 -- 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV'). Expected RECORD_SOURCE:
@@ -1067,7 +1066,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_COVERAGE' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 5. OPUS — HUB  HUB_DISTRIBUTION_CHANNEL   [Implemented]  [M1]
+-- 5. OPUS — HUB  HUB_DISTRIBUTION_CHANNEL   [Implemented]
 -- hub HUB_DISTRIBUTION_CHANNEL; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN',
 -- 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
@@ -1094,7 +1093,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_DISTRIBUTION_CHANNEL' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 6. OPUS — HUB  HUB_FINANCIAL_ACCOUNT   [Implemented]  [M1]
+-- 6. OPUS — HUB  HUB_FINANCIAL_ACCOUNT   [Implemented]
 -- hub HUB_FINANCIAL_ACCOUNT; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected RECORD_SOURCE:
 -- OPUS_BJAZ_TRV_LOADER_DATA_MV. No DBT_RUN_TS column on this table.
@@ -1118,7 +1117,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_ACCOUNT' as table_
 
 
 ----------------------------------------------------------------------------------------
--- 7. OPUS — HUB  HUB_FINANCIAL_TRANSACTION   [Implemented]  [M1]
+-- 7. OPUS — HUB  HUB_FINANCIAL_TRANSACTION   [Implemented]
 -- hub HUB_FINANCIAL_TRANSACTION; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
 -- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
@@ -1144,7 +1143,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_TRANSACTION' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 8. OPUS — HUB  HUB_LOCATION   [Implemented]  [M1]
+-- 8. OPUS — HUB  HUB_LOCATION   [Implemented]
 -- hub HUB_LOCATION; rows scoped to RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV',
 -- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
 -- OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column
@@ -1169,7 +1168,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_LOCATION' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 9. OPUS — HUB  HUB_ORG_UNIT   [Implemented]  [M1]
+-- 9. OPUS — HUB  HUB_ORG_UNIT   [Implemented]
 -- hub HUB_ORG_UNIT; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV',
 -- 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
 -- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV,
@@ -1194,7 +1193,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_ORG_UNIT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 10. OPUS — HUB  HUB_PARTY   [Implemented]  [M1]
+-- 10. OPUS — HUB  HUB_PARTY   [Implemented]
 -- hub HUB_PARTY; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV',
 -- 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
 -- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
@@ -1221,7 +1220,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PARTY' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 11. OPUS — HUB  HUB_POLICY   [Implemented]  [M1]
+-- 11. OPUS — HUB  HUB_POLICY   [Implemented]
 -- hub HUB_POLICY; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV',
 -- 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV',
 -- 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'). Expected RECORD_SOURCE:
@@ -1248,7 +1247,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_POLICY' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 12. OPUS — HUB  HUB_PRODUCT   [Implemented]  [M1]
+-- 12. OPUS — HUB  HUB_PRODUCT   [Implemented]
 -- hub HUB_PRODUCT; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV',
 -- 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
 -- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_PLAN_MV',
@@ -1276,7 +1275,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PRODUCT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 13. OPUS — HUB  HUB_PROPOSAL   [Implemented]  [M1]
+-- 13. OPUS — HUB  HUB_PROPOSAL   [Implemented]
 -- hub HUB_PROPOSAL; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV',
 -- 'OPUS_BJAZ_TRV_DETLS_EXTN'). Expected RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV,
 -- OPUS_BJAZ_TRV_DETLS_EXTN. No DBT_RUN_TS column on this table.
@@ -1300,7 +1299,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PROPOSAL' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 14. OPUS — HUB  HUB_QUOTE   [Implemented]  [M1]
+-- 14. OPUS — HUB  HUB_QUOTE   [Implemented]
 -- hub HUB_QUOTE; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV').
 -- Expected RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV. No DBT_RUN_TS column on this
 -- table.
@@ -1324,7 +1323,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_QUOTE' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 15. OPUS — HUB  HUB_RISK_OBJECT   [Implemented]  [M1]
+-- 15. OPUS — HUB  HUB_RISK_OBJECT   [Implemented]
 -- hub HUB_RISK_OBJECT; rows scoped to RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV',
 -- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
 -- OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column
@@ -1349,7 +1348,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_RISK_OBJECT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 16. OPUS — SATELLITE  SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M1]
+-- 16. OPUS — SATELLITE  SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- satellite SAT_AUG_COMMON_COMMUNICATION_PREFERENCE; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected RECORD_SOURCE:
 -- OPUS_BJAZ_TRV_LOADER_DATA_MV. No DBT_RUN_TS column on this table.
@@ -1373,7 +1372,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_COMMUNICATI
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — SATELLITE  SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M1]
+-- 17. OPUS — SATELLITE  SAT_AUG_COVERAGE_DEFINITION   [Implemented]
 -- satellite SAT_AUG_COVERAGE_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_PLAN_MV'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_PLAN_MV. DBT_RUN_TS
 -- present (load_after_run_ts checked).
@@ -1397,7 +1396,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_DEFINITIO
 
 
 ----------------------------------------------------------------------------------------
--- 18. OPUS — SATELLITE  SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M1]
+-- 18. OPUS — SATELLITE  SAT_AUG_COVERAGE_LIMITS   [Implemented]
 -- satellite SAT_AUG_COVERAGE_LIMITS; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_PLAN_MV'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_PLAN_MV. DBT_RUN_TS
 -- present (load_after_run_ts checked).
@@ -1421,7 +1420,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_LIMITS' a
 
 
 ----------------------------------------------------------------------------------------
--- 19. OPUS — SATELLITE  SAT_AUG_COVERAGE_RATING   [Implemented]  [M1]
+-- 19. OPUS — SATELLITE  SAT_AUG_COVERAGE_RATING   [Implemented]
 -- satellite SAT_AUG_COVERAGE_RATING; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'). Expected
 -- RECORD_SOURCE: OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV, OPUS_BJAZ_TRV_RIDER_DTLS_MV.
@@ -1446,7 +1445,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_RATING' a
 
 
 ----------------------------------------------------------------------------------------
--- 20. OPUS — SATELLITE  SAT_AUG_FINTXN_PREMIUM   [Implemented]  [M1]
+-- 20. OPUS — SATELLITE  SAT_AUG_FINTXN_PREMIUM   [Implemented]
 -- satellite SAT_AUG_FINTXN_PREMIUM; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
 -- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
@@ -1472,7 +1471,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_FINTXN_PREMIUM' as
 
 
 ----------------------------------------------------------------------------------------
--- 21. OPUS — SATELLITE  SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]  [M2]
+-- 21. OPUS — SATELLITE  SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]
 -- satellite SAT_AUG_LNK_PARTY_ROLE_CORE; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
 -- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column on this table.
@@ -1496,7 +1495,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_PARTY_ROLE_COR
 
 
 ----------------------------------------------------------------------------------------
--- 22. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M2]
+-- 22. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
 -- satellite SAT_AUG_LNK_ROLE_CUSTOMER; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected
 -- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV.
@@ -1521,7 +1520,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_CUSTOMER'
 
 
 ----------------------------------------------------------------------------------------
--- 23. OPUS — SATELLITE  SAT_AUG_PARTY_BANKING   [Implemented]  [M2]
+-- 23. OPUS — SATELLITE  SAT_AUG_PARTY_BANKING   [Implemented]
 -- satellite SAT_AUG_PARTY_BANKING; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected RECORD_SOURCE:
 -- OPUS_BJAZ_TRV_LOADER_DATA_MV. No DBT_RUN_TS column on this table.
@@ -1545,7 +1544,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_BANKING' as 
 
 
 ----------------------------------------------------------------------------------------
--- 24. OPUS — SATELLITE  SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M2]
+-- 24. OPUS — SATELLITE  SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
 -- satellite SAT_AUG_PARTY_EMPLOYMENT; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
 -- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
@@ -1570,7 +1569,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_EMPLOYMENT' 
 
 
 ----------------------------------------------------------------------------------------
--- 25. OPUS — SATELLITE  SAT_AUG_PRODUCT_TERMS   [Implemented]  [M2]
+-- 25. OPUS — SATELLITE  SAT_AUG_PRODUCT_TERMS   [Implemented]
 -- satellite SAT_AUG_PRODUCT_TERMS; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV', 'OPUS_BJAZ_TRV_PLAN_MV').
 -- Expected RECORD_SOURCE: OPUS_BA_TRV_PLAN_MST_MV, OPUS_BJAZ_TRV_RATE_MASTER_MV,
@@ -1595,7 +1594,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PRODUCT_TERMS' as 
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — SATELLITE  SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M2]
+-- 26. OPUS — SATELLITE  SAT_AUG_RISK_PERSON_INSURED   [Implemented]
 -- satellite SAT_AUG_RISK_PERSON_INSURED; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected RECORD_SOURCE:
 -- OPUS_BJAZ_TRV_LOADER_DATA_MV. DBT_RUN_TS present (load_after_run_ts checked).
@@ -1619,7 +1618,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_INSURE
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — SATELLITE  SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M2]
+-- 27. OPUS — SATELLITE  SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
 -- satellite SAT_AUG_RISK_PERSON_TRAVEL; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected RECORD_SOURCE:
 -- OPUS_BJAZ_TRV_LOADER_DATA_MV. DBT_RUN_TS present (load_after_run_ts checked).
@@ -1643,7 +1642,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_TRAVEL
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]  [M2]
+-- 28. OPUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]
 -- satellite SAT_COMMON_ADDRESS; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
 -- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
@@ -1668,7 +1667,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_ADDRESS' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]  [M2]
+-- 29. OPUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]
 -- satellite SAT_COMMON_CLASSIFICATION; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected
 -- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV.
@@ -1693,7 +1692,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CLASSIFICATION'
 
 
 ----------------------------------------------------------------------------------------
--- 30. OPUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]  [M2]
+-- 30. OPUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]
 -- satellite SAT_COMMON_CONTACT; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
 -- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
@@ -1718,7 +1717,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONTACT' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 31. OPUS — SATELLITE  SAT_COVERAGE_CONDITIONS   [Implemented]  [M2]
+-- 31. OPUS — SATELLITE  SAT_COVERAGE_CONDITIONS   [Implemented]
 -- satellite SAT_COVERAGE_CONDITIONS; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_PLAN_MV'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_PLAN_MV. No
 -- DBT_RUN_TS column on this table.
@@ -1742,7 +1741,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_CONDITIONS' a
 
 
 ----------------------------------------------------------------------------------------
--- 32. OPUS — SATELLITE  SAT_COVERAGE_DEFINITION   [Implemented]  [M2]
+-- 32. OPUS — SATELLITE  SAT_COVERAGE_DEFINITION   [Implemented]
 -- satellite SAT_COVERAGE_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV',
 -- 'OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_PLAN_MV,
@@ -1768,7 +1767,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_DEFINITION' a
 
 
 ----------------------------------------------------------------------------------------
--- 33. OPUS — SATELLITE  SAT_COVERAGE_LIMITS   [Implemented]  [M2]
+-- 33. OPUS — SATELLITE  SAT_COVERAGE_LIMITS   [Implemented]
 -- satellite SAT_COVERAGE_LIMITS; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV',
 -- 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_PLAN_MV,
@@ -1794,7 +1793,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_LIMITS' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 34. OPUS — SATELLITE  SAT_FINTXN_COMMISSION   [Implemented]  [M2]
+-- 34. OPUS — SATELLITE  SAT_FINTXN_COMMISSION   [Implemented]
 -- satellite SAT_FINTXN_COMMISSION; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected
 -- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV.
@@ -1819,7 +1818,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_COMMISSION' as 
 
 
 ----------------------------------------------------------------------------------------
--- 35. OPUS — SATELLITE  SAT_FINTXN_HEADER   [Implemented]  [M2]
+-- 35. OPUS — SATELLITE  SAT_FINTXN_HEADER   [Implemented]
 -- satellite SAT_FINTXN_HEADER; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
 -- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column on this table.
@@ -1843,7 +1842,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_HEADER' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 36. OPUS — SATELLITE  SAT_FINTXN_PREMIUM   [Implemented]  [M2]
+-- 36. OPUS — SATELLITE  SAT_FINTXN_PREMIUM   [Implemented]
 -- satellite SAT_FINTXN_PREMIUM; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
 -- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
@@ -1869,7 +1868,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_PREMIUM' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 37. OPUS — SATELLITE  SAT_FINTXN_TAX   [Implemented]  [M2]
+-- 37. OPUS — SATELLITE  SAT_FINTXN_TAX   [Implemented]
 -- satellite SAT_FINTXN_TAX; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
 -- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
@@ -1894,7 +1893,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_TAX' as table_n
 
 
 ----------------------------------------------------------------------------------------
--- 38. OPUS — SATELLITE  SAT_FIN_CHARGE_RATE   [Implemented]  [M2]
+-- 38. OPUS — SATELLITE  SAT_FIN_CHARGE_RATE   [Implemented]
 -- satellite SAT_FIN_CHARGE_RATE; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
 -- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
@@ -1919,7 +1918,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FIN_CHARGE_RATE' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 39. OPUS — SATELLITE  SAT_FIN_RECEIPT   [Implemented]  [M2]
+-- 39. OPUS — SATELLITE  SAT_FIN_RECEIPT   [Implemented]
 -- satellite SAT_FIN_RECEIPT; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected
 -- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV.
@@ -1944,7 +1943,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FIN_RECEIPT' as table_
 
 
 ----------------------------------------------------------------------------------------
--- 40. OPUS — SATELLITE  SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M2]
+-- 40. OPUS — SATELLITE  SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
 -- satellite SAT_LNK_ROLE_NOMINEE_BENEFICIARY; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
 -- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
@@ -1969,7 +1968,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_NOMINEE_BENEF
 
 
 ----------------------------------------------------------------------------------------
--- 41. OPUS — SATELLITE  SAT_ORG_UNIT_DEFINITION   [Implemented]  [M3]
+-- 41. OPUS — SATELLITE  SAT_ORG_UNIT_DEFINITION   [Implemented]
 -- satellite SAT_ORG_UNIT_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV'). Expected RECORD_SOURCE:
 -- OPUS_BA_TRV_DATA_POLICY_DTLS_MV. No DBT_RUN_TS column on this table.
@@ -1993,7 +1992,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_ORG_UNIT_DEFINITION' a
 
 
 ----------------------------------------------------------------------------------------
--- 42. OPUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]  [M3]
+-- 42. OPUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]
 -- satellite SAT_PARTY_EMPLOYMENT; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
 -- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
@@ -2018,7 +2017,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_EMPLOYMENT' as t
 
 
 ----------------------------------------------------------------------------------------
--- 43. OPUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M3]
+-- 43. OPUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]
 -- satellite SAT_PARTY_HEALTH_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected
 -- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV.
@@ -2043,7 +2042,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_HEALTH_PROFILE' 
 
 
 ----------------------------------------------------------------------------------------
--- 44. OPUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]  [M3]
+-- 44. OPUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]
 -- satellite SAT_PARTY_IDENTIFICATION; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
 -- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
@@ -2069,7 +2068,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTIFICATION' 
 
 
 ----------------------------------------------------------------------------------------
--- 45. OPUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]  [M3]
+-- 45. OPUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]
 -- satellite SAT_PARTY_IDENTITY; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
 -- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
@@ -2095,7 +2094,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTITY' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 46. OPUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M3]
+-- 46. OPUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- satellite SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
 -- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
@@ -2120,7 +2119,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_INDIVIDUAL_DEMOG
 
 
 ----------------------------------------------------------------------------------------
--- 47. OPUS — SATELLITE  SAT_POLICY_CLASSIFICATION   [Implemented]  [M3]
+-- 47. OPUS — SATELLITE  SAT_POLICY_CLASSIFICATION   [Implemented]
 -- satellite SAT_POLICY_CLASSIFICATION; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
 -- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
@@ -2146,7 +2145,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_CLASSIFICATION'
 
 
 ----------------------------------------------------------------------------------------
--- 48. OPUS — SATELLITE  SAT_POLICY_HEADER   [Implemented]  [M3]
+-- 48. OPUS — SATELLITE  SAT_POLICY_HEADER   [Implemented]
 -- satellite SAT_POLICY_HEADER; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
 -- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'). Expected
@@ -2173,7 +2172,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_HEADER' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 49. OPUS — SATELLITE  SAT_POLICY_TERMS   [Implemented]  [M3]
+-- 49. OPUS — SATELLITE  SAT_POLICY_TERMS   [Implemented]
 -- satellite SAT_POLICY_TERMS; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
 -- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
@@ -2198,7 +2197,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_TERMS' as table
 
 
 ----------------------------------------------------------------------------------------
--- 50. OPUS — SATELLITE  SAT_PRODUCT_DEFINITION   [Implemented]  [M3]
+-- 50. OPUS — SATELLITE  SAT_PRODUCT_DEFINITION   [Implemented]
 -- satellite SAT_PRODUCT_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV',
 -- 'OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected RECORD_SOURCE:
@@ -2224,7 +2223,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_DEFINITION' as
 
 
 ----------------------------------------------------------------------------------------
--- 51. OPUS — SATELLITE  SAT_PRODUCT_RATING_FACTOR   [Implemented]  [M3]
+-- 51. OPUS — SATELLITE  SAT_PRODUCT_RATING_FACTOR   [Implemented]
 -- satellite SAT_PRODUCT_RATING_FACTOR; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_RATE_MASTER_MV'). Expected RECORD_SOURCE:
 -- OPUS_BJAZ_TRV_RATE_MASTER_MV. DBT_RUN_TS present (load_after_run_ts checked).
@@ -2248,7 +2247,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_RATING_FACTOR'
 
 
 ----------------------------------------------------------------------------------------
--- 52. OPUS — SATELLITE  SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M3]
+-- 52. OPUS — SATELLITE  SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- satellite SAT_PRODUCT_RATING_STRUCTURE; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_RATE_MASTER_MV'). Expected RECORD_SOURCE:
 -- OPUS_BJAZ_TRV_RATE_MASTER_MV. No DBT_RUN_TS column on this table.
@@ -2272,7 +2271,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_RATING_STRUCTU
 
 
 ----------------------------------------------------------------------------------------
--- 53. OPUS — SATELLITE  SAT_PRODUCT_TERMS   [Implemented]  [M3]
+-- 53. OPUS — SATELLITE  SAT_PRODUCT_TERMS   [Implemented]
 -- satellite SAT_PRODUCT_TERMS; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_PLAN_MV'). Expected RECORD_SOURCE:
 -- OPUS_BA_TRV_PLAN_MST_MV, OPUS_BJAZ_TRV_PLAN_MV. DBT_RUN_TS present (load_after_run_ts
@@ -2297,7 +2296,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_TERMS' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 54. OPUS — SATELLITE  SAT_PROPOSAL_UNDERWRITING   [Implemented]  [M3]
+-- 54. OPUS — SATELLITE  SAT_PROPOSAL_UNDERWRITING   [Implemented]
 -- satellite SAT_PROPOSAL_UNDERWRITING; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV'). Expected RECORD_SOURCE:
 -- OPUS_BA_TRV_DATA_POLICY_DTLS_MV. No DBT_RUN_TS column on this table.
@@ -2321,7 +2320,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PROPOSAL_UNDERWRITING'
 
 
 ----------------------------------------------------------------------------------------
--- 55. OPUS — SATELLITE  SAT_QUOTE_HEADER   [Implemented]  [M3]
+-- 55. OPUS — SATELLITE  SAT_QUOTE_HEADER   [Implemented]
 -- satellite SAT_QUOTE_HEADER; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV'). Expected RECORD_SOURCE:
 -- OPUS_BA_TRV_DATA_POLICY_DTLS_MV. No DBT_RUN_TS column on this table.
@@ -2345,7 +2344,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_QUOTE_HEADER' as table
 
 
 ----------------------------------------------------------------------------------------
--- 56. OPUS — SATELLITE  SAT_RISK_MOTOR_DRIVER   [Implemented]  [M3]
+-- 56. OPUS — SATELLITE  SAT_RISK_MOTOR_DRIVER   [Implemented]
 -- satellite SAT_RISK_MOTOR_DRIVER; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
 -- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column on this table.
@@ -2369,7 +2368,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_MOTOR_DRIVER' as 
 
 
 ----------------------------------------------------------------------------------------
--- 57. OPUS — SATELLITE  SAT_RISK_MOTOR_VEHICLE   [Implemented]  [M3]
+-- 57. OPUS — SATELLITE  SAT_RISK_MOTOR_VEHICLE   [Implemented]
 -- satellite SAT_RISK_MOTOR_VEHICLE; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
 -- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column on this table.
@@ -2393,7 +2392,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_MOTOR_VEHICLE' as
 
 
 ----------------------------------------------------------------------------------------
--- 58. OPUS — SATELLITE  SAT_RISK_OBJECT_CORE   [Implemented]  [M3]
+-- 58. OPUS — SATELLITE  SAT_RISK_OBJECT_CORE   [Implemented]
 -- satellite SAT_RISK_OBJECT_CORE; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
 -- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column on this table.
@@ -2417,7 +2416,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_OBJECT_CORE' as t
 
 
 ----------------------------------------------------------------------------------------
--- 59. OPUS — SATELLITE  SAT_RISK_PERSON_INSURED   [Implemented]  [M3]
+-- 59. OPUS — SATELLITE  SAT_RISK_PERSON_INSURED   [Implemented]
 -- satellite SAT_RISK_PERSON_INSURED; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected RECORD_SOURCE:
 -- OPUS_BJAZ_TRV_LOADER_DATA_MV. DBT_RUN_TS present (load_after_run_ts checked).
@@ -2441,7 +2440,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_PERSON_INSURED' a
 
 
 ----------------------------------------------------------------------------------------
--- 60. OPUS — SATELLITE  SAT_RISK_PERSON_TRAVEL   [Implemented]  [M3]
+-- 60. OPUS — SATELLITE  SAT_RISK_PERSON_TRAVEL   [Implemented]
 -- satellite SAT_RISK_PERSON_TRAVEL; rows scoped to RECORD_SOURCE in
 -- ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
 -- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.

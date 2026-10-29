@@ -2,7 +2,7 @@
 """
 Travel LOB equivalent of gen_dm_a.py.
 
-Points at opus_travel_dv_dbt + maximus_travel_v2_dv_dbt and writes under
+Points at opus_travel_dv_dbt + maximus_travel_dv_dbt and writes under
 BGIL_DBT/validation/travel/DM-A/. Reuses the partner gen_dm_a helpers and
 hooks a few resolvers to cope with travel-specific shapes:
 
@@ -10,10 +10,10 @@ hooks a few resolvers to cope with travel-specific shapes:
   stitch_risk_person_travel_trip_attrs. Non-macro stitches cannot be
   parsed as a `sources = [...]` jinja literal, so their payload columns
   that come from the joined-in parent are reported as skipped (first-cut).
-- MAXIMUS travel v2: each satellite's source_model is a satfeed_mtv2_
-  view that unions many stg2_mtv2__ views. The satfeed renames
+- MAXIMUS travel: each satellite's source_model is a satfeed_mt_
+  view that unions many stg2_mt__ views. The satfeed renames
   HASHDIFF_<SAT> back to the bare HASHDIFF the ma_sat / sat macro expects.
-  stg2s often read from a resolved_mtv2__ view (base stg_mtv2__ + walk
+  stg2s often read from a resolved_mt__ view (base stg_mt__ + walk
   columns). For the first pass, walk columns are reported as unresolved
   on a per-column basis (the branch's base RAW table is still used).
 
@@ -39,7 +39,7 @@ A.PROJECTS = PROJECTS
 A.VALIDATION = VALIDATION
 A.VAULT = VAULT
 A.RAW_INFO = {
-    "MAXIMUS": K.RAW_SCHEMA["maximus_travel_v2_raw"].split("."),
+    "MAXIMUS": K.RAW_SCHEMA["maximus_travel_raw"].split("."),
     "OPUS": K.RAW_SCHEMA["travel_raw"].split("."),
 }
 A.VAULT_DB, A.VAULT_SCHEMA = VAULT.split(".")
@@ -49,7 +49,7 @@ MD = dict(PROJECTS)
 # ---------------------------------------------------------------------------
 # Resolver patch: handle satfeed / hubfeed / lnkfeed (no yaml_metadata,
 # union-all over wrappers with a trailing where), stg2s whose source is a
-# resolved_mtv2__ view, and non-macro OPUS stitches (plain joins).
+# resolved_mt__ view, and non-macro OPUS stitches (plain joins).
 # ---------------------------------------------------------------------------
 _ORIG_RESOLVE = A.resolve
 
@@ -84,8 +84,8 @@ def _parse_feed_branch_wrapper(part_sql):
 
 def _resolved_source(md, name):
     """Return (raw_fq_table, {col: raw_expr}, walks) for a stg_ or
-    resolved_mtv2__ view. walks only populated for resolved views."""
-    if name.startswith("resolved_mtv2__"):
+    resolved_mt__ view. walks only populated for resolved views."""
+    if name.startswith("resolved_mt__"):
         base_stg, walks = K.parse_resolved(md, name)
         raw, cols = PK.parse_stg(md, base_stg)
         # Walk columns are not resolvable from the base RAW table; mark
@@ -117,7 +117,7 @@ def _resolve_stg2(md, name):
             # non-macro plain join stitch (travel): fall back to its
             # first ref'd stg_ as the base.
             return _resolve_plain_stitch_stg2(md, name, dc, hc, src)
-    if src.startswith("unpivot") or src.startswith("up_mtv2__"):
+    if src.startswith("unpivot") or src.startswith("up_mt__"):
         arms = []
         for i, a in enumerate(A.parse_unpivot_arms(md, src)):
             try:
@@ -129,7 +129,7 @@ def _resolve_stg2(md, name):
             arms.append(A.Arm("unpivot", A.Lookup(dc, hc, base), raw=raw,
                               where=where, label=f"{src}#{i + 1}"))
         return arms
-    # Plain stg_ or resolved_mtv2__ as source.
+    # Plain stg_ or resolved_mt__ as source.
     try:
         raw, cols, walks = _resolved_source(md, src)
     except (SystemExit, Exception) as e:
@@ -188,7 +188,7 @@ def resolve_travel(md, name):
     """Travel-aware A.resolve. Handles satfeed/hubfeed/lnkfeed first, then
     stg2 (yaml-backed), falling back to partner's logic for everything else.
     """
-    if name.startswith(("satfeed_mtv2_", "hubfeed_mtv2_", "lnkfeed_mtv2_")):
+    if name.startswith(("satfeed_mt_", "hubfeed_mt_", "lnkfeed_mt_")):
         return _resolve_feed(md, name)
     try:
         PK.yaml_block(PK.read(PK.find_model(md, name)))
@@ -302,7 +302,7 @@ def build_sats_travel():
                 s.notes.append(
                     f"{src}: column(s) {', '.join(uniq)} could not be traced to RAW "
                     f"on at least one arm -- excluded (first-cut: walk columns from "
-                    f"resolved_mtv2__ views or joined-in stitch columns are not yet "
+                    f"resolved_mt__ views or joined-in stitch columns are not yet "
                     f"inlined into the sampled queries).")
             s.notes = list(OrderedDict.fromkeys(s.notes))
             sats.append(s)
@@ -315,11 +315,11 @@ def build_sats_travel():
 COMMON = [
     ("Owner", "LUMIQ"),
     ("Vault location", VAULT),
-    ("Maximus Travel V2 RAW", K.RAW_SCHEMA["maximus_travel_v2_raw"]),
+    ("Maximus Travel RAW", K.RAW_SCHEMA["maximus_travel_raw"]),
     ("Opus Travel RAW (prod)", K.RAW_SCHEMA["travel_raw"]),
     ("Opus Travel RAW (test)", K.RAW_SCHEMA["travel_test_raw"]),
     ("Scope", "Every standard + augmented satellite of opus_travel_dv_dbt and "
-              "maximus_travel_v2_dv_dbt, one section per project-satellite. "
+              "maximus_travel_dv_dbt, one section per project-satellite. "
               "Satellite rows are scoped by the RECORD_SOURCE each feed writes."),
     ("Sample", f"Deterministic: the first {SAMPLE_N} keys per RECORD_SOURCE "
                f"ordered by hash key."),
@@ -369,9 +369,9 @@ def main():
             f"This file: {pj} only ({len(psats)} satellites, standard + augmented); "
             f"{n_app} have mapped payload, {n_grp} RECORD_SOURCE groups, {n_cols} "
             f"mapped (group, column) pairs.",
-            "Lineage handled: stg_ direct, Maximus Travel V2 stg2 over "
-            "resolved_mtv2__ (base stg_mtv2__ + walk columns -- walk columns are "
-            "reported as unresolved in the first cut), Maximus Travel V2 satfeed "
+            "Lineage handled: stg_ direct, Maximus Travel stg2 over "
+            "resolved_mt__ (base stg_mt__ + walk columns -- walk columns are "
+            "reported as unresolved in the first cut), Maximus Travel satfeed "
             "unions (bare HASHDIFF rename), unpivot arms, OPUS plain-join stitches "
             "(joined-in columns reported as unresolved in the first cut).",
             "Sections marked NA load only hard-coded NULL padding, a disabled "

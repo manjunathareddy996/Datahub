@@ -1,0 +1,273 @@
+{
+ "stage": "0",
+ "entry": "RE-ENTRY 6",
+ "status": "complete",
+ "project": "maximus_travel_dv_dbt",
+ "generated": "2026-09-25",
+ "counts": {
+  "expressions": 3418,
+  "grammar_forms": 5,
+  "parse_residue": 0,
+  "prose_columns": 7,
+  "child_key_slots_examined": 856,
+  "child_key_components_elements": 1119,
+  "map_rows": 2639,
+  "open_items": 7,
+  "undetermined": 6,
+  "counts_note": "Recomputed from build_profile.json at write time by reading the artifact back, not transcribed.",
+  "prose_entries": 4,
+  "machine_with_exceptions_entries": 1
+ },
+ "outcome_vocabulary_note": "Four outcomes are distinguished throughout and never collapsed to two (BUILD_RULES 1.8). PASS = ran and satisfied. FAIL = ran and did not satisfy. NOT-RUN = deliberately not attempted, with a reason. DID-NOT-COMPLETE = attempted and did not finish, so no verdict exists.",
+ "self_checks": [
+  {
+   "check": "Baseline: all five stated md5 + byte lengths reproduce from the live bundle",
+   "result": "pass",
+   "detail": "md5sum/sha256sum/stat over each file. 04_column_map.json 137de5ad6f89e60f8b3ef0e821d2d0b8 / 6378022; BUILD_INSTRUCTIONS 0cd30d3e9d5a4e5a310fa3baf6cfc629 / 10923; KEY_FUNCTIONS 03cd21e88131efce7bfef506afabfcaa / 10960; 22_ordinal_child_keys 0b1b005b3ee47365a26319be6817b2ab / 8461; CONVENTIONS 53683be971b1973b25ac650286c1d5da / 4150. Five of five MATCH. Full sha256 for each is in build_profile.bundle_digests."
+  },
+  {
+   "check": "The map is the one the build consumed",
+   "result": "pass",
+   "detail": "Live map sha256 bdb1f3fea01475fbe25b5c3c0694e5eae791354e679326196009b83d3bfe224e equals BUILD_STATUS.json input_digest exactly. data_7.js f77379da... and 00_tables_index.json 34b2e1ad... also match. All three build inputs unmoved, so the build remains valid."
+  },
+  {
+   "check": "Field census re-enumerated, not inherited",
+   "result": "pass",
+   "detail": "All 2639 rows re-walked; keys enumerated with counts rather than looked up. `kind` is ABSENT on all 1119 child_key_components elements -- the role is carried by `leg_backing`. Census identical to rev 5 key-for-key, as expected for a byte-identical map, and asserted by measurement rather than inferred from the digest."
+  },
+  {
+   "check": "Grammar zero-residue assertion",
+   "result": "pass",
+   "detail": "3418 live expressions; every spine and LNK span stripped; survivors of spine[, >>, -> and LNK( all ZERO. Parser proved to FIRE (yields origin/chain/column on a real corpus expression), to DECLINE a real non-walk corpus expression, and to DECLINE the same corpus expression mutated at one token. All probes sampled from the corpus, never typed (BUILD_RULES 1.13)."
+  },
+  {
+   "check": "Function census: all seven counters recomputed from the map",
+   "result": "pass",
+   "detail": "trim 5094, nullif 5084, coalesce 1783, md5 138, normalise 128, LNK 51, upper 19 -- all seven EXACT, plus spine[] 2390 and the declared zeroes lower 0 / to_char 0. The slot set was DERIVED by exhaustive search over 9 candidate slots, not assumed; the unique minimal set is the four *.expression slots and per-slot contributions sum exactly."
+  },
+  {
+   "check": "The mapper's census gate exits 0 against this map",
+   "result": "pass",
+   "detail": "scripts/check_key_function_census.py is NOT in the bundle; located at SourceMapping_Skill/scripts/ and run unmodified. '[census] OK -- 8 functions over 2843 expressions in 2 slots {resolved_key.expression: 2344, child_key_components: 499}, all ratified, document agrees', EXIT 0."
+  },
+  {
+   "check": "The doc's 2843 denominator reproduces",
+   "result": "pass",
+   "detail": "Did NOT reproduce on first attempt -- my full surface is 3418 and 2843 matched none of 490/2344/2372/3418. Recovered by reading the gate: component expressions are counted only if they contain '('. 2344 + 499 = 2843 exactly. The 575 excluded are paren-free bare literals that can hold no function call, so the scope is sound; the document just does not state it."
+  },
+  {
+   "check": "22_ordinal_child_keys scope claim of 856 verified independently",
+   "result": "pass",
+   "detail": "856 = 491 target + 365 augmentation rows carrying a child_key_value STRING. Reproduced exactly. Note the components-LIST count is 855, one lower, because one augmentation row carries a child_key_value with an empty components list."
+  },
+  {
+   "check": "22_ordinal_child_keys finding count of 11 verified independently",
+   "result": "pass",
+   "detail": "Re-derived by SHAPE over a positional-ordinal vocabulary with legs taken from the DECLARED component array per CONVENTIONS.leg_vs_operand. 11 findings, one satellite, one view."
+  },
+  {
+   "check": "The 33-was-11 correction verified",
+   "result": "pass",
+   "detail": "Each of the 11 rows carries the ordinal in exactly three value-bearing slots -- child_key_value, components[0].value, components[0].expression -- and zero `raw` slots. 11 x 3 = 33 exactly."
+  },
+  {
+   "check": "The 'no bare-ordinal keying' claim",
+   "result": "fail",
+   "detail": "REFUTED by measurement: 11 of 11 findings have legs=1 and other_legs=[]. Compound count is ZERO; every one is a sole leg. The artifact contradicts its own findings in the same file."
+  },
+  {
+   "check": "Census-exploit probe in every slot",
+   "result": "pass",
+   "detail": "8 of 8 slots PASS; 0 fail; 0 NOT-RUN. Negative control over the unmodified map: 4538 slots swept, 0 unratified calls, and the control is not vacuous because the same sweep reports the planted call in all 8. Probe payload sampled from the corpus (nullif(trim(CUSTOMERID),'')) and mutated, never typed. Two slots -- resolved_key.legs and components.raw -- have ZERO natural occurrences and were proved by SYNTHESIS; that caveat is recorded beside each."
+  },
+  {
+   "check": "Prose test with classes derived from the data and non-prose classes proved by parsing",
+   "result": "pass",
+   "detail": "A first generic pass flagged 30 columns as prose; sampling the values showed most were the classifier's fault, not the mapper's -- a SQL-expression column, a comma-list of domain names, a 4-part pipe composite key, a 4-field structured record and a 16-value enum are all machine-usable. 4 prose entries remain covering 7 spreadsheet columns (plus 1 machine-with-exceptions entry), each with a quoted failing value. Seven non-prose classes round-tripped and their parts recorded."
+  },
+  {
+   "check": "Collapse traps re-derived",
+   "result": "fail",
+   "detail": "DID NOT RECONCILE with rev 5's figure of 20. My two explicitly-scoped measurements give 18 (single value across >1 row) and 9 (across >1 view) over a denominator of 58 (satellite, leg) pairs. The map is byte-identical so nothing changed; rev 5 states 20 without a scope. Recorded as undetermined, NOT as a regression."
+  },
+  {
+   "check": "Renumbering ordinals in every spelling",
+   "result": "pass",
+   "detail": "7 spellings by shape over 1544 source column names: PARAM_SEQ, RISK_SERIAL_NO, RISK_SERIAL_NUMBER, SEQUENCE_NUMBER, SERIAL_NO, SRL_NO, SR_NUMBER. Three are one concept and two more another. Calibration recorded: a first vocabulary admitting a bare _NO suffix returned 37 including MOBILE_NO and PAN_NO, which are identifiers -- a gate that fires on those gets switched off (BUILD_RULES 1.12)."
+  },
+  {
+   "check": "Spine semantics resolved against the parent chain in 00_tables_index.json (BUILD_RULES 4)",
+   "result": "fail",
+   "detail": "THE DECLARED CHAIN CANNOT RESOLVE THEM. Only 145 of 5199 full-name destinations (2.8%) are reachable by walking tables[].columns[].child_view from the origin. The relation is also not spelled `parent*` -- all four such spellings return 0 edges, and my first attempt did exactly that and reported 299 nonexistent LCA crosses. Semantics verdict CLIMB rests on view-name containment (5494 of 5496), and the profile says so explicitly rather than implying the chain confirmed it."
+  },
+  {
+   "check": "Sibling payload convention COUNTED from the sibling build",
+   "result": "pass",
+   "detail": "133 sibling payload columns: 102 discriminate for UPPER_SNAKE, 0 for squashed, 7 match both because the attribute is one word, 24 match neither. Emitted as payload_convention_token UPPER_SNAKE_PHYSICAL with status RATIFIED."
+  },
+  {
+   "check": "Profile self-assertion (token whitespace + digest truncation)",
+   "result": "pass",
+   "detail": "0 *_token values containing whitespace. 0 truncated or algorithm-less digests. 368 other space-bearing string values REPORTED for review and not failed, which is correct -- a space is not the property, being read as a token is. THE ASSERTION FIRED ON ITS OWN FILE on the first run (workbook.digest, a 24-char hex inherited from rev 5) and that was fixed before shipping; a self-check that has never failed on its own output is not known to work."
+  },
+  {
+   "check": "Profile chain cascaded and reports preserved",
+   "result": "pass",
+   "detail": "rev5->prev, rev4->prev2, rev3->prev3, rev2->prev4, rev1->prev5, all five sha256 verified before and after. build_artifacts/reports/ NOT deleted and NOT backed up (BUILD_RULES 9.3): 8 files before, 8 after, and this run adds only stage0_reentry6_report.json, a NEW name, so no prior report is rewritten."
+  },
+  {
+   "check": "check_prose_counts for clause 10",
+   "result": "pass",
+   "detail": "vault_tools/check_prose_counts.py maximus_travel_dv_dbt -> 'prose files scanned : 2  PASS', exit 0."
+  },
+  {
+   "check": "check_vault_alignment for clause 1",
+   "result": "fail",
+   "detail": "Exit 1, 'FAIL 1. payload column is not the canonical rendering: 13'. Checks 2-7 report 0. The 13 were re-derived independently (not read from the gate's truncated 5-line print) and split 12 in src_cdk / 1 genuine, confirming the prior diagnosis."
+  },
+  {
+   "check": "Whether the physical vault actually holds the 12 check-1 columns",
+   "result": "NOT-RUN",
+   "detail": "Deliberately not attempted: dbt is out of scope in this workspace and nothing here reads Snowflake. The gate-scope diagnosis rests on the ma_sat contract and on live non-null feeders, which is strong static evidence but is not an observed column. Recorded in undetermined."
+  },
+  {
+   "check": "Re-derivation of clause 9's collapse-trap half (9 of 20 reaching an emitted src_cdk)",
+   "result": "NOT-RUN",
+   "detail": "Not attempted to the same depth as the ordinal half. The denominator does not reproduce (see the collapse-trap check) so re-measuring the numerator against it would have produced a number with no meaning. Routed to stage 1 to state its scope first."
+  }
+ ],
+ "findings": [
+  {
+   "kind": "open_item",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "22_ordinal_child_keys.json contradicts itself: reading_rules.corrected_count asserts 'There is NO bare-ordinal keying in this map' while all 11 of its own findings report a SOLE ordinal leg (legs=1, other_legs=[]). MEASURED: 11 sole legs, 0 compounds. The 33-was-11 half of the sentence is TRUE; the 'therefore not bare' half is FALSE. Split the sentence. BUILD_INSTRUCTIONS section 1.1 now repeats the false half, so BOTH documents need the same correction -- this is how a wrong number becomes consensus."
+  },
+  {
+   "kind": "open_item",
+   "severity": "warn",
+   "for_stage": "modeller",
+   "detail": "CLAUSE 9, RE-MEASURED NOT INHERITED. Denominator: 11 map rows, 1 satellite, 1 view. The build's SAT_AUG_POLICY_DOCUMENT_DISPATCH.src_cdk = DISPATCH_SERIAL_NUMBER finding and the artifact's 11 are THE SAME FACT with different denominators, and neither artifact stated its denominator. Verified independently: the satellite is ABSENT from data_7.js (0 occurrences); it is carried in augmentation.new_satellite with best_home_satellite null and applied false; the key IS resolved (nullif(trim(SERIAL_NO),''), resolved_on_view true); AND the build DID emit it on the augmented track with src_cdk 'DISPATCH_SERIAL_NUMBER', so the ordinal is in emitted SQL. Two further facts neither party raised: the map ALREADY declares this a routed source gap in augmentation.child_key_stability on all 11 rows, with candidate_stable_key POD_NUMBER and an explicit question_for_source; and the emitted SQL ALREADY carries '** UNSTABLE CHILD KEY (BUILD_RULES 5.2)' in both the satellite and the staging model. DISPOSITION: not a standard-track blocker, because nothing canonical depends on it; but it IS emitted SQL carrying a renumbering value in a child key, so the unstable key ships if that satellite is ever promoted or loaded. Correct routing is ONE modeller question about a proposed satellite's grain, carrying a stability caveat -- not eleven findings and not a build blocker."
+  },
+  {
+   "kind": "open_item",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "CLAUSE 10 re-judged: its stated evidence is now FALSIFIED BY THE TREE. 'No handback exists' is false -- BUILDER_ASKS_MAXIMUS_TRAVEL.md exists at 48799 bytes; 'reports/ holds the stage-0 and stage-1 reports and this stage-2 report only' is false -- it holds 8 files including stage3_report.json, so 03-mapper-liaison has run. check_prose_counts returns PASS over 2 files, exit 0. The clause's own blocker is cleared; stage 2 should re-issue the verdict rather than carry the stale evidence string."
+  },
+  {
+   "kind": "open_item",
+   "severity": "warn",
+   "for_stage": "2",
+   "detail": "CLAUSE 1 re-measured: UNCHANGED. Gate exits 1 with 13. Re-derived independently: 12 are present in the model under the exact canonical rendering as src_cdk and all 12 are automate_dv.ma_sat, which materialises src_cdk; the 1 genuine refusal, SAT_RISK_PERSON_INSURED.Age At Entry, is the ONLY one that is not ma_sat and the ONLY one absent from src_cdk as well as src_payload. The split holds exactly. The shared-gate fix (src_payload UNION src_cdk) is still NOT applied and vault_tools was not edited by this run -- a shared gate is not edited while other builds are reading it."
+  },
+  {
+   "kind": "grammar_form",
+   "severity": "warn",
+   "for_stage": "1",
+   "detail": "SPINE DESTINATIONS CANNOT BE RESOLVED AGAINST THE DECLARED PARENT CHAIN, and this is new. (a) The relation is not spelled `parent`/`parent_table`/`parent_view`/`parent_name` -- all four return ZERO edges. It is tables[].columns[].child_view, an edge from parent to child. A reader on any `parent*` spelling finds 0 edges and concludes every view is a root; I did exactly that on the first pass and the run reported 299 lowest-common-ancestor crosses that do not exist. (b) The relation covers 89 of 126 tables, leaving 37 roots of which 24 are _PIVOT_VW views. (c) Consequently only 145 of 5199 full-name destinations (2.8%) are reachable by walking the chain. A verifier following BUILD_RULES 4 literally would classify 5054 arrows as LCA crosses and instantiate a cross layer this LOB does not need. STAGE 1 MUST resolve spine destinations by view-name containment, not by child_view, and must not read a child_view miss as a cross."
+  },
+  {
+   "kind": "grammar_form",
+   "severity": "info",
+   "for_stage": "1",
+   "detail": "A SECOND DESTINATION NAMING FORM, not previously recorded. Of 5496 spine arrows, 5199 name the FULL view name and 297 name an UNQUALIFIED SEGMENT -- 8 distinct: PARTY_PROPERTY (145), MEMBER_DETAILS (78), PROPOSER_DETAILS (67), RISK_LIST (2), QUOTE_PARAM_DETAILS (2), RISK_COVER (1), INSURED_DETAILS (1), POLICY_DETAILS (1). None is a table_name in the index, so a resolver that looks destinations up returns None on 297 arrows. All 297 are segments of their own origin view name, so a segment fallback is total on this map."
+  },
+  {
+   "kind": "field_spelling",
+   "severity": "warn",
+   "for_stage": "1",
+   "detail": "The build's child_key_components reader binds ONE spelling per role (name / value / expression / leg_backing) from the profile, and accepts none of the alternates CONVENTIONS.json declares mandatory (leg / component / maps_to for names; raw / column / source_column for values). Harmless on THIS map -- only name, value, leg_backing, expression, resolved_on_view, note and one `column` occur -- but a live hazard for the next re-issue, which is exactly what the declaration exists to prevent. Widen the reader, or state in the profile that it deliberately does not."
+  },
+  {
+   "kind": "field_spelling",
+   "severity": "info",
+   "for_stage": "mapper",
+   "detail": "CONVENTIONS.child_key_components.this_run_writes lists [name, value, expression, leg_backing, note] and is INCOMPLETE against the bytes: this run also writes resolved_on_view on 988 of 1119 elements and column on 1. Not academic -- resolved_on_view:true is one of the three facts that de-escalates clause 9, and a reader trusting this_run_writes as exhaustive would not know it exists."
+  },
+  {
+   "kind": "directive",
+   "severity": "warn",
+   "for_stage": "1",
+   "detail": "CONVENTIONS.digests (status RATIFIED) says name the algorithm and never truncate. TWO violations in the shipped build. (1) build_profile.json rev 5 carried 20 hex strings, ALL 24 characters, none naming an algorithm -- fixed in rev 6, every digest now full and algorithm-named. (2) build_artifacts/BUILD_STATUS.json input_digest.combined_sha256 is '1ce31de041637a01616d892b6f8f0de2', 32 characters under a field NAMED sha256 -- a half-length value wearing a full-length label, which verifies as a prefix and reconciles against nothing. BUILD_STATUS is stage 1's file and was NOT edited from stage 0: stage 1 must either emit it at 64 characters or rename the field to match what it computes."
+  },
+  {
+   "kind": "directive",
+   "severity": "info",
+   "for_stage": "1",
+   "detail": "BUILD_RULES 1.21 defect still present in the file rev 6 inherited: sibling.payload_convention shipped as an English sentence with no token field, so a comparator had to parse prose. FIXED in rev 6 -- payload_convention_token = UPPER_SNAKE_PHYSICAL, status RATIFIED, with convention_evidence COUNTED from travel_dv_dbt itself (102 discriminate UPPER_SNAKE, 0 squashed, 7 both-because-one-word, 24 neither). Any stage-1 comparator must read the _token field, never the _note."
+  },
+  {
+   "kind": "directive",
+   "severity": "info",
+   "for_stage": "1",
+   "detail": "READING NOTE that has already caused one contradiction: vault_tools/check_vault_alignment.py prints its convention score as {'UPPER_SNAKE': 109, 'squashed': 7} and that 7 is easily misread as seven squashed columns. It is the both-match set -- single-word attributes where the two renderings coincide. 109 = 102 + 7 and squashed-only is ZERO. Rev 5 recorded 'other: 0', which was right but did not explain the gate's 7."
+  },
+  {
+   "kind": "open_item",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "CONVENTIONS.json carries status_token RECOMMENDED_NOT_RATIFIED at top level while five of its six inner blocks carry RATIFIED, and it states no precedence. Both readings are defensible from the bytes. This build ADOPTS THE INNER BLOCKS AS BINDING and says so explicitly rather than silently. Mapper to state precedence -- consuming a recommendation as settled is the defect CONVENTIONS itself exists to prevent."
+  },
+  {
+   "kind": "open_item",
+   "severity": "info",
+   "for_stage": "mapper",
+   "detail": "CONVENTIONS.prose_fields lists `transformation` as never-string-matched, but the build reads target.transformation and target.transformation_kind, and the mapper's own census script documents that this field carries TWO CONTRACTS (executable SQL on travel_v2, English on health_v2) and excludes it from ratification for that reason. The build reads it via the transformation_kind discriminator rather than by parsing prose, which is the safe form -- but the CONVENTIONS list and the census script disagree with each other and one of them should move."
+  },
+  {
+   "kind": "prose_column",
+   "severity": "info",
+   "for_stage": "1",
+   "detail": "4 prose entries covering 7 columns, each with a quoted failing value; the headline one is unchanged from rev 5: CHILDKEY_GAPS.csv::CHILD_KEY_SOURCE_COLUMN, 7 of 95 values MIX a comma-delimited identifier list with parenthesised English sentinels ('(column-as-instance)' on 31 rows, '(none - single-active: constant role/head)' on 4). A column that is MOSTLY parseable is still prose -- the 7 mixed values are exactly what would reach generated SQL. METHOD NOTE: a first generic pass flagged 30 columns; sampling showed most were the classifier's fault, not the mapper's, and reporting them would have been BUILD_RULES 1 committed by the step that enforces BUILD_RULES 3."
+  },
+  {
+   "kind": "directive",
+   "severity": "info",
+   "for_stage": "1",
+   "detail": "4 real source column names are not bare SQL identifiers and must be double-quoted in emitted SQL: 1ST_REMINDER_DATE, 2ND_REMINDER_DATE, 3RD_REMINDER_DATE, 64_VB_STATUS (all begin with a digit, 7 map rows). Not a mapper defect -- it is the source. The build already quotes them; the directive is recorded so a regression is visible."
+  },
+  {
+   "kind": "open_item",
+   "severity": "info",
+   "for_stage": "mapper",
+   "detail": "STILL OPEN from rev 5 and not claimed fixed: the workbook states the degenerate-value contract NOWHERE. 'Key Derivations::Degenerate Value (all-blank row)' is empty on all 2366 rows and KEY_DEGENERATE_VALUES.csv::degenerate_value_display is empty on all 2366. The CSV carries it in degenerate_value_json (2344) and verdict (2366); a reader of the workbook alone cannot learn it. The workbook is byte-identical to rev 5."
+  },
+  {
+   "kind": "undetermined",
+   "severity": "warn",
+   "for_stage": "1",
+   "detail": "COLLAPSE-TRAP DENOMINATOR DOES NOT RECONCILE. Rev 5 says 20 without stating a scope. My two stated scopes give 18 (one distinct rendered value across >1 row) and 9 (across >1 view), over 58 (satellite, leg) pairs carrying a child-key leg. The map is byte-identical so NOTHING CHANGED -- the scopes differ, which is the same error KEY_FUNCTIONS.md records against itself over trim 4415 vs 5094. DO NOT read 18-vs-20 as a regression. Stage 1 must state the scope it used before clause 9's '9 of 20' can be re-judged on its collapse-trap half; until then that half is NOT-RUN, not failed."
+  },
+  {
+   "kind": "undetermined",
+   "severity": "info",
+   "for_stage": "source",
+   "detail": "CONVENTIONS' residual phrase-token class cannot be measured from this side. I verified the MULTI-WORD half is zero (0 multi-word tokens across all 1238 brace spans), which matches the artifact's travel_occurrences:0. The single-word half -- a token naming a real scalar column on its own view -- is indistinguishable from a correct leg by construction, so it is UNMEASURABLE, not zero. If one exists it renders as a plausible child key and passes every gate."
+  },
+  {
+   "kind": "undetermined",
+   "severity": "info",
+   "for_stage": "1",
+   "detail": "resolved_key.legs has ZERO natural occurrences in this map on either track. Its census-exploit coverage was proved by SYNTHESISING an instance, never by observing one; the same is true of components.raw. Read those two PASSes as insurance for the next bundle, never as evidence about this one. Link legs on this LOB live inside LNK(...) text, which the expression slot already covers."
+  },
+  {
+   "kind": "undetermined",
+   "severity": "info",
+   "for_stage": "1",
+   "detail": "There is no stage0_reentry5_report.json. build_profile rev 5 exists and is dated 2026-09-24 but reports/ holds reentry2, 3 and 4 only. Anything rev 5 learned and did not put in the profile is lost. This report is numbered 6 to match the PROFILE revision, not the report series, so the series legitimately skips 5."
+  },
+  {
+   "kind": "undetermined",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "Whether the 12 check-1 satellites are genuinely populated in the physical vault is NOT-RUN and unknowable here: nothing in this workspace runs dbt or reads Snowflake. The diagnosis rests on the ma_sat contract plus live non-null feeders -- strong static evidence, but not an observed column. If AutomateDV's ma_sat behaviour differs from the contract, 12 canonical attributes are unpopulated and the gate was right all along."
+  },
+  {
+   "kind": "directive",
+   "severity": "info",
+   "for_stage": "mapper",
+   "detail": "BUILD_INSTRUCTIONS section 1.1's accounting VERIFIES on every checkable point. The KEY_FUNCTIONS edit is exactly one deletion of an orphaned fragment ('Note the / version of the OPUS map.'), 37 bytes, one line, 198->197, and the version point survives in the bullet's closing parenthetical. The census was NOT stale: all seven counters plus spine[] recompute exact, the census block is byte-identical between rev5 and current (so it was not regenerated), and the gate exits 0. The second queued item did not exist: a repeated-25+-character scan returns 0 on the current file AND 0 on the prior file, which is the stronger result -- it was never there to fix. The map md5 and byte count the doc publishes for self-checking are correct. Two minor notes: the doc publishes md5 and bytes but not sha256, while CONVENTIONS.digests.publish requires all three; and the 2843 figure is stated without its scope."
+  }
+ ]
+}

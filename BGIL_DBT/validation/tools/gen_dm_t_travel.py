@@ -2,7 +2,7 @@
 """
 Travel LOB equivalent of gen_dm_t.py.
 
-Points at opus_travel_dv_dbt + maximus_travel_v2_dv_dbt and writes under
+Points at opus_travel_dv_dbt + maximus_travel_dv_dbt and writes under
 BGIL_DBT/validation/travel/DM-T/. Each hub / link / satellite row is
 scoped by the RECORD_SOURCE value set parsed from the project's own feeds
 (the shared vault also holds partner rows under the same prefix).
@@ -121,7 +121,7 @@ T.Table.scope = table_scope
 COMMON = [
     ("Owner", "LUMIQ"),
     ("Vault location", K.VAULT),
-    ("Maximus Travel V2 RAW", K.RAW_SCHEMA["maximus_travel_v2_raw"]),
+    ("Maximus Travel RAW", K.RAW_SCHEMA["maximus_travel_raw"]),
     ("Opus Travel RAW (prod)", K.RAW_SCHEMA["travel_raw"]),
     ("Opus Travel RAW (test)", K.RAW_SCHEMA["travel_test_raw"]),
     ("Scope", "Every hub, link and satellite the project's travel models load. Rows "

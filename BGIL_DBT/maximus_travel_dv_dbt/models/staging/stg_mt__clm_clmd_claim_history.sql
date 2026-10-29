@@ -1,0 +1,57 @@
+{{ config(materialized='view') }}
+
+-- Layer-1 cast for Maximus Travel source view
+--   NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY
+--
+-- This view CARRIES MAP ROWS; it is a start view for the key and payload layers.
+--
+-- Typing: flattened JSON shreds and pivoted EAV views with no source type list, so every
+-- value is cast to a trimmed VARCHAR. An absent EAV label on this feed is the EMPTY
+-- STRING, not NULL, which is why each value is nullif(trim(...),'') here and why every
+-- key is guarded again in mt_keyrules.render_key().
+--
+-- Every source identifier is DOUBLE-QUOTED (directive D-QUOTE): seven column names in
+-- this feed begin with a digit and do not compile unquoted. Their aliases carry a col_
+-- prefix for the same reason -- an alias may not begin with a digit either.
+--
+-- Shred lineage carried through deliberately (FOREIGN_KEY, KEY_HASH, PARENT_KEY_HASH, ROOT_HASH, RECORD_HASH, PARENT_RECORD_HASH, PARENT_TABLE_NAME): it appears in no row of the map and
+-- the whole sub-document key layer is built on it.
+
+with source as (
+
+    select
+    "FOREIGN_KEY" as foreign_key,
+    "ROOT_HASH" as root_hash,
+    "PARENT_KEY_HASH" as parent_key_hash,
+    "PARENT_RECORD_HASH" as parent_record_hash,
+    "KEY_HASH" as key_hash,
+    "RECORD_HASH" as record_hash,
+    "PARENT_TABLE_NAME" as parent_table_name,
+    try_to_timestamp_ntz(trim(to_varchar("INC_JOB_CREATED_AT"))) as inc_job_created_at,
+    nullif(trim(to_varchar("INC_JOB_ID")), '') as inc_job_id,
+    nullif(trim(to_varchar("FILE_NAME")), '') as file_name,
+    nullif(trim(to_varchar("FILE_TIMESTAMP")), '') as file_timestamp,
+    nullif(trim(to_varchar("CLAIM_REQUIREMENT_STATUS")), '') as claim_requirement_status,
+    nullif(trim(to_varchar("CLAIM_STATUS")), '') as claim_status,
+    nullif(trim(to_varchar("CLAIM_SUB_STATUS")), '') as claim_sub_status,
+    nullif(trim(to_varchar("CREATED_DATE")), '') as created_date,
+    nullif(trim(to_varchar("DELAY_REASON")), '') as delay_reason,
+    nullif(trim(to_varchar("DETAILS")), '') as details,
+    nullif(trim(to_varchar("EVENT")), '') as event,
+    nullif(trim(to_varchar("EVENT_DATE")), '') as event_date,
+    nullif(trim(to_varchar("EVENT_DESCRIPTION")), '') as event_description,
+    nullif(trim(to_varchar("PPI_INDICATOR")), '') as ppi_indicator,
+    nullif(trim(to_varchar("REFERENCE_NUMBER")), '') as reference_number,
+    nullif(trim(to_varchar("REMARKS")), '') as remarks,
+    nullif(trim(to_varchar("SCRUTINY_STATUS")), '') as scrutiny_status,
+    nullif(trim(to_varchar("SURVEY_REPORT_STATUS")), '') as survey_report_status,
+    nullif(trim(to_varchar("TYPE")), '') as type,
+    nullif(trim(to_varchar("USER_CODE")), '') as user_code,
+    nullif(trim(to_varchar("CLAIM_HISTORY")), '') as claim_history,
+    nullif(trim(to_varchar("REC_REFRESH_AT")), '') as rec_refresh_at,
+    nullif(trim(to_varchar("REC_REFRESHED_BY")), '') as rec_refreshed_by
+    from {{ source('maximus_travel_raw', 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY') }}
+
+)
+
+select * from source

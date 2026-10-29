@@ -1,0 +1,65 @@
+{{ config(materialized='view') }}
+
+-- MAXIMUS TRAVEL AUGMENTED stage for SAT_AUG_PARTY_IDENTIFICATION from
+--   NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+--
+-- BUILD-SIDE PROPOSAL, not ratified against data_7.js. One model per (view, satellite),
+-- so withdrawing a proposal is deleting a model rather than editing the standard
+-- track's wide stage. Nothing here feeds a standard satellite.
+--
+-- Reads the fan-out model up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification: 9 instance(s) on this view.
+--
+-- 15 payload column(s); the child key is IDENTIFICATION_TYPE_CODE.
+
+{%- set yaml_metadata -%}
+source_model: 'up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification'
+hashed_columns:
+  PARTY_HKEY__INSURED_MEMBER: 'PARTY_NK__INSURED_MEMBER'
+  HASHDIFF_PARTY_IDENTIFICATION:
+    is_hashdiff: true
+    columns:
+      - 'EIA_CREDIT_REQUIRED_INDICATOR'
+      - 'EIA_DETAILS_NARRATIVE'
+      - 'EIA_HELD_INDICATOR'
+      - 'EIA_LINKED_DATE'
+      - 'EIA_REQUIRED_INDICATOR'
+      - 'IDENTIFICATION_DETAILS_NARRATIVE'
+      - 'IDENTIFICATION_TYPE_CODE'
+      - 'IDENTIFICATION_VERIFICATION_STATUS'
+      - 'NAME_AS_PER_IDENTIFICATION_DOCUMENT'
+      - 'OVD_CATEGORY_OTHER_DESCRIPTION'
+      - 'PAN_AADHAAR_LINKED_INDICATOR'
+      - 'PASSPORT_DETAIL_DESCRIPTION'
+      - 'PASSPORT_FILE_NUMBER'
+      - 'PASSPORT_ISSUING_COUNTRY'
+      - 'PROOF_OF_ADDRESS_OTHER_DESCRIPTION'
+      - 'STATE_WISE_GSTIN_REGISTRATION_DETAILS'
+derived_columns:
+  PARTY_NK__INSURED_MEMBER: "'HUB_PARTY|' || (PARTY_BK__INSURED_MEMBER)"
+  PARTY_BK__INSURED_MEMBER: 'PARTY_BK__INSURED_MEMBER'
+  IDENTIFICATION_TYPE_CODE: 'IDENTIFICATION_TYPE_CODE'
+  EIA_CREDIT_REQUIRED_INDICATOR: 'EIA_CREDIT_REQUIRED_INDICATOR'
+  EIA_DETAILS_NARRATIVE: 'EIA_DETAILS_NARRATIVE'
+  EIA_HELD_INDICATOR: 'EIA_HELD_INDICATOR'
+  EIA_LINKED_DATE: 'EIA_LINKED_DATE'
+  EIA_REQUIRED_INDICATOR: 'EIA_REQUIRED_INDICATOR'
+  IDENTIFICATION_DETAILS_NARRATIVE: 'IDENTIFICATION_DETAILS_NARRATIVE'
+  IDENTIFICATION_VERIFICATION_STATUS: 'IDENTIFICATION_VERIFICATION_STATUS'
+  NAME_AS_PER_IDENTIFICATION_DOCUMENT: 'NAME_AS_PER_IDENTIFICATION_DOCUMENT'
+  OVD_CATEGORY_OTHER_DESCRIPTION: 'OVD_CATEGORY_OTHER_DESCRIPTION'
+  PAN_AADHAAR_LINKED_INDICATOR: 'PAN_AADHAAR_LINKED_INDICATOR'
+  PASSPORT_DETAIL_DESCRIPTION: 'PASSPORT_DETAIL_DESCRIPTION'
+  PASSPORT_FILE_NUMBER: 'PASSPORT_FILE_NUMBER'
+  PASSPORT_ISSUING_COUNTRY: 'PASSPORT_ISSUING_COUNTRY'
+  PROOF_OF_ADDRESS_OTHER_DESCRIPTION: 'PROOF_OF_ADDRESS_OTHER_DESCRIPTION'
+  STATE_WISE_GSTIN_REGISTRATION_DETAILS: 'STATE_WISE_GSTIN_REGISTRATION_DETAILS'
+  RECORD_SOURCE: 'record_source'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

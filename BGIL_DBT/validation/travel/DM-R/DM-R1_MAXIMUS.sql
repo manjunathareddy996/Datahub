@@ -2,7 +2,6 @@
    DM-R1  |  Referential Integrity - No Orphan Satellite Rows (Travel LOB)  (MAXIMUS)
    Every satellite row references a valid hub (or link) key. Pass criterion: 0 orphan rows.
 
-   MEMBER SPLIT: sections 1..235 assigned M1 x 79, M2 x 78, M3 x 78 -- contiguous thirds in listed order.
    Check ID: DM-R1
    Category: Referential integrity
    Sign-off criterion: No orphan satellite rows
@@ -10,7 +9,7 @@
    Pass criteria / tolerance: 0 orphan satellite rows
    Owner: LUMIQ
    Vault location: BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL
-   Maximus Travel V2 RAW: RAW.MAXIMUS_TRAVEL_V2
+   Maximus Travel RAW: RAW.MAXIMUS_TRAVEL
    Opus Travel RAW (prod): BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE
    Opus Travel RAW (test): BAGIC_PREPROD_CURATED_DB.UTILS
    Shared vault: Parents (hubs / links) are checked across ALL their rows (a key may
@@ -24,9 +23,9 @@
    not this file. The queries are IDENTICAL to those in the matching .docx.
 
    Revision notes:
-   - Travel LOB generated 2026-10-13 from the current maximus_travel_v2_dv_dbt models by
+   - Travel LOB generated 2026-10-13 from the current maximus_travel_dv_dbt models by
      validation/tools/gen_dm_r_travel.py.
-   - This file: MAXIMUS only -- 234 satellites and 4 links (LINK_CLAIM_PARTY,
+   - This file: MAXIMUS only -- 209 satellites and 4 links (LINK_CLAIM_PARTY,
      LINK_PARTY_LOCATION, LINK_PARTY_ROLE, LINK_POLICY_PARTY).
    - Every satellite key has a parent hub / link.
    - Row filters use RECORD_SOURCE value sets parsed from each project's own feeds (not a
@@ -36,7 +35,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. MAXIMUS — Summary: all MAXIMUS satellites in one query   [Implemented]  [M1]
+-- 1. MAXIMUS — Summary: all MAXIMUS satellites in one query   [Implemented]
 -- One row per satellite (no RECORD_SOURCE split) -- quick evidence for the whole
 -- project. The per-satellite sections below give the RECORD_SOURCE breakdown and orphan
 -- examples.
@@ -662,12 +661,6 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
       left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
-    select 'SAT_AUG_ASSESSMENT_HEADER' as satellite, 'HUB_ASSESSMENT' as parent_table, count(*) as sat_rows,
-           count_if(s.ASSESSMENT_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_ASSESSMENT_HEADER s
-      left join (select distinct ASSESSMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT) p on p.k = s.ASSESSMENT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.ASSESSMENT_HKEY is null or s.ASSESSMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
     select 'SAT_AUG_CLAIM_APPROVAL_ACTION' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_APPROVAL_ACTION s
@@ -728,12 +721,6 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
-    select 'SAT_AUG_CLAIM_FNOL' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
-           count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FNOL s
-      left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
     select 'SAT_AUG_CLAIM_FOLLOWUP_TASK' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FOLLOWUP_TASK s
@@ -749,12 +736,6 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
     select 'SAT_AUG_CLAIM_HEADER' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_HEADER s
-      left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
-    select 'SAT_AUG_CLAIM_HEALTH_DETAIL' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
-           count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_HEALTH_DETAIL s
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
@@ -800,12 +781,6 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
-    select 'SAT_AUG_CLAIM_REPUDIATION' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
-           count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_REPUDIATION s
-      left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
     select 'SAT_AUG_CLAIM_SETTLEMENT' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_SETTLEMENT s
@@ -836,12 +811,6 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
       left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
-    select 'SAT_AUG_CLAIM_TP_FORENSIC' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
-           count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TP_FORENSIC s
-      left join (select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM) p on p.k = s.CLAIM_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
     select 'SAT_AUG_CLAIM_TRAVEL_DETAIL' as satellite, 'HUB_CLAIM' as parent_table, count(*) as sat_rows,
            count_if(s.CLAIM_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TRAVEL_DETAIL s
@@ -865,24 +834,6 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
-    select 'SAT_AUG_COMMON_CONSENT' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
-           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_CONSENT s
-      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
-    select 'SAT_AUG_COMMON_GEO' as satellite, 'HUB_LOCATION' as parent_table, count(*) as sat_rows,
-           count_if(s.LOCATION_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_GEO s
-      left join (select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION) p on p.k = s.LOCATION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
-    select 'SAT_AUG_COMMON_MONETARY_CONTEXT' as satellite, 'HUB_FINANCIAL_TRANSACTION' as parent_table, count(*) as sat_rows,
-           count_if(s.FINANCIAL_TRANSACTION_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_MONETARY_CONTEXT s
-      left join (select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION) p on p.k = s.FINANCIAL_TRANSACTION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_COVERAGE_CONDITIONS' as satellite, 'HUB_COVERAGE' as parent_table, count(*) as sat_rows,
            count_if(s.COVERAGE_HKEY is null or p.k is null) as orphan_or_null_rows
@@ -920,12 +871,6 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
       left join (select distinct DOCUMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DOCUMENT) p on p.k = s.DOCUMENT_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
-    select 'SAT_AUG_DOCUMENT_DEFINITION' as satellite, 'HUB_DOCUMENT' as parent_table, count(*) as sat_rows,
-           count_if(s.DOCUMENT_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_DEFINITION s
-      left join (select distinct DOCUMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DOCUMENT) p on p.k = s.DOCUMENT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
     select 'SAT_AUG_DOCUMENT_DISPATCH' as satellite, 'HUB_DOCUMENT' as parent_table, count(*) as sat_rows,
            count_if(s.DOCUMENT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_DISPATCH s
@@ -937,12 +882,6 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER s
       left join (select distinct DOCUMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DOCUMENT) p on p.k = s.DOCUMENT_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
-    select 'SAT_AUG_FINTXN_CLAIM_PAYMENT' as satellite, 'HUB_FINANCIAL_TRANSACTION' as parent_table, count(*) as sat_rows,
-           count_if(s.FINANCIAL_TRANSACTION_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_CLAIM_PAYMENT s
-      left join (select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION) p on p.k = s.FINANCIAL_TRANSACTION_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_FINTXN_TAX' as satellite, 'HUB_FINANCIAL_TRANSACTION' as parent_table, count(*) as sat_rows,
            count_if(s.FINANCIAL_TRANSACTION_HKEY is null or p.k is null) as orphan_or_null_rows
@@ -956,18 +895,6 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
       left join (select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION) p on p.k = s.FINANCIAL_TRANSACTION_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
-    select 'SAT_AUG_INSTRUMENT_DEFINITION' as satellite, 'HUB_PAYMENT_INSTRUMENT' as parent_table, count(*) as sat_rows,
-           count_if(s.PAYMENT_INSTRUMENT_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_INSTRUMENT_DEFINITION s
-      left join (select distinct PAYMENT_INSTRUMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PAYMENT_INSTRUMENT) p on p.k = s.PAYMENT_INSTRUMENT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PAYMENT_INSTRUMENT_HKEY is null or s.PAYMENT_INSTRUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
-    select 'SAT_AUG_LNK_ROLE_AGENT' as satellite, 'LINK_PARTY_ROLE' as parent_table, count(*) as sat_rows,
-           count_if(s.PARTY_ROLE_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_AGENT s
-      left join (select distinct PARTY_ROLE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_ROLE) p on p.k = s.PARTY_ROLE_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_ROLE_HKEY is null or s.PARTY_ROLE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
     select 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER s
@@ -979,12 +906,6 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_PROVIDER s
       left join (select distinct PARTY_ROLE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_ROLE) p on p.k = s.PARTY_ROLE_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_ROLE_HKEY is null or s.PARTY_ROLE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
-    select 'SAT_AUG_LOSS_EVENT_DETAIL' as satellite, 'HUB_LOSS_EVENT' as parent_table, count(*) as sat_rows,
-           count_if(s.LOSS_EVENT_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOSS_EVENT_DETAIL s
-      left join (select distinct LOSS_EVENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOSS_EVENT) p on p.k = s.LOSS_EVENT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.LOSS_EVENT_HKEY is null or s.LOSS_EVENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
     select 'SAT_AUG_ORG_UNIT_CONTACT' as satellite, 'HUB_ORG_UNIT' as parent_table, count(*) as sat_rows,
            count_if(s.ORG_UNIT_HKEY is null or p.k is null) as orphan_or_null_rows
@@ -1034,12 +955,6 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
-    select 'SAT_AUG_PARTY_FRAUD_PROFILE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
-           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_FRAUD_PROFILE s
-      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
     select 'SAT_AUG_PARTY_GROUP_SCHEME' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_GROUP_SCHEME s
@@ -1076,12 +991,6 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
-    select 'SAT_AUG_PARTY_KYC' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
-           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_KYC s
-      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
     select 'SAT_AUG_PARTY_LOYALTY_CLASSIFICATION' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_LOYALTY_CLASSIFICATION s
@@ -1094,21 +1003,9 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
-    select 'SAT_AUG_PARTY_ORGANISATION_PROFILE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
-           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_ORGANISATION_PROFILE s
-      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
     select 'SAT_AUG_PARTY_PAYOUT_PROFILE' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
            count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PAYOUT_PROFILE s
-      left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
-    select 'SAT_AUG_PARTY_PORTFOLIO_SUMMARY' as satellite, 'HUB_PARTY' as parent_table, count(*) as sat_rows,
-           count_if(s.PARTY_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PORTFOLIO_SUMMARY s
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
@@ -1130,12 +1027,6 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
       left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) p on p.k = s.PARTY_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
-    select 'SAT_AUG_POLICY_CANCELLATION' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
-           count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_CANCELLATION s
-      left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
     select 'SAT_AUG_POLICY_CLAIM_EXPERIENCE' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_CLAIM_EXPERIENCE s
@@ -1154,27 +1045,9 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
-    select 'SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
-           count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED s
-      left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
     select 'SAT_AUG_POLICY_DOCUMENT_DISPATCH' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DOCUMENT_DISPATCH s
-      left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
-    select 'SAT_AUG_POLICY_ENDORSEMENT' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
-           count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_ENDORSEMENT s
-      left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
-    select 'SAT_AUG_POLICY_GROUP' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
-           count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_GROUP s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
@@ -1229,18 +1102,6 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
     select 'SAT_AUG_POLICY_RENEWAL' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
            count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_RENEWAL s
-      left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
-    select 'SAT_AUG_POLICY_SUM_INSURED_BREAKUP' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
-           count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_SUM_INSURED_BREAKUP s
-      left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
-    select 'SAT_AUG_POLICY_TAX_BREAKUP' as satellite, 'HUB_POLICY' as parent_table, count(*) as sat_rows,
-           count_if(s.POLICY_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TAX_BREAKUP s
       left join (select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY) p on p.k = s.POLICY_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
@@ -1388,12 +1249,6 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
       left join (select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE) p on p.k = s.QUOTE_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
-    select 'SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
-           count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL s
-      left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
     select 'SAT_AUG_RISK_OBJECT_CORE' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
            count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_CORE s
@@ -1403,12 +1258,6 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
     select 'SAT_AUG_RISK_OBJECT_PREMIUM' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
            count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_PREMIUM s
-      left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
-     where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
-    union all
-    select 'SAT_AUG_RISK_OBJECT_VALUATION' as satellite, 'HUB_RISK_OBJECT' as parent_table, count(*) as sat_rows,
-           count_if(s.RISK_OBJECT_HKEY is null or p.k is null) as orphan_or_null_rows
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_VALUATION s
       left join (select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT) p on p.k = s.RISK_OBJECT_HKEY
      where startswith(s.RECORD_SOURCE, 'MAXIMUS_') and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
     union all
@@ -1453,12 +1302,12 @@ select 'MAXIMUS' as project, satellite, parent_table, sat_rows, orphan_or_null_r
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]  [M1]
+-- 2. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]
 -- Parent hub HUB_ASSESSMENT (src_pk ASSESSMENT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK ASSESSMENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS [2 col(s)].
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS [4 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct ASSESSMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT
@@ -1481,7 +1330,7 @@ select 'MAXIMUS' as project, 'SAT_ASSESSMENT_HEADER' as satellite, 'HUB_ASSESSME
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]  [M1]
+-- 3. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]
 -- Parent hub HUB_DISTRIBUTION_CHANNEL (src_pk DISTRIBUTION_CHANNEL_HKEY); checked across
 -- all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -1516,7 +1365,7 @@ select 'MAXIMUS' as project, 'SAT_CHANNEL_DEFINITION' as satellite, 'HUB_DISTRIB
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M1]
+-- 4. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1544,7 +1393,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_ASSESSMENT_SUMMARY' as satellite, 'HUB_C
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Implemented]  [M1]
+-- 5. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1581,7 +1430,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_BENEFIT_HEAD' as satellite, 'HUB_CLAIM' 
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]  [M1]
+-- 6. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1612,13 +1461,13 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_CO_RI_SHARE' as satellite, 'HUB_CLAIM' a
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]  [M1]
+-- 7. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [7
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [14
 -- col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -1642,7 +1491,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_FNOL' as satellite, 'HUB_CLAIM' as paren
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]  [M1]
+-- 8. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1677,7 +1526,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_FRAUD' as satellite, 'HUB_CLAIM' as pare
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]  [M1]
+-- 9. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1713,19 +1562,19 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEADER' as satellite, 'HUB_CLAIM' as par
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]  [M1]
+-- 10. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [5
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- [9 col(s)].
+-- [13 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
@@ -1748,7 +1597,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEALTH_DETAIL' as satellite, 'HUB_CLAIM'
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]  [M1]
+-- 11. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1779,7 +1628,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_INVESTIGATION_FINDING' as satellite, 'HU
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]  [M1]
+-- 12. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1810,7 +1659,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_LITIGATION' as satellite, 'HUB_CLAIM' as
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — SAT_CLAIM_NOTE   [Implemented]  [M1]
+-- 13. MAXIMUS — SAT_CLAIM_NOTE   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1842,7 +1691,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_NOTE' as satellite, 'HUB_CLAIM' as paren
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M1]
+-- 14. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1875,7 +1724,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PAYMENT_TRANCHE' as satellite, 'HUB_CLAI
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]  [M1]
+-- 15. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1904,7 +1753,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PA_DETAIL' as satellite, 'HUB_CLAIM' as 
 
 
 ----------------------------------------------------------------------------------------
--- 16. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Implemented]  [M1]
+-- 16. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1936,7 +1785,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PROVIDER_BILLING' as satellite, 'HUB_CLA
 
 
 ----------------------------------------------------------------------------------------
--- 17. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M1]
+-- 17. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -1965,12 +1814,12 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RECOVERY_SALVAGE' as satellite, 'HUB_CLA
 
 
 ----------------------------------------------------------------------------------------
--- 18. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]  [M1]
+-- 18. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)].
@@ -1996,7 +1845,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_REPUDIATION' as satellite, 'HUB_CLAIM' a
 
 
 ----------------------------------------------------------------------------------------
--- 19. MAXIMUS — SAT_CLAIM_RESERVE   [Implemented]  [M1]
+-- 19. MAXIMUS — SAT_CLAIM_RESERVE   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2026,7 +1875,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RESERVE' as satellite, 'HUB_CLAIM' as pa
 
 
 ----------------------------------------------------------------------------------------
--- 20. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Implemented]  [M1]
+-- 20. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2057,7 +1906,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RESERVE_HEAD' as satellite, 'HUB_CLAIM' 
 
 
 ----------------------------------------------------------------------------------------
--- 21. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]  [M1]
+-- 21. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2086,7 +1935,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_SETTLEMENT' as satellite, 'HUB_CLAIM' as
 
 
 ----------------------------------------------------------------------------------------
--- 22. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]  [M1]
+-- 22. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2114,13 +1963,13 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_SLA_TRACKING' as satellite, 'HUB_CLAIM' 
 
 
 ----------------------------------------------------------------------------------------
--- 23. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]  [M1]
+-- 23. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- [2 col(s)].
+-- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
@@ -2143,7 +1992,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_TP_FORENSIC' as satellite, 'HUB_CLAIM' a
 
 
 ----------------------------------------------------------------------------------------
--- 24. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]  [M1]
+-- 24. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2176,7 +2025,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_TRAVEL_DETAIL' as satellite, 'HUB_CLAIM'
 
 
 ----------------------------------------------------------------------------------------
--- 25. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
+-- 25. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]
 -- Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2230,7 +2079,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'HUB_LOCATION' a
 
 
 ----------------------------------------------------------------------------------------
--- 26. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]  [M1]
+-- 26. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]
 -- Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2259,7 +2108,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADMIN_GEOGRAPHY' as satellite, 'HUB_LOC
 
 
 ----------------------------------------------------------------------------------------
--- 27. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]  [M1]
+-- 27. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2290,7 +2139,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_BUSINESS_AUDIT' as satellite, 'HUB_POLI
 
 
 ----------------------------------------------------------------------------------------
--- 28. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
+-- 28. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2323,7 +2172,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'HUB_PART
 
 
 ----------------------------------------------------------------------------------------
--- 29. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M1]
+-- 29. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2358,7 +2207,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]  [M1]
+-- 30. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2366,7 +2215,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)],
+-- [2 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
@@ -2391,7 +2240,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONSENT' as satellite, 'HUB_PARTY' as p
 
 
 ----------------------------------------------------------------------------------------
--- 31. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]  [M1]
+-- 31. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2436,17 +2285,17 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'HUB_PARTY' as p
 
 
 ----------------------------------------------------------------------------------------
--- 32. MAXIMUS — SAT_COMMON_GEO   [Implemented]  [M1]
+-- 32. MAXIMUS — SAT_COMMON_GEO   [Implemented]
 -- Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK LOCATION_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [2 col(s)],
+-- [3 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [2 col(s)],
+-- [3 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [2 col(s)].
+-- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION
@@ -2469,7 +2318,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_GEO' as satellite, 'HUB_LOCATION' as pa
 
 
 ----------------------------------------------------------------------------------------
--- 33. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]  [M1]
+-- 33. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2498,13 +2347,13 @@ select 'MAXIMUS' as project, 'SAT_COMMON_LIFECYCLE' as satellite, 'HUB_POLICY' a
 
 
 ----------------------------------------------------------------------------------------
--- 34. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]  [M1]
+-- 34. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
 -- satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [3 col(s)],
+-- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [4 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [2 col(s)].
 ----------------------------------------------------------------------------------------
@@ -2529,7 +2378,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_MONETARY_CONTEXT' as satellite, 'HUB_FI
 
 
 ----------------------------------------------------------------------------------------
--- 35. MAXIMUS — SAT_COMMON_STATUS   [Implemented]  [M1]
+-- 35. MAXIMUS — SAT_COMMON_STATUS   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2558,7 +2407,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_STATUS' as satellite, 'HUB_POLICY' as p
 
 
 ----------------------------------------------------------------------------------------
--- 36. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
+-- 36. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2593,7 +2442,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite, 'HUB_COVERA
 
 
 ----------------------------------------------------------------------------------------
--- 37. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
+-- 37. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2630,7 +2479,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'HUB_COVERA
 
 
 ----------------------------------------------------------------------------------------
--- 38. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M1]
+-- 38. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2661,14 +2510,14 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_SUBLIMIT_SCHEDULE' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 39. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]  [M1]
+-- 39. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]
 -- Parent hub HUB_DOCUMENT (src_pk DOCUMENT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK DOCUMENT_HKEY; 10 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [3
+-- [9 col(s)],
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [6
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [4 col(s)], MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS [3 col(s)],
@@ -2705,7 +2554,7 @@ select 'MAXIMUS' as project, 'SAT_DOCUMENT_DEFINITION' as satellite, 'HUB_DOCUME
 
 
 ----------------------------------------------------------------------------------------
--- 40. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]  [M1]
+-- 40. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -2734,13 +2583,13 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_ACCOUNTING' as satellite, 'HUB_FINANCIA
 
 
 ----------------------------------------------------------------------------------------
--- 41. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]  [M1]
+-- 41. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
 -- satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
--- [5 col(s)].
+-- [8 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION
@@ -2763,7 +2612,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_CLAIM_PAYMENT' as satellite, 'HUB_FINAN
 
 
 ----------------------------------------------------------------------------------------
--- 42. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
+-- 42. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -2797,7 +2646,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_HEADER' as satellite, 'HUB_FINANCIAL_TR
 
 
 ----------------------------------------------------------------------------------------
--- 43. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
+-- 43. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -2829,7 +2678,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'HUB_FINANCIAL_T
 
 
 ----------------------------------------------------------------------------------------
--- 44. MAXIMUS — SAT_FINTXN_TAX   [Implemented]  [M1]
+-- 44. MAXIMUS — SAT_FINTXN_TAX   [Implemented]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -2862,7 +2711,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_TAX' as satellite, 'HUB_FINANCIAL_TRANS
 
 
 ----------------------------------------------------------------------------------------
--- 45. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
+-- 45. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -2894,13 +2743,13 @@ select 'MAXIMUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'HUB_FINANCIAL_TRAN
 
 
 ----------------------------------------------------------------------------------------
--- 46. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]  [M1]
+-- 46. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]
 -- Parent hub HUB_PAYMENT_INSTRUMENT (src_pk PAYMENT_INSTRUMENT_HKEY); checked across all
 -- rows of the parent (shared vault: the key may have been loaded by the other project).
 -- Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
 -- satellite, automate_dv.sat; PK PAYMENT_INSTRUMENT_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
--- [2 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
+-- [4 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -2924,7 +2773,7 @@ select 'MAXIMUS' as project, 'SAT_INSTRUMENT_DEFINITION' as satellite, 'HUB_PAYM
 
 
 ----------------------------------------------------------------------------------------
--- 47. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]  [M1]
+-- 47. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -2957,7 +2806,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_PARTY_ROLE_CORE' as satellite, 'HUB_PARTY'
 
 
 ----------------------------------------------------------------------------------------
--- 48. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Implemented]  [M1]
+-- 48. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Implemented]
 -- Parent hub LINK_POLICY_PARTY (src_pk POLICY_PARTY_HKEY); checked across all rows of
 -- the parent (shared vault: the key may have been loaded by the other project).
 -- Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -2993,13 +2842,13 @@ select 'MAXIMUS' as project, 'SAT_LNK_POLICY_PARTY_ROLE' as satellite, 'LINK_POL
 
 
 ----------------------------------------------------------------------------------------
--- 49. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]  [M1]
+-- 49. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]
 -- Parent hub LINK_PARTY_ROLE (src_pk PARTY_ROLE_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_ROLE_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [6 col(s)].
+-- [9 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_ROLE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_ROLE
@@ -3022,7 +2871,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_AGENT' as satellite, 'LINK_PARTY_ROLE
 
 
 ----------------------------------------------------------------------------------------
--- 50. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]  [M1]
+-- 50. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]
 -- Parent hub LINK_PARTY_ROLE (src_pk PARTY_ROLE_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3055,7 +2904,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_CUSTOMER' as satellite, 'LINK_PARTY_R
 
 
 ----------------------------------------------------------------------------------------
--- 51. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]  [M1]
+-- 51. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]
 -- Parent hub LINK_PARTY_ROLE (src_pk PARTY_ROLE_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3090,7 +2939,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_EMPLOYEE' as satellite, 'LINK_PARTY_R
 
 
 ----------------------------------------------------------------------------------------
--- 52. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
+-- 52. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3121,12 +2970,12 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 53. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]  [M1]
+-- 53. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]
 -- Parent hub HUB_LOSS_EVENT (src_pk LOSS_EVENT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK LOSS_EVENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [7
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [8
 -- col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3150,7 +2999,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_DETAIL' as satellite, 'HUB_LOSS_EVE
 
 
 ----------------------------------------------------------------------------------------
--- 54. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]  [M1]
+-- 54. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]
 -- Parent hub HUB_LOSS_EVENT (src_pk LOSS_EVENT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3179,7 +3028,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_NOTIFICATION' as satellite, 'HUB_LO
 
 
 ----------------------------------------------------------------------------------------
--- 55. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Implemented]  [M1]
+-- 55. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Implemented]
 -- Parent hub HUB_LOSS_EVENT (src_pk LOSS_EVENT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3208,7 +3057,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_LOCATION_ADDRESS' as satellite, 'HUB_LOSS
 
 
 ----------------------------------------------------------------------------------------
--- 56. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
+-- 56. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
 -- Parent hub HUB_ORG_UNIT (src_pk ORG_UNIT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3240,7 +3089,7 @@ select 'MAXIMUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite, 'HUB_ORG_UN
 
 
 ----------------------------------------------------------------------------------------
--- 57. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]  [M1]
+-- 57. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3271,7 +3120,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_AML_SCREENING' as satellite, 'HUB_PARTY'
 
 
 ----------------------------------------------------------------------------------------
--- 58. MAXIMUS — SAT_PARTY_BANKING   [Implemented]  [M1]
+-- 58. MAXIMUS — SAT_PARTY_BANKING   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3306,7 +3155,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_BANKING' as satellite, 'HUB_PARTY' as pa
 
 
 ----------------------------------------------------------------------------------------
--- 59. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]  [M1]
+-- 59. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3335,7 +3184,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite, 'HUB_PARTY'
 
 
 ----------------------------------------------------------------------------------------
--- 60. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M1]
+-- 60. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
 -- Parent hub LINK_PARTY_LOCATION (src_pk PARTY_LOCATION_HKEY); checked across all rows
 -- of the parent (shared vault: the key may have been loaded by the other project).
 -- Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard
@@ -3376,7 +3225,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite, 'LIN
 
 
 ----------------------------------------------------------------------------------------
--- 61. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M1]
+-- 61. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3410,7 +3259,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY' as
 
 
 ----------------------------------------------------------------------------------------
--- 62. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]  [M1]
+-- 62. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3441,15 +3290,15 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FINANCIAL_PROFILE' as satellite, 'HUB_PA
 
 
 ----------------------------------------------------------------------------------------
--- 63. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]  [M1]
+-- 63. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)],
+-- [4 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)].
+-- [4 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -3472,7 +3321,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FRAUD_PROFILE' as satellite, 'HUB_PARTY'
 
 
 ----------------------------------------------------------------------------------------
--- 64. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M1]
+-- 64. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3503,7 +3352,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'HUB_PARTY
 
 
 ----------------------------------------------------------------------------------------
--- 65. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]  [M1]
+-- 65. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3545,7 +3394,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'HUB_PARTY
 
 
 ----------------------------------------------------------------------------------------
--- 66. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]  [M1]
+-- 66. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3594,7 +3443,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'HUB_PARTY' as p
 
 
 ----------------------------------------------------------------------------------------
--- 67. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M1]
+-- 67. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3625,15 +3474,15 @@ select 'MAXIMUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 68. MAXIMUS — SAT_PARTY_KYC   [Implemented]  [M1]
+-- 68. MAXIMUS — SAT_PARTY_KYC   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)],
+-- [7 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)].
+-- [7 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -3656,7 +3505,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC' as satellite, 'HUB_PARTY' as parent
 
 
 ----------------------------------------------------------------------------------------
--- 69. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Implemented]  [M1]
+-- 69. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3689,7 +3538,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC_REFERENCE' as satellite, 'HUB_PARTY'
 
 
 ----------------------------------------------------------------------------------------
--- 70. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M1]
+-- 70. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3718,7 +3567,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ONBOARDING_JOURNEY' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 71. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]  [M1]
+-- 71. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3726,10 +3575,10 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ONBOARDING_JOURNEY' as satellite, 'HUB_P
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS [3
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [8 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [3
+-- [14 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [3
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [11 col(s)].
+-- [18 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -3752,7 +3601,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ORGANISATION_PROFILE' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 72. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]  [M1]
+-- 72. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3781,7 +3630,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PAYOUT_PROFILE' as satellite, 'HUB_PARTY
 
 
 ----------------------------------------------------------------------------------------
--- 73. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]  [M1]
+-- 73. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3810,12 +3659,12 @@ select 'MAXIMUS' as project, 'SAT_PARTY_POLICY_HISTORY' as satellite, 'HUB_PARTY
 
 
 ----------------------------------------------------------------------------------------
--- 74. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M1]
+-- 74. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [8
 -- col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -3839,7 +3688,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PORTFOLIO_SUMMARY' as satellite, 'HUB_PA
 
 
 ----------------------------------------------------------------------------------------
--- 75. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M1]
+-- 75. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3868,13 +3717,13 @@ select 'MAXIMUS' as project, 'SAT_PARTY_RELATIONSHIP_PROFILE' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 76. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]  [M1]
+-- 76. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)].
+-- [5 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
@@ -3897,7 +3746,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite, 'HUB_POLICY
 
 
 ----------------------------------------------------------------------------------------
--- 77. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Implemented]  [M1]
+-- 77. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3932,7 +3781,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'HUB_POLI
 
 
 ----------------------------------------------------------------------------------------
--- 78. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M1]
+-- 78. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -3972,13 +3821,13 @@ select 'MAXIMUS' as project, 'SAT_POLICY_COVERAGE_SCHEDULE' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 79. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M1]
+-- 79. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key ITEM_CODE; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)],
+-- [6 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -4006,15 +3855,15 @@ select 'MAXIMUS' as project, 'SAT_POLICY_DISCOUNT_LOADING_APPLIED' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 80. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Implemented]  [M2]
+-- 80. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key ENDORSEMENT_NUMBER; 2 RECORD_SOURCE
--- group(s): MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS [4
+-- group(s): MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS [7
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
+-- [4 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4038,13 +3887,13 @@ select 'MAXIMUS' as project, 'SAT_POLICY_ENDORSEMENT' as satellite, 'HUB_POLICY'
 
 
 ----------------------------------------------------------------------------------------
--- 81. MAXIMUS — SAT_POLICY_GROUP   [Implemented]  [M2]
+-- 81. MAXIMUS — SAT_POLICY_GROUP   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)].
+-- [7 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
@@ -4067,7 +3916,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_GROUP' as satellite, 'HUB_POLICY' as pa
 
 
 ----------------------------------------------------------------------------------------
--- 82. MAXIMUS — SAT_POLICY_HEADER   [Implemented]  [M2]
+-- 82. MAXIMUS — SAT_POLICY_HEADER   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4105,7 +3954,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_HEADER' as satellite, 'HUB_POLICY' as p
 
 
 ----------------------------------------------------------------------------------------
--- 83. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M2]
+-- 83. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4136,7 +3985,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_INTERMEDIARY_SPLIT' as satellite, 'HUB_
 
 
 ----------------------------------------------------------------------------------------
--- 84. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]  [M2]
+-- 84. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4165,7 +4014,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PORTABILITY_MIGRATION' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 85. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Implemented]  [M2]
+-- 85. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4202,7 +4051,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PREMIUM_HEAD' as satellite, 'HUB_POLICY
 
 
 ----------------------------------------------------------------------------------------
--- 86. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]  [M2]
+-- 86. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4235,7 +4084,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PREMIUM_SUMMARY' as satellite, 'HUB_POL
 
 
 ----------------------------------------------------------------------------------------
--- 87. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]  [M2]
+-- 87. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4264,7 +4113,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_RENEWAL' as satellite, 'HUB_POLICY' as 
 
 
 ----------------------------------------------------------------------------------------
--- 88. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]  [M2]
+-- 88. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4293,14 +4142,14 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SERVICING_SUMMARY' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 89. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M2]
+-- 89. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key SUM_INSURED_HEAD; 3 RECORD_SOURCE
 -- group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)],
+-- [2 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -4328,14 +4177,14 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SUM_INSURED_BREAKUP' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 90. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]  [M2]
+-- 90. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [4 col(s)].
+-- [9 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
@@ -4358,7 +4207,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TAX_BREAKUP' as satellite, 'HUB_POLICY'
 
 
 ----------------------------------------------------------------------------------------
--- 91. MAXIMUS — SAT_POLICY_TAX_HEAD   [Implemented]  [M2]
+-- 91. MAXIMUS — SAT_POLICY_TAX_HEAD   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4391,7 +4240,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TAX_HEAD' as satellite, 'HUB_POLICY' as
 
 
 ----------------------------------------------------------------------------------------
--- 92. MAXIMUS — SAT_POLICY_TERMS   [Implemented]  [M2]
+-- 92. MAXIMUS — SAT_POLICY_TERMS   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4420,7 +4269,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TERMS' as satellite, 'HUB_POLICY' as pa
 
 
 ----------------------------------------------------------------------------------------
--- 93. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
+-- 93. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4458,7 +4307,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'HUB_PRODUCT
 
 
 ----------------------------------------------------------------------------------------
--- 94. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
+-- 94. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4489,7 +4338,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 95. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
+-- 95. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4520,7 +4369,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'HUB_PRODUCT' as 
 
 
 ----------------------------------------------------------------------------------------
--- 96. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
+-- 96. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4552,7 +4401,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_HEADER' as satellite, 'HUB_QUOTE' as par
 
 
 ----------------------------------------------------------------------------------------
--- 97. MAXIMUS — SAT_QUOTE_RATING   [Implemented]  [M2]
+-- 97. MAXIMUS — SAT_QUOTE_RATING   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4584,7 +4433,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING' as satellite, 'HUB_QUOTE' as par
 
 
 ----------------------------------------------------------------------------------------
--- 98. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Implemented]  [M2]
+-- 98. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4622,16 +4471,16 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING_INPUT' as satellite, 'HUB_QUOTE' 
 
 
 ----------------------------------------------------------------------------------------
--- 99. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M2]
+-- 99. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key CONDITION_CODE, MEMBER_REFERENCE; 2
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [1 col(s)],
+-- [5 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
--- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
+-- [5 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
@@ -4655,7 +4504,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_HEALTH_MEMBER_MEDICAL' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 100. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M2]
+-- 100. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4689,16 +4538,16 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite, 'HUB_RISK_OBJE
 
 
 ----------------------------------------------------------------------------------------
--- 101. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]  [M2]
+-- 101. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [1 col(s)],
+-- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
--- [1 col(s)].
+-- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT
@@ -4721,7 +4570,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_VALUATION' as satellite, 'HUB_RISK
 
 
 ----------------------------------------------------------------------------------------
--- 102. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M2]
+-- 102. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4752,7 +4601,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, 'HUB_RISK_O
 
 
 ----------------------------------------------------------------------------------------
--- 103. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Implemented]  [M2]
+-- 103. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Implemented]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4785,7 +4634,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_MEMBER' as satellite, 'HUB_RISK_OB
 
 
 ----------------------------------------------------------------------------------------
--- 104. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M2]
+-- 104. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. standard satellite,
@@ -4826,35 +4675,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'HUB_RISK_OB
 
 
 ----------------------------------------------------------------------------------------
--- 105. MAXIMUS — SAT_AUG_ASSESSMENT_HEADER   [Implemented]  [M2]
--- Parent hub HUB_ASSESSMENT (src_pk ASSESSMENT_HKEY); checked across all rows of the
--- parent (shared vault: the key may have been loaded by the other project). Satellite
--- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK ASSESSMENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS [2 col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct ASSESSMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT
-)
-select 'MAXIMUS' as project, 'SAT_AUG_ASSESSMENT_HEADER' as satellite, 'HUB_ASSESSMENT' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.ASSESSMENT_HKEY is null) as null_key_rows,
-       count_if(s.ASSESSMENT_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.ASSESSMENT_HKEY is not null and p.k is null, s.ASSESSMENT_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.ASSESSMENT_HKEY is not null and p.k is null, to_varchar(s.ASSESSMENT_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_ASSESSMENT_HEADER s
-  left join p on p.k = s.ASSESSMENT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS')
-   and (s.ASSESSMENT_HKEY is null or s.ASSESSMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 106. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]  [M2]
+-- 105. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -4885,7 +4706,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_APPROVAL_ACTION' as satellite, 'HUB_
 
 
 ----------------------------------------------------------------------------------------
--- 107. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M2]
+-- 106. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -4917,7 +4738,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_ASSESSMENT_SUMMARY' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 108. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]  [M2]
+-- 107. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -4952,7 +4773,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_BENEFIT_HEAD' as satellite, 'HUB_CLA
 
 
 ----------------------------------------------------------------------------------------
--- 109. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]  [M2]
+-- 108. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -4983,7 +4804,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_CO_RI_SHARE' as satellite, 'HUB_CLAI
 
 
 ----------------------------------------------------------------------------------------
--- 110. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]  [M2]
+-- 109. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5012,7 +4833,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DEDUCTION_WAIVER' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 111. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]  [M2]
+-- 110. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5043,7 +4864,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DOCUMENT_REMINDER' as satellite, 'HU
 
 
 ----------------------------------------------------------------------------------------
--- 112. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]  [M2]
+-- 111. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5072,7 +4893,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 113. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]  [M2]
+-- 112. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5101,7 +4922,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EVIDENCE' as satellite, 'HUB_CLAIM' 
 
 
 ----------------------------------------------------------------------------------------
--- 114. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]  [M2]
+-- 113. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5132,7 +4953,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EXCLUSION_APPLIED' as satellite, 'HU
 
 
 ----------------------------------------------------------------------------------------
--- 115. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]  [M2]
+-- 114. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5161,36 +4982,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EXPENSE_LINE' as satellite, 'HUB_CLA
 
 
 ----------------------------------------------------------------------------------------
--- 116. MAXIMUS — SAT_AUG_CLAIM_FNOL   [Implemented]  [M2]
--- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [7
--- col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
-)
-select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FNOL' as satellite, 'HUB_CLAIM' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.CLAIM_HKEY is null) as null_key_rows,
-       count_if(s.CLAIM_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.CLAIM_HKEY is not null and p.k is null, s.CLAIM_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.CLAIM_HKEY is not null and p.k is null, to_varchar(s.CLAIM_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FNOL s
-  left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-   and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 117. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]  [M2]
+-- 115. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5218,7 +5010,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FOLLOWUP_TASK' as satellite, 'HUB_CL
 
 
 ----------------------------------------------------------------------------------------
--- 118. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]  [M2]
+-- 116. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5253,7 +5045,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FRAUD' as satellite, 'HUB_CLAIM' as 
 
 
 ----------------------------------------------------------------------------------------
--- 119. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]  [M2]
+-- 117. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5285,42 +5077,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_HEADER' as satellite, 'HUB_CLAIM' as
 
 
 ----------------------------------------------------------------------------------------
--- 120. MAXIMUS — SAT_AUG_CLAIM_HEALTH_DETAIL   [Implemented]  [M2]
--- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK CLAIM_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [3
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- [5 col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
-)
-select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_HEALTH_DETAIL' as satellite, 'HUB_CLAIM' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.CLAIM_HKEY is null) as null_key_rows,
-       count_if(s.CLAIM_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.CLAIM_HKEY is not null and p.k is null, s.CLAIM_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.CLAIM_HKEY is not null and p.k is null, to_varchar(s.CLAIM_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_HEALTH_DETAIL s
-  left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-   and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 121. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]  [M2]
+-- 118. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5353,7 +5110,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_LITIGATION' as satellite, 'HUB_CLAIM
 
 
 ----------------------------------------------------------------------------------------
--- 122. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]  [M2]
+-- 119. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5384,7 +5141,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_NETWORK_VERIFICATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 123. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M2]
+-- 120. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5417,7 +5174,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PAYMENT_TRANCHE' as satellite, 'HUB_
 
 
 ----------------------------------------------------------------------------------------
--- 124. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]  [M2]
+-- 121. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5448,7 +5205,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PA_DETAIL' as satellite, 'HUB_CLAIM'
 
 
 ----------------------------------------------------------------------------------------
--- 125. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]  [M2]
+-- 122. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5478,7 +5235,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PROVIDER_BILLING' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 126. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]  [M2]
+-- 123. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5507,7 +5264,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_QUALITY_AUDIT' as satellite, 'HUB_CL
 
 
 ----------------------------------------------------------------------------------------
--- 127. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M2]
+-- 124. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5538,36 +5295,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_RECOVERY_SALVAGE' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 128. MAXIMUS — SAT_AUG_CLAIM_REPUDIATION   [Implemented]  [M2]
--- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
-)
-select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_REPUDIATION' as satellite, 'HUB_CLAIM' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.CLAIM_HKEY is null) as null_key_rows,
-       count_if(s.CLAIM_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.CLAIM_HKEY is not null and p.k is null, s.CLAIM_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.CLAIM_HKEY is not null and p.k is null, to_varchar(s.CLAIM_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_REPUDIATION s
-  left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-   and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 129. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]  [M2]
+-- 125. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5600,7 +5328,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SETTLEMENT' as satellite, 'HUB_CLAIM
 
 
 ----------------------------------------------------------------------------------------
--- 130. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]  [M2]
+-- 126. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5631,7 +5359,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SLA_TRACKING' as satellite, 'HUB_CLA
 
 
 ----------------------------------------------------------------------------------------
--- 131. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]  [M2]
+-- 127. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5659,7 +5387,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_STATUS_HISTORY' as satellite, 'HUB_C
 
 
 ----------------------------------------------------------------------------------------
--- 132. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]  [M2]
+-- 128. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5688,7 +5416,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SURVEY_APPOINTMENT' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 133. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]  [M2]
+-- 129. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5717,36 +5445,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TPA_INTERACTION' as satellite, 'HUB_
 
 
 ----------------------------------------------------------------------------------------
--- 134. MAXIMUS — SAT_AUG_CLAIM_TP_FORENSIC   [Implemented]  [M2]
--- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- [1 col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct CLAIM_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_CLAIM
-)
-select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TP_FORENSIC' as satellite, 'HUB_CLAIM' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.CLAIM_HKEY is null) as null_key_rows,
-       count_if(s.CLAIM_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.CLAIM_HKEY is not null and p.k is null, s.CLAIM_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.CLAIM_HKEY is not null and p.k is null, to_varchar(s.CLAIM_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TP_FORENSIC s
-  left join p on p.k = s.CLAIM_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-   and (s.CLAIM_HKEY is null or s.CLAIM_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 135. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]  [M2]
+-- 130. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5776,7 +5475,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TRAVEL_DETAIL' as satellite, 'HUB_CL
 
 
 ----------------------------------------------------------------------------------------
--- 136. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]  [M2]
+-- 131. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]
 -- Parent hub HUB_CLAIM (src_pk CLAIM_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5805,7 +5504,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TRAVEL_SECTOR' as satellite, 'HUB_CL
 
 
 ----------------------------------------------------------------------------------------
--- 137. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]  [M2]
+-- 132. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]
 -- Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5836,7 +5535,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_ADDRESS' as satellite, 'HUB_LOCATIO
 
 
 ----------------------------------------------------------------------------------------
--- 138. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M2]
+-- 133. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5867,97 +5566,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satell
 
 
 ----------------------------------------------------------------------------------------
--- 139. MAXIMUS — SAT_AUG_COMMON_CONSENT   [Implemented]  [M2]
--- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
-)
-select 'MAXIMUS' as project, 'SAT_AUG_COMMON_CONSENT' as satellite, 'HUB_PARTY' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.PARTY_HKEY is null) as null_key_rows,
-       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_CONSENT s
-  left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 140. MAXIMUS — SAT_AUG_COMMON_GEO   [Implemented]  [M2]
--- Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK LOCATION_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [1 col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION
-)
-select 'MAXIMUS' as project, 'SAT_AUG_COMMON_GEO' as satellite, 'HUB_LOCATION' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.LOCATION_HKEY is null) as null_key_rows,
-       count_if(s.LOCATION_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.LOCATION_HKEY is not null and p.k is null, s.LOCATION_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.LOCATION_HKEY is not null and p.k is null, to_varchar(s.LOCATION_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_GEO s
-  left join p on p.k = s.LOCATION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW')
-   and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 141. MAXIMUS — SAT_AUG_COMMON_MONETARY_CONTEXT   [Implemented]  [M2]
--- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
--- across all rows of the parent (shared vault: the key may have been loaded by the other
--- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE.
--- augmented satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE
--- group(s): MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [1 col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION
-)
-select 'MAXIMUS' as project, 'SAT_AUG_COMMON_MONETARY_CONTEXT' as satellite, 'HUB_FINANCIAL_TRANSACTION' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.FINANCIAL_TRANSACTION_HKEY is null) as null_key_rows,
-       count_if(s.FINANCIAL_TRANSACTION_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.FINANCIAL_TRANSACTION_HKEY is not null and p.k is null, s.FINANCIAL_TRANSACTION_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.FINANCIAL_TRANSACTION_HKEY is not null and p.k is null, to_varchar(s.FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_MONETARY_CONTEXT s
-  left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS')
-   and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 142. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]  [M2]
+-- 134. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -5988,7 +5597,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_CONDITIONS' as satellite, 'HUB_CO
 
 
 ----------------------------------------------------------------------------------------
--- 143. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M2]
+-- 135. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6023,7 +5632,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite, 'HUB_CO
 
 
 ----------------------------------------------------------------------------------------
--- 144. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M2]
+-- 136. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6054,7 +5663,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, 'HUB_COVERA
 
 
 ----------------------------------------------------------------------------------------
--- 145. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M2]
+-- 137. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6085,7 +5694,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 146. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]  [M2]
+-- 138. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6116,7 +5725,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_SUB_COVER_ELEMENT' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 147. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]  [M2]
+-- 139. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]
 -- Parent hub HUB_DOCUMENT (src_pk DOCUMENT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6147,38 +5756,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_CHECKLIST' as satellite, 'HUB_DOC
 
 
 ----------------------------------------------------------------------------------------
--- 148. MAXIMUS — SAT_AUG_DOCUMENT_DEFINITION   [Implemented]  [M2]
--- Parent hub HUB_DOCUMENT (src_pk DOCUMENT_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK DOCUMENT_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [3
--- col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct DOCUMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DOCUMENT
-)
-select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_DEFINITION' as satellite, 'HUB_DOCUMENT' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.DOCUMENT_HKEY is null) as null_key_rows,
-       count_if(s.DOCUMENT_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.DOCUMENT_HKEY is not null and p.k is null, s.DOCUMENT_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.DOCUMENT_HKEY is not null and p.k is null, to_varchar(s.DOCUMENT_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_DEFINITION s
-  left join p on p.k = s.DOCUMENT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-   and (s.DOCUMENT_HKEY is null or s.DOCUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 149. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]  [M2]
+-- 140. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]
 -- Parent hub HUB_DOCUMENT (src_pk DOCUMENT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6207,7 +5785,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_DISPATCH' as satellite, 'HUB_DOCU
 
 
 ----------------------------------------------------------------------------------------
--- 150. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]  [M2]
+-- 141. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]
 -- Parent hub HUB_DOCUMENT (src_pk DOCUMENT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6238,37 +5816,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER' as satellit
 
 
 ----------------------------------------------------------------------------------------
--- 151. MAXIMUS — SAT_AUG_FINTXN_CLAIM_PAYMENT   [Implemented]  [M2]
--- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
--- across all rows of the parent (shared vault: the key may have been loaded by the other
--- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE.
--- augmented satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE
--- group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
--- [3 col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION
-)
-select 'MAXIMUS' as project, 'SAT_AUG_FINTXN_CLAIM_PAYMENT' as satellite, 'HUB_FINANCIAL_TRANSACTION' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.FINANCIAL_TRANSACTION_HKEY is null) as null_key_rows,
-       count_if(s.FINANCIAL_TRANSACTION_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.FINANCIAL_TRANSACTION_HKEY is not null and p.k is null, s.FINANCIAL_TRANSACTION_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.FINANCIAL_TRANSACTION_HKEY is not null and p.k is null, to_varchar(s.FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_CLAIM_PAYMENT s
-  left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')
-   and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 152. MAXIMUS — SAT_AUG_FINTXN_TAX   [Implemented]  [M2]
+-- 142. MAXIMUS — SAT_AUG_FINTXN_TAX   [Implemented]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE.
@@ -6301,7 +5849,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_FINTXN_TAX' as satellite, 'HUB_FINANCIAL_T
 
 
 ----------------------------------------------------------------------------------------
--- 153. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]  [M2]
+-- 143. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE.
@@ -6334,65 +5882,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_FIN_RECEIPT' as satellite, 'HUB_FINANCIAL_
 
 
 ----------------------------------------------------------------------------------------
--- 154. MAXIMUS — SAT_AUG_INSTRUMENT_DEFINITION   [Implemented]  [M2]
--- Parent hub HUB_PAYMENT_INSTRUMENT (src_pk PAYMENT_INSTRUMENT_HKEY); checked across all
--- rows of the parent (shared vault: the key may have been loaded by the other project).
--- Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented
--- satellite, automate_dv.sat; PK PAYMENT_INSTRUMENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
--- [2 col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct PAYMENT_INSTRUMENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PAYMENT_INSTRUMENT
-)
-select 'MAXIMUS' as project, 'SAT_AUG_INSTRUMENT_DEFINITION' as satellite, 'HUB_PAYMENT_INSTRUMENT' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.PAYMENT_INSTRUMENT_HKEY is null) as null_key_rows,
-       count_if(s.PAYMENT_INSTRUMENT_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.PAYMENT_INSTRUMENT_HKEY is not null and p.k is null, s.PAYMENT_INSTRUMENT_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.PAYMENT_INSTRUMENT_HKEY is not null and p.k is null, to_varchar(s.PAYMENT_INSTRUMENT_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_INSTRUMENT_DEFINITION s
-  left join p on p.k = s.PAYMENT_INSTRUMENT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')
-   and (s.PAYMENT_INSTRUMENT_HKEY is null or s.PAYMENT_INSTRUMENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 155. MAXIMUS — SAT_AUG_LNK_ROLE_AGENT   [Implemented]  [M2]
--- Parent hub LINK_PARTY_ROLE (src_pk PARTY_ROLE_HKEY); checked across all rows of the
--- parent (shared vault: the key may have been loaded by the other project). Satellite
--- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK PARTY_ROLE_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct PARTY_ROLE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_ROLE
-)
-select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_AGENT' as satellite, 'LINK_PARTY_ROLE' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.PARTY_ROLE_HKEY is null) as null_key_rows,
-       count_if(s.PARTY_ROLE_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.PARTY_ROLE_HKEY is not null and p.k is null, s.PARTY_ROLE_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.PARTY_ROLE_HKEY is not null and p.k is null, to_varchar(s.PARTY_ROLE_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_AGENT s
-  left join p on p.k = s.PARTY_ROLE_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-   and (s.PARTY_ROLE_HKEY is null or s.PARTY_ROLE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 156. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M2]
+-- 144. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6421,7 +5911,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'HUB_PART
 
 
 ----------------------------------------------------------------------------------------
--- 157. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]  [M2]
+-- 145. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
 -- Parent hub LINK_PARTY_ROLE (src_pk PARTY_ROLE_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6450,36 +5940,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite, 'LINK_PAR
 
 
 ----------------------------------------------------------------------------------------
--- 158. MAXIMUS — SAT_AUG_LOSS_EVENT_DETAIL   [Implemented]  [M3]
--- Parent hub HUB_LOSS_EVENT (src_pk LOSS_EVENT_HKEY); checked across all rows of the
--- parent (shared vault: the key may have been loaded by the other project). Satellite
--- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK LOSS_EVENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct LOSS_EVENT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOSS_EVENT
-)
-select 'MAXIMUS' as project, 'SAT_AUG_LOSS_EVENT_DETAIL' as satellite, 'HUB_LOSS_EVENT' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.LOSS_EVENT_HKEY is null) as null_key_rows,
-       count_if(s.LOSS_EVENT_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.LOSS_EVENT_HKEY is not null and p.k is null, s.LOSS_EVENT_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.LOSS_EVENT_HKEY is not null and p.k is null, to_varchar(s.LOSS_EVENT_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOSS_EVENT_DETAIL s
-  left join p on p.k = s.LOSS_EVENT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-   and (s.LOSS_EVENT_HKEY is null or s.LOSS_EVENT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 159. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Implemented]  [M3]
+-- 146. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Implemented]
 -- Parent hub HUB_ORG_UNIT (src_pk ORG_UNIT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6510,7 +5971,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_ORG_UNIT_CONTACT' as satellite, 'HUB_ORG_U
 
 
 ----------------------------------------------------------------------------------------
--- 160. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
+-- 147. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6545,7 +6006,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite, 'HUB_PARTY' a
 
 
 ----------------------------------------------------------------------------------------
--- 161. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]  [M3]
+-- 148. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6576,7 +6037,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CLAIM_HISTORY' as satellite, 'HUB_PA
 
 
 ----------------------------------------------------------------------------------------
--- 162. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]  [M3]
+-- 149. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6607,7 +6068,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONSENT_MANDATE' as satellite, 'HUB_
 
 
 ----------------------------------------------------------------------------------------
--- 163. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M3]
+-- 150. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
 -- Parent hub LINK_PARTY_LOCATION (src_pk PARTY_LOCATION_HKEY); checked across all rows
 -- of the parent (shared vault: the key may have been loaded by the other project).
 -- Satellite rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented
@@ -6640,7 +6101,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONTACT_ADDRESS_LINK' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 164. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]  [M3]
+-- 151. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6671,7 +6132,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CORRESPONDENCE' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 165. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
+-- 152. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6702,7 +6163,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY
 
 
 ----------------------------------------------------------------------------------------
--- 166. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]  [M3]
+-- 153. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6735,38 +6196,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_FINANCIAL_PROFILE' as satellite, 'HU
 
 
 ----------------------------------------------------------------------------------------
--- 167. MAXIMUS — SAT_AUG_PARTY_FRAUD_PROFILE   [Implemented]  [M3]
--- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
-)
-select 'MAXIMUS' as project, 'SAT_AUG_PARTY_FRAUD_PROFILE' as satellite, 'HUB_PARTY' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.PARTY_HKEY is null) as null_key_rows,
-       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_FRAUD_PROFILE s
-  left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 168. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]  [M3]
+-- 154. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6795,7 +6225,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_GROUP_SCHEME' as satellite, 'HUB_PAR
 
 
 ----------------------------------------------------------------------------------------
--- 169. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]  [M3]
+-- 155. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6826,7 +6256,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HEALTH_PROFILE' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 170. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]  [M3]
+-- 156. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6855,7 +6285,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HIERARCHY' as satellite, 'HUB_PARTY'
 
 
 ----------------------------------------------------------------------------------------
--- 171. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]  [M3]
+-- 157. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6894,7 +6324,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_IDENTIFICATION' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 172. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]  [M3]
+-- 158. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6930,7 +6360,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_IDENTITY' as satellite, 'HUB_PARTY' 
 
 
 ----------------------------------------------------------------------------------------
--- 173. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M3]
+-- 159. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -6963,38 +6393,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellit
 
 
 ----------------------------------------------------------------------------------------
--- 174. MAXIMUS — SAT_AUG_PARTY_KYC   [Implemented]  [M3]
--- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [4 col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
-)
-select 'MAXIMUS' as project, 'SAT_AUG_PARTY_KYC' as satellite, 'HUB_PARTY' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.PARTY_HKEY is null) as null_key_rows,
-       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_KYC s
-  left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 175. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]  [M3]
+-- 160. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7025,7 +6424,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_LOYALTY_CLASSIFICATION' as satellite
 
 
 ----------------------------------------------------------------------------------------
--- 176. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M3]
+-- 161. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7056,38 +6455,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_ONBOARDING_JOURNEY' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 177. MAXIMUS — SAT_AUG_PARTY_ORGANISATION_PROFILE   [Implemented]  [M3]
--- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [7 col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
-)
-select 'MAXIMUS' as project, 'SAT_AUG_PARTY_ORGANISATION_PROFILE' as satellite, 'HUB_PARTY' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.PARTY_HKEY is null) as null_key_rows,
-       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_ORGANISATION_PROFILE s
-  left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 178. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]  [M3]
+-- 162. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7118,36 +6486,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PAYOUT_PROFILE' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 179. MAXIMUS — SAT_AUG_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M3]
--- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [7
--- col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
-)
-select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PORTFOLIO_SUMMARY' as satellite, 'HUB_PARTY' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.PARTY_HKEY is null) as null_key_rows,
-       count_if(s.PARTY_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.PARTY_HKEY is not null and p.k is null, s.PARTY_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.PARTY_HKEY is not null and p.k is null, to_varchar(s.PARTY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PORTFOLIO_SUMMARY s
-  left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-   and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 180. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]  [M3]
+-- 163. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7178,7 +6517,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PREFERENCE_PROFILE' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 181. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M3]
+-- 164. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7212,7 +6551,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RELATIONSHIP_PROFILE' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 182. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]  [M3]
+-- 165. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7241,36 +6580,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RISK_ANALYTICS' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 183. MAXIMUS — SAT_AUG_POLICY_CANCELLATION   [Implemented]  [M3]
--- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [4 col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
-)
-select 'MAXIMUS' as project, 'SAT_AUG_POLICY_CANCELLATION' as satellite, 'HUB_POLICY' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.POLICY_HKEY is null) as null_key_rows,
-       count_if(s.POLICY_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.POLICY_HKEY is not null and p.k is null, s.POLICY_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.POLICY_HKEY is not null and p.k is null, to_varchar(s.POLICY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_CANCELLATION s
-  left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-   and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 184. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]  [M3]
+-- 166. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7299,7 +6609,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_CLAIM_EXPERIENCE' as satellite, 'HU
 
 
 ----------------------------------------------------------------------------------------
--- 185. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M3]
+-- 167. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7334,7 +6644,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_COVERAGE_SCHEDULE' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 186. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]  [M3]
+-- 168. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7363,37 +6673,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DELIVERY' as satellite, 'HUB_POLICY
 
 
 ----------------------------------------------------------------------------------------
--- 187. MAXIMUS — SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M3]
--- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.ma_sat; PK POLICY_HKEY, child key ITEM_CODE; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
--- per member.
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
-)
-select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED' as satellite, 'HUB_POLICY' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.POLICY_HKEY is null) as null_key_rows,
-       count_if(s.POLICY_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.POLICY_HKEY is not null and p.k is null, s.POLICY_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.POLICY_HKEY is not null and p.k is null, to_varchar(s.POLICY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED s
-  left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-   and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 188. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]  [M3]
+-- 169. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7422,68 +6702,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DOCUMENT_DISPATCH' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 189. MAXIMUS — SAT_AUG_POLICY_ENDORSEMENT   [Implemented]  [M3]
--- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.ma_sat; PK POLICY_HKEY, child key ENDORSEMENT_NUMBER; 2 RECORD_SOURCE
--- group(s): MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS [3
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
--- per member.
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
-)
-select 'MAXIMUS' as project, 'SAT_AUG_POLICY_ENDORSEMENT' as satellite, 'HUB_POLICY' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.POLICY_HKEY is null) as null_key_rows,
-       count_if(s.POLICY_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.POLICY_HKEY is not null and p.k is null, s.POLICY_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.POLICY_HKEY is not null and p.k is null, to_varchar(s.POLICY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_ENDORSEMENT s
-  left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-   and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 190. MAXIMUS — SAT_AUG_POLICY_GROUP   [Implemented]  [M3]
--- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [6 col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
-)
-select 'MAXIMUS' as project, 'SAT_AUG_POLICY_GROUP' as satellite, 'HUB_POLICY' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.POLICY_HKEY is null) as null_key_rows,
-       count_if(s.POLICY_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.POLICY_HKEY is not null and p.k is null, s.POLICY_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.POLICY_HKEY is not null and p.k is null, to_varchar(s.POLICY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_GROUP s
-  left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-   and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 191. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]  [M3]
+-- 170. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7516,7 +6735,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_HEADER' as satellite, 'HUB_POLICY' 
 
 
 ----------------------------------------------------------------------------------------
--- 192. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]  [M3]
+-- 171. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7545,7 +6764,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_HEALTH_DECLARATION' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 193. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]  [M3]
+-- 172. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7574,7 +6793,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_INSURED_DECLARATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 194. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M3]
+-- 173. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7607,7 +6826,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_INTERMEDIARY_SPLIT' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 195. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]  [M3]
+-- 174. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7636,7 +6855,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_NOMINEE_DECLARATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 196. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]  [M3]
+-- 175. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7669,7 +6888,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PREMIUM_HEAD' as satellite, 'HUB_PO
 
 
 ----------------------------------------------------------------------------------------
--- 197. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]  [M3]
+-- 176. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7700,7 +6919,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PREMIUM_SUMMARY' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 198. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]  [M3]
+-- 177. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7729,7 +6948,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PROPERTY_LINE' as satellite, 'HUB_P
 
 
 ----------------------------------------------------------------------------------------
--- 199. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]  [M3]
+-- 178. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7759,67 +6978,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_RENEWAL' as satellite, 'HUB_POLICY'
 
 
 ----------------------------------------------------------------------------------------
--- 200. MAXIMUS — SAT_AUG_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M3]
--- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.ma_sat; PK POLICY_HKEY, child key SUM_INSURED_HEAD; 1 RECORD_SOURCE
--- group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
--- per member.
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
-)
-select 'MAXIMUS' as project, 'SAT_AUG_POLICY_SUM_INSURED_BREAKUP' as satellite, 'HUB_POLICY' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.POLICY_HKEY is null) as null_key_rows,
-       count_if(s.POLICY_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.POLICY_HKEY is not null and p.k is null, s.POLICY_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.POLICY_HKEY is not null and p.k is null, to_varchar(s.POLICY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_SUM_INSURED_BREAKUP s
-  left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-   and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 201. MAXIMUS — SAT_AUG_POLICY_TAX_BREAKUP   [Implemented]  [M3]
--- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
--- (shared vault: the key may have been loaded by the other project). Satellite rows
--- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [5 col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
-)
-select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TAX_BREAKUP' as satellite, 'HUB_POLICY' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.POLICY_HKEY is null) as null_key_rows,
-       count_if(s.POLICY_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.POLICY_HKEY is not null and p.k is null, s.POLICY_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.POLICY_HKEY is not null and p.k is null, to_varchar(s.POLICY_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TAX_BREAKUP s
-  left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-   and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 202. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]  [M3]
+-- 179. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7848,7 +7007,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TERMS' as satellite, 'HUB_POLICY' a
 
 
 ----------------------------------------------------------------------------------------
--- 203. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]  [M3]
+-- 180. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7877,7 +7036,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TRAVEL_TERMS' as satellite, 'HUB_PO
 
 
 ----------------------------------------------------------------------------------------
--- 204. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
+-- 181. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7906,7 +7065,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 205. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]  [M3]
+-- 182. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7935,7 +7094,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_UW_QUERY' as satellite, 'HUB_POLICY
 
 
 ----------------------------------------------------------------------------------------
--- 206. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]  [M3]
+-- 183. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7963,7 +7122,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_WORK_ITEM' as satellite, 'HUB_POLIC
 
 
 ----------------------------------------------------------------------------------------
--- 207. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]  [M3]
+-- 184. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -7994,7 +7153,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PRODUCT_RATING_STRUCTURE' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 208. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
+-- 185. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8025,7 +7184,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'HUB_PRODUCT'
 
 
 ----------------------------------------------------------------------------------------
--- 209. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]  [M3]
+-- 186. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8054,7 +7213,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_CLAIM_EXPERIENCE' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 210. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]  [M3]
+-- 187. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8086,7 +7245,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_LINE' as satellite, 'HUB_QU
 
 
 ----------------------------------------------------------------------------------------
--- 211. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]  [M3]
+-- 188. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8117,7 +7276,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_SCHEDULE' as satellite, 'HU
 
 
 ----------------------------------------------------------------------------------------
--- 212. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]  [M3]
+-- 189. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8148,7 +7307,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVER_DETAIL' as satellite, 'HUB_QUO
 
 
 ----------------------------------------------------------------------------------------
--- 213. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]  [M3]
+-- 190. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8188,7 +7347,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_HEADER' as satellite, 'HUB_QUOTE' as
 
 
 ----------------------------------------------------------------------------------------
--- 214. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]  [M3]
+-- 191. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8217,7 +7376,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_HEALTH_DECLARATION' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 215. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]  [M3]
+-- 192. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8246,7 +7405,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_INSURED_DECLARATION' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 216. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]  [M3]
+-- 193. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8275,7 +7434,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_NOMINEE_DECLARATION' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 217. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]  [M3]
+-- 194. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8306,7 +7465,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_PREMIUM_HEAD' as satellite, 'HUB_QUO
 
 
 ----------------------------------------------------------------------------------------
--- 218. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]  [M3]
+-- 195. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8335,7 +7494,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_PROPERTY_LINE' as satellite, 'HUB_QU
 
 
 ----------------------------------------------------------------------------------------
--- 219. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]  [M3]
+-- 196. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8367,7 +7526,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RATING' as satellite, 'HUB_QUOTE' as
 
 
 ----------------------------------------------------------------------------------------
--- 220. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]  [M3]
+-- 197. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8395,7 +7554,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RISK_LINE' as satellite, 'HUB_QUOTE'
 
 
 ----------------------------------------------------------------------------------------
--- 221. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]  [M3]
+-- 198. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8426,7 +7585,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_SUM_INSURED_BREAKUP' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 222. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]  [M3]
+-- 199. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8455,7 +7614,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TERMS' as satellite, 'HUB_QUOTE' as 
 
 
 ----------------------------------------------------------------------------------------
--- 223. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]  [M3]
+-- 200. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8484,7 +7643,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TRAVEL_TRIP' as satellite, 'HUB_QUOT
 
 
 ----------------------------------------------------------------------------------------
--- 224. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
+-- 201. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8513,7 +7672,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 225. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]  [M3]
+-- 202. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8542,40 +7701,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_UW_QUERY' as satellite, 'HUB_QUOTE' 
 
 
 ----------------------------------------------------------------------------------------
--- 226. MAXIMUS — SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M3]
--- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
--- parent (shared vault: the key may have been loaded by the other project). Satellite
--- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key CONDITION_CODE, MEMBER_REFERENCE; 2
--- RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
--- [4 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
--- per member.
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT
-)
-select 'MAXIMUS' as project, 'SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL' as satellite, 'HUB_RISK_OBJECT' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.RISK_OBJECT_HKEY is null) as null_key_rows,
-       count_if(s.RISK_OBJECT_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.RISK_OBJECT_HKEY is not null and p.k is null, s.RISK_OBJECT_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.RISK_OBJECT_HKEY is not null and p.k is null, to_varchar(s.RISK_OBJECT_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL s
-  left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
-   and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 227. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]  [M3]
+-- 203. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8607,7 +7733,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_CORE' as satellite, 'HUB_RISK_
 
 
 ----------------------------------------------------------------------------------------
--- 228. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]  [M3]
+-- 204. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8635,38 +7761,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_PREMIUM' as satellite, 'HUB_RI
 
 
 ----------------------------------------------------------------------------------------
--- 229. MAXIMUS — SAT_AUG_RISK_OBJECT_VALUATION   [Implemented]  [M3]
--- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
--- parent (shared vault: the key may have been loaded by the other project). Satellite
--- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
--- [2 col(s)].
-----------------------------------------------------------------------------------------
-with p as (  -- every key of the parent table(s), any project
-        select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT
-)
-select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_VALUATION' as satellite, 'HUB_RISK_OBJECT' as parent_table,
-       s.RECORD_SOURCE,
-       count(*) as sat_rows,
-       count_if(s.RISK_OBJECT_HKEY is null) as null_key_rows,
-       count_if(s.RISK_OBJECT_HKEY is not null and p.k is null) as orphan_rows,
-       count(distinct iff(s.RISK_OBJECT_HKEY is not null and p.k is null, s.RISK_OBJECT_HKEY, null)) as orphan_keys,
-       array_slice(array_agg(distinct iff(s.RISK_OBJECT_HKEY is not null and p.k is null, to_varchar(s.RISK_OBJECT_HKEY, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_VALUATION s
-  left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
-   and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
- group by s.RECORD_SOURCE
- order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
-
-
-
-----------------------------------------------------------------------------------------
--- 230. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
+-- 205. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8697,7 +7792,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite, 'HUB_RI
 
 
 ----------------------------------------------------------------------------------------
--- 231. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
+-- 206. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8738,7 +7833,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, 'HUB_RIS
 
 
 ----------------------------------------------------------------------------------------
--- 232. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]  [M3]
+-- 207. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8771,7 +7866,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_COVER_TERMS' as satellite, 'HU
 
 
 ----------------------------------------------------------------------------------------
--- 233. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]  [M3]
+-- 208. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8802,7 +7897,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_RATING_INPUT' as satellite, 'H
 
 
 ----------------------------------------------------------------------------------------
--- 234. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]  [M3]
+-- 209. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,
@@ -8833,7 +7928,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_SPONSOR' as satellite, 'HUB_RI
 
 
 ----------------------------------------------------------------------------------------
--- 235. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]  [M3]
+-- 210. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to MAXIMUS; one output row per RECORD_SOURCE. augmented satellite,

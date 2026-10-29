@@ -18,7 +18,7 @@
 
    Revision notes:
    - Travel LOB generated 2026-10-13 from the current opus_travel_dv_dbt and
-     maximus_travel_v2_dv_dbt models by gen_dm_k_travel.py.
+     maximus_travel_dv_dbt models by gen_dm_k_travel.py.
    - Scope: 15 MAXIMUS hubs + 14 OPUS hubs = 29 project-hub sections (18 physical hub
      tables, shared with the partner build).
    - Row filters for DM-K2 / K3 use the RECORD_SOURCE value set parsed from each

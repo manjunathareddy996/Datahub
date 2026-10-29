@@ -2,7 +2,6 @@
    DM-H3  |  History - Idempotent Re-load (Travel LOB)  (MAXIMUS)
    Re-running the same load does not create duplicate satellite rows.
 
-   MEMBER SPLIT: sections 1..236 assigned M1 x 79, M2 x 79, M3 x 78 -- contiguous thirds in listed order.
    Check ID: DM-H3
    Category: History checks
    Sign-off criterion: Idempotent re-load
@@ -11,7 +10,7 @@
    Pass criteria / tolerance: No duplicate rows on re-run
    Owner: LUMIQ
    Vault location: BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL
-   Maximus Travel V2 RAW: RAW.MAXIMUS_TRAVEL_V2
+   Maximus Travel RAW: RAW.MAXIMUS_TRAVEL
    Opus Travel RAW (prod): BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE
    Opus Travel RAW (test): BAGIC_PREPROD_CURATED_DB.UTILS
    Scope: Every standard + augmented satellite of the project; rows scoped by the
@@ -27,9 +26,9 @@
    not this file. The queries are IDENTICAL to those in the matching .docx.
 
    Revision notes:
-   - Travel LOB generated 2026-10-13 from the current maximus_travel_v2_dv_dbt models by
+   - Travel LOB generated 2026-10-13 from the current maximus_travel_dv_dbt models by
      validation/tools/gen_dm_h_travel.py (satellite lineage from gen_dm_a_travel.py).
-   - NO member plan yet -- covers every satellite in MAXIMUS (234; 234 with mapped
+   - NO member plan yet -- covers every satellite in MAXIMUS (209; 209 with mapped
      payload). Trim once a DM-H plan is agreed.
    - Static queries (a) run on data already loaded; (b) procedures need a dbt load
      between BEFORE and AFTER captures.
@@ -38,13 +37,13 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]  [M1]
+-- 1. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]
 -- Grain (ASSESSMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.sat; PK ASSESSMENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS [2 col(s)].
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS [4 col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
     select ASSESSMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
@@ -64,7 +63,7 @@ select 'MAXIMUS' as project, 'SAT_ASSESSMENT_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]  [M1]
+-- 2. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]
 -- Grain (DISTRIBUTION_CHANNEL_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups
 -- = the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -97,7 +96,7 @@ select 'MAXIMUS' as project, 'SAT_CHANNEL_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M1]
+-- 3. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -123,7 +122,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_ASSESSMENT_SUMMARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Implemented]  [M1]
+-- 4. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Implemented]
 -- Grain (CLAIM_HKEY, BENEFIT_HEAD_CODE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -158,7 +157,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_BENEFIT_HEAD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]  [M1]
+-- 5. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -187,14 +186,14 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_CO_RI_SHARE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]  [M1]
+-- 6. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [7
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [14
 -- col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
@@ -215,7 +214,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_FNOL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]  [M1]
+-- 7. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -248,7 +247,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_FRAUD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]  [M1]
+-- 8. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -282,7 +281,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]  [M1]
+-- 9. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -290,12 +289,12 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEADER' as satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [5
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- [9 col(s)].
+-- [13 col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
     select CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
@@ -315,7 +314,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEALTH_DETAIL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]  [M1]
+-- 10. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]
 -- Grain (CLAIM_HKEY, FINDING_SEQUENCE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -344,7 +343,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_INVESTIGATION_FINDING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]  [M1]
+-- 11. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -373,7 +372,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_LITIGATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — SAT_CLAIM_NOTE   [Implemented]  [M1]
+-- 12. MAXIMUS — SAT_CLAIM_NOTE   [Implemented]
 -- Grain (CLAIM_HKEY, NOTE_SEQUENCE, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups
 -- = the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -403,7 +402,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_NOTE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M1]
+-- 13. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]
 -- Grain (CLAIM_HKEY, TRANCHE_NUMBER, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups
 -- = the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -434,7 +433,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PAYMENT_TRANCHE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]  [M1]
+-- 14. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -461,7 +460,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PA_DETAIL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Implemented]  [M1]
+-- 15. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Implemented]
 -- Grain (CLAIM_HKEY, BILL_NUMBER, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups =
 -- the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -491,7 +490,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PROVIDER_BILLING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 16. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M1]
+-- 16. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -518,13 +517,13 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RECOVERY_SALVAGE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 17. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]  [M1]
+-- 17. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)].
@@ -547,7 +546,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_REPUDIATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 18. MAXIMUS — SAT_CLAIM_RESERVE   [Implemented]  [M1]
+-- 18. MAXIMUS — SAT_CLAIM_RESERVE   [Implemented]
 -- Grain (CLAIM_HKEY, RESERVE_HEAD, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups =
 -- the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -575,7 +574,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RESERVE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 19. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Implemented]  [M1]
+-- 19. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Implemented]
 -- Grain (CLAIM_HKEY, RESERVE_HEAD_CODE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -604,7 +603,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RESERVE_HEAD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 20. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]  [M1]
+-- 20. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -631,7 +630,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_SETTLEMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 21. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]  [M1]
+-- 21. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -657,14 +656,14 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_SLA_TRACKING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 22. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]  [M1]
+-- 22. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- [2 col(s)].
+-- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
     select CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
@@ -684,7 +683,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_TP_FORENSIC' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 23. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]  [M1]
+-- 23. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -715,7 +714,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_TRAVEL_DETAIL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 24. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
+-- 24. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]
 -- Grain (LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -767,7 +766,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADDRESS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 25. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]  [M1]
+-- 25. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]
 -- Grain (LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -794,7 +793,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADMIN_GEOGRAPHY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 26. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]  [M1]
+-- 26. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -823,7 +822,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_BUSINESS_AUDIT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 27. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
+-- 27. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -854,7 +853,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 28. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M1]
+-- 28. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -887,7 +886,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 29. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]  [M1]
+-- 29. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -896,7 +895,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)],
+-- [2 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
@@ -918,7 +917,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONSENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]  [M1]
+-- 30. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]
 -- Grain (PARTY_HKEY, CONTACT_POINT_TYPE, CONTACT_PRIORITY_ORDER, RECORD_SOURCE,
 -- LOAD_DATETIME). duplicate_row_groups = the same version stored twice (what a
 -- non-idempotent re-run produces). same_ldts_different_payload_info = two different
@@ -961,18 +960,18 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONTACT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 31. MAXIMUS — SAT_COMMON_GEO   [Implemented]  [M1]
+-- 31. MAXIMUS — SAT_COMMON_GEO   [Implemented]
 -- Grain (LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.sat; PK LOCATION_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [2 col(s)],
+-- [3 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [2 col(s)],
+-- [3 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [2 col(s)].
+-- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
     select LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
@@ -992,7 +991,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_GEO' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 32. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]  [M1]
+-- 32. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1019,14 +1018,14 @@ select 'MAXIMUS' as project, 'SAT_COMMON_LIFECYCLE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 33. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]  [M1]
+-- 33. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]
 -- Grain (FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups
 -- = the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [3 col(s)],
+-- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [4 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [2 col(s)].
 ----------------------------------------------------------------------------------------
@@ -1048,7 +1047,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_MONETARY_CONTEXT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 34. MAXIMUS — SAT_COMMON_STATUS   [Implemented]  [M1]
+-- 34. MAXIMUS — SAT_COMMON_STATUS   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1075,7 +1074,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_STATUS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 35. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
+-- 35. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]
 -- Grain (COVERAGE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1108,7 +1107,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 36. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
+-- 36. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]
 -- Grain (COVERAGE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1143,7 +1142,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 37. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M1]
+-- 37. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
 -- Grain (COVERAGE_HKEY, ACTIVE_SEQUENCE_NUMBER, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -1172,15 +1171,15 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_SUBLIMIT_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 38. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]  [M1]
+-- 38. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]
 -- Grain (DOCUMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.sat; PK DOCUMENT_HKEY; 10 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [3
+-- [9 col(s)],
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [6
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [4 col(s)], MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS [3 col(s)],
@@ -1214,7 +1213,7 @@ select 'MAXIMUS' as project, 'SAT_DOCUMENT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 39. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]  [M1]
+-- 39. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]
 -- Grain (FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups
 -- = the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1241,14 +1240,14 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_ACCOUNTING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 40. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]  [M1]
+-- 40. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]
 -- Grain (FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups
 -- = the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
--- [5 col(s)].
+-- [8 col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
     select FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
@@ -1268,7 +1267,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_CLAIM_PAYMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 41. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
+-- 41. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]
 -- Grain (FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups
 -- = the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1300,7 +1299,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 42. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
+-- 42. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]
 -- Grain (FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups
 -- = the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1330,7 +1329,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_PREMIUM' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 43. MAXIMUS — SAT_FINTXN_TAX   [Implemented]  [M1]
+-- 43. MAXIMUS — SAT_FINTXN_TAX   [Implemented]
 -- Grain (FINANCIAL_TRANSACTION_HKEY, TAX_TYPE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -1361,7 +1360,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_TAX' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 44. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
+-- 44. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]
 -- Grain (FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups
 -- = the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1391,14 +1390,14 @@ select 'MAXIMUS' as project, 'SAT_FIN_RECEIPT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 45. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]  [M1]
+-- 45. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]
 -- Grain (PAYMENT_INSTRUMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups =
 -- the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.sat; PK PAYMENT_INSTRUMENT_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
--- [2 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
+-- [4 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
@@ -1419,7 +1418,7 @@ select 'MAXIMUS' as project, 'SAT_INSTRUMENT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 46. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]  [M1]
+-- 46. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]
 -- Grain (PARTY_HKEY, ROLE_CODE, ROLE_SEQUENCE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -1450,7 +1449,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_PARTY_ROLE_CORE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 47. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Implemented]  [M1]
+-- 47. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Implemented]
 -- Grain (POLICY_PARTY_HKEY, PARTY_ROLE_TYPE, ROLE_SEQUENCE, RECORD_SOURCE,
 -- LOAD_DATETIME). duplicate_row_groups = the same version stored twice (what a
 -- non-idempotent re-run produces). same_ldts_different_payload_info = two different
@@ -1484,14 +1483,14 @@ select 'MAXIMUS' as project, 'SAT_LNK_POLICY_PARTY_ROLE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 48. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]  [M1]
+-- 48. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]
 -- Grain (PARTY_ROLE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.sat; PK PARTY_ROLE_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [6 col(s)].
+-- [9 col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
     select PARTY_ROLE_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
@@ -1511,7 +1510,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_AGENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 49. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]  [M1]
+-- 49. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]
 -- Grain (PARTY_ROLE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1542,7 +1541,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_CUSTOMER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 50. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]  [M1]
+-- 50. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]
 -- Grain (PARTY_ROLE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1575,7 +1574,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_EMPLOYEE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 51. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
+-- 51. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1604,13 +1603,13 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 52. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]  [M1]
+-- 52. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]
 -- Grain (LOSS_EVENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.sat; PK LOSS_EVENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [7
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [8
 -- col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
@@ -1631,7 +1630,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_DETAIL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 53. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]  [M1]
+-- 53. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]
 -- Grain (LOSS_EVENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1658,7 +1657,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_NOTIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 54. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Implemented]  [M1]
+-- 54. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Implemented]
 -- Grain (LOSS_EVENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1685,7 +1684,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_LOCATION_ADDRESS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 55. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
+-- 55. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
 -- Grain (ORG_UNIT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1715,7 +1714,7 @@ select 'MAXIMUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 56. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]  [M1]
+-- 56. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1744,7 +1743,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_AML_SCREENING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 57. MAXIMUS — SAT_PARTY_BANKING   [Implemented]  [M1]
+-- 57. MAXIMUS — SAT_PARTY_BANKING   [Implemented]
 -- Grain (PARTY_HKEY, ACCOUNT_NUMBER_MASKED, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -1777,7 +1776,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_BANKING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 58. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]  [M1]
+-- 58. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1804,7 +1803,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 59. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M1]
+-- 59. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
 -- Grain (PARTY_LOCATION_HKEY, ADDRESS_USAGE_TYPE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -1843,7 +1842,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 60. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M1]
+-- 60. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1875,7 +1874,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 61. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]  [M1]
+-- 61. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1904,16 +1903,16 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FINANCIAL_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 62. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]  [M1]
+-- 62. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)],
+-- [4 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)].
+-- [4 col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
     select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
@@ -1933,7 +1932,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FRAUD_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 63. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M1]
+-- 63. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -1962,7 +1961,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 64. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]  [M1]
+-- 64. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]
 -- Grain (PARTY_HKEY, IDENTIFICATION_TYPE_CODE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -2002,7 +2001,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 65. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]  [M1]
+-- 65. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2049,7 +2048,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_IDENTITY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 66. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M1]
+-- 66. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2078,16 +2077,16 @@ select 'MAXIMUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 67. MAXIMUS — SAT_PARTY_KYC   [Implemented]  [M1]
+-- 67. MAXIMUS — SAT_PARTY_KYC   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)],
+-- [7 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)].
+-- [7 col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
     select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
@@ -2107,7 +2106,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 68. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Implemented]  [M1]
+-- 68. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Implemented]
 -- Grain (PARTY_HKEY, KYC_REFERENCE_TYPE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -2138,7 +2137,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC_REFERENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 69. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M1]
+-- 69. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2165,7 +2164,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ONBOARDING_JOURNEY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 70. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]  [M1]
+-- 70. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2174,10 +2173,10 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ONBOARDING_JOURNEY' as satellite,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS [3
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [8 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [3
+-- [14 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [3
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [11 col(s)].
+-- [18 col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
     select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
@@ -2197,7 +2196,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ORGANISATION_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 71. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]  [M1]
+-- 71. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2224,7 +2223,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PAYOUT_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 72. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]  [M1]
+-- 72. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2251,13 +2250,13 @@ select 'MAXIMUS' as project, 'SAT_PARTY_POLICY_HISTORY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 73. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M1]
+-- 73. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [8
 -- col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
@@ -2278,7 +2277,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PORTFOLIO_SUMMARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 74. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M1]
+-- 74. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2305,14 +2304,14 @@ select 'MAXIMUS' as project, 'SAT_PARTY_RELATIONSHIP_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 75. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]  [M1]
+-- 75. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)].
+-- [5 col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
     select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
@@ -2332,7 +2331,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 76. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Implemented]  [M1]
+-- 76. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Implemented]
 -- Grain (POLICY_HKEY, CLASSIFICATION_TYPE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -2365,7 +2364,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 77. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M1]
+-- 77. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]
 -- Grain (POLICY_HKEY, COVERAGE_REFERENCE, COVERAGE_SEQUENCE, RECORD_SOURCE,
 -- LOAD_DATETIME). duplicate_row_groups = the same version stored twice (what a
 -- non-idempotent re-run produces). same_ldts_different_payload_info = two different
@@ -2403,14 +2402,14 @@ select 'MAXIMUS' as project, 'SAT_POLICY_COVERAGE_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 78. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M1]
+-- 78. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]
 -- Grain (POLICY_HKEY, ITEM_CODE, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups =
 -- the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key ITEM_CODE; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)],
+-- [6 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -2435,16 +2434,16 @@ select 'MAXIMUS' as project, 'SAT_POLICY_DISCOUNT_LOADING_APPLIED' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 79. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Implemented]  [M1]
+-- 79. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Implemented]
 -- Grain (POLICY_HKEY, ENDORSEMENT_NUMBER, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
 -- LOAD_DATETIME (a source grain conflict, not a re-load duplicate) -- informational.
 -- standard satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key ENDORSEMENT_NUMBER;
 -- 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS [4 col(s)],
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS [7 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
+-- [4 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
 with d as (
@@ -2465,14 +2464,14 @@ select 'MAXIMUS' as project, 'SAT_POLICY_ENDORSEMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 80. MAXIMUS — SAT_POLICY_GROUP   [Implemented]  [M2]
+-- 80. MAXIMUS — SAT_POLICY_GROUP   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
 -- source grain conflict, not a re-load duplicate) -- informational. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)].
+-- [7 col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
     select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
@@ -2492,7 +2491,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_GROUP' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 81. MAXIMUS — SAT_POLICY_HEADER   [Implemented]  [M2]
+-- 81. MAXIMUS — SAT_POLICY_HEADER   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2528,7 +2527,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 82. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M2]
+-- 82. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]
 -- Grain (POLICY_HKEY, INTERMEDIARY_REFERENCE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -2558,7 +2557,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_INTERMEDIARY_SPLIT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 83. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]  [M2]
+-- 83. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2585,7 +2584,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PORTABILITY_MIGRATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 84. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Implemented]  [M2]
+-- 84. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Implemented]
 -- Grain (POLICY_HKEY, ADJUSTED_INDICATOR, COVERAGE_REFERENCE, PREMIUM_HEAD_CODE,
 -- SECTION, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same version stored
 -- twice (what a non-idempotent re-run produces). same_ldts_different_payload_info = two
@@ -2621,7 +2620,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PREMIUM_HEAD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 85. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]  [M2]
+-- 85. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2652,7 +2651,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PREMIUM_SUMMARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 86. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]  [M2]
+-- 86. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2679,7 +2678,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_RENEWAL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 87. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]  [M2]
+-- 87. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2706,7 +2705,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SERVICING_SUMMARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 88. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M2]
+-- 88. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]
 -- Grain (POLICY_HKEY, SUM_INSURED_HEAD, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -2714,7 +2713,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SERVICING_SUMMARY' as satellite,
 -- standard satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key SUM_INSURED_HEAD; 3
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)],
+-- [2 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -2739,7 +2738,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SUM_INSURED_BREAKUP' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 89. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]  [M2]
+-- 89. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2747,7 +2746,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SUM_INSURED_BREAKUP' as satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [4 col(s)].
+-- [9 col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
     select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
@@ -2767,7 +2766,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TAX_BREAKUP' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 90. MAXIMUS — SAT_POLICY_TAX_HEAD   [Implemented]  [M2]
+-- 90. MAXIMUS — SAT_POLICY_TAX_HEAD   [Implemented]
 -- Grain (POLICY_HKEY, TAX_HEAD_CODE, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups
 -- = the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2798,7 +2797,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TAX_HEAD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 91. MAXIMUS — SAT_POLICY_TERMS   [Implemented]  [M2]
+-- 91. MAXIMUS — SAT_POLICY_TERMS   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2825,7 +2824,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 92. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
+-- 92. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]
 -- Grain (PRODUCT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2861,7 +2860,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 93. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
+-- 93. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- Grain (PRODUCT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2890,7 +2889,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 94. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
+-- 94. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]
 -- Grain (PRODUCT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2919,7 +2918,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 95. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
+-- 95. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]
 -- Grain (QUOTE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2949,7 +2948,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 96. MAXIMUS — SAT_QUOTE_RATING   [Implemented]  [M2]
+-- 96. MAXIMUS — SAT_QUOTE_RATING   [Implemented]
 -- Grain (QUOTE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -2979,7 +2978,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 97. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Implemented]  [M2]
+-- 97. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Implemented]
 -- Grain (QUOTE_HKEY, FACTOR_CODE, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups =
 -- the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3015,7 +3014,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING_INPUT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 98. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M2]
+-- 98. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]
 -- Grain (RISK_OBJECT_HKEY, CONDITION_CODE, MEMBER_REFERENCE, RECORD_SOURCE,
 -- LOAD_DATETIME). duplicate_row_groups = the same version stored twice (what a
 -- non-idempotent re-run produces). same_ldts_different_payload_info = two different
@@ -3023,9 +3022,9 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING_INPUT' as satellite,
 -- informational. standard satellite, automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key
 -- CONDITION_CODE, MEMBER_REFERENCE; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [1 col(s)],
+-- [5 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
--- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
+-- [5 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
 with d as (
@@ -3046,7 +3045,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_HEALTH_MEMBER_MEDICAL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 99. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M2]
+-- 99. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]
 -- Grain (RISK_OBJECT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the
 -- same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3078,7 +3077,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 100. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]  [M2]
+-- 100. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]
 -- Grain (RISK_OBJECT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the
 -- same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3086,9 +3085,9 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [1 col(s)],
+-- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
--- [1 col(s)].
+-- [3 col(s)].
 ----------------------------------------------------------------------------------------
 with d as (
     select RISK_OBJECT_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
@@ -3108,7 +3107,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_VALUATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 101. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M2]
+-- 101. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]
 -- Grain (RISK_OBJECT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the
 -- same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3137,7 +3136,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 102. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Implemented]  [M2]
+-- 102. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Implemented]
 -- Grain (RISK_OBJECT_HKEY, MEMBER_SEQUENCE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -3168,7 +3167,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_MEMBER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 103. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M2]
+-- 103. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
 -- Grain (RISK_OBJECT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the
 -- same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3207,33 +3206,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 104. MAXIMUS — SAT_AUG_ASSESSMENT_HEADER   [Implemented]  [M2]
--- Grain (ASSESSMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK ASSESSMENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS [2 col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select ASSESSMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_ASSESSMENT_HEADER
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS')
-     group by ASSESSMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_ASSESSMENT_HEADER' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(ASSESSMENT_HKEY, 'HEX'), null)) within group (order by ASSESSMENT_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 105. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]  [M2]
+-- 104. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3262,7 +3235,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_APPROVAL_ACTION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 106. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M2]
+-- 105. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3292,7 +3265,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_ASSESSMENT_SUMMARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 107. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]  [M2]
+-- 106. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]
 -- Grain (CLAIM_HKEY, BENEFIT_HEAD_CODE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -3325,7 +3298,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_BENEFIT_HEAD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 108. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]  [M2]
+-- 107. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3354,7 +3327,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_CO_RI_SHARE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 109. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]  [M2]
+-- 108. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3381,7 +3354,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DEDUCTION_WAIVER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 110. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]  [M2]
+-- 109. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]
 -- Grain (CLAIM_HKEY, REMINDER_SEQUENCE, REQUIREMENT_TYPE_NAME, RECORD_SOURCE,
 -- LOAD_DATETIME). duplicate_row_groups = the same version stored twice (what a
 -- non-idempotent re-run produces). same_ldts_different_payload_info = two different
@@ -3410,7 +3383,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DOCUMENT_REMINDER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 111. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]  [M2]
+-- 110. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3437,7 +3410,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 112. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]  [M2]
+-- 111. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3464,7 +3437,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EVIDENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 113. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]  [M2]
+-- 112. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]
 -- Grain (CLAIM_HKEY, EXCLUSION_SET_CODE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -3493,7 +3466,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EXCLUSION_APPLIED' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 114. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]  [M2]
+-- 113. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3520,34 +3493,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EXPENSE_LINE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 115. MAXIMUS — SAT_AUG_CLAIM_FNOL   [Implemented]  [M2]
--- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [7
--- col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FNOL
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-     group by CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FNOL' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(CLAIM_HKEY, 'HEX'), null)) within group (order by CLAIM_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 116. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]  [M2]
+-- 114. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3573,7 +3519,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FOLLOWUP_TASK' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 117. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]  [M2]
+-- 115. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3606,7 +3552,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FRAUD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 118. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]  [M2]
+-- 116. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3636,40 +3582,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 119. MAXIMUS — SAT_AUG_CLAIM_HEALTH_DETAIL   [Implemented]  [M2]
--- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK CLAIM_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [3
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- [5 col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_HEALTH_DETAIL
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-     group by CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_HEALTH_DETAIL' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(CLAIM_HKEY, 'HEX'), null)) within group (order by CLAIM_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 120. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]  [M2]
+-- 117. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3700,7 +3613,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_LITIGATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 121. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]  [M2]
+-- 118. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3729,7 +3642,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_NETWORK_VERIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 122. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M2]
+-- 119. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]
 -- Grain (CLAIM_HKEY, TRANCHE_NUMBER, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups
 -- = the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3760,7 +3673,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PAYMENT_TRANCHE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 123. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]  [M2]
+-- 120. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3789,7 +3702,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PA_DETAIL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 124. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]  [M2]
+-- 121. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]
 -- Grain (CLAIM_HKEY, BILL_NUMBER, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups =
 -- the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3817,7 +3730,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PROVIDER_BILLING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 125. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]  [M2]
+-- 122. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3844,7 +3757,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_QUALITY_AUDIT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 126. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M2]
+-- 123. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3873,34 +3786,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_RECOVERY_SALVAGE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 127. MAXIMUS — SAT_AUG_CLAIM_REPUDIATION   [Implemented]  [M2]
--- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_REPUDIATION
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-     group by CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_REPUDIATION' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(CLAIM_HKEY, 'HEX'), null)) within group (order by CLAIM_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 128. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]  [M2]
+-- 124. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3931,7 +3817,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SETTLEMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 129. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]  [M2]
+-- 125. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3960,7 +3846,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SLA_TRACKING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 130. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]  [M2]
+-- 126. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -3986,7 +3872,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_STATUS_HISTORY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 131. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]  [M2]
+-- 127. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4013,7 +3899,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SURVEY_APPOINTMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 132. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]  [M2]
+-- 128. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4040,34 +3926,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TPA_INTERACTION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 133. MAXIMUS — SAT_AUG_CLAIM_TP_FORENSIC   [Implemented]  [M2]
--- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- [1 col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TP_FORENSIC
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-     group by CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TP_FORENSIC' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(CLAIM_HKEY, 'HEX'), null)) within group (order by CLAIM_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 134. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]  [M2]
+-- 129. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4095,7 +3954,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TRAVEL_DETAIL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 135. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]  [M2]
+-- 130. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]
 -- Grain (CLAIM_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4122,7 +3981,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TRAVEL_SECTOR' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 136. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]  [M2]
+-- 131. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]
 -- Grain (LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4151,7 +4010,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_ADDRESS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 137. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M2]
+-- 132. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4180,91 +4039,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satell
 
 
 ----------------------------------------------------------------------------------------
--- 138. MAXIMUS — SAT_AUG_COMMON_CONSENT   [Implemented]  [M2]
--- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_CONSENT
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-     group by PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_COMMON_CONSENT' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 139. MAXIMUS — SAT_AUG_COMMON_GEO   [Implemented]  [M2]
--- Grain (LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK LOCATION_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [1 col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_GEO
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW')
-     group by LOCATION_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_COMMON_GEO' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(LOCATION_HKEY, 'HEX'), null)) within group (order by LOCATION_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 140. MAXIMUS — SAT_AUG_COMMON_MONETARY_CONTEXT   [Implemented]  [M2]
--- Grain (FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups
--- = the same version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [1 col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_MONETARY_CONTEXT
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS')
-     group by FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_COMMON_MONETARY_CONTEXT' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 141. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]  [M2]
+-- 133. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]
 -- Grain (COVERAGE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4293,7 +4068,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_CONDITIONS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 142. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M2]
+-- 134. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
 -- Grain (COVERAGE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4326,7 +4101,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 143. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M2]
+-- 135. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
 -- Grain (COVERAGE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4355,7 +4130,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 144. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M2]
+-- 136. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
 -- Grain (COVERAGE_HKEY, ACTIVE_SEQUENCE_NUMBER, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -4384,7 +4159,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 145. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]  [M2]
+-- 137. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]
 -- Grain (COVERAGE_HKEY, SUB_COVER_CODE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -4413,7 +4188,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_SUB_COVER_ELEMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 146. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]  [M2]
+-- 138. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]
 -- Grain (DOCUMENT_HKEY, REQUIRED_DOCUMENT_TYPE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -4442,36 +4217,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_CHECKLIST' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 147. MAXIMUS — SAT_AUG_DOCUMENT_DEFINITION   [Implemented]  [M2]
--- Grain (DOCUMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK DOCUMENT_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [3
--- col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select DOCUMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_DEFINITION
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-     group by DOCUMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_DEFINITION' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(DOCUMENT_HKEY, 'HEX'), null)) within group (order by DOCUMENT_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 148. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]  [M2]
+-- 139. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]
 -- Grain (DOCUMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4498,7 +4244,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_DISPATCH' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 149. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]  [M2]
+-- 140. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]
 -- Grain (DOCUMENT_HKEY, REMINDER_SEQUENCE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -4527,34 +4273,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER' as satellit
 
 
 ----------------------------------------------------------------------------------------
--- 150. MAXIMUS — SAT_AUG_FINTXN_CLAIM_PAYMENT   [Implemented]  [M2]
--- Grain (FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups
--- = the same version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
--- [3 col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_CLAIM_PAYMENT
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')
-     group by FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_FINTXN_CLAIM_PAYMENT' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 151. MAXIMUS — SAT_AUG_FINTXN_TAX   [Implemented]  [M2]
+-- 141. MAXIMUS — SAT_AUG_FINTXN_TAX   [Implemented]
 -- Grain (FINANCIAL_TRANSACTION_HKEY, TAX_TYPE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -4585,7 +4304,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_FINTXN_TAX' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 152. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]  [M2]
+-- 142. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]
 -- Grain (FINANCIAL_TRANSACTION_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups
 -- = the same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4615,61 +4334,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_FIN_RECEIPT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 153. MAXIMUS — SAT_AUG_INSTRUMENT_DEFINITION   [Implemented]  [M2]
--- Grain (PAYMENT_INSTRUMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups =
--- the same version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK PAYMENT_INSTRUMENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
--- [2 col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select PAYMENT_INSTRUMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_INSTRUMENT_DEFINITION
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')
-     group by PAYMENT_INSTRUMENT_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_INSTRUMENT_DEFINITION' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(PAYMENT_INSTRUMENT_HKEY, 'HEX'), null)) within group (order by PAYMENT_INSTRUMENT_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 154. MAXIMUS — SAT_AUG_LNK_ROLE_AGENT   [Implemented]  [M2]
--- Grain (PARTY_ROLE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK PARTY_ROLE_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select PARTY_ROLE_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_AGENT
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-     group by PARTY_ROLE_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_AGENT' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(PARTY_ROLE_HKEY, 'HEX'), null)) within group (order by PARTY_ROLE_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 155. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M2]
+-- 143. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4696,7 +4361,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 156. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]  [M2]
+-- 144. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
 -- Grain (PARTY_ROLE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4723,34 +4388,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 157. MAXIMUS — SAT_AUG_LOSS_EVENT_DETAIL   [Implemented]  [M2]
--- Grain (LOSS_EVENT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK LOSS_EVENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select LOSS_EVENT_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOSS_EVENT_DETAIL
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-     group by LOSS_EVENT_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_LOSS_EVENT_DETAIL' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(LOSS_EVENT_HKEY, 'HEX'), null)) within group (order by LOSS_EVENT_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 158. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Implemented]  [M2]
+-- 145. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Implemented]
 -- Grain (ORG_UNIT_HKEY, CONTACT_POINT_TYPE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -4779,7 +4417,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_ORG_UNIT_CONTACT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 159. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
+-- 146. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4812,7 +4450,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 160. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]  [M3]
+-- 147. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4841,7 +4479,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CLAIM_HISTORY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 161. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]  [M3]
+-- 148. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4870,7 +4508,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONSENT_MANDATE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 162. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M3]
+-- 149. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
 -- Grain (PARTY_LOCATION_HKEY, ADDRESS_USAGE_TYPE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -4901,7 +4539,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONTACT_ADDRESS_LINK' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 163. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]  [M3]
+-- 150. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]
 -- Grain (PARTY_HKEY, DISPATCH_REFERENCE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -4930,7 +4568,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CORRESPONDENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 164. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
+-- 151. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4959,7 +4597,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 165. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]  [M3]
+-- 152. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -4990,36 +4628,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_FINANCIAL_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 166. MAXIMUS — SAT_AUG_PARTY_FRAUD_PROFILE   [Implemented]  [M3]
--- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_FRAUD_PROFILE
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-     group by PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_PARTY_FRAUD_PROFILE' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 167. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]  [M3]
+-- 153. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5046,7 +4655,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_GROUP_SCHEME' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 168. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]  [M3]
+-- 154. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5075,7 +4684,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HEALTH_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 169. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]  [M3]
+-- 155. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5102,7 +4711,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HIERARCHY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 170. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]  [M3]
+-- 156. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]
 -- Grain (PARTY_HKEY, IDENTIFICATION_TYPE_CODE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -5139,7 +4748,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_IDENTIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 171. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]  [M3]
+-- 157. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5173,7 +4782,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_IDENTITY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 172. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M3]
+-- 158. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5204,36 +4813,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellit
 
 
 ----------------------------------------------------------------------------------------
--- 173. MAXIMUS — SAT_AUG_PARTY_KYC   [Implemented]  [M3]
--- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [4 col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_KYC
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-     group by PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_PARTY_KYC' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 174. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]  [M3]
+-- 159. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]
 -- Grain (PARTY_HKEY, LOYALTY_CLASSIFICATION_TYPE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -5262,7 +4842,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_LOYALTY_CLASSIFICATION' as satellite
 
 
 ----------------------------------------------------------------------------------------
--- 175. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M3]
+-- 160. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5291,36 +4871,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_ONBOARDING_JOURNEY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 176. MAXIMUS — SAT_AUG_PARTY_ORGANISATION_PROFILE   [Implemented]  [M3]
--- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [7 col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_ORGANISATION_PROFILE
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-     group by PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_PARTY_ORGANISATION_PROFILE' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 177. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]  [M3]
+-- 161. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5349,34 +4900,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PAYOUT_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 178. MAXIMUS — SAT_AUG_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M3]
--- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [7
--- col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PORTFOLIO_SUMMARY
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-     group by PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PORTFOLIO_SUMMARY' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 179. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]  [M3]
+-- 162. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5405,7 +4929,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PREFERENCE_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 180. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M3]
+-- 163. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5437,7 +4961,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RELATIONSHIP_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 181. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]  [M3]
+-- 164. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]
 -- Grain (PARTY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5464,34 +4988,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RISK_ANALYTICS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 182. MAXIMUS — SAT_AUG_POLICY_CANCELLATION   [Implemented]  [M3]
--- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [4 col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_CANCELLATION
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-     group by POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_POLICY_CANCELLATION' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 183. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]  [M3]
+-- 165. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5518,7 +5015,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_CLAIM_EXPERIENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 184. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M3]
+-- 166. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]
 -- Grain (POLICY_HKEY, COVERAGE_REFERENCE, COVERAGE_SEQUENCE, RECORD_SOURCE,
 -- LOAD_DATETIME). duplicate_row_groups = the same version stored twice (what a
 -- non-idempotent re-run produces). same_ldts_different_payload_info = two different
@@ -5551,7 +5048,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_COVERAGE_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 185. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]  [M3]
+-- 167. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5578,35 +5075,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DELIVERY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 186. MAXIMUS — SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M3]
--- Grain (POLICY_HKEY, ITEM_CODE, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups =
--- the same version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.ma_sat; PK POLICY_HKEY, child key ITEM_CODE; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
--- per member.
-----------------------------------------------------------------------------------------
-with d as (
-    select POLICY_HKEY, ITEM_CODE, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-     group by POLICY_HKEY, ITEM_CODE, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 187. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]  [M3]
+-- 168. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]
 -- Grain (POLICY_HKEY, DISPATCH_SERIAL_NUMBER, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -5634,64 +5103,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DOCUMENT_DISPATCH' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 188. MAXIMUS — SAT_AUG_POLICY_ENDORSEMENT   [Implemented]  [M3]
--- Grain (POLICY_HKEY, ENDORSEMENT_NUMBER, RECORD_SOURCE, LOAD_DATETIME).
--- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
--- produces). same_ldts_different_payload_info = two different payloads at one
--- LOAD_DATETIME (a source grain conflict, not a re-load duplicate) -- informational.
--- augmented satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key ENDORSEMENT_NUMBER;
--- 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
--- per member.
-----------------------------------------------------------------------------------------
-with d as (
-    select POLICY_HKEY, ENDORSEMENT_NUMBER, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_ENDORSEMENT
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-     group by POLICY_HKEY, ENDORSEMENT_NUMBER, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_POLICY_ENDORSEMENT' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 189. MAXIMUS — SAT_AUG_POLICY_GROUP   [Implemented]  [M3]
--- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [6 col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_GROUP
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-     group by POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_POLICY_GROUP' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 190. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]  [M3]
+-- 169. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5722,7 +5134,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 191. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]  [M3]
+-- 170. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5749,7 +5161,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_HEALTH_DECLARATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 192. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]  [M3]
+-- 171. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5776,7 +5188,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_INSURED_DECLARATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 193. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M3]
+-- 172. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]
 -- Grain (POLICY_HKEY, INTERMEDIARY_REFERENCE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -5807,7 +5219,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_INTERMEDIARY_SPLIT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 194. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]  [M3]
+-- 173. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5834,7 +5246,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_NOMINEE_DECLARATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 195. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]  [M3]
+-- 174. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]
 -- Grain (POLICY_HKEY, ADJUSTED_INDICATOR, COVERAGE_REFERENCE, PREMIUM_HEAD_CODE,
 -- SECTION, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same version stored
 -- twice (what a non-idempotent re-run produces). same_ldts_different_payload_info = two
@@ -5866,7 +5278,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PREMIUM_HEAD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 196. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]  [M3]
+-- 175. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5895,7 +5307,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PREMIUM_SUMMARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 197. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]  [M3]
+-- 176. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5922,7 +5334,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PROPERTY_LINE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 198. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]  [M3]
+-- 177. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -5950,63 +5362,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_RENEWAL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 199. MAXIMUS — SAT_AUG_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M3]
--- Grain (POLICY_HKEY, SUM_INSURED_HEAD, RECORD_SOURCE, LOAD_DATETIME).
--- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
--- produces). same_ldts_different_payload_info = two different payloads at one
--- LOAD_DATETIME (a source grain conflict, not a re-load duplicate) -- informational.
--- augmented satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key SUM_INSURED_HEAD; 1
--- RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
--- per member.
-----------------------------------------------------------------------------------------
-with d as (
-    select POLICY_HKEY, SUM_INSURED_HEAD, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_SUM_INSURED_BREAKUP
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-     group by POLICY_HKEY, SUM_INSURED_HEAD, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_POLICY_SUM_INSURED_BREAKUP' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 200. MAXIMUS — SAT_AUG_POLICY_TAX_BREAKUP   [Implemented]  [M3]
--- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
--- version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [5 col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TAX_BREAKUP
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-     group by POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TAX_BREAKUP' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 201. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]  [M3]
+-- 178. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6033,7 +5389,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 202. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]  [M3]
+-- 179. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6060,7 +5416,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TRAVEL_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 203. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
+-- 180. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6087,7 +5443,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 204. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]  [M3]
+-- 181. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6114,7 +5470,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_UW_QUERY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 205. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]  [M3]
+-- 182. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]
 -- Grain (POLICY_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6140,7 +5496,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_WORK_ITEM' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 206. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]  [M3]
+-- 183. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- Grain (PRODUCT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6169,7 +5525,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PRODUCT_RATING_STRUCTURE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 207. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
+-- 184. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
 -- Grain (PRODUCT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6198,7 +5554,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 208. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]  [M3]
+-- 185. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]
 -- Grain (QUOTE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6225,7 +5581,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_CLAIM_EXPERIENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 209. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]  [M3]
+-- 186. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]
 -- Grain (QUOTE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6255,7 +5611,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_LINE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 210. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]  [M3]
+-- 187. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]
 -- Grain (QUOTE_HKEY, COVERAGE_REFERENCE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -6284,7 +5640,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 211. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]  [M3]
+-- 188. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]
 -- Grain (QUOTE_HKEY, COVERAGE_REFERENCE, COVERAGE_SEQUENCE, RECORD_SOURCE,
 -- LOAD_DATETIME). duplicate_row_groups = the same version stored twice (what a
 -- non-idempotent re-run produces). same_ldts_different_payload_info = two different
@@ -6313,7 +5669,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVER_DETAIL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 212. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]  [M3]
+-- 189. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]
 -- Grain (QUOTE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6351,7 +5707,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 213. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]  [M3]
+-- 190. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]
 -- Grain (QUOTE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6378,7 +5734,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_HEALTH_DECLARATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 214. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]  [M3]
+-- 191. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]
 -- Grain (QUOTE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6405,7 +5761,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_INSURED_DECLARATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 215. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]  [M3]
+-- 192. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]
 -- Grain (QUOTE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6432,7 +5788,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_NOMINEE_DECLARATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 216. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]  [M3]
+-- 193. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]
 -- Grain (QUOTE_HKEY, PREMIUM_HEAD_CODE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -6461,7 +5817,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_PREMIUM_HEAD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 217. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]  [M3]
+-- 194. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]
 -- Grain (QUOTE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6488,7 +5844,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_PROPERTY_LINE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 218. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]  [M3]
+-- 195. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]
 -- Grain (QUOTE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6518,7 +5874,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RATING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 219. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]  [M3]
+-- 196. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]
 -- Grain (QUOTE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6544,7 +5900,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RISK_LINE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 220. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]  [M3]
+-- 197. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]
 -- Grain (QUOTE_HKEY, SUM_INSURED_HEAD, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -6573,7 +5929,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_SUM_INSURED_BREAKUP' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 221. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]  [M3]
+-- 198. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]
 -- Grain (QUOTE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6600,7 +5956,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 222. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]  [M3]
+-- 199. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]
 -- Grain (QUOTE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6627,7 +5983,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TRAVEL_TRIP' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 223. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
+-- 200. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]
 -- Grain (QUOTE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6654,7 +6010,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 224. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]  [M3]
+-- 201. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]
 -- Grain (QUOTE_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the same
 -- version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6681,38 +6037,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_UW_QUERY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 225. MAXIMUS — SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M3]
--- Grain (RISK_OBJECT_HKEY, CONDITION_CODE, MEMBER_REFERENCE, RECORD_SOURCE,
--- LOAD_DATETIME). duplicate_row_groups = the same version stored twice (what a
--- non-idempotent re-run produces). same_ldts_different_payload_info = two different
--- payloads at one LOAD_DATETIME (a source grain conflict, not a re-load duplicate) --
--- informational. augmented satellite, automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key
--- CONDITION_CODE, MEMBER_REFERENCE; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
--- [4 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
--- per member.
-----------------------------------------------------------------------------------------
-with d as (
-    select RISK_OBJECT_HKEY, CONDITION_CODE, MEMBER_REFERENCE, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
-     group by RISK_OBJECT_HKEY, CONDITION_CODE, MEMBER_REFERENCE, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(RISK_OBJECT_HKEY, 'HEX'), null)) within group (order by RISK_OBJECT_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 226. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]  [M3]
+-- 202. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]
 -- Grain (RISK_OBJECT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the
 -- same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6742,7 +6067,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_CORE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 227. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]  [M3]
+-- 203. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]
 -- Grain (RISK_OBJECT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the
 -- same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6768,36 +6093,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_PREMIUM' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 228. MAXIMUS — SAT_AUG_RISK_OBJECT_VALUATION   [Implemented]  [M3]
--- Grain (RISK_OBJECT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the
--- same version stored twice (what a non-idempotent re-run produces).
--- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
--- source grain conflict, not a re-load duplicate) -- informational. augmented satellite,
--- automate_dv.sat; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
--- [2 col(s)].
-----------------------------------------------------------------------------------------
-with d as (
-    select RISK_OBJECT_HKEY, RECORD_SOURCE, LOAD_DATETIME, count(*) as n, count(distinct HASHDIFF) as hashdiffs
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_VALUATION
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
-     group by RISK_OBJECT_HKEY, RECORD_SOURCE, LOAD_DATETIME
-    having count(*) > 1
-)
-select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_VALUATION' as satellite,
-       count_if(hashdiffs = 1)            as duplicate_row_groups,
-       coalesce(sum(iff(hashdiffs = 1, n - 1, 0)), 0) as surplus_rows,
-       count_if(hashdiffs > 1)            as same_ldts_different_payload_info,
-       array_slice(array_agg(iff(hashdiffs = 1, to_varchar(RISK_OBJECT_HKEY, 'HEX'), null)) within group (order by RISK_OBJECT_HKEY), 0, 3) as examples,
-       iff(duplicate_row_groups = 0, 'PASS', 'FAIL') as status
-  from d;
-
-
-
-----------------------------------------------------------------------------------------
--- 229. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
+-- 204. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
 -- Grain (RISK_OBJECT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the
 -- same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6826,7 +6122,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 230. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
+-- 205. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
 -- Grain (RISK_OBJECT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the
 -- same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6865,7 +6161,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 231. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]  [M3]
+-- 206. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]
 -- Grain (RISK_OBJECT_HKEY, SUB_COVER_CODE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -6896,7 +6192,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_COVER_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 232. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]  [M3]
+-- 207. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]
 -- Grain (RISK_OBJECT_HKEY, RATING_INPUT_CODE, RECORD_SOURCE, LOAD_DATETIME).
 -- duplicate_row_groups = the same version stored twice (what a non-idempotent re-run
 -- produces). same_ldts_different_payload_info = two different payloads at one
@@ -6925,7 +6221,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_RATING_INPUT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 233. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]  [M3]
+-- 208. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]
 -- Grain (RISK_OBJECT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the
 -- same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6954,7 +6250,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_SPONSOR' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 234. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]  [M3]
+-- 209. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]
 -- Grain (RISK_OBJECT_HKEY, RECORD_SOURCE, LOAD_DATETIME). duplicate_row_groups = the
 -- same version stored twice (what a non-idempotent re-run produces).
 -- same_ldts_different_payload_info = two different payloads at one LOAD_DATETIME (a
@@ -6983,7 +6279,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 235. MAXIMUS — Re-load test: capture row counts   [Procedure]  [M3]
+-- 210. MAXIMUS — Re-load test: capture row counts   [Procedure]
 -- Re-runs a window that is already loaded: the from_date / to_date vars pin
 -- sat_multi_source / stitch_incremental to the same rows, so an idempotent load inserts
 -- nothing. Run the DM-H1 set-up section first (creates the snapshot table).
@@ -7101,7 +6397,6 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', satellite, row_count, current_timestam
     union all select 'SAT_RISK_PERSON_INSURED' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_INSURED where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
     union all select 'SAT_RISK_PERSON_MEMBER' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_MEMBER where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
     union all select 'SAT_RISK_PERSON_TRAVEL' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
-    union all select 'SAT_AUG_ASSESSMENT_HEADER' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_ASSESSMENT_HEADER where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS')
     union all select 'SAT_AUG_CLAIM_APPROVAL_ACTION' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_APPROVAL_ACTION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_ASSESSMENT_SUMMARY' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_ASSESSMENT_SUMMARY where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_BENEFIT_HEAD' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_BENEFIT_HEAD where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
@@ -7112,11 +6407,9 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', satellite, row_count, current_timestam
     union all select 'SAT_AUG_CLAIM_EVIDENCE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_EVIDENCE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_EXCLUSION_APPLIED' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_EXCLUSION_APPLIED where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_EXPENSE_LINE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_EXPENSE_LINE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_CLAIM_FNOL' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FNOL where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_FOLLOWUP_TASK' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FOLLOWUP_TASK where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP')
     union all select 'SAT_AUG_CLAIM_FRAUD' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FRAUD where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_HEADER' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_HEADER where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_CLAIM_HEALTH_DETAIL' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_HEALTH_DETAIL where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_LITIGATION' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_LITIGATION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_NETWORK_VERIFICATION' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_NETWORK_VERIFICATION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_PAYMENT_TRANCHE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_PAYMENT_TRANCHE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
@@ -7124,37 +6417,27 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', satellite, row_count, current_timestam
     union all select 'SAT_AUG_CLAIM_PROVIDER_BILLING' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_PROVIDER_BILLING where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_QUALITY_AUDIT' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_QUALITY_AUDIT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_RECOVERY_SALVAGE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_RECOVERY_SALVAGE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_CLAIM_REPUDIATION' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_REPUDIATION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_SETTLEMENT' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_SETTLEMENT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_SLA_TRACKING' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_SLA_TRACKING where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_STATUS_HISTORY' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_STATUS_HISTORY where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY')
     union all select 'SAT_AUG_CLAIM_SURVEY_APPOINTMENT' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_SURVEY_APPOINTMENT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_TPA_INTERACTION' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TPA_INTERACTION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_CLAIM_TP_FORENSIC' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TP_FORENSIC where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_TRAVEL_DETAIL' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TRAVEL_DETAIL where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_CLAIM_TRAVEL_SECTOR' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TRAVEL_SECTOR where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_COMMON_ADDRESS' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_ADDRESS where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_COMMON_CONSENT' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_CONSENT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_COMMON_GEO' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_GEO where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_COMMON_MONETARY_CONTEXT' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_MONETARY_CONTEXT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS')
     union all select 'SAT_AUG_COVERAGE_CONDITIONS' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_CONDITIONS where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
     union all select 'SAT_AUG_COVERAGE_DEFINITION' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_DEFINITION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
     union all select 'SAT_AUG_COVERAGE_LIMITS' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_LIMITS where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
     union all select 'SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_COVERAGE_SUB_COVER_ELEMENT' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_SUB_COVER_ELEMENT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_DOCUMENT_CHECKLIST' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_CHECKLIST where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_DOCUMENT_DEFINITION' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_DEFINITION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_DOCUMENT_DISPATCH' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_DISPATCH where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_FINTXN_CLAIM_PAYMENT' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_CLAIM_PAYMENT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_FINTXN_TAX' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_TAX where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_FIN_RECEIPT' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FIN_RECEIPT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
-    union all select 'SAT_AUG_INSTRUMENT_DEFINITION' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_INSTRUMENT_DEFINITION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_LNK_ROLE_AGENT' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_AGENT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_PROVIDER where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_LOSS_EVENT_DETAIL' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOSS_EVENT_DETAIL where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_ORG_UNIT_CONTACT' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_ORG_UNIT_CONTACT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_PARTY_BANKING' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_BANKING where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_PARTY_CLAIM_HISTORY' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CLAIM_HISTORY where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
@@ -7163,30 +6446,22 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', satellite, row_count, current_timestam
     union all select 'SAT_AUG_PARTY_CORRESPONDENCE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_CORRESPONDENCE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_PARTY_FINANCIAL_PROFILE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_FINANCIAL_PROFILE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_PARTY_FRAUD_PROFILE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_FRAUD_PROFILE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_PARTY_GROUP_SCHEME' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_GROUP_SCHEME where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_PARTY_HEALTH_PROFILE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_HEALTH_PROFILE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_PARTY_HIERARCHY' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_HIERARCHY where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_PARTY_IDENTIFICATION' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_IDENTIFICATION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_PARTY_IDENTITY' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_IDENTITY where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_PARTY_KYC' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_KYC where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_PARTY_LOYALTY_CLASSIFICATION' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_LOYALTY_CLASSIFICATION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_PARTY_ONBOARDING_JOURNEY' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_ONBOARDING_JOURNEY where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_PARTY_ORGANISATION_PROFILE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_ORGANISATION_PROFILE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_PARTY_PAYOUT_PROFILE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PAYOUT_PROFILE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_PARTY_PORTFOLIO_SUMMARY' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PORTFOLIO_SUMMARY where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all select 'SAT_AUG_PARTY_PREFERENCE_PROFILE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PREFERENCE_PROFILE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_PARTY_RELATIONSHIP_PROFILE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_RELATIONSHIP_PROFILE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_PARTY_RISK_ANALYTICS' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_RISK_ANALYTICS where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-    union all select 'SAT_AUG_POLICY_CANCELLATION' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_CANCELLATION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_POLICY_CLAIM_EXPERIENCE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_CLAIM_EXPERIENCE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_POLICY_COVERAGE_SCHEDULE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_COVERAGE_SCHEDULE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_POLICY_DELIVERY' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DELIVERY where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_POLICY_DOCUMENT_DISPATCH' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DOCUMENT_DISPATCH where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS')
-    union all select 'SAT_AUG_POLICY_ENDORSEMENT' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_ENDORSEMENT where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_POLICY_GROUP' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_GROUP where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_POLICY_HEADER' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_HEADER where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_POLICY_HEALTH_DECLARATION' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_HEALTH_DECLARATION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_POLICY_INSURED_DECLARATION' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_INSURED_DECLARATION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
@@ -7196,8 +6471,6 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', satellite, row_count, current_timestam
     union all select 'SAT_AUG_POLICY_PREMIUM_SUMMARY' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_PREMIUM_SUMMARY where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_POLICY_PROPERTY_LINE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_PROPERTY_LINE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_POLICY_RENEWAL' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_RENEWAL where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_POLICY_SUM_INSURED_BREAKUP' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_SUM_INSURED_BREAKUP where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_POLICY_TAX_BREAKUP' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TAX_BREAKUP where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_POLICY_TERMS' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TERMS where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_POLICY_TRAVEL_TERMS' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TRAVEL_TERMS where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
@@ -7222,10 +6495,8 @@ select $DM_H_RUN, $DM_H_PHASE, 'MAXIMUS', satellite, row_count, current_timestam
     union all select 'SAT_AUG_QUOTE_TRAVEL_TRIP' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_TRAVEL_TRIP where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_QUOTE_UW_QUERY' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_UW_QUERY where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
-    union all select 'SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
     union all select 'SAT_AUG_RISK_OBJECT_CORE' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_CORE where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
     union all select 'SAT_AUG_RISK_OBJECT_PREMIUM' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_PREMIUM where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS')
-    union all select 'SAT_AUG_RISK_OBJECT_VALUATION' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_VALUATION where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
     union all select 'SAT_AUG_RISK_PERSON_INSURED' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_INSURED where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
     union all select 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_TRAVEL where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
     union all select 'SAT_AUG_RISK_TRAVEL_COVER_TERMS' as satellite, count(*) as row_count from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_TRAVEL_COVER_TERMS where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
@@ -7244,7 +6515,7 @@ set DM_H_PHASE = 'AFTER';
 
 
 ----------------------------------------------------------------------------------------
--- 236. MAXIMUS — Re-load test: result   [Implemented]  [M3]
+-- 211. MAXIMUS — Re-load test: result   [Implemented]
 -- Compares the BEFORE / AFTER row counts of the same run id.
 ----------------------------------------------------------------------------------------
 select b.project, b.satellite, b.row_count as rows_before, a.row_count as rows_after,

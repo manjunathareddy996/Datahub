@@ -1,0 +1,86 @@
+{{ config(materialized='view') }}
+
+-- AUGMENTED FEED for SAT_AUG_CLAIM_FRAUD: unions 4 per-view stage model(s).
+-- Payload null-padded to the SATELLITE, and the hashdiff renamed to the bare HASHDIFF the
+-- sibling writes on its augmented track too -- both of its tracks use the bare name,
+-- counted 12 of 12 (BD7 / BUILD_RULES 7.7).
+
+    select
+        CLAIM_HKEY as CLAIM_HKEY,
+        ANALYTICS_ALERT_DATE,
+        ANALYTICS_TRIGGER_DISPOSITION_DESCRIPTION,
+        ANALYTICS_TRIGGER_FEEDBACK,
+        FRAUD_APPROVER_REFERENCE,
+        FRAUD_APPROVER_REMARKS,
+        FRAUD_CLASSIFICATION,
+        FRAUD_REFERRAL_RAISED_BY_REFERENCE,
+        FRAUD_SEVERITY,
+        FRAUD_SEVERITY_GRADE,
+        LIFECYCLE_MANAGEMENT_TRIGGER_SELECTED,
+        MATERIAL_NON_DISCLOSURE_INDICATOR,
+        NON_DISCLOSURE_INDICATOR,
+        RISK_ACCEPTANCE_PRIORITY,
+        HASHDIFF_CLAIM_FRAUD as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mt_aug__clm_clmd_clma_msp_msd_prop_pv__sat_aug_claim_fraud') }}
+    where CLAIM_HKEY is not null
+union all
+    select
+        CLAIM_HKEY as CLAIM_HKEY,
+        ANALYTICS_ALERT_DATE,
+        ANALYTICS_TRIGGER_DISPOSITION_DESCRIPTION,
+        ANALYTICS_TRIGGER_FEEDBACK,
+        FRAUD_APPROVER_REFERENCE,
+        FRAUD_APPROVER_REMARKS,
+        FRAUD_CLASSIFICATION,
+        FRAUD_REFERRAL_RAISED_BY_REFERENCE,
+        FRAUD_SEVERITY,
+        FRAUD_SEVERITY_GRADE,
+        LIFECYCLE_MANAGEMENT_TRIGGER_SELECTED,
+        MATERIAL_NON_DISCLOSURE_INDICATOR,
+        NON_DISCLOSURE_INDICATOR,
+        RISK_ACCEPTANCE_PRIORITY,
+        HASHDIFF_CLAIM_FRAUD as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mt_aug__clm_clmd_clmap_pv__sat_aug_claim_fraud') }}
+    where CLAIM_HKEY is not null
+union all
+    select
+        CLAIM_HKEY as CLAIM_HKEY,
+        ANALYTICS_ALERT_DATE,
+        ANALYTICS_TRIGGER_DISPOSITION_DESCRIPTION,
+        ANALYTICS_TRIGGER_FEEDBACK,
+        FRAUD_APPROVER_REFERENCE,
+        FRAUD_APPROVER_REMARKS,
+        FRAUD_CLASSIFICATION,
+        FRAUD_REFERRAL_RAISED_BY_REFERENCE,
+        FRAUD_SEVERITY,
+        FRAUD_SEVERITY_GRADE,
+        LIFECYCLE_MANAGEMENT_TRIGGER_SELECTED,
+        MATERIAL_NON_DISCLOSURE_INDICATOR,
+        NON_DISCLOSURE_INDICATOR,
+        RISK_ACCEPTANCE_PRIORITY,
+        HASHDIFF_CLAIM_FRAUD as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mt_aug__clm_clmd_clmrsk_rska_msp_msd_prop_pv__sat_aug_claim_fraud') }}
+    where CLAIM_HKEY is not null
+union all
+    select
+        CLAIM_HKEY as CLAIM_HKEY,
+        ANALYTICS_ALERT_DATE,
+        ANALYTICS_TRIGGER_DISPOSITION_DESCRIPTION,
+        ANALYTICS_TRIGGER_FEEDBACK,
+        FRAUD_APPROVER_REFERENCE,
+        FRAUD_APPROVER_REMARKS,
+        FRAUD_CLASSIFICATION,
+        FRAUD_REFERRAL_RAISED_BY_REFERENCE,
+        FRAUD_SEVERITY,
+        FRAUD_SEVERITY_GRADE,
+        LIFECYCLE_MANAGEMENT_TRIGGER_SELECTED,
+        MATERIAL_NON_DISCLOSURE_INDICATOR,
+        NON_DISCLOSURE_INDICATOR,
+        RISK_ACCEPTANCE_PRIORITY,
+        HASHDIFF_CLAIM_FRAUD as HASHDIFF,
+        LOAD_DATETIME, RECORD_SOURCE
+    from {{ ref('stg2_mt_aug__clm_clmd_clmrsk_rska_properties_pv__sat_aug_claim_fraud') }}
+    where CLAIM_HKEY is not null

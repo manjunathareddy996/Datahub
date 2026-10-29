@@ -2,7 +2,6 @@
    DM-T2  |  Load Audit - Hash Key Integrity (DV2.0, Travel LOB)  (MAXIMUS)
    Hash keys generated consistently; no null; no unexpected collisions.
 
-   MEMBER SPLIT: sections 1..254 assigned M1 x 85, M2 x 85, M3 x 84 -- contiguous thirds in listed order.
    Check ID: DM-T2
    Category: Load audit
    Sign-off criterion: Hash key integrity (DV2.0)
@@ -11,7 +10,7 @@
    Pass criteria / tolerance: 0 null; 0 unexpected collisions
    Owner: LUMIQ
    Vault location: BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL
-   Maximus Travel V2 RAW: RAW.MAXIMUS_TRAVEL_V2
+   Maximus Travel RAW: RAW.MAXIMUS_TRAVEL
    Opus Travel RAW (prod): BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE
    Opus Travel RAW (test): BAGIC_PREPROD_CURATED_DB.UTILS
    Scope: Every hub, link and satellite the project's travel models load. Rows scoped
@@ -25,16 +24,16 @@
    not this file. The queries are IDENTICAL to those in the matching .docx.
 
    Revision notes:
-   - Travel LOB generated 2026-10-13 from the current maximus_travel_v2_dv_dbt models by
+   - Travel LOB generated 2026-10-13 from the current maximus_travel_dv_dbt models by
      validation/tools/gen_dm_t_travel.py.
-   - This file: MAXIMUS only -- 15 hubs, 4 links, 234 satellites.
+   - This file: MAXIMUS only -- 15 hubs, 4 links, 209 satellites.
    - Row scopes use the RECORD_SOURCE value set parsed from the project's own feeds; the
      shared MAXIMUS_ / OPUS_ prefix would include partner rows too.
    ===================================================================================== */
 
 
 ----------------------------------------------------------------------------------------
--- 1. MAXIMUS — Hash column types (all tables)   [Implemented]  [M1]
+-- 1. MAXIMUS — Hash column types (all tables)   [Implemented]
 -- Every *_HKEY and HASHDIFF column of the project's hubs, links and satellites must be
 -- BINARY(16) (MD5_BINARY).
 ----------------------------------------------------------------------------------------
@@ -42,14 +41,14 @@ select 'MAXIMUS' as project, table_name, column_name, data_type, character_maxim
        iff(data_type = 'BINARY' and character_maximum_length = 16, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.INFORMATION_SCHEMA.COLUMNS
  where table_schema = 'BGIL_DATA_MODEL'
-   and table_name in ('HUB_ASSESSMENT', 'HUB_CLAIM', 'HUB_COVERAGE', 'HUB_DISTRIBUTION_CHANNEL', 'HUB_DOCUMENT', 'HUB_FINANCIAL_TRANSACTION', 'HUB_LOCATION', 'HUB_LOSS_EVENT', 'HUB_ORG_UNIT', 'HUB_PARTY', 'HUB_PAYMENT_INSTRUMENT', 'HUB_POLICY', 'HUB_PRODUCT', 'HUB_QUOTE', 'HUB_RISK_OBJECT', 'LINK_CLAIM_PARTY', 'LINK_PARTY_LOCATION', 'LINK_PARTY_ROLE', 'LINK_POLICY_PARTY', 'SAT_ASSESSMENT_HEADER', 'SAT_AUG_ASSESSMENT_HEADER', 'SAT_AUG_CLAIM_APPROVAL_ACTION', 'SAT_AUG_CLAIM_ASSESSMENT_SUMMARY', 'SAT_AUG_CLAIM_BENEFIT_HEAD', 'SAT_AUG_CLAIM_CO_RI_SHARE', 'SAT_AUG_CLAIM_DEDUCTION_WAIVER', 'SAT_AUG_CLAIM_DOCUMENT_REMINDER', 'SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT', 'SAT_AUG_CLAIM_EVIDENCE', 'SAT_AUG_CLAIM_EXCLUSION_APPLIED', 'SAT_AUG_CLAIM_EXPENSE_LINE', 'SAT_AUG_CLAIM_FNOL', 'SAT_AUG_CLAIM_FOLLOWUP_TASK', 'SAT_AUG_CLAIM_FRAUD', 'SAT_AUG_CLAIM_HEADER', 'SAT_AUG_CLAIM_HEALTH_DETAIL', 'SAT_AUG_CLAIM_LITIGATION', 'SAT_AUG_CLAIM_NETWORK_VERIFICATION', 'SAT_AUG_CLAIM_PAYMENT_TRANCHE', 'SAT_AUG_CLAIM_PA_DETAIL', 'SAT_AUG_CLAIM_PROVIDER_BILLING', 'SAT_AUG_CLAIM_QUALITY_AUDIT', 'SAT_AUG_CLAIM_RECOVERY_SALVAGE', 'SAT_AUG_CLAIM_REPUDIATION', 'SAT_AUG_CLAIM_SETTLEMENT', 'SAT_AUG_CLAIM_SLA_TRACKING', 'SAT_AUG_CLAIM_STATUS_HISTORY', 'SAT_AUG_CLAIM_SURVEY_APPOINTMENT', 'SAT_AUG_CLAIM_TPA_INTERACTION', 'SAT_AUG_CLAIM_TP_FORENSIC', 'SAT_AUG_CLAIM_TRAVEL_DETAIL', 'SAT_AUG_CLAIM_TRAVEL_SECTOR', 'SAT_AUG_COMMON_ADDRESS', 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE', 'SAT_AUG_COMMON_CONSENT', 'SAT_AUG_COMMON_GEO', 'SAT_AUG_COMMON_MONETARY_CONTEXT', 'SAT_AUG_COVERAGE_CONDITIONS', 'SAT_AUG_COVERAGE_DEFINITION', 'SAT_AUG_COVERAGE_LIMITS', 'SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE', 'SAT_AUG_COVERAGE_SUB_COVER_ELEMENT', 'SAT_AUG_DOCUMENT_CHECKLIST', 'SAT_AUG_DOCUMENT_DEFINITION', 'SAT_AUG_DOCUMENT_DISPATCH', 'SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER', 'SAT_AUG_FINTXN_CLAIM_PAYMENT', 'SAT_AUG_FINTXN_TAX', 'SAT_AUG_FIN_RECEIPT', 'SAT_AUG_INSTRUMENT_DEFINITION', 'SAT_AUG_LNK_ROLE_AGENT', 'SAT_AUG_LNK_ROLE_CUSTOMER', 'SAT_AUG_LNK_ROLE_PROVIDER', 'SAT_AUG_LOSS_EVENT_DETAIL', 'SAT_AUG_ORG_UNIT_CONTACT', 'SAT_AUG_PARTY_BANKING', 'SAT_AUG_PARTY_CLAIM_HISTORY', 'SAT_AUG_PARTY_CONSENT_MANDATE', 'SAT_AUG_PARTY_CONTACT_ADDRESS_LINK', 'SAT_AUG_PARTY_CORRESPONDENCE', 'SAT_AUG_PARTY_EMPLOYMENT', 'SAT_AUG_PARTY_FINANCIAL_PROFILE', 'SAT_AUG_PARTY_FRAUD_PROFILE', 'SAT_AUG_PARTY_GROUP_SCHEME', 'SAT_AUG_PARTY_HEALTH_PROFILE', 'SAT_AUG_PARTY_HIERARCHY', 'SAT_AUG_PARTY_IDENTIFICATION', 'SAT_AUG_PARTY_IDENTITY', 'SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS', 'SAT_AUG_PARTY_KYC', 'SAT_AUG_PARTY_LOYALTY_CLASSIFICATION', 'SAT_AUG_PARTY_ONBOARDING_JOURNEY', 'SAT_AUG_PARTY_ORGANISATION_PROFILE', 'SAT_AUG_PARTY_PAYOUT_PROFILE', 'SAT_AUG_PARTY_PORTFOLIO_SUMMARY', 'SAT_AUG_PARTY_PREFERENCE_PROFILE', 'SAT_AUG_PARTY_RELATIONSHIP_PROFILE', 'SAT_AUG_PARTY_RISK_ANALYTICS', 'SAT_AUG_POLICY_CANCELLATION', 'SAT_AUG_POLICY_CLAIM_EXPERIENCE', 'SAT_AUG_POLICY_COVERAGE_SCHEDULE', 'SAT_AUG_POLICY_DELIVERY', 'SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED', 'SAT_AUG_POLICY_DOCUMENT_DISPATCH', 'SAT_AUG_POLICY_ENDORSEMENT', 'SAT_AUG_POLICY_GROUP', 'SAT_AUG_POLICY_HEADER', 'SAT_AUG_POLICY_HEALTH_DECLARATION', 'SAT_AUG_POLICY_INSURED_DECLARATION', 'SAT_AUG_POLICY_INTERMEDIARY_SPLIT', 'SAT_AUG_POLICY_NOMINEE_DECLARATION', 'SAT_AUG_POLICY_PREMIUM_HEAD', 'SAT_AUG_POLICY_PREMIUM_SUMMARY', 'SAT_AUG_POLICY_PROPERTY_LINE', 'SAT_AUG_POLICY_RENEWAL', 'SAT_AUG_POLICY_SUM_INSURED_BREAKUP', 'SAT_AUG_POLICY_TAX_BREAKUP', 'SAT_AUG_POLICY_TERMS', 'SAT_AUG_POLICY_TRAVEL_TERMS', 'SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE', 'SAT_AUG_POLICY_UW_QUERY', 'SAT_AUG_POLICY_WORK_ITEM', 'SAT_AUG_PRODUCT_RATING_STRUCTURE', 'SAT_AUG_PRODUCT_TERMS', 'SAT_AUG_QUOTE_CLAIM_EXPERIENCE', 'SAT_AUG_QUOTE_COVERAGE_LINE', 'SAT_AUG_QUOTE_COVERAGE_SCHEDULE', 'SAT_AUG_QUOTE_COVER_DETAIL', 'SAT_AUG_QUOTE_HEADER', 'SAT_AUG_QUOTE_HEALTH_DECLARATION', 'SAT_AUG_QUOTE_INSURED_DECLARATION', 'SAT_AUG_QUOTE_NOMINEE_DECLARATION', 'SAT_AUG_QUOTE_PREMIUM_HEAD', 'SAT_AUG_QUOTE_PROPERTY_LINE', 'SAT_AUG_QUOTE_RATING', 'SAT_AUG_QUOTE_RISK_LINE', 'SAT_AUG_QUOTE_SUM_INSURED_BREAKUP', 'SAT_AUG_QUOTE_TERMS', 'SAT_AUG_QUOTE_TRAVEL_TRIP', 'SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE', 'SAT_AUG_QUOTE_UW_QUERY', 'SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL', 'SAT_AUG_RISK_OBJECT_CORE', 'SAT_AUG_RISK_OBJECT_PREMIUM', 'SAT_AUG_RISK_OBJECT_VALUATION', 'SAT_AUG_RISK_PERSON_INSURED', 'SAT_AUG_RISK_PERSON_TRAVEL', 'SAT_AUG_RISK_TRAVEL_COVER_TERMS', 'SAT_AUG_RISK_TRAVEL_RATING_INPUT', 'SAT_AUG_RISK_TRAVEL_SPONSOR', 'SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY', 'SAT_CHANNEL_DEFINITION', 'SAT_CLAIM_ASSESSMENT_SUMMARY', 'SAT_CLAIM_BENEFIT_HEAD', 'SAT_CLAIM_CO_RI_SHARE', 'SAT_CLAIM_FNOL', 'SAT_CLAIM_FRAUD', 'SAT_CLAIM_HEADER', 'SAT_CLAIM_HEALTH_DETAIL', 'SAT_CLAIM_INVESTIGATION_FINDING', 'SAT_CLAIM_LITIGATION', 'SAT_CLAIM_NOTE', 'SAT_CLAIM_PAYMENT_TRANCHE', 'SAT_CLAIM_PA_DETAIL', 'SAT_CLAIM_PROVIDER_BILLING', 'SAT_CLAIM_RECOVERY_SALVAGE', 'SAT_CLAIM_REPUDIATION', 'SAT_CLAIM_RESERVE', 'SAT_CLAIM_RESERVE_HEAD', 'SAT_CLAIM_SETTLEMENT', 'SAT_CLAIM_SLA_TRACKING', 'SAT_CLAIM_TP_FORENSIC', 'SAT_CLAIM_TRAVEL_DETAIL', 'SAT_COMMON_ADDRESS', 'SAT_COMMON_ADMIN_GEOGRAPHY', 'SAT_COMMON_BUSINESS_AUDIT', 'SAT_COMMON_CLASSIFICATION', 'SAT_COMMON_COMMUNICATION_PREFERENCE', 'SAT_COMMON_CONSENT', 'SAT_COMMON_CONTACT', 'SAT_COMMON_GEO', 'SAT_COMMON_LIFECYCLE', 'SAT_COMMON_MONETARY_CONTEXT', 'SAT_COMMON_STATUS', 'SAT_COVERAGE_CONDITIONS', 'SAT_COVERAGE_DEFINITION', 'SAT_COVERAGE_SUBLIMIT_SCHEDULE', 'SAT_DOCUMENT_DEFINITION', 'SAT_FINTXN_ACCOUNTING', 'SAT_FINTXN_CLAIM_PAYMENT', 'SAT_FINTXN_HEADER', 'SAT_FINTXN_PREMIUM', 'SAT_FINTXN_TAX', 'SAT_FIN_RECEIPT', 'SAT_INSTRUMENT_DEFINITION', 'SAT_LNK_PARTY_ROLE_CORE', 'SAT_LNK_POLICY_PARTY_ROLE', 'SAT_LNK_ROLE_AGENT', 'SAT_LNK_ROLE_CUSTOMER', 'SAT_LNK_ROLE_EMPLOYEE', 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY', 'SAT_LOSS_EVENT_DETAIL', 'SAT_LOSS_EVENT_NOTIFICATION', 'SAT_LOSS_LOCATION_ADDRESS', 'SAT_ORG_UNIT_DEFINITION', 'SAT_PARTY_AML_SCREENING', 'SAT_PARTY_BANKING', 'SAT_PARTY_CLAIM_HISTORY', 'SAT_PARTY_CONTACT_ADDRESS_LINK', 'SAT_PARTY_EMPLOYMENT', 'SAT_PARTY_FINANCIAL_PROFILE', 'SAT_PARTY_FRAUD_PROFILE', 'SAT_PARTY_HEALTH_PROFILE', 'SAT_PARTY_IDENTIFICATION', 'SAT_PARTY_IDENTITY', 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS', 'SAT_PARTY_KYC', 'SAT_PARTY_KYC_REFERENCE', 'SAT_PARTY_ONBOARDING_JOURNEY', 'SAT_PARTY_ORGANISATION_PROFILE', 'SAT_PARTY_PAYOUT_PROFILE', 'SAT_PARTY_POLICY_HISTORY', 'SAT_PARTY_PORTFOLIO_SUMMARY', 'SAT_PARTY_RELATIONSHIP_PROFILE', 'SAT_POLICY_CANCELLATION', 'SAT_POLICY_CLASSIFICATION', 'SAT_POLICY_COVERAGE_SCHEDULE', 'SAT_POLICY_DISCOUNT_LOADING_APPLIED', 'SAT_POLICY_ENDORSEMENT', 'SAT_POLICY_GROUP', 'SAT_POLICY_HEADER', 'SAT_POLICY_INTERMEDIARY_SPLIT', 'SAT_POLICY_PORTABILITY_MIGRATION', 'SAT_POLICY_PREMIUM_HEAD', 'SAT_POLICY_PREMIUM_SUMMARY', 'SAT_POLICY_RENEWAL', 'SAT_POLICY_SERVICING_SUMMARY', 'SAT_POLICY_SUM_INSURED_BREAKUP', 'SAT_POLICY_TAX_BREAKUP', 'SAT_POLICY_TAX_HEAD', 'SAT_POLICY_TERMS', 'SAT_PRODUCT_DEFINITION', 'SAT_PRODUCT_RATING_STRUCTURE', 'SAT_PRODUCT_TERMS', 'SAT_QUOTE_HEADER', 'SAT_QUOTE_RATING', 'SAT_QUOTE_RATING_INPUT', 'SAT_RISK_HEALTH_MEMBER_MEDICAL', 'SAT_RISK_OBJECT_CORE', 'SAT_RISK_OBJECT_VALUATION', 'SAT_RISK_PERSON_INSURED', 'SAT_RISK_PERSON_MEMBER', 'SAT_RISK_PERSON_TRAVEL')
+   and table_name in ('HUB_ASSESSMENT', 'HUB_CLAIM', 'HUB_COVERAGE', 'HUB_DISTRIBUTION_CHANNEL', 'HUB_DOCUMENT', 'HUB_FINANCIAL_TRANSACTION', 'HUB_LOCATION', 'HUB_LOSS_EVENT', 'HUB_ORG_UNIT', 'HUB_PARTY', 'HUB_PAYMENT_INSTRUMENT', 'HUB_POLICY', 'HUB_PRODUCT', 'HUB_QUOTE', 'HUB_RISK_OBJECT', 'LINK_CLAIM_PARTY', 'LINK_PARTY_LOCATION', 'LINK_PARTY_ROLE', 'LINK_POLICY_PARTY', 'SAT_ASSESSMENT_HEADER', 'SAT_AUG_CLAIM_APPROVAL_ACTION', 'SAT_AUG_CLAIM_ASSESSMENT_SUMMARY', 'SAT_AUG_CLAIM_BENEFIT_HEAD', 'SAT_AUG_CLAIM_CO_RI_SHARE', 'SAT_AUG_CLAIM_DEDUCTION_WAIVER', 'SAT_AUG_CLAIM_DOCUMENT_REMINDER', 'SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT', 'SAT_AUG_CLAIM_EVIDENCE', 'SAT_AUG_CLAIM_EXCLUSION_APPLIED', 'SAT_AUG_CLAIM_EXPENSE_LINE', 'SAT_AUG_CLAIM_FOLLOWUP_TASK', 'SAT_AUG_CLAIM_FRAUD', 'SAT_AUG_CLAIM_HEADER', 'SAT_AUG_CLAIM_LITIGATION', 'SAT_AUG_CLAIM_NETWORK_VERIFICATION', 'SAT_AUG_CLAIM_PAYMENT_TRANCHE', 'SAT_AUG_CLAIM_PA_DETAIL', 'SAT_AUG_CLAIM_PROVIDER_BILLING', 'SAT_AUG_CLAIM_QUALITY_AUDIT', 'SAT_AUG_CLAIM_RECOVERY_SALVAGE', 'SAT_AUG_CLAIM_SETTLEMENT', 'SAT_AUG_CLAIM_SLA_TRACKING', 'SAT_AUG_CLAIM_STATUS_HISTORY', 'SAT_AUG_CLAIM_SURVEY_APPOINTMENT', 'SAT_AUG_CLAIM_TPA_INTERACTION', 'SAT_AUG_CLAIM_TRAVEL_DETAIL', 'SAT_AUG_CLAIM_TRAVEL_SECTOR', 'SAT_AUG_COMMON_ADDRESS', 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE', 'SAT_AUG_COVERAGE_CONDITIONS', 'SAT_AUG_COVERAGE_DEFINITION', 'SAT_AUG_COVERAGE_LIMITS', 'SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE', 'SAT_AUG_COVERAGE_SUB_COVER_ELEMENT', 'SAT_AUG_DOCUMENT_CHECKLIST', 'SAT_AUG_DOCUMENT_DISPATCH', 'SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER', 'SAT_AUG_FINTXN_TAX', 'SAT_AUG_FIN_RECEIPT', 'SAT_AUG_LNK_ROLE_CUSTOMER', 'SAT_AUG_LNK_ROLE_PROVIDER', 'SAT_AUG_ORG_UNIT_CONTACT', 'SAT_AUG_PARTY_BANKING', 'SAT_AUG_PARTY_CLAIM_HISTORY', 'SAT_AUG_PARTY_CONSENT_MANDATE', 'SAT_AUG_PARTY_CONTACT_ADDRESS_LINK', 'SAT_AUG_PARTY_CORRESPONDENCE', 'SAT_AUG_PARTY_EMPLOYMENT', 'SAT_AUG_PARTY_FINANCIAL_PROFILE', 'SAT_AUG_PARTY_GROUP_SCHEME', 'SAT_AUG_PARTY_HEALTH_PROFILE', 'SAT_AUG_PARTY_HIERARCHY', 'SAT_AUG_PARTY_IDENTIFICATION', 'SAT_AUG_PARTY_IDENTITY', 'SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS', 'SAT_AUG_PARTY_LOYALTY_CLASSIFICATION', 'SAT_AUG_PARTY_ONBOARDING_JOURNEY', 'SAT_AUG_PARTY_PAYOUT_PROFILE', 'SAT_AUG_PARTY_PREFERENCE_PROFILE', 'SAT_AUG_PARTY_RELATIONSHIP_PROFILE', 'SAT_AUG_PARTY_RISK_ANALYTICS', 'SAT_AUG_POLICY_CLAIM_EXPERIENCE', 'SAT_AUG_POLICY_COVERAGE_SCHEDULE', 'SAT_AUG_POLICY_DELIVERY', 'SAT_AUG_POLICY_DOCUMENT_DISPATCH', 'SAT_AUG_POLICY_HEADER', 'SAT_AUG_POLICY_HEALTH_DECLARATION', 'SAT_AUG_POLICY_INSURED_DECLARATION', 'SAT_AUG_POLICY_INTERMEDIARY_SPLIT', 'SAT_AUG_POLICY_NOMINEE_DECLARATION', 'SAT_AUG_POLICY_PREMIUM_HEAD', 'SAT_AUG_POLICY_PREMIUM_SUMMARY', 'SAT_AUG_POLICY_PROPERTY_LINE', 'SAT_AUG_POLICY_RENEWAL', 'SAT_AUG_POLICY_TERMS', 'SAT_AUG_POLICY_TRAVEL_TERMS', 'SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE', 'SAT_AUG_POLICY_UW_QUERY', 'SAT_AUG_POLICY_WORK_ITEM', 'SAT_AUG_PRODUCT_RATING_STRUCTURE', 'SAT_AUG_PRODUCT_TERMS', 'SAT_AUG_QUOTE_CLAIM_EXPERIENCE', 'SAT_AUG_QUOTE_COVERAGE_LINE', 'SAT_AUG_QUOTE_COVERAGE_SCHEDULE', 'SAT_AUG_QUOTE_COVER_DETAIL', 'SAT_AUG_QUOTE_HEADER', 'SAT_AUG_QUOTE_HEALTH_DECLARATION', 'SAT_AUG_QUOTE_INSURED_DECLARATION', 'SAT_AUG_QUOTE_NOMINEE_DECLARATION', 'SAT_AUG_QUOTE_PREMIUM_HEAD', 'SAT_AUG_QUOTE_PROPERTY_LINE', 'SAT_AUG_QUOTE_RATING', 'SAT_AUG_QUOTE_RISK_LINE', 'SAT_AUG_QUOTE_SUM_INSURED_BREAKUP', 'SAT_AUG_QUOTE_TERMS', 'SAT_AUG_QUOTE_TRAVEL_TRIP', 'SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE', 'SAT_AUG_QUOTE_UW_QUERY', 'SAT_AUG_RISK_OBJECT_CORE', 'SAT_AUG_RISK_OBJECT_PREMIUM', 'SAT_AUG_RISK_PERSON_INSURED', 'SAT_AUG_RISK_PERSON_TRAVEL', 'SAT_AUG_RISK_TRAVEL_COVER_TERMS', 'SAT_AUG_RISK_TRAVEL_RATING_INPUT', 'SAT_AUG_RISK_TRAVEL_SPONSOR', 'SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY', 'SAT_CHANNEL_DEFINITION', 'SAT_CLAIM_ASSESSMENT_SUMMARY', 'SAT_CLAIM_BENEFIT_HEAD', 'SAT_CLAIM_CO_RI_SHARE', 'SAT_CLAIM_FNOL', 'SAT_CLAIM_FRAUD', 'SAT_CLAIM_HEADER', 'SAT_CLAIM_HEALTH_DETAIL', 'SAT_CLAIM_INVESTIGATION_FINDING', 'SAT_CLAIM_LITIGATION', 'SAT_CLAIM_NOTE', 'SAT_CLAIM_PAYMENT_TRANCHE', 'SAT_CLAIM_PA_DETAIL', 'SAT_CLAIM_PROVIDER_BILLING', 'SAT_CLAIM_RECOVERY_SALVAGE', 'SAT_CLAIM_REPUDIATION', 'SAT_CLAIM_RESERVE', 'SAT_CLAIM_RESERVE_HEAD', 'SAT_CLAIM_SETTLEMENT', 'SAT_CLAIM_SLA_TRACKING', 'SAT_CLAIM_TP_FORENSIC', 'SAT_CLAIM_TRAVEL_DETAIL', 'SAT_COMMON_ADDRESS', 'SAT_COMMON_ADMIN_GEOGRAPHY', 'SAT_COMMON_BUSINESS_AUDIT', 'SAT_COMMON_CLASSIFICATION', 'SAT_COMMON_COMMUNICATION_PREFERENCE', 'SAT_COMMON_CONSENT', 'SAT_COMMON_CONTACT', 'SAT_COMMON_GEO', 'SAT_COMMON_LIFECYCLE', 'SAT_COMMON_MONETARY_CONTEXT', 'SAT_COMMON_STATUS', 'SAT_COVERAGE_CONDITIONS', 'SAT_COVERAGE_DEFINITION', 'SAT_COVERAGE_SUBLIMIT_SCHEDULE', 'SAT_DOCUMENT_DEFINITION', 'SAT_FINTXN_ACCOUNTING', 'SAT_FINTXN_CLAIM_PAYMENT', 'SAT_FINTXN_HEADER', 'SAT_FINTXN_PREMIUM', 'SAT_FINTXN_TAX', 'SAT_FIN_RECEIPT', 'SAT_INSTRUMENT_DEFINITION', 'SAT_LNK_PARTY_ROLE_CORE', 'SAT_LNK_POLICY_PARTY_ROLE', 'SAT_LNK_ROLE_AGENT', 'SAT_LNK_ROLE_CUSTOMER', 'SAT_LNK_ROLE_EMPLOYEE', 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY', 'SAT_LOSS_EVENT_DETAIL', 'SAT_LOSS_EVENT_NOTIFICATION', 'SAT_LOSS_LOCATION_ADDRESS', 'SAT_ORG_UNIT_DEFINITION', 'SAT_PARTY_AML_SCREENING', 'SAT_PARTY_BANKING', 'SAT_PARTY_CLAIM_HISTORY', 'SAT_PARTY_CONTACT_ADDRESS_LINK', 'SAT_PARTY_EMPLOYMENT', 'SAT_PARTY_FINANCIAL_PROFILE', 'SAT_PARTY_FRAUD_PROFILE', 'SAT_PARTY_HEALTH_PROFILE', 'SAT_PARTY_IDENTIFICATION', 'SAT_PARTY_IDENTITY', 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS', 'SAT_PARTY_KYC', 'SAT_PARTY_KYC_REFERENCE', 'SAT_PARTY_ONBOARDING_JOURNEY', 'SAT_PARTY_ORGANISATION_PROFILE', 'SAT_PARTY_PAYOUT_PROFILE', 'SAT_PARTY_POLICY_HISTORY', 'SAT_PARTY_PORTFOLIO_SUMMARY', 'SAT_PARTY_RELATIONSHIP_PROFILE', 'SAT_POLICY_CANCELLATION', 'SAT_POLICY_CLASSIFICATION', 'SAT_POLICY_COVERAGE_SCHEDULE', 'SAT_POLICY_DISCOUNT_LOADING_APPLIED', 'SAT_POLICY_ENDORSEMENT', 'SAT_POLICY_GROUP', 'SAT_POLICY_HEADER', 'SAT_POLICY_INTERMEDIARY_SPLIT', 'SAT_POLICY_PORTABILITY_MIGRATION', 'SAT_POLICY_PREMIUM_HEAD', 'SAT_POLICY_PREMIUM_SUMMARY', 'SAT_POLICY_RENEWAL', 'SAT_POLICY_SERVICING_SUMMARY', 'SAT_POLICY_SUM_INSURED_BREAKUP', 'SAT_POLICY_TAX_BREAKUP', 'SAT_POLICY_TAX_HEAD', 'SAT_POLICY_TERMS', 'SAT_PRODUCT_DEFINITION', 'SAT_PRODUCT_RATING_STRUCTURE', 'SAT_PRODUCT_TERMS', 'SAT_QUOTE_HEADER', 'SAT_QUOTE_RATING', 'SAT_QUOTE_RATING_INPUT', 'SAT_RISK_HEALTH_MEMBER_MEDICAL', 'SAT_RISK_OBJECT_CORE', 'SAT_RISK_OBJECT_VALUATION', 'SAT_RISK_PERSON_INSURED', 'SAT_RISK_PERSON_MEMBER', 'SAT_RISK_PERSON_TRAVEL')
    and (column_name like '%\\_HKEY' escape '\\' or column_name like 'HASHDIFF%')
  order by iff(status = 'FAIL', 0, 1), table_name, column_name;
 
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — HUB  HUB_ASSESSMENT   [Implemented]  [M1]
+-- 2. MAXIMUS — HUB  HUB_ASSESSMENT   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))),
 -- '')) must equal ASSESSMENT_HKEY. collisions = hash keys carrying more than one
 -- PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and
@@ -72,7 +71,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_ASSESSMENT' as table_name
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — HUB  HUB_CLAIM   [Implemented]  [M1]
+-- 3. MAXIMUS — HUB  HUB_CLAIM   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))),
 -- '')) must equal CLAIM_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -95,7 +94,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_CLAIM' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — HUB  HUB_COVERAGE   [Implemented]  [M1]
+-- 4. MAXIMUS — HUB  HUB_COVERAGE   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))),
 -- '')) must equal COVERAGE_HKEY. collisions = hash keys carrying more than one
 -- PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and
@@ -118,7 +117,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_COVERAGE' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — HUB  HUB_DISTRIBUTION_CHANNEL   [Implemented]  [M1]
+-- 5. MAXIMUS — HUB  HUB_DISTRIBUTION_CHANNEL   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))),
 -- '')) must equal DISTRIBUTION_CHANNEL_HKEY. collisions = hash keys carrying more than
 -- one PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute
@@ -141,7 +140,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_DISTRIBUTION_CHANNEL' as 
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — HUB  HUB_DOCUMENT   [Implemented]  [M1]
+-- 6. MAXIMUS — HUB  HUB_DOCUMENT   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))),
 -- '')) must equal DOCUMENT_HKEY. collisions = hash keys carrying more than one
 -- PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and
@@ -164,7 +163,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_DOCUMENT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — HUB  HUB_FINANCIAL_TRANSACTION   [Implemented]  [M1]
+-- 7. MAXIMUS — HUB  HUB_FINANCIAL_TRANSACTION   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))),
 -- '')) must equal FINANCIAL_TRANSACTION_HKEY. collisions = hash keys carrying more than
 -- one PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute
@@ -187,7 +186,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_TRANSACTION' as
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — HUB  HUB_LOCATION   [Implemented]  [M1]
+-- 8. MAXIMUS — HUB  HUB_LOCATION   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))),
 -- '')) must equal LOCATION_HKEY. collisions = hash keys carrying more than one
 -- PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and
@@ -210,7 +209,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_LOCATION' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — HUB  HUB_LOSS_EVENT   [Implemented]  [M1]
+-- 9. MAXIMUS — HUB  HUB_LOSS_EVENT   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))),
 -- '')) must equal LOSS_EVENT_HKEY. collisions = hash keys carrying more than one
 -- PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and
@@ -233,7 +232,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_LOSS_EVENT' as table_name
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — HUB  HUB_ORG_UNIT   [Implemented]  [M1]
+-- 10. MAXIMUS — HUB  HUB_ORG_UNIT   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))),
 -- '')) must equal ORG_UNIT_HKEY. collisions = hash keys carrying more than one
 -- PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and
@@ -256,7 +255,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_ORG_UNIT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — HUB  HUB_PARTY   [Implemented]  [M1]
+-- 11. MAXIMUS — HUB  HUB_PARTY   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))),
 -- '')) must equal PARTY_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -279,7 +278,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_PARTY' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — HUB  HUB_PAYMENT_INSTRUMENT   [Implemented]  [M1]
+-- 12. MAXIMUS — HUB  HUB_PAYMENT_INSTRUMENT   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))),
 -- '')) must equal PAYMENT_INSTRUMENT_HKEY. collisions = hash keys carrying more than one
 -- PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and
@@ -302,7 +301,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_PAYMENT_INSTRUMENT' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — HUB  HUB_POLICY   [Implemented]  [M1]
+-- 13. MAXIMUS — HUB  HUB_POLICY   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))),
 -- '')) must equal POLICY_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -325,7 +324,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_POLICY' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — HUB  HUB_PRODUCT   [Implemented]  [M1]
+-- 14. MAXIMUS — HUB  HUB_PRODUCT   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))),
 -- '')) must equal PRODUCT_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -348,7 +347,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_PRODUCT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — HUB  HUB_QUOTE   [Implemented]  [M1]
+-- 15. MAXIMUS — HUB  HUB_QUOTE   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))),
 -- '')) must equal QUOTE_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -371,7 +370,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_QUOTE' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 16. MAXIMUS — HUB  HUB_RISK_OBJECT   [Implemented]  [M1]
+-- 16. MAXIMUS — HUB  HUB_RISK_OBJECT   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('MAXIMUS_' || PARENT_BK AS VARCHAR))),
 -- '')) must equal RISK_OBJECT_HKEY. collisions = hash keys carrying more than one
 -- PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and
@@ -394,7 +393,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_RISK_OBJECT' as table_nam
 
 
 ----------------------------------------------------------------------------------------
--- 17. MAXIMUS — LINK  LINK_CLAIM_PARTY   [Implemented]  [M1]
+-- 17. MAXIMUS — LINK  LINK_CLAIM_PARTY   [Implemented]
 -- FK hash keys CLAIM_HKEY, PARTY_HKEY. collisions = one link hash key with more than one
 -- FK combination (the link key no longer identifies one relationship).
 ----------------------------------------------------------------------------------------
@@ -415,7 +414,7 @@ select 'MAXIMUS' as project, 'link' as table_type, 'LINK_CLAIM_PARTY' as table_n
 
 
 ----------------------------------------------------------------------------------------
--- 18. MAXIMUS — LINK  LINK_PARTY_LOCATION   [Implemented]  [M1]
+-- 18. MAXIMUS — LINK  LINK_PARTY_LOCATION   [Implemented]
 -- FK hash keys PARTY_HKEY, LOCATION_HKEY. collisions = one link hash key with more than
 -- one FK combination (the link key no longer identifies one relationship).
 ----------------------------------------------------------------------------------------
@@ -436,7 +435,7 @@ select 'MAXIMUS' as project, 'link' as table_type, 'LINK_PARTY_LOCATION' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 19. MAXIMUS — LINK  LINK_PARTY_ROLE   [Implemented]  [M1]
+-- 19. MAXIMUS — LINK  LINK_PARTY_ROLE   [Implemented]
 -- FK hash keys PARTY_HKEY, PARTY_ROLE_ROLE. collisions = one link hash key with more
 -- than one FK combination (the link key no longer identifies one relationship).
 ----------------------------------------------------------------------------------------
@@ -457,7 +456,7 @@ select 'MAXIMUS' as project, 'link' as table_type, 'LINK_PARTY_ROLE' as table_na
 
 
 ----------------------------------------------------------------------------------------
--- 20. MAXIMUS — LINK  LINK_POLICY_PARTY   [Implemented]  [M1]
+-- 20. MAXIMUS — LINK  LINK_POLICY_PARTY   [Implemented]
 -- FK hash keys POLICY_HKEY, PARTY_HKEY. collisions = one link hash key with more than
 -- one FK combination (the link key no longer identifies one relationship).
 ----------------------------------------------------------------------------------------
@@ -478,7 +477,7 @@ select 'MAXIMUS' as project, 'link' as table_type, 'LINK_POLICY_PARTY' as table_
 
 
 ----------------------------------------------------------------------------------------
--- 21. MAXIMUS — SATELLITE  SAT_ASSESSMENT_HEADER   [Implemented]  [M1]
+-- 21. MAXIMUS — SATELLITE  SAT_ASSESSMENT_HEADER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -494,23 +493,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_ASSESSMENT_HEADER' 
 
 
 ----------------------------------------------------------------------------------------
--- 22. MAXIMUS — SATELLITE  SAT_AUG_ASSESSMENT_HEADER   [Implemented]  [M1]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_ASSESSMENT_HEADER' as table_name,
-       count(*) as rows_in_scope,
-       count_if(ASSESSMENT_HKEY is null) as null_hkey,
-       count_if(ASSESSMENT_HKEY is not null and length(ASSESSMENT_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_ASSESSMENT_HEADER
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS');
-
-
-
-----------------------------------------------------------------------------------------
--- 23. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]  [M1]
+-- 22. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -526,7 +509,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_APPROVAL_
 
 
 ----------------------------------------------------------------------------------------
--- 24. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M1]
+-- 23. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -542,7 +525,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_ASSESSMEN
 
 
 ----------------------------------------------------------------------------------------
--- 25. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]  [M1]
+-- 24. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -558,7 +541,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_BENEFIT_H
 
 
 ----------------------------------------------------------------------------------------
--- 26. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]  [M1]
+-- 25. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -574,7 +557,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_CO_RI_SHA
 
 
 ----------------------------------------------------------------------------------------
--- 27. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]  [M1]
+-- 26. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -590,7 +573,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_DEDUCTION
 
 
 ----------------------------------------------------------------------------------------
--- 28. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]  [M1]
+-- 27. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -606,7 +589,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_DOCUMENT_
 
 
 ----------------------------------------------------------------------------------------
--- 29. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]  [M1]
+-- 28. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -622,7 +605,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_DOCUMENT_
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EVIDENCE   [Implemented]  [M1]
+-- 29. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EVIDENCE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -638,7 +621,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_EVIDENCE'
 
 
 ----------------------------------------------------------------------------------------
--- 31. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]  [M1]
+-- 30. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -654,7 +637,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_EXCLUSION
 
 
 ----------------------------------------------------------------------------------------
--- 32. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]  [M1]
+-- 31. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -670,23 +653,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_EXPENSE_L
 
 
 ----------------------------------------------------------------------------------------
--- 33. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_FNOL   [Implemented]  [M1]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_FNOL' as table_name,
-       count(*) as rows_in_scope,
-       count_if(CLAIM_HKEY is null) as null_hkey,
-       count_if(CLAIM_HKEY is not null and length(CLAIM_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FNOL
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 34. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]  [M1]
+-- 32. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -702,7 +669,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_FOLLOWUP_
 
 
 ----------------------------------------------------------------------------------------
--- 35. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_FRAUD   [Implemented]  [M1]
+-- 33. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_FRAUD   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -718,7 +685,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_FRAUD' as
 
 
 ----------------------------------------------------------------------------------------
--- 36. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_HEADER   [Implemented]  [M1]
+-- 34. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_HEADER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -734,23 +701,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_HEADER' a
 
 
 ----------------------------------------------------------------------------------------
--- 37. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_HEALTH_DETAIL   [Implemented]  [M1]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_HEALTH_DETAIL' as table_name,
-       count(*) as rows_in_scope,
-       count_if(CLAIM_HKEY is null) as null_hkey,
-       count_if(CLAIM_HKEY is not null and length(CLAIM_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_HEALTH_DETAIL
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 38. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_LITIGATION   [Implemented]  [M1]
+-- 35. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_LITIGATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -766,7 +717,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_LITIGATIO
 
 
 ----------------------------------------------------------------------------------------
--- 39. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]  [M1]
+-- 36. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -782,7 +733,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_NETWORK_V
 
 
 ----------------------------------------------------------------------------------------
--- 40. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M1]
+-- 37. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -798,7 +749,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_PAYMENT_T
 
 
 ----------------------------------------------------------------------------------------
--- 41. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PA_DETAIL   [Implemented]  [M1]
+-- 38. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PA_DETAIL   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -814,7 +765,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_PA_DETAIL
 
 
 ----------------------------------------------------------------------------------------
--- 42. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]  [M1]
+-- 39. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -830,7 +781,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_PROVIDER_
 
 
 ----------------------------------------------------------------------------------------
--- 43. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]  [M1]
+-- 40. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -846,7 +797,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_QUALITY_A
 
 
 ----------------------------------------------------------------------------------------
--- 44. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M1]
+-- 41. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -862,23 +813,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_RECOVERY_
 
 
 ----------------------------------------------------------------------------------------
--- 45. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_REPUDIATION   [Implemented]  [M1]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_REPUDIATION' as table_name,
-       count(*) as rows_in_scope,
-       count_if(CLAIM_HKEY is null) as null_hkey,
-       count_if(CLAIM_HKEY is not null and length(CLAIM_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_REPUDIATION
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 46. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SETTLEMENT   [Implemented]  [M1]
+-- 42. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SETTLEMENT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -894,7 +829,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_SETTLEMEN
 
 
 ----------------------------------------------------------------------------------------
--- 47. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]  [M1]
+-- 43. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -910,7 +845,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_SLA_TRACK
 
 
 ----------------------------------------------------------------------------------------
--- 48. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]  [M1]
+-- 44. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -926,7 +861,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_STATUS_HI
 
 
 ----------------------------------------------------------------------------------------
--- 49. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]  [M1]
+-- 45. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -942,7 +877,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_SURVEY_AP
 
 
 ----------------------------------------------------------------------------------------
--- 50. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]  [M1]
+-- 46. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -958,23 +893,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_TPA_INTER
 
 
 ----------------------------------------------------------------------------------------
--- 51. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TP_FORENSIC   [Implemented]  [M1]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_TP_FORENSIC' as table_name,
-       count(*) as rows_in_scope,
-       count_if(CLAIM_HKEY is null) as null_hkey,
-       count_if(CLAIM_HKEY is not null and length(CLAIM_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TP_FORENSIC
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 52. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]  [M1]
+-- 47. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -990,7 +909,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_TRAVEL_DE
 
 
 ----------------------------------------------------------------------------------------
--- 53. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]  [M1]
+-- 48. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1006,7 +925,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_TRAVEL_SE
 
 
 ----------------------------------------------------------------------------------------
--- 54. MAXIMUS — SATELLITE  SAT_AUG_COMMON_ADDRESS   [Implemented]  [M1]
+-- 49. MAXIMUS — SATELLITE  SAT_AUG_COMMON_ADDRESS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1022,7 +941,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_ADDRESS'
 
 
 ----------------------------------------------------------------------------------------
--- 55. MAXIMUS — SATELLITE  SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M1]
+-- 50. MAXIMUS — SATELLITE  SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1038,55 +957,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_COMMUNIC
 
 
 ----------------------------------------------------------------------------------------
--- 56. MAXIMUS — SATELLITE  SAT_AUG_COMMON_CONSENT   [Implemented]  [M1]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_CONSENT' as table_name,
-       count(*) as rows_in_scope,
-       count_if(PARTY_HKEY is null) as null_hkey,
-       count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_CONSENT
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 57. MAXIMUS — SATELLITE  SAT_AUG_COMMON_GEO   [Implemented]  [M1]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_GEO' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOCATION_HKEY is null) as null_hkey,
-       count_if(LOCATION_HKEY is not null and length(LOCATION_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_GEO
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 58. MAXIMUS — SATELLITE  SAT_AUG_COMMON_MONETARY_CONTEXT   [Implemented]  [M1]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_MONETARY_CONTEXT' as table_name,
-       count(*) as rows_in_scope,
-       count_if(FINANCIAL_TRANSACTION_HKEY is null) as null_hkey,
-       count_if(FINANCIAL_TRANSACTION_HKEY is not null and length(FINANCIAL_TRANSACTION_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_MONETARY_CONTEXT
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS');
-
-
-
-----------------------------------------------------------------------------------------
--- 59. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_CONDITIONS   [Implemented]  [M1]
+-- 51. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_CONDITIONS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1102,7 +973,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_CONDIT
 
 
 ----------------------------------------------------------------------------------------
--- 60. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M1]
+-- 52. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_DEFINITION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1118,7 +989,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_DEFINI
 
 
 ----------------------------------------------------------------------------------------
--- 61. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M1]
+-- 53. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_LIMITS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1134,7 +1005,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_LIMITS
 
 
 ----------------------------------------------------------------------------------------
--- 62. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M1]
+-- 54. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1150,7 +1021,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_SUBLIM
 
 
 ----------------------------------------------------------------------------------------
--- 63. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]  [M1]
+-- 55. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1166,7 +1037,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_SUB_CO
 
 
 ----------------------------------------------------------------------------------------
--- 64. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]  [M1]
+-- 56. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1182,23 +1053,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_DOCUMENT_CHECKL
 
 
 ----------------------------------------------------------------------------------------
--- 65. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_DEFINITION   [Implemented]  [M1]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_DOCUMENT_DEFINITION' as table_name,
-       count(*) as rows_in_scope,
-       count_if(DOCUMENT_HKEY is null) as null_hkey,
-       count_if(DOCUMENT_HKEY is not null and length(DOCUMENT_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_DEFINITION
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 66. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_DISPATCH   [Implemented]  [M1]
+-- 57. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_DISPATCH   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1214,7 +1069,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_DOCUMENT_DISPAT
 
 
 ----------------------------------------------------------------------------------------
--- 67. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]  [M1]
+-- 58. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1230,23 +1085,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_DOCUMENT_REQUIR
 
 
 ----------------------------------------------------------------------------------------
--- 68. MAXIMUS — SATELLITE  SAT_AUG_FINTXN_CLAIM_PAYMENT   [Implemented]  [M1]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_FINTXN_CLAIM_PAYMENT' as table_name,
-       count(*) as rows_in_scope,
-       count_if(FINANCIAL_TRANSACTION_HKEY is null) as null_hkey,
-       count_if(FINANCIAL_TRANSACTION_HKEY is not null and length(FINANCIAL_TRANSACTION_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_CLAIM_PAYMENT
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 69. MAXIMUS — SATELLITE  SAT_AUG_FINTXN_TAX   [Implemented]  [M1]
+-- 59. MAXIMUS — SATELLITE  SAT_AUG_FINTXN_TAX   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1262,7 +1101,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_FINTXN_TAX' as 
 
 
 ----------------------------------------------------------------------------------------
--- 70. MAXIMUS — SATELLITE  SAT_AUG_FIN_RECEIPT   [Implemented]  [M1]
+-- 60. MAXIMUS — SATELLITE  SAT_AUG_FIN_RECEIPT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1278,39 +1117,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_FIN_RECEIPT' as
 
 
 ----------------------------------------------------------------------------------------
--- 71. MAXIMUS — SATELLITE  SAT_AUG_INSTRUMENT_DEFINITION   [Implemented]  [M1]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_INSTRUMENT_DEFINITION' as table_name,
-       count(*) as rows_in_scope,
-       count_if(PAYMENT_INSTRUMENT_HKEY is null) as null_hkey,
-       count_if(PAYMENT_INSTRUMENT_HKEY is not null and length(PAYMENT_INSTRUMENT_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_INSTRUMENT_DEFINITION
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 72. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_AGENT   [Implemented]  [M1]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_AGENT' as table_name,
-       count(*) as rows_in_scope,
-       count_if(PARTY_ROLE_HKEY is null) as null_hkey,
-       count_if(PARTY_ROLE_HKEY is not null and length(PARTY_ROLE_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_AGENT
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 73. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M1]
+-- 61. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1326,7 +1133,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_CUSTOM
 
 
 ----------------------------------------------------------------------------------------
--- 74. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]  [M1]
+-- 62. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1342,23 +1149,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_PROVID
 
 
 ----------------------------------------------------------------------------------------
--- 75. MAXIMUS — SATELLITE  SAT_AUG_LOSS_EVENT_DETAIL   [Implemented]  [M1]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LOSS_EVENT_DETAIL' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOSS_EVENT_HKEY is null) as null_hkey,
-       count_if(LOSS_EVENT_HKEY is not null and length(LOSS_EVENT_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOSS_EVENT_DETAIL
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 76. MAXIMUS — SATELLITE  SAT_AUG_ORG_UNIT_CONTACT   [Implemented]  [M1]
+-- 63. MAXIMUS — SATELLITE  SAT_AUG_ORG_UNIT_CONTACT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1374,7 +1165,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_ORG_UNIT_CONTAC
 
 
 ----------------------------------------------------------------------------------------
--- 77. MAXIMUS — SATELLITE  SAT_AUG_PARTY_BANKING   [Implemented]  [M1]
+-- 64. MAXIMUS — SATELLITE  SAT_AUG_PARTY_BANKING   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1390,7 +1181,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_BANKING' 
 
 
 ----------------------------------------------------------------------------------------
--- 78. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]  [M1]
+-- 65. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1406,7 +1197,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CLAIM_HIS
 
 
 ----------------------------------------------------------------------------------------
--- 79. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]  [M1]
+-- 66. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1422,7 +1213,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CONSENT_M
 
 
 ----------------------------------------------------------------------------------------
--- 80. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M1]
+-- 67. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1438,7 +1229,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CONTACT_A
 
 
 ----------------------------------------------------------------------------------------
--- 81. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]  [M1]
+-- 68. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1454,7 +1245,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CORRESPON
 
 
 ----------------------------------------------------------------------------------------
--- 82. MAXIMUS — SATELLITE  SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M1]
+-- 69. MAXIMUS — SATELLITE  SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1470,7 +1261,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_EMPLOYMEN
 
 
 ----------------------------------------------------------------------------------------
--- 83. MAXIMUS — SATELLITE  SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]  [M1]
+-- 70. MAXIMUS — SATELLITE  SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1486,23 +1277,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_FINANCIAL
 
 
 ----------------------------------------------------------------------------------------
--- 84. MAXIMUS — SATELLITE  SAT_AUG_PARTY_FRAUD_PROFILE   [Implemented]  [M1]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_FRAUD_PROFILE' as table_name,
-       count(*) as rows_in_scope,
-       count_if(PARTY_HKEY is null) as null_hkey,
-       count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_FRAUD_PROFILE
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 85. MAXIMUS — SATELLITE  SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]  [M1]
+-- 71. MAXIMUS — SATELLITE  SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1518,7 +1293,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_GROUP_SCH
 
 
 ----------------------------------------------------------------------------------------
--- 86. MAXIMUS — SATELLITE  SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]  [M2]
+-- 72. MAXIMUS — SATELLITE  SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1534,7 +1309,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_HEALTH_PR
 
 
 ----------------------------------------------------------------------------------------
--- 87. MAXIMUS — SATELLITE  SAT_AUG_PARTY_HIERARCHY   [Implemented]  [M2]
+-- 73. MAXIMUS — SATELLITE  SAT_AUG_PARTY_HIERARCHY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1550,7 +1325,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_HIERARCHY
 
 
 ----------------------------------------------------------------------------------------
--- 88. MAXIMUS — SATELLITE  SAT_AUG_PARTY_IDENTIFICATION   [Implemented]  [M2]
+-- 74. MAXIMUS — SATELLITE  SAT_AUG_PARTY_IDENTIFICATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1566,7 +1341,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_IDENTIFIC
 
 
 ----------------------------------------------------------------------------------------
--- 89. MAXIMUS — SATELLITE  SAT_AUG_PARTY_IDENTITY   [Implemented]  [M2]
+-- 75. MAXIMUS — SATELLITE  SAT_AUG_PARTY_IDENTITY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1582,7 +1357,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_IDENTITY'
 
 
 ----------------------------------------------------------------------------------------
--- 90. MAXIMUS — SATELLITE  SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M2]
+-- 76. MAXIMUS — SATELLITE  SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1598,23 +1373,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_INDIVIDUA
 
 
 ----------------------------------------------------------------------------------------
--- 91. MAXIMUS — SATELLITE  SAT_AUG_PARTY_KYC   [Implemented]  [M2]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_KYC' as table_name,
-       count(*) as rows_in_scope,
-       count_if(PARTY_HKEY is null) as null_hkey,
-       count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_KYC
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 92. MAXIMUS — SATELLITE  SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]  [M2]
+-- 77. MAXIMUS — SATELLITE  SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1630,7 +1389,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_LOYALTY_C
 
 
 ----------------------------------------------------------------------------------------
--- 93. MAXIMUS — SATELLITE  SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M2]
+-- 78. MAXIMUS — SATELLITE  SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1646,23 +1405,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_ONBOARDIN
 
 
 ----------------------------------------------------------------------------------------
--- 94. MAXIMUS — SATELLITE  SAT_AUG_PARTY_ORGANISATION_PROFILE   [Implemented]  [M2]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_ORGANISATION_PROFILE' as table_name,
-       count(*) as rows_in_scope,
-       count_if(PARTY_HKEY is null) as null_hkey,
-       count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_ORGANISATION_PROFILE
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 95. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]  [M2]
+-- 79. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1678,23 +1421,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_PAYOUT_PR
 
 
 ----------------------------------------------------------------------------------------
--- 96. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M2]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_PORTFOLIO_SUMMARY' as table_name,
-       count(*) as rows_in_scope,
-       count_if(PARTY_HKEY is null) as null_hkey,
-       count_if(PARTY_HKEY is not null and length(PARTY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PORTFOLIO_SUMMARY
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 97. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]  [M2]
+-- 80. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1710,7 +1437,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_PREFERENC
 
 
 ----------------------------------------------------------------------------------------
--- 98. MAXIMUS — SATELLITE  SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M2]
+-- 81. MAXIMUS — SATELLITE  SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1726,7 +1453,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_RELATIONS
 
 
 ----------------------------------------------------------------------------------------
--- 99. MAXIMUS — SATELLITE  SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]  [M2]
+-- 82. MAXIMUS — SATELLITE  SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1742,23 +1469,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_RISK_ANAL
 
 
 ----------------------------------------------------------------------------------------
--- 100. MAXIMUS — SATELLITE  SAT_AUG_POLICY_CANCELLATION   [Implemented]  [M2]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_CANCELLATION' as table_name,
-       count(*) as rows_in_scope,
-       count_if(POLICY_HKEY is null) as null_hkey,
-       count_if(POLICY_HKEY is not null and length(POLICY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_CANCELLATION
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 101. MAXIMUS — SATELLITE  SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]  [M2]
+-- 83. MAXIMUS — SATELLITE  SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1774,7 +1485,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_CLAIM_EX
 
 
 ----------------------------------------------------------------------------------------
--- 102. MAXIMUS — SATELLITE  SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M2]
+-- 84. MAXIMUS — SATELLITE  SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1790,7 +1501,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_COVERAGE
 
 
 ----------------------------------------------------------------------------------------
--- 103. MAXIMUS — SATELLITE  SAT_AUG_POLICY_DELIVERY   [Implemented]  [M2]
+-- 85. MAXIMUS — SATELLITE  SAT_AUG_POLICY_DELIVERY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1806,23 +1517,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_DELIVERY
 
 
 ----------------------------------------------------------------------------------------
--- 104. MAXIMUS — SATELLITE  SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M2]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED' as table_name,
-       count(*) as rows_in_scope,
-       count_if(POLICY_HKEY is null) as null_hkey,
-       count_if(POLICY_HKEY is not null and length(POLICY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 105. MAXIMUS — SATELLITE  SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]  [M2]
+-- 86. MAXIMUS — SATELLITE  SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1838,39 +1533,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_DOCUMENT
 
 
 ----------------------------------------------------------------------------------------
--- 106. MAXIMUS — SATELLITE  SAT_AUG_POLICY_ENDORSEMENT   [Implemented]  [M2]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_ENDORSEMENT' as table_name,
-       count(*) as rows_in_scope,
-       count_if(POLICY_HKEY is null) as null_hkey,
-       count_if(POLICY_HKEY is not null and length(POLICY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_ENDORSEMENT
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 107. MAXIMUS — SATELLITE  SAT_AUG_POLICY_GROUP   [Implemented]  [M2]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_GROUP' as table_name,
-       count(*) as rows_in_scope,
-       count_if(POLICY_HKEY is null) as null_hkey,
-       count_if(POLICY_HKEY is not null and length(POLICY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_GROUP
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 108. MAXIMUS — SATELLITE  SAT_AUG_POLICY_HEADER   [Implemented]  [M2]
+-- 87. MAXIMUS — SATELLITE  SAT_AUG_POLICY_HEADER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1886,7 +1549,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_HEADER' 
 
 
 ----------------------------------------------------------------------------------------
--- 109. MAXIMUS — SATELLITE  SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]  [M2]
+-- 88. MAXIMUS — SATELLITE  SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1902,7 +1565,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_HEALTH_D
 
 
 ----------------------------------------------------------------------------------------
--- 110. MAXIMUS — SATELLITE  SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]  [M2]
+-- 89. MAXIMUS — SATELLITE  SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1918,7 +1581,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_INSURED_
 
 
 ----------------------------------------------------------------------------------------
--- 111. MAXIMUS — SATELLITE  SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M2]
+-- 90. MAXIMUS — SATELLITE  SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1934,7 +1597,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_INTERMED
 
 
 ----------------------------------------------------------------------------------------
--- 112. MAXIMUS — SATELLITE  SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]  [M2]
+-- 91. MAXIMUS — SATELLITE  SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1950,7 +1613,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_NOMINEE_
 
 
 ----------------------------------------------------------------------------------------
--- 113. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]  [M2]
+-- 92. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1966,7 +1629,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_PREMIUM_
 
 
 ----------------------------------------------------------------------------------------
--- 114. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]  [M2]
+-- 93. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1982,7 +1645,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_PREMIUM_
 
 
 ----------------------------------------------------------------------------------------
--- 115. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]  [M2]
+-- 94. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1998,7 +1661,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_PROPERTY
 
 
 ----------------------------------------------------------------------------------------
--- 116. MAXIMUS — SATELLITE  SAT_AUG_POLICY_RENEWAL   [Implemented]  [M2]
+-- 95. MAXIMUS — SATELLITE  SAT_AUG_POLICY_RENEWAL   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2014,39 +1677,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_RENEWAL'
 
 
 ----------------------------------------------------------------------------------------
--- 117. MAXIMUS — SATELLITE  SAT_AUG_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M2]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_SUM_INSURED_BREAKUP' as table_name,
-       count(*) as rows_in_scope,
-       count_if(POLICY_HKEY is null) as null_hkey,
-       count_if(POLICY_HKEY is not null and length(POLICY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_SUM_INSURED_BREAKUP
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 118. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TAX_BREAKUP   [Implemented]  [M2]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_TAX_BREAKUP' as table_name,
-       count(*) as rows_in_scope,
-       count_if(POLICY_HKEY is null) as null_hkey,
-       count_if(POLICY_HKEY is not null and length(POLICY_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TAX_BREAKUP
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 119. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TERMS   [Implemented]  [M2]
+-- 96. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TERMS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2062,7 +1693,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_TERMS' a
 
 
 ----------------------------------------------------------------------------------------
--- 120. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]  [M2]
+-- 97. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2078,7 +1709,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_TRAVEL_T
 
 
 ----------------------------------------------------------------------------------------
--- 121. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M2]
+-- 98. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2094,7 +1725,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_TRAVEL_T
 
 
 ----------------------------------------------------------------------------------------
--- 122. MAXIMUS — SATELLITE  SAT_AUG_POLICY_UW_QUERY   [Implemented]  [M2]
+-- 99. MAXIMUS — SATELLITE  SAT_AUG_POLICY_UW_QUERY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2110,7 +1741,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_UW_QUERY
 
 
 ----------------------------------------------------------------------------------------
--- 123. MAXIMUS — SATELLITE  SAT_AUG_POLICY_WORK_ITEM   [Implemented]  [M2]
+-- 100. MAXIMUS — SATELLITE  SAT_AUG_POLICY_WORK_ITEM   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2126,7 +1757,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_WORK_ITE
 
 
 ----------------------------------------------------------------------------------------
--- 124. MAXIMUS — SATELLITE  SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
+-- 101. MAXIMUS — SATELLITE  SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2142,7 +1773,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PRODUCT_RATING_
 
 
 ----------------------------------------------------------------------------------------
--- 125. MAXIMUS — SATELLITE  SAT_AUG_PRODUCT_TERMS   [Implemented]  [M2]
+-- 102. MAXIMUS — SATELLITE  SAT_AUG_PRODUCT_TERMS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2158,7 +1789,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PRODUCT_TERMS' 
 
 
 ----------------------------------------------------------------------------------------
--- 126. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]  [M2]
+-- 103. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2174,7 +1805,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_CLAIM_EXP
 
 
 ----------------------------------------------------------------------------------------
--- 127. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]  [M2]
+-- 104. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2190,7 +1821,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_COVERAGE_
 
 
 ----------------------------------------------------------------------------------------
--- 128. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]  [M2]
+-- 105. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2206,7 +1837,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_COVERAGE_
 
 
 ----------------------------------------------------------------------------------------
--- 129. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]  [M2]
+-- 106. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2222,7 +1853,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_COVER_DET
 
 
 ----------------------------------------------------------------------------------------
--- 130. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_HEADER   [Implemented]  [M2]
+-- 107. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_HEADER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2238,7 +1869,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_HEADER' a
 
 
 ----------------------------------------------------------------------------------------
--- 131. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]  [M2]
+-- 108. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2254,7 +1885,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_HEALTH_DE
 
 
 ----------------------------------------------------------------------------------------
--- 132. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]  [M2]
+-- 109. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2270,7 +1901,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_INSURED_D
 
 
 ----------------------------------------------------------------------------------------
--- 133. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]  [M2]
+-- 110. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2286,7 +1917,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_NOMINEE_D
 
 
 ----------------------------------------------------------------------------------------
--- 134. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]  [M2]
+-- 111. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2302,7 +1933,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_PREMIUM_H
 
 
 ----------------------------------------------------------------------------------------
--- 135. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]  [M2]
+-- 112. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2318,7 +1949,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_PROPERTY_
 
 
 ----------------------------------------------------------------------------------------
--- 136. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_RATING   [Implemented]  [M2]
+-- 113. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_RATING   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2334,7 +1965,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_RATING' a
 
 
 ----------------------------------------------------------------------------------------
--- 137. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_RISK_LINE   [Implemented]  [M2]
+-- 114. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_RISK_LINE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2350,7 +1981,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_RISK_LINE
 
 
 ----------------------------------------------------------------------------------------
--- 138. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]  [M2]
+-- 115. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2366,7 +1997,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_SUM_INSUR
 
 
 ----------------------------------------------------------------------------------------
--- 139. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TERMS   [Implemented]  [M2]
+-- 116. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TERMS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2382,7 +2013,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_TERMS' as
 
 
 ----------------------------------------------------------------------------------------
--- 140. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]  [M2]
+-- 117. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2398,7 +2029,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_TRAVEL_TR
 
 
 ----------------------------------------------------------------------------------------
--- 141. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M2]
+-- 118. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2414,7 +2045,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_TRAVEL_TR
 
 
 ----------------------------------------------------------------------------------------
--- 142. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_UW_QUERY   [Implemented]  [M2]
+-- 119. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_UW_QUERY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2430,23 +2061,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_UW_QUERY'
 
 
 ----------------------------------------------------------------------------------------
--- 143. MAXIMUS — SATELLITE  SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M2]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL' as table_name,
-       count(*) as rows_in_scope,
-       count_if(RISK_OBJECT_HKEY is null) as null_hkey,
-       count_if(RISK_OBJECT_HKEY is not null and length(RISK_OBJECT_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 144. MAXIMUS — SATELLITE  SAT_AUG_RISK_OBJECT_CORE   [Implemented]  [M2]
+-- 120. MAXIMUS — SATELLITE  SAT_AUG_RISK_OBJECT_CORE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2462,7 +2077,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_OBJECT_COR
 
 
 ----------------------------------------------------------------------------------------
--- 145. MAXIMUS — SATELLITE  SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]  [M2]
+-- 121. MAXIMUS — SATELLITE  SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2478,23 +2093,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_OBJECT_PRE
 
 
 ----------------------------------------------------------------------------------------
--- 146. MAXIMUS — SATELLITE  SAT_AUG_RISK_OBJECT_VALUATION   [Implemented]  [M2]
--- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
--- DM-H1 (a).
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_OBJECT_VALUATION' as table_name,
-       count(*) as rows_in_scope,
-       count_if(RISK_OBJECT_HKEY is null) as null_hkey,
-       count_if(RISK_OBJECT_HKEY is not null and length(RISK_OBJECT_HKEY) <> 16) as wrong_length_hkey,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_VALUATION
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 147. MAXIMUS — SATELLITE  SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M2]
+-- 122. MAXIMUS — SATELLITE  SAT_AUG_RISK_PERSON_INSURED   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2510,7 +2109,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_INS
 
 
 ----------------------------------------------------------------------------------------
--- 148. MAXIMUS — SATELLITE  SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M2]
+-- 123. MAXIMUS — SATELLITE  SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2526,7 +2125,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_TRA
 
 
 ----------------------------------------------------------------------------------------
--- 149. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]  [M2]
+-- 124. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2542,7 +2141,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_TRAVEL_COV
 
 
 ----------------------------------------------------------------------------------------
--- 150. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]  [M2]
+-- 125. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2558,7 +2157,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_TRAVEL_RAT
 
 
 ----------------------------------------------------------------------------------------
--- 151. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]  [M2]
+-- 126. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2574,7 +2173,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_TRAVEL_SPO
 
 
 ----------------------------------------------------------------------------------------
--- 152. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]  [M2]
+-- 127. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2590,7 +2189,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_TRAVEL_TRI
 
 
 ----------------------------------------------------------------------------------------
--- 153. MAXIMUS — SATELLITE  SAT_CHANNEL_DEFINITION   [Implemented]  [M2]
+-- 128. MAXIMUS — SATELLITE  SAT_CHANNEL_DEFINITION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2606,7 +2205,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CHANNEL_DEFINITION'
 
 
 ----------------------------------------------------------------------------------------
--- 154. MAXIMUS — SATELLITE  SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M2]
+-- 129. MAXIMUS — SATELLITE  SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2622,7 +2221,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_ASSESSMENT_SU
 
 
 ----------------------------------------------------------------------------------------
--- 155. MAXIMUS — SATELLITE  SAT_CLAIM_BENEFIT_HEAD   [Implemented]  [M2]
+-- 130. MAXIMUS — SATELLITE  SAT_CLAIM_BENEFIT_HEAD   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2638,7 +2237,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_BENEFIT_HEAD'
 
 
 ----------------------------------------------------------------------------------------
--- 156. MAXIMUS — SATELLITE  SAT_CLAIM_CO_RI_SHARE   [Implemented]  [M2]
+-- 131. MAXIMUS — SATELLITE  SAT_CLAIM_CO_RI_SHARE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2654,7 +2253,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_CO_RI_SHARE' 
 
 
 ----------------------------------------------------------------------------------------
--- 157. MAXIMUS — SATELLITE  SAT_CLAIM_FNOL   [Implemented]  [M2]
+-- 132. MAXIMUS — SATELLITE  SAT_CLAIM_FNOL   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2670,7 +2269,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_FNOL' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 158. MAXIMUS — SATELLITE  SAT_CLAIM_FRAUD   [Implemented]  [M2]
+-- 133. MAXIMUS — SATELLITE  SAT_CLAIM_FRAUD   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2686,7 +2285,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_FRAUD' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 159. MAXIMUS — SATELLITE  SAT_CLAIM_HEADER   [Implemented]  [M2]
+-- 134. MAXIMUS — SATELLITE  SAT_CLAIM_HEADER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2702,7 +2301,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_HEADER' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 160. MAXIMUS — SATELLITE  SAT_CLAIM_HEALTH_DETAIL   [Implemented]  [M2]
+-- 135. MAXIMUS — SATELLITE  SAT_CLAIM_HEALTH_DETAIL   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2718,7 +2317,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_HEALTH_DETAIL
 
 
 ----------------------------------------------------------------------------------------
--- 161. MAXIMUS — SATELLITE  SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]  [M2]
+-- 136. MAXIMUS — SATELLITE  SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2734,7 +2333,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_INVESTIGATION
 
 
 ----------------------------------------------------------------------------------------
--- 162. MAXIMUS — SATELLITE  SAT_CLAIM_LITIGATION   [Implemented]  [M2]
+-- 137. MAXIMUS — SATELLITE  SAT_CLAIM_LITIGATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2750,7 +2349,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_LITIGATION' a
 
 
 ----------------------------------------------------------------------------------------
--- 163. MAXIMUS — SATELLITE  SAT_CLAIM_NOTE   [Implemented]  [M2]
+-- 138. MAXIMUS — SATELLITE  SAT_CLAIM_NOTE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2766,7 +2365,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_NOTE' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 164. MAXIMUS — SATELLITE  SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M2]
+-- 139. MAXIMUS — SATELLITE  SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2782,7 +2381,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_PAYMENT_TRANC
 
 
 ----------------------------------------------------------------------------------------
--- 165. MAXIMUS — SATELLITE  SAT_CLAIM_PA_DETAIL   [Implemented]  [M2]
+-- 140. MAXIMUS — SATELLITE  SAT_CLAIM_PA_DETAIL   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2798,7 +2397,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_PA_DETAIL' as
 
 
 ----------------------------------------------------------------------------------------
--- 166. MAXIMUS — SATELLITE  SAT_CLAIM_PROVIDER_BILLING   [Implemented]  [M2]
+-- 141. MAXIMUS — SATELLITE  SAT_CLAIM_PROVIDER_BILLING   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2814,7 +2413,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_PROVIDER_BILL
 
 
 ----------------------------------------------------------------------------------------
--- 167. MAXIMUS — SATELLITE  SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M2]
+-- 142. MAXIMUS — SATELLITE  SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2830,7 +2429,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_RECOVERY_SALV
 
 
 ----------------------------------------------------------------------------------------
--- 168. MAXIMUS — SATELLITE  SAT_CLAIM_REPUDIATION   [Implemented]  [M2]
+-- 143. MAXIMUS — SATELLITE  SAT_CLAIM_REPUDIATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2846,7 +2445,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_REPUDIATION' 
 
 
 ----------------------------------------------------------------------------------------
--- 169. MAXIMUS — SATELLITE  SAT_CLAIM_RESERVE   [Implemented]  [M2]
+-- 144. MAXIMUS — SATELLITE  SAT_CLAIM_RESERVE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2862,7 +2461,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_RESERVE' as t
 
 
 ----------------------------------------------------------------------------------------
--- 170. MAXIMUS — SATELLITE  SAT_CLAIM_RESERVE_HEAD   [Implemented]  [M2]
+-- 145. MAXIMUS — SATELLITE  SAT_CLAIM_RESERVE_HEAD   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2878,7 +2477,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_RESERVE_HEAD'
 
 
 ----------------------------------------------------------------------------------------
--- 171. MAXIMUS — SATELLITE  SAT_CLAIM_SETTLEMENT   [Implemented]  [M3]
+-- 146. MAXIMUS — SATELLITE  SAT_CLAIM_SETTLEMENT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2894,7 +2493,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_SETTLEMENT' a
 
 
 ----------------------------------------------------------------------------------------
--- 172. MAXIMUS — SATELLITE  SAT_CLAIM_SLA_TRACKING   [Implemented]  [M3]
+-- 147. MAXIMUS — SATELLITE  SAT_CLAIM_SLA_TRACKING   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2910,7 +2509,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_SLA_TRACKING'
 
 
 ----------------------------------------------------------------------------------------
--- 173. MAXIMUS — SATELLITE  SAT_CLAIM_TP_FORENSIC   [Implemented]  [M3]
+-- 148. MAXIMUS — SATELLITE  SAT_CLAIM_TP_FORENSIC   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2926,7 +2525,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_TP_FORENSIC' 
 
 
 ----------------------------------------------------------------------------------------
--- 174. MAXIMUS — SATELLITE  SAT_CLAIM_TRAVEL_DETAIL   [Implemented]  [M3]
+-- 149. MAXIMUS — SATELLITE  SAT_CLAIM_TRAVEL_DETAIL   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2942,7 +2541,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_TRAVEL_DETAIL
 
 
 ----------------------------------------------------------------------------------------
--- 175. MAXIMUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]  [M3]
+-- 150. MAXIMUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2958,7 +2557,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_ADDRESS' as 
 
 
 ----------------------------------------------------------------------------------------
--- 176. MAXIMUS — SATELLITE  SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]  [M3]
+-- 151. MAXIMUS — SATELLITE  SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2974,7 +2573,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_ADMIN_GEOGRA
 
 
 ----------------------------------------------------------------------------------------
--- 177. MAXIMUS — SATELLITE  SAT_COMMON_BUSINESS_AUDIT   [Implemented]  [M3]
+-- 152. MAXIMUS — SATELLITE  SAT_COMMON_BUSINESS_AUDIT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -2990,7 +2589,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_BUSINESS_AUD
 
 
 ----------------------------------------------------------------------------------------
--- 178. MAXIMUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]  [M3]
+-- 153. MAXIMUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3006,7 +2605,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_CLASSIFICATI
 
 
 ----------------------------------------------------------------------------------------
--- 179. MAXIMUS — SATELLITE  SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M3]
+-- 154. MAXIMUS — SATELLITE  SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3022,7 +2621,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_COMMUNICATIO
 
 
 ----------------------------------------------------------------------------------------
--- 180. MAXIMUS — SATELLITE  SAT_COMMON_CONSENT   [Implemented]  [M3]
+-- 155. MAXIMUS — SATELLITE  SAT_COMMON_CONSENT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3038,7 +2637,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONSENT' as 
 
 
 ----------------------------------------------------------------------------------------
--- 181. MAXIMUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]  [M3]
+-- 156. MAXIMUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3054,7 +2653,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONTACT' as 
 
 
 ----------------------------------------------------------------------------------------
--- 182. MAXIMUS — SATELLITE  SAT_COMMON_GEO   [Implemented]  [M3]
+-- 157. MAXIMUS — SATELLITE  SAT_COMMON_GEO   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3070,7 +2669,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_GEO' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 183. MAXIMUS — SATELLITE  SAT_COMMON_LIFECYCLE   [Implemented]  [M3]
+-- 158. MAXIMUS — SATELLITE  SAT_COMMON_LIFECYCLE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3086,7 +2685,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_LIFECYCLE' a
 
 
 ----------------------------------------------------------------------------------------
--- 184. MAXIMUS — SATELLITE  SAT_COMMON_MONETARY_CONTEXT   [Implemented]  [M3]
+-- 159. MAXIMUS — SATELLITE  SAT_COMMON_MONETARY_CONTEXT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3102,7 +2701,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_MONETARY_CON
 
 
 ----------------------------------------------------------------------------------------
--- 185. MAXIMUS — SATELLITE  SAT_COMMON_STATUS   [Implemented]  [M3]
+-- 160. MAXIMUS — SATELLITE  SAT_COMMON_STATUS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3118,7 +2717,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_STATUS' as t
 
 
 ----------------------------------------------------------------------------------------
--- 186. MAXIMUS — SATELLITE  SAT_COVERAGE_CONDITIONS   [Implemented]  [M3]
+-- 161. MAXIMUS — SATELLITE  SAT_COVERAGE_CONDITIONS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3134,7 +2733,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_CONDITIONS
 
 
 ----------------------------------------------------------------------------------------
--- 187. MAXIMUS — SATELLITE  SAT_COVERAGE_DEFINITION   [Implemented]  [M3]
+-- 162. MAXIMUS — SATELLITE  SAT_COVERAGE_DEFINITION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3150,7 +2749,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_DEFINITION
 
 
 ----------------------------------------------------------------------------------------
--- 188. MAXIMUS — SATELLITE  SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M3]
+-- 163. MAXIMUS — SATELLITE  SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3166,7 +2765,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_SUBLIMIT_S
 
 
 ----------------------------------------------------------------------------------------
--- 189. MAXIMUS — SATELLITE  SAT_DOCUMENT_DEFINITION   [Implemented]  [M3]
+-- 164. MAXIMUS — SATELLITE  SAT_DOCUMENT_DEFINITION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3182,7 +2781,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_DOCUMENT_DEFINITION
 
 
 ----------------------------------------------------------------------------------------
--- 190. MAXIMUS — SATELLITE  SAT_FINTXN_ACCOUNTING   [Implemented]  [M3]
+-- 165. MAXIMUS — SATELLITE  SAT_FINTXN_ACCOUNTING   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3198,7 +2797,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FINTXN_ACCOUNTING' 
 
 
 ----------------------------------------------------------------------------------------
--- 191. MAXIMUS — SATELLITE  SAT_FINTXN_CLAIM_PAYMENT   [Implemented]  [M3]
+-- 166. MAXIMUS — SATELLITE  SAT_FINTXN_CLAIM_PAYMENT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3214,7 +2813,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FINTXN_CLAIM_PAYMEN
 
 
 ----------------------------------------------------------------------------------------
--- 192. MAXIMUS — SATELLITE  SAT_FINTXN_HEADER   [Implemented]  [M3]
+-- 167. MAXIMUS — SATELLITE  SAT_FINTXN_HEADER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3230,7 +2829,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FINTXN_HEADER' as t
 
 
 ----------------------------------------------------------------------------------------
--- 193. MAXIMUS — SATELLITE  SAT_FINTXN_PREMIUM   [Implemented]  [M3]
+-- 168. MAXIMUS — SATELLITE  SAT_FINTXN_PREMIUM   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3246,7 +2845,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FINTXN_PREMIUM' as 
 
 
 ----------------------------------------------------------------------------------------
--- 194. MAXIMUS — SATELLITE  SAT_FINTXN_TAX   [Implemented]  [M3]
+-- 169. MAXIMUS — SATELLITE  SAT_FINTXN_TAX   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3262,7 +2861,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FINTXN_TAX' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 195. MAXIMUS — SATELLITE  SAT_FIN_RECEIPT   [Implemented]  [M3]
+-- 170. MAXIMUS — SATELLITE  SAT_FIN_RECEIPT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3278,7 +2877,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FIN_RECEIPT' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 196. MAXIMUS — SATELLITE  SAT_INSTRUMENT_DEFINITION   [Implemented]  [M3]
+-- 171. MAXIMUS — SATELLITE  SAT_INSTRUMENT_DEFINITION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3294,7 +2893,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_INSTRUMENT_DEFINITI
 
 
 ----------------------------------------------------------------------------------------
--- 197. MAXIMUS — SATELLITE  SAT_LNK_PARTY_ROLE_CORE   [Implemented]  [M3]
+-- 172. MAXIMUS — SATELLITE  SAT_LNK_PARTY_ROLE_CORE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3310,7 +2909,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_PARTY_ROLE_CORE
 
 
 ----------------------------------------------------------------------------------------
--- 198. MAXIMUS — SATELLITE  SAT_LNK_POLICY_PARTY_ROLE   [Implemented]  [M3]
+-- 173. MAXIMUS — SATELLITE  SAT_LNK_POLICY_PARTY_ROLE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3326,7 +2925,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_POLICY_PARTY_RO
 
 
 ----------------------------------------------------------------------------------------
--- 199. MAXIMUS — SATELLITE  SAT_LNK_ROLE_AGENT   [Implemented]  [M3]
+-- 174. MAXIMUS — SATELLITE  SAT_LNK_ROLE_AGENT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3342,7 +2941,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_AGENT' as 
 
 
 ----------------------------------------------------------------------------------------
--- 200. MAXIMUS — SATELLITE  SAT_LNK_ROLE_CUSTOMER   [Implemented]  [M3]
+-- 175. MAXIMUS — SATELLITE  SAT_LNK_ROLE_CUSTOMER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3358,7 +2957,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_CUSTOMER' 
 
 
 ----------------------------------------------------------------------------------------
--- 201. MAXIMUS — SATELLITE  SAT_LNK_ROLE_EMPLOYEE   [Implemented]  [M3]
+-- 176. MAXIMUS — SATELLITE  SAT_LNK_ROLE_EMPLOYEE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3374,7 +2973,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_EMPLOYEE' 
 
 
 ----------------------------------------------------------------------------------------
--- 202. MAXIMUS — SATELLITE  SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M3]
+-- 177. MAXIMUS — SATELLITE  SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3390,7 +2989,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_NOMINEE_BE
 
 
 ----------------------------------------------------------------------------------------
--- 203. MAXIMUS — SATELLITE  SAT_LOSS_EVENT_DETAIL   [Implemented]  [M3]
+-- 178. MAXIMUS — SATELLITE  SAT_LOSS_EVENT_DETAIL   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3406,7 +3005,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LOSS_EVENT_DETAIL' 
 
 
 ----------------------------------------------------------------------------------------
--- 204. MAXIMUS — SATELLITE  SAT_LOSS_EVENT_NOTIFICATION   [Implemented]  [M3]
+-- 179. MAXIMUS — SATELLITE  SAT_LOSS_EVENT_NOTIFICATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3422,7 +3021,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LOSS_EVENT_NOTIFICA
 
 
 ----------------------------------------------------------------------------------------
--- 205. MAXIMUS — SATELLITE  SAT_LOSS_LOCATION_ADDRESS   [Implemented]  [M3]
+-- 180. MAXIMUS — SATELLITE  SAT_LOSS_LOCATION_ADDRESS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3438,7 +3037,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LOSS_LOCATION_ADDRE
 
 
 ----------------------------------------------------------------------------------------
--- 206. MAXIMUS — SATELLITE  SAT_ORG_UNIT_DEFINITION   [Implemented]  [M3]
+-- 181. MAXIMUS — SATELLITE  SAT_ORG_UNIT_DEFINITION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3454,7 +3053,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_ORG_UNIT_DEFINITION
 
 
 ----------------------------------------------------------------------------------------
--- 207. MAXIMUS — SATELLITE  SAT_PARTY_AML_SCREENING   [Implemented]  [M3]
+-- 182. MAXIMUS — SATELLITE  SAT_PARTY_AML_SCREENING   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3470,7 +3069,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_AML_SCREENING
 
 
 ----------------------------------------------------------------------------------------
--- 208. MAXIMUS — SATELLITE  SAT_PARTY_BANKING   [Implemented]  [M3]
+-- 183. MAXIMUS — SATELLITE  SAT_PARTY_BANKING   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3486,7 +3085,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_BANKING' as t
 
 
 ----------------------------------------------------------------------------------------
--- 209. MAXIMUS — SATELLITE  SAT_PARTY_CLAIM_HISTORY   [Implemented]  [M3]
+-- 184. MAXIMUS — SATELLITE  SAT_PARTY_CLAIM_HISTORY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3502,7 +3101,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_CLAIM_HISTORY
 
 
 ----------------------------------------------------------------------------------------
--- 210. MAXIMUS — SATELLITE  SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M3]
+-- 185. MAXIMUS — SATELLITE  SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3518,7 +3117,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_CONTACT_ADDRE
 
 
 ----------------------------------------------------------------------------------------
--- 211. MAXIMUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]  [M3]
+-- 186. MAXIMUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3534,7 +3133,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_EMPLOYMENT' a
 
 
 ----------------------------------------------------------------------------------------
--- 212. MAXIMUS — SATELLITE  SAT_PARTY_FINANCIAL_PROFILE   [Implemented]  [M3]
+-- 187. MAXIMUS — SATELLITE  SAT_PARTY_FINANCIAL_PROFILE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3550,7 +3149,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_FINANCIAL_PRO
 
 
 ----------------------------------------------------------------------------------------
--- 213. MAXIMUS — SATELLITE  SAT_PARTY_FRAUD_PROFILE   [Implemented]  [M3]
+-- 188. MAXIMUS — SATELLITE  SAT_PARTY_FRAUD_PROFILE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3566,7 +3165,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_FRAUD_PROFILE
 
 
 ----------------------------------------------------------------------------------------
--- 214. MAXIMUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M3]
+-- 189. MAXIMUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3582,7 +3181,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_HEALTH_PROFIL
 
 
 ----------------------------------------------------------------------------------------
--- 215. MAXIMUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]  [M3]
+-- 190. MAXIMUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3598,7 +3197,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTIFICATIO
 
 
 ----------------------------------------------------------------------------------------
--- 216. MAXIMUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]  [M3]
+-- 191. MAXIMUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3614,7 +3213,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTITY' as 
 
 
 ----------------------------------------------------------------------------------------
--- 217. MAXIMUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M3]
+-- 192. MAXIMUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3630,7 +3229,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_INDIVIDUAL_DE
 
 
 ----------------------------------------------------------------------------------------
--- 218. MAXIMUS — SATELLITE  SAT_PARTY_KYC   [Implemented]  [M3]
+-- 193. MAXIMUS — SATELLITE  SAT_PARTY_KYC   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3646,7 +3245,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_KYC' as table
 
 
 ----------------------------------------------------------------------------------------
--- 219. MAXIMUS — SATELLITE  SAT_PARTY_KYC_REFERENCE   [Implemented]  [M3]
+-- 194. MAXIMUS — SATELLITE  SAT_PARTY_KYC_REFERENCE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3662,7 +3261,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_KYC_REFERENCE
 
 
 ----------------------------------------------------------------------------------------
--- 220. MAXIMUS — SATELLITE  SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M3]
+-- 195. MAXIMUS — SATELLITE  SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3678,7 +3277,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_ONBOARDING_JO
 
 
 ----------------------------------------------------------------------------------------
--- 221. MAXIMUS — SATELLITE  SAT_PARTY_ORGANISATION_PROFILE   [Implemented]  [M3]
+-- 196. MAXIMUS — SATELLITE  SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3694,7 +3293,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_ORGANISATION_
 
 
 ----------------------------------------------------------------------------------------
--- 222. MAXIMUS — SATELLITE  SAT_PARTY_PAYOUT_PROFILE   [Implemented]  [M3]
+-- 197. MAXIMUS — SATELLITE  SAT_PARTY_PAYOUT_PROFILE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3710,7 +3309,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_PAYOUT_PROFIL
 
 
 ----------------------------------------------------------------------------------------
--- 223. MAXIMUS — SATELLITE  SAT_PARTY_POLICY_HISTORY   [Implemented]  [M3]
+-- 198. MAXIMUS — SATELLITE  SAT_PARTY_POLICY_HISTORY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3726,7 +3325,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_POLICY_HISTOR
 
 
 ----------------------------------------------------------------------------------------
--- 224. MAXIMUS — SATELLITE  SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M3]
+-- 199. MAXIMUS — SATELLITE  SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3742,7 +3341,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_PORTFOLIO_SUM
 
 
 ----------------------------------------------------------------------------------------
--- 225. MAXIMUS — SATELLITE  SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M3]
+-- 200. MAXIMUS — SATELLITE  SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3758,7 +3357,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_RELATIONSHIP_
 
 
 ----------------------------------------------------------------------------------------
--- 226. MAXIMUS — SATELLITE  SAT_POLICY_CANCELLATION   [Implemented]  [M3]
+-- 201. MAXIMUS — SATELLITE  SAT_POLICY_CANCELLATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3774,7 +3373,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_CANCELLATION
 
 
 ----------------------------------------------------------------------------------------
--- 227. MAXIMUS — SATELLITE  SAT_POLICY_CLASSIFICATION   [Implemented]  [M3]
+-- 202. MAXIMUS — SATELLITE  SAT_POLICY_CLASSIFICATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3790,7 +3389,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_CLASSIFICATI
 
 
 ----------------------------------------------------------------------------------------
--- 228. MAXIMUS — SATELLITE  SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M3]
+-- 203. MAXIMUS — SATELLITE  SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3806,7 +3405,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_COVERAGE_SCH
 
 
 ----------------------------------------------------------------------------------------
--- 229. MAXIMUS — SATELLITE  SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M3]
+-- 204. MAXIMUS — SATELLITE  SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3822,7 +3421,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_DISCOUNT_LOA
 
 
 ----------------------------------------------------------------------------------------
--- 230. MAXIMUS — SATELLITE  SAT_POLICY_ENDORSEMENT   [Implemented]  [M3]
+-- 205. MAXIMUS — SATELLITE  SAT_POLICY_ENDORSEMENT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3838,7 +3437,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_ENDORSEMENT'
 
 
 ----------------------------------------------------------------------------------------
--- 231. MAXIMUS — SATELLITE  SAT_POLICY_GROUP   [Implemented]  [M3]
+-- 206. MAXIMUS — SATELLITE  SAT_POLICY_GROUP   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3854,7 +3453,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_GROUP' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 232. MAXIMUS — SATELLITE  SAT_POLICY_HEADER   [Implemented]  [M3]
+-- 207. MAXIMUS — SATELLITE  SAT_POLICY_HEADER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3870,7 +3469,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_HEADER' as t
 
 
 ----------------------------------------------------------------------------------------
--- 233. MAXIMUS — SATELLITE  SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M3]
+-- 208. MAXIMUS — SATELLITE  SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3886,7 +3485,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_INTERMEDIARY
 
 
 ----------------------------------------------------------------------------------------
--- 234. MAXIMUS — SATELLITE  SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]  [M3]
+-- 209. MAXIMUS — SATELLITE  SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3902,7 +3501,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_PORTABILITY_
 
 
 ----------------------------------------------------------------------------------------
--- 235. MAXIMUS — SATELLITE  SAT_POLICY_PREMIUM_HEAD   [Implemented]  [M3]
+-- 210. MAXIMUS — SATELLITE  SAT_POLICY_PREMIUM_HEAD   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3918,7 +3517,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_PREMIUM_HEAD
 
 
 ----------------------------------------------------------------------------------------
--- 236. MAXIMUS — SATELLITE  SAT_POLICY_PREMIUM_SUMMARY   [Implemented]  [M3]
+-- 211. MAXIMUS — SATELLITE  SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3934,7 +3533,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_PREMIUM_SUMM
 
 
 ----------------------------------------------------------------------------------------
--- 237. MAXIMUS — SATELLITE  SAT_POLICY_RENEWAL   [Implemented]  [M3]
+-- 212. MAXIMUS — SATELLITE  SAT_POLICY_RENEWAL   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3950,7 +3549,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_RENEWAL' as 
 
 
 ----------------------------------------------------------------------------------------
--- 238. MAXIMUS — SATELLITE  SAT_POLICY_SERVICING_SUMMARY   [Implemented]  [M3]
+-- 213. MAXIMUS — SATELLITE  SAT_POLICY_SERVICING_SUMMARY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3966,7 +3565,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_SERVICING_SU
 
 
 ----------------------------------------------------------------------------------------
--- 239. MAXIMUS — SATELLITE  SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M3]
+-- 214. MAXIMUS — SATELLITE  SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3982,7 +3581,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_SUM_INSURED_
 
 
 ----------------------------------------------------------------------------------------
--- 240. MAXIMUS — SATELLITE  SAT_POLICY_TAX_BREAKUP   [Implemented]  [M3]
+-- 215. MAXIMUS — SATELLITE  SAT_POLICY_TAX_BREAKUP   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -3998,7 +3597,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_TAX_BREAKUP'
 
 
 ----------------------------------------------------------------------------------------
--- 241. MAXIMUS — SATELLITE  SAT_POLICY_TAX_HEAD   [Implemented]  [M3]
+-- 216. MAXIMUS — SATELLITE  SAT_POLICY_TAX_HEAD   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -4014,7 +3613,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_TAX_HEAD' as
 
 
 ----------------------------------------------------------------------------------------
--- 242. MAXIMUS — SATELLITE  SAT_POLICY_TERMS   [Implemented]  [M3]
+-- 217. MAXIMUS — SATELLITE  SAT_POLICY_TERMS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -4030,7 +3629,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_TERMS' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 243. MAXIMUS — SATELLITE  SAT_PRODUCT_DEFINITION   [Implemented]  [M3]
+-- 218. MAXIMUS — SATELLITE  SAT_PRODUCT_DEFINITION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -4046,7 +3645,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_DEFINITION'
 
 
 ----------------------------------------------------------------------------------------
--- 244. MAXIMUS — SATELLITE  SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M3]
+-- 219. MAXIMUS — SATELLITE  SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -4062,7 +3661,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_RATING_STRU
 
 
 ----------------------------------------------------------------------------------------
--- 245. MAXIMUS — SATELLITE  SAT_PRODUCT_TERMS   [Implemented]  [M3]
+-- 220. MAXIMUS — SATELLITE  SAT_PRODUCT_TERMS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -4078,7 +3677,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_TERMS' as t
 
 
 ----------------------------------------------------------------------------------------
--- 246. MAXIMUS — SATELLITE  SAT_QUOTE_HEADER   [Implemented]  [M3]
+-- 221. MAXIMUS — SATELLITE  SAT_QUOTE_HEADER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -4094,7 +3693,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_QUOTE_HEADER' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 247. MAXIMUS — SATELLITE  SAT_QUOTE_RATING   [Implemented]  [M3]
+-- 222. MAXIMUS — SATELLITE  SAT_QUOTE_RATING   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -4110,7 +3709,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_QUOTE_RATING' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 248. MAXIMUS — SATELLITE  SAT_QUOTE_RATING_INPUT   [Implemented]  [M3]
+-- 223. MAXIMUS — SATELLITE  SAT_QUOTE_RATING_INPUT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -4126,7 +3725,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_QUOTE_RATING_INPUT'
 
 
 ----------------------------------------------------------------------------------------
--- 249. MAXIMUS — SATELLITE  SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M3]
+-- 224. MAXIMUS — SATELLITE  SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -4142,7 +3741,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_RISK_HEALTH_MEMBER_
 
 
 ----------------------------------------------------------------------------------------
--- 250. MAXIMUS — SATELLITE  SAT_RISK_OBJECT_CORE   [Implemented]  [M3]
+-- 225. MAXIMUS — SATELLITE  SAT_RISK_OBJECT_CORE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -4158,7 +3757,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_RISK_OBJECT_CORE' a
 
 
 ----------------------------------------------------------------------------------------
--- 251. MAXIMUS — SATELLITE  SAT_RISK_OBJECT_VALUATION   [Implemented]  [M3]
+-- 226. MAXIMUS — SATELLITE  SAT_RISK_OBJECT_VALUATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -4174,7 +3773,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_RISK_OBJECT_VALUATI
 
 
 ----------------------------------------------------------------------------------------
--- 252. MAXIMUS — SATELLITE  SAT_RISK_PERSON_INSURED   [Implemented]  [M3]
+-- 227. MAXIMUS — SATELLITE  SAT_RISK_PERSON_INSURED   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -4190,7 +3789,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_RISK_PERSON_INSURED
 
 
 ----------------------------------------------------------------------------------------
--- 253. MAXIMUS — SATELLITE  SAT_RISK_PERSON_MEMBER   [Implemented]  [M3]
+-- 228. MAXIMUS — SATELLITE  SAT_RISK_PERSON_MEMBER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -4206,7 +3805,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_RISK_PERSON_MEMBER'
 
 
 ----------------------------------------------------------------------------------------
--- 254. MAXIMUS — SATELLITE  SAT_RISK_PERSON_TRAVEL   [Implemented]  [M3]
+-- 229. MAXIMUS — SATELLITE  SAT_RISK_PERSON_TRAVEL   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------

@@ -2,7 +2,6 @@
    DM-R2  |  Referential Integrity - Links Reconcile (Travel LOB)  (OPUS)
    Every valid source relationship exists as a link row; no orphan links.
 
-   MEMBER SPLIT: sections 1..1 assigned M1 x 1, M2 x 0, M3 x 0 -- contiguous thirds in listed order.
    Check ID: DM-R2
    Category: Referential integrity
    Sign-off criterion: Relationships / links reconcile
@@ -10,7 +9,7 @@
    Pass criteria / tolerance: 0 missing / orphan links
    Owner: LUMIQ
    Vault location: BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL
-   Maximus Travel V2 RAW: RAW.MAXIMUS_TRAVEL_V2
+   Maximus Travel RAW: RAW.MAXIMUS_TRAVEL
    Opus Travel RAW (prod): BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE
    Opus Travel RAW (test): BAGIC_PREPROD_CURATED_DB.UTILS
    Shared vault: Parents (hubs / links) are checked across ALL their rows (a key may
@@ -35,7 +34,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. OPUS — No links in this project   [NA]  [M1]
+-- 1. OPUS — No links in this project   [NA]
 -- OPUS travel has 0 link models.
 ----------------------------------------------------------------------------------------
 -- OPUS travel: no links yet

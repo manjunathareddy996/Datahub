@@ -1,0 +1,204 @@
+{
+ "stage": "3",
+ "mode": "handback",
+ "status": "partial",
+ "project": "maximus_travel_dv_dbt",
+ "generated": "2026-09-25",
+ "artifact": "BUILDER_ASKS_MAXIMUS_TRAVEL.md",
+ "numbers_live_in": "build_artifacts/BUILD_STATUS.json (referenced, never retyped)",
+ "map_sha256": "bdb1f3fea01475fbe25b5c3c0694e5eae791354e679326196009b83d3bfe224e",
+ "status_note": "The handback is written and closes BUILD_RULES 10 clause 10. Status is PARTIAL, not COMPLETE, for one reason: vault_tools/check_prose_counts.py could NOT be executed in this session (the Bash tool is disabled), so the required PASS is asserted by hand-audit and not by the gate. See self_checks.",
+ "counts": {
+  "items_routed_mapper": 7,
+  "items_routed_modeller": 4,
+  "items_routed_source": 8,
+  "items_routed_vault_tools": 6,
+  "items_routed_build_owner": 1,
+  "bundle_open_items_answered": 20,
+  "bundle_open_items_total": 21,
+  "limits_stated": 2,
+  "record_corrections": 9
+ },
+ "routing_index": {
+  "mapper": ["M1 child-key leg sets that disagree within one satellite",
+             "M2 SAT_CLAIM_EVIDENCE.'Media Reference' leg_backing=unresolved",
+             "M3 two satellites whose child key is only no-operand literal legs",
+             "M4 augmentation attributes bound to the dominant instance (BD11)",
+             "M5 attributes that are the child key and nothing else",
+             "M6 link legs that disagree with their hub's key (BD12)",
+             "M7 HUB_ORG_UNIT shared unprefixed namespace"],
+  "modeller": ["D1 renumbering ordinal carrying a child key -- BLOCKING (clause 9)",
+               "D2 SAT_PARTY_BANKING grain divergence against the sibling",
+               "D3 two content-hash canonicalisations on disjoint hubs (BD8)",
+               "D4 SAT_COVERAGE_SUBLIMIT_SCHEDULE catalogue grain, proposed not applied"],
+  "source": ["S1 FOREIGN_KEY round-trip unproven",
+             "S2 is POL_RISK_ID globally unique",
+             "S3 is a PNR-trip the same risk object as a POL_RISK_ID-risk",
+             "S4 is TRIP_NO a global identifier or a per-policy ordinal",
+             "S5 is BILL_NO a document identifier or a per-parent ordinal",
+             "S6 is SERIAL_NO stable per dispatch line (the fact behind D1)",
+             "S7 HUB_FINANCIAL_TRANSACTION rows with no transaction identifier",
+             "S8 hubs with several single-operand bare keys"],
+  "vault_tools": ["V1 check 1 compares src_payload alone -- BLOCKER against the gate",
+                  "V2 coverage check 6 blind to the augmentation container",
+                  "V3 shared accepted_uncovered.txt has no per-project integrity guard",
+                  "V4 a dead exemption is indistinguishable from a live one",
+                  "V5 check_patterns reads the first .search() argument as a pattern",
+                  "V6 promotion candidate: prose detection in emitted models"],
+  "build_owner": ["HASHDIFF residual: narrowed on the name, not retired on the input lists"]
+ },
+ "bundle_open_items": {
+  "source_document": "BUILD_INSTRUCTIONS_TRAVEL_V2.rev5.md",
+  "answered": ["1 gate status", "2.1 empty string is not NULL", "2.2 FK round-trip",
+               "2.3 link leg must equal hub key", "2.4 HUB_RISK_OBJECT qualified form",
+               "3a HUB_FINANCIAL_TRANSACTION currency", "3b endorsement type",
+               "3c SAT_COVERAGE_SUBLIMIT_SCHEDULE grain", "3d same class needs values",
+               "3e HUB_RISK_OBJECT two namespaces", "3g spine-spelling normalisation",
+               "4 monetary grain decision", "4 OPUS quote branch is minimal",
+               "5 PNR-trip vs POL_RISK_ID-risk", "6 augmentation all build-side",
+               "6 SAT_POLICY_DOCUMENT_DISPATCH do not collapse", "7.1 validate the FK round-trip",
+               "7.2 confirm rejection of null-resolving keys", "7.3 monetary grain disagreement",
+               "7.4 what we could settle from data we have"],
+  "not_addressed": ["3f cross-table duplicate groups on byte-identical keys -- this build did not measure duplicate groups and makes no claim about them; stated explicitly in the handback rather than omitted (BUILD_RULES 11.2)"]
+ },
+ "self_checks": [
+  {
+   "check": "every number came from BUILD_STATUS.json",
+   "result": "pass",
+   "detail": "NO quantity is typed in BUILDER_ASKS_MAXIMUS_TRAVEL.md. Every count is written as a JSON path (.counts.*, .coverage.by_class.*, .link_leg_census.*, .sibling.shared_surface.*, .clauses.*, .unbuilt_by_routing.*) and resolved by the reader against build_artifacts/BUILD_STATUS.json. Figures that do not exist in BUILD_STATUS.json -- the sibling payload canonical-track split, the carried-debt ran_locally results, the profile key disposition split -- are cited to build_artifacts/reports/stage1_report.json and stage2_report.json by name instead of being retyped. Ratios are written as path-of-path rather than as a percentage."
+  },
+  {
+   "check": "vault_tools/check_prose_counts.py maximus_travel_dv_dbt returns PASS",
+   "result": "fail",
+   "detail": "NOT EXECUTED -- not FAILED. The Bash tool is disabled in this session, so the gate could not be run at all, and BUILD_RULES 1.8 forbids reporting that third outcome as either PASS or FAIL. Recorded as a failed ASSERTION because the assertion 'the gate was run and returned PASS' cannot be made. What WAS done instead is the hand-audit in the next entry. THE GATE STILL NEEDS TO BE RUN: python3 vault_tools/check_prose_counts.py maximus_travel_dv_dbt -- and note it distinguishes PASS from NOT RUN (exit 2), so check which one comes back."
+  },
+  {
+   "check": "hand-audit of the handback against check_prose_counts.scan() line by line",
+   "result": "pass",
+   "detail": "Every digit-bearing line in the handback was enumerated and judged against the scanner's actual logic, which was read first rather than assumed: fenced-line skip, the section-scoped SOURCED declaration and its reset on any line starting with '#', the code-span parity test, the identifier test on the preceding and following character, REF_BEFORE, and the two-digit-or-unit-word threshold with its 24-character lookahead. Result: zero reportable quantities. Every section that carries a digit opens with an explicit provenance line naming build_artifacts/BUILD_STATUS.json or 'taken from'/'by reference', every section reference is written with a section sign, and every bare identifier carrying a digit sits inside a code span. THIS IS NOT A SUBSTITUTE FOR RUNNING THE GATE (BUILD_RULES 1.1): a reading of a check is not the check."
+  },
+  {
+   "check": "every routed item states the build's behaviour if the question goes unanswered",
+   "result": "pass",
+   "detail": "All 25 routed items (7 mapper, 4 modeller, 8 source, 6 vault_tools) carry a 'What the build does meanwhile' clause. BUILD_RULES 11.3: a question without a stated default invites a slow answer."
+  },
+  {
+   "check": "the bundle's agenda is the reply's agenda",
+   "result": "pass",
+   "detail": "All 21 KNOWN OPEN items in BUILD_INSTRUCTIONS_TRAVEL_V2.rev5.md are answered in a table keyed to the bundle's own section numbers; the single unanswered one is marked NOT ADDRESSED in capitals rather than omitted (BUILD_RULES 11.2)."
+  },
+  {
+   "check": "Mine to own is present and non-empty",
+   "result": "pass",
+   "detail": "Seven entries: two defects introduced and only partly repaired (one still open and named as still open), one count in this build's own code that disagrees with the code, one convention claim right for the wrong reason, three artifacts lost to a deletion step ordered before the thing that needed them, one false alarm raised and withdrawn before reporting, and one negative control that failed because a shell heredoc ate a backslash. Each is written as defect -> rule section -> the check that catches it, not as a narrative."
+  },
+  {
+   "check": "claims about the map and the sibling were verified before being relayed",
+   "result": "pass",
+   "detail": "The map digest was checked against BUILD_STATUS.json .input_digest and the stage-2 before/after pair. The bundle's own open items were read out of BUILD_INSTRUCTIONS_TRAVEL_V2.rev5.md rather than recalled. The carried-debt run/not-run split was read out of stage2_report.json .carried_debt rather than counted from memory."
+  },
+  {
+   "check": "a relayed claim that did not reproduce was withdrawn rather than shipped",
+   "result": "pass",
+   "detail": "The staleness claim about maximus_health_v2_dv_dbt's exemption lines was withdrawn before delivery: the figure was a file-wide count spanning three projects relayed as one project's, it does not reproduce on the project where it can be tested, and that project's tree was mid-regeneration and could not be read. Recorded in the handback as WITHDRAWN and as NOT EXAMINED -- a third outcome, not clean and not stale."
+  }
+ ],
+ "findings": [
+  {
+   "kind": "note",
+   "severity": "blocker",
+   "for_stage": "modeller",
+   "detail": "CLAUSE 9, BLOCKING BEFORE ANY LOAD. A renumbering ordinal carries a child key (SAT_AUG_POLICY_DOCUMENT_DISPATCH.DISPATCH_SERIAL_NUMBER from SERIAL_NO), and collapse-trap pairs reach an emitted src_cdk. Counts at BUILD_STATUS.json .counts.ordinal_child_keys_by_backing and .counts.collapse_trap_pairs_reaching_a_child_key; the named list is at .clauses.9.detail. Built AS MAPPED (BUILD_RULES 5.7) and raised, never corrected. The mapper reports this class in five of six maps, so it is systemic rather than a per-map slip. The underlying fact question -- is SERIAL_NO stable per dispatch line -- is routed to source as S6."
+  },
+  {
+   "kind": "note",
+   "severity": "blocker",
+   "for_stage": "vault_tools",
+   "detail": "CHECK 1 OF check_vault_alignment COMPARES src_payload ALONE AND SO FAILS CORRECTLY-BUILT SATELLITES. The canonical rendering is present as src_cdk. Corroborated four ways (all ma_sat; all with a live non-cast-null feeder; the map declares them as child-key legs; the sibling itself writes IDENTIFICATION_TYPE_CODE as src_cdk on SAT_PARTY_IDENTIFICATION) and settled by injection: satisfying check 1 as written creates a BUILD_RULES 5.4 clash. THE GATE AS WRITTEN ASKS FOR A DEFECT. Until it compares src_payload UNION src_cdk, most of this project's coverage exemptions paper over a GATE defect rather than a BUILD one -- an exemption that hides a gate bug is worse than a red check. Not fixed here: a shared gate is not edited while builds are reading it."
+  },
+  {
+   "kind": "note",
+   "severity": "blocker",
+   "for_stage": "modeller",
+   "detail": "SHARED-VAULT HASHDIFF: NARROWED, NOT RETIRED -- routed to the build owner in the handback, and the reconciliation itself is a modeller decision about one shared table. Retired on the column NAME (.counts.hashdiff_name_disagreements). NOT retired on the CONTENTS: .counts.hashdiff_input_list_disagreements of .counts.shared_satellites_with_the_sibling. Same name, different contents is the worse failure because the agreeing name hides it from every name-comparing check. SCOPE CORRECTION: the shared surface quoted for most of this engagement counted only the OPUS-named SAT_AUG_* set and omitted the standard track."
+  },
+  {
+   "kind": "record_correction",
+   "severity": "warn",
+   "for_stage": "vault_tools",
+   "detail": "WITHDRAWN: the claim that almost all of maximus_health_v2_dv_dbt's exemption lines are stale. It was a FILE-WIDE count spanning three projects relayed as one project's -- the same subset-as-surface error corrected twice elsewhere in this build, in the opposite direction. Measured where it can be tested: NONE of this build's exemptions is stale; .coverage.by_class.satellite_not_built of them name a satellite not present in the emitted models and are worth a look; the rest are live. maximus_health_v2_dv_dbt was NOT EXAMINED -- its models were being regenerated, so any read would have been torn -- and not-examined must not read as clean or as stale (BUILD_RULES 1.8). The property that survives without any count behind it: a dead exemption is indistinguishable from a live one, which is why the shared file needs a periodic check and a per-project section digest (V3)."
+  },
+  {
+   "kind": "record_correction",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "TWO OVERSTATEMENTS AND A STALE AS-BUILT CLAIM IN THE COVERING DOCUMENTS, each corrected in the handback with the real residual stated beside it (BUILD_RULES 11.8): (a) the gate is at eight warns and two prose artifacts still say seven -- the extra warn is a pre-existing collapse now VISIBLE, not a regression, and the sentence calling the warns byte-identical to the baseline is no longer true; (b) KEY_FUNCTIONS.md section 10 still names SAT_QUOTE_RATING as an as-built contract and still renders the HUB_QUOTE natural key without its parentheses -- verified against the sibling build, not against a document; (c) the FK round-trip row figure reproduces as no population in this map and has survived four re-issues uncorrected -- see .profile_crosschecks.do_not_quote."
+  },
+  {
+   "kind": "record_correction",
+   "severity": "info",
+   "for_stage": "mapper",
+   "detail": "AN UNDERSTATED LIMIT CORRECTED, AND A CORRECTION OF THE CORRECTION. The link-leg coverage limit was published twice too small: once counting only legs that were BOTH positional AND uncorroborated (a subset of a subset, understating it by an order of magnitude), and once from a verification re-derivation that undercounted hub-named legs. Both are WITHDRAWN. The figure to quote is .counts.link_legs_naming_no_hub of .counts.link_legs, with the population stated, and the limit itself at .link_leg_census.coverage_limit. Separately and in the other direction: SAT_RISK_PERSON_INSURED.AGE_AT_ENTRY is NOT part of the check-1 gate artifact -- it is a genuine refusal of an unratified derivation with no ratified function, which is the correct outcome for that build directive."
+  },
+  {
+   "kind": "unanswered_open_item",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "BUNDLE ITEM 3f -- cross-table duplicate groups on byte-identical keys -- IS NOT ADDRESSED. This build did not measure duplicate groups, no artifact it wrote carries them, and no claim about them is made. Marked NOT ADDRESSED in the handback rather than omitted. It can be measured from the map in one pass if it matters before load."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "1",
+   "detail": "STILL OPEN, MINE: BUILD_STATUS.json loses two schema-required fields on every chain re-run. 'project' and 'generated' are in selfcheck_mt.STAGE1_OWNED_KEYS so they are excluded from preservation, but stage 1 never writes them -- so the chain DELETES them. Re-added by hand; they will vanish again on the next run_all.sh until STAGE1_OWNED_KEYS is corrected or stage 1 writes them. The warning is carried in .schema_warning in the file itself."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "1",
+   "detail": "PARTLY REPAIRED, MINE: build_artifacts/reproducibility.json is in prove_mt_reproducibility.CHAIN_OUTPUT_FILES but run_all.sh never writes it, so deleting per BUILD_RULES 9.3 with that list as the definition of 'what the chain rewrites' destroys it permanently. That happened and it was restored by re-running the prover. The list is still wrong: either drop the entry or state that the prover must be re-run. Nothing yet asserts that every CHAIN_OUTPUT_FILES entry has a writer IN the chain."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "1",
+   "detail": "MINE, two of a kind and both in the handback: (a) the rev-5 profile key split in mt_names.PROFILE_KEY_DISPOSITION is TRANSPOSED in its own code comment -- BUILD_RULES 1.9 violated inside the module that enforces 2.2, and check_prose_counts does not scan generator comments; (b) mt_names.detect_payload_convention has NO 'squashed' class and a squashed name fullmatches its UPPER_SNAKE pattern, so the unanimous sibling-convention result was a SHAPE CENSUS, NOT A CONVENTION TEST (BUILD_RULES 1.10). The answer is still right, re-derived against canonical renderings; the fix is to score against canonical renderings as the shared gate already does."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "2",
+   "detail": "THE PROSE GATE WAS NOT RUN ON THIS HANDBACK. vault_tools/check_prose_counts.py could not be executed -- the Bash tool is disabled in this session -- so its PASS is asserted by a line-by-line hand-audit against the scanner's logic and NOT by the gate. A reading of a check is not the check (BUILD_RULES 1.1). Run: python3 vault_tools/check_prose_counts.py maximus_travel_dv_dbt, and check whether the answer is PASS or NOT RUN, because that file returns exit 2 for NOT RUN and the two are different outcomes (1.8, 1.9)."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "vault_tools",
+   "detail": "TWO LIMITS STATED AS LIMITS, NOT OMISSIONS (BUILD_RULES 11.8). (1) THIS BUILD CANNOT CERTIFY that no other project's lines in the shared vault_tools/accepted_uncovered.txt were touched: there is no VCS and no baseline. What can be said is that this build's generator cannot write that file, that all of its own lines match its generated copy, and that the file is structurally intact -- nothing more. A per-project section digest in vault_tools would make it checkable. (2) The leg-equals-hub-key property is UNVERIFIABLE on .counts.link_legs_naming_no_hub of .counts.link_legs, because leg and hub key come from one renderer there and agree by construction."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "vault_tools",
+   "detail": "COVERAGE CHECK 6 IS BLIND TO THE AUGMENTATION CONTAINER, quantified on this LOB at .counts.augmentation_rows_invisible_to_coverage: those rows are in neither the denominator NOR accepted_uncovered.txt -- neither counted nor exempted, which is the silence BUILD_RULES 8.1 says coverage exists to catch. Second LOB to raise it; promotion trigger on the third. Separately, check_patterns.py reads the first argument of .search()/.match() as a PATTERN, which is wrong for a literal SUBJECT and will fire on any project that probes a pattern that way."
+  },
+  {
+   "kind": "promotion_candidate",
+   "severity": "info",
+   "for_stage": "vault_tools",
+   "detail": "PROSE DETECTION IN EMITTED MODELS. BUILD_RULES 3 asks for it and no shared gate implements it; travel and health each assert it privately and this build's verification implemented it a third time ad hoc. Three independent implementations meets the promotion trigger: it belongs in check_patterns.py or a new shared check, not in one build's verifier."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "CARRIED DEBT (BUILD_RULES 12): most items ran locally against this build; the ones that did NOT are named in the handback with their reasons -- the six-project check-7 re-sweep and the 2026-09-04 check-7 sweep (estate-wide, a decision rather than a chore, and their figures remain lower bounds), the three-way HASHDIFF on Health V2 and the PLACEHOLDER_CK control byte (different projects), the ref()-chain no-regression comparison (estate-wide), and BUILDER_VALIDATOR.md (a mapper-facing document, not a builder-side edit). Per-item results with ran_locally on each are in build_artifacts/reports/stage2_report.json .carried_debt."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "CLAUSE 10 CLOSES ON THIS DOCUMENT. BUILDER_ASKS_MAXIMUS_TRAVEL.md exists at the project root and answers the bundle's agenda. .done stays false and clauses 1 and 9 stay failed: neither is affected by this handback, and clause 1 cannot pass for any Maximus project carrying a canonical attribute as a child key until the shared gate's check 1 is fixed. Every builder decision BD1..BD13 is listed in the handback with its one-line overrule (BUILD_RULES 11.5)."
+  }
+ ]
+}

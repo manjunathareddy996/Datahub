@@ -1,0 +1,181 @@
+{
+ "produced_by": "generators/verify_mt_gates.py -- this file. Every gate verdict is the gate's OWN subprocess returncode; nothing is read through a pipe.",
+ "outcome_vocabulary": "PASS / FAIL / NOT_RUN / DID_NOT_COMPLETE, never collapsed to two (BUILD_RULES 1.8).",
+ "gates": {
+  "check_internal": {
+   "argv": [
+    "maximus_travel_dv_dbt"
+   ],
+   "clean_exit": 0,
+   "verdict": "PASS"
+  },
+  "check_patterns": {
+   "argv": [
+    "maximus_travel_dv_dbt"
+   ],
+   "clean_exit": 0,
+   "verdict": "PASS"
+  },
+  "check_prose_counts": {
+   "argv": [
+    "maximus_travel_dv_dbt"
+   ],
+   "clean_exit": 0,
+   "verdict": "PASS"
+  },
+  "check_prose_shape": {
+   "argv": [
+    "maximus_travel_dv_dbt"
+   ],
+   "clean_exit": 0,
+   "verdict": "PASS"
+  },
+  "check_vault_alignment": {
+   "argv": [
+    "maximus_travel_dv_dbt",
+    "travel_dv_dbt",
+    "../SourceMapping_Skill/maximus travel mapping v2/outputs/04_column_map.json"
+   ],
+   "clean_exit": 0,
+   "verdict": "PASS"
+  }
+ },
+ "baseline_tree_sha256": "2eafd451b630bd4c90bfedb19674fed31340c36189b0521be3bf2622808b38dc",
+ "baseline_tree_files": 1044,
+ "final_tree_sha256": "2eafd451b630bd4c90bfedb19674fed31340c36189b0521be3bf2622808b38dc",
+ "bundle_before": {
+  "04_column_map.json": "bdb1f3fea01475fbe25b5c3c0694e5eae791354e679326196009b83d3bfe224e"
+ },
+ "bundle_after": {
+  "04_column_map.json": "bdb1f3fea01475fbe25b5c3c0694e5eae791354e679326196009b83d3bfe224e"
+ },
+ "checks": [
+  {
+   "check": "check_internal on the clean tree",
+   "result": "PASS",
+   "detail": "EXIT 0, read from the GATE's own returncode -- never from a pipe. models                        : 1040   (maximus_travel_dv_dbt) / PASS -- refs resolve, every declared source column is emitted, names unique.",
+   "gate": "check_internal",
+   "exit_code": 0,
+   "argv": [
+    "maximus_travel_dv_dbt"
+   ]
+  },
+  {
+   "check": "check_patterns on the clean tree",
+   "result": "PASS",
+   "detail": "EXIT 0, read from the GATE's own returncode -- never from a pipe. files scanned                 : 19 / PASS -- no control bytes, every statically-known pattern compiles.",
+   "gate": "check_patterns",
+   "exit_code": 0,
+   "argv": [
+    "maximus_travel_dv_dbt"
+   ]
+  },
+  {
+   "check": "check_prose_counts on the clean tree",
+   "result": "PASS",
+   "detail": "EXIT 0, read from the GATE's own returncode -- never from a pipe. prose files scanned           : 2 / PASS -- every quantity in current-state prose is sourced or absent.",
+   "gate": "check_prose_counts",
+   "exit_code": 0,
+   "argv": [
+    "maximus_travel_dv_dbt"
+   ]
+  },
+  {
+   "check": "check_prose_shape on the clean tree",
+   "result": "PASS",
+   "detail": "EXIT 0, read from the GATE's own returncode -- never from a pipe. models examined               : 1040   (population) / PASS -- no identifier-position token contains a space.",
+   "gate": "check_prose_shape",
+   "exit_code": 0,
+   "argv": [
+    "maximus_travel_dv_dbt"
+   ]
+  },
+  {
+   "check": "check_vault_alignment on the clean tree",
+   "result": "PASS",
+   "detail": "EXIT 0, read from the GATE's own returncode -- never from a pipe. verage still counts them) / mapped columns reaching a sat  : 425 of 442   (96.2%)   [17 accepted] / dead data paths                : 0 / PASS -- aligned with the sibling build and the canonical model.",
+   "gate": "check_vault_alignment",
+   "exit_code": 0,
+   "argv": [
+    "maximus_travel_dv_dbt",
+    "travel_dv_dbt",
+    "../SourceMapping_Skill/maximus travel mapping v2/outputs/04_column_map.json"
+   ]
+  },
+  {
+   "check": "check_internal FAILS on a dangling ref()",
+   "result": "PASS",
+   "detail": "EXIT 1 and the gate NAMES the edge: satfeed_mt_sat_assessment_header -> stg2_mt__PLANTED_DANGLING. A first attempt aimed at a `source_model:` entry did NOT fire -- see the scope-limit finding below; that was the probe being wrong about what the gate reads, and it is recorded rather than retried silently."
+  },
+  {
+   "check": "tree restored by the CHAIN after the dangling-ref injection",
+   "result": "PASS",
+   "detail": "run_all.sh exit 0; 1044 file(s) -> 2eafd451b630bd4c90bfedb19674fed31340c36189b0521be3bf2622808b38dc. Models are GENERATED, so the chain is the restore mechanism and the BINARY tree digest is the proof."
+  },
+  {
+   "check": "GATE SCOPE LIMIT: check_internal cannot see a source_model entry naming a model that does not exist",
+   "result": "FAIL",
+   "detail": "EXIT 0 -- SILENT on a planted nonexistent source_model entry. The gate skips a source_model name absent from its file set, commenting 'a dangling ref, already reported above', but the ref() half sees only ref() CALLS and 234 satellite model(s) here carry a source_model list and NO ref() call at all. MEASURED by injection, not inferred. vault_tools is NOT edited and no exemption is written to work around it: the shared gate is read by other builds.",
+   "population": "234 satellite models with a source_model list and no ref() call"
+  },
+  {
+   "check": "tree restored by the CHAIN after the source_model scope probe",
+   "result": "PASS",
+   "detail": "run_all.sh exit 0; 1044 file(s) -> 2eafd451b630bd4c90bfedb19674fed31340c36189b0521be3bf2622808b38dc. Models are GENERATED, so the chain is the restore mechanism and the BINARY tree digest is the proof."
+  },
+  {
+   "check": "check_prose_shape FAILS on a two-word token in an identifier position",
+   "result": "PASS",
+   "detail": "EXIT 1 and the gate names file, line and phrase. TWO probe defects preceded this one: the first put the space in a YAML scalar, which the gate does not scan, and the second used the word `number`, which is on the gate's SQL-keyword list precisely because SQL legitimately puts a type name beside an identifier. Neither silence was accepted as a pass (BUILD_RULES 1.1)."
+  },
+  {
+   "check": "tree restored by the CHAIN after the prose-shape injection",
+   "result": "PASS",
+   "detail": "run_all.sh exit 0; 1044 file(s) -> 2eafd451b630bd4c90bfedb19674fed31340c36189b0521be3bf2622808b38dc. Models are GENERATED, so the chain is the restore mechanism and the BINARY tree digest is the proof."
+  },
+  {
+   "check": "check_vault_alignment FAILS on a payload column that is not the canonical rendering",
+   "result": "PASS",
+   "detail": "EXIT 1. FAIL 1. payload column is not the canonical rendering: 1 / FAIL 6. mapped column reaches no satellite: 1"
+  },
+  {
+   "check": "tree restored by the CHAIN after the alignment injection",
+   "result": "PASS",
+   "detail": "run_all.sh exit 0; 1044 file(s) -> 2eafd451b630bd4c90bfedb19674fed31340c36189b0521be3bf2622808b38dc. Models are GENERATED, so the chain is the restore mechanism and the BINARY tree digest is the proof."
+  },
+  {
+   "check": "check_prose_counts FAILS on an unsourced count under a NEW heading",
+   "result": "PASS",
+   "detail": "EXIT 1, the gate names the number and the line, and README.md is restored byte-identically (asserted in BINARY: True). The heading matters: the scanner's declared-provenance flag is sticky until the next heading, so a count appended at the end inherits provenance from far above and the gate stays silent."
+  },
+  {
+   "check": "check_prose_counts returns to PASS with the injection removed",
+   "result": "PASS",
+   "detail": "EXIT 0"
+  },
+  {
+   "check": "check_patterns FAILS on a control byte in a compiled pattern",
+   "result": "PASS",
+   "detail": "0x08 asserted PRESENT in the bytes BEFORE the verdict (present=True), gate EXIT 1 naming the file and line, and mt_names.py restored byte-identically (asserted in BINARY: True). FAIL control_byte  mt_names.py:754"
+  },
+  {
+   "check": "check_patterns returns to PASS with the injection removed",
+   "result": "PASS",
+   "detail": "EXIT 0"
+  },
+  {
+   "check": "the tree is byte-identical to the baseline after EVERY injection",
+   "result": "PASS",
+   "detail": "1044 file(s) -> 2eafd451b630bd4c90bfedb19674fed31340c36189b0521be3bf2622808b38dc, baseline 2eafd451b630bd4c90bfedb19674fed31340c36189b0521be3bf2622808b38dc over 1044 file(s)"
+  },
+  {
+   "check": "the bundle is byte-identical before and after this verification",
+   "result": "PASS",
+   "detail": "04_column_map.json: bdb1f3fea01475fb before, bdb1f3fea01475fb after. The bundle is READ-ONLY and FINAL (BUILD_RULES 9.1, 9.6)."
+  }
+ ],
+ "failed": [
+  "GATE SCOPE LIMIT: check_internal cannot see a source_model entry naming a model that does not exist"
+ ],
+ "not_run": []
+}

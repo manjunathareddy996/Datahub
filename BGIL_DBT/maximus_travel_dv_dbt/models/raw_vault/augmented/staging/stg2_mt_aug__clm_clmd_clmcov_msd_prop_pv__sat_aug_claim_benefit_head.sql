@@ -1,0 +1,65 @@
+{{ config(materialized='view') }}
+
+-- MAXIMUS TRAVEL AUGMENTED stage for SAT_AUG_CLAIM_BENEFIT_HEAD from
+--   NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+--
+-- BUILD-SIDE PROPOSAL, not ratified against data_7.js. One model per (view, satellite),
+-- so withdrawing a proposal is deleting a model rather than editing the standard
+-- track's wide stage. Nothing here feeds a standard satellite.
+--
+-- 16 payload column(s); the child key is BENEFIT_HEAD_CODE.
+
+{%- set yaml_metadata -%}
+source_model: 'resolved_mt__clm_clmd_clmcov_msd_prop_pv'
+hashed_columns:
+  CLAIM_HKEY: 'CLAIM_NK'
+  HASHDIFF_CLAIM_BENEFIT_HEAD:
+    is_hashdiff: true
+    columns:
+      - 'AMOUNT_IN_EXCESS_OF_SUM_INSURED'
+      - 'BENEFIT_HEAD_CODE'
+      - 'BENEFIT_LIMIT_AMOUNT_USD'
+      - 'CLAIMED_AMOUNT_BREAKUP'
+      - 'COVER_SUM_INSURED_AMOUNT'
+      - 'COVER_SUM_INSURED_CURRENCY'
+      - 'COVER_TAKEN_INDICATOR'
+      - 'DEDUCTIBLE_AMOUNT'
+      - 'DEDUCTIBLE_COMMENT'
+      - 'DEDUCTIBLE_WAIVED_INDICATOR'
+      - 'DEDUCTION_AMOUNT_BREAKUP'
+      - 'EXTENSION_OR_CLAUSE_APPLICABLE_INDICATOR'
+      - 'HEAD_LINE_PARTICULARS'
+      - 'HEAD_SUM_INSURED_AMOUNT'
+      - 'PANDEMIC_COVER_APPLICABLE_INDICATOR'
+      - 'SUM_INSURED_VALIDATION_OVERRIDE_INDICATOR'
+      - 'SUM_INSURED_VALIDATION_OVERRIDE_REMARKS'
+derived_columns:
+  CLAIM_BK: "nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),'')"
+  CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),''))"
+  BENEFIT_HEAD_CODE: "coalesce(nullif(trim(cover_taken), ''),'')"
+  AMOUNT_IN_EXCESS_OF_SUM_INSURED: 'cast(null as varchar)'
+  BENEFIT_LIMIT_AMOUNT_USD: 'cast(null as varchar)'
+  CLAIMED_AMOUNT_BREAKUP: 'cast(null as varchar)'
+  COVER_SUM_INSURED_AMOUNT: 'cast(null as varchar)'
+  COVER_SUM_INSURED_CURRENCY: 'cast(null as varchar)'
+  COVER_TAKEN_INDICATOR: 'cover_taken'
+  DEDUCTIBLE_AMOUNT: 'cast(null as varchar)'
+  DEDUCTIBLE_COMMENT: 'cast(null as varchar)'
+  DEDUCTIBLE_WAIVED_INDICATOR: 'cast(null as varchar)'
+  DEDUCTION_AMOUNT_BREAKUP: 'cast(null as varchar)'
+  EXTENSION_OR_CLAUSE_APPLICABLE_INDICATOR: 'cast(null as varchar)'
+  HEAD_LINE_PARTICULARS: 'cast(null as varchar)'
+  HEAD_SUM_INSURED_AMOUNT: 'cast(null as varchar)'
+  PANDEMIC_COVER_APPLICABLE_INDICATOR: 'cast(null as varchar)'
+  SUM_INSURED_VALIDATION_OVERRIDE_INDICATOR: 'cast(null as varchar)'
+  SUM_INSURED_VALIDATION_OVERRIDE_REMARKS: 'cast(null as varchar)'
+  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW'
+  LOAD_DATETIME: 'REC_REFRESH_AT'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

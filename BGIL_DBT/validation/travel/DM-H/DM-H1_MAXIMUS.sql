@@ -2,7 +2,6 @@
    DM-H1  |  History - Change Creates a New Satellite Row (Travel LOB)  (MAXIMUS)
    A record changed in source creates a new satellite row.
 
-   MEMBER SPLIT: sections 1..237 assigned M1 x 79, M2 x 79, M3 x 79 -- contiguous thirds in listed order.
    Check ID: DM-H1
    Category: History checks
    Sign-off criterion: Change creates a new satellite row
@@ -11,7 +10,7 @@
    Pass criteria / tolerance: New sat row on change
    Owner: LUMIQ
    Vault location: BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL
-   Maximus Travel V2 RAW: RAW.MAXIMUS_TRAVEL_V2
+   Maximus Travel RAW: RAW.MAXIMUS_TRAVEL
    Opus Travel RAW (prod): BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE
    Opus Travel RAW (test): BAGIC_PREPROD_CURATED_DB.UTILS
    Scope: Every standard + augmented satellite of the project; rows scoped by the
@@ -27,9 +26,9 @@
    not this file. The queries are IDENTICAL to those in the matching .docx.
 
    Revision notes:
-   - Travel LOB generated 2026-10-13 from the current maximus_travel_v2_dv_dbt models by
+   - Travel LOB generated 2026-10-13 from the current maximus_travel_dv_dbt models by
      validation/tools/gen_dm_h_travel.py (satellite lineage from gen_dm_a_travel.py).
-   - NO member plan yet -- covers every satellite in MAXIMUS (234; 234 with mapped
+   - NO member plan yet -- covers every satellite in MAXIMUS (209; 209 with mapped
      payload). Trim once a DM-H plan is agreed.
    - Static queries (a) run on data already loaded; (b) procedures need a dbt load
      between BEFORE and AFTER captures.
@@ -38,7 +37,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. SETUP — CDC test set-up (run once)   [Procedure]  [M1]
+-- 1. SETUP — CDC test set-up (run once)   [Procedure]
 -- Creates the snapshot tables used by DM-H1 (b), DM-H2 (b) and DM-H3 (b). Needs CREATE
 -- SCHEMA / TABLE rights on the scratch schema; change VALIDATION_SCHEMA in gen_dm_h.py
 -- to use another one.
@@ -59,7 +58,7 @@ create transient table if not exists BAGIC_PREPROD_CURATED_DB.UTILS.DM_H_RELOAD_
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — CDC before / after test procedure   [Procedure]  [M1]
+-- 2. MAXIMUS — CDC before / after test procedure   [Procedure]
 -- MAXIMUS RAW is the production mirror -- do NOT modify it. Let one normal load cycle
 -- land source changes between BEFORE and AFTER; a satellite whose sample saw no change
 -- reports NOT TESTED.
@@ -86,18 +85,18 @@ set DM_H_PHASE = 'AFTER';
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]  [M1]
+-- 3. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK ASSESSMENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS [2 col(s)].
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS [4 col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_ASSESSMENT_HEADER' as satellite, 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ASSESSMENT_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REQUESTED_DATE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ASSESSMENT_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REQUESTED_DATE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(ASSESSMENT_HKEY, 'HEX'), null)) within group (order by ASSESSMENT_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ASSESSMENT_END_TIME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ASSESSMENT_START_TIME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ASSESSMENT_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REQUESTED_DATE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ASSESSMENT_END_TIME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ASSESSMENT_START_TIME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ASSESSMENT_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REQUESTED_DATE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(ASSESSMENT_HKEY, 'HEX'), null)) within group (order by ASSESSMENT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ASSESSMENT_HEADER
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS');
@@ -105,7 +104,7 @@ select 'MAXIMUS' as project, 'SAT_ASSESSMENT_HEADER' as satellite, 'MAXIMUS_NONH
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]  [M1]
+-- 4. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -131,7 +130,7 @@ select 'MAXIMUS' as project, 'SAT_CHANNEL_DEFINITION' as satellite, '4 RECORD_SO
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M1]
+-- 5. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -150,13 +149,13 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_ASSESSMENT_SUMMARY' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Design finding]  [M1]
+-- 6. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- (satfeed_mtv2_sat_claim_benefit_head) also hashes BENEFIT_HEAD_CODE, which this
+-- (satfeed_mt_sat_claim_benefit_head) also hashes BENEFIT_HEAD_CODE, which this
 -- satellite does not store (a shared stage feeding several satellites). A change in only
 -- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
 -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
@@ -177,7 +176,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_ASSESSMENT_SUMMARY' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]  [M1]
+-- 7. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -199,20 +198,20 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_CO_RI_SHARE' as satellite, '2 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]  [M1]
+-- 8. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [7
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [14
 -- col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_CLAIM_FNOL' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(FNOL_CHANNEL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FNOL_TIME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRELIMINARY_LOSS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRELIMINARY_LOSS_ESTIMATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REPORTED_BY_CONTACT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REPORTED_BY_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SELF_SERVICE_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(FNOL_CHANNEL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FNOL_TIME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRELIMINARY_LOSS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRELIMINARY_LOSS_ESTIMATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REPORTED_BY_CONTACT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REPORTED_BY_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SELF_SERVICE_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(CLAIM_HKEY, 'HEX'), null)) within group (order by CLAIM_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADD_ON_CLAIM_ELECTED_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CLAIM_PERSON_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DELAYED_INTIMATION_REASON AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FNOL_CHANNEL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FNOL_TIME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INTIMATED_CAUSE_OF_CLAIM AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRELIMINARY_LOSS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRELIMINARY_LOSS_ESTIMATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REGISTRATION_FLAGS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REPORTED_BY_CONTACT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REPORTED_BY_EMAIL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REPORTED_BY_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SELF_SERVICE_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(THIRD_PARTY_INVOLVEMENT_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADD_ON_CLAIM_ELECTED_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CLAIM_PERSON_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DELAYED_INTIMATION_REASON AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FNOL_CHANNEL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FNOL_TIME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INTIMATED_CAUSE_OF_CLAIM AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRELIMINARY_LOSS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRELIMINARY_LOSS_ESTIMATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REGISTRATION_FLAGS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REPORTED_BY_CONTACT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REPORTED_BY_EMAIL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REPORTED_BY_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SELF_SERVICE_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(THIRD_PARTY_INVOLVEMENT_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(CLAIM_HKEY, 'HEX'), null)) within group (order by CLAIM_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_FNOL
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
@@ -220,7 +219,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_FNOL' as satellite, '2 RECORD_SOURCEs sh
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]  [M1]
+-- 9. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -246,7 +245,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_FRAUD' as satellite, '4 RECORD_SOURCEs s
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]  [M1]
+-- 10. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -273,25 +272,25 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEADER' as satellite, '5 RECORD_SOURCEs 
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]  [M1]
+-- 11. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [5
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- [9 col(s)].
+-- [13 col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_CLAIM_HEALTH_DETAIL' as satellite, '4 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADMISSION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(AILMENT_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DISCHARGE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HEALTH_CLAIM_REMARKS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ICD_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LENGTH_OF_STAY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRE_EXISTING_DISEASE_RELATED_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TREATING_DOCTOR_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TREATMENT_TYPE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADMISSION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(AILMENT_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DISCHARGE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HEALTH_CLAIM_REMARKS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ICD_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LENGTH_OF_STAY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRE_EXISTING_DISEASE_RELATED_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TREATING_DOCTOR_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TREATMENT_TYPE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(CLAIM_HKEY, 'HEX'), null)) within group (order by CLAIM_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADMISSION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ADVERSE_MEDICAL_HISTORY_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(AILMENT_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DISCHARGE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DISEASE_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HEALTH_CLAIM_REMARKS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ICD_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ICD_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LENGTH_OF_STAY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MEDICALLY_ADMISSIBLE_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRE_EXISTING_DISEASE_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRE_EXISTING_DISEASE_RELATED_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRE_EXISTING_ILLNESS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SYSTEM_OF_MEDICINE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TREATING_DOCTOR_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TREATMENT_TYPE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADMISSION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ADVERSE_MEDICAL_HISTORY_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(AILMENT_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DISCHARGE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DISEASE_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(HEALTH_CLAIM_REMARKS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ICD_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ICD_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LENGTH_OF_STAY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MEDICALLY_ADMISSIBLE_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRE_EXISTING_DISEASE_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRE_EXISTING_DISEASE_RELATED_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRE_EXISTING_ILLNESS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SYSTEM_OF_MEDICINE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TREATING_DOCTOR_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TREATMENT_TYPE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(CLAIM_HKEY, 'HEX'), null)) within group (order by CLAIM_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_HEALTH_DETAIL
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW');
@@ -299,14 +298,14 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEALTH_DETAIL' as satellite, '4 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Design finding]  [M1]
+-- 12. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- (satfeed_mtv2_sat_claim_investigation_finding) also hashes FINDING_SEQUENCE, which
--- this satellite does not store (a shared stage feeding several satellites). A change in
--- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
--- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
--- be recomputed from the satellite row. standard satellite, automate_dv.ma_sat; PK
+-- (satfeed_mt_sat_claim_investigation_finding) also hashes FINDING_SEQUENCE, which this
+-- satellite does not store (a shared stage feeding several satellites). A change in only
+-- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
+-- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
+-- recomputed from the satellite row. standard satellite, automate_dv.ma_sat; PK
 -- CLAIM_HKEY, child key FINDING_SEQUENCE; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
@@ -317,7 +316,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEALTH_DETAIL' as satellite, '4 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]  [M1]
+-- 13. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -339,11 +338,11 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_LITIGATION' as satellite, '2 RECORD_SOUR
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — SAT_CLAIM_NOTE   [Design finding]  [M1]
+-- 14. MAXIMUS — SAT_CLAIM_NOTE   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- (satfeed_mtv2_sat_claim_note) also hashes NOTE_SEQUENCE, which this satellite does not
+-- (satfeed_mt_sat_claim_note) also hashes NOTE_SEQUENCE, which this satellite does not
 -- store (a shared stage feeding several satellites). A change in only those columns
 -- gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2;
 -- see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be recomputed from the
@@ -360,11 +359,11 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_LITIGATION' as satellite, '2 RECORD_SOUR
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Design finding]  [M1]
+-- 15. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Design finding]
 -- HASHDIFF of MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_claim_payment_tranche) also hashes TRANCHE_NUMBER, which this
+-- (satfeed_mt_sat_claim_payment_tranche) also hashes TRANCHE_NUMBER, which this
 -- satellite does not store (a shared stage feeding several satellites). A change in only
 -- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
 -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
@@ -382,7 +381,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_LITIGATION' as satellite, '2 RECORD_SOUR
 
 
 ----------------------------------------------------------------------------------------
--- 16. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]  [M1]
+-- 16. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -402,16 +401,16 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PA_DETAIL' as satellite, 'MAXIMUS_NONHLT
 
 
 ----------------------------------------------------------------------------------------
--- 17. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Design finding]  [M1]
+-- 17. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_claim_provider_billing) also hashes BILL_NUMBER, which this
--- satellite does not store (a shared stage feeding several satellites). A change in only
--- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
--- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
--- recomputed from the satellite row. standard satellite, automate_dv.ma_sat; PK
--- CLAIM_HKEY, child key BILL_NUMBER; 2 RECORD_SOURCE group(s):
+-- (satfeed_mt_sat_claim_provider_billing) also hashes BILL_NUMBER, which this satellite
+-- does not store (a shared stage feeding several satellites). A change in only those
+-- columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks
+-- DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be recomputed
+-- from the satellite row. standard satellite, automate_dv.ma_sat; PK CLAIM_HKEY, child
+-- key BILL_NUMBER; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
 -- [0 col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -423,7 +422,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PA_DETAIL' as satellite, 'MAXIMUS_NONHLT
 
 
 ----------------------------------------------------------------------------------------
--- 18. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M1]
+-- 18. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -443,12 +442,12 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RECOVERY_SALVAGE' as satellite, 'MAXIMUS
 
 
 ----------------------------------------------------------------------------------------
--- 19. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]  [M1]
+-- 19. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [1 col(s)].
@@ -456,8 +455,8 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RECOVERY_SALVAGE' as satellite, 'MAXIMUS
 select 'MAXIMUS' as project, 'SAT_CLAIM_REPUDIATION' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(REPUDIATION_REASON AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(REPUDIATION_REASON AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(CLAIM_HKEY, 'HEX'), null)) within group (order by CLAIM_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(REPUDIATION_REASON AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REPUDIATION_REMARKS AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(REPUDIATION_REASON AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REPUDIATION_REMARKS AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(CLAIM_HKEY, 'HEX'), null)) within group (order by CLAIM_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_REPUDIATION
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW');
@@ -465,12 +464,12 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_REPUDIATION' as satellite, '2 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 20. MAXIMUS — SAT_CLAIM_RESERVE   [Design finding]  [M1]
+-- 20. MAXIMUS — SAT_CLAIM_RESERVE   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE
--- (satfeed_mtv2_sat_claim_reserve) also hashes RESERVE_HEAD, which this satellite does
--- not store (a shared stage feeding several satellites). A change in only those columns
+-- (satfeed_mt_sat_claim_reserve) also hashes RESERVE_HEAD, which this satellite does not
+-- store (a shared stage feeding several satellites). A change in only those columns
 -- gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2;
 -- see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be recomputed from the
 -- satellite row. standard satellite, automate_dv.ma_sat; PK CLAIM_HKEY, child key
@@ -484,10 +483,10 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_REPUDIATION' as satellite, '2 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 21. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Design finding]  [M1]
+-- 21. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- (satfeed_mtv2_sat_claim_reserve_head) also hashes RESERVE_HEAD_CODE, which this
+-- (satfeed_mt_sat_claim_reserve_head) also hashes RESERVE_HEAD_CODE, which this
 -- satellite does not store (a shared stage feeding several satellites). A change in only
 -- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
 -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
@@ -502,7 +501,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_REPUDIATION' as satellite, '2 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 22. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]  [M1]
+-- 22. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -522,7 +521,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_SETTLEMENT' as satellite, 'MAXIMUS_NONHL
 
 
 ----------------------------------------------------------------------------------------
--- 23. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]  [M1]
+-- 23. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -541,19 +540,19 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_SLA_TRACKING' as satellite, 'MAXIMUS_NON
 
 
 ----------------------------------------------------------------------------------------
--- 24. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]  [M1]
+-- 24. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- [2 col(s)].
+-- [3 col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_CLAIM_TP_FORENSIC' as satellite, 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_NUMBER AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_NUMBER AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(CLAIM_HKEY, 'HEX'), null)) within group (order by CLAIM_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_TIME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_TIME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(CLAIM_HKEY, 'HEX'), null)) within group (order by CLAIM_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_CLAIM_TP_FORENSIC
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW');
@@ -561,7 +560,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_TP_FORENSIC' as satellite, 'MAXIMUS_NONH
 
 
 ----------------------------------------------------------------------------------------
--- 25. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]  [M1]
+-- 25. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -585,7 +584,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_TRAVEL_DETAIL' as satellite, '3 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 26. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
+-- 26. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -630,10 +629,10 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADDRESS' as satellite, '15 RECORD_SOURC
 
 
 ----------------------------------------------------------------------------------------
--- 27. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Design finding]  [M1]
+-- 27. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- (satfeed_mtv2_sat_common_admin_geography) also hashes
+-- (satfeed_mt_sat_common_admin_geography) also hashes
 -- STATE_NAME__SAT_COMMON_ADMIN_GEOGRAPHY, which this satellite does not store (a shared
 -- stage feeding several satellites). A change in only those columns gives a new HASHDIFF
 -- and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a)
@@ -647,7 +646,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADDRESS' as satellite, '15 RECORD_SOURC
 
 
 ----------------------------------------------------------------------------------------
--- 28. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]  [M1]
+-- 28. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -669,7 +668,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_BUSINESS_AUDIT' as satellite, '2 RECORD
 
 
 ----------------------------------------------------------------------------------------
--- 29. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
+-- 29. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -693,7 +692,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, '3 RECORD
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M1]
+-- 30. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -719,7 +718,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 31. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]  [M1]
+-- 31. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -727,15 +726,15 @@ select 'MAXIMUS' as project, 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)],
+-- [2 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_COMMON_CONSENT' as satellite, '3 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CONSENT_GIVEN_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CONSENT_GIVEN_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CONSENT_GIVEN_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DATA_SHARING_CONSENT_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CONSENT_GIVEN_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DATA_SHARING_CONSENT_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONSENT
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
@@ -743,7 +742,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONSENT' as satellite, '3 RECORD_SOURCE
 
 
 ----------------------------------------------------------------------------------------
--- 32. MAXIMUS — SAT_COMMON_CONTACT   [Design finding]  [M1]
+-- 32. MAXIMUS — SAT_COMMON_CONTACT   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW,
@@ -753,7 +752,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONSENT' as satellite, '3 RECORD_SOURCE
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_common_contact) also hashes CONTACT_POINT_TYPE,
+-- (satfeed_mt_sat_common_contact) also hashes CONTACT_POINT_TYPE,
 -- CONTACT_PRIORITY_ORDER, which this satellite does not store (a shared stage feeding
 -- several satellites). A change in only those columns gives a new HASHDIFF and so a NEW
 -- ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a)
@@ -783,23 +782,23 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONSENT' as satellite, '3 RECORD_SOURCE
 
 
 ----------------------------------------------------------------------------------------
--- 33. MAXIMUS — SAT_COMMON_GEO   [Implemented]  [M1]
+-- 33. MAXIMUS — SAT_COMMON_GEO   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK LOCATION_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [2 col(s)],
+-- [3 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [2 col(s)],
+-- [3 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [2 col(s)].
+-- [3 col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_COMMON_GEO' as satellite, '3 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(LATITUDE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LONGITUDE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(LATITUDE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LONGITUDE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(LOCATION_HKEY, 'HEX'), null)) within group (order by LOCATION_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ALTITUDE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATITUDE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LONGITUDE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ALTITUDE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATITUDE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LONGITUDE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(LOCATION_HKEY, 'HEX'), null)) within group (order by LOCATION_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_GEO
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW');
@@ -807,7 +806,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_GEO' as satellite, '3 RECORD_SOURCEs sh
 
 
 ----------------------------------------------------------------------------------------
--- 34. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]  [M1]
+-- 34. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -827,21 +826,21 @@ select 'MAXIMUS' as project, 'SAT_COMMON_LIFECYCLE' as satellite, 'MAXIMUS_NONHL
 
 
 ----------------------------------------------------------------------------------------
--- 35. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]  [M1]
+-- 35. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [3 col(s)],
+-- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [4 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [2 col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_COMMON_MONETARY_CONTEXT' as satellite, '4 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BASE_CURRENCY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CURRENCY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXCHANGE_RATE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BASE_CURRENCY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CURRENCY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXCHANGE_RATE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BASE_CURRENCY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BASE_CURRENCY_EXCHANGE_RATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CURRENCY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXCHANGE_RATE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BASE_CURRENCY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BASE_CURRENCY_EXCHANGE_RATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CURRENCY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EXCHANGE_RATE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_MONETARY_CONTEXT
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST');
@@ -849,7 +848,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_MONETARY_CONTEXT' as satellite, '4 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 36. MAXIMUS — SAT_COMMON_STATUS   [Implemented]  [M1]
+-- 36. MAXIMUS — SAT_COMMON_STATUS   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -869,7 +868,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_STATUS' as satellite, 'MAXIMUS_NONHLTH_
 
 
 ----------------------------------------------------------------------------------------
--- 37. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
+-- 37. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -895,7 +894,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite, '4 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 38. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
+-- 38. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -923,15 +922,15 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, '5 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 39. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Design finding]  [M1]
+-- 39. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_coverage_sublimit_schedule) also hashes ACTIVE_SEQUENCE_NUMBER,
--- which this satellite does not store (a shared stage feeding several satellites). A
--- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
--- PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF
--- cannot be recomputed from the satellite row. standard satellite, automate_dv.ma_sat;
--- PK COVERAGE_HKEY, child key ACTIVE_SEQUENCE_NUMBER; 1 RECORD_SOURCE group(s):
+-- (satfeed_mt_sat_coverage_sublimit_schedule) also hashes ACTIVE_SEQUENCE_NUMBER, which
+-- this satellite does not store (a shared stage feeding several satellites). A change in
+-- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
+-- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
+-- be recomputed from the satellite row. standard satellite, automate_dv.ma_sat; PK
+-- COVERAGE_HKEY, child key ACTIVE_SEQUENCE_NUMBER; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
@@ -941,14 +940,14 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, '5 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 40. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]  [M1]
+-- 40. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK DOCUMENT_HKEY; 10 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [3
+-- [9 col(s)],
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [6
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [4 col(s)], MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS [3 col(s)],
@@ -967,8 +966,8 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, '5 RECORD_S
 select 'MAXIMUS' as project, 'SAT_DOCUMENT_DEFINITION' as satellite, '10 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_REFERENCE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ISSUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RECEIVED_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SOURCE_CHANNEL AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_REFERENCE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ISSUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RECEIVED_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SOURCE_CHANNEL AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(DOCUMENT_HKEY, 'HEX'), null)) within group (order by DOCUMENT_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(COURIER_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_DETAILS_TEXT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_REFERENCE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ISSUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PROOF_OF_DELIVERY_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RECEIVED_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RECORD_VALID_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SENDER_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SOURCE_CHANNEL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_ENCLOSURES_DETAILS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_ENCLOSURES_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(COURIER_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_DETAILS_TEXT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_REFERENCE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ISSUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PROOF_OF_DELIVERY_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RECEIVED_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RECORD_VALID_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SENDER_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SOURCE_CHANNEL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_ENCLOSURES_DETAILS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_ENCLOSURES_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(DOCUMENT_HKEY, 'HEX'), null)) within group (order by DOCUMENT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_DOCUMENT_DEFINITION
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW');
@@ -976,7 +975,7 @@ select 'MAXIMUS' as project, 'SAT_DOCUMENT_DEFINITION' as satellite, '10 RECORD_
 
 
 ----------------------------------------------------------------------------------------
--- 41. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]  [M1]
+-- 41. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -996,19 +995,19 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_ACCOUNTING' as satellite, 'MAXIMUS_NONH
 
 
 ----------------------------------------------------------------------------------------
--- 42. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]  [M1]
+-- 42. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
--- [5 col(s)].
+-- [8 col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_FINTXN_CLAIM_PAYMENT' as satellite, 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CHEQUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CHEQUE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAYMENT_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAYMENT_MODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(UTR_NUMBER AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CHEQUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CHEQUE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAYMENT_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAYMENT_MODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(UTR_NUMBER AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CHEQUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CHEQUE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSTRUMENT_PAYABLE_AT_LOCATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSTRUMENT_PRINT_LOCATION_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NEFT_APPROVAL_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAYMENT_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAYMENT_MODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(UTR_NUMBER AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CHEQUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CHEQUE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSTRUMENT_PAYABLE_AT_LOCATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSTRUMENT_PRINT_LOCATION_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NEFT_APPROVAL_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAYMENT_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAYMENT_MODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(UTR_NUMBER AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_CLAIM_PAYMENT
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW');
@@ -1016,7 +1015,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_CLAIM_PAYMENT' as satellite, 'MAXIMUS_N
 
 
 ----------------------------------------------------------------------------------------
--- 43. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
+-- 43. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1041,7 +1040,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_HEADER' as satellite, '4 RECORD_SOURCEs
 
 
 ----------------------------------------------------------------------------------------
--- 44. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
+-- 44. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1064,14 +1063,14 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, '3 RECORD_SOURCE
 
 
 ----------------------------------------------------------------------------------------
--- 45. MAXIMUS — SAT_FINTXN_TAX   [Design finding]  [M1]
+-- 45. MAXIMUS — SAT_FINTXN_TAX   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_fintxn_tax) also hashes TAX_TYPE, which this satellite does not
--- store (a shared stage feeding several satellites). A change in only those columns
--- gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2;
--- see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be recomputed from the
+-- (satfeed_mt_sat_fintxn_tax) also hashes TAX_TYPE, which this satellite does not store
+-- (a shared stage feeding several satellites). A change in only those columns gives a
+-- new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2; see
+-- DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be recomputed from the
 -- satellite row. standard satellite, automate_dv.ma_sat; PK FINANCIAL_TRANSACTION_HKEY,
 -- child key TAX_TYPE; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
@@ -1085,7 +1084,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, '3 RECORD_SOURCE
 
 
 ----------------------------------------------------------------------------------------
--- 46. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
+-- 46. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1108,20 +1107,20 @@ select 'MAXIMUS' as project, 'SAT_FIN_RECEIPT' as satellite, '3 RECORD_SOURCEs s
 
 
 ----------------------------------------------------------------------------------------
--- 47. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]  [M1]
+-- 47. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK PAYMENT_INSTRUMENT_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
--- [2 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
+-- [4 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
 -- [1 col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_INSTRUMENT_DEFINITION' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNT_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANK_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSTRUMENT_STATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNT_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANK_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSTRUMENT_STATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PAYMENT_INSTRUMENT_HKEY, 'HEX'), null)) within group (order by PAYMENT_INSTRUMENT_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNT_CATEGORY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNT_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANK_BRANCH_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANK_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSTRUMENT_STATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNT_CATEGORY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNT_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANK_BRANCH_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANK_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSTRUMENT_STATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PAYMENT_INSTRUMENT_HKEY, 'HEX'), null)) within group (order by PAYMENT_INSTRUMENT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_INSTRUMENT_DEFINITION
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION');
@@ -1129,15 +1128,15 @@ select 'MAXIMUS' as project, 'SAT_INSTRUMENT_DEFINITION' as satellite, '2 RECORD
 
 
 ----------------------------------------------------------------------------------------
--- 48. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Design finding]  [M1]
+-- 48. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_lnk_party_role_core) also hashes ROLE_CODE, ROLE_SEQUENCE, which
--- this satellite does not store (a shared stage feeding several satellites). A change in
--- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
--- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
--- be recomputed from the satellite row. standard satellite, automate_dv.ma_sat; PK
+-- (satfeed_mt_sat_lnk_party_role_core) also hashes ROLE_CODE, ROLE_SEQUENCE, which this
+-- satellite does not store (a shared stage feeding several satellites). A change in only
+-- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
+-- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
+-- recomputed from the satellite row. standard satellite, automate_dv.ma_sat; PK
 -- PARTY_HKEY, child key ROLE_CODE, ROLE_SEQUENCE; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -1150,14 +1149,14 @@ select 'MAXIMUS' as project, 'SAT_INSTRUMENT_DEFINITION' as satellite, '2 RECORD
 
 
 ----------------------------------------------------------------------------------------
--- 49. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Design finding]  [M1]
+-- 49. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION
--- (satfeed_mtv2_sat_lnk_policy_party_role) also hashes PARTY_ROLE_TYPE, ROLE_SEQUENCE,
+-- (satfeed_mt_sat_lnk_policy_party_role) also hashes PARTY_ROLE_TYPE, ROLE_SEQUENCE,
 -- which this satellite does not store (a shared stage feeding several satellites). A
 -- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
 -- PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF
@@ -1178,19 +1177,19 @@ select 'MAXIMUS' as project, 'SAT_INSTRUMENT_DEFINITION' as satellite, '2 RECORD
 
 
 ----------------------------------------------------------------------------------------
--- 50. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]  [M1]
+-- 50. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK PARTY_ROLE_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [6 col(s)].
+-- [9 col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_LNK_ROLE_AGENT' as satellite, 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(AGENT_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IRDAI_AGENT_LICENCE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_EXPIRY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_ISSUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_TDS_RATE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(AGENT_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IRDAI_AGENT_LICENCE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_EXPIRY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_ISSUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_TDS_RATE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_ROLE_HKEY, 'HEX'), null)) within group (order by PARTY_ROLE_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(AGENT_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IRDAI_AGENT_LICENCE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IRDA_LISTED_PRIMARY_PROFESSION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_DETAILS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_EXPIRY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_ISSUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_TDS_RATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_TDS_RATE_APPLICABLE_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(AGENT_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IRDAI_AGENT_LICENCE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IRDA_LISTED_PRIMARY_PROFESSION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_DETAILS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_EXPIRY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_ISSUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_TDS_RATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_TDS_RATE_APPLICABLE_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_ROLE_HKEY, 'HEX'), null)) within group (order by PARTY_ROLE_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_AGENT
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
@@ -1198,7 +1197,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_AGENT' as satellite, 'MAXIMUS_NONHLTH
 
 
 ----------------------------------------------------------------------------------------
--- 51. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]  [M1]
+-- 51. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1222,7 +1221,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_CUSTOMER' as satellite, '3 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 52. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]  [M1]
+-- 52. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1248,7 +1247,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_EMPLOYEE' as satellite, '4 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 53. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
+-- 53. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1270,19 +1269,19 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, '2
 
 
 ----------------------------------------------------------------------------------------
--- 54. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]  [M1]
+-- 54. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK LOSS_EVENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [7
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [8
 -- col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_DETAIL' as satellite, 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CAUSE_OF_LOSS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOSS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOSS_TIME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(POLICE_STATION_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(THIRD_PARTY_INVOLVED_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CAUSE_OF_LOSS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOSS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOSS_TIME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(POLICE_STATION_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(THIRD_PARTY_INVOLVED_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(LOSS_EVENT_HKEY, 'HEX'), null)) within group (order by LOSS_EVENT_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CAUSE_OF_LOSS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOSS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOSS_TIME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(POLICE_REPORT_TIME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(POLICE_STATION_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(THIRD_PARTY_INVOLVED_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CAUSE_OF_LOSS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOSS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOSS_TIME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(POLICE_REPORT_TIME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(POLICE_STATION_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(THIRD_PARTY_INVOLVED_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(LOSS_EVENT_HKEY, 'HEX'), null)) within group (order by LOSS_EVENT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LOSS_EVENT_DETAIL
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
@@ -1290,7 +1289,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_DETAIL' as satellite, 'MAXIMUS_NONH
 
 
 ----------------------------------------------------------------------------------------
--- 55. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]  [M1]
+-- 55. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1310,10 +1309,10 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_NOTIFICATION' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 56. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Design finding]  [M1]
+-- 56. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- (satfeed_mtv2_sat_loss_location_address) also hashes
+-- (satfeed_mt_sat_loss_location_address) also hashes
 -- ADDRESS_LINE_1__SAT_LOSS_LOCATION_ADDRESS, POSTAL_CODE__SAT_LOSS_LOCATION_ADDRESS,
 -- which this satellite does not store (a shared stage feeding several satellites). A
 -- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
@@ -1328,7 +1327,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_NOTIFICATION' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 57. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
+-- 57. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1351,7 +1350,7 @@ select 'MAXIMUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite, '4 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 58. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]  [M1]
+-- 58. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1373,17 +1372,17 @@ select 'MAXIMUS' as project, 'SAT_PARTY_AML_SCREENING' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 59. MAXIMUS — SAT_PARTY_BANKING   [Design finding]  [M1]
+-- 59. MAXIMUS — SAT_PARTY_BANKING   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_party_banking) also hashes ACCOUNT_NUMBER_MASKED, which this
--- satellite does not store (a shared stage feeding several satellites). A change in only
--- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
--- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
--- recomputed from the satellite row. standard satellite, automate_dv.ma_sat; PK
--- PARTY_HKEY, child key ACCOUNT_NUMBER_MASKED; 3 RECORD_SOURCE group(s):
+-- (satfeed_mt_sat_party_banking) also hashes ACCOUNT_NUMBER_MASKED, which this satellite
+-- does not store (a shared stage feeding several satellites). A change in only those
+-- columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks
+-- DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be recomputed
+-- from the satellite row. standard satellite, automate_dv.ma_sat; PK PARTY_HKEY, child
+-- key ACCOUNT_NUMBER_MASKED; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [6
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -1397,7 +1396,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_AML_SCREENING' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 60. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]  [M1]
+-- 60. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1417,7 +1416,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 61. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Design finding]  [M1]
+-- 61. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW,
@@ -1425,11 +1424,11 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite, 'MAXIMUS_NO
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_party_contact_address_link) also hashes ADDRESS_USAGE_TYPE, which
--- this satellite does not store (a shared stage feeding several satellites). A change in
--- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
--- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
--- be recomputed from the satellite row. standard satellite, automate_dv.ma_sat; PK
+-- (satfeed_mt_sat_party_contact_address_link) also hashes ADDRESS_USAGE_TYPE, which this
+-- satellite does not store (a shared stage feeding several satellites). A change in only
+-- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
+-- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
+-- recomputed from the satellite row. standard satellite, automate_dv.ma_sat; PK
 -- PARTY_LOCATION_HKEY, child key ADDRESS_USAGE_TYPE; 6 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
 -- [0 col(s)],
@@ -1450,7 +1449,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 62. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M1]
+-- 62. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1475,7 +1474,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, '4 RECORD_SOUR
 
 
 ----------------------------------------------------------------------------------------
--- 63. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]  [M1]
+-- 63. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1497,21 +1496,21 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FINANCIAL_PROFILE' as satellite, '2 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 64. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]  [M1]
+-- 64. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)],
+-- [4 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)].
+-- [4 col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_PARTY_FRAUD_PROFILE' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(NEGATIVE_LIST_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NEGATIVE_LIST_REASON AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(NEGATIVE_LIST_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NEGATIVE_LIST_REASON AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(NEGATIVE_LIST_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NEGATIVE_LIST_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NEGATIVE_LIST_REASON AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NON_DISCLOSURE_ACTION_INITIATED_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(NEGATIVE_LIST_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NEGATIVE_LIST_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NEGATIVE_LIST_REASON AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NON_DISCLOSURE_ACTION_INITIATED_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_FRAUD_PROFILE
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
@@ -1519,7 +1518,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FRAUD_PROFILE' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 65. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M1]
+-- 65. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1541,7 +1540,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, '2 RECORD_
 
 
 ----------------------------------------------------------------------------------------
--- 66. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Design finding]  [M1]
+-- 66. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY,
@@ -1551,11 +1550,11 @@ select 'MAXIMUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, '2 RECORD_
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_party_identification) also hashes IDENTIFICATION_TYPE_CODE, which
--- this satellite does not store (a shared stage feeding several satellites). A change in
--- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
--- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
--- be recomputed from the satellite row. standard satellite, automate_dv.ma_sat; PK
+-- (satfeed_mt_sat_party_identification) also hashes IDENTIFICATION_TYPE_CODE, which this
+-- satellite does not store (a shared stage feeding several satellites). A change in only
+-- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
+-- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
+-- recomputed from the satellite row. standard satellite, automate_dv.ma_sat; PK
 -- PARTY_HKEY, child key IDENTIFICATION_TYPE_CODE; 8 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [7
 -- col(s)], MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY [1 col(s)],
@@ -1577,7 +1576,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, '2 RECORD_
 
 
 ----------------------------------------------------------------------------------------
--- 67. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]  [M1]
+-- 67. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1617,7 +1616,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_IDENTITY' as satellite, '14 RECORD_SOURC
 
 
 ----------------------------------------------------------------------------------------
--- 68. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M1]
+-- 68. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1639,21 +1638,21 @@ select 'MAXIMUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 69. MAXIMUS — SAT_PARTY_KYC   [Implemented]  [M1]
+-- 69. MAXIMUS — SAT_PARTY_KYC   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)],
+-- [7 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)].
+-- [7 col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_PARTY_KYC' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CKYC_REGISTRATION_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_COMPLETION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_STATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CKYC_REGISTRATION_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_COMPLETION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_STATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CKYC_DETAILS_NARRATIVE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CKYC_NUMBER_HELD_DECLARED_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CKYC_REGISTRATION_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_COMPLETION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_DETAILS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_DETAIL_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_RELATED_DETAILS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_STATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CKYC_DETAILS_NARRATIVE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CKYC_NUMBER_HELD_DECLARED_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CKYC_REGISTRATION_STATUS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_COMPLETION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_DETAILS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_DETAIL_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_RELATED_DETAILS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_STATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_KYC
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
@@ -1661,11 +1660,11 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC' as satellite, '2 RECORD_SOURCEs sha
 
 
 ----------------------------------------------------------------------------------------
--- 70. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Design finding]  [M1]
+-- 70. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_party_kyc_reference) also hashes KYC_REFERENCE_TYPE, which this
+-- (satfeed_mt_sat_party_kyc_reference) also hashes KYC_REFERENCE_TYPE, which this
 -- satellite does not store (a shared stage feeding several satellites). A change in only
 -- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
 -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
@@ -1682,7 +1681,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC' as satellite, '2 RECORD_SOURCEs sha
 
 
 ----------------------------------------------------------------------------------------
--- 71. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M1]
+-- 71. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1702,7 +1701,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ONBOARDING_JOURNEY' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 72. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]  [M1]
+-- 72. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1710,16 +1709,16 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ONBOARDING_JOURNEY' as satellite, 'MAXIM
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS [3
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [8 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [3
+-- [14 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS [3
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [11 col(s)].
+-- [18 col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_PARTY_ORGANISATION_PROFILE' as satellite, '4 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ANNUAL_TURNOVER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BUSINESS_REGISTRATION_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_INCORPORATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INDUSTRY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LEGAL_CONSTITUTION_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MSME_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MSME_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NATURE_OF_BUSINESS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NIC_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAID_UP_CAPITAL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PARENT_ENTITY_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ANNUAL_TURNOVER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BUSINESS_REGISTRATION_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_INCORPORATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INDUSTRY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LEGAL_CONSTITUTION_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MSME_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MSME_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NATURE_OF_BUSINESS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NIC_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAID_UP_CAPITAL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PARENT_ENTITY_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ANNUAL_TURNOVER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BUSINESS_REGISTRATION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BUSINESS_REGISTRATION_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BUSINESS_TYPE_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_INCORPORATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INDUSTRY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INFRASTRUCTURE_SUB_SECTOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LEGAL_CONSTITUTION_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MSME_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MSME_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NATURE_OF_BUSINESS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NIC_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OTHER_INDUSTRY_TYPE_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAID_UP_CAPITAL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PARENT_ENTITY_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REGISTERED_BUSINESS_TRUST_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REGISTERED_COMPANY_DECLARED_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TRADE_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ANNUAL_TURNOVER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BUSINESS_REGISTRATION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BUSINESS_REGISTRATION_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BUSINESS_TYPE_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_INCORPORATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INDUSTRY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INFRASTRUCTURE_SUB_SECTOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LEGAL_CONSTITUTION_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MSME_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MSME_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NATURE_OF_BUSINESS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NIC_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OTHER_INDUSTRY_TYPE_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PAID_UP_CAPITAL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PARENT_ENTITY_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REGISTERED_BUSINESS_TRUST_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REGISTERED_COMPANY_DECLARED_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TRADE_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_ORGANISATION_PROFILE
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
@@ -1727,7 +1726,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ORGANISATION_PROFILE' as satellite, '4 R
 
 
 ----------------------------------------------------------------------------------------
--- 73. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]  [M1]
+-- 73. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1747,7 +1746,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PAYOUT_PROFILE' as satellite, 'MAXIMUS_N
 
 
 ----------------------------------------------------------------------------------------
--- 74. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]  [M1]
+-- 74. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1767,19 +1766,19 @@ select 'MAXIMUS' as project, 'SAT_PARTY_POLICY_HISTORY' as satellite, 'MAXIMUS_N
 
 
 ----------------------------------------------------------------------------------------
--- 75. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M1]
+-- 75. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [8
 -- col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_PARTY_PORTFOLIO_SUMMARY' as satellite, 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ACTIVE_POLICY_COUNT AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ACTIVE_POLICY_COUNT AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACTIVE_POLICY_COUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CROSS_SELL_POLICIES_PURCHASED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CUSTOMER_ACTIVE_YEARS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATEST_POLICY_ISSUANCE_LOCATION_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATEST_POLICY_LINE_OF_BUSINESS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATEST_POLICY_PRODUCT_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATEST_POLICY_SUB_CHANNEL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MULTI_CHANNEL_PURCHASE_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACTIVE_POLICY_COUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CROSS_SELL_POLICIES_PURCHASED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CUSTOMER_ACTIVE_YEARS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATEST_POLICY_ISSUANCE_LOCATION_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATEST_POLICY_LINE_OF_BUSINESS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATEST_POLICY_PRODUCT_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATEST_POLICY_SUB_CHANNEL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MULTI_CHANNEL_PURCHASE_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_PORTFOLIO_SUMMARY
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
@@ -1787,7 +1786,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PORTFOLIO_SUMMARY' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 76. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M1]
+-- 76. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1807,19 +1806,19 @@ select 'MAXIMUS' as project, 'SAT_PARTY_RELATIONSHIP_PROFILE' as satellite, 'MAX
 
 
 ----------------------------------------------------------------------------------------
--- 77. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]  [M1]
+-- 77. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)].
+-- [5 col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite, 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CANCELLATION_REQUESTED_BY_ROLE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CANCELLATION_REQUESTED_BY_ROLE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CANCELLATION_PREMIUM_BASIS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CANCELLATION_REQUESTED_BY_ROLE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ELAPSED_PERIOD_PREMIUM_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RETAINED_ADMIN_CHARGES_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(UNEXPIRED_PERIOD_PREMIUM_AMOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CANCELLATION_PREMIUM_BASIS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CANCELLATION_REQUESTED_BY_ROLE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ELAPSED_PERIOD_PREMIUM_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RETAINED_ADMIN_CHARGES_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(UNEXPIRED_PERIOD_PREMIUM_AMOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CANCELLATION
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
@@ -1827,12 +1826,12 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 78. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Design finding]  [M1]
+-- 78. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_policy_classification) also hashes CLASSIFICATION_TYPE, which this
+-- (satfeed_mt_sat_policy_classification) also hashes CLASSIFICATION_TYPE, which this
 -- satellite does not store (a shared stage feeding several satellites). A change in only
 -- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
 -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
@@ -1851,7 +1850,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 79. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Design finding]  [M1]
+-- 79. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS,
@@ -1859,7 +1858,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite, 'MAXIMUS_NO
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_policy_coverage_schedule) also hashes COVERAGE_REFERENCE,
+-- (satfeed_mt_sat_policy_coverage_schedule) also hashes COVERAGE_REFERENCE,
 -- COVERAGE_SEQUENCE, which this satellite does not store (a shared stage feeding several
 -- satellites). A change in only those columns gives a new HASHDIFF and so a NEW ROW WITH
 -- AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts.
@@ -1884,19 +1883,19 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 80. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Design finding]  [M2]
+-- 80. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_policy_discount_loading_applied) also hashes ITEM_CODE, which this
+-- (satfeed_mt_sat_policy_discount_loading_applied) also hashes ITEM_CODE, which this
 -- satellite does not store (a shared stage feeding several satellites). A change in only
 -- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
 -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
 -- recomputed from the satellite row. standard satellite, automate_dv.ma_sat; PK
 -- POLICY_HKEY, child key ITEM_CODE; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)],
+-- [6 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -1908,18 +1907,18 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 81. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Design finding]  [M2]
+-- 81. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Design finding]
 -- HASHDIFF of MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_policy_endorsement) also hashes ENDORSEMENT_NUMBER, which this
+-- (satfeed_mt_sat_policy_endorsement) also hashes ENDORSEMENT_NUMBER, which this
 -- satellite does not store (a shared stage feeding several satellites). A change in only
 -- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
 -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
 -- recomputed from the satellite row. standard satellite, automate_dv.ma_sat; PK
 -- POLICY_HKEY, child key ENDORSEMENT_NUMBER; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS [4 col(s)],
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS [7 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
+-- [4 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
 -- DM-H1 (a) MAXIMUS SAT_POLICY_ENDORSEMENT: HASHDIFF not recomputable -- see note
@@ -1927,19 +1926,19 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 82. MAXIMUS — SAT_POLICY_GROUP   [Implemented]  [M2]
+-- 82. MAXIMUS — SAT_POLICY_GROUP   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)].
+-- [7 col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_POLICY_GROUP' as satellite, 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(GROUP_TYPE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(GROUP_TYPE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CHILD_POLICY_PLAN_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EMPLOYER_ORGANISATION_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GLOBAL_ACCOUNT_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GROUP_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GROUP_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_EMPLOYEE_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PROGRAM_IDENTIFIER AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CHILD_POLICY_PLAN_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EMPLOYER_ORGANISATION_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GLOBAL_ACCOUNT_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GROUP_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GROUP_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_EMPLOYEE_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PROGRAM_IDENTIFIER AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_GROUP
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
@@ -1947,7 +1946,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_GROUP' as satellite, 'MAXIMUS_NONHLTH_T
 
 
 ----------------------------------------------------------------------------------------
--- 83. MAXIMUS — SAT_POLICY_HEADER   [Implemented]  [M2]
+-- 83. MAXIMUS — SAT_POLICY_HEADER   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1976,10 +1975,10 @@ select 'MAXIMUS' as project, 'SAT_POLICY_HEADER' as satellite, '7 RECORD_SOURCEs
 
 
 ----------------------------------------------------------------------------------------
--- 84. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Design finding]  [M2]
+-- 84. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Design finding]
 -- HASHDIFF of MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_policy_intermediary_split) also hashes INTERMEDIARY_REFERENCE, which
+-- (satfeed_mt_sat_policy_intermediary_split) also hashes INTERMEDIARY_REFERENCE, which
 -- this satellite does not store (a shared stage feeding several satellites). A change in
 -- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
 -- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
@@ -1995,7 +1994,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_HEADER' as satellite, '7 RECORD_SOURCEs
 
 
 ----------------------------------------------------------------------------------------
--- 85. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]  [M2]
+-- 85. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2015,13 +2014,13 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PORTABILITY_MIGRATION' as satellite, 'M
 
 
 ----------------------------------------------------------------------------------------
--- 86. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Design finding]  [M2]
+-- 86. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_policy_premium_head) also hashes ADJUSTED_INDICATOR,
+-- (satfeed_mt_sat_policy_premium_head) also hashes ADJUSTED_INDICATOR,
 -- COVERAGE_REFERENCE__SAT_POLICY_PREMIUM_HEAD, PREMIUM_HEAD_CODE, SECTION, which this
 -- satellite does not store (a shared stage feeding several satellites). A change in only
 -- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
@@ -2044,7 +2043,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PORTABILITY_MIGRATION' as satellite, 'M
 
 
 ----------------------------------------------------------------------------------------
--- 87. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]  [M2]
+-- 87. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2068,7 +2067,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PREMIUM_SUMMARY' as satellite, '5 RECOR
 
 
 ----------------------------------------------------------------------------------------
--- 88. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]  [M2]
+-- 88. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2088,7 +2087,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_RENEWAL' as satellite, 'MAXIMUS_NONHLTH
 
 
 ----------------------------------------------------------------------------------------
--- 89. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]  [M2]
+-- 89. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2108,19 +2107,19 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SERVICING_SUMMARY' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 90. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Design finding]  [M2]
+-- 90. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_policy_sum_insured_breakup) also hashes SUM_INSURED_HEAD, which this
+-- (satfeed_mt_sat_policy_sum_insured_breakup) also hashes SUM_INSURED_HEAD, which this
 -- satellite does not store (a shared stage feeding several satellites). A change in only
 -- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
 -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
 -- recomputed from the satellite row. standard satellite, automate_dv.ma_sat; PK
 -- POLICY_HKEY, child key SUM_INSURED_HEAD; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)],
+-- [2 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -2132,20 +2131,20 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SERVICING_SUMMARY' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 91. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]  [M2]
+-- 91. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK POLICY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [4 col(s)].
+-- [9 col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_POLICY_TAX_BREAKUP' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CESS_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CGST_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IGST_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SGST_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STAMP_DUTY_AMOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CESS_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CGST_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IGST_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SGST_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STAMP_DUTY_AMOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CESS_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CGST_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GST_BIFURCATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GST_TDS_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GST_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IGST_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SGST_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STAMP_DUTY_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STAMP_DUTY_RECEIPT_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TOTAL_TAX_AMOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CESS_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CGST_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GST_BIFURCATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GST_TDS_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GST_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(IGST_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SGST_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STAMP_DUTY_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STAMP_DUTY_RECEIPT_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TOTAL_TAX_AMOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TAX_BREAKUP
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
@@ -2153,16 +2152,16 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TAX_BREAKUP' as satellite, '2 RECORD_SO
 
 
 ----------------------------------------------------------------------------------------
--- 92. MAXIMUS — SAT_POLICY_TAX_HEAD   [Design finding]  [M2]
+-- 92. MAXIMUS — SAT_POLICY_TAX_HEAD   [Design finding]
 -- HASHDIFF of MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_policy_tax_head) also hashes TAX_HEAD_CODE, which this satellite
--- does not store (a shared stage feeding several satellites). A change in only those
--- columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks
--- DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be recomputed
--- from the satellite row. standard satellite, automate_dv.ma_sat; PK POLICY_HKEY, child
--- key TAX_HEAD_CODE; 3 RECORD_SOURCE group(s):
+-- (satfeed_mt_sat_policy_tax_head) also hashes TAX_HEAD_CODE, which this satellite does
+-- not store (a shared stage feeding several satellites). A change in only those columns
+-- gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2;
+-- see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be recomputed from the
+-- satellite row. standard satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key
+-- TAX_HEAD_CODE; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -2175,7 +2174,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TAX_BREAKUP' as satellite, '2 RECORD_SO
 
 
 ----------------------------------------------------------------------------------------
--- 93. MAXIMUS — SAT_POLICY_TERMS   [Implemented]  [M2]
+-- 93. MAXIMUS — SAT_POLICY_TERMS   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2195,7 +2194,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TERMS' as satellite, 'MAXIMUS_NONHLTH_T
 
 
 ----------------------------------------------------------------------------------------
--- 94. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
+-- 94. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2224,7 +2223,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, '7 RECORD_SO
 
 
 ----------------------------------------------------------------------------------------
--- 95. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
+-- 95. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2246,7 +2245,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite, '2 REC
 
 
 ----------------------------------------------------------------------------------------
--- 96. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
+-- 96. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2268,7 +2267,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_TERMS' as satellite, '2 RECORD_SOURCEs
 
 
 ----------------------------------------------------------------------------------------
--- 97. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
+-- 97. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2291,7 +2290,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_HEADER' as satellite, '3 RECORD_SOURCEs 
 
 
 ----------------------------------------------------------------------------------------
--- 98. MAXIMUS — SAT_QUOTE_RATING   [Implemented]  [M2]
+-- 98. MAXIMUS — SAT_QUOTE_RATING   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2314,19 +2313,19 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING' as satellite, '3 RECORD_SOURCEs 
 
 
 ----------------------------------------------------------------------------------------
--- 99. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Design finding]  [M2]
+-- 99. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
--- (satfeed_mtv2_sat_quote_rating_input) also hashes FACTOR_CODE, which this satellite
--- does not store (a shared stage feeding several satellites). A change in only those
--- columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks
--- DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be recomputed
--- from the satellite row. standard satellite, automate_dv.ma_sat; PK QUOTE_HKEY, child
--- key FACTOR_CODE; 5 RECORD_SOURCE group(s):
+-- (satfeed_mt_sat_quote_rating_input) also hashes FACTOR_CODE, which this satellite does
+-- not store (a shared stage feeding several satellites). A change in only those columns
+-- gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2;
+-- see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be recomputed from the
+-- satellite row. standard satellite, automate_dv.ma_sat; PK QUOTE_HKEY, child key
+-- FACTOR_CODE; 5 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [2 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
@@ -2344,11 +2343,11 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING' as satellite, '3 RECORD_SOURCEs 
 
 
 ----------------------------------------------------------------------------------------
--- 100. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Design finding]  [M2]
+-- 100. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_risk_health_member_medical) also hashes CONDITION_CODE,
+-- (satfeed_mt_sat_risk_health_member_medical) also hashes CONDITION_CODE,
 -- MEMBER_REFERENCE, which this satellite does not store (a shared stage feeding several
 -- satellites). A change in only those columns gives a new HASHDIFF and so a NEW ROW WITH
 -- AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts.
@@ -2356,9 +2355,9 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING' as satellite, '3 RECORD_SOURCEs 
 -- automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key CONDITION_CODE, MEMBER_REFERENCE; 2
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [1 col(s)],
+-- [5 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
--- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
+-- [5 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
 ----------------------------------------------------------------------------------------
 -- DM-H1 (a) MAXIMUS SAT_RISK_HEALTH_MEMBER_MEDICAL: HASHDIFF not recomputable -- see note
@@ -2366,7 +2365,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING' as satellite, '3 RECORD_SOURCEs 
 
 
 ----------------------------------------------------------------------------------------
--- 101. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M2]
+-- 101. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2391,22 +2390,22 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite, '6 RECORD_SOUR
 
 
 ----------------------------------------------------------------------------------------
--- 102. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]  [M2]
+-- 102. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [1 col(s)],
+-- [3 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
--- [1 col(s)].
+-- [3 col(s)].
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_VALUATION' as satellite, '4 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_VALUE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_VALUE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(RISK_OBJECT_HKEY, 'HEX'), null)) within group (order by RISK_OBJECT_HKEY), 0, 3) as mismatch_examples,
+       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_VALUE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_VALUE_IN_SUM_INSURED_CURRENCY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_VALUE_IN_TRANSACTION_CURRENCY AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
+       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_VALUE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_VALUE_IN_SUM_INSURED_CURRENCY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_VALUE_IN_TRANSACTION_CURRENCY AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(RISK_OBJECT_HKEY, 'HEX'), null)) within group (order by RISK_OBJECT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_VALUATION
  where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW');
@@ -2414,7 +2413,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_VALUATION' as satellite, '4 RECORD
 
 
 ----------------------------------------------------------------------------------------
--- 103. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M2]
+-- 103. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2436,16 +2435,16 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 104. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Design finding]  [M2]
+-- 104. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_sat_risk_person_member) also hashes MEMBER_SEQUENCE, which this
--- satellite does not store (a shared stage feeding several satellites). A change in only
--- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
--- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
--- recomputed from the satellite row. standard satellite, automate_dv.ma_sat; PK
--- RISK_OBJECT_HKEY, child key MEMBER_SEQUENCE; 2 RECORD_SOURCE group(s):
+-- (satfeed_mt_sat_risk_person_member) also hashes MEMBER_SEQUENCE, which this satellite
+-- does not store (a shared stage feeding several satellites). A change in only those
+-- columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks
+-- DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be recomputed
+-- from the satellite row. standard satellite, automate_dv.ma_sat; PK RISK_OBJECT_HKEY,
+-- child key MEMBER_SEQUENCE; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
@@ -2457,7 +2456,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 105. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M2]
+-- 105. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2489,26 +2488,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, '7 RECORD_SO
 
 
 ----------------------------------------------------------------------------------------
--- 106. MAXIMUS — SAT_AUG_ASSESSMENT_HEADER   [Implemented]  [M2]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK ASSESSMENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS [2 col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_ASSESSMENT_HEADER' as satellite, 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ASSESSMENT_END_TIME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ASSESSMENT_START_TIME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ASSESSMENT_END_TIME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ASSESSMENT_START_TIME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(ASSESSMENT_HKEY, 'HEX'), null)) within group (order by ASSESSMENT_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_ASSESSMENT_HEADER
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS');
-
-
-
-----------------------------------------------------------------------------------------
--- 107. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]  [M2]
+-- 106. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2530,7 +2510,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_APPROVAL_ACTION' as satellite, '2 RE
 
 
 ----------------------------------------------------------------------------------------
--- 108. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M2]
+-- 107. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2553,16 +2533,16 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_ASSESSMENT_SUMMARY' as satellite, '3
 
 
 ----------------------------------------------------------------------------------------
--- 109. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Design finding]  [M2]
+-- 108. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_claim_benefit_head) also hashes BENEFIT_HEAD_CODE, which
--- this satellite does not store (a shared stage feeding several satellites). A change in
--- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
--- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
--- be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat; PK
+-- (satfeed_mt_aug_sat_aug_claim_benefit_head) also hashes BENEFIT_HEAD_CODE, which this
+-- satellite does not store (a shared stage feeding several satellites). A change in only
+-- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
+-- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
+-- recomputed from the satellite row. augmented satellite, automate_dv.ma_sat; PK
 -- CLAIM_HKEY, child key BENEFIT_HEAD_CODE; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)],
@@ -2577,7 +2557,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_ASSESSMENT_SUMMARY' as satellite, '3
 
 
 ----------------------------------------------------------------------------------------
--- 110. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]  [M2]
+-- 109. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2599,7 +2579,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_CO_RI_SHARE' as satellite, '2 RECORD
 
 
 ----------------------------------------------------------------------------------------
--- 111. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]  [M2]
+-- 110. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2619,10 +2599,10 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DEDUCTION_WAIVER' as satellite, 'MAX
 
 
 ----------------------------------------------------------------------------------------
--- 112. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Design finding]  [M2]
+-- 111. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_claim_document_reminder) also hashes REMINDER_SEQUENCE,
+-- (satfeed_mt_aug_sat_aug_claim_document_reminder) also hashes REMINDER_SEQUENCE,
 -- REQUIREMENT_TYPE_NAME, which this satellite does not store (a shared stage feeding
 -- several satellites). A change in only those columns gives a new HASHDIFF and so a NEW
 -- ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a)
@@ -2638,7 +2618,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DEDUCTION_WAIVER' as satellite, 'MAX
 
 
 ----------------------------------------------------------------------------------------
--- 113. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]  [M2]
+-- 112. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2658,7 +2638,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 114. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]  [M2]
+-- 113. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2678,15 +2658,15 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EVIDENCE' as satellite, 'MAXIMUS_NON
 
 
 ----------------------------------------------------------------------------------------
--- 115. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Design finding]  [M2]
+-- 114. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_claim_exclusion_applied) also hashes EXCLUSION_SET_CODE,
--- which this satellite does not store (a shared stage feeding several satellites). A
--- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
--- PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF
--- cannot be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat;
--- PK CLAIM_HKEY, child key EXCLUSION_SET_CODE; 1 RECORD_SOURCE group(s):
+-- (satfeed_mt_aug_sat_aug_claim_exclusion_applied) also hashes EXCLUSION_SET_CODE, which
+-- this satellite does not store (a shared stage feeding several satellites). A change in
+-- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
+-- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
+-- be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat; PK
+-- CLAIM_HKEY, child key EXCLUSION_SET_CODE; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
 -- member.
@@ -2696,7 +2676,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EVIDENCE' as satellite, 'MAXIMUS_NON
 
 
 ----------------------------------------------------------------------------------------
--- 116. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]  [M2]
+-- 115. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2716,27 +2696,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EXPENSE_LINE' as satellite, 'MAXIMUS
 
 
 ----------------------------------------------------------------------------------------
--- 117. MAXIMUS — SAT_AUG_CLAIM_FNOL   [Implemented]  [M2]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [7
--- col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FNOL' as satellite, 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADD_ON_CLAIM_ELECTED_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CLAIM_PERSON_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DELAYED_INTIMATION_REASON AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INTIMATED_CAUSE_OF_CLAIM AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REGISTRATION_FLAGS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REPORTED_BY_EMAIL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(THIRD_PARTY_INVOLVEMENT_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADD_ON_CLAIM_ELECTED_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CLAIM_PERSON_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DELAYED_INTIMATION_REASON AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INTIMATED_CAUSE_OF_CLAIM AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REGISTRATION_FLAGS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REPORTED_BY_EMAIL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(THIRD_PARTY_INVOLVEMENT_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(CLAIM_HKEY, 'HEX'), null)) within group (order by CLAIM_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FNOL
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 118. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]  [M2]
+-- 116. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2755,7 +2715,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FOLLOWUP_TASK' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 119. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]  [M2]
+-- 117. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2781,7 +2741,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FRAUD' as satellite, '4 RECORD_SOURC
 
 
 ----------------------------------------------------------------------------------------
--- 120. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]  [M2]
+-- 118. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2804,33 +2764,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_HEADER' as satellite, '3 RECORD_SOUR
 
 
 ----------------------------------------------------------------------------------------
--- 121. MAXIMUS — SAT_AUG_CLAIM_HEALTH_DETAIL   [Implemented]  [M2]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK CLAIM_HKEY; 4 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [3
--- col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- [5 col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_HEALTH_DETAIL' as satellite, '4 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADVERSE_MEDICAL_HISTORY_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DISEASE_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ICD_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MEDICALLY_ADMISSIBLE_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRE_EXISTING_DISEASE_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRE_EXISTING_ILLNESS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SYSTEM_OF_MEDICINE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ADVERSE_MEDICAL_HISTORY_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DISEASE_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ICD_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MEDICALLY_ADMISSIBLE_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRE_EXISTING_DISEASE_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRE_EXISTING_ILLNESS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SYSTEM_OF_MEDICINE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(CLAIM_HKEY, 'HEX'), null)) within group (order by CLAIM_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_HEALTH_DETAIL
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 122. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]  [M2]
+-- 119. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2854,7 +2788,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_LITIGATION' as satellite, '3 RECORD_
 
 
 ----------------------------------------------------------------------------------------
--- 123. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]  [M2]
+-- 120. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2876,15 +2810,15 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_NETWORK_VERIFICATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 124. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Design finding]  [M2]
+-- 121. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Design finding]
 -- HASHDIFF of MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_claim_payment_tranche) also hashes TRANCHE_NUMBER, which
--- this satellite does not store (a shared stage feeding several satellites). A change in
--- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
--- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
--- be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat; PK
+-- (satfeed_mt_aug_sat_aug_claim_payment_tranche) also hashes TRANCHE_NUMBER, which this
+-- satellite does not store (a shared stage feeding several satellites). A change in only
+-- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
+-- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
+-- recomputed from the satellite row. augmented satellite, automate_dv.ma_sat; PK
 -- CLAIM_HKEY, child key TRANCHE_NUMBER; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT [4 col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
@@ -2898,7 +2832,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_NETWORK_VERIFICATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 125. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]  [M2]
+-- 122. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2920,10 +2854,10 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PA_DETAIL' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 126. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Design finding]  [M2]
+-- 123. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_claim_provider_billing) also hashes BILL_NUMBER, which this
+-- (satfeed_mt_aug_sat_aug_claim_provider_billing) also hashes BILL_NUMBER, which this
 -- satellite does not store (a shared stage feeding several satellites). A change in only
 -- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
 -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
@@ -2938,7 +2872,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PA_DETAIL' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 127. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]  [M2]
+-- 124. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2958,7 +2892,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_QUALITY_AUDIT' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 128. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M2]
+-- 125. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2980,27 +2914,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_RECOVERY_SALVAGE' as satellite, '2 R
 
 
 ----------------------------------------------------------------------------------------
--- 129. MAXIMUS — SAT_AUG_CLAIM_REPUDIATION   [Implemented]  [M2]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_REPUDIATION' as satellite, 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(REPUDIATION_REMARKS AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(REPUDIATION_REMARKS AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(CLAIM_HKEY, 'HEX'), null)) within group (order by CLAIM_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_REPUDIATION
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 130. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]  [M2]
+-- 126. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3024,7 +2938,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SETTLEMENT' as satellite, '3 RECORD_
 
 
 ----------------------------------------------------------------------------------------
--- 131. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]  [M2]
+-- 127. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3046,7 +2960,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SLA_TRACKING' as satellite, '2 RECOR
 
 
 ----------------------------------------------------------------------------------------
--- 132. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]  [M2]
+-- 128. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3065,7 +2979,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_STATUS_HISTORY' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 133. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]  [M2]
+-- 129. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3085,7 +2999,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SURVEY_APPOINTMENT' as satellite, 'M
 
 
 ----------------------------------------------------------------------------------------
--- 134. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]  [M2]
+-- 130. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3105,27 +3019,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TPA_INTERACTION' as satellite, 'MAXI
 
 
 ----------------------------------------------------------------------------------------
--- 135. MAXIMUS — SAT_AUG_CLAIM_TP_FORENSIC   [Implemented]  [M2]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- [1 col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TP_FORENSIC' as satellite, 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_TIME AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(FIR_TIME AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(CLAIM_HKEY, 'HEX'), null)) within group (order by CLAIM_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TP_FORENSIC
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 136. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]  [M2]
+-- 131. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3146,7 +3040,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TRAVEL_DETAIL' as satellite, '2 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 137. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]  [M2]
+-- 132. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3166,7 +3060,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TRAVEL_SECTOR' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 138. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]  [M2]
+-- 133. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3188,7 +3082,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_ADDRESS' as satellite, '2 RECORD_SO
 
 
 ----------------------------------------------------------------------------------------
--- 139. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M2]
+-- 134. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3210,70 +3104,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satell
 
 
 ----------------------------------------------------------------------------------------
--- 140. MAXIMUS — SAT_AUG_COMMON_CONSENT   [Implemented]  [M2]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_COMMON_CONSENT' as satellite, 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(DATA_SHARING_CONSENT_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(DATA_SHARING_CONSENT_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_CONSENT
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 141. MAXIMUS — SAT_AUG_COMMON_GEO   [Implemented]  [M2]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK LOCATION_HKEY; 3 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [1 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- [1 col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_COMMON_GEO' as satellite, '3 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ALTITUDE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(ALTITUDE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(LOCATION_HKEY, 'HEX'), null)) within group (order by LOCATION_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_GEO
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 142. MAXIMUS — SAT_AUG_COMMON_MONETARY_CONTEXT   [Implemented]  [M2]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [1 col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_COMMON_MONETARY_CONTEXT' as satellite, 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(BASE_CURRENCY_EXCHANGE_RATE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(BASE_CURRENCY_EXCHANGE_RATE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_MONETARY_CONTEXT
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS');
-
-
-
-----------------------------------------------------------------------------------------
--- 143. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]  [M2]
+-- 135. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3295,7 +3126,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_CONDITIONS' as satellite, '2 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 144. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M2]
+-- 136. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3321,7 +3152,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite, '4 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 145. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M2]
+-- 137. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3343,10 +3174,10 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 146. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Design finding]  [M2]
+-- 138. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_coverage_sublimit_schedule) also hashes
+-- (satfeed_mt_aug_sat_aug_coverage_sublimit_schedule) also hashes
 -- ACTIVE_SEQUENCE_NUMBER, which this satellite does not store (a shared stage feeding
 -- several satellites). A change in only those columns gives a new HASHDIFF and so a NEW
 -- ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a)
@@ -3362,15 +3193,15 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 147. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Design finding]  [M2]
+-- 139. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_coverage_sub_cover_element) also hashes SUB_COVER_CODE,
--- which this satellite does not store (a shared stage feeding several satellites). A
--- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
--- PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF
--- cannot be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat;
--- PK COVERAGE_HKEY, child key SUB_COVER_CODE; 1 RECORD_SOURCE group(s):
+-- (satfeed_mt_aug_sat_aug_coverage_sub_cover_element) also hashes SUB_COVER_CODE, which
+-- this satellite does not store (a shared stage feeding several satellites). A change in
+-- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
+-- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
+-- be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat; PK
+-- COVERAGE_HKEY, child key SUB_COVER_CODE; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
@@ -3380,15 +3211,15 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 148. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Design finding]  [M2]
+-- 140. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_document_checklist) also hashes REQUIRED_DOCUMENT_TYPE,
--- which this satellite does not store (a shared stage feeding several satellites). A
--- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
--- PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF
--- cannot be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat;
--- PK DOCUMENT_HKEY, child key REQUIRED_DOCUMENT_TYPE; 1 RECORD_SOURCE group(s):
+-- (satfeed_mt_aug_sat_aug_document_checklist) also hashes REQUIRED_DOCUMENT_TYPE, which
+-- this satellite does not store (a shared stage feeding several satellites). A change in
+-- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
+-- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
+-- be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat; PK
+-- DOCUMENT_HKEY, child key REQUIRED_DOCUMENT_TYPE; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
@@ -3398,29 +3229,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 149. MAXIMUS — SAT_AUG_DOCUMENT_DEFINITION   [Implemented]  [M2]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK DOCUMENT_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [3
--- col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_DEFINITION' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(COURIER_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_DETAILS_TEXT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PROOF_OF_DELIVERY_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RECORD_VALID_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SENDER_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_ENCLOSURES_DETAILS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_ENCLOSURES_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(COURIER_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DOCUMENT_DETAILS_TEXT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PROOF_OF_DELIVERY_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RECORD_VALID_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SENDER_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_ENCLOSURES_DETAILS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_ENCLOSURES_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(DOCUMENT_HKEY, 'HEX'), null)) within group (order by DOCUMENT_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_DEFINITION
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 150. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]  [M2]
+-- 141. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3440,16 +3249,15 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_DISPATCH' as satellite, 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 151. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Design finding]  [M2]
+-- 142. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_document_requirement_reminder) also hashes
--- REMINDER_SEQUENCE, which this satellite does not store (a shared stage feeding several
--- satellites). A change in only those columns gives a new HASHDIFF and so a NEW ROW WITH
--- AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts.
--- The HASHDIFF cannot be recomputed from the satellite row. augmented satellite,
--- automate_dv.ma_sat; PK DOCUMENT_HKEY, child key REMINDER_SEQUENCE; 1 RECORD_SOURCE
--- group(s):
+-- (satfeed_mt_aug_sat_aug_document_requirement_reminder) also hashes REMINDER_SEQUENCE,
+-- which this satellite does not store (a shared stage feeding several satellites). A
+-- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
+-- PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF
+-- cannot be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat;
+-- PK DOCUMENT_HKEY, child key REMINDER_SEQUENCE; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
@@ -3459,31 +3267,11 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_DISPATCH' as satellite, 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 152. MAXIMUS — SAT_AUG_FINTXN_CLAIM_PAYMENT   [Implemented]  [M2]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
--- [3 col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_FINTXN_CLAIM_PAYMENT' as satellite, 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(INSTRUMENT_PAYABLE_AT_LOCATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSTRUMENT_PRINT_LOCATION_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NEFT_APPROVAL_REFERENCE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(INSTRUMENT_PAYABLE_AT_LOCATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSTRUMENT_PRINT_LOCATION_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NEFT_APPROVAL_REFERENCE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_CLAIM_PAYMENT
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 153. MAXIMUS — SAT_AUG_FINTXN_TAX   [Design finding]  [M2]
+-- 143. MAXIMUS — SAT_AUG_FINTXN_TAX   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_fintxn_tax) also hashes TAX_TYPE, which this satellite does
+-- (satfeed_mt_aug_sat_aug_fintxn_tax) also hashes TAX_TYPE, which this satellite does
 -- not store (a shared stage feeding several satellites). A change in only those columns
 -- gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2;
 -- see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be recomputed from the
@@ -3500,7 +3288,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_FINTXN_CLAIM_PAYMENT' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 154. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]  [M2]
+-- 144. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3523,47 +3311,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_FIN_RECEIPT' as satellite, '3 RECORD_SOURC
 
 
 ----------------------------------------------------------------------------------------
--- 155. MAXIMUS — SAT_AUG_INSTRUMENT_DEFINITION   [Implemented]  [M2]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK PAYMENT_INSTRUMENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
--- [2 col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_INSTRUMENT_DEFINITION' as satellite, 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNT_CATEGORY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANK_BRANCH_CODE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ACCOUNT_CATEGORY_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BANK_BRANCH_CODE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PAYMENT_INSTRUMENT_HKEY, 'HEX'), null)) within group (order by PAYMENT_INSTRUMENT_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_INSTRUMENT_DEFINITION
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 156. MAXIMUS — SAT_AUG_LNK_ROLE_AGENT   [Implemented]  [M2]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK PARTY_ROLE_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_AGENT' as satellite, 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(IRDA_LISTED_PRIMARY_PROFESSION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_DETAILS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_TDS_RATE_APPLICABLE_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(IRDA_LISTED_PRIMARY_PROFESSION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LICENCE_DETAILS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_TDS_RATE_APPLICABLE_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_ROLE_HKEY, 'HEX'), null)) within group (order by PARTY_ROLE_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_AGENT
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 157. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M2]
+-- 145. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3583,7 +3331,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 158. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]  [M2]
+-- 146. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3603,30 +3351,10 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite, 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 159. MAXIMUS — SAT_AUG_LOSS_EVENT_DETAIL   [Implemented]  [M3]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK LOSS_EVENT_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
--- col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_LOSS_EVENT_DETAIL' as satellite, 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(POLICE_REPORT_TIME AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(POLICE_REPORT_TIME AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(LOSS_EVENT_HKEY, 'HEX'), null)) within group (order by LOSS_EVENT_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOSS_EVENT_DETAIL
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 160. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Design finding]  [M3]
+-- 147. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_org_unit_contact) also hashes CONTACT_POINT_TYPE, which this
+-- (satfeed_mt_aug_sat_aug_org_unit_contact) also hashes CONTACT_POINT_TYPE, which this
 -- satellite does not store (a shared stage feeding several satellites). A change in only
 -- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
 -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
@@ -3641,7 +3369,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LOSS_EVENT_DETAIL' as satellite, 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 161. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
+-- 148. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3667,7 +3395,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite, '4 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 162. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]  [M3]
+-- 149. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3689,7 +3417,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CLAIM_HISTORY' as satellite, '2 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 163. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]  [M3]
+-- 150. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3711,11 +3439,11 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONSENT_MANDATE' as satellite, '2 RE
 
 
 ----------------------------------------------------------------------------------------
--- 164. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Design finding]  [M3]
+-- 151. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_party_contact_address_link) also hashes ADDRESS_USAGE_TYPE,
+-- (satfeed_mt_aug_sat_aug_party_contact_address_link) also hashes ADDRESS_USAGE_TYPE,
 -- which this satellite does not store (a shared stage feeding several satellites). A
 -- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
 -- PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF
@@ -3732,10 +3460,10 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONSENT_MANDATE' as satellite, '2 RE
 
 
 ----------------------------------------------------------------------------------------
--- 165. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Design finding]  [M3]
+-- 152. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_party_correspondence) also hashes DISPATCH_REFERENCE, which
+-- (satfeed_mt_aug_sat_aug_party_correspondence) also hashes DISPATCH_REFERENCE, which
 -- this satellite does not store (a shared stage feeding several satellites). A change in
 -- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
 -- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
@@ -3750,7 +3478,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONSENT_MANDATE' as satellite, '2 RE
 
 
 ----------------------------------------------------------------------------------------
--- 166. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
+-- 153. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3772,7 +3500,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, '2 RECORD_
 
 
 ----------------------------------------------------------------------------------------
--- 167. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]  [M3]
+-- 154. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3796,29 +3524,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_FINANCIAL_PROFILE' as satellite, '3 
 
 
 ----------------------------------------------------------------------------------------
--- 168. MAXIMUS — SAT_AUG_PARTY_FRAUD_PROFILE   [Implemented]  [M3]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_PARTY_FRAUD_PROFILE' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(NEGATIVE_LIST_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NON_DISCLOSURE_ACTION_INITIATED_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(NEGATIVE_LIST_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NON_DISCLOSURE_ACTION_INITIATED_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_FRAUD_PROFILE
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 169. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]  [M3]
+-- 155. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3838,7 +3544,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_GROUP_SCHEME' as satellite, 'MAXIMUS
 
 
 ----------------------------------------------------------------------------------------
--- 170. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]  [M3]
+-- 156. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3860,7 +3566,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HEALTH_PROFILE' as satellite, '2 REC
 
 
 ----------------------------------------------------------------------------------------
--- 171. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]  [M3]
+-- 157. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3880,14 +3586,14 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HIERARCHY' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 172. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Design finding]  [M3]
+-- 158. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_party_identification) also hashes IDENTIFICATION_TYPE_CODE,
+-- (satfeed_mt_aug_sat_aug_party_identification) also hashes IDENTIFICATION_TYPE_CODE,
 -- which this satellite does not store (a shared stage feeding several satellites). A
 -- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
 -- PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF
@@ -3910,7 +3616,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HIERARCHY' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 173. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]  [M3]
+-- 159. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3937,7 +3643,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_IDENTITY' as satellite, '5 RECORD_SO
 
 
 ----------------------------------------------------------------------------------------
--- 174. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M3]
+-- 160. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3961,32 +3667,10 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellit
 
 
 ----------------------------------------------------------------------------------------
--- 175. MAXIMUS — SAT_AUG_PARTY_KYC   [Implemented]  [M3]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [4 col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_PARTY_KYC' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CKYC_DETAILS_NARRATIVE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CKYC_NUMBER_HELD_DECLARED_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_DETAILS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_DETAIL_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_RELATED_DETAILS_DESCRIPTION AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CKYC_DETAILS_NARRATIVE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CKYC_NUMBER_HELD_DECLARED_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_DETAILS_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_DETAIL_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(KYC_RELATED_DETAILS_DESCRIPTION AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_KYC
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 176. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Design finding]  [M3]
+-- 161. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_party_loyalty_classification) also hashes
+-- (satfeed_mt_aug_sat_aug_party_loyalty_classification) also hashes
 -- LOYALTY_CLASSIFICATION_TYPE, which this satellite does not store (a shared stage
 -- feeding several satellites). A change in only those columns gives a new HASHDIFF and
 -- so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a)
@@ -4002,7 +3686,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_KYC' as satellite, '2 RECORD_SOURCEs
 
 
 ----------------------------------------------------------------------------------------
--- 177. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M3]
+-- 162. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4024,29 +3708,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_ONBOARDING_JOURNEY' as satellite, '2
 
 
 ----------------------------------------------------------------------------------------
--- 178. MAXIMUS — SAT_AUG_PARTY_ORGANISATION_PROFILE   [Implemented]  [M3]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [6 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [7 col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_PARTY_ORGANISATION_PROFILE' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BUSINESS_REGISTRATION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BUSINESS_TYPE_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INFRASTRUCTURE_SUB_SECTOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OTHER_INDUSTRY_TYPE_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REGISTERED_BUSINESS_TRUST_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REGISTERED_COMPANY_DECLARED_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TRADE_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BUSINESS_REGISTRATION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(BUSINESS_TYPE_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INFRASTRUCTURE_SUB_SECTOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(OTHER_INDUSTRY_TYPE_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REGISTERED_BUSINESS_TRUST_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REGISTERED_COMPANY_DECLARED_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TRADE_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_ORGANISATION_PROFILE
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 179. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]  [M3]
+-- 163. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4068,27 +3730,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PAYOUT_PROFILE' as satellite, '2 REC
 
 
 ----------------------------------------------------------------------------------------
--- 180. MAXIMUS — SAT_AUG_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M3]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [7
--- col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PORTFOLIO_SUMMARY' as satellite, 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CROSS_SELL_POLICIES_PURCHASED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CUSTOMER_ACTIVE_YEARS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATEST_POLICY_ISSUANCE_LOCATION_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATEST_POLICY_LINE_OF_BUSINESS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATEST_POLICY_PRODUCT_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATEST_POLICY_SUB_CHANNEL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MULTI_CHANNEL_PURCHASE_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CROSS_SELL_POLICIES_PURCHASED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CUSTOMER_ACTIVE_YEARS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATEST_POLICY_ISSUANCE_LOCATION_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATEST_POLICY_LINE_OF_BUSINESS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATEST_POLICY_PRODUCT_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LATEST_POLICY_SUB_CHANNEL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MULTI_CHANNEL_PURCHASE_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PORTFOLIO_SUMMARY
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 181. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]  [M3]
+-- 164. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4110,7 +3752,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PREFERENCE_PROFILE' as satellite, '2
 
 
 ----------------------------------------------------------------------------------------
--- 182. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M3]
+-- 165. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4135,7 +3777,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RELATIONSHIP_PROFILE' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 183. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]  [M3]
+-- 166. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4155,27 +3797,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RISK_ANALYTICS' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 184. MAXIMUS — SAT_AUG_POLICY_CANCELLATION   [Implemented]  [M3]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [4 col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_POLICY_CANCELLATION' as satellite, 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CANCELLATION_PREMIUM_BASIS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ELAPSED_PERIOD_PREMIUM_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RETAINED_ADMIN_CHARGES_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(UNEXPIRED_PERIOD_PREMIUM_AMOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CANCELLATION_PREMIUM_BASIS AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ELAPSED_PERIOD_PREMIUM_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RETAINED_ADMIN_CHARGES_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(UNEXPIRED_PERIOD_PREMIUM_AMOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_CANCELLATION
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 185. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]  [M3]
+-- 167. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4195,12 +3817,12 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_CLAIM_EXPERIENCE' as satellite, 'MA
 
 
 ----------------------------------------------------------------------------------------
--- 186. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Design finding]  [M3]
+-- 168. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_policy_coverage_schedule) also hashes COVERAGE_REFERENCE,
+-- (satfeed_mt_aug_sat_aug_policy_coverage_schedule) also hashes COVERAGE_REFERENCE,
 -- COVERAGE_SEQUENCE, which this satellite does not store (a shared stage feeding several
 -- satellites). A change in only those columns gives a new HASHDIFF and so a NEW ROW WITH
 -- AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts.
@@ -4220,7 +3842,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_CLAIM_EXPERIENCE' as satellite, 'MA
 
 
 ----------------------------------------------------------------------------------------
--- 187. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]  [M3]
+-- 169. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4240,33 +3862,14 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DELIVERY' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 188. MAXIMUS — SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED   [Design finding]  [M3]
--- HASHDIFF of
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_policy_discount_loading_applied) also hashes ITEM_CODE,
+-- 170. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Design finding]
+-- HASHDIFF of MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS
+-- (satfeed_mt_aug_sat_aug_policy_document_dispatch) also hashes DISPATCH_SERIAL_NUMBER,
 -- which this satellite does not store (a shared stage feeding several satellites). A
 -- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
 -- PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF
 -- cannot be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat;
--- PK POLICY_HKEY, child key ITEM_CODE; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [3 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
--- per member.
-----------------------------------------------------------------------------------------
--- DM-H1 (a) MAXIMUS SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED: HASHDIFF not recomputable -- see note
-
-
-
-----------------------------------------------------------------------------------------
--- 189. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Design finding]  [M3]
--- HASHDIFF of MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS
--- (satfeed_mtv2_aug_sat_aug_policy_document_dispatch) also hashes
--- DISPATCH_SERIAL_NUMBER, which this satellite does not store (a shared stage feeding
--- several satellites). A change in only those columns gives a new HASHDIFF and so a NEW
--- ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a)
--- unchanged_payload_reinserts. The HASHDIFF cannot be recomputed from the satellite row.
--- augmented satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key
--- DISPATCH_SERIAL_NUMBER; 1 RECORD_SOURCE group(s):
+-- PK POLICY_HKEY, child key DISPATCH_SERIAL_NUMBER; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS [10 col(s)].
 -- Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
 ----------------------------------------------------------------------------------------
@@ -4275,46 +3878,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DELIVERY' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 190. MAXIMUS — SAT_AUG_POLICY_ENDORSEMENT   [Design finding]  [M3]
--- HASHDIFF of MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_policy_endorsement) also hashes ENDORSEMENT_NUMBER, which
--- this satellite does not store (a shared stage feeding several satellites). A change in
--- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
--- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
--- be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat; PK
--- POLICY_HKEY, child key ENDORSEMENT_NUMBER; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS [3 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
--- per member.
-----------------------------------------------------------------------------------------
--- DM-H1 (a) MAXIMUS SAT_AUG_POLICY_ENDORSEMENT: HASHDIFF not recomputable -- see note
-
-
-
-----------------------------------------------------------------------------------------
--- 191. MAXIMUS — SAT_AUG_POLICY_GROUP   [Implemented]  [M3]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [6 col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_POLICY_GROUP' as satellite, 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CHILD_POLICY_PLAN_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EMPLOYER_ORGANISATION_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GLOBAL_ACCOUNT_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GROUP_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_EMPLOYEE_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PROGRAM_IDENTIFIER AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CHILD_POLICY_PLAN_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EMPLOYER_ORGANISATION_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GLOBAL_ACCOUNT_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GROUP_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_EMPLOYEE_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PROGRAM_IDENTIFIER AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_GROUP
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 192. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]  [M3]
+-- 171. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4338,7 +3902,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_HEADER' as satellite, '4 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 193. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]  [M3]
+-- 172. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4358,7 +3922,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_HEALTH_DECLARATION' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 194. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]  [M3]
+-- 173. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4378,17 +3942,16 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_INSURED_DECLARATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 195. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Design finding]  [M3]
+-- 174. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_policy_intermediary_split) also hashes
--- INTERMEDIARY_REFERENCE, which this satellite does not store (a shared stage feeding
--- several satellites). A change in only those columns gives a new HASHDIFF and so a NEW
--- ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a)
--- unchanged_payload_reinserts. The HASHDIFF cannot be recomputed from the satellite row.
--- augmented satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key
--- INTERMEDIARY_REFERENCE; 2 RECORD_SOURCE group(s):
+-- (satfeed_mt_aug_sat_aug_policy_intermediary_split) also hashes INTERMEDIARY_REFERENCE,
+-- which this satellite does not store (a shared stage feeding several satellites). A
+-- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
+-- PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF
+-- cannot be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat;
+-- PK POLICY_HKEY, child key INTERMEDIARY_REFERENCE; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -4400,7 +3963,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_INSURED_DECLARATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 196. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]  [M3]
+-- 175. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4420,11 +3983,11 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_NOMINEE_DECLARATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 197. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Design finding]  [M3]
+-- 176. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_policy_premium_head) also hashes ADJUSTED_INDICATOR,
+-- (satfeed_mt_aug_sat_aug_policy_premium_head) also hashes ADJUSTED_INDICATOR,
 -- COVERAGE_REFERENCE, PREMIUM_HEAD_CODE, SECTION, which this satellite does not store (a
 -- shared stage feeding several satellites). A change in only those columns gives a new
 -- HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2
@@ -4442,7 +4005,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_NOMINEE_DECLARATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 198. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]  [M3]
+-- 177. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4464,7 +4027,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PREMIUM_SUMMARY' as satellite, '2 R
 
 
 ----------------------------------------------------------------------------------------
--- 199. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]  [M3]
+-- 178. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4484,7 +4047,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PROPERTY_LINE' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 200. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]  [M3]
+-- 179. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4505,45 +4068,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_RENEWAL' as satellite, '2 RECORD_SO
 
 
 ----------------------------------------------------------------------------------------
--- 201. MAXIMUS — SAT_AUG_POLICY_SUM_INSURED_BREAKUP   [Design finding]  [M3]
--- HASHDIFF of
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_policy_sum_insured_breakup) also hashes SUM_INSURED_HEAD,
--- which this satellite does not store (a shared stage feeding several satellites). A
--- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
--- PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF
--- cannot be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat;
--- PK POLICY_HKEY, child key SUM_INSURED_HEAD; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
--- per member.
-----------------------------------------------------------------------------------------
--- DM-H1 (a) MAXIMUS SAT_AUG_POLICY_SUM_INSURED_BREAKUP: HASHDIFF not recomputable -- see note
-
-
-
-----------------------------------------------------------------------------------------
--- 202. MAXIMUS — SAT_AUG_POLICY_TAX_BREAKUP   [Implemented]  [M3]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [5 col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TAX_BREAKUP' as satellite, 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(GST_BIFURCATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GST_TDS_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GST_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STAMP_DUTY_RECEIPT_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TOTAL_TAX_AMOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(GST_BIFURCATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GST_TDS_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GST_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STAMP_DUTY_RECEIPT_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TOTAL_TAX_AMOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TAX_BREAKUP
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 203. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]  [M3]
+-- 180. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4563,7 +4088,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TERMS' as satellite, 'MAXIMUS_NONHL
 
 
 ----------------------------------------------------------------------------------------
--- 204. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]  [M3]
+-- 181. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4583,7 +4108,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TRAVEL_TERMS' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 205. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
+-- 182. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4603,7 +4128,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 206. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]  [M3]
+-- 183. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4623,7 +4148,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_UW_QUERY' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 207. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]  [M3]
+-- 184. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4642,7 +4167,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_WORK_ITEM' as satellite, 'MAXIMUS_N
 
 
 ----------------------------------------------------------------------------------------
--- 208. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]  [M3]
+-- 185. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4664,7 +4189,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PRODUCT_RATING_STRUCTURE' as satellite, '2
 
 
 ----------------------------------------------------------------------------------------
--- 209. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
+-- 186. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4686,7 +4211,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, '2 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 210. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]  [M3]
+-- 187. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4706,7 +4231,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_CLAIM_EXPERIENCE' as satellite, 'MAX
 
 
 ----------------------------------------------------------------------------------------
--- 211. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]  [M3]
+-- 188. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4729,15 +4254,15 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_LINE' as satellite, '3 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 212. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Design finding]  [M3]
+-- 189. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_quote_coverage_schedule) also hashes COVERAGE_REFERENCE,
--- which this satellite does not store (a shared stage feeding several satellites). A
--- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
--- PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF
--- cannot be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat;
--- PK QUOTE_HKEY, child key COVERAGE_REFERENCE; 1 RECORD_SOURCE group(s):
+-- (satfeed_mt_aug_sat_aug_quote_coverage_schedule) also hashes COVERAGE_REFERENCE, which
+-- this satellite does not store (a shared stage feeding several satellites). A change in
+-- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
+-- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
+-- be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat; PK
+-- QUOTE_HKEY, child key COVERAGE_REFERENCE; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [9 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
@@ -4747,10 +4272,10 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_LINE' as satellite, '3 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 213. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Design finding]  [M3]
+-- 190. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_quote_cover_detail) also hashes COVERAGE_REFERENCE,
+-- (satfeed_mt_aug_sat_aug_quote_cover_detail) also hashes COVERAGE_REFERENCE,
 -- COVERAGE_SEQUENCE, which this satellite does not store (a shared stage feeding several
 -- satellites). A change in only those columns gives a new HASHDIFF and so a NEW ROW WITH
 -- AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts.
@@ -4766,7 +4291,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_LINE' as satellite, '3 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 214. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]  [M3]
+-- 191. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4797,7 +4322,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_HEADER' as satellite, '9 RECORD_SOUR
 
 
 ----------------------------------------------------------------------------------------
--- 215. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]  [M3]
+-- 192. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4817,7 +4342,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_HEALTH_DECLARATION' as satellite, 'M
 
 
 ----------------------------------------------------------------------------------------
--- 216. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]  [M3]
+-- 193. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4837,7 +4362,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_INSURED_DECLARATION' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 217. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]  [M3]
+-- 194. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4857,14 +4382,14 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_NOMINEE_DECLARATION' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 218. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Design finding]  [M3]
+-- 195. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_quote_premium_head) also hashes PREMIUM_HEAD_CODE, which
--- this satellite does not store (a shared stage feeding several satellites). A change in
--- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
--- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
--- be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat; PK
+-- (satfeed_mt_aug_sat_aug_quote_premium_head) also hashes PREMIUM_HEAD_CODE, which this
+-- satellite does not store (a shared stage feeding several satellites). A change in only
+-- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
+-- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
+-- recomputed from the satellite row. augmented satellite, automate_dv.ma_sat; PK
 -- QUOTE_HKEY, child key PREMIUM_HEAD_CODE; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [2 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
@@ -4875,7 +4400,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_NOMINEE_DECLARATION' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 219. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]  [M3]
+-- 196. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4895,7 +4420,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_PROPERTY_LINE' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 220. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]  [M3]
+-- 197. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4918,7 +4443,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RATING' as satellite, '3 RECORD_SOUR
 
 
 ----------------------------------------------------------------------------------------
--- 221. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]  [M3]
+-- 198. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4937,15 +4462,15 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RISK_LINE' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 222. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Design finding]  [M3]
+-- 199. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_quote_sum_insured_breakup) also hashes SUM_INSURED_HEAD,
--- which this satellite does not store (a shared stage feeding several satellites). A
--- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
--- PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF
--- cannot be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat;
--- PK QUOTE_HKEY, child key SUM_INSURED_HEAD; 1 RECORD_SOURCE group(s):
+-- (satfeed_mt_aug_sat_aug_quote_sum_insured_breakup) also hashes SUM_INSURED_HEAD, which
+-- this satellite does not store (a shared stage feeding several satellites). A change in
+-- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
+-- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
+-- be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat; PK
+-- QUOTE_HKEY, child key SUM_INSURED_HEAD; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [1 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
@@ -4955,7 +4480,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RISK_LINE' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 223. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]  [M3]
+-- 200. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4975,7 +4500,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TERMS' as satellite, '2 RECORD_SOURC
 
 
 ----------------------------------------------------------------------------------------
--- 224. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]  [M3]
+-- 201. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4995,7 +4520,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TRAVEL_TRIP' as satellite, 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 225. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
+-- 202. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -5015,7 +4540,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 226. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]  [M3]
+-- 203. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -5035,29 +4560,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_UW_QUERY' as satellite, 'MAXIMUS_NON
 
 
 ----------------------------------------------------------------------------------------
--- 227. MAXIMUS — SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL   [Design finding]  [M3]
--- HASHDIFF of
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_risk_health_member_medical) also hashes CONDITION_CODE,
--- MEMBER_REFERENCE, which this satellite does not store (a shared stage feeding several
--- satellites). A change in only those columns gives a new HASHDIFF and so a NEW ROW WITH
--- AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts.
--- The HASHDIFF cannot be recomputed from the satellite row. augmented satellite,
--- automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key CONDITION_CODE, MEMBER_REFERENCE; 2
--- RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- [4 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
--- [4 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
--- per member.
-----------------------------------------------------------------------------------------
--- DM-H1 (a) MAXIMUS SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL: HASHDIFF not recomputable -- see note
-
-
-
-----------------------------------------------------------------------------------------
--- 228. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]  [M3]
+-- 204. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -5080,7 +4583,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_CORE' as satellite, '3 RECORD_
 
 
 ----------------------------------------------------------------------------------------
--- 229. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]  [M3]
+-- 205. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -5099,29 +4602,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_PREMIUM' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 230. MAXIMUS — SAT_AUG_RISK_OBJECT_VALUATION   [Implemented]  [M3]
--- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
--- computes it, from the payload stored on the same row. A match proves every payload
--- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- [2 col(s)],
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
--- [2 col(s)].
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_VALUATION' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
-       count(*) as rows_checked,
-       count_if(HASHDIFF is null) as null_hashdiff,
-       count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_VALUE_IN_SUM_INSURED_CURRENCY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_VALUE_IN_TRANSACTION_CURRENCY AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
-       array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_VALUE_IN_SUM_INSURED_CURRENCY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_VALUE_IN_TRANSACTION_CURRENCY AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(RISK_OBJECT_HKEY, 'HEX'), null)) within group (order by RISK_OBJECT_HKEY), 0, 3) as mismatch_examples,
-       iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_VALUATION
- where (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW') or (RECORD_SOURCE = 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 231. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
+-- 206. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -5143,7 +4624,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite, '2 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 232. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
+-- 207. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -5175,11 +4656,11 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, '7 RECOR
 
 
 ----------------------------------------------------------------------------------------
--- 233. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Design finding]  [M3]
+-- 208. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_risk_travel_cover_terms) also hashes SUB_COVER_CODE, which
+-- (satfeed_mt_aug_sat_aug_risk_travel_cover_terms) also hashes SUB_COVER_CODE, which
 -- this satellite does not store (a shared stage feeding several satellites). A change in
 -- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
 -- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
@@ -5196,15 +4677,15 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, '7 RECOR
 
 
 ----------------------------------------------------------------------------------------
--- 234. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Design finding]  [M3]
+-- 209. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Design finding]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (satfeed_mtv2_aug_sat_aug_risk_travel_rating_input) also hashes RATING_INPUT_CODE,
--- which this satellite does not store (a shared stage feeding several satellites). A
--- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
--- PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF
--- cannot be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat;
--- PK RISK_OBJECT_HKEY, child key RATING_INPUT_CODE; 1 RECORD_SOURCE group(s):
+-- (satfeed_mt_aug_sat_aug_risk_travel_rating_input) also hashes RATING_INPUT_CODE, which
+-- this satellite does not store (a shared stage feeding several satellites). A change in
+-- only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD
+-- here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot
+-- be recomputed from the satellite row. augmented satellite, automate_dv.ma_sat; PK
+-- RISK_OBJECT_HKEY, child key RATING_INPUT_CODE; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME
 -- per member.
@@ -5214,7 +4695,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, '7 RECOR
 
 
 ----------------------------------------------------------------------------------------
--- 235. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]  [M3]
+-- 210. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -5236,7 +4717,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_SPONSOR' as satellite, '2 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 236. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]  [M3]
+-- 211. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -5258,7 +4739,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 237. MAXIMUS — CDC result (all satellites)   [Implemented]  [M3]
+-- 212. MAXIMUS — CDC result (all satellites)   [Implemented]
 -- Joins the BEFORE and AFTER captures of the same run id. raw_changed compares the
 -- normalised RAW payload hash (same UPPER/TRIM/NULL rules as the HASHDIFF, so a
 -- case-only RAW edit is not a change); new_rows = satellite rows added for the key

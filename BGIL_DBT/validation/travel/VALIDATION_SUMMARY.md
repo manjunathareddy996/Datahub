@@ -103,7 +103,7 @@ Notes
   from each project's own feeds (not the MAXIMUS_ / OPUS_ prefix, which
   the partner build also writes).
 - First-cut limitations carry a short note on the DM-K / DM-A sections:
-  stg2 columns that resolve via a `resolved_mtv2__` walk column or a
+  stg2 columns that resolve via a `resolved_mt__` walk column or a
   plain-join (non-macro) stitch are reported as unresolved rather than
   inlined into the sampled queries.
 - No DM-H member plan yet for travel; the DM-H files cover every

@@ -11,12 +11,12 @@
    Pass criteria / tolerance: 100% match on the sample
    Owner: LUMIQ
    Vault location: BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL
-   Maximus Travel V2 RAW: RAW.MAXIMUS_TRAVEL_V2
+   Maximus Travel RAW: RAW.MAXIMUS_TRAVEL
    Opus Travel RAW (prod): BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE
    Opus Travel RAW (test): BAGIC_PREPROD_CURATED_DB.UTILS
    Scope: Every standard + augmented satellite of opus_travel_dv_dbt and
-       maximus_travel_v2_dv_dbt, one section per project-satellite. Satellite rows are
-       scoped by the RECORD_SOURCE each feed writes.
+       maximus_travel_dv_dbt, one section per project-satellite. Satellite rows are scoped
+       by the RECORD_SOURCE each feed writes.
    Sample: Deterministic: the first 100 keys per RECORD_SOURCE ordered by hash key.
    Shared vault note: Travel satellites write the SAME physical tables as the partner
        build. DM-A row scopes use the RECORD_SOURCE string values the travel feeds actually
@@ -32,10 +32,10 @@
      hash formula).
    - This file: OPUS only (45 satellites, standard + augmented); 45 have mapped payload,
      83 RECORD_SOURCE groups, 197 mapped (group, column) pairs.
-   - Lineage handled: stg_ direct, Maximus Travel V2 stg2 over resolved_mtv2__ (base
-     stg_mtv2__ + walk columns -- walk columns are reported as unresolved in the first
-     cut), Maximus Travel V2 satfeed unions (bare HASHDIFF rename), unpivot arms, OPUS
-     plain-join stitches (joined-in columns reported as unresolved in the first cut).
+   - Lineage handled: stg_ direct, Maximus Travel stg2 over resolved_mt__ (base stg_mt__
+     + walk columns -- walk columns are reported as unresolved in the first cut), Maximus
+     Travel satfeed unions (bare HASHDIFF rename), unpivot arms, OPUS plain-join stitches
+     (joined-in columns reported as unresolved in the first cut).
    - Sections marked NA load only hard-coded NULL padding, a disabled placeholder, or
      every arm resolved to zero columns.
    ===================================================================================== */
@@ -47,7 +47,7 @@
 -- OPUS_BJAZ_TRV_LOADER_DATA_MV [5 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [6 col(s)].
 -- stg2_common_address_bjaz_trv_loader_data_mv: column(s) COUNTRY_NAME could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
@@ -304,29 +304,28 @@ order by record_source, column_name;
 -- (key, child key); latest = max LOAD_DATETIME per member.
 -- stg2_common_contact_bjaz_trv_loader_data_mv_0: column(s) FAX_NUMBER, LANDLINE_NUMBER,
 -- MOBILE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_mv_1:
--- column(s) FAX_NUMBER, LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
--- joined-in stitch columns are not yet inlined into the sampled queries).
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_mv_1: column(s)
+-- FAX_NUMBER, LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at least one
+-- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
+-- columns are not yet inlined into the sampled queries).
 -- stg2_common_contact_bjaz_trv_loader_data_mv_2: column(s) LANDLINE_NUMBER,
 -- MOBILE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_mv_3:
--- column(s) LANDLINE_NUMBER could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
--- stg2_common_contact_bjaz_trv_loader_log_table_mv_5: column(s) FAX_NUMBER,
--- LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at least one arm --
--- excluded (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch
--- columns are not yet inlined into the sampled queries).
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_mv_3: column(s)
+-- LANDLINE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_mv_5:
+-- column(s) FAX_NUMBER, LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
+-- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_common_contact_bjaz_trv_loader_log_table_mv_6: column(s) LANDLINE_NUMBER,
 -- MOBILE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_mv_7:
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_mv_7:
 -- column(s) LANDLINE_NUMBER could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
@@ -608,80 +607,80 @@ order by record_source, column_name;
 -- OPUS_BJAZ_TRV_PLAN_MV [2 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS_MV [1 col(s)],
 -- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)]. stg2_coverage_definition_bjaz_trv_plan_mv:
 -- column(s) COVERAGE_NAME, FREE_COVER_LIMIT could not be traced to RAW on at least one
--- arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or joined-in
--- stitch columns are not yet inlined into the sampled queries).
+-- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
+-- columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_rider_dtls_mv: column(s) COVERAGE_DESCRIPTION,
 -- FREE_COVER_LIMIT, PERIL_COVERED could not be traced to RAW on at least one arm --
--- excluded (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch
--- columns are not yet inlined into the sampled queries).
+-- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
+-- are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_acchospexp: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_adventuresportbenefit: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_bouncedhotel: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_compvisitfamilymember: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_delayofcheckedbaggage: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_emergencyhotelextension: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_emermedicalevac: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_homeburglaryinsurance: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_hospdailyallow: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_lossofbaggage: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_lossofcheckedbaggage: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_missedconnection: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_personalliability: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_repatonofremains: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_tripcancellation: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_tripcurtailment: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_coverage_definition_bjaz_trv_loader_data_mv_tripdelaybyscheduledaircraft:
 -- column(s) COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to
--- RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mtv2__
--- views or joined-in stitch columns are not yet inlined into the sampled queries).
+-- RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views
+-- or joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
@@ -925,11 +924,11 @@ order by record_source, column_name;
 -- OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV [1 col(s)].
 -- stg2_coverage_limits_bjaz_trv_rider_dtls_mv: column(s) DEDUCTIBLE_AMOUNT could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). stg2_coverage_limits_bjaz_trv_rider_rate_mast_mv: column(s)
 -- DEDUCTIBLE_AMOUNT could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
@@ -1078,7 +1077,7 @@ order by record_source, column_name;
 -- child key); latest = max LOAD_DATETIME per member.
 -- stg2_fintxn_commission_bjaz_trv_loader_data_mv: column(s) COMMISSION_AMOUNT could not
 -- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
@@ -1239,14 +1238,14 @@ order by record_source, column_name;
 -- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [4 col(s)].
 -- stg2_fintxn_premium_ba_trv_data_policy_dtls_mv: column(s) BASE_PREMIUM could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). stg2_fintxn_premium_bjaz_trv_loader_data_mv: column(s) DISCOUNT_PERCENTAGE,
 -- NET_PREMIUM could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries). stg2_fintxn_premium_bjaz_trv_loader_log_table_mv:
--- column(s) BASE_PREMIUM, DISCOUNT_PERCENTAGE, NET_PREMIUM could not be traced to RAW on
--- at least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
--- joined-in stitch columns are not yet inlined into the sampled queries).
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries). stg2_fintxn_premium_bjaz_trv_loader_log_table_mv: column(s)
+-- BASE_PREMIUM, DISCOUNT_PERCENTAGE, NET_PREMIUM could not be traced to RAW on at least
+-- one arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in
+-- stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
@@ -1472,10 +1471,10 @@ order by record_source, column_name;
 -- key); latest = max LOAD_DATETIME per member.
 -- stg2_fintxn_tax_ba_trv_data_policy_dtls_mv_0: column(s) SERVICE_TAX_AMOUNT could not
 -- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). stg2_fintxn_tax_bjaz_trv_loader_log_table_mv_2: column(s) CESS_AMOUNT could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
@@ -1594,11 +1593,11 @@ order by record_source, column_name;
 -- key); latest = max LOAD_DATETIME per member.
 -- stg2_fin_charge_rate_ba_trv_data_policy_dtls_mv: column(s) ADDITIONAL_LOADING_RATE
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries). stg2_fin_charge_rate_bjaz_trv_loader_log_table_mv: column(s)
 -- ADDITIONAL_LOADING_RATE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_CHARGE_RATE
@@ -1714,11 +1713,11 @@ order by record_source, column_name;
 -- group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [3
 -- col(s)]. stg2_fin_receipt_ba_trv_data_policy_dtls_mv: column(s) AMOUNT_RECEIVED,
 -- INSTRUMENT_DATE could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries). stg2_fin_receipt_bjaz_trv_loader_data_mv: column(s)
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries). stg2_fin_receipt_bjaz_trv_loader_data_mv: column(s)
 -- PAYMENT_GATEWAY_REFERENCE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT
@@ -1981,7 +1980,7 @@ order by record_source, column_name;
 -- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [2 col(s)].
 -- stg2_party_employment_bjaz_trv_loader_data_mv_payer: column(s) DESIGNATION could not
 -- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
@@ -2182,23 +2181,22 @@ order by record_source, column_name;
 -- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
 -- member. stg2_party_identification_ba_trv_data_policy_dtls_mv_0: column(s)
 -- AADHAAR_NUMBER, EIA_NUMBER, GSTIN could not be traced to RAW on at least one arm --
--- excluded (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch
--- columns are not yet inlined into the sampled queries).
+-- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
+-- are not yet inlined into the sampled queries).
 -- stg2_party_identification_bjaz_trv_loader_data_mv_1: column(s) EIA_NUMBER, GSTIN,
 -- PASSPORT_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries).
--- stg2_party_identification_bjaz_trv_loader_data_mv_2: column(s) GSTIN, PASSPORT_NUMBER
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_party_identification_bjaz_trv_loader_data_mv_3: column(s)
--- PASSPORT_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries).
--- stg2_party_identification_bjaz_trv_loader_log_table_mv_5: column(s) AADHAAR_NUMBER,
--- EIA_NUMBER, GSTIN could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries). stg2_party_identification_bjaz_trv_loader_data_mv_2:
+-- column(s) GSTIN, PASSPORT_NUMBER could not be traced to RAW on at least one arm --
+-- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
+-- are not yet inlined into the sampled queries).
+-- stg2_party_identification_bjaz_trv_loader_data_mv_3: column(s) PASSPORT_NUMBER could
+-- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). stg2_party_identification_bjaz_trv_loader_log_table_mv_5: column(s)
+-- AADHAAR_NUMBER, EIA_NUMBER, GSTIN could not be traced to RAW on at least one arm --
+-- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
+-- are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
@@ -2397,18 +2395,18 @@ order by record_source, column_name;
 -- stg2_party_identity_ba_trv_data_policy_dtls_mv_payer: column(s) FIRST_NAME,
 -- GENDER_CODE, LAST_NAME, MIDDLE_NAME, PARTY_FULL_NAME, PARTY_LEGAL_NAME, TITLE_CODE
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries). stg2_party_identity_ba_trv_data_policy_dtls_mv_agent: column(s)
 -- FIRST_NAME, GENDER_CODE, LAST_NAME, MIDDLE_NAME, PARTY_LEGAL_NAME, TITLE_CODE could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). stg2_party_identity_bjaz_trv_loader_data_mv_payer: column(s) AGE,
 -- PARTY_FULL_NAME, TITLE_CODE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 -- stg2_party_identity_bjaz_trv_loader_log_table_mv_payer: column(s) PARTY_FULL_NAME
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
@@ -2917,22 +2915,22 @@ order by record_source, column_name;
 -- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [8 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS_MV [2 col(s)].
 -- stg2_policy_header_ba_trv_data_policy_dtls_mv: column(s) POLICY_TYPE,
 -- SUM_INSURED_TOTAL could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries). stg2_policy_header_bjaz_trv_loader_data_mv:
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries). stg2_policy_header_bjaz_trv_loader_data_mv:
 -- column(s) COVER_NOTE_DATE, COVER_NOTE_REFERENCE, ISSUE_DATE, MASTER_POLICY_REFERENCE,
 -- POLICY_NUMBER, POLICY_TYPE, RISK_EXPIRY_DATE, RISK_INCEPTION_DATE, SUM_INSURED_TOTAL
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries). stg2_policy_header_bjaz_trv_loader_log_table_mv: column(s)
 -- NUMBER_OF_LIVES_COVERED, POLICY_NUMBER, POLICY_TYPE could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_policy_header_bjaz_trv_rider_dtls_mv: column(s) COVER_NOTE_DATE,
 -- COVER_NOTE_REFERENCE, ISSUE_DATE, MASTER_POLICY_REFERENCE, POLICY_NUMBER,
 -- RISK_EXPIRY_DATE, RISK_INCEPTION_DATE, RURAL_SECTOR_POLICY_INDICATOR,
 -- SUM_INSURED_TOTAL could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
@@ -3330,12 +3328,11 @@ order by record_source, column_name;
 -- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
 -- stg2_product_definition_ba_trv_data_policy_dtls_mv: column(s) PRODUCT_DISPLAY_NAME,
 -- PRODUCT_STATUS could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries). stg2_product_definition_bjaz_trv_loader_data_mv:
--- column(s) PRODUCT_CODE, PRODUCT_DISPLAY_NAME, PRODUCT_NAME, PRODUCT_STATUS could not
--- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries).
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries). stg2_product_definition_bjaz_trv_loader_data_mv: column(s)
+-- PRODUCT_CODE, PRODUCT_DISPLAY_NAME, PRODUCT_NAME, PRODUCT_STATUS could not be traced
+-- to RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__
+-- views or joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
@@ -3518,7 +3515,7 @@ order by record_source, column_name;
 -- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
 -- member. stg2_product_rating_factor_bjaz_trv_rate_master_mv_0: column(s) VALUE_RANGE_TO
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
@@ -3658,7 +3655,7 @@ order by record_source, column_name;
 -- stg2_product_terms_bjaz_trv_plan_mv: column(s) FAMILY_DEFINITION,
 -- GEOGRAPHY_RESTRICTION, MAXIMUM_ENTRY_AGE, MINIMUM_ENTRY_AGE, MINIMUM_POLICY_TERM could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
@@ -4218,7 +4215,7 @@ order by record_source, column_name;
 -- stg2_risk_person_travel_bjaz_trv_loader_log_table_mv: column(s) PASSPORT_NUMBER,
 -- TRIP_DURATION, TRIP_END_DATE, TRIP_START_DATE, TRIP_TYPE, VISA_TYPE could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
@@ -4475,7 +4472,7 @@ order by record_source, column_name;
 -- OPUS_BJAZ_TRV_PLAN_MV [2 col(s)].
 -- stg2_aug_coverage_definition_bjaz_trv_plan_mv_eff_date: column(s) COVERAGE_SEQUENCE
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
@@ -4543,11 +4540,11 @@ order by record_source, column_name;
 -- augmented satellite, sat_multi_source; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_PLAN_MV [3 col(s)]. stg2_aug_coverage_limits_bjaz_trv_plan_mv_currency:
 -- column(s) DEDUCTIBLE_DESCRIPTION, LIMIT_DESCRIPTION could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 -- stg2_aug_coverage_limits_bjaz_trv_plan_mv_deductible_desc: column(s) LIMIT_DESCRIPTION
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
@@ -4633,25 +4630,25 @@ order by record_source, column_name;
 -- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_nb_prm_excluding_st: column(s)
 -- EXTENSION_PREMIUM_EXCLUDING_ST, MINIMUM_EXTENSION_PREMIUM,
 -- MINIMUM_NEW_BUSINESS_PREMIUM, RIDER_PREMIUM could not be traced to RAW on at least one
--- arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or joined-in
--- stitch columns are not yet inlined into the sampled queries).
+-- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
+-- columns are not yet inlined into the sampled queries).
 -- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_extn_prm_excluding_st: column(s)
 -- MINIMUM_EXTENSION_PREMIUM, MINIMUM_NEW_BUSINESS_PREMIUM, RIDER_PREMIUM could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_min_extn_prm: column(s)
 -- MINIMUM_NEW_BUSINESS_PREMIUM, RIDER_PREMIUM could not be traced to RAW on at least one
--- arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or joined-in
--- stitch columns are not yet inlined into the sampled queries).
+-- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
+-- columns are not yet inlined into the sampled queries).
 -- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_min_nb_prm: column(s)
 -- RIDER_PREMIUM could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mtv2__ views or joined-in stitch columns are not yet
--- inlined into the sampled queries).
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries).
 -- stg2_aug_coverage_rating_bjaz_trv_rider_dtls_mv_rider_premium: column(s)
 -- EXTENSION_PREMIUM_EXCLUDING_ST, MINIMUM_EXTENSION_PREMIUM,
 -- MINIMUM_NEW_BUSINESS_PREMIUM, NEW_BUSINESS_PREMIUM_EXCLUDING_ST could not be traced to
--- RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mtv2__
--- views or joined-in stitch columns are not yet inlined into the sampled queries).
+-- RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views
+-- or joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_RATING
@@ -4797,16 +4794,16 @@ order by record_source, column_name;
 -- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
 -- stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_mv_sp_discount_per: column(s)
 -- SPECIAL_DISCOUNT_AMOUNT could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 -- stg2_aug_fintxn_premium_bjaz_trv_loader_data_mv_spdiscount: column(s)
 -- SPECIAL_DISCOUNT_PERCENTAGE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 -- stg2_aug_fintxn_premium_bjaz_trv_loader_log_table_mv_spdiscount: column(s)
 -- SPECIAL_DISCOUNT_PERCENTAGE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mtv2__ views or joined-in stitch columns are
--- not yet inlined into the sampled queries).
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
@@ -5253,25 +5250,25 @@ order by record_source, column_name;
 -- stg2_aug_product_terms_ba_trv_plan_mst_mv_multi_year_yn: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, CFT_ELIGIBLE_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). stg2_aug_product_terms_ba_trv_plan_mst_mv_age_bypass_yn: column(s)
 -- CFT_ELIGIBLE_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could not be traced to RAW on at least
--- one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or joined-in
+-- one arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in
 -- stitch columns are not yet inlined into the sampled queries).
 -- stg2_aug_product_terms_ba_trv_plan_mst_mv_cft_yn: column(s) PLAN_GEOGRAPHICAL_ZONE
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries). stg2_aug_product_terms_bjaz_trv_rate_master_mv_cft_yn: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, MULTI_YEAR_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). stg2_aug_product_terms_bjaz_trv_plan_mv_area: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, CFT_ELIGIBLE_INDICATOR, MULTI_YEAR_INDICATOR could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mtv2__ views or joined-in stitch columns are not yet inlined into the sampled
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). stg2_aug_product_terms_bjaz_trv_rate_master_mv_area: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, MULTI_YEAR_INDICATOR could not be traced to RAW on
--- at least one arm -- excluded (first-cut: walk columns from resolved_mtv2__ views or
+-- at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key

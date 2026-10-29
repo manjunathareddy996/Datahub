@@ -2,16 +2,16 @@
 """
 Travel LOB equivalent of gen_dm_k.py.
 
-Points at opus_travel_dv_dbt + maximus_travel_v2_dv_dbt and writes under
+Points at opus_travel_dv_dbt + maximus_travel_dv_dbt and writes under
 BGIL_DBT/validation/travel/DM-K/. Reuses every helper from gen_dm_k.py
 (hash formula, DOCX writer, SQL writer, Branch / Hub classes). Only the
 Opus / Maximus hub walkers are travel-specific:
 
 - OPUS travel staging prefix is stg_travel__ (not stg_partner__).
-- MAXIMUS travel v2 hubs point at hubfeed_mtv2_* (single string). Each
-  hubfeed branch references a stg2_mtv2__ which reads from either a
-  stg_mtv2__ (direct), a resolved_mtv2__ view (base stg_mtv2__ + walk
-  columns), or a stg2_mtv2_up__ wrapper over an up_mtv2__ unpivot.
+- MAXIMUS travel hubs point at hubfeed_mt_* (single string). Each
+  hubfeed branch references a stg2_mt__ which reads from either a
+  stg_mt__ (direct), a resolved_mt__ view (base stg_mt__ + walk
+  columns), or a stg2_mt_up__ wrapper over an up_mt__ unpivot.
 
 Scoping (DM-K2 / DM-R / DM-T): travel reuses the MAXIMUS_ / OPUS_
 RECORD_SOURCE prefixes with partner, so a bare startswith('<prefix>_')
@@ -35,7 +35,7 @@ VALIDATION_ROOT = HERE.parent         # BGIL_DBT/validation
 ROOT = VALIDATION_ROOT.parent         # BGIL_DBT
 VALIDATION = VALIDATION_ROOT / "travel"
 OPUS = ROOT / "opus_travel_dv_dbt" / "models"
-MAXI = ROOT / "maximus_travel_v2_dv_dbt" / "models"
+MAXI = ROOT / "maximus_travel_dv_dbt" / "models"
 
 # Expose for downstream travel generators (gen_dm_a_travel etc).
 VAULT = PK.VAULT
@@ -50,8 +50,8 @@ RAW_SCHEMA.update({
     "travel_raw": "BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE",
     # Opus travel dev / test (overridden by profile).
     "travel_test_raw": "BAGIC_PREPROD_CURATED_DB.UTILS",
-    # Maximus Travel V2.
-    "maximus_travel_v2_raw": "RAW.MAXIMUS_TRAVEL_V2",
+    # Maximus Travel.
+    "maximus_travel_raw": "RAW.MAXIMUS_TRAVEL",
 })
 
 # Redirect helpers (parse_stg, write_sql / write_docx, out_dir, hub_meta)
@@ -72,7 +72,7 @@ if TEMPLATE_DOCX is not None:
 
 
 # ---------------------------------------------------------------------------
-# Resolved-view parser: resolved_mtv2__X = stg_mtv2__X + walk columns.
+# Resolved-view parser: resolved_mt__X = stg_mt__X + walk columns.
 # ---------------------------------------------------------------------------
 _resolved_cache = {}
 
@@ -87,7 +87,7 @@ def parse_resolved(models_dir, name):
     if not base:
         raise ValueError(f"{name}: no 'from {{{{ ref(..) }}}} b' found")
     walks = {}
-    # left join {{ ref('stg_mtv2__X') }} <alias> on <alias>.<pcol> = b.<bcol>
+    # left join {{ ref('stg_mt__X') }} <alias> on <alias>.<pcol> = b.<bcol>
     join_re = re.compile(
         r"left\s+join\s*\{\{\s*ref\('([^']+)'\)\s*\}\}\s+([A-Za-z0-9_]+)\s+on\s+"
         r"\2\.[A-Za-z0-9_]+\s*=\s*b\.[A-Za-z0-9_]+", re.I)
@@ -111,7 +111,7 @@ def parse_stg_or_resolved(models_dir, name, skipped=None, via=None):
     and leave them unchanged -- callers detect this and mark the branch as
     unresolved).
     """
-    if name.startswith("resolved_mtv2__"):
+    if name.startswith("resolved_mt__"):
         base_stg, walks = parse_resolved(models_dir, name)
         raw, cols = PK.parse_stg(models_dir, base_stg)
         return raw, dict(cols), walks
@@ -125,7 +125,7 @@ def parse_stg_or_resolved(models_dir, name, skipped=None, via=None):
 # view rather than a stg_.
 # ---------------------------------------------------------------------------
 def parse_unpivot_travel(models_dir, name, bk_alias):
-    """[(ref_name, bk_literal_expr, where_or_None)] for an up_mtv2__ model.
+    """[(ref_name, bk_literal_expr, where_or_None)] for an up_mt__ model.
 
     bk_alias is the derived-column name the wrapper picks the BK up as
     (e.g. 'CLAIM_BK'). Every arm must select something aliased to that
@@ -237,8 +237,8 @@ def build_opus_travel():
 
 
 # ---------------------------------------------------------------------------
-# MAXIMUS travel v2 builder: hubfeed_mtv2_* -> stg2_mtv2__* (one hub key
-# column per branch) -> resolved_mtv2__ | stg_mtv2__ | up_mtv2__.
+# MAXIMUS travel builder: hubfeed_mt_* -> stg2_mt__* (one hub key
+# column per branch) -> resolved_mt__ | stg_mt__ | up_mt__.
 # ---------------------------------------------------------------------------
 def _bk_name_from_nk(nk_name):
     """CLAIM_NK -> CLAIM_BK; CLAIM_NK__V2 -> CLAIM_BK__V2."""
@@ -262,16 +262,16 @@ def _hubfeed_branches(models_dir, feed):
         yield ref_m.group(1), hk_m.group(1)
 
 
-def _resolve_mtv2_stg_source(models_dir, src_model, skipped=None, via=None):
+def _resolve_mt_stg_source(models_dir, src_model, skipped=None, via=None):
     """Resolve a stg2's source_model to (base_raw, base_cols, walks).
 
-    Supports stg_mtv2__, resolved_mtv2__. Returns None if we cannot trace.
+    Supports stg_mt__, resolved_mt__. Returns None if we cannot trace.
     """
     try:
-        if src_model.startswith("stg_mtv2__"):
+        if src_model.startswith("stg_mt__"):
             raw, cols = PK.parse_stg(models_dir, src_model)
             return raw, dict(cols), {}
-        if src_model.startswith("resolved_mtv2__"):
+        if src_model.startswith("resolved_mt__"):
             return parse_stg_or_resolved(models_dir, src_model)
     except Exception as e:
         if skipped is not None:
@@ -282,10 +282,10 @@ def _resolve_mtv2_stg_source(models_dir, src_model, skipped=None, via=None):
     return None
 
 
-def _make_mtv2_branch(models_dir, src_model, bk_expr, nk_expr, hk_alias,
+def _make_mt_branch(models_dir, src_model, bk_expr, nk_expr, hk_alias,
                       via=None, skipped=None, extra_notes=None):
-    """Branch from a stg2 whose source is a stg_mtv2__ or resolved_mtv2__."""
-    resolved = _resolve_mtv2_stg_source(models_dir, src_model, skipped, via)
+    """Branch from a stg2 whose source is a stg_mt__ or resolved_mt__."""
+    resolved = _resolve_mt_stg_source(models_dir, src_model, skipped, via)
     if resolved is None:
         return None
     raw, cols, walks = resolved
@@ -324,9 +324,9 @@ def _make_mtv2_branch(models_dir, src_model, bk_expr, nk_expr, hk_alias,
     return PK.Branch(label=label, raw=raw, bk=bk_raw, nk=nk_raw, where=None, via=via)
 
 
-def _make_mtv2_unpivot_branches(models_dir, up_name, bk_alias, nk_expr,
+def _make_mt_unpivot_branches(models_dir, up_name, bk_alias, nk_expr,
                                 hk_alias, via, skipped):
-    """Branches for each arm of an up_mtv2__ unpivot view.
+    """Branches for each arm of an up_mt__ unpivot view.
 
     nk_expr is the stg2 wrapper's NK derived-column expression; it was built
     assuming <bk_alias> is a top-level column, so we substitute each arm's
@@ -342,7 +342,7 @@ def _make_mtv2_unpivot_branches(models_dir, up_name, bk_alias, nk_expr,
         return []
     out = []
     for ref, arm_bk, where in arms:
-        resolved = _resolve_mtv2_stg_source(models_dir, ref, skipped,
+        resolved = _resolve_mt_stg_source(models_dir, ref, skipped,
                                             via=f"{via} <- {up_name}")
         if resolved is None:
             continue
@@ -438,17 +438,17 @@ def build_maxi_travel():
                     continue
                 via = f"{feed} <- {stg2}"
                 try:
-                    if src_model.startswith("stg_mtv2__") or \
-                            src_model.startswith("resolved_mtv2__"):
-                        b = _make_mtv2_branch(MAXI, src_model, bk_expr, nk_expr,
+                    if src_model.startswith("stg_mt__") or \
+                            src_model.startswith("resolved_mt__"):
+                        b = _make_mt_branch(MAXI, src_model, bk_expr, nk_expr,
                                               hk_alias, via=via, skipped=skipped)
                         if b:
                             branches.append(b)
-                    elif src_model.startswith("up_mtv2__"):
-                        # stg2 is actually a stg2_mtv2_up__ wrapper over an
-                        # up_mtv2__ unpivot: bk_alias name here must match the
+                    elif src_model.startswith("up_mt__"):
+                        # stg2 is actually a stg2_mt_up__ wrapper over an
+                        # up_mt__ unpivot: bk_alias name here must match the
                         # unpivot output column.
-                        for b in _make_mtv2_unpivot_branches(
+                        for b in _make_mt_unpivot_branches(
                                 MAXI, src_model, bk_name, nk_expr, hk_alias,
                                 via=via, skipped=skipped):
                             branches.append(b)
@@ -569,7 +569,7 @@ def k5(hub):
 COMMON_OVERVIEW_TRAVEL = [
     ("Owner", "LUMIQ"),
     ("Vault location", VAULT),
-    ("Maximus Travel V2 RAW", RAW_SCHEMA["maximus_travel_v2_raw"]),
+    ("Maximus Travel RAW", RAW_SCHEMA["maximus_travel_raw"]),
     ("Opus Travel RAW (prod)", RAW_SCHEMA["travel_raw"]),
     ("Opus Travel RAW (test)", RAW_SCHEMA["travel_test_raw"]),
 ]
@@ -659,7 +659,7 @@ def main():
 
     revision = [
         f"Travel LOB generated 2026-10-13 from the current opus_travel_dv_dbt "
-        f"and maximus_travel_v2_dv_dbt models by gen_dm_k_travel.py.",
+        f"and maximus_travel_dv_dbt models by gen_dm_k_travel.py.",
         f"Scope: {len(maxi)} MAXIMUS hubs + {len(opus)} OPUS hubs = "
         f"{len(project_hubs)} project-hub sections "
         f"({len(shared)} physical hub tables, shared with the partner build).",

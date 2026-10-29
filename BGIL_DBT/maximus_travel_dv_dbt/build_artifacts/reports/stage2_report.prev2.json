@@ -1,0 +1,169 @@
+{
+ "stage": "2",
+ "status": "complete",
+ "verdict": "NOT DONE. 4 of 10 DONE clauses pass. Numbers live in build_artifacts/BUILD_STATUS.json and are referenced, never retyped (BUILD_RULES 11.7).",
+ "numbers_live_in": "build_artifacts/BUILD_STATUS.json",
+ "counts": {
+  "clauses_passed": 4,
+  "clauses_failed": 6,
+  "checks_run": 16,
+  "checks_proved": 11
+ },
+ "sibling": {
+  "project": "travel_dv_dbt",
+  "is_a_real_OPUS_build": true,
+  "all_seven_alignment_checks_live": true,
+  "no_op_half": "check 4 LINK half compared ZERO models -- the sibling builds no links",
+  "superseded_sibling_not_read": "maximus_travel_dv_dbt"
+ },
+ "executed_nothing_note": "Nothing in this workspace runs dbt. Every check here READS artifacts or re-derives from the bundle; no SQL was executed, so the four audit models remain unexercised (BUILD_RULES 1.7).",
+ "self_checks": [
+  {
+   "check": "dead data paths, independent implementation (clause 5)",
+   "result": "pass",
+   "detail": "INJECTED three ways into the model tree. One: SAT_CLAIM_FRAUD.FRAUD_SCORE nulled in its one live stage -- reported 1 dead, exit 1. Two: SAT_COMMON_ADDRESS.CITY nulled in all 12 live stages -- reported 1 dead, exit 1. Three, the NEGATIVE control for the ANY-branch rule: CITY nulled in ONE of several live branches -- reported 0, exit 0, so the rule manufactures no false positives. CLEAN RE-RUN after restoring the tree: 0 dead over 234 satellites and 1355 attributes, exit 0."
+  },
+  {
+   "check": "check 7 versus the independent implementation (clause 5)",
+   "result": "pass",
+   "detail": "INJECTED the same real dead path (CITY nulled in all 12 live stages) into a scratch copy and ran check_vault_alignment.dead_data_paths against it: the count stayed at 930 and SAT_COMMON_ADDRESS.CITY was never named. The check that reports 930 cannot see a real one. Confirms the disagreement is a blind spot in check 7, not findings."
+  },
+  {
+   "check": "mapper-notation residue, case-insensitive (clause 4)",
+   "result": "pass",
+   "detail": "Each of the seven patterns PROVED TO FIRE on an opposite-case probe appended to every model: uppercase SPINE[, lowercase placeholder braces, the double-spaced arrow, (COLUMN-AS-INSTANCE), lowercase <column>, lowercase tbd, uppercase NONE. SILENT on a known-good probe, a real nullif(trim(...)) expression. CLEAN RE-RUN: 0 hits over 1040 models on non-comment lines and 0 over every line."
+  },
+  {
+   "check": "control bytes and dead patterns (clause 7)",
+   "result": "pass",
+   "detail": "INJECTED a literal backspace byte and an uncompilable pattern into a SCRATCH copy of mt_names.py: check_patterns.py reported control_byte and uncompilable and exited 1. Removed both; exit 0 and PASS. Independent byte sweep over 1059 generator, model and yml files: 0 control bytes, with the sweep itself proved on a probe string carrying a backspace."
+  },
+  {
+   "check": "renumbering ordinals and collapse traps (clause 9)",
+   "result": "pass",
+   "detail": "THE FIRST VERSION OF THIS CHECK RETURNED A FALSE CLEAN ZERO and is recorded rather than hidden: it looked for a child key by the name shape ending in _CK, a spelling this build does not use, so it could not fire (BUILD_RULES 1.5). The rewritten version resolves the child key the way the build wires it, satellite src_cdk through the satfeed alias to the stage expression, and reports the real hit on SAT_AUG_POLICY_DOCUMENT_DISPATCH. PROVED BOTH HALVES: forcing a second satellite child key onto PARAM_SEQ raised the count from 1 to 2 distinct satellites; injecting a PROBE_BK key slot built on SRL_NO into a scratch stage raised key-slot hits from 0 to 1. CLEAN RE-RUN on the real tree: 0 key slots, 1 child key."
+  },
+  {
+   "check": "layer completeness (clause 8 neighbourhood, BUILD_RULES 6)",
+   "result": "pass",
+   "detail": "INJECTED by deleting one cast (stg_mt__clm_clmd_clmap_pv.sql) from a scratch copy: the view was named as both a mapped-view gap and a walk-touched gap, and the cast count fell to 114. Restored: 0 gaps of either kind over 115 casts."
+  },
+  {
+   "check": "name injectivity (BUILD_RULES 7.5)",
+   "result": "pass",
+   "detail": "INJECTED a second, different source view truncating onto an existing model name: reported immediately as a model name serving more than one view. CLEAN: 115 casts, 115 distinct views, a bijection."
+  },
+  {
+   "check": "parse residue over the live map (clause 6)",
+   "result": "pass",
+   "detail": "INJECTED an expression carrying a sibling-cross operator, a form this LOB grammar census records as ABSENT with count 0: reported as 1 residue occurrence, exit 1. CLEAN: 3418 slots, 0 failures, 0 residue, exit 0."
+  },
+  {
+   "check": "reproducibility wipe order (clause 8)",
+   "result": "pass",
+   "detail": "INJECTED a stale model into all 13 layer directories, then re-ran the chain: all 13 removed and the named-set digest returned to b2ab8958. This is the proof that FAILED on this project before, so it was run rather than trusted."
+  },
+  {
+   "check": "payload versus child-key clash (BUILD_RULES 5.4)",
+   "result": "pass",
+   "detail": "The test is a set intersection of src_cdk and src_payload per satellite. Proved on a constructed pair -- a shared ROLE_SEQUENCE reports a clash, a disjoint pair reports none. CLEAN: 0 clashes over 234 satellites, 56 of them multi-active."
+  },
+  {
+   "check": "every heredoc-written pattern survived the shell (CLAUDE.md, BUILD_RULES 1.2)",
+   "result": "pass",
+   "detail": "Every check script was written to a FILE and then read back and inspected byte by byte for the escape sequences it depends on -- word boundaries, whitespace classes, the union-all token, the anchored line patterns -- before being trusted. No pattern in this verification was authored inline in a shell command."
+  }
+ ],
+ "findings": [
+  {
+   "kind": "gate_gap",
+   "severity": "blocker",
+   "for_stage": "vault_tools",
+   "detail": "check_vault_alignment check 7 cannot see this build. It resolves a feeder only through a source_model YAML key, one level; this build satfeed reaches its stage through ref(), so check 7 stops at the satfeed. It reports 930 dead paths, which is 100 percent of the augmented track and 0 percent of the standard track, and an injected REAL dead path left the count unchanged and unnamed. MUST DO: make check 7 follow ref() transitively, as check_internal already does. Second LOB to raise a check-7 defect after Health V2, so under the promotion trigger a third raising promotes the fix or the reason it cannot be promoted goes into BUILD_RULES 12."
+  },
+  {
+   "kind": "gate_gap",
+   "severity": "warn",
+   "for_stage": "vault_tools",
+   "detail": "Coverage check 6 counts only target-track rows with outcome=mapped. On this LOB that is 442 pairs, out of a map that also carries 990 distinct augmentation satellite-and-attribute pairs, 60 of which reach no built payload. They are neither counted nor exemptible, so BUILD_RULES 8.1 -- coverage is the only check that can see silence -- does not hold over the augmentation track. Already in BUILD_RULES 12 from Health V2; this is the second LOB. MUST DO: add the augmentation container to the denominator, or state in 12 why it cannot be."
+  },
+  {
+   "kind": "reproducibility",
+   "severity": "blocker",
+   "for_stage": "1",
+   "detail": "generators/run_all.sh exits 1 at the FIRST generator against build_profile.json revision 5: 11 unrecognised profile keys (carried_forward_with_digest_proof_note, census_exploit_retest, doc_vs_bundle_contradictions, foreign_key_population, function_allowlist_coverage_gap_RESOLVED, function_census_verified_per_slot, gate_status, hub_risk_object, stage1_field_knowledge_note, still_open_reconfirmed, transformation_contract). The build was made against revision 4. The refusal is CORRECT under BUILD_RULES 2.2 -- a profile field nobody looked at is the one that breaks silently -- but the project cannot be rebuilt from its own directory. MUST DO: read the 11, acknowledge them in mt_names.py, re-run, and confirm the digest is still b2ab8958. Until then clause 8 cannot pass."
+  },
+  {
+   "kind": "note",
+   "severity": "blocker",
+   "for_stage": "1",
+   "detail": "The BD13 negative control is pinned to a FILENAME in a bundle that is being rewritten: 04_column_map.pre_degenfix.json is now byte-identical to the live map, so selfcheck_mt.py FAILS on every run and the BD13 zero loses its evidence. The zero is nonetheless real -- the same probe returns 1 on 04_column_map.pre_docfix.json with exactly the finding stage 1 quoted. MUST DO: pin the control to a CONTENT DIGEST or select the baseline by marker, which is what stage 0 already does for map baselines."
+  },
+  {
+   "kind": "note",
+   "severity": "blocker",
+   "for_stage": "1",
+   "detail": "THE LINK-LEG COVERAGE LIMIT IS UNDERSTATED BY AN ORDER OF MAGNITUDE. stage1_report.json and mt_spec.json census.link_legs_positional_unverifiable say 4 positional legs, in a sentence that also says more than half the link surface is unverified. Re-derived from the live map: 91 legs, 34 named, 57 positional; build_profile.json says 40 named and 51 positional under its own method. MUST DO: correct the census to the measured population and make the two halves of the sentence agree. BUILD_RULES 11.8 applies in the understated direction."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "1",
+   "detail": "SHARED-SATELLITE COUNT UNDERSTATED. stage1_report.json says 9 satellites are written by both this build and travel_dv_dbt and lists only the SAT_AUG_* nine. Measured by name intersection: 35, including 26 standard-track satellites. The BD7 hashdiff retirement holds across all 35 -- zero column-name disagreements and zero src_pk, grain or src_cdk disagreements -- so the correction strengthens the retirement claim. But the RESIDUAL exposure, a differing hashdiff INPUT LIST, applies to 34 of the 35 and not to 9. MUST DO: restate both numbers."
+  },
+  {
+   "kind": "reproducibility",
+   "severity": "warn",
+   "for_stage": "1",
+   "detail": "The digest stage 1 recorded for its own deletion proof, 92320a455d6645165eed30c26e7c7561, is not reproducible by any of five combining methods over the same tree, and the script that produced it is not in the repository. BUILD_RULES 9.3 requires a digest a script produced over a named file set. MUST DO: emit the proof from a script that lives in generators/ or build_artifacts/, with the combining method stated. Stage 2 has replaced build_artifacts/reproducibility.json with a measured one, method included."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "1",
+   "detail": "BUILD_STATUS.json has two writers with two schemas. generators/selfcheck_mt.py writes it inside run_all.sh and gen_mt_readme.py refuses to run without its keys, while BUILD_RULES 10 requires stage 2 to write the clause block into the same file. Stage 2 merged and recorded both writers under .writers, but a chain re-run silently discards the clause half and DONE vanishes from the single source of every number (11.7). MUST DO: separate the files, or have selfcheck preserve any key it does not own."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "COVERAGE HAS NO SANCTIONED EXEMPTIONS ON THIS PROJECT. 17 mapped columns reach no satellite and vault_tools/accepted_uncovered.txt carries zero lines for maximus_travel_dv_dbt, so all 17 read as novel silence even though every one has a reason in mt_spec.json. 13 are attributes withheld because the payload name clashes a child-key leg (BUILD_RULES 5.4) and need a mapper answer -- a different payload name, or a ruling that the attribute is the child key and nothing else. 2 are the refused build directives and 2 the refused satellites. MUST DO at stage 3: an answer that lets them be built, or a line each in accepted_uncovered.txt."
+  },
+  {
+   "kind": "collapse_trap",
+   "severity": "blocker",
+   "for_stage": "source",
+   "detail": "A RENUMBERING ORDINAL REACHES A CHILD KEY IN EMITTED SQL. SAT_AUG_POLICY_DOCUMENT_DISPATCH declares src_cdk DISPATCH_SERIAL_NUMBER and its stage defines it from serial_no, one of the seven ordinal spellings re-derived by shape from the source index. A dispatch line inserted or removed re-attaches the history of the rest (BUILD_RULES 5.1). Built as mapped under 5.7, correctly, with the mapper own declared-source-gap disposition, so this is a SOURCE question and not a build defect: is SERIAL_NO stable per dispatch line, and if not, what identifies one. Handback note: the build names the satellite SAT_POLICY_DOCUMENT_DISPATCH but the emitted model is SAT_AUG_POLICY_DOCUMENT_DISPATCH, and the 11 map leg rows collapse to one child-key column in one stage."
+  },
+  {
+   "kind": "collapse_trap",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "15 of the 20 collapse-trap satellite-and-leg pairs in the profile are src_cdk columns on BUILT satellites. Two satellites were refused because every leg of their child key is a no-operand literal, which was right. The rest are backed by a source column that is currently single-valued only because one view carries the leg, and the build says so. MUST DO: a mapper ruling per satellite on whether the leg really discriminates at load time. Stage 1 reports 11 here, which counts satellites whose child key is composed ONLY of trap legs -- a narrower population than the 15 leg pairs measured in the emitted models. Both are true of their own scope and the handback should say which it means."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "THE 8-WARN CONTRADICTION IS CLOSED AND THE BUILD DOES NOT KNOW IT. 09_validation_report.json, 08_handoff_facts.json, BUILD_INSTRUCTIONS_TRAVEL_V2.md and MESSAGE_TO_BUILDER.md now ALL say 8 warns, and both prose documents state the 8th exactly as the build does, a pre-existing collapse made visible by whitespace normalisation rather than a regression. build_profile.json and stage1_report.json still say the covering documents say 7. MUST DO at stage 3: do not repeat the contradiction; carry only the surviving build consequence, that two HUB_DOCUMENT instances on the claim-attribute-properties pivot view resolve to one key and one of them needs its own key."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "BD12 ADJUDICATED: refusing to substitute a hub key into a link leg is the right call, and audit_mt_link_leg_divergence probes all 13 recorded divergences -- 66 left joins, 42 link-hub-feeder triples, 38 leg slots, 13 of 13 covered. Three limits must travel with it: it has never been executed, because nothing here runs dbt; orphan legs above zero is necessary but not sufficient, since a null business key dropped by the hub feed looks the same; and it cannot see a mis-bound POSITIONAL leg, because leg and hub key come from the same renderer and agree by construction. The handback should ask the mapper for the CLAIM_RESERVE ruling -- does the link attach to the FOREIGN_KEY claim or the PARENT_KEY_HASH claim -- and for the origin of the orphan EMP leg on BAGIC_RM_ECODE."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "REFUSED BUILD DIRECTIVES ARE REAL AND ADEQUATELY REPORTED IN THE ARTIFACTS, NOT AT THE GATE. The 3 refusals are absent from the emitted payloads, the 4 prose derivation rows built normally and are live, and no satellite lost its whole payload. mt_spec.json names all three with view and source column and reconciles 3 against the bundle 20_build_directives.json 3. But nothing in models/ records the refusal, and at the gate the two refused attributes are bare coverage misses. MUST DO at stage 3: put AGE_AT_ENTRY and COVERAGE_REFERENCE to the mapper with the two questions the build cannot answer -- is COVER_INCEPTION_DATE available on those two views, and what is the delimiter of POLICY_RISK_COVER_LIST -- and meanwhile give each a line in accepted_uncovered.txt."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "SCOPE OF THE GREEN, stated so it is not over-read. The sibling travel_dv_dbt is a REAL OPUS build, so all seven alignment checks are live, but two are narrower than they look: check 4 compared 11 hubs and ZERO links, because the sibling builds no links, so all 8 of this build links are unverified against any sibling; and check 7 is report-only and blind here. Nothing in this workspace executes SQL, so every statement about what the models DO at load time -- the FK round-trip, the spine-walk variants, the link-leg divergences, the key rejections -- rests on four audit models that have never been run (BUILD_RULES 1.7)."
+  }
+ ]
+}

@@ -2,7 +2,6 @@
    DM-T1  |  Load Audit - Load Metadata Populated (Travel LOB)  (MAXIMUS)
    Load date/timestamp and record source populated and correct. Pass criterion: 0 rows with missing metadata.
 
-   MEMBER SPLIT: sections 1..254 assigned M1 x 85, M2 x 85, M3 x 84 -- contiguous thirds in listed order.
    Check ID: DM-T1
    Category: Load audit
    Sign-off criterion: Load metadata populated
@@ -11,7 +10,7 @@
    Pass criteria / tolerance: 0 rows with missing metadata
    Owner: LUMIQ
    Vault location: BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL
-   Maximus Travel V2 RAW: RAW.MAXIMUS_TRAVEL_V2
+   Maximus Travel RAW: RAW.MAXIMUS_TRAVEL
    Opus Travel RAW (prod): BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE
    Opus Travel RAW (test): BAGIC_PREPROD_CURATED_DB.UTILS
    Scope: Every hub, link and satellite the project's travel models load. Rows scoped
@@ -26,16 +25,16 @@
    not this file. The queries are IDENTICAL to those in the matching .docx.
 
    Revision notes:
-   - Travel LOB generated 2026-10-13 from the current maximus_travel_v2_dv_dbt models by
+   - Travel LOB generated 2026-10-13 from the current maximus_travel_dv_dbt models by
      validation/tools/gen_dm_t_travel.py.
-   - This file: MAXIMUS only -- 15 hubs, 4 links, 234 satellites.
+   - This file: MAXIMUS only -- 15 hubs, 4 links, 209 satellites.
    - Row scopes use the RECORD_SOURCE value set parsed from the project's own feeds; the
      shared MAXIMUS_ / OPUS_ prefix would include partner rows too.
    ===================================================================================== */
 
 
 ----------------------------------------------------------------------------------------
--- 1. MAXIMUS — Summary: every MAXIMUS hub, link and satellite in one query   [Implemented]  [M1]
+-- 1. MAXIMUS — Summary: every MAXIMUS hub, link and satellite in one query   [Implemented]
 -- The same per-table query as the sections below, unioned -- run this for the evidence
 -- and use the sections to drill into a FAIL.
 ----------------------------------------------------------------------------------------
@@ -360,22 +359,6 @@ select * from (
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ASSESSMENT_HEADER
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS')
     union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_ASSESSMENT_HEADER' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_ASSESSMENT_HEADER
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS')
-    union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_APPROVAL_ACTION' as table_name,
            count(*) as rows_in_scope,
            count_if(LOAD_DATETIME is null) as null_load_datetime,
@@ -536,22 +519,6 @@ select * from (
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_EXPENSE_LINE
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
     union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_FNOL' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FNOL
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-    union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_FOLLOWUP_TASK' as table_name,
            count(*) as rows_in_scope,
            count_if(LOAD_DATETIME is null) as null_load_datetime,
@@ -599,22 +566,6 @@ select * from (
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_HEADER
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
-    union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_HEALTH_DETAIL' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_HEALTH_DETAIL
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_LITIGATION' as table_name,
            count(*) as rows_in_scope,
@@ -728,22 +679,6 @@ select * from (
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_RECOVERY_SALVAGE
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
     union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_REPUDIATION' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_REPUDIATION
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-    union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_SETTLEMENT' as table_name,
            count(*) as rows_in_scope,
            count_if(LOAD_DATETIME is null) as null_load_datetime,
@@ -824,22 +759,6 @@ select * from (
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TPA_INTERACTION
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
     union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_TP_FORENSIC' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TP_FORENSIC
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-    union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_TRAVEL_DETAIL' as table_name,
            count(*) as rows_in_scope,
            count_if(LOAD_DATETIME is null) as null_load_datetime,
@@ -903,54 +822,6 @@ select * from (
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_CONSENT' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_CONSENT
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_GEO' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_GEO
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW')
-    union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_MONETARY_CONTEXT' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_MONETARY_CONTEXT
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS')
     union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_CONDITIONS' as table_name,
            count(*) as rows_in_scope,
@@ -1048,22 +919,6 @@ select * from (
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_CHECKLIST
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
     union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_DOCUMENT_DEFINITION' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_DEFINITION
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
-    union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_DOCUMENT_DISPATCH' as table_name,
            count(*) as rows_in_scope,
            count_if(LOAD_DATETIME is null) as null_load_datetime,
@@ -1095,22 +950,6 @@ select * from (
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW')
-    union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_FINTXN_CLAIM_PAYMENT' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_CLAIM_PAYMENT
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')
     union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_FINTXN_TAX' as table_name,
            count(*) as rows_in_scope,
@@ -1144,38 +983,6 @@ select * from (
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FIN_RECEIPT
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW')
     union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_INSTRUMENT_DEFINITION' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_INSTRUMENT_DEFINITION
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')
-    union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_AGENT' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_AGENT
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_CUSTOMER' as table_name,
            count(*) as rows_in_scope,
            count_if(LOAD_DATETIME is null) as null_load_datetime,
@@ -1207,22 +1014,6 @@ select * from (
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_PROVIDER
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LOSS_EVENT_DETAIL' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOSS_EVENT_DETAIL
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_ORG_UNIT_CONTACT' as table_name,
            count(*) as rows_in_scope,
@@ -1352,22 +1143,6 @@ select * from (
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_FINANCIAL_PROFILE
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_FRAUD_PROFILE' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_FRAUD_PROFILE
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_GROUP_SCHEME' as table_name,
            count(*) as rows_in_scope,
            count_if(LOAD_DATETIME is null) as null_load_datetime,
@@ -1464,22 +1239,6 @@ select * from (
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_KYC' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_KYC
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_LOYALTY_CLASSIFICATION' as table_name,
            count(*) as rows_in_scope,
            count_if(LOAD_DATETIME is null) as null_load_datetime,
@@ -1512,22 +1271,6 @@ select * from (
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_ONBOARDING_JOURNEY
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_ORGANISATION_PROFILE' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_ORGANISATION_PROFILE
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_PAYOUT_PROFILE' as table_name,
            count(*) as rows_in_scope,
            count_if(LOAD_DATETIME is null) as null_load_datetime,
@@ -1543,22 +1286,6 @@ select * from (
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PAYOUT_PROFILE
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_PORTFOLIO_SUMMARY' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PORTFOLIO_SUMMARY
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_PREFERENCE_PROFILE' as table_name,
            count(*) as rows_in_scope,
@@ -1608,22 +1335,6 @@ select * from (
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_RISK_ANALYTICS
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')
     union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_CANCELLATION' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_CANCELLATION
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_CLAIM_EXPERIENCE' as table_name,
            count(*) as rows_in_scope,
            count_if(LOAD_DATETIME is null) as null_load_datetime,
@@ -1672,22 +1383,6 @@ select * from (
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DELIVERY
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_DOCUMENT_DISPATCH' as table_name,
            count(*) as rows_in_scope,
            count_if(LOAD_DATETIME is null) as null_load_datetime,
@@ -1703,38 +1398,6 @@ select * from (
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DOCUMENT_DISPATCH
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS')
-    union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_ENDORSEMENT' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_ENDORSEMENT
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_GROUP' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_GROUP
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_HEADER' as table_name,
            count(*) as rows_in_scope,
@@ -1879,38 +1542,6 @@ select * from (
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_RENEWAL
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_SUM_INSURED_BREAKUP' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_SUM_INSURED_BREAKUP
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
-    union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_TAX_BREAKUP' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TAX_BREAKUP
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')
     union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_TERMS' as table_name,
            count(*) as rows_in_scope,
@@ -2296,22 +1927,6 @@ select * from (
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_QUOTE_UW_QUERY
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
     union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
-    union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_OBJECT_CORE' as table_name,
            count(*) as rows_in_scope,
            count_if(LOAD_DATETIME is null) as null_load_datetime,
@@ -2343,22 +1958,6 @@ select * from (
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_PREMIUM
      where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS')
-    union all
-    select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_OBJECT_VALUATION' as table_name,
-           count(*) as rows_in_scope,
-           count_if(LOAD_DATETIME is null) as null_load_datetime,
-           count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-           null as null_dbt_run_ts,
-           count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-           count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-           null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-           iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-               and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-               and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_VALUATION
-     where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')
     union all
     select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_INSURED' as table_name,
            count(*) as rows_in_scope,
@@ -4093,7 +3692,7 @@ order by iff(status = 'FAIL', 0, 1), table_type, table_name;
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — HUB  HUB_ASSESSMENT   [Implemented]  [M1]
+-- 2. MAXIMUS — HUB  HUB_ASSESSMENT   [Implemented]
 -- hub HUB_ASSESSMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS',
@@ -4123,7 +3722,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_ASSESSMENT' as table_name
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — HUB  HUB_CLAIM   [Implemented]  [M1]
+-- 3. MAXIMUS — HUB  HUB_CLAIM   [Implemented]
 -- hub HUB_CLAIM; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -4165,7 +3764,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_CLAIM' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — HUB  HUB_COVERAGE   [Implemented]  [M1]
+-- 4. MAXIMUS — HUB  HUB_COVERAGE   [Implemented]
 -- hub HUB_COVERAGE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS',
@@ -4203,7 +3802,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_COVERAGE' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — HUB  HUB_DISTRIBUTION_CHANNEL   [Implemented]  [M1]
+-- 5. MAXIMUS — HUB  HUB_DISTRIBUTION_CHANNEL   [Implemented]
 -- hub HUB_DISTRIBUTION_CHANNEL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -4239,7 +3838,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_DISTRIBUTION_CHANNEL' as 
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — HUB  HUB_DOCUMENT   [Implemented]  [M1]
+-- 6. MAXIMUS — HUB  HUB_DOCUMENT   [Implemented]
 -- hub HUB_DOCUMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -4281,7 +3880,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_DOCUMENT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — HUB  HUB_FINANCIAL_TRANSACTION   [Implemented]  [M1]
+-- 7. MAXIMUS — HUB  HUB_FINANCIAL_TRANSACTION   [Implemented]
 -- hub HUB_FINANCIAL_TRANSACTION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -4318,7 +3917,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_TRANSACTION' as
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — HUB  HUB_LOCATION   [Implemented]  [M1]
+-- 8. MAXIMUS — HUB  HUB_LOCATION   [Implemented]
 -- hub HUB_LOCATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -4363,7 +3962,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_LOCATION' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — HUB  HUB_LOSS_EVENT   [Implemented]  [M1]
+-- 9. MAXIMUS — HUB  HUB_LOSS_EVENT   [Implemented]
 -- hub HUB_LOSS_EVENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -4389,7 +3988,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_LOSS_EVENT' as table_name
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — HUB  HUB_ORG_UNIT   [Implemented]  [M1]
+-- 10. MAXIMUS — HUB  HUB_ORG_UNIT   [Implemented]
 -- hub HUB_ORG_UNIT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
@@ -4428,7 +4027,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_ORG_UNIT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — HUB  HUB_PARTY   [Implemented]  [M1]
+-- 11. MAXIMUS — HUB  HUB_PARTY   [Implemented]
 -- hub HUB_PARTY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY',
@@ -4487,7 +4086,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_PARTY' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — HUB  HUB_PAYMENT_INSTRUMENT   [Implemented]  [M1]
+-- 12. MAXIMUS — HUB  HUB_PAYMENT_INSTRUMENT   [Implemented]
 -- hub HUB_PAYMENT_INSTRUMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION'). Expected
@@ -4515,7 +4114,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_PAYMENT_INSTRUMENT' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — HUB  HUB_POLICY   [Implemented]  [M1]
+-- 13. MAXIMUS — HUB  HUB_POLICY   [Implemented]
 -- hub HUB_POLICY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -4564,7 +4163,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_POLICY' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — HUB  HUB_PRODUCT   [Implemented]  [M1]
+-- 14. MAXIMUS — HUB  HUB_PRODUCT   [Implemented]
 -- hub HUB_PRODUCT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
@@ -4602,7 +4201,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_PRODUCT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — HUB  HUB_QUOTE   [Implemented]  [M1]
+-- 15. MAXIMUS — HUB  HUB_QUOTE   [Implemented]
 -- hub HUB_QUOTE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -4644,7 +4243,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_QUOTE' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 16. MAXIMUS — HUB  HUB_RISK_OBJECT   [Implemented]  [M1]
+-- 16. MAXIMUS — HUB  HUB_RISK_OBJECT   [Implemented]
 -- hub HUB_RISK_OBJECT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK',
@@ -4686,7 +4285,7 @@ select 'MAXIMUS' as project, 'hub' as table_type, 'HUB_RISK_OBJECT' as table_nam
 
 
 ----------------------------------------------------------------------------------------
--- 17. MAXIMUS — LINK  LINK_CLAIM_PARTY   [Implemented]  [M1]
+-- 17. MAXIMUS — LINK  LINK_CLAIM_PARTY   [Implemented]
 -- link LINK_CLAIM_PARTY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -4722,7 +4321,7 @@ select 'MAXIMUS' as project, 'link' as table_type, 'LINK_CLAIM_PARTY' as table_n
 
 
 ----------------------------------------------------------------------------------------
--- 18. MAXIMUS — LINK  LINK_PARTY_LOCATION   [Implemented]  [M1]
+-- 18. MAXIMUS — LINK  LINK_PARTY_LOCATION   [Implemented]
 -- link LINK_PARTY_LOCATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -4759,7 +4358,7 @@ select 'MAXIMUS' as project, 'link' as table_type, 'LINK_PARTY_LOCATION' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 19. MAXIMUS — LINK  LINK_PARTY_ROLE   [Implemented]  [M1]
+-- 19. MAXIMUS — LINK  LINK_PARTY_ROLE   [Implemented]
 -- link LINK_PARTY_ROLE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW',
@@ -4793,7 +4392,7 @@ select 'MAXIMUS' as project, 'link' as table_type, 'LINK_PARTY_ROLE' as table_na
 
 
 ----------------------------------------------------------------------------------------
--- 20. MAXIMUS — LINK  LINK_POLICY_PARTY   [Implemented]  [M1]
+-- 20. MAXIMUS — LINK  LINK_POLICY_PARTY   [Implemented]
 -- link LINK_POLICY_PARTY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION',
@@ -4827,7 +4426,7 @@ select 'MAXIMUS' as project, 'link' as table_type, 'LINK_POLICY_PARTY' as table_
 
 
 ----------------------------------------------------------------------------------------
--- 21. MAXIMUS — SATELLITE  SAT_ASSESSMENT_HEADER   [Implemented]  [M1]
+-- 21. MAXIMUS — SATELLITE  SAT_ASSESSMENT_HEADER   [Implemented]
 -- satellite SAT_ASSESSMENT_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS'). Expected
 -- RECORD_SOURCE:
@@ -4853,33 +4452,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_ASSESSMENT_HEADER' 
 
 
 ----------------------------------------------------------------------------------------
--- 22. MAXIMUS — SATELLITE  SAT_AUG_ASSESSMENT_HEADER   [Implemented]  [M1]
--- satellite SAT_AUG_ASSESSMENT_HEADER; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS'). Expected
--- RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS. No
--- DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_ASSESSMENT_HEADER' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_ASSESSMENT_HEADER
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS');
-
-
-
-----------------------------------------------------------------------------------------
--- 23. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]  [M1]
+-- 22. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]
 -- satellite SAT_AUG_CLAIM_APPROVAL_ACTION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
@@ -4907,7 +4480,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_APPROVAL_
 
 
 ----------------------------------------------------------------------------------------
--- 24. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M1]
+-- 23. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
 -- satellite SAT_AUG_CLAIM_ASSESSMENT_SUMMARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -4936,7 +4509,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_ASSESSMEN
 
 
 ----------------------------------------------------------------------------------------
--- 25. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]  [M1]
+-- 24. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]
 -- satellite SAT_AUG_CLAIM_BENEFIT_HEAD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -4966,7 +4539,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_BENEFIT_H
 
 
 ----------------------------------------------------------------------------------------
--- 26. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]  [M1]
+-- 25. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]
 -- satellite SAT_AUG_CLAIM_CO_RI_SHARE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -4994,7 +4567,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_CO_RI_SHA
 
 
 ----------------------------------------------------------------------------------------
--- 27. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]  [M1]
+-- 26. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]
 -- satellite SAT_AUG_CLAIM_DEDUCTION_WAIVER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5020,7 +4593,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_DEDUCTION
 
 
 ----------------------------------------------------------------------------------------
--- 28. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]  [M1]
+-- 27. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]
 -- satellite SAT_AUG_CLAIM_DOCUMENT_REMINDER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5046,7 +4619,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_DOCUMENT_
 
 
 ----------------------------------------------------------------------------------------
--- 29. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]  [M1]
+-- 28. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]
 -- satellite SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5072,7 +4645,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_DOCUMENT_
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EVIDENCE   [Implemented]  [M1]
+-- 29. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EVIDENCE   [Implemented]
 -- satellite SAT_AUG_CLAIM_EVIDENCE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5098,7 +4671,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_EVIDENCE'
 
 
 ----------------------------------------------------------------------------------------
--- 31. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]  [M1]
+-- 30. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]
 -- satellite SAT_AUG_CLAIM_EXCLUSION_APPLIED; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5124,7 +4697,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_EXCLUSION
 
 
 ----------------------------------------------------------------------------------------
--- 32. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]  [M1]
+-- 31. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]
 -- satellite SAT_AUG_CLAIM_EXPENSE_LINE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5150,33 +4723,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_EXPENSE_L
 
 
 ----------------------------------------------------------------------------------------
--- 33. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_FNOL   [Implemented]  [M1]
--- satellite SAT_AUG_CLAIM_FNOL; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW. No
--- DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_FNOL' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_FNOL
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 34. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]  [M1]
+-- 32. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]
 -- satellite SAT_AUG_CLAIM_FOLLOWUP_TASK; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP'). Expected
 -- RECORD_SOURCE: MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP. No
@@ -5201,7 +4748,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_FOLLOWUP_
 
 
 ----------------------------------------------------------------------------------------
--- 35. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_FRAUD   [Implemented]  [M1]
+-- 33. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_FRAUD   [Implemented]
 -- satellite SAT_AUG_CLAIM_FRAUD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -5233,7 +4780,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_FRAUD' as
 
 
 ----------------------------------------------------------------------------------------
--- 36. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_HEADER   [Implemented]  [M1]
+-- 34. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_HEADER   [Implemented]
 -- satellite SAT_AUG_CLAIM_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -5262,39 +4809,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_HEADER' a
 
 
 ----------------------------------------------------------------------------------------
--- 37. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_HEALTH_DETAIL   [Implemented]  [M1]
--- satellite SAT_AUG_CLAIM_HEALTH_DETAIL; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
--- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
--- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
--- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_HEALTH_DETAIL' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_HEALTH_DETAIL
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 38. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_LITIGATION   [Implemented]  [M1]
+-- 35. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_LITIGATION   [Implemented]
 -- satellite SAT_AUG_CLAIM_LITIGATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -5324,7 +4839,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_LITIGATIO
 
 
 ----------------------------------------------------------------------------------------
--- 39. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]  [M1]
+-- 36. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]
 -- satellite SAT_AUG_CLAIM_NETWORK_VERIFICATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -5352,7 +4867,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_NETWORK_V
 
 
 ----------------------------------------------------------------------------------------
--- 40. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M1]
+-- 37. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]
 -- satellite SAT_AUG_CLAIM_PAYMENT_TRANCHE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
@@ -5381,7 +4896,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_PAYMENT_T
 
 
 ----------------------------------------------------------------------------------------
--- 41. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PA_DETAIL   [Implemented]  [M1]
+-- 38. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PA_DETAIL   [Implemented]
 -- satellite SAT_AUG_CLAIM_PA_DETAIL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -5409,7 +4924,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_PA_DETAIL
 
 
 ----------------------------------------------------------------------------------------
--- 42. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]  [M1]
+-- 39. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]
 -- satellite SAT_AUG_CLAIM_PROVIDER_BILLING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5435,7 +4950,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_PROVIDER_
 
 
 ----------------------------------------------------------------------------------------
--- 43. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]  [M1]
+-- 40. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]
 -- satellite SAT_AUG_CLAIM_QUALITY_AUDIT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5461,7 +4976,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_QUALITY_A
 
 
 ----------------------------------------------------------------------------------------
--- 44. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M1]
+-- 41. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]
 -- satellite SAT_AUG_CLAIM_RECOVERY_SALVAGE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
@@ -5489,33 +5004,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_RECOVERY_
 
 
 ----------------------------------------------------------------------------------------
--- 45. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_REPUDIATION   [Implemented]  [M1]
--- satellite SAT_AUG_CLAIM_REPUDIATION; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW. No
--- DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_REPUDIATION' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_REPUDIATION
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 46. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SETTLEMENT   [Implemented]  [M1]
+-- 42. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SETTLEMENT   [Implemented]
 -- satellite SAT_AUG_CLAIM_SETTLEMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -5545,7 +5034,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_SETTLEMEN
 
 
 ----------------------------------------------------------------------------------------
--- 47. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]  [M1]
+-- 43. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]
 -- satellite SAT_AUG_CLAIM_SLA_TRACKING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -5573,7 +5062,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_SLA_TRACK
 
 
 ----------------------------------------------------------------------------------------
--- 48. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]  [M1]
+-- 44. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]
 -- satellite SAT_AUG_CLAIM_STATUS_HISTORY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY'). Expected
 -- RECORD_SOURCE: MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY. No
@@ -5598,7 +5087,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_STATUS_HI
 
 
 ----------------------------------------------------------------------------------------
--- 49. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]  [M1]
+-- 45. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]
 -- satellite SAT_AUG_CLAIM_SURVEY_APPOINTMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5624,7 +5113,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_SURVEY_AP
 
 
 ----------------------------------------------------------------------------------------
--- 50. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]  [M1]
+-- 46. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]
 -- satellite SAT_AUG_CLAIM_TPA_INTERACTION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5650,33 +5139,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_TPA_INTER
 
 
 ----------------------------------------------------------------------------------------
--- 51. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TP_FORENSIC   [Implemented]  [M1]
--- satellite SAT_AUG_CLAIM_TP_FORENSIC; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_TP_FORENSIC' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_CLAIM_TP_FORENSIC
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 52. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]  [M1]
+-- 47. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]
 -- satellite SAT_AUG_CLAIM_TRAVEL_DETAIL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -5703,7 +5166,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_TRAVEL_DE
 
 
 ----------------------------------------------------------------------------------------
--- 53. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]  [M1]
+-- 48. MAXIMUS — SATELLITE  SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]
 -- satellite SAT_AUG_CLAIM_TRAVEL_SECTOR; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5729,7 +5192,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_CLAIM_TRAVEL_SE
 
 
 ----------------------------------------------------------------------------------------
--- 54. MAXIMUS — SATELLITE  SAT_AUG_COMMON_ADDRESS   [Implemented]  [M1]
+-- 49. MAXIMUS — SATELLITE  SAT_AUG_COMMON_ADDRESS   [Implemented]
 -- satellite SAT_AUG_COMMON_ADDRESS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -5757,7 +5220,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_ADDRESS'
 
 
 ----------------------------------------------------------------------------------------
--- 55. MAXIMUS — SATELLITE  SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M1]
+-- 50. MAXIMUS — SATELLITE  SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- satellite SAT_AUG_COMMON_COMMUNICATION_PREFERENCE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -5785,88 +5248,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_COMMUNIC
 
 
 ----------------------------------------------------------------------------------------
--- 56. MAXIMUS — SATELLITE  SAT_AUG_COMMON_CONSENT   [Implemented]  [M1]
--- satellite SAT_AUG_COMMON_CONSENT; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_CONSENT' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_CONSENT
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 57. MAXIMUS — SATELLITE  SAT_AUG_COMMON_GEO   [Implemented]  [M1]
--- satellite SAT_AUG_COMMON_GEO; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW',
--- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW',
--- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_GEO' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_GEO
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 58. MAXIMUS — SATELLITE  SAT_AUG_COMMON_MONETARY_CONTEXT   [Implemented]  [M1]
--- satellite SAT_AUG_COMMON_MONETARY_CONTEXT; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS'). Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS. No DBT_RUN_TS column on this
--- table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_MONETARY_CONTEXT' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_MONETARY_CONTEXT
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS');
-
-
-
-----------------------------------------------------------------------------------------
--- 59. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_CONDITIONS   [Implemented]  [M1]
+-- 51. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_CONDITIONS   [Implemented]
 -- satellite SAT_AUG_COVERAGE_CONDITIONS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -5894,7 +5276,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_CONDIT
 
 
 ----------------------------------------------------------------------------------------
--- 60. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M1]
+-- 52. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_DEFINITION   [Implemented]
 -- satellite SAT_AUG_COVERAGE_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -5926,7 +5308,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_DEFINI
 
 
 ----------------------------------------------------------------------------------------
--- 61. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M1]
+-- 53. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_LIMITS   [Implemented]
 -- satellite SAT_AUG_COVERAGE_LIMITS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -5954,7 +5336,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_LIMITS
 
 
 ----------------------------------------------------------------------------------------
--- 62. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M1]
+-- 54. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
 -- satellite SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -5980,7 +5362,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_SUBLIM
 
 
 ----------------------------------------------------------------------------------------
--- 63. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]  [M1]
+-- 55. MAXIMUS — SATELLITE  SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]
 -- satellite SAT_AUG_COVERAGE_SUB_COVER_ELEMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6006,7 +5388,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_SUB_CO
 
 
 ----------------------------------------------------------------------------------------
--- 64. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]  [M1]
+-- 56. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]
 -- satellite SAT_AUG_DOCUMENT_CHECKLIST; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6032,35 +5414,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_DOCUMENT_CHECKL
 
 
 ----------------------------------------------------------------------------------------
--- 65. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_DEFINITION   [Implemented]  [M1]
--- satellite SAT_AUG_DOCUMENT_DEFINITION; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
--- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW. No
--- DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_DOCUMENT_DEFINITION' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_DOCUMENT_DEFINITION
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 66. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_DISPATCH   [Implemented]  [M1]
+-- 57. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_DISPATCH   [Implemented]
 -- satellite SAT_AUG_DOCUMENT_DISPATCH; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6086,7 +5440,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_DOCUMENT_DISPAT
 
 
 ----------------------------------------------------------------------------------------
--- 67. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]  [M1]
+-- 58. MAXIMUS — SATELLITE  SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]
 -- satellite SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6112,33 +5466,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_DOCUMENT_REQUIR
 
 
 ----------------------------------------------------------------------------------------
--- 68. MAXIMUS — SATELLITE  SAT_AUG_FINTXN_CLAIM_PAYMENT   [Implemented]  [M1]
--- satellite SAT_AUG_FINTXN_CLAIM_PAYMENT; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_FINTXN_CLAIM_PAYMENT' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_CLAIM_PAYMENT
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 69. MAXIMUS — SATELLITE  SAT_AUG_FINTXN_TAX   [Implemented]  [M1]
+-- 59. MAXIMUS — SATELLITE  SAT_AUG_FINTXN_TAX   [Implemented]
 -- satellite SAT_AUG_FINTXN_TAX; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
@@ -6166,7 +5494,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_FINTXN_TAX' as 
 
 
 ----------------------------------------------------------------------------------------
--- 70. MAXIMUS — SATELLITE  SAT_AUG_FIN_RECEIPT   [Implemented]  [M1]
+-- 60. MAXIMUS — SATELLITE  SAT_AUG_FIN_RECEIPT   [Implemented]
 -- satellite SAT_AUG_FIN_RECEIPT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -6196,59 +5524,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_FIN_RECEIPT' as
 
 
 ----------------------------------------------------------------------------------------
--- 71. MAXIMUS — SATELLITE  SAT_AUG_INSTRUMENT_DEFINITION   [Implemented]  [M1]
--- satellite SAT_AUG_INSTRUMENT_DEFINITION; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_INSTRUMENT_DEFINITION' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_INSTRUMENT_DEFINITION
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 72. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_AGENT   [Implemented]  [M1]
--- satellite SAT_AUG_LNK_ROLE_AGENT; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_AGENT' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_AGENT
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 73. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M1]
+-- 61. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
 -- satellite SAT_AUG_LNK_ROLE_CUSTOMER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6274,7 +5550,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_CUSTOM
 
 
 ----------------------------------------------------------------------------------------
--- 74. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]  [M1]
+-- 62. MAXIMUS — SATELLITE  SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
 -- satellite SAT_AUG_LNK_ROLE_PROVIDER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6300,33 +5576,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_PROVID
 
 
 ----------------------------------------------------------------------------------------
--- 75. MAXIMUS — SATELLITE  SAT_AUG_LOSS_EVENT_DETAIL   [Implemented]  [M1]
--- satellite SAT_AUG_LOSS_EVENT_DETAIL; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW. No
--- DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_LOSS_EVENT_DETAIL' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LOSS_EVENT_DETAIL
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 76. MAXIMUS — SATELLITE  SAT_AUG_ORG_UNIT_CONTACT   [Implemented]  [M1]
+-- 63. MAXIMUS — SATELLITE  SAT_AUG_ORG_UNIT_CONTACT   [Implemented]
 -- satellite SAT_AUG_ORG_UNIT_CONTACT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6352,7 +5602,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_ORG_UNIT_CONTAC
 
 
 ----------------------------------------------------------------------------------------
--- 77. MAXIMUS — SATELLITE  SAT_AUG_PARTY_BANKING   [Implemented]  [M1]
+-- 64. MAXIMUS — SATELLITE  SAT_AUG_PARTY_BANKING   [Implemented]
 -- satellite SAT_AUG_PARTY_BANKING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -6384,7 +5634,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_BANKING' 
 
 
 ----------------------------------------------------------------------------------------
--- 78. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]  [M1]
+-- 65. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]
 -- satellite SAT_AUG_PARTY_CLAIM_HISTORY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6412,7 +5662,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CLAIM_HIS
 
 
 ----------------------------------------------------------------------------------------
--- 79. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]  [M1]
+-- 66. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]
 -- satellite SAT_AUG_PARTY_CONSENT_MANDATE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6440,7 +5690,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CONSENT_M
 
 
 ----------------------------------------------------------------------------------------
--- 80. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M1]
+-- 67. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
 -- satellite SAT_AUG_PARTY_CONTACT_ADDRESS_LINK; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6468,7 +5718,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CONTACT_A
 
 
 ----------------------------------------------------------------------------------------
--- 81. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]  [M1]
+-- 68. MAXIMUS — SATELLITE  SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]
 -- satellite SAT_AUG_PARTY_CORRESPONDENCE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6494,7 +5744,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_CORRESPON
 
 
 ----------------------------------------------------------------------------------------
--- 82. MAXIMUS — SATELLITE  SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M1]
+-- 69. MAXIMUS — SATELLITE  SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
 -- satellite SAT_AUG_PARTY_EMPLOYMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6522,7 +5772,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_EMPLOYMEN
 
 
 ----------------------------------------------------------------------------------------
--- 83. MAXIMUS — SATELLITE  SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]  [M1]
+-- 70. MAXIMUS — SATELLITE  SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]
 -- satellite SAT_AUG_PARTY_FINANCIAL_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -6552,35 +5802,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_FINANCIAL
 
 
 ----------------------------------------------------------------------------------------
--- 84. MAXIMUS — SATELLITE  SAT_AUG_PARTY_FRAUD_PROFILE   [Implemented]  [M1]
--- satellite SAT_AUG_PARTY_FRAUD_PROFILE; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
--- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_FRAUD_PROFILE' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_FRAUD_PROFILE
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 85. MAXIMUS — SATELLITE  SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]  [M1]
+-- 71. MAXIMUS — SATELLITE  SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]
 -- satellite SAT_AUG_PARTY_GROUP_SCHEME; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6606,7 +5828,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_GROUP_SCH
 
 
 ----------------------------------------------------------------------------------------
--- 86. MAXIMUS — SATELLITE  SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]  [M2]
+-- 72. MAXIMUS — SATELLITE  SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]
 -- satellite SAT_AUG_PARTY_HEALTH_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6634,7 +5856,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_HEALTH_PR
 
 
 ----------------------------------------------------------------------------------------
--- 87. MAXIMUS — SATELLITE  SAT_AUG_PARTY_HIERARCHY   [Implemented]  [M2]
+-- 73. MAXIMUS — SATELLITE  SAT_AUG_PARTY_HIERARCHY   [Implemented]
 -- satellite SAT_AUG_PARTY_HIERARCHY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6660,7 +5882,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_HIERARCHY
 
 
 ----------------------------------------------------------------------------------------
--- 88. MAXIMUS — SATELLITE  SAT_AUG_PARTY_IDENTIFICATION   [Implemented]  [M2]
+-- 74. MAXIMUS — SATELLITE  SAT_AUG_PARTY_IDENTIFICATION   [Implemented]
 -- satellite SAT_AUG_PARTY_IDENTIFICATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -6694,7 +5916,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_IDENTIFIC
 
 
 ----------------------------------------------------------------------------------------
--- 89. MAXIMUS — SATELLITE  SAT_AUG_PARTY_IDENTITY   [Implemented]  [M2]
+-- 75. MAXIMUS — SATELLITE  SAT_AUG_PARTY_IDENTITY   [Implemented]
 -- satellite SAT_AUG_PARTY_IDENTITY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS',
@@ -6728,7 +5950,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_IDENTITY'
 
 
 ----------------------------------------------------------------------------------------
--- 90. MAXIMUS — SATELLITE  SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M2]
+-- 76. MAXIMUS — SATELLITE  SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- satellite SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -6758,35 +5980,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_INDIVIDUA
 
 
 ----------------------------------------------------------------------------------------
--- 91. MAXIMUS — SATELLITE  SAT_AUG_PARTY_KYC   [Implemented]  [M2]
--- satellite SAT_AUG_PARTY_KYC; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
--- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_KYC' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_KYC
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 92. MAXIMUS — SATELLITE  SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]  [M2]
+-- 77. MAXIMUS — SATELLITE  SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]
 -- satellite SAT_AUG_PARTY_LOYALTY_CLASSIFICATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -6812,7 +6006,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_LOYALTY_C
 
 
 ----------------------------------------------------------------------------------------
--- 93. MAXIMUS — SATELLITE  SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M2]
+-- 78. MAXIMUS — SATELLITE  SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]
 -- satellite SAT_AUG_PARTY_ONBOARDING_JOURNEY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6840,35 +6034,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_ONBOARDIN
 
 
 ----------------------------------------------------------------------------------------
--- 94. MAXIMUS — SATELLITE  SAT_AUG_PARTY_ORGANISATION_PROFILE   [Implemented]  [M2]
--- satellite SAT_AUG_PARTY_ORGANISATION_PROFILE; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
--- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_ORGANISATION_PROFILE' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_ORGANISATION_PROFILE
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 95. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]  [M2]
+-- 79. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]
 -- satellite SAT_AUG_PARTY_PAYOUT_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6896,33 +6062,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_PAYOUT_PR
 
 
 ----------------------------------------------------------------------------------------
--- 96. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M2]
--- satellite SAT_AUG_PARTY_PORTFOLIO_SUMMARY; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW. No
--- DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_PORTFOLIO_SUMMARY' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_PORTFOLIO_SUMMARY
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 97. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]  [M2]
+-- 80. MAXIMUS — SATELLITE  SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]
 -- satellite SAT_AUG_PARTY_PREFERENCE_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -6950,7 +6090,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_PREFERENC
 
 
 ----------------------------------------------------------------------------------------
--- 98. MAXIMUS — SATELLITE  SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M2]
+-- 81. MAXIMUS — SATELLITE  SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]
 -- satellite SAT_AUG_PARTY_RELATIONSHIP_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -6982,7 +6122,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_RELATIONS
 
 
 ----------------------------------------------------------------------------------------
--- 99. MAXIMUS — SATELLITE  SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]  [M2]
+-- 82. MAXIMUS — SATELLITE  SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]
 -- satellite SAT_AUG_PARTY_RISK_ANALYTICS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7008,33 +6148,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_RISK_ANAL
 
 
 ----------------------------------------------------------------------------------------
--- 100. MAXIMUS — SATELLITE  SAT_AUG_POLICY_CANCELLATION   [Implemented]  [M2]
--- satellite SAT_AUG_POLICY_CANCELLATION; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_CANCELLATION' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_CANCELLATION
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 101. MAXIMUS — SATELLITE  SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]  [M2]
+-- 83. MAXIMUS — SATELLITE  SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]
 -- satellite SAT_AUG_POLICY_CLAIM_EXPERIENCE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7060,7 +6174,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_CLAIM_EX
 
 
 ----------------------------------------------------------------------------------------
--- 102. MAXIMUS — SATELLITE  SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M2]
+-- 84. MAXIMUS — SATELLITE  SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]
 -- satellite SAT_AUG_POLICY_COVERAGE_SCHEDULE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -7090,7 +6204,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_COVERAGE
 
 
 ----------------------------------------------------------------------------------------
--- 103. MAXIMUS — SATELLITE  SAT_AUG_POLICY_DELIVERY   [Implemented]  [M2]
+-- 85. MAXIMUS — SATELLITE  SAT_AUG_POLICY_DELIVERY   [Implemented]
 -- satellite SAT_AUG_POLICY_DELIVERY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7116,33 +6230,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_DELIVERY
 
 
 ----------------------------------------------------------------------------------------
--- 104. MAXIMUS — SATELLITE  SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M2]
--- satellite SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_DISCOUNT_LOADING_APPLIED
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 105. MAXIMUS — SATELLITE  SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]  [M2]
+-- 86. MAXIMUS — SATELLITE  SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]
 -- satellite SAT_AUG_POLICY_DOCUMENT_DISPATCH; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS'). Expected
 -- RECORD_SOURCE: MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS. No
@@ -7167,61 +6255,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_DOCUMENT
 
 
 ----------------------------------------------------------------------------------------
--- 106. MAXIMUS — SATELLITE  SAT_AUG_POLICY_ENDORSEMENT   [Implemented]  [M2]
--- satellite SAT_AUG_POLICY_ENDORSEMENT; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS',
--- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_ENDORSEMENT' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_ENDORSEMENT
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 107. MAXIMUS — SATELLITE  SAT_AUG_POLICY_GROUP   [Implemented]  [M2]
--- satellite SAT_AUG_POLICY_GROUP; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_GROUP' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_GROUP
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 108. MAXIMUS — SATELLITE  SAT_AUG_POLICY_HEADER   [Implemented]  [M2]
+-- 87. MAXIMUS — SATELLITE  SAT_AUG_POLICY_HEADER   [Implemented]
 -- satellite SAT_AUG_POLICY_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
@@ -7253,7 +6287,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_HEADER' 
 
 
 ----------------------------------------------------------------------------------------
--- 109. MAXIMUS — SATELLITE  SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]  [M2]
+-- 88. MAXIMUS — SATELLITE  SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]
 -- satellite SAT_AUG_POLICY_HEALTH_DECLARATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7279,7 +6313,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_HEALTH_D
 
 
 ----------------------------------------------------------------------------------------
--- 110. MAXIMUS — SATELLITE  SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]  [M2]
+-- 89. MAXIMUS — SATELLITE  SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]
 -- satellite SAT_AUG_POLICY_INSURED_DECLARATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7305,7 +6339,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_INSURED_
 
 
 ----------------------------------------------------------------------------------------
--- 111. MAXIMUS — SATELLITE  SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M2]
+-- 90. MAXIMUS — SATELLITE  SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]
 -- satellite SAT_AUG_POLICY_INTERMEDIARY_SPLIT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -7333,7 +6367,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_INTERMED
 
 
 ----------------------------------------------------------------------------------------
--- 112. MAXIMUS — SATELLITE  SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]  [M2]
+-- 91. MAXIMUS — SATELLITE  SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]
 -- satellite SAT_AUG_POLICY_NOMINEE_DECLARATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7359,7 +6393,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_NOMINEE_
 
 
 ----------------------------------------------------------------------------------------
--- 113. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]  [M2]
+-- 92. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]
 -- satellite SAT_AUG_POLICY_PREMIUM_HEAD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -7387,7 +6421,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_PREMIUM_
 
 
 ----------------------------------------------------------------------------------------
--- 114. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]  [M2]
+-- 93. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- satellite SAT_AUG_POLICY_PREMIUM_SUMMARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -7415,7 +6449,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_PREMIUM_
 
 
 ----------------------------------------------------------------------------------------
--- 115. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]  [M2]
+-- 94. MAXIMUS — SATELLITE  SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]
 -- satellite SAT_AUG_POLICY_PROPERTY_LINE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7441,7 +6475,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_PROPERTY
 
 
 ----------------------------------------------------------------------------------------
--- 116. MAXIMUS — SATELLITE  SAT_AUG_POLICY_RENEWAL   [Implemented]  [M2]
+-- 95. MAXIMUS — SATELLITE  SAT_AUG_POLICY_RENEWAL   [Implemented]
 -- satellite SAT_AUG_POLICY_RENEWAL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -7468,59 +6502,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_RENEWAL'
 
 
 ----------------------------------------------------------------------------------------
--- 117. MAXIMUS — SATELLITE  SAT_AUG_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M2]
--- satellite SAT_AUG_POLICY_SUM_INSURED_BREAKUP; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_SUM_INSURED_BREAKUP' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_SUM_INSURED_BREAKUP
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 118. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TAX_BREAKUP   [Implemented]  [M2]
--- satellite SAT_AUG_POLICY_TAX_BREAKUP; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_TAX_BREAKUP' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_POLICY_TAX_BREAKUP
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 119. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TERMS   [Implemented]  [M2]
+-- 96. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TERMS   [Implemented]
 -- satellite SAT_AUG_POLICY_TERMS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7546,7 +6528,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_TERMS' a
 
 
 ----------------------------------------------------------------------------------------
--- 120. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]  [M2]
+-- 97. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]
 -- satellite SAT_AUG_POLICY_TRAVEL_TERMS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7572,7 +6554,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_TRAVEL_T
 
 
 ----------------------------------------------------------------------------------------
--- 121. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M2]
+-- 98. MAXIMUS — SATELLITE  SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]
 -- satellite SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7598,7 +6580,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_TRAVEL_T
 
 
 ----------------------------------------------------------------------------------------
--- 122. MAXIMUS — SATELLITE  SAT_AUG_POLICY_UW_QUERY   [Implemented]  [M2]
+-- 99. MAXIMUS — SATELLITE  SAT_AUG_POLICY_UW_QUERY   [Implemented]
 -- satellite SAT_AUG_POLICY_UW_QUERY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7624,7 +6606,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_UW_QUERY
 
 
 ----------------------------------------------------------------------------------------
--- 123. MAXIMUS — SATELLITE  SAT_AUG_POLICY_WORK_ITEM   [Implemented]  [M2]
+-- 100. MAXIMUS — SATELLITE  SAT_AUG_POLICY_WORK_ITEM   [Implemented]
 -- satellite SAT_AUG_POLICY_WORK_ITEM; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_WORK_ITEM_DETAILS'). Expected
 -- RECORD_SOURCE: MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_WORK_ITEM_DETAILS. No
@@ -7649,7 +6631,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_POLICY_WORK_ITE
 
 
 ----------------------------------------------------------------------------------------
--- 124. MAXIMUS — SATELLITE  SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
+-- 101. MAXIMUS — SATELLITE  SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- satellite SAT_AUG_PRODUCT_RATING_STRUCTURE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -7677,7 +6659,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PRODUCT_RATING_
 
 
 ----------------------------------------------------------------------------------------
--- 125. MAXIMUS — SATELLITE  SAT_AUG_PRODUCT_TERMS   [Implemented]  [M2]
+-- 102. MAXIMUS — SATELLITE  SAT_AUG_PRODUCT_TERMS   [Implemented]
 -- satellite SAT_AUG_PRODUCT_TERMS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -7705,7 +6687,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_PRODUCT_TERMS' 
 
 
 ----------------------------------------------------------------------------------------
--- 126. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]  [M2]
+-- 103. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]
 -- satellite SAT_AUG_QUOTE_CLAIM_EXPERIENCE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7731,7 +6713,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_CLAIM_EXP
 
 
 ----------------------------------------------------------------------------------------
--- 127. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]  [M2]
+-- 104. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]
 -- satellite SAT_AUG_QUOTE_COVERAGE_LINE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW',
@@ -7761,7 +6743,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_COVERAGE_
 
 
 ----------------------------------------------------------------------------------------
--- 128. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]  [M2]
+-- 105. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]
 -- satellite SAT_AUG_QUOTE_COVERAGE_SCHEDULE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7787,7 +6769,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_COVERAGE_
 
 
 ----------------------------------------------------------------------------------------
--- 129. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]  [M2]
+-- 106. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]
 -- satellite SAT_AUG_QUOTE_COVER_DETAIL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7813,7 +6795,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_COVER_DET
 
 
 ----------------------------------------------------------------------------------------
--- 130. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_HEADER   [Implemented]  [M2]
+-- 107. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_HEADER   [Implemented]
 -- satellite SAT_AUG_QUOTE_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS',
@@ -7852,7 +6834,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_HEADER' a
 
 
 ----------------------------------------------------------------------------------------
--- 131. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]  [M2]
+-- 108. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]
 -- satellite SAT_AUG_QUOTE_HEALTH_DECLARATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7878,7 +6860,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_HEALTH_DE
 
 
 ----------------------------------------------------------------------------------------
--- 132. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]  [M2]
+-- 109. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]
 -- satellite SAT_AUG_QUOTE_INSURED_DECLARATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7904,7 +6886,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_INSURED_D
 
 
 ----------------------------------------------------------------------------------------
--- 133. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]  [M2]
+-- 110. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]
 -- satellite SAT_AUG_QUOTE_NOMINEE_DECLARATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7930,7 +6912,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_NOMINEE_D
 
 
 ----------------------------------------------------------------------------------------
--- 134. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]  [M2]
+-- 111. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]
 -- satellite SAT_AUG_QUOTE_PREMIUM_HEAD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7956,7 +6938,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_PREMIUM_H
 
 
 ----------------------------------------------------------------------------------------
--- 135. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]  [M2]
+-- 112. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]
 -- satellite SAT_AUG_QUOTE_PROPERTY_LINE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -7982,7 +6964,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_PROPERTY_
 
 
 ----------------------------------------------------------------------------------------
--- 136. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_RATING   [Implemented]  [M2]
+-- 113. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_RATING   [Implemented]
 -- satellite SAT_AUG_QUOTE_RATING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW',
@@ -8011,7 +6993,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_RATING' a
 
 
 ----------------------------------------------------------------------------------------
--- 137. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_RISK_LINE   [Implemented]  [M2]
+-- 114. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_RISK_LINE   [Implemented]
 -- satellite SAT_AUG_QUOTE_RISK_LINE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST'). Expected
 -- RECORD_SOURCE: MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST. No
@@ -8036,7 +7018,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_RISK_LINE
 
 
 ----------------------------------------------------------------------------------------
--- 138. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]  [M2]
+-- 115. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]
 -- satellite SAT_AUG_QUOTE_SUM_INSURED_BREAKUP; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8062,7 +7044,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_SUM_INSUR
 
 
 ----------------------------------------------------------------------------------------
--- 139. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TERMS   [Implemented]  [M2]
+-- 116. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TERMS   [Implemented]
 -- satellite SAT_AUG_QUOTE_TERMS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST'). Expected
@@ -8090,7 +7072,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_TERMS' as
 
 
 ----------------------------------------------------------------------------------------
--- 140. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]  [M2]
+-- 117. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]
 -- satellite SAT_AUG_QUOTE_TRAVEL_TRIP; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8116,7 +7098,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_TRAVEL_TR
 
 
 ----------------------------------------------------------------------------------------
--- 141. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M2]
+-- 118. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]
 -- satellite SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8142,7 +7124,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_TRAVEL_TR
 
 
 ----------------------------------------------------------------------------------------
--- 142. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_UW_QUERY   [Implemented]  [M2]
+-- 119. MAXIMUS — SATELLITE  SAT_AUG_QUOTE_UW_QUERY   [Implemented]
 -- satellite SAT_AUG_QUOTE_UW_QUERY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8168,35 +7150,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_QUOTE_UW_QUERY'
 
 
 ----------------------------------------------------------------------------------------
--- 143. MAXIMUS — SATELLITE  SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M2]
--- satellite SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
--- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_HEALTH_MEMBER_MEDICAL
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 144. MAXIMUS — SATELLITE  SAT_AUG_RISK_OBJECT_CORE   [Implemented]  [M2]
+-- 120. MAXIMUS — SATELLITE  SAT_AUG_RISK_OBJECT_CORE   [Implemented]
 -- satellite SAT_AUG_RISK_OBJECT_CORE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -8226,7 +7180,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_OBJECT_COR
 
 
 ----------------------------------------------------------------------------------------
--- 145. MAXIMUS — SATELLITE  SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]  [M2]
+-- 121. MAXIMUS — SATELLITE  SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]
 -- satellite SAT_AUG_RISK_OBJECT_PREMIUM; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS'). Expected
 -- RECORD_SOURCE: MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS. No
@@ -8251,35 +7205,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_OBJECT_PRE
 
 
 ----------------------------------------------------------------------------------------
--- 146. MAXIMUS — SATELLITE  SAT_AUG_RISK_OBJECT_VALUATION   [Implemented]  [M2]
--- satellite SAT_AUG_RISK_OBJECT_VALUATION; rows scoped to RECORD_SOURCE in
--- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
--- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
--- Expected RECORD_SOURCE:
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW.
--- No DBT_RUN_TS column on this table.
-----------------------------------------------------------------------------------------
-select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_OBJECT_VALUATION' as table_name,
-       count(*) as rows_in_scope,
-       count_if(LOAD_DATETIME is null) as null_load_datetime,
-       count_if(nullif(trim(RECORD_SOURCE), '') is null) as null_record_source,
-       null as null_dbt_run_ts,
-       count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
-       count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
-       null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
-       iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
-           and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
-           and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_OBJECT_VALUATION
- where RECORD_SOURCE in ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW');
-
-
-
-----------------------------------------------------------------------------------------
--- 147. MAXIMUS — SATELLITE  SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M2]
+-- 122. MAXIMUS — SATELLITE  SAT_AUG_RISK_PERSON_INSURED   [Implemented]
 -- satellite SAT_AUG_RISK_PERSON_INSURED; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -8307,7 +7233,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_INS
 
 
 ----------------------------------------------------------------------------------------
--- 148. MAXIMUS — SATELLITE  SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M2]
+-- 123. MAXIMUS — SATELLITE  SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
 -- satellite SAT_AUG_RISK_PERSON_TRAVEL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -8344,7 +7270,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_TRA
 
 
 ----------------------------------------------------------------------------------------
--- 149. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]  [M2]
+-- 124. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]
 -- satellite SAT_AUG_RISK_TRAVEL_COVER_TERMS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
@@ -8372,7 +7298,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_TRAVEL_COV
 
 
 ----------------------------------------------------------------------------------------
--- 150. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]  [M2]
+-- 125. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]
 -- satellite SAT_AUG_RISK_TRAVEL_RATING_INPUT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8398,7 +7324,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_TRAVEL_RAT
 
 
 ----------------------------------------------------------------------------------------
--- 151. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]  [M2]
+-- 126. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]
 -- satellite SAT_AUG_RISK_TRAVEL_SPONSOR; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -8426,7 +7352,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_TRAVEL_SPO
 
 
 ----------------------------------------------------------------------------------------
--- 152. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]  [M2]
+-- 127. MAXIMUS — SATELLITE  SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]
 -- satellite SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
@@ -8454,7 +7380,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_TRAVEL_TRI
 
 
 ----------------------------------------------------------------------------------------
--- 153. MAXIMUS — SATELLITE  SAT_CHANNEL_DEFINITION   [Implemented]  [M2]
+-- 128. MAXIMUS — SATELLITE  SAT_CHANNEL_DEFINITION   [Implemented]
 -- satellite SAT_CHANNEL_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -8486,7 +7412,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CHANNEL_DEFINITION'
 
 
 ----------------------------------------------------------------------------------------
--- 154. MAXIMUS — SATELLITE  SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M2]
+-- 129. MAXIMUS — SATELLITE  SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
 -- satellite SAT_CLAIM_ASSESSMENT_SUMMARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS'). Expected RECORD_SOURCE:
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS. No DBT_RUN_TS column on this table.
@@ -8510,7 +7436,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_ASSESSMENT_SU
 
 
 ----------------------------------------------------------------------------------------
--- 155. MAXIMUS — SATELLITE  SAT_CLAIM_BENEFIT_HEAD   [Implemented]  [M2]
+-- 130. MAXIMUS — SATELLITE  SAT_CLAIM_BENEFIT_HEAD   [Implemented]
 -- satellite SAT_CLAIM_BENEFIT_HEAD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -8542,7 +7468,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_BENEFIT_HEAD'
 
 
 ----------------------------------------------------------------------------------------
--- 156. MAXIMUS — SATELLITE  SAT_CLAIM_CO_RI_SHARE   [Implemented]  [M2]
+-- 131. MAXIMUS — SATELLITE  SAT_CLAIM_CO_RI_SHARE   [Implemented]
 -- satellite SAT_CLAIM_CO_RI_SHARE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
@@ -8570,7 +7496,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_CO_RI_SHARE' 
 
 
 ----------------------------------------------------------------------------------------
--- 157. MAXIMUS — SATELLITE  SAT_CLAIM_FNOL   [Implemented]  [M2]
+-- 132. MAXIMUS — SATELLITE  SAT_CLAIM_FNOL   [Implemented]
 -- satellite SAT_CLAIM_FNOL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -8597,7 +7523,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_FNOL' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 158. MAXIMUS — SATELLITE  SAT_CLAIM_FRAUD   [Implemented]  [M2]
+-- 133. MAXIMUS — SATELLITE  SAT_CLAIM_FRAUD   [Implemented]
 -- satellite SAT_CLAIM_FRAUD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -8629,7 +7555,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_FRAUD' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 159. MAXIMUS — SATELLITE  SAT_CLAIM_HEADER   [Implemented]  [M2]
+-- 134. MAXIMUS — SATELLITE  SAT_CLAIM_HEADER   [Implemented]
 -- satellite SAT_CLAIM_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -8662,7 +7588,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_HEADER' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 160. MAXIMUS — SATELLITE  SAT_CLAIM_HEALTH_DETAIL   [Implemented]  [M2]
+-- 135. MAXIMUS — SATELLITE  SAT_CLAIM_HEALTH_DETAIL   [Implemented]
 -- satellite SAT_CLAIM_HEALTH_DETAIL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -8694,7 +7620,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_HEALTH_DETAIL
 
 
 ----------------------------------------------------------------------------------------
--- 161. MAXIMUS — SATELLITE  SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]  [M2]
+-- 136. MAXIMUS — SATELLITE  SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]
 -- satellite SAT_CLAIM_INVESTIGATION_FINDING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8720,7 +7646,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_INVESTIGATION
 
 
 ----------------------------------------------------------------------------------------
--- 162. MAXIMUS — SATELLITE  SAT_CLAIM_LITIGATION   [Implemented]  [M2]
+-- 137. MAXIMUS — SATELLITE  SAT_CLAIM_LITIGATION   [Implemented]
 -- satellite SAT_CLAIM_LITIGATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
@@ -8748,7 +7674,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_LITIGATION' a
 
 
 ----------------------------------------------------------------------------------------
--- 163. MAXIMUS — SATELLITE  SAT_CLAIM_NOTE   [Implemented]  [M2]
+-- 138. MAXIMUS — SATELLITE  SAT_CLAIM_NOTE   [Implemented]
 -- satellite SAT_CLAIM_NOTE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -8776,7 +7702,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_NOTE' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 164. MAXIMUS — SATELLITE  SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M2]
+-- 139. MAXIMUS — SATELLITE  SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]
 -- satellite SAT_CLAIM_PAYMENT_TRANCHE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
@@ -8805,7 +7731,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_PAYMENT_TRANC
 
 
 ----------------------------------------------------------------------------------------
--- 165. MAXIMUS — SATELLITE  SAT_CLAIM_PA_DETAIL   [Implemented]  [M2]
+-- 140. MAXIMUS — SATELLITE  SAT_CLAIM_PA_DETAIL   [Implemented]
 -- satellite SAT_CLAIM_PA_DETAIL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8831,7 +7757,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_PA_DETAIL' as
 
 
 ----------------------------------------------------------------------------------------
--- 166. MAXIMUS — SATELLITE  SAT_CLAIM_PROVIDER_BILLING   [Implemented]  [M2]
+-- 141. MAXIMUS — SATELLITE  SAT_CLAIM_PROVIDER_BILLING   [Implemented]
 -- satellite SAT_CLAIM_PROVIDER_BILLING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
@@ -8859,7 +7785,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_PROVIDER_BILL
 
 
 ----------------------------------------------------------------------------------------
--- 167. MAXIMUS — SATELLITE  SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M2]
+-- 142. MAXIMUS — SATELLITE  SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]
 -- satellite SAT_CLAIM_RECOVERY_SALVAGE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8885,7 +7811,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_RECOVERY_SALV
 
 
 ----------------------------------------------------------------------------------------
--- 168. MAXIMUS — SATELLITE  SAT_CLAIM_REPUDIATION   [Implemented]  [M2]
+-- 143. MAXIMUS — SATELLITE  SAT_CLAIM_REPUDIATION   [Implemented]
 -- satellite SAT_CLAIM_REPUDIATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
@@ -8913,7 +7839,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_REPUDIATION' 
 
 
 ----------------------------------------------------------------------------------------
--- 169. MAXIMUS — SATELLITE  SAT_CLAIM_RESERVE   [Implemented]  [M2]
+-- 144. MAXIMUS — SATELLITE  SAT_CLAIM_RESERVE   [Implemented]
 -- satellite SAT_CLAIM_RESERVE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE'). Expected
@@ -8941,7 +7867,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_RESERVE' as t
 
 
 ----------------------------------------------------------------------------------------
--- 170. MAXIMUS — SATELLITE  SAT_CLAIM_RESERVE_HEAD   [Implemented]  [M2]
+-- 145. MAXIMUS — SATELLITE  SAT_CLAIM_RESERVE_HEAD   [Implemented]
 -- satellite SAT_CLAIM_RESERVE_HEAD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8967,7 +7893,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_RESERVE_HEAD'
 
 
 ----------------------------------------------------------------------------------------
--- 171. MAXIMUS — SATELLITE  SAT_CLAIM_SETTLEMENT   [Implemented]  [M3]
+-- 146. MAXIMUS — SATELLITE  SAT_CLAIM_SETTLEMENT   [Implemented]
 -- satellite SAT_CLAIM_SETTLEMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -8993,7 +7919,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_SETTLEMENT' a
 
 
 ----------------------------------------------------------------------------------------
--- 172. MAXIMUS — SATELLITE  SAT_CLAIM_SLA_TRACKING   [Implemented]  [M3]
+-- 147. MAXIMUS — SATELLITE  SAT_CLAIM_SLA_TRACKING   [Implemented]
 -- satellite SAT_CLAIM_SLA_TRACKING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS'). Expected RECORD_SOURCE:
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS. No DBT_RUN_TS column on this table.
@@ -9017,7 +7943,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_SLA_TRACKING'
 
 
 ----------------------------------------------------------------------------------------
--- 173. MAXIMUS — SATELLITE  SAT_CLAIM_TP_FORENSIC   [Implemented]  [M3]
+-- 148. MAXIMUS — SATELLITE  SAT_CLAIM_TP_FORENSIC   [Implemented]
 -- satellite SAT_CLAIM_TP_FORENSIC; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9043,7 +7969,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_TP_FORENSIC' 
 
 
 ----------------------------------------------------------------------------------------
--- 174. MAXIMUS — SATELLITE  SAT_CLAIM_TRAVEL_DETAIL   [Implemented]  [M3]
+-- 149. MAXIMUS — SATELLITE  SAT_CLAIM_TRAVEL_DETAIL   [Implemented]
 -- satellite SAT_CLAIM_TRAVEL_DETAIL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -9073,7 +7999,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_CLAIM_TRAVEL_DETAIL
 
 
 ----------------------------------------------------------------------------------------
--- 175. MAXIMUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]  [M3]
+-- 150. MAXIMUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]
 -- satellite SAT_COMMON_ADDRESS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -9118,7 +8044,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_ADDRESS' as 
 
 
 ----------------------------------------------------------------------------------------
--- 176. MAXIMUS — SATELLITE  SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]  [M3]
+-- 151. MAXIMUS — SATELLITE  SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]
 -- satellite SAT_COMMON_ADMIN_GEOGRAPHY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9144,7 +8070,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_ADMIN_GEOGRA
 
 
 ----------------------------------------------------------------------------------------
--- 177. MAXIMUS — SATELLITE  SAT_COMMON_BUSINESS_AUDIT   [Implemented]  [M3]
+-- 152. MAXIMUS — SATELLITE  SAT_COMMON_BUSINESS_AUDIT   [Implemented]
 -- satellite SAT_COMMON_BUSINESS_AUDIT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -9172,7 +8098,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_BUSINESS_AUD
 
 
 ----------------------------------------------------------------------------------------
--- 178. MAXIMUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]  [M3]
+-- 153. MAXIMUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]
 -- satellite SAT_COMMON_CLASSIFICATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9202,7 +8128,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_CLASSIFICATI
 
 
 ----------------------------------------------------------------------------------------
--- 179. MAXIMUS — SATELLITE  SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M3]
+-- 154. MAXIMUS — SATELLITE  SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- satellite SAT_COMMON_COMMUNICATION_PREFERENCE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9234,7 +8160,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_COMMUNICATIO
 
 
 ----------------------------------------------------------------------------------------
--- 180. MAXIMUS — SATELLITE  SAT_COMMON_CONSENT   [Implemented]  [M3]
+-- 155. MAXIMUS — SATELLITE  SAT_COMMON_CONSENT   [Implemented]
 -- satellite SAT_COMMON_CONSENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9264,7 +8190,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONSENT' as 
 
 
 ----------------------------------------------------------------------------------------
--- 181. MAXIMUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]  [M3]
+-- 156. MAXIMUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]
 -- satellite SAT_COMMON_CONTACT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -9302,7 +8228,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONTACT' as 
 
 
 ----------------------------------------------------------------------------------------
--- 182. MAXIMUS — SATELLITE  SAT_COMMON_GEO   [Implemented]  [M3]
+-- 157. MAXIMUS — SATELLITE  SAT_COMMON_GEO   [Implemented]
 -- satellite SAT_COMMON_GEO; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW',
@@ -9332,7 +8258,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_GEO' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 183. MAXIMUS — SATELLITE  SAT_COMMON_LIFECYCLE   [Implemented]  [M3]
+-- 158. MAXIMUS — SATELLITE  SAT_COMMON_LIFECYCLE   [Implemented]
 -- satellite SAT_COMMON_LIFECYCLE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9358,7 +8284,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_LIFECYCLE' a
 
 
 ----------------------------------------------------------------------------------------
--- 184. MAXIMUS — SATELLITE  SAT_COMMON_MONETARY_CONTEXT   [Implemented]  [M3]
+-- 159. MAXIMUS — SATELLITE  SAT_COMMON_MONETARY_CONTEXT   [Implemented]
 -- satellite SAT_COMMON_MONETARY_CONTEXT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS',
@@ -9390,7 +8316,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_MONETARY_CON
 
 
 ----------------------------------------------------------------------------------------
--- 185. MAXIMUS — SATELLITE  SAT_COMMON_STATUS   [Implemented]  [M3]
+-- 160. MAXIMUS — SATELLITE  SAT_COMMON_STATUS   [Implemented]
 -- satellite SAT_COMMON_STATUS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9416,7 +8342,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COMMON_STATUS' as t
 
 
 ----------------------------------------------------------------------------------------
--- 186. MAXIMUS — SATELLITE  SAT_COVERAGE_CONDITIONS   [Implemented]  [M3]
+-- 161. MAXIMUS — SATELLITE  SAT_COVERAGE_CONDITIONS   [Implemented]
 -- satellite SAT_COVERAGE_CONDITIONS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9448,7 +8374,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_CONDITIONS
 
 
 ----------------------------------------------------------------------------------------
--- 187. MAXIMUS — SATELLITE  SAT_COVERAGE_DEFINITION   [Implemented]  [M3]
+-- 162. MAXIMUS — SATELLITE  SAT_COVERAGE_DEFINITION   [Implemented]
 -- satellite SAT_COVERAGE_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9482,7 +8408,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_DEFINITION
 
 
 ----------------------------------------------------------------------------------------
--- 188. MAXIMUS — SATELLITE  SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M3]
+-- 163. MAXIMUS — SATELLITE  SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
 -- satellite SAT_COVERAGE_SUBLIMIT_SCHEDULE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9508,7 +8434,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_SUBLIMIT_S
 
 
 ----------------------------------------------------------------------------------------
--- 189. MAXIMUS — SATELLITE  SAT_DOCUMENT_DEFINITION   [Implemented]  [M3]
+-- 164. MAXIMUS — SATELLITE  SAT_DOCUMENT_DEFINITION   [Implemented]
 -- satellite SAT_DOCUMENT_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
@@ -9548,7 +8474,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_DOCUMENT_DEFINITION
 
 
 ----------------------------------------------------------------------------------------
--- 190. MAXIMUS — SATELLITE  SAT_FINTXN_ACCOUNTING   [Implemented]  [M3]
+-- 165. MAXIMUS — SATELLITE  SAT_FINTXN_ACCOUNTING   [Implemented]
 -- satellite SAT_FINTXN_ACCOUNTING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9574,7 +8500,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FINTXN_ACCOUNTING' 
 
 
 ----------------------------------------------------------------------------------------
--- 191. MAXIMUS — SATELLITE  SAT_FINTXN_CLAIM_PAYMENT   [Implemented]  [M3]
+-- 166. MAXIMUS — SATELLITE  SAT_FINTXN_CLAIM_PAYMENT   [Implemented]
 -- satellite SAT_FINTXN_CLAIM_PAYMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9600,7 +8526,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FINTXN_CLAIM_PAYMEN
 
 
 ----------------------------------------------------------------------------------------
--- 192. MAXIMUS — SATELLITE  SAT_FINTXN_HEADER   [Implemented]  [M3]
+-- 167. MAXIMUS — SATELLITE  SAT_FINTXN_HEADER   [Implemented]
 -- satellite SAT_FINTXN_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION',
@@ -9632,7 +8558,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FINTXN_HEADER' as t
 
 
 ----------------------------------------------------------------------------------------
--- 193. MAXIMUS — SATELLITE  SAT_FINTXN_PREMIUM   [Implemented]  [M3]
+-- 168. MAXIMUS — SATELLITE  SAT_FINTXN_PREMIUM   [Implemented]
 -- satellite SAT_FINTXN_PREMIUM; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9662,7 +8588,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FINTXN_PREMIUM' as 
 
 
 ----------------------------------------------------------------------------------------
--- 194. MAXIMUS — SATELLITE  SAT_FINTXN_TAX   [Implemented]  [M3]
+-- 169. MAXIMUS — SATELLITE  SAT_FINTXN_TAX   [Implemented]
 -- satellite SAT_FINTXN_TAX; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW').
@@ -9690,7 +8616,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FINTXN_TAX' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 195. MAXIMUS — SATELLITE  SAT_FIN_RECEIPT   [Implemented]  [M3]
+-- 170. MAXIMUS — SATELLITE  SAT_FIN_RECEIPT   [Implemented]
 -- satellite SAT_FIN_RECEIPT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9720,7 +8646,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_FIN_RECEIPT' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 196. MAXIMUS — SATELLITE  SAT_INSTRUMENT_DEFINITION   [Implemented]  [M3]
+-- 171. MAXIMUS — SATELLITE  SAT_INSTRUMENT_DEFINITION   [Implemented]
 -- satellite SAT_INSTRUMENT_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION'). Expected
@@ -9748,7 +8674,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_INSTRUMENT_DEFINITI
 
 
 ----------------------------------------------------------------------------------------
--- 197. MAXIMUS — SATELLITE  SAT_LNK_PARTY_ROLE_CORE   [Implemented]  [M3]
+-- 172. MAXIMUS — SATELLITE  SAT_LNK_PARTY_ROLE_CORE   [Implemented]
 -- satellite SAT_LNK_PARTY_ROLE_CORE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -9776,7 +8702,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_PARTY_ROLE_CORE
 
 
 ----------------------------------------------------------------------------------------
--- 198. MAXIMUS — SATELLITE  SAT_LNK_POLICY_PARTY_ROLE   [Implemented]  [M3]
+-- 173. MAXIMUS — SATELLITE  SAT_LNK_POLICY_PARTY_ROLE   [Implemented]
 -- satellite SAT_LNK_POLICY_PARTY_ROLE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION',
@@ -9810,7 +8736,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_POLICY_PARTY_RO
 
 
 ----------------------------------------------------------------------------------------
--- 199. MAXIMUS — SATELLITE  SAT_LNK_ROLE_AGENT   [Implemented]  [M3]
+-- 174. MAXIMUS — SATELLITE  SAT_LNK_ROLE_AGENT   [Implemented]
 -- satellite SAT_LNK_ROLE_AGENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9836,7 +8762,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_AGENT' as 
 
 
 ----------------------------------------------------------------------------------------
--- 200. MAXIMUS — SATELLITE  SAT_LNK_ROLE_CUSTOMER   [Implemented]  [M3]
+-- 175. MAXIMUS — SATELLITE  SAT_LNK_ROLE_CUSTOMER   [Implemented]
 -- satellite SAT_LNK_ROLE_CUSTOMER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9866,7 +8792,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_CUSTOMER' 
 
 
 ----------------------------------------------------------------------------------------
--- 201. MAXIMUS — SATELLITE  SAT_LNK_ROLE_EMPLOYEE   [Implemented]  [M3]
+-- 176. MAXIMUS — SATELLITE  SAT_LNK_ROLE_EMPLOYEE   [Implemented]
 -- satellite SAT_LNK_ROLE_EMPLOYEE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -9898,7 +8824,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_EMPLOYEE' 
 
 
 ----------------------------------------------------------------------------------------
--- 202. MAXIMUS — SATELLITE  SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M3]
+-- 177. MAXIMUS — SATELLITE  SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
 -- satellite SAT_LNK_ROLE_NOMINEE_BENEFICIARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
@@ -9926,7 +8852,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_NOMINEE_BE
 
 
 ----------------------------------------------------------------------------------------
--- 203. MAXIMUS — SATELLITE  SAT_LOSS_EVENT_DETAIL   [Implemented]  [M3]
+-- 178. MAXIMUS — SATELLITE  SAT_LOSS_EVENT_DETAIL   [Implemented]
 -- satellite SAT_LOSS_EVENT_DETAIL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9952,7 +8878,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LOSS_EVENT_DETAIL' 
 
 
 ----------------------------------------------------------------------------------------
--- 204. MAXIMUS — SATELLITE  SAT_LOSS_EVENT_NOTIFICATION   [Implemented]  [M3]
+-- 179. MAXIMUS — SATELLITE  SAT_LOSS_EVENT_NOTIFICATION   [Implemented]
 -- satellite SAT_LOSS_EVENT_NOTIFICATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -9978,7 +8904,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LOSS_EVENT_NOTIFICA
 
 
 ----------------------------------------------------------------------------------------
--- 205. MAXIMUS — SATELLITE  SAT_LOSS_LOCATION_ADDRESS   [Implemented]  [M3]
+-- 180. MAXIMUS — SATELLITE  SAT_LOSS_LOCATION_ADDRESS   [Implemented]
 -- satellite SAT_LOSS_LOCATION_ADDRESS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10004,7 +8930,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_LOSS_LOCATION_ADDRE
 
 
 ----------------------------------------------------------------------------------------
--- 206. MAXIMUS — SATELLITE  SAT_ORG_UNIT_DEFINITION   [Implemented]  [M3]
+-- 181. MAXIMUS — SATELLITE  SAT_ORG_UNIT_DEFINITION   [Implemented]
 -- satellite SAT_ORG_UNIT_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -10035,7 +8961,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_ORG_UNIT_DEFINITION
 
 
 ----------------------------------------------------------------------------------------
--- 207. MAXIMUS — SATELLITE  SAT_PARTY_AML_SCREENING   [Implemented]  [M3]
+-- 182. MAXIMUS — SATELLITE  SAT_PARTY_AML_SCREENING   [Implemented]
 -- satellite SAT_PARTY_AML_SCREENING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10063,7 +8989,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_AML_SCREENING
 
 
 ----------------------------------------------------------------------------------------
--- 208. MAXIMUS — SATELLITE  SAT_PARTY_BANKING   [Implemented]  [M3]
+-- 183. MAXIMUS — SATELLITE  SAT_PARTY_BANKING   [Implemented]
 -- satellite SAT_PARTY_BANKING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -10093,7 +9019,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_BANKING' as t
 
 
 ----------------------------------------------------------------------------------------
--- 209. MAXIMUS — SATELLITE  SAT_PARTY_CLAIM_HISTORY   [Implemented]  [M3]
+-- 184. MAXIMUS — SATELLITE  SAT_PARTY_CLAIM_HISTORY   [Implemented]
 -- satellite SAT_PARTY_CLAIM_HISTORY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10119,7 +9045,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_CLAIM_HISTORY
 
 
 ----------------------------------------------------------------------------------------
--- 210. MAXIMUS — SATELLITE  SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M3]
+-- 185. MAXIMUS — SATELLITE  SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
 -- satellite SAT_PARTY_CONTACT_ADDRESS_LINK; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW',
@@ -10155,7 +9081,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_CONTACT_ADDRE
 
 
 ----------------------------------------------------------------------------------------
--- 211. MAXIMUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]  [M3]
+-- 186. MAXIMUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]
 -- satellite SAT_PARTY_EMPLOYMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -10187,7 +9113,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_EMPLOYMENT' a
 
 
 ----------------------------------------------------------------------------------------
--- 212. MAXIMUS — SATELLITE  SAT_PARTY_FINANCIAL_PROFILE   [Implemented]  [M3]
+-- 187. MAXIMUS — SATELLITE  SAT_PARTY_FINANCIAL_PROFILE   [Implemented]
 -- satellite SAT_PARTY_FINANCIAL_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10215,7 +9141,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_FINANCIAL_PRO
 
 
 ----------------------------------------------------------------------------------------
--- 213. MAXIMUS — SATELLITE  SAT_PARTY_FRAUD_PROFILE   [Implemented]  [M3]
+-- 188. MAXIMUS — SATELLITE  SAT_PARTY_FRAUD_PROFILE   [Implemented]
 -- satellite SAT_PARTY_FRAUD_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10243,7 +9169,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_FRAUD_PROFILE
 
 
 ----------------------------------------------------------------------------------------
--- 214. MAXIMUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M3]
+-- 189. MAXIMUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]
 -- satellite SAT_PARTY_HEALTH_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10271,7 +9197,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_HEALTH_PROFIL
 
 
 ----------------------------------------------------------------------------------------
--- 215. MAXIMUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]  [M3]
+-- 190. MAXIMUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]
 -- satellite SAT_PARTY_IDENTIFICATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY',
@@ -10309,7 +9235,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTIFICATIO
 
 
 ----------------------------------------------------------------------------------------
--- 216. MAXIMUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]  [M3]
+-- 191. MAXIMUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]
 -- satellite SAT_PARTY_IDENTITY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY',
@@ -10353,7 +9279,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTITY' as 
 
 
 ----------------------------------------------------------------------------------------
--- 217. MAXIMUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M3]
+-- 192. MAXIMUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- satellite SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10381,7 +9307,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_INDIVIDUAL_DE
 
 
 ----------------------------------------------------------------------------------------
--- 218. MAXIMUS — SATELLITE  SAT_PARTY_KYC   [Implemented]  [M3]
+-- 193. MAXIMUS — SATELLITE  SAT_PARTY_KYC   [Implemented]
 -- satellite SAT_PARTY_KYC; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10409,7 +9335,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_KYC' as table
 
 
 ----------------------------------------------------------------------------------------
--- 219. MAXIMUS — SATELLITE  SAT_PARTY_KYC_REFERENCE   [Implemented]  [M3]
+-- 194. MAXIMUS — SATELLITE  SAT_PARTY_KYC_REFERENCE   [Implemented]
 -- satellite SAT_PARTY_KYC_REFERENCE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10437,7 +9363,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_KYC_REFERENCE
 
 
 ----------------------------------------------------------------------------------------
--- 220. MAXIMUS — SATELLITE  SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M3]
+-- 195. MAXIMUS — SATELLITE  SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]
 -- satellite SAT_PARTY_ONBOARDING_JOURNEY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10463,7 +9389,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_ONBOARDING_JO
 
 
 ----------------------------------------------------------------------------------------
--- 221. MAXIMUS — SATELLITE  SAT_PARTY_ORGANISATION_PROFILE   [Implemented]  [M3]
+-- 196. MAXIMUS — SATELLITE  SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
 -- satellite SAT_PARTY_ORGANISATION_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -10495,7 +9421,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_ORGANISATION_
 
 
 ----------------------------------------------------------------------------------------
--- 222. MAXIMUS — SATELLITE  SAT_PARTY_PAYOUT_PROFILE   [Implemented]  [M3]
+-- 197. MAXIMUS — SATELLITE  SAT_PARTY_PAYOUT_PROFILE   [Implemented]
 -- satellite SAT_PARTY_PAYOUT_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10521,7 +9447,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_PAYOUT_PROFIL
 
 
 ----------------------------------------------------------------------------------------
--- 223. MAXIMUS — SATELLITE  SAT_PARTY_POLICY_HISTORY   [Implemented]  [M3]
+-- 198. MAXIMUS — SATELLITE  SAT_PARTY_POLICY_HISTORY   [Implemented]
 -- satellite SAT_PARTY_POLICY_HISTORY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10547,7 +9473,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_POLICY_HISTOR
 
 
 ----------------------------------------------------------------------------------------
--- 224. MAXIMUS — SATELLITE  SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M3]
+-- 199. MAXIMUS — SATELLITE  SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]
 -- satellite SAT_PARTY_PORTFOLIO_SUMMARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10573,7 +9499,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_PORTFOLIO_SUM
 
 
 ----------------------------------------------------------------------------------------
--- 225. MAXIMUS — SATELLITE  SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M3]
+-- 200. MAXIMUS — SATELLITE  SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]
 -- satellite SAT_PARTY_RELATIONSHIP_PROFILE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10599,7 +9525,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PARTY_RELATIONSHIP_
 
 
 ----------------------------------------------------------------------------------------
--- 226. MAXIMUS — SATELLITE  SAT_POLICY_CANCELLATION   [Implemented]  [M3]
+-- 201. MAXIMUS — SATELLITE  SAT_POLICY_CANCELLATION   [Implemented]
 -- satellite SAT_POLICY_CANCELLATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10625,7 +9551,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_CANCELLATION
 
 
 ----------------------------------------------------------------------------------------
--- 227. MAXIMUS — SATELLITE  SAT_POLICY_CLASSIFICATION   [Implemented]  [M3]
+-- 202. MAXIMUS — SATELLITE  SAT_POLICY_CLASSIFICATION   [Implemented]
 -- satellite SAT_POLICY_CLASSIFICATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -10655,7 +9581,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_CLASSIFICATI
 
 
 ----------------------------------------------------------------------------------------
--- 228. MAXIMUS — SATELLITE  SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M3]
+-- 203. MAXIMUS — SATELLITE  SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]
 -- satellite SAT_POLICY_COVERAGE_SCHEDULE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS',
@@ -10691,7 +9617,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_COVERAGE_SCH
 
 
 ----------------------------------------------------------------------------------------
--- 229. MAXIMUS — SATELLITE  SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M3]
+-- 204. MAXIMUS — SATELLITE  SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]
 -- satellite SAT_POLICY_DISCOUNT_LOADING_APPLIED; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -10721,7 +9647,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_DISCOUNT_LOA
 
 
 ----------------------------------------------------------------------------------------
--- 230. MAXIMUS — SATELLITE  SAT_POLICY_ENDORSEMENT   [Implemented]  [M3]
+-- 205. MAXIMUS — SATELLITE  SAT_POLICY_ENDORSEMENT   [Implemented]
 -- satellite SAT_POLICY_ENDORSEMENT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10749,7 +9675,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_ENDORSEMENT'
 
 
 ----------------------------------------------------------------------------------------
--- 231. MAXIMUS — SATELLITE  SAT_POLICY_GROUP   [Implemented]  [M3]
+-- 206. MAXIMUS — SATELLITE  SAT_POLICY_GROUP   [Implemented]
 -- satellite SAT_POLICY_GROUP; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10775,7 +9701,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_GROUP' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 232. MAXIMUS — SATELLITE  SAT_POLICY_HEADER   [Implemented]  [M3]
+-- 207. MAXIMUS — SATELLITE  SAT_POLICY_HEADER   [Implemented]
 -- satellite SAT_POLICY_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
@@ -10812,7 +9738,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_HEADER' as t
 
 
 ----------------------------------------------------------------------------------------
--- 233. MAXIMUS — SATELLITE  SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M3]
+-- 208. MAXIMUS — SATELLITE  SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]
 -- satellite SAT_POLICY_INTERMEDIARY_SPLIT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -10839,7 +9765,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_INTERMEDIARY
 
 
 ----------------------------------------------------------------------------------------
--- 234. MAXIMUS — SATELLITE  SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]  [M3]
+-- 209. MAXIMUS — SATELLITE  SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]
 -- satellite SAT_POLICY_PORTABILITY_MIGRATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10865,7 +9791,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_PORTABILITY_
 
 
 ----------------------------------------------------------------------------------------
--- 235. MAXIMUS — SATELLITE  SAT_POLICY_PREMIUM_HEAD   [Implemented]  [M3]
+-- 210. MAXIMUS — SATELLITE  SAT_POLICY_PREMIUM_HEAD   [Implemented]
 -- satellite SAT_POLICY_PREMIUM_HEAD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -10897,7 +9823,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_PREMIUM_HEAD
 
 
 ----------------------------------------------------------------------------------------
--- 236. MAXIMUS — SATELLITE  SAT_POLICY_PREMIUM_SUMMARY   [Implemented]  [M3]
+-- 211. MAXIMUS — SATELLITE  SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- satellite SAT_POLICY_PREMIUM_SUMMARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -10929,7 +9855,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_PREMIUM_SUMM
 
 
 ----------------------------------------------------------------------------------------
--- 237. MAXIMUS — SATELLITE  SAT_POLICY_RENEWAL   [Implemented]  [M3]
+-- 212. MAXIMUS — SATELLITE  SAT_POLICY_RENEWAL   [Implemented]
 -- satellite SAT_POLICY_RENEWAL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10955,7 +9881,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_RENEWAL' as 
 
 
 ----------------------------------------------------------------------------------------
--- 238. MAXIMUS — SATELLITE  SAT_POLICY_SERVICING_SUMMARY   [Implemented]  [M3]
+-- 213. MAXIMUS — SATELLITE  SAT_POLICY_SERVICING_SUMMARY   [Implemented]
 -- satellite SAT_POLICY_SERVICING_SUMMARY; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -10981,7 +9907,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_SERVICING_SU
 
 
 ----------------------------------------------------------------------------------------
--- 239. MAXIMUS — SATELLITE  SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M3]
+-- 214. MAXIMUS — SATELLITE  SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]
 -- satellite SAT_POLICY_SUM_INSURED_BREAKUP; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -11011,7 +9937,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_SUM_INSURED_
 
 
 ----------------------------------------------------------------------------------------
--- 240. MAXIMUS — SATELLITE  SAT_POLICY_TAX_BREAKUP   [Implemented]  [M3]
+-- 215. MAXIMUS — SATELLITE  SAT_POLICY_TAX_BREAKUP   [Implemented]
 -- satellite SAT_POLICY_TAX_BREAKUP; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
@@ -11038,7 +9964,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_TAX_BREAKUP'
 
 
 ----------------------------------------------------------------------------------------
--- 241. MAXIMUS — SATELLITE  SAT_POLICY_TAX_HEAD   [Implemented]  [M3]
+-- 216. MAXIMUS — SATELLITE  SAT_POLICY_TAX_HEAD   [Implemented]
 -- satellite SAT_POLICY_TAX_HEAD; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -11067,7 +9993,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_TAX_HEAD' as
 
 
 ----------------------------------------------------------------------------------------
--- 242. MAXIMUS — SATELLITE  SAT_POLICY_TERMS   [Implemented]  [M3]
+-- 217. MAXIMUS — SATELLITE  SAT_POLICY_TERMS   [Implemented]
 -- satellite SAT_POLICY_TERMS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW').
 -- Expected RECORD_SOURCE:
@@ -11093,7 +10019,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_POLICY_TERMS' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 243. MAXIMUS — SATELLITE  SAT_PRODUCT_DEFINITION   [Implemented]  [M3]
+-- 218. MAXIMUS — SATELLITE  SAT_PRODUCT_DEFINITION   [Implemented]
 -- satellite SAT_PRODUCT_DEFINITION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS',
@@ -11130,7 +10056,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_DEFINITION'
 
 
 ----------------------------------------------------------------------------------------
--- 244. MAXIMUS — SATELLITE  SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M3]
+-- 219. MAXIMUS — SATELLITE  SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- satellite SAT_PRODUCT_RATING_STRUCTURE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -11158,7 +10084,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_RATING_STRU
 
 
 ----------------------------------------------------------------------------------------
--- 245. MAXIMUS — SATELLITE  SAT_PRODUCT_TERMS   [Implemented]  [M3]
+-- 220. MAXIMUS — SATELLITE  SAT_PRODUCT_TERMS   [Implemented]
 -- satellite SAT_PRODUCT_TERMS; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -11186,7 +10112,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_TERMS' as t
 
 
 ----------------------------------------------------------------------------------------
--- 246. MAXIMUS — SATELLITE  SAT_QUOTE_HEADER   [Implemented]  [M3]
+-- 221. MAXIMUS — SATELLITE  SAT_QUOTE_HEADER   [Implemented]
 -- satellite SAT_QUOTE_HEADER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW',
@@ -11215,7 +10141,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_QUOTE_HEADER' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 247. MAXIMUS — SATELLITE  SAT_QUOTE_RATING   [Implemented]  [M3]
+-- 222. MAXIMUS — SATELLITE  SAT_QUOTE_RATING   [Implemented]
 -- satellite SAT_QUOTE_RATING; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW',
@@ -11244,7 +10170,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_QUOTE_RATING' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 248. MAXIMUS — SATELLITE  SAT_QUOTE_RATING_INPUT   [Implemented]  [M3]
+-- 223. MAXIMUS — SATELLITE  SAT_QUOTE_RATING_INPUT   [Implemented]
 -- satellite SAT_QUOTE_RATING_INPUT; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW',
@@ -11278,7 +10204,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_QUOTE_RATING_INPUT'
 
 
 ----------------------------------------------------------------------------------------
--- 249. MAXIMUS — SATELLITE  SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M3]
+-- 224. MAXIMUS — SATELLITE  SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]
 -- satellite SAT_RISK_HEALTH_MEMBER_MEDICAL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
@@ -11306,7 +10232,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_RISK_HEALTH_MEMBER_
 
 
 ----------------------------------------------------------------------------------------
--- 250. MAXIMUS — SATELLITE  SAT_RISK_OBJECT_CORE   [Implemented]  [M3]
+-- 225. MAXIMUS — SATELLITE  SAT_RISK_OBJECT_CORE   [Implemented]
 -- satellite SAT_RISK_OBJECT_CORE; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK',
@@ -11342,7 +10268,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_RISK_OBJECT_CORE' a
 
 
 ----------------------------------------------------------------------------------------
--- 251. MAXIMUS — SATELLITE  SAT_RISK_OBJECT_VALUATION   [Implemented]  [M3]
+-- 226. MAXIMUS — SATELLITE  SAT_RISK_OBJECT_VALUATION   [Implemented]
 -- satellite SAT_RISK_OBJECT_VALUATION; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
@@ -11374,7 +10300,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_RISK_OBJECT_VALUATI
 
 
 ----------------------------------------------------------------------------------------
--- 252. MAXIMUS — SATELLITE  SAT_RISK_PERSON_INSURED   [Implemented]  [M3]
+-- 227. MAXIMUS — SATELLITE  SAT_RISK_PERSON_INSURED   [Implemented]
 -- satellite SAT_RISK_PERSON_INSURED; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW').
@@ -11402,7 +10328,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_RISK_PERSON_INSURED
 
 
 ----------------------------------------------------------------------------------------
--- 253. MAXIMUS — SATELLITE  SAT_RISK_PERSON_MEMBER   [Implemented]  [M3]
+-- 228. MAXIMUS — SATELLITE  SAT_RISK_PERSON_MEMBER   [Implemented]
 -- satellite SAT_RISK_PERSON_MEMBER; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW').
@@ -11430,7 +10356,7 @@ select 'MAXIMUS' as project, 'satellite' as table_type, 'SAT_RISK_PERSON_MEMBER'
 
 
 ----------------------------------------------------------------------------------------
--- 254. MAXIMUS — SATELLITE  SAT_RISK_PERSON_TRAVEL   [Implemented]  [M3]
+-- 229. MAXIMUS — SATELLITE  SAT_RISK_PERSON_TRAVEL   [Implemented]
 -- satellite SAT_RISK_PERSON_TRAVEL; rows scoped to RECORD_SOURCE in
 -- ('MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW',
 -- 'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW',

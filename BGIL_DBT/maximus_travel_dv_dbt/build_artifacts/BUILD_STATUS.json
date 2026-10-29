@@ -1,0 +1,1744 @@
+{
+ "lob": "maximus_travel",
+ "stage": "1",
+ "generated_by": "generators/selfcheck_mt.py",
+ "profile_revision": 6,
+ "input_digest": {
+  "files": [
+   {
+    "file": "data_7.js",
+    "sha256": "f77379da67f732393d06eb5d505734b82d8f9d40fb9a8287626cad865b157978"
+   },
+   {
+    "file": "build_profile.json",
+    "sha256": "bdb05ee66e0570c7a528e07ea1d5f7537f27de702341ed937e28f73157aa1fd6"
+   },
+   {
+    "file": "00_tables_index.json",
+    "sha256": "34b2e1ad079c427ee07604c063a36c802a3eb51b3763ed5d6a0e1bb9421b1c4e"
+   },
+   {
+    "file": "04_column_map.json",
+    "sha256": "bdb1f3fea01475fbe25b5c3c0694e5eae791354e679326196009b83d3bfe224e"
+   }
+  ],
+  "combined_sha256": "454dd4eb14cb768701e680464dfe42714691305fff6454a2ce841eae0b3f64b1",
+  "combining_method": "sha256 of each file's bytes, then sha256 over those per-file digests concatenated in sorted-basename order. Stated because a digest without its method is not checkable (BUILD_RULES 11.7).",
+  "digest_length_note": "64 hex, the full length sha256 produces. The previous emission truncated to 32 under this same field name."
+ },
+ "models": {
+  "total": 1040,
+  "by_layer": {
+   "automate_dv/augmented/satellites": 131,
+   "automate_dv/augmented/satfeed": 131,
+   "automate_dv/augmented/staging": 253,
+   "automate_dv/standard/audit": 4,
+   "automate_dv/standard/hubfeed": 15,
+   "automate_dv/standard/hubs": 15,
+   "automate_dv/standard/links": 8,
+   "automate_dv/standard/resolvers": 50,
+   "automate_dv/standard/satellites": 103,
+   "automate_dv/standard/satfeed": 103,
+   "automate_dv/standard/staging": 87,
+   "automate_dv/standard/unpivot": 25,
+   "staging/maximus_travel": 115
+  }
+ },
+ "layers": {
+  "cast_views": 115,
+  "map_views": 62,
+  "walk_only_casts": 53,
+  "provisioned_not_joined": 16,
+  "key_slots": 228,
+  "link_slots": 32,
+  "satellites_standard": 106,
+  "satellites_augmented": 131,
+  "multi_active": 59,
+  "feeders": 549,
+  "unpivot_feeders": 41
+ },
+ "grammar": {
+  "key_rendered": 2375,
+  "shape_concat": 2237,
+  "child_leg_rendered": 498,
+  "dest_exact": 5199,
+  "fk_hops": 863,
+  "fk_hops_over_named_levels": 787,
+  "fk_named_levels_skipped": 2606,
+  "arrow_hops": 5496,
+  "spine_occurrences": 2390,
+  "constant_key": 573,
+  "shape_normalise": 128,
+  "leg_unresolved_sentinel_refused": 1,
+  "dest_abbreviated": 297,
+  "hops_skipping_levels": 772,
+  "levels_expanded": 772,
+  "shape_upper_trim": 10,
+  "cross_to_sibling": 2,
+  "leg_literal_synthesised": 44,
+  "lnk_call_sites": 51,
+  "lnk_legs": 91,
+  "lnk_named_legs": 40,
+  "lnk_leg_named_with_equals": 34,
+  "lnk_leg_named_with_colon": 6,
+  "collapse_trap_warned_not_refused": 11
+ },
+ "content_hash_canonicalisations": {
+  "forms": {
+   "concat": 195,
+   "normalise": 29,
+   "upper_trim": 4
+  },
+  "by_hub": {
+   "HUB_PARTY": {
+    "concat": 53,
+    "upper_trim": 2
+   },
+   "HUB_CLAIM": {
+    "concat": 25
+   },
+   "HUB_LOCATION": {
+    "normalise": 29,
+    "concat": 2
+   },
+   "HUB_POLICY": {
+    "concat": 25
+   },
+   "HUB_LOSS_EVENT": {
+    "concat": 2
+   },
+   "HUB_DOCUMENT": {
+    "concat": 15
+   },
+   "HUB_DISTRIBUTION_CHANNEL": {
+    "concat": 8
+   },
+   "HUB_ORG_UNIT": {
+    "concat": 8,
+    "upper_trim": 2
+   },
+   "HUB_QUOTE": {
+    "concat": 13
+   },
+   "HUB_PRODUCT": {
+    "concat": 8
+   },
+   "HUB_RISK_OBJECT": {
+    "concat": 15
+   },
+   "HUB_FINANCIAL_TRANSACTION": {
+    "concat": 8
+   },
+   "HUB_COVERAGE": {
+    "concat": 8
+   },
+   "HUB_ASSESSMENT": {
+    "concat": 3
+   },
+   "HUB_PAYMENT_INSTRUMENT": {
+    "concat": 2
+   }
+  },
+  "note": "TWO canonicalisations, used on DISJOINT hubs: md5(normalise(...)) on HUB_LOCATION and LNK_PARTY_LOCATION (addresses, internal whitespace collapsed) and md5(upper(trim(...))) on HUB_PARTY, LNK_PARTY_ROLE and HUB_ORG_UNIT (nominee and branch NAMES, ends trimmed only). Zero hubs carry both. Emitted as written; unifying them would re-key a hub."
+ },
+ "namespaces_by_hub": {
+  "HUB_LOSS_EVENT": {
+   "LOSSEVT:": 2
+  },
+  "HUB_DOCUMENT": {
+   "INWARD:": 4,
+   "DOC:": 7,
+   "COI:": 4
+  },
+  "HUB_DISTRIBUTION_CHANNEL": {
+   "IMD:": 1,
+   "DEALER:": 1
+  },
+  "HUB_ORG_UNIT": {
+   "ORGHUB:": 1,
+   "ORGUNIT:": 5
+  },
+  "HUB_PARTY": {
+   "MEMBER:": 1,
+   "PTPARTNER:": 1,
+   "IMD:": 2,
+   "EMP:": 3,
+   "NOMINEE:": 2,
+   "PROVIDER:": 1,
+   "AGENT:": 1
+  },
+  "HUB_PRODUCT": {
+   "PROD:": 8
+  },
+  "HUB_RISK_OBJECT": {
+   "RISK:": 14,
+   "TRIP:": 1
+  },
+  "HUB_FINANCIAL_TRANSACTION": {
+   "INV:": 1,
+   "PAY:": 2,
+   "QUOTEPREM:": 3,
+   "POLPREM:": 1
+  },
+  "HUB_COVERAGE": {
+   "COV:": 8
+  },
+  "HUB_ASSESSMENT": {
+   "SCRUTINY:": 2,
+   "TELEVERIF:": 1
+  },
+  "HUB_PAYMENT_INSTRUMENT": {
+   "ACCT:": 1,
+   "CHEQUE:": 1
+  }
+ },
+ "key_rejection": {
+  "mechanism": "shape: CASE over coalesce(<guarded operands>) is not null, then nullif(trim(key),'')",
+  "keys_with_a_statically_computable_degenerate_constant": 0,
+  "constant_by_construction_keys": 0,
+  "note": "Zero is reported as zero. Every key expression in this map evaluates to NULL on an all-blank row under Snowflake semantics, so the outer nullif has nothing to compare against and a predicate of the form key = 'RISK:' could never fire. The per-hub per-feeder drop counts are in audit_mt_key_rejections; they are measured at run time, not here."
+ },
+ "unbuilt": 60,
+ "unbuilt_by_routing": {
+  "mapper": 38,
+  "source": 22
+ },
+ "unresolved_keys": 3,
+ "builder_decisions": [
+  "BD1-FK-HOP-IS-ONE-JOIN",
+  "BD2-FK-INTERVENING-CASTS-PROVISIONED",
+  "BD3-PIVOT-PARENT-IS-THE-BASE-NODE",
+  "BD4-LNK-LEG-CORROBORATION-IS-REPORTED-NOT-FATAL",
+  "BD5-ROLE-CODE-IS-A-DEGENERATE-LINK-LEG",
+  "BD6-MULTI-ACTIVE-WITHOUT-A-DISCRIMINATOR-IS-SINGLE-ACTIVE",
+  "BD7-HASHDIFF-FOLLOWS-THE-SIBLING",
+  "BD8-TWO-CONTENT-HASH-CANONICALISATIONS-EMITTED-AS-WRITTEN",
+  "BD9-DEGENERATE-KEYS-REJECTED-BY-SHAPE-NEVER-BY-CONSTANT",
+  "BD10-PURE-LITERAL-KEY-IS-CONSTANT-BY-CONSTRUCTION",
+  "BD11-ANCHOR-ONLY-ROWS-BIND-TO-THE-MAP-S-OWN-KEY",
+  "BD12-LINK-LEG-BUILT-AS-MAPPED-DIVERGENCE-MEASURED",
+  "BD13-HUB-DOCUMENT-TWO-KEY-FORMS-BUILT-AS-MAPPED",
+  "BD14-CHILD-KEY-COMPONENT-READER-ACCEPTS-EVERY-DECLARED-SPELLING",
+  "BD15-LINK-LEG-NAME-READER-SWEEPS-BOTH-SEPARATORS",
+  "BD16-A-PROFILE-FIGURE-IS-CROSS-CHECKED-ON-ITS-LOAD-BEARING-HALF-ONLY"
+ ],
+ "link_leg_census": {
+  "population": "91 legs over 51 LNK( OCCURRENCES. Every figure below is over THIS population unless it names another.",
+  "THE_THREE_QUESTIONS": {
+   "1_names_a_hub": "does the MAP write a HUB_ name token before this leg? 39 of 91 DO, 52 do NOT. Swept over BOTH declared separators: 34 named with '=' and 5 with ':'. AN EQUALS-ONLY READER MEASURES 34 AND 57, which is where the withdrawn '34 name a hub, 57 do not' comes from -- a reader defect, not a map fact (BD15).",
+   "2_binds_to_a_hub": "does the leg's EXPRESSION also appear as a hub key resolved on the SAME view? 21 of 91 do NOT -- 13 carry no on-view hub key with that expression and 8 are pure literals with no hub to bind to. A different question from naming, with a different answer.",
+   "3_is_positional": "does the leg carry NO name token at all, so its hub comes from the link's hub ORDER in data_7.js? 51 of 91 legs."
+  },
+  "FIGURES_PUBLISHED_ON_THIS_PROJECT_AND_WHAT_EACH_ANSWERED": {
+   "4": "WITHDRAWN. Legs that were BOTH positional AND uncorroborated -- a subset of a subset, published as if it were the coverage limit, understating it by an order of magnitude.",
+   "34": "WITHDRAWN as a hub-naming count over this population. It is the count under an EQUALS-ONLY name reader: the map names 5 further leg(s) with ':' and the profile's own grammar_lnk_census declares 9 colon-form call sites, so such a reader contradicts a field it could have read.",
+   "52": "NOT WITHDRAWN -- re-derived independently this run and CORRECT. It is the count of legs naming NO hub over this 91-leg population. A handback withdrew it as wrong; it is restated here as right, with its question named.",
+   "57": "the LEG TOTAL of a DIFFERENT population -- the 30 distinct (view, expression) call sites carry 57 legs, of which 34 name no hub. 57 and 34 are both true of THAT population; presented as a split of 91 they fuse two scopes.",
+   "19": "NOT REPRODUCED, and NOT GUESSED AT. It is recorded in BUILD_STATUS.counts as link_legs_not_bound_to_any_hub_by_name_or_expression_match -- a THIRD question, crediting a NAME match as well as an expression match. This build measures question 2 as 21 unbound by EXPRESSION match (13 with no on-view hub key, 8 pure literals with no hub to bind to), which agrees with its own counters and with an independent re-derivation. 19 is neither confirmed nor contradicted here: its definition is not this one, and inventing a derivation that lands on it would be the same error as the figures above."
+  },
+  "named_for_a_hub_by_separator": {
+   "equals": 34,
+   "colon": 5
+  },
+  "legs_total": 91,
+  "by_binding": {
+   "positional": 43,
+   "named_hub": 39,
+   "literal": 8,
+   "named_role": 1
+  },
+  "named_for_a_hub": 39,
+  "named_for_a_hub_by_hub": {
+   "HUB_PARTY": 26,
+   "HUB_POLICY": 8,
+   "HUB_LOCATION": 4,
+   "HUB_CLAIM": 1
+  },
+  "no_name_token_at_all": 51,
+  "named_for_a_non_hub_role": 1,
+  "carrying_any_name_token": 40,
+  "positional_no_name_token": 43,
+  "literal_degenerate": 8,
+  "not_named_for_a_hub": 52,
+  "uncorroborated_by_an_on_view_hub_key": 13,
+  "uncorroborated_and_positional": 4,
+  "reconciliation": {
+   "build_parser_lnk_named_legs": 40,
+   "profile_grammar_lnk_census_legs_total": 91,
+   "note": "All three published figures are right about their own scope. The figure a reader should quote for the COVERAGE LIMIT is not_named_for_a_hub, because that is the population whose hub binding the map does not state. The previously published figure counted only legs that were BOTH positional AND uncorroborated, which is a subset of a subset and understated the limit by an order of magnitude (BUILD_RULES 11.8)."
+  },
+  "coverage_limit": "the leg-equals-hub-key property is UNVERIFIABLE on the legs that name no hub: leg and hub key come from one renderer and agree by construction, so audit_mt_link_leg_divergence cannot see a mis-bound leg there. It is verifiable only on the named legs."
+ },
+ "coverage": {
+  "total": 442,
+  "covered": 425,
+  "by_class": {
+   "carried_as_cdk": 12,
+   "satellite_not_built": 4,
+   "build_directive_refused": 1
+  },
+  "unexplained": 0,
+  "note": "measured over the same population as the shared gate's check 6: target rows with outcome=mapped whose satellite and attribute are canonical."
+ },
+ "coverage_exemptions": 17,
+ "ordinal_child_keys": {
+  "distinct": [
+   {
+    "satellite": "SAT_POLICY_DOCUMENT_DISPATCH",
+    "leg": "Dispatch Serial Number",
+    "column": "DISPATCH_SERIAL_NUMBER",
+    "view": "NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS",
+    "columns": [
+     "SERIAL_NO"
+    ],
+    "map_rows": 11,
+    "built": "as mapped (BUILD_RULES 5.7)",
+    "routing": "modeller",
+    "severity": "blocker"
+   }
+  ],
+  "map_row_occurrences": 11,
+  "rule": "BUILD_RULES 5.2 -- an ordinal is never a discriminator and a child-key leg needs hub-grade stability. A row inserted or removed renumbers the rest and re-attaches their history.",
+  "detected_by": "SHAPE over the rendered source columns of every emitted child-key leg, never by a name shape this build happens to use.",
+  "re_derived_from_the_emitted_models": [
+   {
+    "satellite": "SAT_AUG_POLICY_DOCUMENT_DISPATCH",
+    "column": "DISPATCH_SERIAL_NUMBER",
+    "columns": [
+     "SERIAL_NO"
+    ],
+    "stage": "stg2_mt_aug__uwr_pol_disp__sat_aug_policy_document_dispatch"
+   }
+  ],
+  "ordinal_shaped_but_not_source_backed": [
+   {
+    "satellite": "SAT_AUG_CLAIM_DOCUMENT_REMINDER",
+    "column": "REMINDER_SEQUENCE",
+    "stage": "stg2_mt_aug__clm_clmd_clmcov_msd_prop_pv__sat_aug_claim_document_reminder",
+    "backed_by": "'REMINDER_SEQUENCE'",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE",
+    "column": "ACTIVE_SEQUENCE_NUMBER",
+    "stage": "stg2_mt_aug__uwr_pol_ins_cov_covp_msp_msd_prop_pv__sat_aug_coverage_sublimit_schedule",
+    "backed_by": "\"coalesce(nullif(trim(sublimit_name), ''),'')\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER",
+    "column": "REMINDER_SEQUENCE",
+    "stage": "stg2_mt_aug__clm_clmd_clma_msp_msd_prop_pv__sat_aug_document_requirement_reminder",
+    "backed_by": "'REMINDER_SEQUENCE'",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_AUG_POLICY_COVERAGE_SCHEDULE",
+    "column": "COVERAGE_SEQUENCE",
+    "stage": "stg2_mt_aug__uwr_pol_ins_cov__sat_aug_policy_coverage_schedule",
+    "backed_by": "\"coalesce(nullif(trim(w1_pol_risk_id), ''),'')\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_AUG_POLICY_COVERAGE_SCHEDULE",
+    "column": "COVERAGE_SEQUENCE",
+    "stage": "stg2_mt_aug__uwr_pol_ins_cov_covp_sp_pv__sat_aug_policy_coverage_schedule",
+    "backed_by": "\"coalesce(nullif(trim(w1_pol_risk_id), ''),'')\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_AUG_POLICY_COVERAGE_SCHEDULE",
+    "column": "COVERAGE_SEQUENCE",
+    "stage": "stg2_mt_aug__uwr_pol_ins_rskp_sp_pv__sat_aug_policy_coverage_schedule",
+    "backed_by": "\"coalesce(nullif(trim(w1_pol_risk_id), ''),'')\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_AUG_QUOTE_COVER_DETAIL",
+    "column": "COVERAGE_SEQUENCE",
+    "stage": "stg2_mt_aug__uwr_qpd_rskl_rskc_rskc_prop_rl_pv__sat_aug_quote_cover_detail",
+    "backed_by": "\"'1'\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_CLAIM_INVESTIGATION_FINDING",
+    "column": "FINDING_SEQUENCE",
+    "stage": "stg2_mt__clm_clmd_clmrsk_rska_properties_pv",
+    "backed_by": "\"coalesce(nullif(trim(investigation_number), ''),'')\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_CLAIM_NOTE",
+    "column": "NOTE_SEQUENCE",
+    "stage": "stg2_mt_up__clm_clmd_clmap_pv__sat_claim_note",
+    "backed_by": "'NOTE_SEQUENCE'",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_CLAIM_NOTE",
+    "column": "NOTE_SEQUENCE",
+    "stage": "stg2_mt_up__clm_clmd_clmrsk_rska_properties_pv__sat_claim_note",
+    "backed_by": "'NOTE_SEQUENCE'",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_COVERAGE_SUBLIMIT_SCHEDULE",
+    "column": "ACTIVE_SEQUENCE_NUMBER",
+    "stage": "stg2_mt__uwr_pol_ins_cov_covp_msp_msd_prop_pv",
+    "backed_by": "\"coalesce(nullif(trim(sublimit_name), ''),'')\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_LNK_PARTY_ROLE_CORE",
+    "column": "ROLE_SEQUENCE",
+    "stage": "stg2_mt__uwr_pol_ins_mbr_pp_sp_pv",
+    "backed_by": "\"'1'\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_LNK_PARTY_ROLE_CORE",
+    "column": "ROLE_SEQUENCE",
+    "stage": "stg2_mt_up__uwr_pol_prp_pp_sp_pv__sat_lnk_party_role_core",
+    "backed_by": "'ROLE_SEQUENCE'",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_LNK_POLICY_PARTY_ROLE",
+    "column": "ROLE_SEQUENCE",
+    "stage": "stg2_mt__uwr_pol_ins_mbr",
+    "backed_by": "\"'1'\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_LNK_POLICY_PARTY_ROLE",
+    "column": "ROLE_SEQUENCE",
+    "stage": "stg2_mt__uwr_pol_ins_mbr_party_relation",
+    "backed_by": "\"'1'\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_LNK_POLICY_PARTY_ROLE",
+    "column": "ROLE_SEQUENCE",
+    "stage": "stg2_mt__uwr_pol_policy_relation",
+    "backed_by": "\"'1'\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_LNK_POLICY_PARTY_ROLE",
+    "column": "ROLE_SEQUENCE",
+    "stage": "stg2_mt__uwr_pol_prp",
+    "backed_by": "\"'1'\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_LNK_POLICY_PARTY_ROLE",
+    "column": "ROLE_SEQUENCE",
+    "stage": "stg2_mt__uwr_pol_prp_party_relation",
+    "backed_by": "\"'1'\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+    "column": "COVERAGE_SEQUENCE",
+    "stage": "stg2_mt__clm_clmd_clmap_pv",
+    "backed_by": "\"'1'\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+    "column": "COVERAGE_SEQUENCE",
+    "stage": "stg2_mt__uwr_pol_ins_cov",
+    "backed_by": "\"coalesce(nullif(trim(w1_pol_risk_id), ''),'')\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+    "column": "COVERAGE_SEQUENCE",
+    "stage": "stg2_mt__uwr_pol_ins_cov_covp_sp_pv",
+    "backed_by": "\"coalesce(nullif(trim(w1_pol_risk_id), ''),'')\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+    "column": "COVERAGE_SEQUENCE",
+    "stage": "stg2_mt__uwr_pol_ins_rskp_sp_pv",
+    "backed_by": "\"coalesce(nullif(trim(w1_pol_risk_id), ''),'')\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+    "column": "COVERAGE_SEQUENCE",
+    "stage": "stg2_mt__uwr_pol_polp_msp_msd_prop_pv",
+    "backed_by": "\"'1'\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+    "column": "COVERAGE_SEQUENCE",
+    "stage": "stg2_mt__uwr_pol_polp_sp_pv",
+    "backed_by": "\"'1'\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_RISK_PERSON_MEMBER",
+    "column": "MEMBER_SEQUENCE",
+    "stage": "stg2_mt__uwr_pol_ins_rskp_msp_msd_prop_pv",
+    "backed_by": "\"coalesce(nullif(trim(key_hash), ''),'')\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   },
+   {
+    "satellite": "SAT_RISK_PERSON_MEMBER",
+    "column": "MEMBER_SEQUENCE",
+    "stage": "stg2_mt__uwr_qpd_rskl_msp_imsd_inp_pv",
+    "backed_by": "\"coalesce(nullif(trim(key_hash), ''),'')\"",
+    "why_not_an_ordinal": "no SOURCE column of ordinal shape reaches this leg; the identifiers in its expression are upstream model columns"
+   }
+  ]
+ },
+ "profile_crosschecks": {
+  "checked": [
+   {
+    "item": "live expression slots",
+    "mine": 3418,
+    "profile": 3418,
+    "population": "sum of function_census_verified_per_slot[*].slots over the four expression-bearing slots; the build counts the same four",
+    "agrees": true
+   },
+   {
+    "item": "spine[FOREIGN_KEY] expression slots",
+    "mine": 863,
+    "profile": 863,
+    "population": "expression slots whose walk starts at FOREIGN_KEY",
+    "agrees": true
+   },
+   {
+    "item": "child-key legs carrying the unresolved sentinel",
+    "mine": 1,
+    "profile": 1,
+    "population": "legs whose leg_backing is 'unresolved'; refused, never rendered",
+    "agrees": true
+   },
+   {
+    "item": "HUB_RISK_OBJECT namespaces",
+    "mine": [
+     "RISK",
+     "TRIP"
+    ],
+    "profile": [
+     "RISK",
+     "TRIP"
+    ],
+    "population": "the namespace SET on the built key surface. The profile counts MAP ROWS and the build counts KEY SLOTS, so only the set is comparable",
+    "agrees": true
+   },
+   {
+    "item": "transformation_kind census",
+    "mine": {
+     "synonym_note": 38,
+     "executable_expression": 3,
+     "derivation_note": 4,
+     "reference_decode": 12,
+     "provenance_note": 6
+    },
+    "profile": {
+     "synonym_note": 38,
+     "reference_decode": 12,
+     "provenance_note": 6,
+     "derivation_note": 4,
+     "executable_expression": 3
+    },
+    "population": "rows carrying a transformation, by declared kind",
+    "agrees": true
+   },
+   {
+    "item": "rows carrying build_directive=true",
+    "mine": 3,
+    "profile": 3,
+    "population": "the executable rows this build REFUSES",
+    "agrees": true
+   }
+  ],
+  "do_not_quote": "BUILD_INSTRUCTIONS section 2.2 and MESSAGE_TO_BUILDER both say '733 rows depend on the FK round-trip'. 733 is not reproducible as any population in this map: not rows (875), not target rows (335), not augmentation rows (540), not spine-FK slots (863), not bare-FK fallback slots (861). Quote 875 rows / 863 spine-FK slots and say which you mean. Both documents are unchanged since rev 4, so this figure has survived four re-issues uncorrected.",
+  "hub_risk_object_open": "CONFIRMED STILL OPEN. Two namespaces that are not string-comparable feed one hub and one satellite: a TRIP prefix over coalesce(PNR, TRIP_NO) on 12 rows, and a RISK prefix over root#POL_RISK_ID on 215. Build the qualified form as instructed and expect two populations until the source answers whether a PNR-trip is the same risk object as a POL_RISK_ID-risk.",
+  "still_open": [
+   "EMP_orphan_leg",
+   "HUB_CLAIM_vs_CLAIM_RESERVE_leg",
+   "ORG_UNIT_shared_unprefixed_namespace",
+   "leg_backing_unresolved_sentinel"
+  ],
+  "gate_status_warns": 8,
+  "gate_status_blockers": 0
+ },
+ "project": "maximus_travel_dv_dbt",
+ "generated": "2026-09-25T06:05:19Z",
+ "sibling": {
+  "project": "travel_dv_dbt",
+  "satellites": 45,
+  "shared_surface": {
+   "satellites_here": 234,
+   "satellites_in_the_sibling": 45,
+   "shared_by_name": 35,
+   "shared_satellites": [
+    "SAT_AUG_COMMON_COMMUNICATION_PREFERENCE",
+    "SAT_AUG_COVERAGE_DEFINITION",
+    "SAT_AUG_COVERAGE_LIMITS",
+    "SAT_AUG_LNK_ROLE_CUSTOMER",
+    "SAT_AUG_PARTY_BANKING",
+    "SAT_AUG_PARTY_EMPLOYMENT",
+    "SAT_AUG_PRODUCT_TERMS",
+    "SAT_AUG_RISK_PERSON_INSURED",
+    "SAT_AUG_RISK_PERSON_TRAVEL",
+    "SAT_COMMON_ADDRESS",
+    "SAT_COMMON_CLASSIFICATION",
+    "SAT_COMMON_CONTACT",
+    "SAT_COVERAGE_CONDITIONS",
+    "SAT_COVERAGE_DEFINITION",
+    "SAT_FINTXN_HEADER",
+    "SAT_FINTXN_PREMIUM",
+    "SAT_FINTXN_TAX",
+    "SAT_FIN_RECEIPT",
+    "SAT_LNK_ROLE_NOMINEE_BENEFICIARY",
+    "SAT_ORG_UNIT_DEFINITION",
+    "SAT_PARTY_EMPLOYMENT",
+    "SAT_PARTY_HEALTH_PROFILE",
+    "SAT_PARTY_IDENTIFICATION",
+    "SAT_PARTY_IDENTITY",
+    "SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS",
+    "SAT_POLICY_CLASSIFICATION",
+    "SAT_POLICY_HEADER",
+    "SAT_POLICY_TERMS",
+    "SAT_PRODUCT_DEFINITION",
+    "SAT_PRODUCT_RATING_STRUCTURE",
+    "SAT_PRODUCT_TERMS",
+    "SAT_QUOTE_HEADER",
+    "SAT_RISK_OBJECT_CORE",
+    "SAT_RISK_PERSON_INSURED",
+    "SAT_RISK_PERSON_TRAVEL"
+   ],
+   "hashdiff_name_disagreements": [],
+   "hashdiff_input_list_disagreements": 34,
+   "hashdiff_input_list_detail": [
+    {
+     "satellite": "SAT_AUG_COMMON_COMMUNICATION_PREFERENCE",
+     "only_in_the_sibling": [
+      "CUSTOMER_CONSENT_INDICATOR"
+     ],
+     "only_here": [
+      "PREFERRED_ALERT_CHANNEL"
+     ],
+     "shared_columns": 0
+    },
+    {
+     "satellite": "SAT_AUG_COVERAGE_DEFINITION",
+     "only_in_the_sibling": [
+      "COVERAGE_SEQUENCE",
+      "EFFECTIVE_DATE"
+     ],
+     "only_here": [
+      "COVERAGE_PLAN_VARIANT",
+      "LEADING_COVER_INDICATOR"
+     ],
+     "shared_columns": 0
+    },
+    {
+     "satellite": "SAT_AUG_COVERAGE_LIMITS",
+     "only_in_the_sibling": [
+      "CURRENCY_CODE",
+      "DEDUCTIBLE_DESCRIPTION",
+      "LIMIT_DESCRIPTION"
+     ],
+     "only_here": [
+      "PER_TRIP_DAY_LIMIT"
+     ],
+     "shared_columns": 0
+    },
+    {
+     "satellite": "SAT_AUG_LNK_ROLE_CUSTOMER",
+     "only_in_the_sibling": [
+      "PROPOSER_IS_TRAVELLER_INDICATOR"
+     ],
+     "only_here": [
+      "MEMBER_TYPE"
+     ],
+     "shared_columns": 0
+    },
+    {
+     "satellite": "SAT_AUG_PARTY_BANKING",
+     "only_in_the_sibling": [
+      "BANK_CUSTOMER_IDENTIFIER"
+     ],
+     "only_here": [
+      "APPROVED_OR_REJECTED_BY",
+      "APPROVED_OR_REJECTED_DATE",
+      "BANK_DETAIL_REMARKS",
+      "BANK_VERIFIED_ACCOUNT_HOLDER_NAME",
+      "NEFT_VERIFICATION_STATUS",
+      "PENNY_DROP_NAME_MATCH_SCORE",
+      "PENNY_DROP_WAIVED_INDICATOR",
+      "REFUND_TO_BANK_GUARANTEE_HOLDER_ACCOUNT_REFERENCE"
+     ],
+     "shared_columns": 0
+    },
+    {
+     "satellite": "SAT_AUG_PARTY_EMPLOYMENT",
+     "only_in_the_sibling": [],
+     "only_here": [
+      "EMPLOYER_DETAILS_NARRATIVE",
+      "PRIMARY_PROFESSION",
+      "USED_CAR_DEALER_OCCUPATION_INDICATOR"
+     ],
+     "shared_columns": 1
+    },
+    {
+     "satellite": "SAT_AUG_PRODUCT_TERMS",
+     "only_in_the_sibling": [
+      "AGE_ELIGIBILITY_BYPASS_INDICATOR",
+      "CFT_ELIGIBLE_INDICATOR",
+      "MULTI_YEAR_INDICATOR",
+      "PLAN_GEOGRAPHICAL_ZONE"
+     ],
+     "only_here": [
+      "CHILD_POLICY_MAXIMUM_DURATION"
+     ],
+     "shared_columns": 0
+    },
+    {
+     "satellite": "SAT_AUG_RISK_PERSON_INSURED",
+     "only_in_the_sibling": [
+      "DATE_OF_BIRTH"
+     ],
+     "only_here": [
+      "ALCOHOL_USE_INDICATOR",
+      "EMPLOYEE_NUMBER",
+      "GOOD_HEALTH_DECLARATION_INDICATOR",
+      "INSURED_SAME_AS_POLICYHOLDER_INDICATOR",
+      "MEDICAL_CHECK_REQUIRED_INDICATOR",
+      "NOMINEE_DETAILS",
+      "OTHER_INSURANCE_HELD_DETAIL",
+      "PREVIOUS_CLAIM_DECLARATION_DETAIL",
+      "RECREATIONAL_DRUG_USE_INDICATOR",
+      "RELATIONSHIP_TO_PRIMARY_INSURED"
+     ],
+     "shared_columns": 0
+    },
+    {
+     "satellite": "SAT_AUG_RISK_PERSON_TRAVEL",
+     "only_in_the_sibling": [
+      "ALTITUDE_LIMIT",
+      "MODE_OF_TRANSPORT"
+     ],
+     "only_here": [
+      "ARRIVAL_COUNTRY",
+      "ARRIVAL_DATE",
+      "ARRIVAL_TIME",
+      "COVER_TRIP_TYPE",
+      "DEPARTURE_AIRPORT_CODE",
+      "DEPARTURE_COUNTRY",
+      "DEPARTURE_TIME",
+      "DESTINATION_CONTINENT",
+      "FLIGHT_ITINERARY_DETAIL",
+      "FLIGHT_NUMBER",
+      "GUIDED_TOUR_INDICATOR",
+      "OVERSEAS_STAY_DAYS",
+      "PLAN_NAME",
+      "PRIORITY_MEMBER_INDICATOR",
+      "RISK_COVER_EXPIRY_DATE",
+      "RISK_COVER_INCEPTION_DATE",
+      "RISK_PLAN_CODE",
+      "STANDARD_RISK_INDICATOR",
+      "TRIP_COVERAGE_BASIS",
+      "TRIP_DESCRIPTION",
+      "TRIP_DURATION_TYPE",
+      "TRIP_ORIGIN_PLACE",
+      "UHC_CODE",
+      "VISA_APPLICATION_NUMBER"
+     ],
+     "shared_columns": 0
+    },
+    {
+     "satellite": "SAT_COMMON_ADDRESS",
+     "only_in_the_sibling": [
+      "BUILDING_NAME"
+     ],
+     "only_here": [
+      "ADDRESS_LINE_1",
+      "ADDRESS_LINE_2",
+      "ADDRESS_LINE_3",
+      "ADDRESS_TYPE_CODE",
+      "CARE_OF_NAME",
+      "COUNTRY_CODE",
+      "DISTRICT",
+      "LANDMARK",
+      "LOCALITY",
+      "POST_OFFICE_NAME",
+      "STATE_CODE"
+     ],
+     "shared_columns": 5
+    },
+    {
+     "satellite": "SAT_COMMON_CLASSIFICATION",
+     "only_in_the_sibling": [],
+     "only_here": [
+      "SEGMENT_NAME",
+      "TIER_CODE",
+      "VALUE_BAND"
+     ],
+     "shared_columns": 1
+    },
+    {
+     "satellite": "SAT_COMMON_CONTACT",
+     "only_in_the_sibling": [],
+     "only_here": [
+      "ALTERNATE_EMAIL_ADDRESS",
+      "ALTERNATE_MOBILE_NUMBER",
+      "CONTACT_POINT_USAGE",
+      "SOCIAL_MEDIA_HANDLE",
+      "STD_CODE"
+     ],
+     "shared_columns": 6
+    },
+    {
+     "satellite": "SAT_COVERAGE_CONDITIONS",
+     "only_in_the_sibling": [
+      "WAITING_PERIOD_CONDITION"
+     ],
+     "only_here": [],
+     "shared_columns": 1
+    },
+    {
+     "satellite": "SAT_COVERAGE_DEFINITION",
+     "only_in_the_sibling": [
+      "FREE_COVER_LIMIT"
+     ],
+     "only_here": [],
+     "shared_columns": 3
+    },
+    {
+     "satellite": "SAT_FINTXN_HEADER",
+     "only_in_the_sibling": [
+      "GROSS_AMOUNT"
+     ],
+     "only_here": [
+      "ORG_UNIT_CODE",
+      "SOURCE_REFERENCE_NUMBER",
+      "SOURCE_REFERENCE_TYPE",
+      "TRANSACTION_CHANNEL",
+      "TRANSACTION_DATE",
+      "TRANSACTION_NUMBER",
+      "TRANSACTION_TYPE"
+     ],
+     "shared_columns": 0
+    },
+    {
+     "satellite": "SAT_FINTXN_PREMIUM",
+     "only_in_the_sibling": [
+      "BASE_PREMIUM",
+      "DISCOUNT_AMOUNT",
+      "DISCOUNT_PERCENTAGE",
+      "GROSS_PREMIUM",
+      "LOADING_AMOUNT",
+      "NET_PREMIUM"
+     ],
+     "only_here": [],
+     "shared_columns": 1
+    },
+    {
+     "satellite": "SAT_FINTXN_TAX",
+     "only_in_the_sibling": [
+      "CESS_AMOUNT",
+      "SERVICE_TAX_AMOUNT"
+     ],
+     "only_here": [
+      "CGST_AMOUNT",
+      "CGST_RATE",
+      "IGST_AMOUNT",
+      "IGST_RATE",
+      "PLACE_OF_SUPPLY",
+      "SGST_AMOUNT",
+      "SGST_RATE",
+      "TAX_APPLICABLE_INDICATOR",
+      "TAX_INVOICE_DATE",
+      "TAX_INVOICE_NUMBER",
+      "TAX_RATE",
+      "TDS_AMOUNT",
+      "TDS_RATE"
+     ],
+     "shared_columns": 1
+    },
+    {
+     "satellite": "SAT_FIN_RECEIPT",
+     "only_in_the_sibling": [
+      "INSTRUMENT_DATE"
+     ],
+     "only_here": [
+      "REALISATION_DATE",
+      "RECEIPT_DATE",
+      "RECEIPT_TYPE"
+     ],
+     "shared_columns": 3
+    },
+    {
+     "satellite": "SAT_LNK_ROLE_NOMINEE_BENEFICIARY",
+     "only_in_the_sibling": [],
+     "only_here": [
+      "APPOINTEE_NAME",
+      "NOMINATION_PERCENTAGE"
+     ],
+     "shared_columns": 1
+    },
+    {
+     "satellite": "SAT_ORG_UNIT_DEFINITION",
+     "only_in_the_sibling": [],
+     "only_here": [
+      "ORG_UNIT_NAME"
+     ],
+     "shared_columns": 1
+    },
+    {
+     "satellite": "SAT_PARTY_EMPLOYMENT",
+     "only_in_the_sibling": [
+      "DESIGNATION",
+      "EMPLOYMENT_STATUS"
+     ],
+     "only_here": [
+      "EMPLOYER_NAME",
+      "OCCUPATION_CODE",
+      "OCCUPATION_DESCRIPTION",
+      "PROFESSIONAL_REGISTRATION_NUMBER"
+     ],
+     "shared_columns": 0
+    },
+    {
+     "satellite": "SAT_PARTY_HEALTH_PROFILE",
+     "only_in_the_sibling": [],
+     "only_here": [
+      "CURRENT_MEDICATION_DETAIL",
+      "DISABILITY_INDICATOR",
+      "DISABILITY_PERCENTAGE",
+      "HEIGHT",
+      "WEIGHT"
+     ],
+     "shared_columns": 1
+    },
+    {
+     "satellite": "SAT_PARTY_IDENTIFICATION",
+     "only_in_the_sibling": [],
+     "only_here": [
+      "AADHAAR_VERIFICATION_STATUS",
+      "AGE_PROOF_TYPE",
+      "CIN_NUMBER",
+      "CKYC_NUMBER",
+      "DRIVING_LICENCE_EXPIRY_DATE",
+      "DRIVING_LICENCE_NUMBER",
+      "GST_REGISTRATION_STATUS",
+      "GST_TAXPAYER_TYPE",
+      "IDENTIFICATION_EXPIRY_DATE",
+      "IDENTIFICATION_ISSUE_DATE",
+      "IDENTIFICATION_ISSUING_AUTHORITY",
+      "IDENTIFICATION_NUMBER",
+      "IDENTIFICATION_VERIFIED_INDICATOR",
+      "INSURANCE_REPOSITORY_NAME",
+      "NREGA_CARD_NUMBER",
+      "OVD_CATEGORY",
+      "PAN_NUMBER",
+      "PAN_VERIFICATION_STATUS",
+      "PASSPORT_EXPIRY_DATE",
+      "TAN_NUMBER",
+      "VOTER_ID_NUMBER"
+     ],
+     "shared_columns": 5
+    },
+    {
+     "satellite": "SAT_PARTY_IDENTITY",
+     "only_in_the_sibling": [
+      "TITLE_CODE"
+     ],
+     "only_here": [
+      "COUNTRY_OF_BIRTH",
+      "COUNTRY_OF_RESIDENCE",
+      "NATIONALITY",
+      "PARTY_STATUS",
+      "PARTY_SUB_TYPE_CODE",
+      "PARTY_TYPE_CODE",
+      "SALUTATION"
+     ],
+     "shared_columns": 8
+    },
+    {
+     "satellite": "SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS",
+     "only_in_the_sibling": [],
+     "only_here": [
+      "EDUCATIONAL_QUALIFICATION",
+      "FATHER_NAME",
+      "HIGHEST_DEGREE",
+      "SPOUSE_NAME",
+      "YEARS_IN_CITY"
+     ],
+     "shared_columns": 1
+    },
+    {
+     "satellite": "SAT_POLICY_HEADER",
+     "only_in_the_sibling": [
+      "COVER_NOTE_DATE",
+      "COVER_NOTE_REFERENCE",
+      "ISSUE_DATE",
+      "MASTER_POLICY_REFERENCE",
+      "NUMBER_OF_LIVES_COVERED",
+      "POLICY_NUMBER",
+      "RURAL_SECTOR_POLICY_INDICATOR"
+     ],
+     "only_here": [
+      "CO_INSURANCE_INDICATOR",
+      "CURRENCY_CODE",
+      "FIRST_YEAR_INDICATOR",
+      "POLICYHOLDER_REFERENCE",
+      "POLICY_CHANNEL_TYPE",
+      "POLICY_REFERENCE_NUMBER",
+      "POLICY_REMARKS",
+      "POLICY_STATUS",
+      "POLICY_SUB_STATUS",
+      "POLICY_TERM",
+      "PREMIUM_FREQUENCY",
+      "PREMIUM_PAYER_REFERENCE",
+      "PRODUCT_REFERENCE",
+      "RISK_END_TIME",
+      "RISK_START_TIME"
+     ],
+     "shared_columns": 4
+    },
+    {
+     "satellite": "SAT_POLICY_TERMS",
+     "only_in_the_sibling": [
+      "SPECIAL_CONDITIONS"
+     ],
+     "only_here": [
+      "GEOGRAPHICAL_SCOPE"
+     ],
+     "shared_columns": 0
+    },
+    {
+     "satellite": "SAT_PRODUCT_DEFINITION",
+     "only_in_the_sibling": [
+      "PRODUCT_CODE",
+      "PRODUCT_DISPLAY_NAME",
+      "PRODUCT_STATUS"
+     ],
+     "only_here": [
+      "LINE_OF_BUSINESS",
+      "UIN"
+     ],
+     "shared_columns": 2
+    },
+    {
+     "satellite": "SAT_PRODUCT_RATING_STRUCTURE",
+     "only_in_the_sibling": [
+      "PRICING_EFFECTIVE_DATE"
+     ],
+     "only_here": [
+      "DEPOSIT_PREMIUM_INDICATOR",
+      "RATE_BASIS"
+     ],
+     "shared_columns": 0
+    },
+    {
+     "satellite": "SAT_PRODUCT_TERMS",
+     "only_in_the_sibling": [
+      "FAMILY_DEFINITION",
+      "GEOGRAPHY_RESTRICTION",
+      "MAXIMUM_ENTRY_AGE",
+      "MAXIMUM_POLICY_TERM",
+      "MINIMUM_ENTRY_AGE",
+      "MINIMUM_POLICY_TERM"
+     ],
+     "only_here": [
+      "FREE_LOOK_PERIOD"
+     ],
+     "shared_columns": 0
+    },
+    {
+     "satellite": "SAT_QUOTE_HEADER",
+     "only_in_the_sibling": [
+      "QUOTE_DATE"
+     ],
+     "only_here": [
+      "LEAD_REFERENCE",
+      "PROSPECT_REFERENCE",
+      "QUOTE_REMARKS",
+      "QUOTE_SOURCE",
+      "QUOTE_STATUS",
+      "REQUESTED_COVER_START_DATE",
+      "REQUESTED_POLICY_TERM",
+      "REQUESTED_SUM_INSURED"
+     ],
+     "shared_columns": 0
+    },
+    {
+     "satellite": "SAT_RISK_OBJECT_CORE",
+     "only_in_the_sibling": [],
+     "only_here": [
+      "EXPOSURE_UNIT",
+      "RISK_CLASS_CODE",
+      "RISK_OBJECT_DESCRIPTION",
+      "RISK_OBJECT_REFERENCE_NUMBER",
+      "RISK_OBJECT_TYPE"
+     ],
+     "shared_columns": 1
+    },
+    {
+     "satellite": "SAT_RISK_PERSON_INSURED",
+     "only_in_the_sibling": [
+      "GENDER",
+      "RELATIONSHIP_TO_PROPOSER"
+     ],
+     "only_here": [
+      "MEMBER_TYPE",
+      "PRE_EXISTING_DISEASE_INDICATOR",
+      "SMOKER_INDICATOR"
+     ],
+     "shared_columns": 2
+    },
+    {
+     "satellite": "SAT_RISK_PERSON_TRAVEL",
+     "only_in_the_sibling": [
+      "PASSPORT_NUMBER",
+      "VISA_TYPE"
+     ],
+     "only_here": [],
+     "shared_columns": 6
+    }
+   ],
+   "bare_hashdiff_here": 234,
+   "bare_hashdiff_in_the_sibling": 45,
+   "verdict": "NARROWED, NOT RETIRED: the column NAME agrees everywhere and the INPUT LIST does not. A row written by one project and read by the other still compares as changed, and the name agreeing is what hides it.",
+   "input_list_definition": "the satellite's src_payload plus its src_cdk -- the columns each project's stage hashes into the hashdiff."
+  },
+  "aligned_satellites": [
+   "SAT_AUG_COMMON_COMMUNICATION_PREFERENCE",
+   "SAT_AUG_COVERAGE_DEFINITION",
+   "SAT_AUG_COVERAGE_LIMITS",
+   "SAT_AUG_LNK_ROLE_CUSTOMER",
+   "SAT_AUG_PARTY_BANKING",
+   "SAT_AUG_PARTY_EMPLOYMENT",
+   "SAT_AUG_PRODUCT_TERMS",
+   "SAT_AUG_RISK_PERSON_INSURED",
+   "SAT_AUG_RISK_PERSON_TRAVEL"
+  ],
+  "grain_divergences": [
+   {
+    "satellite": "SAT_PARTY_BANKING",
+    "track": "augmentation",
+    "sibling": {
+     "multi_active": false,
+     "src_cdk": [],
+     "src_pk": "PARTY_HKEY"
+    },
+    "maximus_declared": {
+     "multi_active": true,
+     "src_cdk": [
+      "ACCOUNT_NUMBER_MASKED"
+     ],
+     "child_key": "Account Number Masked"
+    },
+    "resolution": "built under the SIBLING contract; the divergence is reported, not resolved (BUILD_RULES 7.2)",
+    "rows_affected": 16
+   }
+  ],
+  "src_pk_repoints": [
+   {
+    "satellite": "SAT_LNK_ROLE_CUSTOMER",
+    "track": "augmentation",
+    "view": "NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW",
+    "from": "PARTY_ROLE_HKEY__PROPOSER",
+    "to": "PARTY_HKEY__PROPOSER",
+    "byte_identical_to_the_link_leg": true
+   },
+   {
+    "satellite": "SAT_LNK_ROLE_NOMINEE_BENEFICIARY",
+    "track": "target",
+    "view": "NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "from": "PARTY_ROLE_HKEY__NOMINEE",
+    "to": "PARTY_HKEY__NOMINEE",
+    "byte_identical_to_the_link_leg": true
+   },
+   {
+    "satellite": "SAT_LNK_ROLE_NOMINEE_BENEFICIARY",
+    "track": "target",
+    "view": "NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "from": "PARTY_ROLE_HKEY__NOMINEE",
+    "to": "PARTY_HKEY__NOMINEE",
+    "byte_identical_to_the_link_leg": true
+   },
+   {
+    "satellite": "SAT_LNK_ROLE_NOMINEE_BENEFICIARY",
+    "track": "target",
+    "view": "NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW",
+    "from": "PARTY_ROLE_HKEY__NOMINEE",
+    "to": "PARTY_HKEY__NOMINEE",
+    "byte_identical_to_the_link_leg": true
+   },
+   {
+    "satellite": "SAT_LNK_ROLE_NOMINEE_BENEFICIARY",
+    "track": "target",
+    "view": "NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW",
+    "from": "PARTY_ROLE_HKEY__NOMINEE",
+    "to": "PARTY_HKEY__NOMINEE",
+    "byte_identical_to_the_link_leg": true
+   },
+   {
+    "satellite": "SAT_LNK_ROLE_NOMINEE_BENEFICIARY",
+    "track": "target",
+    "view": "NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW",
+    "from": "PARTY_ROLE_HKEY__NOMINEE",
+    "to": "PARTY_HKEY__NOMINEE",
+    "byte_identical_to_the_link_leg": true
+   },
+   {
+    "satellite": "SAT_LNK_ROLE_NOMINEE_BENEFICIARY",
+    "track": "target",
+    "view": "NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW",
+    "from": "PARTY_ROLE_HKEY__NOMINEE",
+    "to": "PARTY_HKEY__NOMINEE",
+    "byte_identical_to_the_link_leg": true
+   }
+  ]
+ },
+ "preserved_from_a_previous_writer": {
+  "keys": [
+   "carried_debt",
+   "clauses",
+   "counts",
+   "done",
+   "done_reason",
+   "findings",
+   "gates",
+   "input_digest_verified_before_and_after",
+   "outcome_vocabulary_note",
+   "schema_warning",
+   "verified_by"
+  ],
+  "note": "written by a LATER stage (BUILD_RULES 10) and preserved rather than discarded by this writer. They describe the tree AS VERIFIED; the check below fails if this run wrote a different tree, so a preserved number is never read as a current one."
+ },
+ "verified_by": "02-build-verifier re-verification against BUILD_RULES 10. Every clause re-MEASURED against the tree and the bundle as they stand now; none inherited from the prior clause block (BUILD_RULES 1.24).",
+ "done": false,
+ "clauses": {
+  "1": {
+   "result": "pass",
+   "evidence": "check_internal exit 0 (1040 models). check_vault_alignment exit 0 PASS, sibling travel_dv_dbt, all 7 checks live. Both gates PROVED able to fail this session: check_internal names an injected dangling ref (exit 1); check_vault_alignment check 1 names an injected payload rename on a CANONICAL satellite (exit 1, checks 1 and 6 both fire); check 7 names an injected cast-null on both tracks.",
+   "detail": "THE GREEN IS NOT ONE FIX WORKING. Cross-tabulated per finding over the 438-pair population: all 13 original check-1 findings were ALREADY exempted in accepted_uncovered.txt, and 12 of the 13 are also present as src_cdk. Marginal contribution of the src_cdk union GIVEN the exemption loader = 0. Exemption loader alone clears 13 of 13. src_cdk union alone clears 12 of 13, leaving the genuine refusal SAT_RISK_PERSON_INSURED Age At Entry. The PASS is carried entirely by the shared exemption loader; the src_cdk union is correct per BUILD_RULES 5.4 but changed nothing on this LOB. SCOPE OF THE GREEN: check 1 examines 103 of 234 built satellites; 131 augmented satellites fall outside its population because they are not canonical in data_7.js."
+  },
+  "2": {
+   "result": "pass",
+   "evidence": "107 targeted satellites, 103 built, 4 unbuilt. All 60 entries in mt_spec.json .unbuilt carry a non-empty reason and a routing (60 of 60, measured). Each of the 4 unbuilt satellites appears in vault_tools/accepted_uncovered.txt with a stated reason.",
+   "detail": "21 of the 60 unbuilt entries name a satellite that IS canonical in data_7.js; each states its rule (BUILD_RULES 5.4 name clash, 5.6 not invented, or an executable derivation refused per 3.1 and 5.6). Routing split: mapper 38, source 22."
+  },
+  "3": {
+   "result": "pass",
+   "evidence": "Re-run independently: 425 of 442 mapped satellite-attribute pairs reach a satellite (96.2 percent); 17 missed, and 17 of 17 are in accepted_uncovered.txt with a reason. coverage.unexplained = 0.",
+   "detail": "MEASURED BEYOND THE CLAUSE: check 6 compares src_payload ALONE. The src_cdk union was applied to check 1 only. Under src_payload UNION src_cdk the true reach is 437 of 442 (98.9 percent): 12 of the 17 missed pairs DO reach the vault, as a child-key leg. Only 5 are genuinely absent, 4 on satellites not built and 1 a refused derivation. So 12 exemption lines currently suppress a gap that is not a gap."
+  },
+  "4": {
+   "result": "pass",
+   "evidence": "0 notation hits over 1042 model files under a 10-pattern case-insensitive vocabulary. All 10 patterns PROVED to fire by injection into a 13-model corpus-sampled mini-project: 7 probes sampled from the bundle, 3 synthesised (arrow_spaced, tbd, double_gt have NO corpus instance) with the caveat recorded. All injections removed cleanly.",
+   "detail": "The only matches come from a deliberately broadened BARE arrow pattern, not the BUILD_RULES 3.3 spaced form: 1 occurrence outside comments, in _mt_sources.yml inside a description, and 104 inside SQL comments. Both are documentary English describing a join hop, never in an identifier or expression position. Residue under the 3.3 vocabulary is 0. PROBE DEFECT FOUND AND FIXED FIRST: my initial pattern file, authored through a shell heredoc, held three 0x08 BACKSPACE bytes where a word boundary was meant, so the tbd and lnk_notation patterns could not fire. That is the maximus_property defect recorded in BUILD_RULES 12, reproduced live by the verifier enforcing it. Rebuilt from chr(92) with a byte-level assertion; the zero above is from the corrected probe."
+  },
+  "5": {
+   "result": "pass",
+   "evidence": "TWO independent implementations agree at 0 over 234 satellites and 1355 payload attributes, with 0 attributes unresolved in the chain. Gate check 7 reports 0; the independent reader reports 0. BOTH proved to fire: forcing every definition of one real payload attribute to cast-null makes BOTH report exactly 1 and NAME it, on the STANDARD track (SAT_ASSESSMENT_HEADER ASSESSMENT_STATUS) and on the AUGMENTED track (SAT_AUG_ASSESSMENT_HEADER ASSESSMENT_END_TIME). Clean re-run returns both to 0.",
+   "detail": "MY FIRST INDEPENDENT IMPLEMENTATION WAS WRONG IN THE SILENT DIRECTION and its 0 was worthless: it counted a BARE pass-through column name in a select list as a DEFINITION, and never read the YAML derived-columns form at all, so a stage writing cast-null in YAML still read as live via the satfeed bare mention. Found by injection: the mutation applied 0 definitions and the run still said 0. v2 treats a bare name as a reference and reads the YAML form, and only then agrees with the gate. Two implementations agreeing is the evidence, and they agreed only after the second was repaired."
+  },
+  "6": {
+   "result": "pass",
+   "evidence": "Re-derived independently: 0 parse residue. Population stated: 4274 live expressions over 3 slot kinds, resolved_key.expression 2344, child_key_value 856, child_key_components.expression 1074, across target and augmentation. After stripping every spine span and every balanced LNK span, all four surviving-operator counts are 0. The count is printed at .counts.parse_residue and .counts.expressions_parsed.",
+   "detail": "The residue test was PROVED able to fire by mutating ONE real corpus expression at ONE token, turning a spine bracket into a brace: residue moves from 0 to 1 as the now-unmatched span arrow survives. TWO POPULATIONS, both zero: stage 0 swept four expression slots and reports 3418; my sweep includes child_key_value and reports 4274. Neither is wrong; each states its slot set."
+  },
+  "7": {
+   "result": "did_not_complete",
+   "evidence": "CONTROL-BYTE HALF: PASS. check_patterns exit 0 over 18 generator files, and PROVED to fire on BOTH arms: a 0x08 byte substituted for a real escape in a corpus-sampled pattern (exit 1, names mt_keyrules.py line 331) and a non-compiling pattern (exit 1, names the line). Clean re-runs exit 0, and the mutation was asserted to have applied before any verdict was taken. REGEX-FIRING HALF: NOT-RUN. The 9 selfcheck_mt.py checks tagged clause=7 cannot execute, because every chain generator imports mt_names, which REFUSES TO RUN against profile rev 6. 1 of the 9 was re-proved independently (BD13); 8 were not run.",
+   "detail": "Clause 7 has two halves and only one was measurable this session, so no single verdict exists (BUILD_RULES 1.8). BD13 verified LIVE and independently of the blocked chain: the control file 04_column_map.pre_docfix.json digests to 81cd1f46a6fb6248dc897e602644b56d6f460a109b4ec1c458a2d43da71857f5, exactly the recorded BD13_CONTROL_DIGEST; an independent reimplementation of prefix_split_probe returns 1 finding on it, HUB_DOCUMENT DOCUMENT_ID carried both bare and under the DOC: namespace, which is the expected finding, and 0 on the live map. The live map zero is therefore a JUDGED zero. The other 8 firing proofs are carried from stage 1 last successful run and were NOT re-run."
+  },
+  "8": {
+   "result": "did_not_complete",
+   "evidence": "The deletion proof was ATTEMPTED and did not finish. prove_mt_reproducibility.py exited at its first step with REFUSING TO RUN: build_profile.json carries 15 keys this generator set does not recognise. NOTHING WAS DELETED: the guard fires before the wipe, which is the correct ordering (BUILD_RULES 9.7). Verified after the attempt: models/ still holds 1042 files, all chain outputs present, and build_artifacts/reports/ byte-identical to session start at 9 files.",
+   "evidence_carried": "The digest from the last successful proof REPRODUCES EXACTLY. Recomputed independently under the recorded combining method, namely sha256 of each file bytes then sha256 over the sorted lines of relative path plus per-file digest, over every file under models/ plus dbt_project.yml and packages.yml: 0c79ac108b4271d488008d1bc4562728e6da8e1c3f509b2a9f537c3cfb323d5d over 1044 files, equal to combined_sha256_shipped_tree, combined_sha256_run1_from_empty and combined_sha256_run2_over_populated. The tree has not drifted.",
+   "detail": "A carried proof is not a proof performed. The build currently cannot be regenerated at all: profile rev 6 added 15 keys and mt_names.load_profile refuses rather than half-reading them (BUILD_RULES 2.2). The shipped tree was built against profile rev 5. Routed BLOCKING to stage 1: consume or acknowledge the 15 keys. One FIXED item confirmed en route: reproducibility.json is now deliberately ABSENT from CHAIN_OUTPUT_FILES, so the chain no longer deletes an artifact that no later step writes."
+  },
+  "9": {
+   "result": "fail",
+   "evidence": "FAILS ON THE ORDINAL HALF, measured. A direct sweep of EMITTED SQL, independent of the map, over 234 satellites and 71 emitted child-key legs finds exactly 1 leg whose source expression references a renumbering ordinal: sat_aug_policy_document_dispatch DISPATCH_SERIAL_NUMBER, rendered from serial_no, and it is the SOLE child key of that satellite. The sweep was PROVED to fire: substituting an ordinal into two other satellites leg definitions moves it from 1 to 3 and names both. Stage 1 own independent re-derivation names the same single satellite.",
+   "detail_ordinal": "DE-ESCALATED, AND ALL FOUR FACTS CONFIRMED INDEPENDENTLY. (1) 11 map rows, ONE satellite SAT_POLICY_DOCUMENT_DISPATCH, ONE view NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS, 3 value-bearing slots each and 1 declared leg each, so a SOLE ordinal leg, which also refutes the artifact claim that there is no bare-ordinal keying in this map. (2) Absent from data_7.js with 0 occurrences, yet EMITTED on the augmented track as SAT_AUG_POLICY_DOCUMENT_DISPATCH with src_cdk DISPATCH_SERIAL_NUMBER. (3) All 11 rows carry augmentation.child_key_stability with candidate_stable_key POD_NUMBER and a question_for_source. (4) The emitted SQL carries the UNSTABLE CHILD KEY BUILD_RULES 5.2 marker in BOTH the satellite and its staging model. So this is ONE modeller question with a stability caveat, severity warn, not 11 blockers. But the clause is absolute and an ordinal IS in an emitted child key, so the clause FAILS.",
+   "detail_collapse_traps": "PASS, and the scope is RESOLVED rather than reported NOT-RUN. Denominator: 57 distinct satellite-leg pairs carrying a child-key leg. The scope that REPRODUCES the profile figure of 20 is: one distinct rendered value across ALL rows carrying the leg, with no minimum row count. I measure exactly 20, matching the profile list on 19 of 20 elements; the profile carries SAT_PARTY_DIGITAL_IDENTITY Active Sequence Number where I carry SAT_PARTY_BANKING Account Number Masked. Splitting the 20 by WHAT the single value is, corroborated independently by the map own leg_backing field, gives 9 literal-backed which discriminate nothing, and 11 column-bearing which are textually identical across rows but vary per row at load and so are not collapse traps at all. Of the 9 literal-backed, 6 reach an emitted src_cdk, and ZERO of the 6 is the SOLE child key: every one sits beside a discriminating leg, which is a constant role label and legitimate. The 4 satellites where the constant WOULD have been the sole leg, SAT_CLAIM_EVIDENCE, SAT_DOCUMENT_CHECKLIST, SAT_LNK_CLAIM_PARTY_ROLE and SAT_PARTY_CORRESPONDENCE, are exactly the 4 the build REFUSED to emit and exempted for that reason. No emitted satellite collapses its instances onto one row. The previously published 9-of-20 does not reproduce: 9 is the size of the literal-backed SUBSET, not a count of legs reaching src_cdk, so that figure took a numerator and a denominator from different populations (BUILD_RULES 1.16)."
+  },
+  "10": {
+   "result": "pass",
+   "evidence": "BUILDER_ASKS_MAXIMUS_TRAVEL.md exists at the project root, 48799 bytes, with routed sections: for vault_tools V1 to V6, for the MODELLER D1 to D4, for the SOURCE owner S1 to S8, plus Does anything here block and What was built. 43 routing mentions. check_prose_counts: PASS, exit 0, prose files scanned 2.",
+   "detail": "check_prose_counts is PASS, not NOT RUN, and its zero is a JUDGED zero proved this session. The FIRST injection did NOT fire and I did not report that as a pass: the scanner declared-provenance flag is sticky until the next heading, so a count appended at the end of a file inherits provenance from far above. Re-injected under a NEW heading: 2 typed_count findings, exit 1, naming generators/README.md line 274 and both numbers. Negative control, the SAME count with a source line above it: PASS, exit 0. Clean re-run exit 0. The prior clause-10 evidence that no handback exists is falsified by the tree, and stage 3 has run."
+  }
+ },
+ "counts": {
+  "models": 1040,
+  "by_layer": {
+   "staging/maximus_travel (layer-1 + walk-only casts)": 115,
+   "automate_dv/standard/resolvers": 50,
+   "automate_dv/standard/unpivot": 25,
+   "automate_dv/standard/staging (wide stage)": 87,
+   "automate_dv/standard/hubfeed": 15,
+   "automate_dv/standard/hubs": 15,
+   "automate_dv/standard/links": 8,
+   "automate_dv/standard/satfeed": 103,
+   "automate_dv/standard/satellites": 103,
+   "automate_dv/standard/audit": 4,
+   "automate_dv/augmented/staging": 253,
+   "automate_dv/augmented/satfeed": 131,
+   "automate_dv/augmented/satellites": 131
+  },
+  "by_layer_note": "13 layer directories, .sql only, summing to 1040. The 2 .yml files bring the file count under models/ to 1042.",
+  "layer_directories": 13,
+  "satellites_built": 234,
+  "satellites_targeted": 107,
+  "satellites_targeted_built": 103,
+  "satellites_targeted_unbuilt": 4,
+  "coverage_reached": 425,
+  "coverage_total": 442,
+  "exemptions": 17,
+  "coverage_reached_under_payload_union_cdk": 437,
+  "coverage_missed_that_do_reach_the_vault_as_a_child_key": 12,
+  "coverage_missed_genuinely_absent": 5,
+  "unbuilt": 60,
+  "unbuilt_entries_carrying_a_reason": 60,
+  "files_in_the_reproducibility_set": 1044,
+  "payload_attributes_declared": 1355,
+  "dead_data_paths": 0,
+  "dead_data_paths_second_implementation": 0,
+  "parse_residue": 0,
+  "expressions_parsed": 3418,
+  "expressions_parsed_verifier_slot_set": 4274,
+  "notation_residue_lines": 0,
+  "notation_patterns_proved_to_fire": 10,
+  "notation_probes_sampled_from_the_corpus": 7,
+  "notation_probes_synthesised": 3,
+  "control_byte_files": 0,
+  "generator_files_scanned_by_check_patterns": 18,
+  "check1_population_satellites": 103,
+  "built_satellites_outside_check1_population": 131,
+  "check1_findings_before_the_fixes": 13,
+  "check1_cleared_by_the_exemption_loader_alone": 13,
+  "check1_cleared_by_the_src_cdk_union_alone": 12,
+  "check1_cleared_by_the_src_cdk_union_GIVEN_the_exemption_loader": 0,
+  "link_call_sites": 51,
+  "link_legs": 91,
+  "link_legs_naming_a_hub_verifier_measurement": 34,
+  "link_legs_naming_no_hub_verifier_measurement": 57,
+  "link_legs_not_bound_to_any_hub_by_name_or_expression_match": 19,
+  "link_legs_naming_no_hub_AS_PUBLISHED_DOES_NOT_REPRODUCE": 52,
+  "child_key_leg_pairs_denominator": 57,
+  "collapse_trap_pairs_reproducing_the_profile_scope": 20,
+  "collapse_trap_pairs_literal_backed": 9,
+  "collapse_trap_pairs_column_bearing": 11,
+  "collapse_trap_literal_pairs_reaching_an_emitted_src_cdk": 6,
+  "collapse_trap_literal_pairs_that_are_the_SOLE_child_key": 0,
+  "emitted_child_key_legs": 71,
+  "ordinal_child_keys_in_emitted_sql": 1,
+  "ordinal_child_key_map_rows": 11,
+  "shared_satellites_with_the_sibling": 35,
+  "hashdiff_name_disagreements": 0,
+  "hashdiff_input_list_disagreements": 34,
+  "sibling_src_pk_disagreements": 0,
+  "sibling_grain_disagreements": 0,
+  "sibling_src_cdk_disagreements": 0,
+  "cast_models": 115,
+  "spine_arrows": 2390,
+  "spine_destinations_distinct": 16,
+  "spine_destinations_without_their_own_cast": 4,
+  "resolver_start_views_with_more_than_one_resolver": 0,
+  "name_injectivity_failures": 0,
+  "payload_versus_child_key_clashes": 0,
+  "projects_passing_check_prose_shape": 12,
+  "tree_digest_sha256": "0c79ac108b4271d488008d1bc4562728e6da8e1c3f509b2a9f537c3cfb323d5d",
+  "tree_digest_method": "sha256 of each file bytes, then sha256 over the sorted lines of relative path plus per-file digest, over every file under models/ plus dbt_project.yml and packages.yml"
+ },
+ "gates": {
+  "check_internal": "PASS",
+  "check_vault_alignment": "PASS",
+  "check_patterns": "PASS",
+  "check_prose_counts": "PASS",
+  "check_prose_shape": "PASS",
+  "sibling": "travel_dv_dbt",
+  "sibling_is_real": true,
+  "live_alignment_checks": "all 7. travel_dv_dbt is a real OPUS sibling with 45 satellites, so checks 1, 2 and 4 are NOT no-ops. This is a seven-live-check verdict, not a four.",
+  "check_vault_alignment_detail": "exit 0. 13 skipped as recorded gaps; coverage 425 of 442 with 17 accepted; dead data paths 0; convention UPPER_SNAKE scored 109 UPPER_SNAKE and 7 squashed, where the 7 is the BOTH-match set of one-word attributes and squashed-only is 0.",
+  "check_prose_shape_detail": "NEW since the last verification. 1040 models examined, PASS. Swept across the estate: all 12 projects PASS.",
+  "every_shared_gate_proved_able_to_fail_this_session": true,
+  "the_builds_own_chain": "REFUSES TO RUN against profile rev 6. run_all.sh, selfcheck_mt.py and prove_mt_reproducibility.py all exit at the mt_names profile key guard."
+ },
+ "schema_warning": "project and generated are in selfcheck_mt.STAGE1_OWNED_KEYS but stage 1 never writes them, so a chain re-run DELETES two fields the BUILD_RULES 10 output schema requires. Routed to generator-author. Re-added by hand after the verification re-run; they will be lost again on the next run of generators/run_all.sh until that set is corrected.",
+ "done_reason": "Clause 9 FAILS, one renumbering ordinal in an emitted sole child key, and clauses 7 and 8 DID NOT COMPLETE because the chain refuses to run against profile rev 6. Clause 10 now PASSES, so the handback is no longer the obstacle.",
+ "carried_debt": [
+  {
+   "item": "Shared-vault HASHDIFF divergence (2026-08)",
+   "ran_locally": true,
+   "result": "RAN. Re-derived from the SIBLING BUILD, never from the profile. Retired on the column NAME: 234 of 234 bare HASHDIFF here, 45 of 45 on travel_dv_dbt, 0 name disagreements over the 35 shared satellites, 0 disagreements on src_pk, grain or src_cdk. NOT retired on the CONTENT: the hashdiff input list differs on 34 of the 35, and only SAT_POLICY_CLASSIFICATION agrees. Same name with different contents is the worse failure, because the agreeing name hides it from every name comparison. NARROWED, NOT RETIRED."
+  },
+  {
+   "item": "Dead-data-path check, promoted to check_vault_alignment check 7, report-only (2026-09)",
+   "ran_locally": true,
+   "result": "RAN. 0 on this project, confirmed by a SECOND independent implementation also at 0 over 1355 payload attributes. Both proved to fire on both tracks. Still report-only in the shared gate; ENFORCE_DEAD_PATHS is not set."
+  },
+  {
+   "item": "Check 7 YAML-value blindness, FIXED 2026-09-24, not re-swept",
+   "ran_locally": true,
+   "result": "RAN LOB-LOCALLY. The fix is present: the YAML test reads the VALUE and liveness is ANY occurrence. Verified by injecting a cast-null into the YAML derived-columns form and into the SQL alias form. The ESTATE-WIDE re-sweep was NOT run: the ledger records it as a decision rather than a chore."
+  },
+  {
+   "item": "Six existing projects not re-swept under the corrected check 7 (2026-09-24)",
+   "ran_locally": false,
+   "result": "NOT RUN. Deliberately: re-opening six closed builds is a decision, not a chore. Their check-7 figures remain lower bounds."
+  },
+  {
+   "item": "Coverage check 6 blind to the augmentation container (2026-09-24)",
+   "ran_locally": true,
+   "result": "RAN, CONFIRMED STILL OPEN, and a second instance measured. check 6 also compares src_payload ALONE, so 12 attributes that DO reach the vault as a child-key leg are counted as missed and then exempted. Under src_payload UNION src_cdk coverage is 437 of 442 rather than 425 of 442. The src_cdk union was applied to check 1 only."
+  },
+  {
+   "item": "Three-way HASHDIFF on Health V2 (2026-09-24)",
+   "ran_locally": false,
+   "result": "NOT RUN. It is a Health V2 measurement; this verification is scoped to Maximus Travel and its own sibling."
+  },
+  {
+   "item": "First check-7 sweep, six projects (2026-09-04)",
+   "ran_locally": false,
+   "result": "NOT RUN as a sweep. Those figures pre-date both the YAML-value fix and the ref-chain fix, so they are not merely lower bounds but unreliable."
+  },
+  {
+   "item": "Prose validated by nothing; check_prose_counts promoted, report-only (2026-09-24)",
+   "ran_locally": true,
+   "result": "RAN. PASS, exit 0, 2 files scanned. PROVED to fire this session: an unsourced count under a new heading yields 2 typed_count findings and exit 1; the same count with a source line above it is silent. A scope limit measured here: the declared-provenance flag is sticky until the next heading, so a count appended to the end of a section inherits provenance from a line that may be far above and about something else."
+  },
+  {
+   "item": "First check_prose_counts sweep; six closed projects not remediated (2026-09-24)",
+   "ran_locally": true,
+   "result": "RAN for this project only: PASS. The estate sweep was NOT re-run."
+  },
+  {
+   "item": "Check 7 condemned an entire track via the source_model spelling, FIXED 2026-09-24",
+   "ran_locally": true,
+   "result": "RAN. The fix holds: 0 dead paths on the augmented track, where the old implementation reported 930. My independent reader resolves feeders through bare, quoted and ref spellings and agrees at 0, with 0 attributes unresolved, so no track is silently condemned."
+  },
+  {
+   "item": "Shared-vault HASHDIFF narrowed not retired; the BD7 correction (2026-09-24)",
+   "ran_locally": true,
+   "result": "RAN and CONFIRMED EXACTLY: 35 shared satellites, not the 9 quoted earlier in the engagement; 0 name disagreements; input lists differing on 34 of 35."
+  },
+  {
+   "item": "A renumbering ordinal carrying a child key in TWO LOBs (2026-09-24)",
+   "ran_locally": true,
+   "result": "RAN for the Travel half. Confirmed: exactly 1 emitted child-key leg, SAT_AUG_POLICY_DOCUMENT_DISPATCH DISPATCH_SERIAL_NUMBER from SERIAL_NO, and it is the SOLE child key. The Health V2 half, SAT_POLICY_COVERAGE_SCHEDULE with three writers, was NOT run: different project. Still OPEN, blocking before any load, routed modeller."
+  },
+  {
+   "item": "An ordinal check returned a false clean zero by looking for a CK name shape (2026-09-24)",
+   "ran_locally": true,
+   "result": "RAN. The fix holds, and I re-derived by SHAPE over source expressions rather than any name shape. Independently useful: stage 1 records 4 ordinal-SHAPED emitted legs that are NOT source-backed, and my by-shape sweep correctly does not flag them, so the two implementations agree on the positives AND the negatives. Calibration recorded: a vocabulary admitting a bare NO suffix also matches MOBILE_NO and PAN_NO, which are identifiers (BUILD_RULES 1.12)."
+  },
+  {
+   "item": "The ref-chain fix no-regression comparison across projects (2026-09-24)",
+   "ran_locally": false,
+   "result": "NOT RUN. It is an estate-wide old-versus-new comparison over nine projects; this verification measured only this project, where the current implementation reports 0 and is proved to fire."
+  },
+  {
+   "item": "Section 3 asks for prose detection; PROMOTED to check_prose_shape (2026-09-25)",
+   "ran_locally": true,
+   "result": "RAN, and the estate claim VERIFIED: all 12 projects PASS, this one over 1040 models. PROVED to fire by injecting a phrase token sampled from the bundle, the two-word token member key, into an identifier position: exit 1, naming the file and line. It closes the MULTI-WORD half only; a one-word phrase token remains indistinguishable from a valid reference, exactly as the ledger states."
+  },
+  {
+   "item": "Check 1 demands what 5.4 forbids; fix stated, deferred by choice (2026-09-25)",
+   "ran_locally": true,
+   "result": "RAN, and the fix is now APPLIED in the shared gate: check 1 compares against src_payload UNION src_cdk, and the exemption loader is shared with check 6. But see clause 1: cross-tabulated per finding, the src_cdk union cleared 0 findings the exemption loader had not already cleared. The equivalent defect REMAINS in check 6, which still compares src_payload alone."
+  },
+  {
+   "item": "Nothing points the machinery at our own output; the stated-population helper (2026-09-25)",
+   "ran_locally": false,
+   "result": "NOT RUN, and not built. The ledger makes a FRESH SESSION and a negative control planted by someone other than the author into binding preconditions, and neither holds here. This verification applied the discipline by hand instead, and it paid: three of my own probes returned a vacuous zero and were caught only by asserting the mutation had applied. That is direct evidence for building the helper."
+  },
+  {
+   "item": "An unresolved child key on a PROPOSED multi-active satellite is a promotion precondition (2026-09-25)",
+   "ran_locally": true,
+   "result": "RAN for this project. Directly relevant and confirmed: SAT_AUG_POLICY_DOCUMENT_DISPATCH is exactly such a satellite, proposed and emitted with a sole ordinal child key. Routed modeller as one question carrying a stability caveat."
+  },
+  {
+   "item": "Pattern-fires and control-byte check, promoted to check_patterns (2026-09)",
+   "ran_locally": true,
+   "result": "RAN. PASS over 18 generator files, and PROVED to fire on a 0x08 byte and on a non-compiling pattern."
+  },
+  {
+   "item": "First check_patterns sweep: maximus_property PLACEHOLDER_CK holds a literal 0x08 (2026-09-04)",
+   "ran_locally": true,
+   "result": "RAN, and STILL OPEN. check_patterns on maximus_property_dv_dbt exits 1: FAIL control_byte at mpr_keyrules.py line 230. Unfixed, as the ledger says; the measured consequence on that build remains none."
+  },
+  {
+   "item": "BUILDER_VALIDATOR.md is stale (2026-09)",
+   "ran_locally": false,
+   "result": "NOT RUN. It is a mapper-facing contract document; rewriting it is a conversation rather than a builder-side edit, and nothing in this verification depends on it."
+  }
+ ],
+ "findings": [
+  {
+   "check": "reproducibility, clause 8",
+   "severity": "blocker",
+   "for_stage": "1",
+   "kind": "reproducibility",
+   "detail": "THE BUILD CANNOT CURRENTLY BE REGENERATED AT ALL. Every chain generator imports mt_names, whose load_profile REFUSES TO RUN because build_profile.json rev 6 carries 15 keys stage 1 does not consume or acknowledge: clause_remeasurement, collapse_traps_note, collapse_traps_scope_A_18, collapse_traps_scope_B_9, component_kinds_field_note, conventions_artifact, digest_contract_note, document_diff, longest_source_view_cast_example_note, longest_source_view_cast_name, ordinal_artifact, profile_self_assertion, prose_test_counts, renumbering_ordinals_with_no_child_key_reach, workbook_degenerate_column_still_empty_note. So run_all.sh, selfcheck_mt.py and prove_mt_reproducibility.py all exit at step 1, clause 8 could not be re-proved, and the 9 clause-7 regex-firing proofs could not be re-run. THE GUARD IS CORRECT (BUILD_RULES 2.2) and it correctly fires BEFORE the wipe, so nothing was destroyed. WHAT MUST BE DONE: stage 1 reads each of the 15 keys or declares it acknowledged in mt_names.py, then re-runs the deletion proof. Until then the shipped tree is built against profile rev 5 while the profile on disk is rev 6."
+  },
+  {
+   "check": "clause 9, ordinal child key",
+   "severity": "warn",
+   "for_stage": "modeller",
+   "kind": "collapse_trap",
+   "detail": "ONE modeller question, not eleven blockers, and the de-escalation is measured not argued. Exactly 1 emitted child-key leg over 71 is backed by a renumbering ordinal: SAT_AUG_POLICY_DOCUMENT_DISPATCH src_cdk DISPATCH_SERIAL_NUMBER from SERIAL_NO, and it is the SOLE leg. All four de-escalating facts confirmed independently: 11 map rows on one satellite and one view; the satellite is absent from data_7.js; the map already declares a routed source gap with candidate_stable_key POD_NUMBER and a question_for_source on all 11 rows; and the emitted SQL already carries the UNSTABLE CHILD KEY BUILD_RULES 5.2 marker in both the satellite and its staging model. WHAT MUST BE DONE: answer one question about a proposed satellite grain, namely whether POD_NUMBER is populated and unique per dispatch line. If yes the child key moves to it in one pass. Do not promote or load this satellite until it is answered: an ordinal child key re-attaches history on every insert."
+  },
+  {
+   "check": "coverage check 6 scope",
+   "severity": "warn",
+   "for_stage": "vault_tools",
+   "kind": "gate_gap",
+   "detail": "THE src_cdk FIX WAS APPLIED TO CHECK 1 AND NOT TO CHECK 6, so the same defect survives in the coverage number. check 6 still tests only col in src_payload. Measured on this LOB: 12 of the 17 pairs it counts as missed ARE in the vault, as child-key legs, so coverage reads 425 of 442 when the true reach is 437 of 442. The consequence is worse than a wrong percentage: 12 exemption lines now exist to suppress a gap that is not a gap, and each of those lines says so in its own comment. WHAT MUST BE DONE: apply the same src_payload UNION src_cdk comparison in check 6, then delete the 12 carried_as_cdk exemption lines, which will no longer be needed."
+  },
+  {
+   "check": "clause 1 scope",
+   "severity": "info",
+   "for_stage": "vault_tools",
+   "kind": "gate_gap",
+   "detail": "WHAT THE GREEN COVERS, stated because it is smaller than it looks. check 1 examines 103 of the 234 built satellites; the 131 augmented satellites are outside its population entirely, because want is built only from map rows whose satellite and attribute are canonical in data_7.js. Proved by injection: renaming a payload column on an AUGMENTED satellite leaves check 1 at exit 0, while the same rename on a canonical satellite yields exit 1 on checks 1 and 6. This is not a defect in the gate, since augmented satellites are proposals rather than canonical structures, but it bounds the claim and should be printed alongside the satellite counts."
+  },
+  {
+   "check": "link leg census",
+   "severity": "warn",
+   "for_stage": "1",
+   "kind": "note",
+   "detail": "THE PUBLISHED 52 OF 91 DOES NOT REPRODUCE, and I am reporting what I measured rather than the number I was asked to carry forward. Population stated: 51 LNK call sites in target and augmentation resolved_key.expression, 91 legs recovered by balanced-paren splitting, which agrees with the published leg total exactly. Of those 91, exactly 34 carry a name token and every one is of the form HUB_X equals; 57 carry none; and ZERO legs contain an equals sign anywhere other than those 34. So not-named-for-a-hub is 57 of 91, not 52 of 91, and the missing 5 cannot be recovered by widening the name search. Under a different and defensible scope, hub-BOUND by explicit name OR by matching a harvested hub key expression per BUILD_RULES 4, the figure is 19 of 91 unbound. Note also that this build states 39 and 40 for the same quantity in one file: link_leg_census.named_for_a_hub is 39 while reconciliation.build_parser_lnk_named_legs is 40. WHAT MUST BE DONE: stage 1 states the slot set and the binding rule its 39 comes from, or adopts one of the two scopes measured here."
+  },
+  {
+   "check": "BD7 shared-vault hashdiff",
+   "severity": "blocker",
+   "for_stage": "modeller",
+   "kind": "note",
+   "detail": "NARROWED, NOT RETIRED, and re-derived from the SIBLING BUILD rather than the profile. 234 satellites here, 45 on travel_dv_dbt, 35 written by BOTH. Retired on the column NAME: bare HASHDIFF on 234 of 234 here and 45 of 45 there, 0 name disagreements, and 0 disagreements on src_pk, grain or src_cdk across all 35. NOT retired on the CONTENT: the hashdiff input list differs on 34 of the 35; only SAT_POLICY_CLASSIFICATION agrees. WHAT MUST BE DONE: one modeller decision per shared satellite on whose payload set the shared hashdiff is computed over, before any shared load. Same name with different contents is the dangerous half, because every check that compares names reports clean."
+  },
+  {
+   "check": "BD13 negative control",
+   "severity": "info",
+   "for_stage": "1",
+   "kind": "note",
+   "detail": "VERIFIED LIVE and independently of the blocked chain, so the detector zero is a JUDGED zero. The control file 04_column_map.pre_docfix.json digests to 81cd1f46a6fb6248dc897e602644b56d6f460a109b4ec1c458a2d43da71857f5, exactly the recorded BD13_CONTROL_DIGEST, and it is not byte-identical to the live map at 6350105 versus 6378022 bytes. An independent reimplementation of the prefix-split probe returns 1 finding on the control, HUB_DOCUMENT DOCUMENT_ID appearing both bare and under the DOC namespace, which is precisely the expected finding, and 0 on the live map. Nothing needs doing; this is the carried item confirmed."
+  },
+  {
+   "check": "collapse-trap scope",
+   "severity": "info",
+   "for_stage": "1",
+   "kind": "note",
+   "detail": "THE SCOPE IS RESOLVED, so this is no longer undetermined. The profile figure of 20 reproduces exactly under one explicitly stated scope: a satellite-leg pair whose rendered discriminator is ONE distinct string across ALL rows carrying the leg, with no minimum row count, over a denominator of 57 pairs carrying a child-key leg at all. My list matches the profile list on 19 of 20 elements. WHAT MUST BE DONE: record that scope beside the 20 and retire the competing 18 and 9, which come from adding a more-than-one-row and a more-than-one-view restriction. AND SPLIT THE CLASS: 11 of the 20 are column-bearing expressions that are textually identical across rows but vary per row at load, so they are not collapse traps at all. Only 9 are literal-backed, corroborated independently by the map own leg_backing field. Reporting 20 overstates the hazard by more than double."
+  },
+  {
+   "check": "notation probe self-defect",
+   "severity": "info",
+   "for_stage": "vault_tools",
+   "kind": "control_byte",
+   "detail": "PROMOTION CANDIDATE, raised from the verifier own defect. My first notation pattern file, authored through a shell heredoc, silently acquired three 0x08 BACKSPACE bytes where word boundaries were meant, so two of ten patterns could not match and their zeros were meaningless. That is the maximus_property PLACEHOLDER_CK defect in BUILD_RULES 12, committed live by the step enforcing it, and it was caught only by a byte-level check of my own probe file. check_patterns already detects exactly this, but nothing points it at a verifier scratch probe. WHAT MUST BE DONE: have the verifier run check_patterns over its OWN probe files before trusting any zero, and say so in the stage-2 contract. This is the third estate occurrence of the same byte."
+  },
+  {
+   "check": "text-mode restore",
+   "severity": "warn",
+   "for_stage": "2",
+   "kind": "note",
+   "detail": "MY OWN DEFECT, found and repaired, and it is a contract issue for this stage rather than a build finding. My check_internal injection wrote a real model file and restored it in TEXT mode, which on Windows rewrote 19 line endings from LF to CRLF. My own assertion that the file was restored byte-identical was ALSO made through a text-mode read, so it normalised the very difference it was meant to detect and reported True. The damage was caught only by recomputing the whole-tree digest, which had moved to 6bbd6ddc. I converted the file back to LF and the tree digest returned to 0c79ac108b4271d488008d1bc4562728e6da8e1c3f509b2a9f537c3cfb323d5d, matching the recorded proof over 1044 files. WHAT MUST BE DONE: any on-disk probe reads and writes bytes, never text, and the whole-tree digest is recomputed after every on-disk probe. Prefer in-memory injection, which is what the other probes used and why they left no trace."
+  },
+  {
+   "check": "dead-path second implementation",
+   "severity": "info",
+   "for_stage": "2",
+   "kind": "note",
+   "detail": "THE FIRST VERSION OF MY OWN SECOND IMPLEMENTATION AGREED WITH THE GATE FOR THE WRONG REASON. It counted a bare pass-through column name in a select list as a DEFINITION and never read the YAML derived-columns form, so an attribute that a wide stage writes as cast-null in YAML still read as live through the satfeed bare mention. Two implementations agreeing means nothing if the second has a blind spot in the same direction. Caught because an injection applied 0 definitions and the number did not move. After repair, both report 0 over 1355 attributes, both fire on both tracks, and both name the injected attribute. RECORD: agreement between implementations is evidence only once each has been shown to fail independently."
+  },
+  {
+   "check": "check_prose_counts provenance scope",
+   "severity": "info",
+   "for_stage": "vault_tools",
+   "kind": "gate_gap",
+   "detail": "A MEASURED SCOPE LIMIT, not a defect, but it changes what a PASS means. The declared flag set by a SOURCED marker stays true until the next line beginning with a hash, so one provenance line discharges every count below it to the end of its section. My first injection, appended at the end of the file, was therefore silent, and I nearly recorded that silence as proof the gate works. Re-injected under a new heading it fires correctly with 2 findings. WHAT MUST BE DONE: consider narrowing the discharge to the adjacent block, or print how many counts were discharged by provenance so a reader can see how much the PASS is actually asserting."
+  },
+  {
+   "check": "profile sub-count staleness",
+   "severity": "info",
+   "for_stage": "1",
+   "kind": "note",
+   "detail": "TWO FIGURES IN THE PROFILE FOR ONE QUANTITY. layer_sizing gives total_views_needing_a_cast 115 and walk_only_casts_required 51 alongside views_carrying_map_rows 62, but 62 plus 51 is 113, not 115; the 51 is the rev-3 figure carried beside a rev-6 total, and the method_delta_note explains the 113-to-115 change without updating the sub-count. Stage 1 reports walk_only_casts 53, which does reconcile. Measured independently: 115 cast models over 115 distinct source views, 62 views carrying map rows, 0 mapped views without a cast. WHAT MUST BE DONE: recompute walk_only_casts_required under the rev-6 method or delete it."
+  },
+  {
+   "check": "layer completeness",
+   "severity": "info",
+   "for_stage": "1",
+   "kind": "layer_gap",
+   "detail": "NO GAP, and the one apparent gap resolves. All 62 views carrying any map row have a cast, and all 56 carrying a MAPPED row do. 50 resolvers over 50 distinct start views, 0 start views with more than one resolver. 0 name-injectivity failures over 115 casts and 115 source views, proved by injecting a second real source view into one cast model. 25 unpivot models against 593 literal-backed legs over 36 views, so the unpivot layer is not manufactured where no column-as-instance family exists. Of 16 distinct spine destinations over 2390 arrows, 4 have no cast of their own: MEMBER_DETAILS 77 arrows, PROPOSER_DETAILS 67, QUOTE_PARAM_DETAILS 2, POLICY_DETAILS 1. All four are the UNQUALIFIED SEGMENT form stage 0 recorded, every one is a segment of its own origin view name, and every origin HAS a cast, so the walk is fully covered by the segment fallback and none of the four is a missing layer."
+  },
+  {
+   "check": "exemption file attribution",
+   "severity": "info",
+   "for_stage": "vault_tools",
+   "kind": "note",
+   "detail": "THE WITHDRAWAL WAS CORRECT, and I confirm it by measurement. vault_tools/accepted_uncovered.txt holds 36 non-comment lines in total: maximus_health_v2_dv_dbt 16, maximus_travel_dv_dbt 17, maximus_travel_dv_dbt 3. So the earlier claim that 34 of 35 of health_v2 exemption lines were stale was a file-wide count attributed to one project, and stage 3 was right to withdraw it. Health V2 has 16 lines, not 35. The underlying gap stands: the shared file still has no per-project integrity guard and is merged by hand."
+  }
+ ],
+ "outcome_vocabulary_note": "Four outcomes, never collapsed (BUILD_RULES 1.8). pass = ran and satisfied. fail = ran and did not satisfy. NOT-RUN = deliberately not attempted, with a reason. did_not_complete = attempted and did not finish, so no verdict exists.",
+ "input_digest_verified_before_and_after": {
+  "04_column_map.json md5": "137de5ad6f89e60f8b3ef0e821d2d0b8",
+  "04_column_map.json sha256": "bdb1f3fea01475fbe25b5c3c0694e5eae791354e679326196009b83d3bfe224e",
+  "04_column_map.json bytes": 6378022,
+  "verdict": "MATCHES the stated values exactly, checked before and after verification. The map did not move, so the build remains valid (BUILD_RULES 9.6)."
+ },
+ "self_checks": [
+  {
+   "check": "every pattern in this file fires on a probe and stays silent on a known-good input, and COVERAGE IS TOTAL",
+   "result": "pass",
+   "detail": "8 of 8 fire, 8 of 8 silent, over 8 module-level pattern(s) -- coverage ASSERTED total, so an unprobed pattern raises rather than passing for free. Failing: none",
+   "clause": 7
+  },
+  {
+   "check": "no control byte in any generator or emitted model",
+   "result": "pass",
+   "detail": "1062 generator/model file(s) scanned, 0 carrying a control byte",
+   "clause": 7
+  },
+  {
+   "check": "zero mapper-notation residue in emitted SQL (non-comment lines)",
+   "result": "pass",
+   "detail": "1040 model(s) scanned; residue in 0 line(s)",
+   "clause": 4
+  },
+  {
+   "check": "the residue check can FAIL",
+   "result": "pass",
+   "detail": "planted 'spine[A -> B].C' is detected; the zero above is a judged zero",
+   "clause": 7
+  },
+  {
+   "check": "every ref() resolves to a model in this project",
+   "result": "pass",
+   "detail": "441 distinct ref target(s); 0 unresolved",
+   "clause": 8
+  },
+  {
+   "check": "every source() table is declared in _mt_sources.yml",
+   "result": "pass",
+   "detail": "115 used, 116 declared, 0 undeclared",
+   "clause": 8
+  },
+  {
+   "check": "the augmented generator and the alignment shim partition the augmented satellites",
+   "result": "pass",
+   "detail": "131 augmented satellite model(s), 9 of them the OPUS-named SAT_AUG_* the shim owns",
+   "clause": 8
+  },
+  {
+   "check": "no satellite declares a payload attribute that is cast(null) in EVERY feeder (a declaration is not a data path)",
+   "result": "pass",
+   "detail": "234 satellite model(s), 1355 declared payload attribute(s), 0 with no live feeder",
+   "clause": 5
+  },
+  {
+   "check": "the dead-path reader reads the VALUE, not just the key",
+   "result": "pass",
+   "detail": "fires on a cast-null YAML value, silent on a real one -- the defect BUILD_RULES 12 records inside the check written to enforce 8.3",
+   "clause": 7
+  },
+  {
+   "check": "no satellite was BUILT on a child key composed only of collapse-trap legs",
+   "result": "pass",
+   "detail": "20 collapse trap(s) in the profile; 2 satellite(s) refused for using them alone, and none of those was built",
+   "clause": 9
+  },
+  {
+   "check": "no satellite payload attribute shares a name with a child-key leg",
+   "result": "pass",
+   "detail": "237 satellite(s) checked, 0 clash(es)",
+   "clause": 9
+  },
+  {
+   "check": "every multi-active satellite carries a child key",
+   "result": "pass",
+   "detail": "59 multi-active satellite(s), 0 without a discriminator",
+   "clause": 9
+  },
+  {
+   "check": "parse residue is zero, over 3418 live expression(s)",
+   "result": "pass",
+   "detail": "3418 expression(s) parsed, 0 failure(s), 0 residue",
+   "clause": 6
+  },
+  {
+   "check": "no generator wrote into a read-only input",
+   "result": "pass",
+   "detail": "1041 output path(s) checked against 4 read-only root(s)",
+   "clause": 8
+  },
+  {
+   "check": "BD13 negative control FIRES, and on the expected finding",
+   "result": "pass",
+   "detail": "control 04_column_map.pre_docfix.json (sha256 81cd1f46a6fb6248, the recorded digest) reports 1 split namespace(s) including HUB_DOCUMENT.DOCUMENT_ID ['(NO PREFIX)', 'DOC:']; the live map reports 0. The control is chosen by CONTENT -- the recorded digest; EXCLUDED as byte-identical to the live map: 04_column_map.pre_degenfix.json -- and is asserted to differ from the live map, which is exactly the failure that made the previous control useless.",
+   "clause": 7
+  },
+  {
+   "check": "one-column-two-key-spaces: the live ZERO is judged",
+   "result": "pass",
+   "detail": "live map 0, a control that fires 1. The zero is judged, not assumed.",
+   "clause": 7
+  },
+  {
+   "check": "renumbering ordinals in an emitted child key are found BY SHAPE, and agree with the spec",
+   "result": "pass",
+   "detail": "1 child-key column(s) in the emitted models resolve to a source column of ordinal SHAPE (SAT_AUG_POLICY_DOCUMENT_DISPATCH.DISPATCH_SERIAL_NUMBER from SERIAL_NO); the spec declares 1. Detected by resolving satellite src_cdk through the feed to the stage expression -- never by a name shape such as a _CK suffix, which this build does not use and which is how a check returns a clean zero it cannot earn. A further 26 child-key column(s) are ordinal-SHAPED but backed by no source column of that shape (SAT_AUG_CLAIM_DOCUMENT_REMINDER.REMINDER_SEQUENCE, SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE.ACTIVE_SEQUENCE_NUMBER, SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER.REMINDER_SEQUENCE, SAT_AUG_POLICY_COVERAGE_SCHEDULE.COVERAGE_SEQUENCE, SAT_AUG_QUOTE_COVER_DETAIL.COVERAGE_SEQUENCE, SAT_CLAIM_INVESTIGATION_FINDING.FINDING_SEQUENCE, SAT_CLAIM_NOTE.NOTE_SEQUENCE, SAT_COVERAGE_SUBLIMIT_SCHEDULE.ACTIVE_SEQUENCE_NUMBER, SAT_LNK_PARTY_ROLE_CORE.ROLE_SEQUENCE, SAT_LNK_POLICY_PARTY_ROLE.ROLE_SEQUENCE, SAT_POLICY_COVERAGE_SCHEDULE.COVERAGE_SEQUENCE, SAT_RISK_PERSON_MEMBER.MEMBER_SEQUENCE): reported, not counted as ordinals.",
+   "clause": 9
+  },
+  {
+   "check": "the ordinal detector over the emitted models CAN fire",
+   "result": "pass",
+   "detail": "it fires on the real tree",
+   "clause": 7
+  },
+  {
+   "check": "the ordinal spellings declared to reach NO child key reach none, and the one declared to reach a leg does",
+   "result": "pass",
+   "detail": "7 ordinal spelling(s) exist in this source; the EMITTED child-key surface is reached by ['SERIAL_NO'] over 1 leg(s) on 1 satellite(s). DECLARED ABSENT (6): PARAM_SEQ, RISK_SERIAL_NO, RISK_SERIAL_NUMBER, SEQUENCE_NUMBER, SRL_NO, SR_NUMBER -- violations: none. DECLARED PRESENT (1): SERIAL_NO -- missing: none. A further 26 child-key column(s) are ordinal-SHAPED but backed by no source column of that shape, and are reported rather than counted.",
+   "clause": 9
+  },
+  {
+   "check": "key selection reads a DECLARED slot set, and no keynorm slot is in it",
+   "result": "pass",
+   "detail": "slots read: expression, hub, instance, source_columns, tier. The history slot the profile names is 'keynorm.previous_expression', and both 'keynorm' and 'previous_expression' are on NEVER_READ_FIELDS, so adding a reader for one is fatal rather than quiet. keynorm slots in the read set: 0.",
+   "clause": 9
+  },
+  {
+   "check": "the keynorm SHAPE guard fires on an unknown field set and is silent on a known one",
+   "result": "pass",
+   "detail": "fires on a planted extra keynorm field, silent on the map's own commonest shape. The full containment proof -- all 1444 archived values poisoned, whole spec rebuilt, zero occurrences, with the search proved by poisoning a LIVE expression -- is generators/probe_mt_keynorm.py and its result is in build_artifacts/keynorm_probe.json.",
+   "clause": 7
+  },
+  {
+   "check": "every coverage exemption this build generated is present in vault_tools/accepted_uncovered.txt",
+   "result": "pass",
+   "detail": "17 generated line(s), 17 present in the shared file, 0 missing. An exemption the gate cannot see leaves a recorded decision reading as novel silence (BUILD_RULES 8.2).",
+   "clause": 3
+  },
+  {
+   "check": "the preserved verification block still describes THIS tree",
+   "result": "pass",
+   "detail": "preserved key(s): carried_debt, clauses, counts, done, done_reason, findings, gates, input_digest_verified_before_and_after, outcome_vocabulary_note, schema_warning, verified_by. every preserved count that overlaps a stage-1 fact still agrees",
+   "clause": 8
+  },
+  {
+   "check": "every digest this build emits is full length and names its algorithm",
+   "result": "pass",
+   "detail": "3 artifact(s) swept, 0 violation(s). Proved able to fire on the real 32-char value that shipped under a field named sha256 (fires=True) and silent at 64 (silent=True).",
+   "clause": 7
+  }
+ ],
+ "self_checks_failed": 0,
+ "status": "pass"
+}

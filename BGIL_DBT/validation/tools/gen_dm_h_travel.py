@@ -7,7 +7,7 @@ No member plan yet for travel -- covers every satellite in this round
 agreed. Row scopes use the RECORD_SOURCE value set parsed per satellite
 (the partner build shares the vault under the same prefix).
 
-HASHDIFF integrity (h1a) for Maximus Travel V2 crosses the satfeed layer:
+HASHDIFF integrity (h1a) for Maximus Travel crosses the satfeed layer:
 each satfeed branch's `HASHDIFF_<SAT>` column is parsed back to the
 originating stg2's hashed_columns entry; the payload column list stored
 there is used to recompute the hashdiff on the sat row.
@@ -49,7 +49,7 @@ H.h3_tag = lambda sat: ""
 
 
 # ---------------------------------------------------------------------------
-# feed_hashdiff_cols for travel: a satfeed_mtv2_<sat> branch renames
+# feed_hashdiff_cols for travel: a satfeed_mt_<sat> branch renames
 # HASHDIFF_<SAT> -> HASHDIFF; the stg2 whose hashed_columns define
 # HASHDIFF_<SAT> carries the real payload column list. Partner's helper
 # already follows a thin wrapper rename back to a wide stage; the same
@@ -61,7 +61,7 @@ _ORIG_FEED_HASHDIFF_COLS = H.feed_hashdiff_cols
 
 def feed_hashdiff_cols_travel(md, feed, hd):
     sql = PK.read(PK.find_model(md, feed))
-    if feed.startswith(("satfeed_mtv2_", "hubfeed_mtv2_", "lnkfeed_mtv2_")):
+    if feed.startswith(("satfeed_mt_", "hubfeed_mt_", "lnkfeed_mt_")):
         # Union-all over per-branch renames; every branch is expected to
         # map the same payload list (the macros can't tolerate a mismatch),
         # so we read the first branch's mapping and use that.
@@ -108,7 +108,7 @@ H.project_scope = _project_scope_travel
 COMMON = [
     ("Owner", "LUMIQ"),
     ("Vault location", K.VAULT),
-    ("Maximus Travel V2 RAW", K.RAW_SCHEMA["maximus_travel_v2_raw"]),
+    ("Maximus Travel RAW", K.RAW_SCHEMA["maximus_travel_raw"]),
     ("Opus Travel RAW (prod)", K.RAW_SCHEMA["travel_raw"]),
     ("Opus Travel RAW (test)", K.RAW_SCHEMA["travel_test_raw"]),
     ("Scope", "Every standard + augmented satellite of the project; rows scoped by the "

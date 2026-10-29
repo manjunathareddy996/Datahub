@@ -2,10 +2,10 @@
 """
 Travel LOB equivalent of gen_dm_r.py.
 
-Points at opus_travel_dv_dbt + maximus_travel_v2_dv_dbt and writes under
+Points at opus_travel_dv_dbt + maximus_travel_dv_dbt and writes under
 BGIL_DBT/validation/travel/DM-R/. Reuses the partner gen_dm_r helpers.
 
-Link feeds: Maximus Travel V2 writes lnkfeed_mtv2_<link> views (same shape
+Link feeds: Maximus Travel writes lnkfeed_mt_<link> views (same shape
 as the maximus_partner hubfeed pattern -- union-all over stg2 wrappers
 with a trailing `where <FK_BK> is not null`). OPUS Travel has no links.
 
@@ -34,11 +34,11 @@ GHOST = K.GHOST_HKEY
 
 # ---------------------------------------------------------------------------
 # Point partner's gen_dm_r at the travel projects; override its hubfeed/
-# lnkfeed parser so it understands the mtv2 shape via A.resolve (patched by
+# lnkfeed parser so it understands the mt shape via A.resolve (patched by
 # gen_dm_a_travel to handle satfeed_/hubfeed_/lnkfeed_).
 # ---------------------------------------------------------------------------
 def link_feed_arms_travel(md, feed):
-    """Parse a lnkfeed_mtv2_* (or OPUS style) feed into [(label, Arm)]."""
+    """Parse a lnkfeed_mt_* (or OPUS style) feed into [(label, Arm)]."""
     try:
         sql = PK.read(PK.find_model(md, feed))
     except SystemExit as e:
@@ -212,7 +212,7 @@ def r2_sections_travel(ln):
 COMMON = [
     ("Owner", "LUMIQ"),
     ("Vault location", K.VAULT),
-    ("Maximus Travel V2 RAW", K.RAW_SCHEMA["maximus_travel_v2_raw"]),
+    ("Maximus Travel RAW", K.RAW_SCHEMA["maximus_travel_raw"]),
     ("Opus Travel RAW (prod)", K.RAW_SCHEMA["travel_raw"]),
     ("Opus Travel RAW (test)", K.RAW_SCHEMA["travel_test_raw"]),
     ("Shared vault", "Parents (hubs / links) are checked across ALL their rows "

@@ -954,7 +954,7 @@ is missing or not a mapping — and uses it to scope the per-source-group `MAX(D
   **The column name is per-project** — confirm from a sibling LOB's `stg_` files before writing
   new ones. Observed per-project names:
     - `opus_partner_dv_dbt`, `opus_travel_dv_dbt`:   `inc_job_updated_at`
-    - `maximus_travel_v2_dv_dbt`:                    `rec_refresh_at`
+    - `maximus_travel_dv_dbt`:                    `rec_refresh_at`
   Whichever name the project uses, every `stg_` model must select it and every stg2 derived
   column must wire it as the `LOAD_DATETIME` (see next bullet).
 - **`LOAD_DATETIME` in every `stg2_*` must reference the project's CDC watermark column, not
@@ -966,7 +966,7 @@ is missing or not a mapping — and uses it to scope the per-source-group `MAX(D
   the project's CDC column instead (no `!` prefix, so `stage()` resolves it as a column
   reference). Observed project settings:
     - `opus_partner_dv_dbt`, `opus_travel_dv_dbt`:   `LOAD_DATETIME: 'INC_JOB_UPDATED_AT'`
-    - `maximus_travel_v2_dv_dbt`:                    `LOAD_DATETIME: 'REC_REFRESH_AT'`
+    - `maximus_travel_dv_dbt`:                    `LOAD_DATETIME: 'REC_REFRESH_AT'`
   This is the stg2-layer counterpart of the stg1 mandatory-column rule: the two must line up
   (same column flowing through both layers), or the watermark breaks on the join.
 - Stitch watermark column: `gg_change_date` here (a CDC timestamp from the replication tool, not
