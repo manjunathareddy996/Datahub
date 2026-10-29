@@ -24,7 +24,7 @@
 --   HASHDIFF_POLICY_HEADER             SAT_POLICY_HEADER payload 5 of 19 live here
 --   HASHDIFF_POLICY_INTERMEDIARY_SPLIT SAT_POLICY_INTERMEDIARY_SPLIT payload 1 of 2 live here
 --   HASHDIFF_POLICY_PREMIUM_SUMMARY    SAT_POLICY_PREMIUM_SUMMARY payload 2 of 7 live here
---   HASHDIFF_POLICY_TAX_BREAKUP        SAT_POLICY_TAX_BREAKUP payload 1 of 5 live here
+--   HASHDIFF_POLICY_TAX_BREAKUP        SAT_POLICY_TAX_BREAKUP payload 1 of 10 live here
 --   HASHDIFF_POLICY_TAX_HEAD           SAT_POLICY_TAX_HEAD payload 1 of 1 live here
 --   HASHDIFF_PRODUCT_DEFINITION        SAT_PRODUCT_DEFINITION payload 1 of 4 live here
 
@@ -85,9 +85,14 @@ hashed_columns:
     columns:
       - 'CESS_AMOUNT'
       - 'CGST_AMOUNT'
+      - 'GST_BIFURCATION'
+      - 'GST_TDS_AMOUNT'
+      - 'GST_TYPE'
       - 'IGST_AMOUNT'
       - 'SGST_AMOUNT'
       - 'STAMP_DUTY_AMOUNT'
+      - 'STAMP_DUTY_RECEIPT_NUMBER'
+      - 'TOTAL_TAX_AMOUNT'
   HASHDIFF_POLICY_TAX_HEAD:
     is_hashdiff: true
     columns:
@@ -155,6 +160,11 @@ derived_columns:
   TAX_HEAD_CODE: "'GST'"
   TOTAL_PREMIUM_COLLECTED: 'cast(null as varchar)'
   UIN: 'cast(null as varchar)'
+  GST_BIFURCATION: 'cast(null as varchar)'
+  GST_TDS_AMOUNT: 'cast(null as varchar)'
+  GST_TYPE: 'cast(null as varchar)'
+  STAMP_DUTY_RECEIPT_NUMBER: 'cast(null as varchar)'
+  TOTAL_TAX_AMOUNT: 'cast(null as varchar)'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS'
 {%- endset -%}

@@ -17,7 +17,7 @@
 --   LOCATION_HKEY                      HUB_LOCATION  (7 row(s) in the map)
 --   ORG_UNIT_HKEY                      HUB_ORG_UNIT  (6 row(s) in the map)
 --   HASHDIFF_COMMON_ADDRESS            SAT_COMMON_ADDRESS payload 4 of 16 live here
---   HASHDIFF_COMMON_GEO                SAT_COMMON_GEO payload 2 of 2 live here
+--   HASHDIFF_COMMON_GEO                SAT_COMMON_GEO payload 3 of 3 live here
 
 {%- set yaml_metadata -%}
 source_model: 'resolved_mtv2__uwr_pol_off_oa_address_prop_pv'
@@ -46,6 +46,7 @@ hashed_columns:
   HASHDIFF_COMMON_GEO:
     is_hashdiff: true
     columns:
+      - 'ALTITUDE'
       - 'LATITUDE'
       - 'LONGITUDE'
 derived_columns:
@@ -71,6 +72,7 @@ derived_columns:
   STATE_CODE: 'cast(null as varchar)'
   STATE_NAME: 'cast(null as varchar)'
   STREET_NAME: 'cast(null as varchar)'
+  ALTITUDE: 'geo_coordinate_altitude'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW'
 {%- endset -%}

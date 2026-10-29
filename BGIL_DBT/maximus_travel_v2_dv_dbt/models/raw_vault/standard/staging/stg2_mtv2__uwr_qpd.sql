@@ -21,7 +21,7 @@
 --   PARTY_HKEY__POLICYHOLDER           HUB_PARTY / policyholder  (1 row(s) in the map)
 --   PRODUCT_HKEY                       HUB_PRODUCT  (1 row(s) in the map)
 --   QUOTE_HKEY                         HUB_QUOTE  (17 row(s) in the map)
---   HASHDIFF_COMMON_MONETARY_CONTEXT   SAT_COMMON_MONETARY_CONTEXT payload 3 of 3 live here
+--   HASHDIFF_COMMON_MONETARY_CONTEXT   SAT_COMMON_MONETARY_CONTEXT payload 4 of 4 live here
 --   HASHDIFF_ORG_UNIT_DEFINITION       SAT_ORG_UNIT_DEFINITION payload 1 of 2 live here
 --   HASHDIFF_QUOTE_HEADER              SAT_QUOTE_HEADER payload 4 of 8 live here
 --   HASHDIFF_QUOTE_RATING              SAT_QUOTE_RATING payload 3 of 6 live here
@@ -40,6 +40,7 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'BASE_CURRENCY_CODE'
+      - 'BASE_CURRENCY_EXCHANGE_RATE'
       - 'CURRENCY_CODE'
       - 'EXCHANGE_RATE'
   HASHDIFF_ORG_UNIT_DEFINITION:
@@ -101,6 +102,7 @@ derived_columns:
   REQUESTED_COVER_START_DATE: 'policy_inception_date'
   REQUESTED_POLICY_TERM: 'policy_term'
   REQUESTED_SUM_INSURED: 'cast(null as varchar)'
+  BASE_CURRENCY_EXCHANGE_RATE: 'base_currency_rate'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS'
 {%- endset -%}

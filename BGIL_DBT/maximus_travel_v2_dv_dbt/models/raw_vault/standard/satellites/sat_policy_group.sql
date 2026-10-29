@@ -12,7 +12,13 @@
 source_model: 'satfeed_mtv2_sat_policy_group'
 src_pk: 'POLICY_HKEY'
 src_payload:
+  - 'CHILD_POLICY_PLAN_CODE'
+  - 'EMPLOYER_ORGANISATION_NAME'
+  - 'GLOBAL_ACCOUNT_INDICATOR'
+  - 'GROUP_NAME'
   - 'GROUP_TYPE'
+  - 'INSURED_EMPLOYEE_CODE'
+  - 'PROGRAM_IDENTIFIER'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

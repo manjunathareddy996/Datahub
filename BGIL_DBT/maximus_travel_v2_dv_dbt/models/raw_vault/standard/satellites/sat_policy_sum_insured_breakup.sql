@@ -15,6 +15,7 @@ src_cdk:
   - 'SUM_INSURED_HEAD'
 src_payload:
   - 'SUM_INSURED_AMOUNT'
+  - 'SUM_INSURED_BREAK_UP_DETAIL'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

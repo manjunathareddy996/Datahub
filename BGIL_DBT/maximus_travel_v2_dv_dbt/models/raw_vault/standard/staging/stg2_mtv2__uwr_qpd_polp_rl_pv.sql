@@ -32,8 +32,8 @@
 --   QUOTE_HKEY                         HUB_QUOTE  (101 row(s) in the map)
 --   HASHDIFF_CHANNEL_DEFINITION        SAT_CHANNEL_DEFINITION payload 1 of 5 live here
 --   HASHDIFF_COMMON_COMMUNICATION_PREFERENCE SAT_COMMON_COMMUNICATION_PREFERENCE payload 1 of 4 live here
---   HASHDIFF_COMMON_MONETARY_CONTEXT   SAT_COMMON_MONETARY_CONTEXT payload 3 of 3 live here
---   HASHDIFF_DOCUMENT_DEFINITION       SAT_DOCUMENT_DEFINITION payload 1 of 6 live here
+--   HASHDIFF_COMMON_MONETARY_CONTEXT   SAT_COMMON_MONETARY_CONTEXT payload 3 of 4 live here
+--   HASHDIFF_DOCUMENT_DEFINITION       SAT_DOCUMENT_DEFINITION payload 1 of 13 live here
 --   HASHDIFF_FINTXN_HEADER             SAT_FINTXN_HEADER payload 1 of 7 live here
 --   HASHDIFF_FINTXN_PREMIUM            SAT_FINTXN_PREMIUM payload 1 of 1 live here
 --   HASHDIFF_FIN_RECEIPT               SAT_FIN_RECEIPT payload 1 of 6 live here
@@ -83,17 +83,25 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'BASE_CURRENCY_CODE'
+      - 'BASE_CURRENCY_EXCHANGE_RATE'
       - 'CURRENCY_CODE'
       - 'EXCHANGE_RATE'
   HASHDIFF_DOCUMENT_DEFINITION:
     is_hashdiff: true
     columns:
+      - 'COURIER_NAME'
+      - 'DOCUMENT_DETAILS_TEXT'
       - 'DOCUMENT_NAME'
       - 'DOCUMENT_REFERENCE_NUMBER'
       - 'DOCUMENT_TYPE'
       - 'ISSUE_DATE'
+      - 'PROOF_OF_DELIVERY_NUMBER'
       - 'RECEIVED_DATE'
+      - 'RECORD_VALID_INDICATOR'
+      - 'SENDER_NAME'
       - 'SOURCE_CHANNEL'
+      - 'SPECIAL_ENCLOSURES_DETAILS'
+      - 'SPECIAL_ENCLOSURES_INDICATOR'
   HASHDIFF_FINTXN_HEADER:
     is_hashdiff: true
     columns:
@@ -290,6 +298,14 @@ derived_columns:
   TRANSACTION_TYPE: 'cast(null as varchar)'
   UIN: 'uin'
   VIP_INDICATOR: 'cast(null as varchar)'
+  BASE_CURRENCY_EXCHANGE_RATE: 'cast(null as varchar)'
+  COURIER_NAME: 'cast(null as varchar)'
+  DOCUMENT_DETAILS_TEXT: 'cast(null as varchar)'
+  PROOF_OF_DELIVERY_NUMBER: 'cast(null as varchar)'
+  RECORD_VALID_INDICATOR: 'cast(null as varchar)'
+  SENDER_NAME: 'cast(null as varchar)'
+  SPECIAL_ENCLOSURES_DETAILS: 'cast(null as varchar)'
+  SPECIAL_ENCLOSURES_INDICATOR: 'cast(null as varchar)'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW'
 {%- endset -%}

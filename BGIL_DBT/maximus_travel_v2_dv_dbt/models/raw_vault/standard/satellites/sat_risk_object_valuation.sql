@@ -13,6 +13,8 @@ source_model: 'satfeed_mtv2_sat_risk_object_valuation'
 src_pk: 'RISK_OBJECT_HKEY'
 src_payload:
   - 'INSURED_VALUE'
+  - 'INSURED_VALUE_IN_SUM_INSURED_CURRENCY'
+  - 'INSURED_VALUE_IN_TRANSACTION_CURRENCY'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

@@ -13,6 +13,7 @@ source_model: 'satfeed_mtv2_sat_claim_repudiation'
 src_pk: 'CLAIM_HKEY'
 src_payload:
   - 'REPUDIATION_REASON'
+  - 'REPUDIATION_REMARKS'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

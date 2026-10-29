@@ -30,7 +30,7 @@
 --   HASHDIFF_QUOTE_RATING              SAT_QUOTE_RATING payload 1 of 6 live here
 --   HASHDIFF_QUOTE_RATING_INPUT        SAT_QUOTE_RATING_INPUT payload 3 of 3 live here
 --   HASHDIFF_RISK_OBJECT_CORE          SAT_RISK_OBJECT_CORE payload 4 of 6 live here
---   HASHDIFF_RISK_OBJECT_VALUATION     SAT_RISK_OBJECT_VALUATION payload 1 of 1 live here
+--   HASHDIFF_RISK_OBJECT_VALUATION     SAT_RISK_OBJECT_VALUATION payload 3 of 3 live here
 --   HASHDIFF_RISK_PERSON_INSURED       SAT_RISK_PERSON_INSURED payload 5 of 5 live here
 --   HASHDIFF_RISK_PERSON_TRAVEL        SAT_RISK_PERSON_TRAVEL payload 3 of 6 live here
 
@@ -127,6 +127,8 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'INSURED_VALUE'
+      - 'INSURED_VALUE_IN_SUM_INSURED_CURRENCY'
+      - 'INSURED_VALUE_IN_TRANSACTION_CURRENCY'
   HASHDIFF_RISK_PERSON_INSURED:
     is_hashdiff: true
     columns:
@@ -219,6 +221,8 @@ derived_columns:
   TRIP_START_DATE: 'cast(null as varchar)'
   TRIP_TYPE: 'coalesce(trip_typeace, journey_typeace)'
   UIN: 'cast(null as varchar)'
+  INSURED_VALUE_IN_SUM_INSURED_CURRENCY: 'sum_insured_in_si_currency'
+  INSURED_VALUE_IN_TRANSACTION_CURRENCY: 'risk_sum_insured_in_transaction_currency'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW'
 {%- endset -%}

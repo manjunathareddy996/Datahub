@@ -15,7 +15,7 @@
 -- feeder -- so a zero is a measured zero (directive D-REJECT).
 --
 --   POLICY_HKEY                        HUB_POLICY  (5 row(s) in the map)
---   HASHDIFF_POLICY_ENDORSEMENT        SAT_POLICY_ENDORSEMENT payload 4 of 5 live here
+--   HASHDIFF_POLICY_ENDORSEMENT        SAT_POLICY_ENDORSEMENT payload 7 of 11 live here
 
 {%- set yaml_metadata -%}
 source_model: 'resolved_mtv2__uwr_pol_endt'
@@ -25,10 +25,15 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'EFFECTIVE_DATE'
+      - 'ENDORSEMENT_APPROVAL_DATE'
+      - 'ENDORSEMENT_INVOICE_REFERENCE'
       - 'ENDORSEMENT_NUMBER'
       - 'ENDORSEMENT_REASON'
+      - 'ENDORSEMENT_REMARKS'
       - 'ENDORSEMENT_TYPE'
+      - 'ENDORSEMENT_UNIQUE_IDENTIFICATION_CODE'
       - 'PREMIUM_IMPACT_AMOUNT'
+      - 'REVISED_SUM_INSURED_AMOUNT'
       - 'SUM_INSURED_IMPACT_AMOUNT'
 derived_columns:
   POLICY_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),'')"
@@ -39,6 +44,11 @@ derived_columns:
   ENDORSEMENT_TYPE: 'typeof_endorsement'
   PREMIUM_IMPACT_AMOUNT: 'endorsement_premium'
   SUM_INSURED_IMPACT_AMOUNT: 'endorsement_sum_insured'
+  ENDORSEMENT_APPROVAL_DATE: 'endorsement_approved_date'
+  ENDORSEMENT_INVOICE_REFERENCE: 'cast(null as varchar)'
+  ENDORSEMENT_REMARKS: 'remarks'
+  ENDORSEMENT_UNIQUE_IDENTIFICATION_CODE: 'cast(null as varchar)'
+  REVISED_SUM_INSURED_AMOUNT: 'endorsement_revised_sum_insured'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS'
 {%- endset -%}

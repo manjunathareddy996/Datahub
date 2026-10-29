@@ -49,19 +49,19 @@
 --   HASHDIFF_CHANNEL_DEFINITION        SAT_CHANNEL_DEFINITION payload 1 of 5 live here
 --   HASHDIFF_CLAIM_BENEFIT_HEAD        SAT_CLAIM_BENEFIT_HEAD payload 1 of 7 live here
 --   HASHDIFF_CLAIM_CO_RI_SHARE         SAT_CLAIM_CO_RI_SHARE payload 2 of 3 live here
---   HASHDIFF_CLAIM_FNOL                SAT_CLAIM_FNOL payload 7 of 7 live here
+--   HASHDIFF_CLAIM_FNOL                SAT_CLAIM_FNOL payload 14 of 14 live here
 --   HASHDIFF_CLAIM_FRAUD               SAT_CLAIM_FRAUD payload 5 of 6 live here
 --   HASHDIFF_CLAIM_HEADER              SAT_CLAIM_HEADER payload 11 of 14 live here
---   HASHDIFF_CLAIM_HEALTH_DETAIL       SAT_CLAIM_HEALTH_DETAIL payload 2 of 9 live here
+--   HASHDIFF_CLAIM_HEALTH_DETAIL       SAT_CLAIM_HEALTH_DETAIL payload 5 of 16 live here
 --   HASHDIFF_CLAIM_LITIGATION          SAT_CLAIM_LITIGATION payload 2 of 3 live here
---   HASHDIFF_CLAIM_REPUDIATION         SAT_CLAIM_REPUDIATION payload 1 of 1 live here
+--   HASHDIFF_CLAIM_REPUDIATION         SAT_CLAIM_REPUDIATION payload 2 of 2 live here
 --   HASHDIFF_CLAIM_TRAVEL_DETAIL       SAT_CLAIM_TRAVEL_DETAIL payload 1 of 6 live here
 --   HASHDIFF_COMMON_ADDRESS            SAT_COMMON_ADDRESS payload 7 of 16 live here
 --   HASHDIFF_COMMON_ADMIN_GEOGRAPHY    SAT_COMMON_ADMIN_GEOGRAPHY payload 5 of 5 live here
 --   HASHDIFF_COMMON_CLASSIFICATION     SAT_COMMON_CLASSIFICATION payload 1 of 4 live here
---   HASHDIFF_COMMON_CONSENT            SAT_COMMON_CONSENT payload 1 of 1 live here
---   HASHDIFF_DOCUMENT_DEFINITION       SAT_DOCUMENT_DEFINITION payload 3 of 6 live here
---   HASHDIFF_LOSS_EVENT_DETAIL         SAT_LOSS_EVENT_DETAIL payload 7 of 7 live here
+--   HASHDIFF_COMMON_CONSENT            SAT_COMMON_CONSENT payload 1 of 2 live here
+--   HASHDIFF_DOCUMENT_DEFINITION       SAT_DOCUMENT_DEFINITION payload 6 of 13 live here
+--   HASHDIFF_LOSS_EVENT_DETAIL         SAT_LOSS_EVENT_DETAIL payload 8 of 8 live here
 --   HASHDIFF_LOSS_EVENT_NOTIFICATION   SAT_LOSS_EVENT_NOTIFICATION payload 1 of 1 live here
 --   HASHDIFF_LOSS_LOCATION_ADDRESS     SAT_LOSS_LOCATION_ADDRESS payload 4 of 4 live here
 --   HASHDIFF_PARTY_BANKING             SAT_PARTY_BANKING payload 6 of 7 live here
@@ -70,7 +70,7 @@
 --   HASHDIFF_PARTY_FINANCIAL_PROFILE   SAT_PARTY_FINANCIAL_PROFILE payload 1 of 2 live here
 --   HASHDIFF_PARTY_IDENTITY            SAT_PARTY_IDENTITY payload 2 of 15 live here
 --   HASHDIFF_PARTY_POLICY_HISTORY      SAT_PARTY_POLICY_HISTORY payload 1 of 1 live here
---   HASHDIFF_PARTY_PORTFOLIO_SUMMARY   SAT_PARTY_PORTFOLIO_SUMMARY payload 1 of 1 live here
+--   HASHDIFF_PARTY_PORTFOLIO_SUMMARY   SAT_PARTY_PORTFOLIO_SUMMARY payload 8 of 8 live here
 --   HASHDIFF_PARTY_RELATIONSHIP_PROFILE SAT_PARTY_RELATIONSHIP_PROFILE payload 1 of 1 live here
 --   HASHDIFF_POLICY_CLASSIFICATION     SAT_POLICY_CLASSIFICATION payload 1 of 1 live here
 --   HASHDIFF_POLICY_COVERAGE_SCHEDULE  SAT_POLICY_COVERAGE_SCHEDULE payload 2 of 8 live here
@@ -143,13 +143,20 @@ hashed_columns:
   HASHDIFF_CLAIM_FNOL:
     is_hashdiff: true
     columns:
+      - 'ADD_ON_CLAIM_ELECTED_INDICATOR'
+      - 'CLAIM_PERSON_NAME'
+      - 'DELAYED_INTIMATION_REASON'
       - 'FNOL_CHANNEL'
       - 'FNOL_TIME'
+      - 'INTIMATED_CAUSE_OF_CLAIM'
       - 'PRELIMINARY_LOSS_DESCRIPTION'
       - 'PRELIMINARY_LOSS_ESTIMATE'
+      - 'REGISTRATION_FLAGS'
       - 'REPORTED_BY_CONTACT'
+      - 'REPORTED_BY_EMAIL'
       - 'REPORTED_BY_NAME'
       - 'SELF_SERVICE_INDICATOR'
+      - 'THIRD_PARTY_INVOLVEMENT_INDICATOR'
   HASHDIFF_CLAIM_FRAUD:
     is_hashdiff: true
     columns:
@@ -180,12 +187,19 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'ADMISSION_DATE'
+      - 'ADVERSE_MEDICAL_HISTORY_DESCRIPTION'
       - 'AILMENT_DESCRIPTION'
       - 'DISCHARGE_DATE'
+      - 'DISEASE_CATEGORY'
       - 'HEALTH_CLAIM_REMARKS'
       - 'ICD_CODE'
+      - 'ICD_DESCRIPTION'
       - 'LENGTH_OF_STAY'
+      - 'MEDICALLY_ADMISSIBLE_INDICATOR'
+      - 'PRE_EXISTING_DISEASE_DESCRIPTION'
       - 'PRE_EXISTING_DISEASE_RELATED_INDICATOR'
+      - 'PRE_EXISTING_ILLNESS_DESCRIPTION'
+      - 'SYSTEM_OF_MEDICINE'
       - 'TREATING_DOCTOR_NAME'
       - 'TREATMENT_TYPE'
   HASHDIFF_CLAIM_LITIGATION:
@@ -198,6 +212,7 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'REPUDIATION_REASON'
+      - 'REPUDIATION_REMARKS'
   HASHDIFF_CLAIM_TRAVEL_DETAIL:
     is_hashdiff: true
     columns:
@@ -245,15 +260,23 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'CONSENT_GIVEN_INDICATOR'
+      - 'DATA_SHARING_CONSENT_INDICATOR'
   HASHDIFF_DOCUMENT_DEFINITION:
     is_hashdiff: true
     columns:
+      - 'COURIER_NAME'
+      - 'DOCUMENT_DETAILS_TEXT'
       - 'DOCUMENT_NAME'
       - 'DOCUMENT_REFERENCE_NUMBER'
       - 'DOCUMENT_TYPE'
       - 'ISSUE_DATE'
+      - 'PROOF_OF_DELIVERY_NUMBER'
       - 'RECEIVED_DATE'
+      - 'RECORD_VALID_INDICATOR'
+      - 'SENDER_NAME'
       - 'SOURCE_CHANNEL'
+      - 'SPECIAL_ENCLOSURES_DETAILS'
+      - 'SPECIAL_ENCLOSURES_INDICATOR'
   HASHDIFF_LOSS_EVENT_DETAIL:
     is_hashdiff: true
     columns:
@@ -262,6 +285,7 @@ hashed_columns:
       - 'FIR_NUMBER'
       - 'LOSS_DESCRIPTION'
       - 'LOSS_TIME'
+      - 'POLICE_REPORT_TIME'
       - 'POLICE_STATION_NAME'
       - 'THIRD_PARTY_INVOLVED_INDICATOR'
   HASHDIFF_LOSS_EVENT_NOTIFICATION:
@@ -325,6 +349,13 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'ACTIVE_POLICY_COUNT'
+      - 'CROSS_SELL_POLICIES_PURCHASED'
+      - 'CUSTOMER_ACTIVE_YEARS'
+      - 'LATEST_POLICY_ISSUANCE_LOCATION_NAME'
+      - 'LATEST_POLICY_LINE_OF_BUSINESS'
+      - 'LATEST_POLICY_PRODUCT_NAME'
+      - 'LATEST_POLICY_SUB_CHANNEL'
+      - 'MULTI_CHANNEL_PURCHASE_INDICATOR'
   HASHDIFF_PARTY_RELATIONSHIP_PROFILE:
     is_hashdiff: true
     columns:
@@ -639,6 +670,37 @@ derived_columns:
   TREATMENT_TYPE: 'cast(null as varchar)'
   UIN: 'cast(null as varchar)'
   VALUE_BAND: 'cast(null as varchar)'
+  ADD_ON_CLAIM_ELECTED_INDICATOR: 'are_you_claiming_for_add_on'
+  CLAIM_PERSON_NAME: 'name_of_person'
+  DELAYED_INTIMATION_REASON: 'delay_reason_for_registration'
+  INTIMATED_CAUSE_OF_CLAIM: 'cause_of_claim'
+  REGISTRATION_FLAGS: 'registration_flags'
+  REPORTED_BY_EMAIL: 'caller_email_id'
+  THIRD_PARTY_INVOLVEMENT_INDICATOR: 'do_you_want_third_party_involvemnt'
+  ADVERSE_MEDICAL_HISTORY_DESCRIPTION: 'cast(null as varchar)'
+  DISEASE_CATEGORY: 'disease_category'
+  ICD_DESCRIPTION: 'icd_description'
+  MEDICALLY_ADMISSIBLE_INDICATOR: 'medically_admissible'
+  PRE_EXISTING_DISEASE_DESCRIPTION: 'cast(null as varchar)'
+  PRE_EXISTING_ILLNESS_DESCRIPTION: 'cast(null as varchar)'
+  SYSTEM_OF_MEDICINE: 'cast(null as varchar)'
+  REPUDIATION_REMARKS: 'repudiation_remarks'
+  DATA_SHARING_CONSENT_INDICATOR: 'cast(null as varchar)'
+  COURIER_NAME: 'courier_name'
+  DOCUMENT_DETAILS_TEXT: 'document_details'
+  PROOF_OF_DELIVERY_NUMBER: 'cast(null as varchar)'
+  RECORD_VALID_INDICATOR: 'isvalid'
+  SENDER_NAME: 'cast(null as varchar)'
+  SPECIAL_ENCLOSURES_DETAILS: 'cast(null as varchar)'
+  SPECIAL_ENCLOSURES_INDICATOR: 'cast(null as varchar)'
+  POLICE_REPORT_TIME: 'police_report_time'
+  CROSS_SELL_POLICIES_PURCHASED: 'cross_sell_policies_purchased'
+  CUSTOMER_ACTIVE_YEARS: 'customer_active_period_with_bagic_in_year'
+  LATEST_POLICY_ISSUANCE_LOCATION_NAME: 'latest_policy_location_name_of_policy_issuance'
+  LATEST_POLICY_LINE_OF_BUSINESS: 'latest_policy_line_of_business'
+  LATEST_POLICY_PRODUCT_NAME: 'latest_policy_product_name'
+  LATEST_POLICY_SUB_CHANNEL: 'latest_policy_sub_channnel'
+  MULTI_CHANNEL_PURCHASE_INDICATOR: 'customer_taking_policies_from_multiple_channels'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW'
 {%- endset -%}

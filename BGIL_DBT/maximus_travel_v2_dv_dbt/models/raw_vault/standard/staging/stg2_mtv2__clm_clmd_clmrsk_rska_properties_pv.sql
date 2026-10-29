@@ -25,12 +25,12 @@
 --   HASHDIFF_CLAIM_BENEFIT_HEAD        SAT_CLAIM_BENEFIT_HEAD payload 3 of 7 live here
 --   HASHDIFF_CLAIM_FRAUD               SAT_CLAIM_FRAUD payload 1 of 6 live here
 --   HASHDIFF_CLAIM_HEADER              SAT_CLAIM_HEADER payload 1 of 14 live here
---   HASHDIFF_CLAIM_HEALTH_DETAIL       SAT_CLAIM_HEALTH_DETAIL payload 9 of 9 live here
+--   HASHDIFF_CLAIM_HEALTH_DETAIL       SAT_CLAIM_HEALTH_DETAIL payload 14 of 16 live here
 --   HASHDIFF_CLAIM_INVESTIGATION_FINDING SAT_CLAIM_INVESTIGATION_FINDING payload 1 of 1 live here
 --   HASHDIFF_CLAIM_PA_DETAIL           SAT_CLAIM_PA_DETAIL payload 2 of 2 live here
---   HASHDIFF_CLAIM_REPUDIATION         SAT_CLAIM_REPUDIATION payload 1 of 1 live here
+--   HASHDIFF_CLAIM_REPUDIATION         SAT_CLAIM_REPUDIATION payload 1 of 2 live here
 --   HASHDIFF_CLAIM_RESERVE_HEAD        SAT_CLAIM_RESERVE_HEAD payload 2 of 2 live here
---   HASHDIFF_CLAIM_TP_FORENSIC         SAT_CLAIM_TP_FORENSIC payload 2 of 2 live here
+--   HASHDIFF_CLAIM_TP_FORENSIC         SAT_CLAIM_TP_FORENSIC payload 3 of 3 live here
 --   HASHDIFF_CLAIM_TRAVEL_DETAIL       SAT_CLAIM_TRAVEL_DETAIL payload 6 of 6 live here
 --   HASHDIFF_COMMON_ADDRESS            SAT_COMMON_ADDRESS payload 3 of 16 live here
 --   HASHDIFF_COMMON_CONTACT            SAT_COMMON_CONTACT payload 1 of 9 live here
@@ -88,12 +88,19 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'ADMISSION_DATE'
+      - 'ADVERSE_MEDICAL_HISTORY_DESCRIPTION'
       - 'AILMENT_DESCRIPTION'
       - 'DISCHARGE_DATE'
+      - 'DISEASE_CATEGORY'
       - 'HEALTH_CLAIM_REMARKS'
       - 'ICD_CODE'
+      - 'ICD_DESCRIPTION'
       - 'LENGTH_OF_STAY'
+      - 'MEDICALLY_ADMISSIBLE_INDICATOR'
+      - 'PRE_EXISTING_DISEASE_DESCRIPTION'
       - 'PRE_EXISTING_DISEASE_RELATED_INDICATOR'
+      - 'PRE_EXISTING_ILLNESS_DESCRIPTION'
+      - 'SYSTEM_OF_MEDICINE'
       - 'TREATING_DOCTOR_NAME'
       - 'TREATMENT_TYPE'
   HASHDIFF_CLAIM_INVESTIGATION_FINDING:
@@ -110,6 +117,7 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'REPUDIATION_REASON'
+      - 'REPUDIATION_REMARKS'
   HASHDIFF_CLAIM_RESERVE_HEAD:
     is_hashdiff: true
     columns:
@@ -121,6 +129,7 @@ hashed_columns:
     columns:
       - 'FIR_DATE'
       - 'FIR_NUMBER'
+      - 'FIR_TIME'
   HASHDIFF_CLAIM_TRAVEL_DETAIL:
     is_hashdiff: true
     columns:
@@ -293,6 +302,15 @@ derived_columns:
   SUB_LIMIT_APPLIED: 'sublimit'
   TREATING_DOCTOR_NAME: 'treating_doctor_details'
   TREATMENT_TYPE: 'mode_of_treatment'
+  ADVERSE_MEDICAL_HISTORY_DESCRIPTION: 'adverse_medical_history'
+  DISEASE_CATEGORY: 'disease_category'
+  ICD_DESCRIPTION: 'cast(null as varchar)'
+  MEDICALLY_ADMISSIBLE_INDICATOR: 'cast(null as varchar)'
+  PRE_EXISTING_DISEASE_DESCRIPTION: 'preexisting_description'
+  PRE_EXISTING_ILLNESS_DESCRIPTION: 'preexisting_illness'
+  SYSTEM_OF_MEDICINE: 'system_of_medicine'
+  REPUDIATION_REMARKS: 'cast(null as varchar)'
+  FIR_TIME: 'fir_time'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW'
 {%- endset -%}

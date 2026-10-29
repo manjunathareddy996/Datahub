@@ -13,6 +13,7 @@ source_model: 'satfeed_mtv2_sat_common_monetary_context'
 src_pk: 'FINANCIAL_TRANSACTION_HKEY'
 src_payload:
   - 'BASE_CURRENCY_CODE'
+  - 'BASE_CURRENCY_EXCHANGE_RATE'
   - 'CURRENCY_CODE'
   - 'EXCHANGE_RATE'
 src_hashdiff: 'HASHDIFF'

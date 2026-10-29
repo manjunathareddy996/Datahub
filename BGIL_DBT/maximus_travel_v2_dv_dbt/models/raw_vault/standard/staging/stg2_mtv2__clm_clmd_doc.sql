@@ -15,7 +15,7 @@
 -- feeder -- so a zero is a measured zero (directive D-REJECT).
 --
 --   DOCUMENT_HKEY                      HUB_DOCUMENT  (4 row(s) in the map)
---   HASHDIFF_DOCUMENT_DEFINITION       SAT_DOCUMENT_DEFINITION payload 3 of 6 live here
+--   HASHDIFF_DOCUMENT_DEFINITION       SAT_DOCUMENT_DEFINITION payload 3 of 13 live here
 
 {%- set yaml_metadata -%}
 source_model: 'stg_mtv2__clm_clmd_doc'
@@ -24,12 +24,19 @@ hashed_columns:
   HASHDIFF_DOCUMENT_DEFINITION:
     is_hashdiff: true
     columns:
+      - 'COURIER_NAME'
+      - 'DOCUMENT_DETAILS_TEXT'
       - 'DOCUMENT_NAME'
       - 'DOCUMENT_REFERENCE_NUMBER'
       - 'DOCUMENT_TYPE'
       - 'ISSUE_DATE'
+      - 'PROOF_OF_DELIVERY_NUMBER'
       - 'RECEIVED_DATE'
+      - 'RECORD_VALID_INDICATOR'
+      - 'SENDER_NAME'
       - 'SOURCE_CHANNEL'
+      - 'SPECIAL_ENCLOSURES_DETAILS'
+      - 'SPECIAL_ENCLOSURES_INDICATOR'
 derived_columns:
   DOCUMENT_BK: "nullif(trim(case when coalesce(nullif(trim(document_id),'')) is not null then 'DOC:' || nullif(trim(document_id), '') end),'')"
   DOCUMENT_NK: "'HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(document_id),'')) is not null then 'DOC:' || nullif(trim(document_id), '') end),''))"
@@ -39,6 +46,13 @@ derived_columns:
   ISSUE_DATE: 'document_generation_date'
   RECEIVED_DATE: 'cast(null as varchar)'
   SOURCE_CHANNEL: 'cast(null as varchar)'
+  COURIER_NAME: 'cast(null as varchar)'
+  DOCUMENT_DETAILS_TEXT: 'cast(null as varchar)'
+  PROOF_OF_DELIVERY_NUMBER: 'cast(null as varchar)'
+  RECORD_VALID_INDICATOR: 'cast(null as varchar)'
+  SENDER_NAME: 'cast(null as varchar)'
+  SPECIAL_ENCLOSURES_DETAILS: 'cast(null as varchar)'
+  SPECIAL_ENCLOSURES_INDICATOR: 'cast(null as varchar)'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS'
 {%- endset -%}

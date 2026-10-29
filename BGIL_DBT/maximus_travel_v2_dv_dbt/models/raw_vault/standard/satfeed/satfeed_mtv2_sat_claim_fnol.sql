@@ -3,7 +3,7 @@
 -- FEED for SAT_CLAIM_FNOL (target track): unions 2 feeder(s).
 --
 -- Payload is the union over ALL feeders, null-padded to the SATELLITE -- not to any one
--- feeder group (BUILD_RULES 6). 7 payload column(s), 0 child-key column(s).
+-- feeder group (BUILD_RULES 6). 14 payload column(s), 0 child-key column(s).
 --
 -- The hashdiff is renamed here from the wide stage's HASHDIFF_CLAIM_FNOL to the bare HASHDIFF the sibling
 -- writes on all 45 of its satellites. The wide stage cannot use the bare name because
@@ -18,6 +18,13 @@
         REPORTED_BY_CONTACT as REPORTED_BY_CONTACT,
         REPORTED_BY_NAME as REPORTED_BY_NAME,
         SELF_SERVICE_INDICATOR as SELF_SERVICE_INDICATOR,
+        ADD_ON_CLAIM_ELECTED_INDICATOR as ADD_ON_CLAIM_ELECTED_INDICATOR,
+        CLAIM_PERSON_NAME as CLAIM_PERSON_NAME,
+        DELAYED_INTIMATION_REASON as DELAYED_INTIMATION_REASON,
+        INTIMATED_CAUSE_OF_CLAIM as INTIMATED_CAUSE_OF_CLAIM,
+        REGISTRATION_FLAGS as REGISTRATION_FLAGS,
+        REPORTED_BY_EMAIL as REPORTED_BY_EMAIL,
+        THIRD_PARTY_INVOLVEMENT_INDICATOR as THIRD_PARTY_INVOLVEMENT_INDICATOR,
         HASHDIFF_CLAIM_FNOL as HASHDIFF,
         LOAD_DATETIME, RECORD_SOURCE
     from {{ ref('stg2_mtv2__clm_clmd') }}
@@ -32,6 +39,13 @@ union all
         REPORTED_BY_CONTACT as REPORTED_BY_CONTACT,
         REPORTED_BY_NAME as REPORTED_BY_NAME,
         SELF_SERVICE_INDICATOR as SELF_SERVICE_INDICATOR,
+        ADD_ON_CLAIM_ELECTED_INDICATOR as ADD_ON_CLAIM_ELECTED_INDICATOR,
+        CLAIM_PERSON_NAME as CLAIM_PERSON_NAME,
+        DELAYED_INTIMATION_REASON as DELAYED_INTIMATION_REASON,
+        INTIMATED_CAUSE_OF_CLAIM as INTIMATED_CAUSE_OF_CLAIM,
+        REGISTRATION_FLAGS as REGISTRATION_FLAGS,
+        REPORTED_BY_EMAIL as REPORTED_BY_EMAIL,
+        THIRD_PARTY_INVOLVEMENT_INDICATOR as THIRD_PARTY_INVOLVEMENT_INDICATOR,
         HASHDIFF_CLAIM_FNOL as HASHDIFF,
         LOAD_DATETIME, RECORD_SOURCE
     from {{ ref('stg2_mtv2__clm_clmd_clmap_pv') }}

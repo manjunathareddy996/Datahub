@@ -13,6 +13,7 @@ source_model: 'satfeed_mtv2_sat_common_consent'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'CONSENT_GIVEN_INDICATOR'
+  - 'DATA_SHARING_CONSENT_INDICATOR'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

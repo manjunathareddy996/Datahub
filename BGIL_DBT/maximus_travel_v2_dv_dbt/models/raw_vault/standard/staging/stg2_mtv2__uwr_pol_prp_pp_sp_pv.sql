@@ -33,21 +33,21 @@
 --   HASHDIFF_COMMON_ADDRESS            SAT_COMMON_ADDRESS payload 9 of 16 live here
 --   HASHDIFF_COMMON_CLASSIFICATION     SAT_COMMON_CLASSIFICATION payload 2 of 4 live here
 --   HASHDIFF_COMMON_COMMUNICATION_PREFERENCE SAT_COMMON_COMMUNICATION_PREFERENCE payload 3 of 4 live here
---   HASHDIFF_COMMON_CONSENT            SAT_COMMON_CONSENT payload 1 of 1 live here
---   HASHDIFF_LNK_ROLE_AGENT            SAT_LNK_ROLE_AGENT payload 6 of 6 live here
+--   HASHDIFF_COMMON_CONSENT            SAT_COMMON_CONSENT payload 1 of 2 live here
+--   HASHDIFF_LNK_ROLE_AGENT            SAT_LNK_ROLE_AGENT payload 9 of 9 live here
 --   HASHDIFF_LNK_ROLE_CUSTOMER         SAT_LNK_ROLE_CUSTOMER payload 2 of 3 live here
 --   HASHDIFF_LNK_ROLE_EMPLOYEE         SAT_LNK_ROLE_EMPLOYEE payload 1 of 1 live here
 --   HASHDIFF_PARTY_AML_SCREENING       SAT_PARTY_AML_SCREENING payload 1 of 1 live here
 --   HASHDIFF_PARTY_CONTACT_ADDRESS_LINK SAT_PARTY_CONTACT_ADDRESS_LINK payload 1 of 1 live here
 --   HASHDIFF_PARTY_EMPLOYMENT          SAT_PARTY_EMPLOYMENT payload 4 of 4 live here
 --   HASHDIFF_PARTY_FINANCIAL_PROFILE   SAT_PARTY_FINANCIAL_PROFILE payload 1 of 2 live here
---   HASHDIFF_PARTY_FRAUD_PROFILE       SAT_PARTY_FRAUD_PROFILE payload 2 of 2 live here
+--   HASHDIFF_PARTY_FRAUD_PROFILE       SAT_PARTY_FRAUD_PROFILE payload 4 of 4 live here
 --   HASHDIFF_PARTY_HEALTH_PROFILE      SAT_PARTY_HEALTH_PROFILE payload 6 of 6 live here
 --   HASHDIFF_PARTY_IDENTITY            SAT_PARTY_IDENTITY payload 10 of 15 live here
 --   HASHDIFF_PARTY_INDIVIDUAL_DEMOGRAPHICS SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS payload 6 of 6 live here
---   HASHDIFF_PARTY_KYC                 SAT_PARTY_KYC payload 3 of 3 live here
+--   HASHDIFF_PARTY_KYC                 SAT_PARTY_KYC payload 7 of 8 live here
 --   HASHDIFF_PARTY_ONBOARDING_JOURNEY  SAT_PARTY_ONBOARDING_JOURNEY payload 4 of 4 live here
---   HASHDIFF_PARTY_ORGANISATION_PROFILE SAT_PARTY_ORGANISATION_PROFILE payload 11 of 11 live here
+--   HASHDIFF_PARTY_ORGANISATION_PROFILE SAT_PARTY_ORGANISATION_PROFILE payload 18 of 18 live here
 --   HASHDIFF_PARTY_PAYOUT_PROFILE      SAT_PARTY_PAYOUT_PROFILE payload 1 of 1 live here
 
 {%- set yaml_metadata -%}
@@ -113,15 +113,19 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'CONSENT_GIVEN_INDICATOR'
+      - 'DATA_SHARING_CONSENT_INDICATOR'
   HASHDIFF_LNK_ROLE_AGENT:
     is_hashdiff: true
     columns:
       - 'AGENT_CODE'
       - 'IRDAI_AGENT_LICENCE_NUMBER'
+      - 'IRDA_LISTED_PRIMARY_PROFESSION'
       - 'LICENCE_CATEGORY'
+      - 'LICENCE_DETAILS_DESCRIPTION'
       - 'LICENCE_EXPIRY_DATE'
       - 'LICENCE_ISSUE_DATE'
       - 'SPECIAL_TDS_RATE'
+      - 'SPECIAL_TDS_RATE_APPLICABLE_INDICATOR'
   HASHDIFF_LNK_ROLE_CUSTOMER:
     is_hashdiff: true
     columns:
@@ -156,8 +160,10 @@ hashed_columns:
   HASHDIFF_PARTY_FRAUD_PROFILE:
     is_hashdiff: true
     columns:
+      - 'NEGATIVE_LIST_DATE'
       - 'NEGATIVE_LIST_INDICATOR'
       - 'NEGATIVE_LIST_REASON'
+      - 'NON_DISCLOSURE_ACTION_INITIATED_INDICATOR'
   HASHDIFF_PARTY_HEALTH_PROFILE:
     is_hashdiff: true
     columns:
@@ -197,8 +203,13 @@ hashed_columns:
   HASHDIFF_PARTY_KYC:
     is_hashdiff: true
     columns:
+      - 'CKYC_DETAILS_NARRATIVE'
+      - 'CKYC_NUMBER_HELD_DECLARED_INDICATOR'
       - 'CKYC_REGISTRATION_STATUS'
       - 'KYC_COMPLETION_DATE'
+      - 'KYC_DETAILS_DESCRIPTION'
+      - 'KYC_DETAIL_DESCRIPTION'
+      - 'KYC_RELATED_DETAILS_DESCRIPTION'
       - 'KYC_STATUS'
   HASHDIFF_PARTY_ONBOARDING_JOURNEY:
     is_hashdiff: true
@@ -211,16 +222,23 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'ANNUAL_TURNOVER'
+      - 'BUSINESS_REGISTRATION_DATE'
       - 'BUSINESS_REGISTRATION_NUMBER'
+      - 'BUSINESS_TYPE_CODE'
       - 'DATE_OF_INCORPORATION'
       - 'INDUSTRY_CODE'
+      - 'INFRASTRUCTURE_SUB_SECTOR'
       - 'LEGAL_CONSTITUTION_TYPE'
       - 'MSME_CATEGORY'
       - 'MSME_INDICATOR'
       - 'NATURE_OF_BUSINESS'
       - 'NIC_CODE'
+      - 'OTHER_INDUSTRY_TYPE_DESCRIPTION'
       - 'PAID_UP_CAPITAL'
       - 'PARENT_ENTITY_NAME'
+      - 'REGISTERED_BUSINESS_TRUST_INDICATOR'
+      - 'REGISTERED_COMPANY_DECLARED_INDICATOR'
+      - 'TRADE_NAME'
   HASHDIFF_PARTY_PAYOUT_PROFILE:
     is_hashdiff: true
     columns:
@@ -353,6 +371,24 @@ derived_columns:
   VIP_INDICATOR: 'prive_flag'
   WEIGHT: 'weight'
   YEARS_IN_CITY: 'number_of_years_residing_in_the_city_of_residence'
+  DATA_SHARING_CONSENT_INDICATOR: 'cast(null as varchar)'
+  IRDA_LISTED_PRIMARY_PROFESSION: 'irda_list_primary_profession'
+  LICENCE_DETAILS_DESCRIPTION: 'license_details'
+  SPECIAL_TDS_RATE_APPLICABLE_INDICATOR: 'special_rate_applicable'
+  NEGATIVE_LIST_DATE: 'date_of_blacklisting'
+  NON_DISCLOSURE_ACTION_INITIATED_INDICATOR: 'nondisclosure_initiated'
+  CKYC_DETAILS_NARRATIVE: 'coalesce(ckyc_details, claim_ckyc_details)'
+  CKYC_NUMBER_HELD_DECLARED_INDICATOR: 'do_you_have_ckyc_number'
+  KYC_DETAILS_DESCRIPTION: 'cast(null as varchar)'
+  KYC_DETAIL_DESCRIPTION: 'kyc_details'
+  KYC_RELATED_DETAILS_DESCRIPTION: 'kyc_related_details'
+  BUSINESS_REGISTRATION_DATE: 'date_of_registration'
+  BUSINESS_TYPE_CODE: 'business_type'
+  INFRASTRUCTURE_SUB_SECTOR: 'infrastructure_subsector'
+  OTHER_INDUSTRY_TYPE_DESCRIPTION: 'other_client_industry_type'
+  REGISTERED_BUSINESS_TRUST_INDICATOR: 'is_the_organisation_a_registered_business_trust'
+  REGISTERED_COMPANY_DECLARED_INDICATOR: 'are_you_registered_company'
+  TRADE_NAME: 'trade_name'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
 {%- endset -%}

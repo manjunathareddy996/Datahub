@@ -3,7 +3,7 @@
 -- FEED for SAT_CLAIM_TP_FORENSIC (target track): unions 1 feeder(s).
 --
 -- Payload is the union over ALL feeders, null-padded to the SATELLITE -- not to any one
--- feeder group (BUILD_RULES 6). 2 payload column(s), 0 child-key column(s).
+-- feeder group (BUILD_RULES 6). 3 payload column(s), 0 child-key column(s).
 --
 -- The hashdiff is renamed here from the wide stage's HASHDIFF_CLAIM_TP_FORENSIC to the bare HASHDIFF the sibling
 -- writes on all 45 of its satellites. The wide stage cannot use the bare name because
@@ -13,6 +13,7 @@
         CLAIM_HKEY as CLAIM_HKEY,
         FIR_DATE as FIR_DATE,
         FIR_NUMBER as FIR_NUMBER,
+        FIR_TIME as FIR_TIME,
         HASHDIFF_CLAIM_TP_FORENSIC as HASHDIFF,
         LOAD_DATETIME, RECORD_SOURCE
     from {{ ref('stg2_mtv2__clm_clmd_clmrsk_rska_properties_pv') }}

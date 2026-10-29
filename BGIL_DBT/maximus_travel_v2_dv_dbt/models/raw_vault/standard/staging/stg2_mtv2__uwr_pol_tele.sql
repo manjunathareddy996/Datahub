@@ -15,7 +15,7 @@
 -- feeder -- so a zero is a measured zero (directive D-REJECT).
 --
 --   ASSESSMENT_HKEY__TELE_VERIFICATION HUB_ASSESSMENT / tele-verification  (5 row(s) in the map)
---   HASHDIFF_ASSESSMENT_HEADER         SAT_ASSESSMENT_HEADER payload 2 of 2 live here
+--   HASHDIFF_ASSESSMENT_HEADER         SAT_ASSESSMENT_HEADER payload 4 of 4 live here
 
 {%- set yaml_metadata -%}
 source_model: 'stg_mtv2__uwr_pol_tele'
@@ -24,6 +24,8 @@ hashed_columns:
   HASHDIFF_ASSESSMENT_HEADER:
     is_hashdiff: true
     columns:
+      - 'ASSESSMENT_END_TIME'
+      - 'ASSESSMENT_START_TIME'
       - 'ASSESSMENT_STATUS'
       - 'REQUESTED_DATE'
 derived_columns:
@@ -31,6 +33,8 @@ derived_columns:
   ASSESSMENT_NK__TELE_VERIFICATION: "'HUB_ASSESSMENT|' || (nullif(trim(case when coalesce(nullif(trim(transaction_id),'')) is not null then 'TELEVERIF:' || nullif(trim(transaction_id), '') end),''))"
   ASSESSMENT_STATUS: 'tele_varification_status'
   REQUESTED_DATE: 'tele_varification_initiated_date'
+  ASSESSMENT_END_TIME: 'end_time'
+  ASSESSMENT_START_TIME: 'start_time'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS'
 {%- endset -%}

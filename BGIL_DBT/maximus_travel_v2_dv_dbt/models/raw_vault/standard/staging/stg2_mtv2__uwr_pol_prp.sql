@@ -21,7 +21,7 @@
 --   HASHDIFF_LNK_POLICY_PARTY_ROLE     SAT_LNK_POLICY_PARTY_ROLE payload 2 of 3 live here
 --   HASHDIFF_PARTY_EMPLOYMENT          SAT_PARTY_EMPLOYMENT payload 1 of 4 live here
 --   HASHDIFF_PARTY_IDENTITY            SAT_PARTY_IDENTITY payload 10 of 15 live here
---   HASHDIFF_PARTY_ORGANISATION_PROFILE SAT_PARTY_ORGANISATION_PROFILE payload 3 of 11 live here
+--   HASHDIFF_PARTY_ORGANISATION_PROFILE SAT_PARTY_ORGANISATION_PROFILE payload 3 of 18 live here
 
 {%- set yaml_metadata -%}
 source_model: 'resolved_mtv2__uwr_pol_prp'
@@ -67,16 +67,23 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'ANNUAL_TURNOVER'
+      - 'BUSINESS_REGISTRATION_DATE'
       - 'BUSINESS_REGISTRATION_NUMBER'
+      - 'BUSINESS_TYPE_CODE'
       - 'DATE_OF_INCORPORATION'
       - 'INDUSTRY_CODE'
+      - 'INFRASTRUCTURE_SUB_SECTOR'
       - 'LEGAL_CONSTITUTION_TYPE'
       - 'MSME_CATEGORY'
       - 'MSME_INDICATOR'
       - 'NATURE_OF_BUSINESS'
       - 'NIC_CODE'
+      - 'OTHER_INDUSTRY_TYPE_DESCRIPTION'
       - 'PAID_UP_CAPITAL'
       - 'PARENT_ENTITY_NAME'
+      - 'REGISTERED_BUSINESS_TRUST_INDICATOR'
+      - 'REGISTERED_COMPANY_DECLARED_INDICATOR'
+      - 'TRADE_NAME'
 derived_columns:
   PARTY_BK__PARENT_PARTY: "nullif(trim(case when coalesce(nullif(trim(parent_party_code),'')) is not null then nullif(trim(parent_party_code), '') end),'')"
   PARTY_NK__PARENT_PARTY: "'HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(parent_party_code),'')) is not null then nullif(trim(parent_party_code), '') end),''))"
@@ -121,6 +128,13 @@ derived_columns:
   ROLE_END_DATE: 'party_end_date'
   ROLE_SEQUENCE: "'1'"
   SALUTATION: 'title'
+  BUSINESS_REGISTRATION_DATE: 'cast(null as varchar)'
+  BUSINESS_TYPE_CODE: 'cast(null as varchar)'
+  INFRASTRUCTURE_SUB_SECTOR: 'cast(null as varchar)'
+  OTHER_INDUSTRY_TYPE_DESCRIPTION: 'cast(null as varchar)'
+  REGISTERED_BUSINESS_TRUST_INDICATOR: 'cast(null as varchar)'
+  REGISTERED_COMPANY_DECLARED_INDICATOR: 'cast(null as varchar)'
+  TRADE_NAME: 'cast(null as varchar)'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS'
 {%- endset -%}

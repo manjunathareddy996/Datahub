@@ -19,7 +19,7 @@
 --   HASHDIFF_FINTXN_HEADER             SAT_FINTXN_HEADER payload 3 of 7 live here
 --   HASHDIFF_FINTXN_PREMIUM            SAT_FINTXN_PREMIUM payload 1 of 1 live here
 --   HASHDIFF_FIN_RECEIPT               SAT_FIN_RECEIPT payload 5 of 6 live here
---   HASHDIFF_INSTRUMENT_DEFINITION     SAT_INSTRUMENT_DEFINITION payload 1 of 3 live here
+--   HASHDIFF_INSTRUMENT_DEFINITION     SAT_INSTRUMENT_DEFINITION payload 1 of 5 live here
 
 {%- set yaml_metadata -%}
 source_model: 'stg_mtv2__uwr_pol_policy_payment_information'
@@ -52,7 +52,9 @@ hashed_columns:
   HASHDIFF_INSTRUMENT_DEFINITION:
     is_hashdiff: true
     columns:
+      - 'ACCOUNT_CATEGORY_CODE'
       - 'ACCOUNT_TYPE'
+      - 'BANK_BRANCH_CODE'
       - 'BANK_NAME'
       - 'INSTRUMENT_STATUS'
 derived_columns:
@@ -77,6 +79,8 @@ derived_columns:
   TRANSACTION_DATE: 'transaction_date'
   TRANSACTION_NUMBER: 'cast(null as varchar)'
   TRANSACTION_TYPE: 'cast(null as varchar)'
+  ACCOUNT_CATEGORY_CODE: 'cast(null as varchar)'
+  BANK_BRANCH_CODE: 'cast(null as varchar)'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION'
 {%- endset -%}

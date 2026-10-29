@@ -12,7 +12,9 @@
 source_model: 'satfeed_mtv2_sat_instrument_definition'
 src_pk: 'PAYMENT_INSTRUMENT_HKEY'
 src_payload:
+  - 'ACCOUNT_CATEGORY_CODE'
   - 'ACCOUNT_TYPE'
+  - 'BANK_BRANCH_CODE'
   - 'BANK_NAME'
   - 'INSTRUMENT_STATUS'
 src_hashdiff: 'HASHDIFF'

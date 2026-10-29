@@ -20,7 +20,7 @@
 --   HASHDIFF_COVERAGE_CONDITIONS       SAT_COVERAGE_CONDITIONS payload 1 of 1 live here
 --   HASHDIFF_COVERAGE_DEFINITION       SAT_COVERAGE_DEFINITION payload 1 of 3 live here
 --   HASHDIFF_POLICY_COVERAGE_SCHEDULE  SAT_POLICY_COVERAGE_SCHEDULE payload 6 of 8 live here
---   HASHDIFF_POLICY_SUM_INSURED_BREAKUP SAT_POLICY_SUM_INSURED_BREAKUP payload 1 of 1 live here
+--   HASHDIFF_POLICY_SUM_INSURED_BREAKUP SAT_POLICY_SUM_INSURED_BREAKUP payload 2 of 3 live here
 --   HASHDIFF_RISK_PERSON_TRAVEL        SAT_RISK_PERSON_TRAVEL payload 2 of 6 live here
 
 {%- set yaml_metadata -%}
@@ -56,6 +56,7 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'SUM_INSURED_AMOUNT'
+      - 'SUM_INSURED_BREAK_UP_DETAIL'
       - 'SUM_INSURED_HEAD'
   HASHDIFF_RISK_PERSON_TRAVEL:
     is_hashdiff: true
@@ -95,6 +96,7 @@ derived_columns:
   TRIP_END_DATE: 'cast(null as varchar)'
   TRIP_START_DATE: 'cast(null as varchar)'
   TRIP_TYPE: 'trip_typeace_domestic'
+  SUM_INSURED_BREAK_UP_DETAIL: 'sum_insured_break_up'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
 {%- endset -%}

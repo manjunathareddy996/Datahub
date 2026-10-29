@@ -19,7 +19,7 @@
 --   PARTY_HKEY__PROPOSER               HUB_PARTY / proposer  (7 row(s) in the map)
 --   PARTY_LOCATION_HKEY__PROPOSER      LNK_PARTY_LOCATION / proposer  LINK
 --   HASHDIFF_COMMON_ADDRESS            SAT_COMMON_ADDRESS payload 6 of 16 live here
---   HASHDIFF_COMMON_GEO                SAT_COMMON_GEO payload 2 of 2 live here
+--   HASHDIFF_COMMON_GEO                SAT_COMMON_GEO payload 3 of 3 live here
 --   HASHDIFF_PARTY_CONTACT_ADDRESS_LINK SAT_PARTY_CONTACT_ADDRESS_LINK payload 0 of 1 live here
 
 {%- set yaml_metadata -%}
@@ -51,6 +51,7 @@ hashed_columns:
   HASHDIFF_COMMON_GEO:
     is_hashdiff: true
     columns:
+      - 'ALTITUDE'
       - 'LATITUDE'
       - 'LONGITUDE'
   HASHDIFF_PARTY_CONTACT_ADDRESS_LINK:
@@ -87,6 +88,7 @@ derived_columns:
   STATE_CODE: 'cast(null as varchar)'
   STATE_NAME: 'state'
   STREET_NAME: 'cast(null as varchar)'
+  ALTITUDE: 'geo_coordinate_altitude'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW'
 {%- endset -%}

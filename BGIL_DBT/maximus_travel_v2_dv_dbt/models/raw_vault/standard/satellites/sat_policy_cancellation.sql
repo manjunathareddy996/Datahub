@@ -12,7 +12,11 @@
 source_model: 'satfeed_mtv2_sat_policy_cancellation'
 src_pk: 'POLICY_HKEY'
 src_payload:
+  - 'CANCELLATION_PREMIUM_BASIS'
   - 'CANCELLATION_REQUESTED_BY_ROLE'
+  - 'ELAPSED_PERIOD_PREMIUM_AMOUNT'
+  - 'RETAINED_ADMIN_CHARGES_AMOUNT'
+  - 'UNEXPIRED_PERIOD_PREMIUM_AMOUNT'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

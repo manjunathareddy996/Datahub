@@ -13,10 +13,13 @@ hashed_columns:
   HASHDIFF_POLICY_DISCOUNT_LOADING_APPLIED:
     is_hashdiff: true
     columns:
-      - 'ITEM_CODE'
       - 'AMOUNT_APPLIED'
+      - 'APPLICABILITY_INDICATOR'
+      - 'ITEM_CODE'
       - 'ITEM_TYPE'
       - 'PERCENTAGE_APPLIED'
+      - 'RELATIVITY_APPLIED'
+      - 'RISK_LOADING_TYPE'
 derived_columns:
   POLICY_NK: "'HUB_POLICY|' || (POLICY_BK)"
   POLICY_BK: 'POLICY_BK'
@@ -24,6 +27,9 @@ derived_columns:
   AMOUNT_APPLIED: 'AMOUNT_APPLIED'
   ITEM_TYPE: 'ITEM_TYPE'
   PERCENTAGE_APPLIED: 'PERCENTAGE_APPLIED'
+  APPLICABILITY_INDICATOR: 'cast(null as varchar)'
+  RELATIVITY_APPLIED: 'cast(null as varchar)'
+  RISK_LOADING_TYPE: 'cast(null as varchar)'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: 'record_source'
 {%- endset -%}

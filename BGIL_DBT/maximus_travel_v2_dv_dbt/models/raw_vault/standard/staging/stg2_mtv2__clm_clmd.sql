@@ -17,7 +17,7 @@
 --   CLAIM_HKEY                         HUB_CLAIM  (16 row(s) in the map)
 --   POLICY_HKEY                        HUB_POLICY  (1 row(s) in the map)
 --   HASHDIFF_CLAIM_ASSESSMENT_SUMMARY  SAT_CLAIM_ASSESSMENT_SUMMARY payload 1 of 1 live here
---   HASHDIFF_CLAIM_FNOL                SAT_CLAIM_FNOL payload 1 of 7 live here
+--   HASHDIFF_CLAIM_FNOL                SAT_CLAIM_FNOL payload 1 of 14 live here
 --   HASHDIFF_CLAIM_HEADER              SAT_CLAIM_HEADER payload 6 of 14 live here
 --   HASHDIFF_CLAIM_SLA_TRACKING        SAT_CLAIM_SLA_TRACKING payload 1 of 1 live here
 
@@ -33,13 +33,20 @@ hashed_columns:
   HASHDIFF_CLAIM_FNOL:
     is_hashdiff: true
     columns:
+      - 'ADD_ON_CLAIM_ELECTED_INDICATOR'
+      - 'CLAIM_PERSON_NAME'
+      - 'DELAYED_INTIMATION_REASON'
       - 'FNOL_CHANNEL'
       - 'FNOL_TIME'
+      - 'INTIMATED_CAUSE_OF_CLAIM'
       - 'PRELIMINARY_LOSS_DESCRIPTION'
       - 'PRELIMINARY_LOSS_ESTIMATE'
+      - 'REGISTRATION_FLAGS'
       - 'REPORTED_BY_CONTACT'
+      - 'REPORTED_BY_EMAIL'
       - 'REPORTED_BY_NAME'
       - 'SELF_SERVICE_INDICATOR'
+      - 'THIRD_PARTY_INVOLVEMENT_INDICATOR'
   HASHDIFF_CLAIM_HEADER:
     is_hashdiff: true
     columns:
@@ -89,6 +96,13 @@ derived_columns:
   REPORTED_BY_CONTACT: 'cast(null as varchar)'
   REPORTED_BY_NAME: 'cast(null as varchar)'
   SELF_SERVICE_INDICATOR: 'cast(null as varchar)'
+  ADD_ON_CLAIM_ELECTED_INDICATOR: 'cast(null as varchar)'
+  CLAIM_PERSON_NAME: 'cast(null as varchar)'
+  DELAYED_INTIMATION_REASON: 'cast(null as varchar)'
+  INTIMATED_CAUSE_OF_CLAIM: 'cast(null as varchar)'
+  REGISTRATION_FLAGS: 'cast(null as varchar)'
+  REPORTED_BY_EMAIL: 'cast(null as varchar)'
+  THIRD_PARTY_INVOLVEMENT_INDICATOR: 'cast(null as varchar)'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS'
 {%- endset -%}

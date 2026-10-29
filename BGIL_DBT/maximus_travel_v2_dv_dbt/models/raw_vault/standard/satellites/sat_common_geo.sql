@@ -12,6 +12,7 @@
 source_model: 'satfeed_mtv2_sat_common_geo'
 src_pk: 'LOCATION_HKEY'
 src_payload:
+  - 'ALTITUDE'
   - 'LATITUDE'
   - 'LONGITUDE'
 src_hashdiff: 'HASHDIFF'

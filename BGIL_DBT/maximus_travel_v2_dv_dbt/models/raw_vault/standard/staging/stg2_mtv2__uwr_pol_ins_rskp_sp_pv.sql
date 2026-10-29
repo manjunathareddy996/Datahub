@@ -25,16 +25,16 @@
 --   HASHDIFF_COVERAGE_DEFINITION       SAT_COVERAGE_DEFINITION payload 2 of 3 live here
 --   HASHDIFF_PARTY_IDENTITY            SAT_PARTY_IDENTITY payload 1 of 15 live here
 --   HASHDIFF_POLICY_COVERAGE_SCHEDULE  SAT_POLICY_COVERAGE_SCHEDULE payload 4 of 8 live here
---   HASHDIFF_POLICY_DISCOUNT_LOADING_APPLIED SAT_POLICY_DISCOUNT_LOADING_APPLIED payload 3 of 3 live here
+--   HASHDIFF_POLICY_DISCOUNT_LOADING_APPLIED SAT_POLICY_DISCOUNT_LOADING_APPLIED payload 6 of 7 live here
 --   HASHDIFF_POLICY_HEADER             SAT_POLICY_HEADER payload 8 of 19 live here
 --   HASHDIFF_POLICY_PREMIUM_SUMMARY    SAT_POLICY_PREMIUM_SUMMARY payload 2 of 7 live here
---   HASHDIFF_POLICY_SUM_INSURED_BREAKUP SAT_POLICY_SUM_INSURED_BREAKUP payload 1 of 1 live here
+--   HASHDIFF_POLICY_SUM_INSURED_BREAKUP SAT_POLICY_SUM_INSURED_BREAKUP payload 1 of 3 live here
 --   HASHDIFF_POLICY_TAX_HEAD           SAT_POLICY_TAX_HEAD payload 1 of 1 live here
 --   HASHDIFF_PRODUCT_DEFINITION        SAT_PRODUCT_DEFINITION payload 2 of 4 live here
 --   HASHDIFF_PRODUCT_RATING_STRUCTURE  SAT_PRODUCT_RATING_STRUCTURE payload 2 of 2 live here
 --   HASHDIFF_PRODUCT_TERMS             SAT_PRODUCT_TERMS payload 1 of 1 live here
 --   HASHDIFF_RISK_OBJECT_CORE          SAT_RISK_OBJECT_CORE payload 4 of 6 live here
---   HASHDIFF_RISK_OBJECT_VALUATION     SAT_RISK_OBJECT_VALUATION payload 1 of 1 live here
+--   HASHDIFF_RISK_OBJECT_VALUATION     SAT_RISK_OBJECT_VALUATION payload 3 of 3 live here
 --   HASHDIFF_RISK_PERSON_INSURED       SAT_RISK_PERSON_INSURED payload 5 of 5 live here
 --   HASHDIFF_RISK_PERSON_TRAVEL        SAT_RISK_PERSON_TRAVEL payload 3 of 6 live here
 
@@ -98,9 +98,12 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'AMOUNT_APPLIED'
+      - 'APPLICABILITY_INDICATOR'
       - 'ITEM_CODE'
       - 'ITEM_TYPE'
       - 'PERCENTAGE_APPLIED'
+      - 'RELATIVITY_APPLIED'
+      - 'RISK_LOADING_TYPE'
   HASHDIFF_POLICY_HEADER:
     is_hashdiff: true
     columns:
@@ -137,6 +140,7 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'SUM_INSURED_AMOUNT'
+      - 'SUM_INSURED_BREAK_UP_DETAIL'
       - 'SUM_INSURED_HEAD'
   HASHDIFF_POLICY_TAX_HEAD:
     is_hashdiff: true
@@ -172,6 +176,8 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'INSURED_VALUE'
+      - 'INSURED_VALUE_IN_SUM_INSURED_CURRENCY'
+      - 'INSURED_VALUE_IN_TRANSACTION_CURRENCY'
   HASHDIFF_RISK_PERSON_INSURED:
     is_hashdiff: true
     columns:
@@ -293,6 +299,12 @@ derived_columns:
   TRIP_START_DATE: 'cast(null as varchar)'
   TRIP_TYPE: 'coalesce(trip_typeace, journey_typeace)'
   UIN: 'cast(null as varchar)'
+  APPLICABILITY_INDICATOR: 'is_consumer_loading_applicable'
+  RELATIVITY_APPLIED: 'journey_type_relativity'
+  RISK_LOADING_TYPE: 'risk_load_type'
+  SUM_INSURED_BREAK_UP_DETAIL: 'cast(null as varchar)'
+  INSURED_VALUE_IN_SUM_INSURED_CURRENCY: 'sum_insured_in_si_currency'
+  INSURED_VALUE_IN_TRANSACTION_CURRENCY: 'risk_sum_insured_in_transaction_currency'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
 {%- endset -%}

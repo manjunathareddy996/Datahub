@@ -21,9 +21,9 @@
 --   HASHDIFF_CLAIM_PROVIDER_BILLING    SAT_CLAIM_PROVIDER_BILLING payload 0 of 5 live here
 --   HASHDIFF_CLAIM_RESERVE             SAT_CLAIM_RESERVE payload 2 of 5 live here
 --   HASHDIFF_FINTXN_ACCOUNTING         SAT_FINTXN_ACCOUNTING payload 1 of 1 live here
---   HASHDIFF_FINTXN_CLAIM_PAYMENT      SAT_FINTXN_CLAIM_PAYMENT payload 5 of 5 live here
+--   HASHDIFF_FINTXN_CLAIM_PAYMENT      SAT_FINTXN_CLAIM_PAYMENT payload 8 of 8 live here
 --   HASHDIFF_FINTXN_HEADER             SAT_FINTXN_HEADER payload 4 of 7 live here
---   HASHDIFF_INSTRUMENT_DEFINITION     SAT_INSTRUMENT_DEFINITION payload 2 of 3 live here
+--   HASHDIFF_INSTRUMENT_DEFINITION     SAT_INSTRUMENT_DEFINITION payload 4 of 5 live here
 
 {%- set yaml_metadata -%}
 source_model: 'resolved_mtv2__clm_clmd_clmpay_payp_pv'
@@ -72,6 +72,9 @@ hashed_columns:
     columns:
       - 'CHEQUE_DATE'
       - 'CHEQUE_NUMBER'
+      - 'INSTRUMENT_PAYABLE_AT_LOCATION'
+      - 'INSTRUMENT_PRINT_LOCATION_CODE'
+      - 'NEFT_APPROVAL_REFERENCE'
       - 'PAYMENT_DATE'
       - 'PAYMENT_MODE'
       - 'UTR_NUMBER'
@@ -88,7 +91,9 @@ hashed_columns:
   HASHDIFF_INSTRUMENT_DEFINITION:
     is_hashdiff: true
     columns:
+      - 'ACCOUNT_CATEGORY_CODE'
       - 'ACCOUNT_TYPE'
+      - 'BANK_BRANCH_CODE'
       - 'BANK_NAME'
       - 'INSTRUMENT_STATUS'
 derived_columns:
@@ -137,6 +142,11 @@ derived_columns:
   TRANSACTION_TYPE: 'payment_transaction_type'
   UTR_NUMBER: 'utr_no'
   VOUCHER_NUMBER: 'claim_payment_voucher'
+  INSTRUMENT_PAYABLE_AT_LOCATION: 'payable_at'
+  INSTRUMENT_PRINT_LOCATION_CODE: 'print_location_code'
+  NEFT_APPROVAL_REFERENCE: 'neft_approval'
+  ACCOUNT_CATEGORY_CODE: 'account_category_code'
+  BANK_BRANCH_CODE: 'branch_code'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW'
 {%- endset -%}

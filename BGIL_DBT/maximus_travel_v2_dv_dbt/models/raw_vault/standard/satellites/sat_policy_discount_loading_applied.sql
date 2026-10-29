@@ -15,8 +15,11 @@ src_cdk:
   - 'ITEM_CODE'
 src_payload:
   - 'AMOUNT_APPLIED'
+  - 'APPLICABILITY_INDICATOR'
   - 'ITEM_TYPE'
   - 'PERCENTAGE_APPLIED'
+  - 'RELATIVITY_APPLIED'
+  - 'RISK_LOADING_TYPE'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

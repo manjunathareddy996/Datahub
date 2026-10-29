@@ -36,7 +36,7 @@
 --   POLICY_HKEY                        HUB_POLICY  (2 row(s) in the map)
 --   HASHDIFF_CLAIM_CO_RI_SHARE         SAT_CLAIM_CO_RI_SHARE payload 1 of 3 live here
 --   HASHDIFF_CLAIM_FRAUD               SAT_CLAIM_FRAUD payload 2 of 6 live here
---   HASHDIFF_CLAIM_HEALTH_DETAIL       SAT_CLAIM_HEALTH_DETAIL payload 2 of 9 live here
+--   HASHDIFF_CLAIM_HEALTH_DETAIL       SAT_CLAIM_HEALTH_DETAIL payload 3 of 16 live here
 --   HASHDIFF_CLAIM_LITIGATION          SAT_CLAIM_LITIGATION payload 1 of 3 live here
 --   HASHDIFF_CLAIM_PAYMENT_TRANCHE     SAT_CLAIM_PAYMENT_TRANCHE payload 7 of 10 live here
 --   HASHDIFF_CLAIM_PROVIDER_BILLING    SAT_CLAIM_PROVIDER_BILLING payload 5 of 5 live here
@@ -91,12 +91,19 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'ADMISSION_DATE'
+      - 'ADVERSE_MEDICAL_HISTORY_DESCRIPTION'
       - 'AILMENT_DESCRIPTION'
       - 'DISCHARGE_DATE'
+      - 'DISEASE_CATEGORY'
       - 'HEALTH_CLAIM_REMARKS'
       - 'ICD_CODE'
+      - 'ICD_DESCRIPTION'
       - 'LENGTH_OF_STAY'
+      - 'MEDICALLY_ADMISSIBLE_INDICATOR'
+      - 'PRE_EXISTING_DISEASE_DESCRIPTION'
       - 'PRE_EXISTING_DISEASE_RELATED_INDICATOR'
+      - 'PRE_EXISTING_ILLNESS_DESCRIPTION'
+      - 'SYSTEM_OF_MEDICINE'
       - 'TREATING_DOCTOR_NAME'
       - 'TREATMENT_TYPE'
   HASHDIFF_CLAIM_LITIGATION:
@@ -403,6 +410,13 @@ derived_columns:
   TREATING_DOCTOR_NAME: 'cast(null as varchar)'
   TREATMENT_TYPE: 'cast(null as varchar)'
   VOTER_ID_NUMBER: 'cast(null as varchar)'
+  ADVERSE_MEDICAL_HISTORY_DESCRIPTION: 'cast(null as varchar)'
+  DISEASE_CATEGORY: 'disease_category'
+  ICD_DESCRIPTION: 'cast(null as varchar)'
+  MEDICALLY_ADMISSIBLE_INDICATOR: 'cast(null as varchar)'
+  PRE_EXISTING_DISEASE_DESCRIPTION: 'cast(null as varchar)'
+  PRE_EXISTING_ILLNESS_DESCRIPTION: 'cast(null as varchar)'
+  SYSTEM_OF_MEDICINE: 'cast(null as varchar)'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW'
 {%- endset -%}

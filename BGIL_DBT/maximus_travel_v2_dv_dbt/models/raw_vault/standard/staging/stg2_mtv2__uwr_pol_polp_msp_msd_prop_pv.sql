@@ -17,8 +17,8 @@
 --   POLICY_HKEY                        HUB_POLICY  (71 row(s) in the map)
 --   RISK_OBJECT_HKEY                   HUB_RISK_OBJECT  (12 row(s) in the map)
 --   HASHDIFF_POLICY_COVERAGE_SCHEDULE  SAT_POLICY_COVERAGE_SCHEDULE payload 1 of 8 live here
---   HASHDIFF_POLICY_DISCOUNT_LOADING_APPLIED SAT_POLICY_DISCOUNT_LOADING_APPLIED payload 1 of 3 live here
---   HASHDIFF_POLICY_SUM_INSURED_BREAKUP SAT_POLICY_SUM_INSURED_BREAKUP payload 1 of 1 live here
+--   HASHDIFF_POLICY_DISCOUNT_LOADING_APPLIED SAT_POLICY_DISCOUNT_LOADING_APPLIED payload 1 of 7 live here
+--   HASHDIFF_POLICY_SUM_INSURED_BREAKUP SAT_POLICY_SUM_INSURED_BREAKUP payload 1 of 3 live here
 --   HASHDIFF_RISK_PERSON_TRAVEL        SAT_RISK_PERSON_TRAVEL payload 3 of 6 live here
 
 {%- set yaml_metadata -%}
@@ -43,13 +43,17 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'AMOUNT_APPLIED'
+      - 'APPLICABILITY_INDICATOR'
       - 'ITEM_CODE'
       - 'ITEM_TYPE'
       - 'PERCENTAGE_APPLIED'
+      - 'RELATIVITY_APPLIED'
+      - 'RISK_LOADING_TYPE'
   HASHDIFF_POLICY_SUM_INSURED_BREAKUP:
     is_hashdiff: true
     columns:
       - 'SUM_INSURED_AMOUNT'
+      - 'SUM_INSURED_BREAK_UP_DETAIL'
       - 'SUM_INSURED_HEAD'
   HASHDIFF_RISK_PERSON_TRAVEL:
     is_hashdiff: true
@@ -87,6 +91,10 @@ derived_columns:
   TRIP_END_DATE: 'cast(null as varchar)'
   TRIP_START_DATE: 'departure_date'
   TRIP_TYPE: 'cast(null as varchar)'
+  APPLICABILITY_INDICATOR: 'cast(null as varchar)'
+  RELATIVITY_APPLIED: 'cast(null as varchar)'
+  RISK_LOADING_TYPE: 'cast(null as varchar)'
+  SUM_INSURED_BREAK_UP_DETAIL: 'cast(null as varchar)'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW'
 {%- endset -%}

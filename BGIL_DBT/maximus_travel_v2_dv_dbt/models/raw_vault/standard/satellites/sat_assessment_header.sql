@@ -12,6 +12,8 @@
 source_model: 'satfeed_mtv2_sat_assessment_header'
 src_pk: 'ASSESSMENT_HKEY'
 src_payload:
+  - 'ASSESSMENT_END_TIME'
+  - 'ASSESSMENT_START_TIME'
   - 'ASSESSMENT_STATUS'
   - 'REQUESTED_DATE'
 src_hashdiff: 'HASHDIFF'

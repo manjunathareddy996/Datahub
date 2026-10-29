@@ -22,9 +22,9 @@
 --   QUOTE_HKEY                         HUB_QUOTE  (7 row(s) in the map)
 --   RISK_OBJECT_HKEY                   HUB_RISK_OBJECT  (5 row(s) in the map)
 --   HASHDIFF_COMMON_ADDRESS            SAT_COMMON_ADDRESS payload 7 of 16 live here
---   HASHDIFF_COMMON_MONETARY_CONTEXT   SAT_COMMON_MONETARY_CONTEXT payload 2 of 3 live here
+--   HASHDIFF_COMMON_MONETARY_CONTEXT   SAT_COMMON_MONETARY_CONTEXT payload 2 of 4 live here
 --   HASHDIFF_RISK_OBJECT_CORE          SAT_RISK_OBJECT_CORE payload 3 of 6 live here
---   HASHDIFF_RISK_OBJECT_VALUATION     SAT_RISK_OBJECT_VALUATION payload 1 of 1 live here
+--   HASHDIFF_RISK_OBJECT_VALUATION     SAT_RISK_OBJECT_VALUATION payload 1 of 3 live here
 
 {%- set yaml_metadata -%}
 source_model: 'resolved_mtv2__uwr_qpd_rskl'
@@ -59,6 +59,7 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'BASE_CURRENCY_CODE'
+      - 'BASE_CURRENCY_EXCHANGE_RATE'
       - 'CURRENCY_CODE'
       - 'EXCHANGE_RATE'
   HASHDIFF_RISK_OBJECT_CORE:
@@ -74,6 +75,8 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'INSURED_VALUE'
+      - 'INSURED_VALUE_IN_SUM_INSURED_CURRENCY'
+      - 'INSURED_VALUE_IN_TRANSACTION_CURRENCY'
 derived_columns:
   DOCUMENT_BK: "nullif(trim(case when coalesce(nullif(trim(document_id),'')) is not null then 'DOC:' || nullif(trim(document_id), '') end),'')"
   DOCUMENT_NK: "'HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(document_id),'')) is not null then 'DOC:' || nullif(trim(document_id), '') end),''))"
@@ -115,6 +118,9 @@ derived_columns:
   STATE_CODE: 'state_code'
   STATE_NAME: 'cast(null as varchar)'
   STREET_NAME: 'cast(null as varchar)'
+  BASE_CURRENCY_EXCHANGE_RATE: 'cast(null as varchar)'
+  INSURED_VALUE_IN_SUM_INSURED_CURRENCY: 'cast(null as varchar)'
+  INSURED_VALUE_IN_TRANSACTION_CURRENCY: 'cast(null as varchar)'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST'
 {%- endset -%}

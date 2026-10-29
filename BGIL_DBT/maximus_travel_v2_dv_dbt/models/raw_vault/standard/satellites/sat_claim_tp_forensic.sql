@@ -14,6 +14,7 @@ src_pk: 'CLAIM_HKEY'
 src_payload:
   - 'FIR_DATE'
   - 'FIR_NUMBER'
+  - 'FIR_TIME'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

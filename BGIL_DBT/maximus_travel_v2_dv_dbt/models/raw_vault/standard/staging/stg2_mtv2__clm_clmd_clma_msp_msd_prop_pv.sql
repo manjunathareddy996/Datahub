@@ -20,10 +20,10 @@
 --   HASHDIFF_CLAIM_BENEFIT_HEAD        SAT_CLAIM_BENEFIT_HEAD payload 6 of 7 live here
 --   HASHDIFF_CLAIM_FRAUD               SAT_CLAIM_FRAUD payload 2 of 6 live here
 --   HASHDIFF_CLAIM_HEADER              SAT_CLAIM_HEADER payload 1 of 14 live here
---   HASHDIFF_CLAIM_HEALTH_DETAIL       SAT_CLAIM_HEALTH_DETAIL payload 2 of 9 live here
+--   HASHDIFF_CLAIM_HEALTH_DETAIL       SAT_CLAIM_HEALTH_DETAIL payload 3 of 16 live here
 --   HASHDIFF_COMMON_ADDRESS            SAT_COMMON_ADDRESS payload 3 of 16 live here
 --   HASHDIFF_DOCUMENT_CHECKLIST        SAT_DOCUMENT_CHECKLIST payload 0 of 0 live here
---   HASHDIFF_DOCUMENT_DEFINITION       SAT_DOCUMENT_DEFINITION payload 3 of 6 live here
+--   HASHDIFF_DOCUMENT_DEFINITION       SAT_DOCUMENT_DEFINITION payload 9 of 13 live here
 
 {%- set yaml_metadata -%}
 source_model: 'resolved_mtv2__clm_clmd_clma_msp_msd_prop_pv'
@@ -72,12 +72,19 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'ADMISSION_DATE'
+      - 'ADVERSE_MEDICAL_HISTORY_DESCRIPTION'
       - 'AILMENT_DESCRIPTION'
       - 'DISCHARGE_DATE'
+      - 'DISEASE_CATEGORY'
       - 'HEALTH_CLAIM_REMARKS'
       - 'ICD_CODE'
+      - 'ICD_DESCRIPTION'
       - 'LENGTH_OF_STAY'
+      - 'MEDICALLY_ADMISSIBLE_INDICATOR'
+      - 'PRE_EXISTING_DISEASE_DESCRIPTION'
       - 'PRE_EXISTING_DISEASE_RELATED_INDICATOR'
+      - 'PRE_EXISTING_ILLNESS_DESCRIPTION'
+      - 'SYSTEM_OF_MEDICINE'
       - 'TREATING_DOCTOR_NAME'
       - 'TREATMENT_TYPE'
   HASHDIFF_COMMON_ADDRESS:
@@ -106,12 +113,19 @@ hashed_columns:
   HASHDIFF_DOCUMENT_DEFINITION:
     is_hashdiff: true
     columns:
+      - 'COURIER_NAME'
+      - 'DOCUMENT_DETAILS_TEXT'
       - 'DOCUMENT_NAME'
       - 'DOCUMENT_REFERENCE_NUMBER'
       - 'DOCUMENT_TYPE'
       - 'ISSUE_DATE'
+      - 'PROOF_OF_DELIVERY_NUMBER'
       - 'RECEIVED_DATE'
+      - 'RECORD_VALID_INDICATOR'
+      - 'SENDER_NAME'
       - 'SOURCE_CHANNEL'
+      - 'SPECIAL_ENCLOSURES_DETAILS'
+      - 'SPECIAL_ENCLOSURES_INDICATOR'
 derived_columns:
   CLAIM_BK: "nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),'')"
   CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),''))"
@@ -179,6 +193,20 @@ derived_columns:
   SUB_LIMIT_APPLIED: 'cast(null as varchar)'
   TREATING_DOCTOR_NAME: 'cast(null as varchar)'
   TREATMENT_TYPE: 'cast(null as varchar)'
+  ADVERSE_MEDICAL_HISTORY_DESCRIPTION: 'cast(null as varchar)'
+  DISEASE_CATEGORY: 'disease_category'
+  ICD_DESCRIPTION: 'cast(null as varchar)'
+  MEDICALLY_ADMISSIBLE_INDICATOR: 'cast(null as varchar)'
+  PRE_EXISTING_DISEASE_DESCRIPTION: 'cast(null as varchar)'
+  PRE_EXISTING_ILLNESS_DESCRIPTION: 'cast(null as varchar)'
+  SYSTEM_OF_MEDICINE: 'cast(null as varchar)'
+  COURIER_NAME: 'courier_name'
+  DOCUMENT_DETAILS_TEXT: 'document_details'
+  PROOF_OF_DELIVERY_NUMBER: 'pod_number'
+  RECORD_VALID_INDICATOR: 'cast(null as varchar)'
+  SENDER_NAME: 'sender_name'
+  SPECIAL_ENCLOSURES_DETAILS: 'special_enclosures_details'
+  SPECIAL_ENCLOSURES_INDICATOR: 'special_enclosures_flag'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW'
 {%- endset -%}

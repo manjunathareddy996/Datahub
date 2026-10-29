@@ -20,7 +20,7 @@
 --   HASHDIFF_CLAIM_BENEFIT_HEAD        SAT_CLAIM_BENEFIT_HEAD payload 1 of 7 live here
 --   HASHDIFF_CLAIM_HEADER              SAT_CLAIM_HEADER payload 1 of 14 live here
 --   HASHDIFF_COMMON_ADDRESS            SAT_COMMON_ADDRESS payload 3 of 16 live here
---   HASHDIFF_DOCUMENT_DEFINITION       SAT_DOCUMENT_DEFINITION payload 4 of 6 live here
+--   HASHDIFF_DOCUMENT_DEFINITION       SAT_DOCUMENT_DEFINITION payload 4 of 13 live here
 
 {%- set yaml_metadata -%}
 source_model: 'resolved_mtv2__clm_clmd_clmcov_msd_prop_pv'
@@ -78,12 +78,19 @@ hashed_columns:
   HASHDIFF_DOCUMENT_DEFINITION:
     is_hashdiff: true
     columns:
+      - 'COURIER_NAME'
+      - 'DOCUMENT_DETAILS_TEXT'
       - 'DOCUMENT_NAME'
       - 'DOCUMENT_REFERENCE_NUMBER'
       - 'DOCUMENT_TYPE'
       - 'ISSUE_DATE'
+      - 'PROOF_OF_DELIVERY_NUMBER'
       - 'RECEIVED_DATE'
+      - 'RECORD_VALID_INDICATOR'
+      - 'SENDER_NAME'
       - 'SOURCE_CHANNEL'
+      - 'SPECIAL_ENCLOSURES_DETAILS'
+      - 'SPECIAL_ENCLOSURES_INDICATOR'
 derived_columns:
   CLAIM_BK: "nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),'')"
   CLAIM_NK: "'HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim(foreign_key), '')) end),''))"
@@ -135,6 +142,13 @@ derived_columns:
   STATE_NAME: 'state'
   STREET_NAME: 'cast(null as varchar)'
   SUB_LIMIT_APPLIED: 'cast(null as varchar)'
+  COURIER_NAME: 'cast(null as varchar)'
+  DOCUMENT_DETAILS_TEXT: 'cast(null as varchar)'
+  PROOF_OF_DELIVERY_NUMBER: 'cast(null as varchar)'
+  RECORD_VALID_INDICATOR: 'cast(null as varchar)'
+  SENDER_NAME: 'cast(null as varchar)'
+  SPECIAL_ENCLOSURES_DETAILS: 'cast(null as varchar)'
+  SPECIAL_ENCLOSURES_INDICATOR: 'cast(null as varchar)'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW'
 {%- endset -%}

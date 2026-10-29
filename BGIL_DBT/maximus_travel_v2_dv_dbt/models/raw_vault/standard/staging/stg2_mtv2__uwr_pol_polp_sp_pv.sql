@@ -32,24 +32,24 @@
 --   HASHDIFF_COMMON_BUSINESS_AUDIT     SAT_COMMON_BUSINESS_AUDIT payload 3 of 3 live here
 --   HASHDIFF_COMMON_COMMUNICATION_PREFERENCE SAT_COMMON_COMMUNICATION_PREFERENCE payload 1 of 4 live here
 --   HASHDIFF_COMMON_LIFECYCLE          SAT_COMMON_LIFECYCLE payload 1 of 1 live here
---   HASHDIFF_COMMON_MONETARY_CONTEXT   SAT_COMMON_MONETARY_CONTEXT payload 3 of 3 live here
+--   HASHDIFF_COMMON_MONETARY_CONTEXT   SAT_COMMON_MONETARY_CONTEXT payload 3 of 4 live here
 --   HASHDIFF_COMMON_STATUS             SAT_COMMON_STATUS payload 1 of 1 live here
---   HASHDIFF_DOCUMENT_DEFINITION       SAT_DOCUMENT_DEFINITION payload 1 of 6 live here
+--   HASHDIFF_DOCUMENT_DEFINITION       SAT_DOCUMENT_DEFINITION payload 1 of 13 live here
 --   HASHDIFF_FINTXN_HEADER             SAT_FINTXN_HEADER payload 1 of 7 live here
 --   HASHDIFF_FINTXN_PREMIUM            SAT_FINTXN_PREMIUM payload 1 of 1 live here
 --   HASHDIFF_FIN_RECEIPT               SAT_FIN_RECEIPT payload 1 of 6 live here
 --   HASHDIFF_LNK_ROLE_CUSTOMER         SAT_LNK_ROLE_CUSTOMER payload 1 of 3 live here
 --   HASHDIFF_LNK_ROLE_EMPLOYEE         SAT_LNK_ROLE_EMPLOYEE payload 1 of 1 live here
 --   HASHDIFF_ORG_UNIT_DEFINITION       SAT_ORG_UNIT_DEFINITION payload 1 of 2 live here
---   HASHDIFF_POLICY_CANCELLATION       SAT_POLICY_CANCELLATION payload 1 of 1 live here
+--   HASHDIFF_POLICY_CANCELLATION       SAT_POLICY_CANCELLATION payload 5 of 5 live here
 --   HASHDIFF_POLICY_COVERAGE_SCHEDULE  SAT_POLICY_COVERAGE_SCHEDULE payload 1 of 8 live here
---   HASHDIFF_POLICY_ENDORSEMENT        SAT_POLICY_ENDORSEMENT payload 2 of 5 live here
---   HASHDIFF_POLICY_GROUP              SAT_POLICY_GROUP payload 1 of 1 live here
+--   HASHDIFF_POLICY_ENDORSEMENT        SAT_POLICY_ENDORSEMENT payload 4 of 11 live here
+--   HASHDIFF_POLICY_GROUP              SAT_POLICY_GROUP payload 7 of 7 live here
 --   HASHDIFF_POLICY_HEADER             SAT_POLICY_HEADER payload 15 of 19 live here
 --   HASHDIFF_POLICY_INTERMEDIARY_SPLIT SAT_POLICY_INTERMEDIARY_SPLIT payload 1 of 2 live here
 --   HASHDIFF_POLICY_PORTABILITY_MIGRATION SAT_POLICY_PORTABILITY_MIGRATION payload 1 of 1 live here
 --   HASHDIFF_POLICY_PREMIUM_SUMMARY    SAT_POLICY_PREMIUM_SUMMARY payload 6 of 7 live here
---   HASHDIFF_POLICY_TAX_BREAKUP        SAT_POLICY_TAX_BREAKUP payload 4 of 5 live here
+--   HASHDIFF_POLICY_TAX_BREAKUP        SAT_POLICY_TAX_BREAKUP payload 9 of 10 live here
 --   HASHDIFF_POLICY_TAX_HEAD           SAT_POLICY_TAX_HEAD payload 1 of 1 live here
 --   HASHDIFF_POLICY_TERMS              SAT_POLICY_TERMS payload 1 of 1 live here
 --   HASHDIFF_PRODUCT_DEFINITION        SAT_PRODUCT_DEFINITION payload 2 of 4 live here
@@ -100,6 +100,7 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'BASE_CURRENCY_CODE'
+      - 'BASE_CURRENCY_EXCHANGE_RATE'
       - 'CURRENCY_CODE'
       - 'EXCHANGE_RATE'
   HASHDIFF_COMMON_STATUS:
@@ -109,12 +110,19 @@ hashed_columns:
   HASHDIFF_DOCUMENT_DEFINITION:
     is_hashdiff: true
     columns:
+      - 'COURIER_NAME'
+      - 'DOCUMENT_DETAILS_TEXT'
       - 'DOCUMENT_NAME'
       - 'DOCUMENT_REFERENCE_NUMBER'
       - 'DOCUMENT_TYPE'
       - 'ISSUE_DATE'
+      - 'PROOF_OF_DELIVERY_NUMBER'
       - 'RECEIVED_DATE'
+      - 'RECORD_VALID_INDICATOR'
+      - 'SENDER_NAME'
       - 'SOURCE_CHANNEL'
+      - 'SPECIAL_ENCLOSURES_DETAILS'
+      - 'SPECIAL_ENCLOSURES_INDICATOR'
   HASHDIFF_FINTXN_HEADER:
     is_hashdiff: true
     columns:
@@ -156,7 +164,11 @@ hashed_columns:
   HASHDIFF_POLICY_CANCELLATION:
     is_hashdiff: true
     columns:
+      - 'CANCELLATION_PREMIUM_BASIS'
       - 'CANCELLATION_REQUESTED_BY_ROLE'
+      - 'ELAPSED_PERIOD_PREMIUM_AMOUNT'
+      - 'RETAINED_ADMIN_CHARGES_AMOUNT'
+      - 'UNEXPIRED_PERIOD_PREMIUM_AMOUNT'
   HASHDIFF_POLICY_COVERAGE_SCHEDULE:
     is_hashdiff: true
     columns:
@@ -174,15 +186,26 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'EFFECTIVE_DATE__SAT_POLICY_ENDORSEMENT'
+      - 'ENDORSEMENT_APPROVAL_DATE'
+      - 'ENDORSEMENT_INVOICE_REFERENCE'
       - 'ENDORSEMENT_NUMBER'
       - 'ENDORSEMENT_REASON'
+      - 'ENDORSEMENT_REMARKS'
       - 'ENDORSEMENT_TYPE'
+      - 'ENDORSEMENT_UNIQUE_IDENTIFICATION_CODE'
       - 'PREMIUM_IMPACT_AMOUNT'
+      - 'REVISED_SUM_INSURED_AMOUNT'
       - 'SUM_INSURED_IMPACT_AMOUNT'
   HASHDIFF_POLICY_GROUP:
     is_hashdiff: true
     columns:
+      - 'CHILD_POLICY_PLAN_CODE'
+      - 'EMPLOYER_ORGANISATION_NAME'
+      - 'GLOBAL_ACCOUNT_INDICATOR'
+      - 'GROUP_NAME'
       - 'GROUP_TYPE'
+      - 'INSURED_EMPLOYEE_CODE'
+      - 'PROGRAM_IDENTIFIER'
   HASHDIFF_POLICY_HEADER:
     is_hashdiff: true
     columns:
@@ -230,9 +253,14 @@ hashed_columns:
     columns:
       - 'CESS_AMOUNT'
       - 'CGST_AMOUNT'
+      - 'GST_BIFURCATION'
+      - 'GST_TDS_AMOUNT'
+      - 'GST_TYPE'
       - 'IGST_AMOUNT'
       - 'SGST_AMOUNT'
       - 'STAMP_DUTY_AMOUNT'
+      - 'STAMP_DUTY_RECEIPT_NUMBER'
+      - 'TOTAL_TAX_AMOUNT'
   HASHDIFF_POLICY_TAX_HEAD:
     is_hashdiff: true
     columns:
@@ -382,6 +410,34 @@ derived_columns:
   TRANSACTION_TYPE: 'cast(null as varchar)'
   UIN: 'uin'
   VIP_INDICATOR: 'cast(null as varchar)'
+  BASE_CURRENCY_EXCHANGE_RATE: 'cast(null as varchar)'
+  COURIER_NAME: 'cast(null as varchar)'
+  DOCUMENT_DETAILS_TEXT: 'cast(null as varchar)'
+  PROOF_OF_DELIVERY_NUMBER: 'cast(null as varchar)'
+  RECORD_VALID_INDICATOR: 'cast(null as varchar)'
+  SENDER_NAME: 'cast(null as varchar)'
+  SPECIAL_ENCLOSURES_DETAILS: 'cast(null as varchar)'
+  SPECIAL_ENCLOSURES_INDICATOR: 'cast(null as varchar)'
+  CANCELLATION_PREMIUM_BASIS: 'cancellation_basis'
+  ELAPSED_PERIOD_PREMIUM_AMOUNT: 'calculated_amount_for_elapsed_period'
+  RETAINED_ADMIN_CHARGES_AMOUNT: 'retained_admin_charges'
+  UNEXPIRED_PERIOD_PREMIUM_AMOUNT: 'calculated_amount_for_remaining_period'
+  ENDORSEMENT_APPROVAL_DATE: 'cast(null as varchar)'
+  ENDORSEMENT_INVOICE_REFERENCE: 'endorsement_invoice'
+  ENDORSEMENT_REMARKS: 'cast(null as varchar)'
+  ENDORSEMENT_UNIQUE_IDENTIFICATION_CODE: 'unique_identification_code_for_endt'
+  REVISED_SUM_INSURED_AMOUNT: 'cast(null as varchar)'
+  CHILD_POLICY_PLAN_CODE: 'child_policy_plan'
+  EMPLOYER_ORGANISATION_NAME: 'employee_company'
+  GLOBAL_ACCOUNT_INDICATOR: 'global_account_policy'
+  GROUP_NAME: 'group_name'
+  INSURED_EMPLOYEE_CODE: 'employee_code'
+  PROGRAM_IDENTIFIER: 'program_id'
+  GST_BIFURCATION: 'gst_bifurcation'
+  GST_TDS_AMOUNT: 'gst_tds'
+  GST_TYPE: 'gst_type'
+  STAMP_DUTY_RECEIPT_NUMBER: 'stamp_receipt_no'
+  TOTAL_TAX_AMOUNT: 'total_taxes'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW'
 {%- endset -%}

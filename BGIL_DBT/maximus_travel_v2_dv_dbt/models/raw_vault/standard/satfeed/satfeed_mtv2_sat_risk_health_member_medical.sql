@@ -3,7 +3,7 @@
 -- FEED for SAT_RISK_HEALTH_MEMBER_MEDICAL (target track): unions 2 feeder(s).
 --
 -- Payload is the union over ALL feeders, null-padded to the SATELLITE -- not to any one
--- feeder group (BUILD_RULES 6). 1 payload column(s), 2 child-key column(s).
+-- feeder group (BUILD_RULES 6). 5 payload column(s), 2 child-key column(s).
 --
 -- The hashdiff is renamed here from the wide stage's HASHDIFF_RISK_HEALTH_MEMBER_MEDICAL to the bare HASHDIFF the sibling
 -- writes on all 45 of its satellites. The wide stage cannot use the bare name because
@@ -14,6 +14,10 @@
         CONDITION_CODE as CONDITION_CODE,
         MEMBER_REFERENCE as MEMBER_REFERENCE,
         CONDITION_NAME as CONDITION_NAME,
+        CONDITION_DESCRIPTION as CONDITION_DESCRIPTION,
+        CURRENT_MEDICATION_DETAIL as CURRENT_MEDICATION_DETAIL,
+        PRE_EXISTING_DISEASE_ONSET_MONTH as PRE_EXISTING_DISEASE_ONSET_MONTH,
+        PRE_EXISTING_DISEASE_ONSET_YEAR as PRE_EXISTING_DISEASE_ONSET_YEAR,
         HASHDIFF_RISK_HEALTH_MEMBER_MEDICAL as HASHDIFF,
         LOAD_DATETIME, RECORD_SOURCE
     from {{ ref('stg2_mtv2__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
@@ -24,6 +28,10 @@ union all
         CONDITION_CODE as CONDITION_CODE,
         MEMBER_REFERENCE as MEMBER_REFERENCE,
         CONDITION_NAME as CONDITION_NAME,
+        CONDITION_DESCRIPTION as CONDITION_DESCRIPTION,
+        CURRENT_MEDICATION_DETAIL as CURRENT_MEDICATION_DETAIL,
+        PRE_EXISTING_DISEASE_ONSET_MONTH as PRE_EXISTING_DISEASE_ONSET_MONTH,
+        PRE_EXISTING_DISEASE_ONSET_YEAR as PRE_EXISTING_DISEASE_ONSET_YEAR,
         HASHDIFF_RISK_HEALTH_MEMBER_MEDICAL as HASHDIFF,
         LOAD_DATETIME, RECORD_SOURCE
     from {{ ref('stg2_mtv2__uwr_qpd_rskl_msp_imsd_inp_pv') }}

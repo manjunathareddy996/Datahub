@@ -12,8 +12,10 @@
 source_model: 'satfeed_mtv2_sat_party_fraud_profile'
 src_pk: 'PARTY_HKEY'
 src_payload:
+  - 'NEGATIVE_LIST_DATE'
   - 'NEGATIVE_LIST_INDICATOR'
   - 'NEGATIVE_LIST_REASON'
+  - 'NON_DISCLOSURE_ACTION_INITIATED_INDICATOR'
 src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'

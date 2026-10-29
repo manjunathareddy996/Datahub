@@ -17,7 +17,7 @@
 --   RISK_OBJECT_HKEY                   HUB_RISK_OBJECT  (1 row(s) in the map)
 --   RISK_OBJECT_HKEY__INSURED_RISK_LINE HUB_RISK_OBJECT / insured-risk-line  (6 row(s) in the map)
 --   HASHDIFF_RISK_OBJECT_CORE          SAT_RISK_OBJECT_CORE payload 2 of 6 live here
---   HASHDIFF_RISK_OBJECT_VALUATION     SAT_RISK_OBJECT_VALUATION payload 1 of 1 live here
+--   HASHDIFF_RISK_OBJECT_VALUATION     SAT_RISK_OBJECT_VALUATION payload 1 of 3 live here
 
 {%- set yaml_metadata -%}
 source_model: 'resolved_mtv2__uwr_pol_ins'
@@ -37,6 +37,8 @@ hashed_columns:
     is_hashdiff: true
     columns:
       - 'INSURED_VALUE'
+      - 'INSURED_VALUE_IN_SUM_INSURED_CURRENCY'
+      - 'INSURED_VALUE_IN_TRANSACTION_CURRENCY'
 derived_columns:
   RISK_OBJECT_BK: "nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),''), nullif(trim(pol_risk_id),'')) is not null then 'RISK:' || coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) || '#' || nullif(trim(pol_risk_id), '') end),'')"
   RISK_OBJECT_NK: "'HUB_RISK_OBJECT|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),''), nullif(trim(pol_risk_id),'')) is not null then 'RISK:' || coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) || '#' || nullif(trim(pol_risk_id), '') end),''))"
@@ -49,6 +51,8 @@ derived_columns:
   RISK_OBJECT_DESCRIPTION: 'risk_desc'
   RISK_OBJECT_REFERENCE_NUMBER: 'cast(null as varchar)'
   RISK_OBJECT_TYPE: 'cast(null as varchar)'
+  INSURED_VALUE_IN_SUM_INSURED_CURRENCY: 'cast(null as varchar)'
+  INSURED_VALUE_IN_TRANSACTION_CURRENCY: 'cast(null as varchar)'
   LOAD_DATETIME: 'REC_REFRESH_AT'
   RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS'
 {%- endset -%}
