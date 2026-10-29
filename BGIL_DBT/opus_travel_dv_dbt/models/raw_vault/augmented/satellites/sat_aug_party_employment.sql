@@ -6,8 +6,8 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_aug_party_employment_ba_trv_data_policy_dtls_mv_cft_emp_no'
-  - 'stg2_aug_party_employment_bjaz_trv_loader_log_table_mv_empno'
+  - 'stg2_aug_party_employment_ba_trv_data_policy_dtls_cft_emp_no'
+  - 'stg2_aug_party_employment_bjaz_trv_loader_log_table_empno'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'EMPLOYEE_NUMBER'
@@ -15,8 +15,8 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_aug_party_employment_ba_trv_data_policy_dtls_mv_cft_emp_no: 'OPUS'
-  stg2_aug_party_employment_bjaz_trv_loader_log_table_mv_empno: 'OPUS'
+  stg2_aug_party_employment_ba_trv_data_policy_dtls_cft_emp_no: 'OPUS'
+  stg2_aug_party_employment_bjaz_trv_loader_log_table_empno: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

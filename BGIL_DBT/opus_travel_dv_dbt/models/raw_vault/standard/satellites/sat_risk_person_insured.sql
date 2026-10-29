@@ -4,11 +4,11 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_risk_person_insured_bjaz_trv_loader_data_mv_member1'
-  - 'stg2_risk_person_insured_bjaz_trv_loader_data_mv_member2'
-  - 'stg2_risk_person_insured_bjaz_trv_loader_data_mv_member3'
-  - 'stg2_risk_person_insured_bjaz_trv_loader_data_mv_member4'
-  - 'stg2_risk_person_insured_bjaz_trv_loader_data_mv_member5'
+  - 'stg2_risk_person_insured_bjaz_trv_loader_data_member1'
+  - 'stg2_risk_person_insured_bjaz_trv_loader_data_member2'
+  - 'stg2_risk_person_insured_bjaz_trv_loader_data_member3'
+  - 'stg2_risk_person_insured_bjaz_trv_loader_data_member4'
+  - 'stg2_risk_person_insured_bjaz_trv_loader_data_member5'
 src_pk: 'RISK_OBJECT_HKEY'
 src_payload:
   - 'GENDER'
@@ -19,11 +19,11 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_risk_person_insured_bjaz_trv_loader_data_mv_member1: 'OPUS'
-  stg2_risk_person_insured_bjaz_trv_loader_data_mv_member2: 'OPUS'
-  stg2_risk_person_insured_bjaz_trv_loader_data_mv_member3: 'OPUS'
-  stg2_risk_person_insured_bjaz_trv_loader_data_mv_member4: 'OPUS'
-  stg2_risk_person_insured_bjaz_trv_loader_data_mv_member5: 'OPUS'
+  stg2_risk_person_insured_bjaz_trv_loader_data_member1: 'OPUS'
+  stg2_risk_person_insured_bjaz_trv_loader_data_member2: 'OPUS'
+  stg2_risk_person_insured_bjaz_trv_loader_data_member3: 'OPUS'
+  stg2_risk_person_insured_bjaz_trv_loader_data_member4: 'OPUS'
+  stg2_risk_person_insured_bjaz_trv_loader_data_member5: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

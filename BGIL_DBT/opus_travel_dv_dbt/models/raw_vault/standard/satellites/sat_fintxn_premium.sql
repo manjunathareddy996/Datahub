@@ -1,17 +1,17 @@
 {{ config(materialized='incremental') }}
 
 -- TRAVEL STANDARD-MODEL sat() for SAT_FINTXN_PREMIUM (parent HUB_FINANCIAL_TRANSACTION).
--- Round-2: added BJAZ_TRV_LOADER_LOG_TABLE_MV via the new degenerate transaction key.
+-- Round-2: added BJAZ_TRV_LOADER_LOG_TABLE via the new degenerate transaction key.
 -- data_7 sync (MAPPER_NOTE_TRAVEL_DATA7_SYNC.md): DISCOUNT_PERCENTAGE folded in from
--- SAT_AUG_FINTXN_PREMIUM -- see stg2_fintxn_premium_ba_trv_data_policy_dtls_mv.sql's
+-- SAT_AUG_FINTXN_PREMIUM -- see stg2_fintxn_premium_ba_trv_data_policy_dtls.sql's
 -- header. Only that one branch populates it; AutomateDV nulls it for the other two
 -- source_model entries automatically.
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_fintxn_premium_ba_trv_data_policy_dtls_mv'
-  - 'stg2_fintxn_premium_bjaz_trv_loader_data_mv'
-  - 'stg2_fintxn_premium_bjaz_trv_loader_log_table_mv'
+  - 'stg2_fintxn_premium_ba_trv_data_policy_dtls'
+  - 'stg2_fintxn_premium_bjaz_trv_loader_data'
+  - 'stg2_fintxn_premium_bjaz_trv_loader_log_table'
 src_pk: 'FINANCIAL_TRANSACTION_HKEY'
 src_payload:
   - 'BASE_PREMIUM'
@@ -25,9 +25,9 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_fintxn_premium_ba_trv_data_policy_dtls_mv: 'OPUS'
-  stg2_fintxn_premium_bjaz_trv_loader_data_mv: 'OPUS'
-  stg2_fintxn_premium_bjaz_trv_loader_log_table_mv: 'OPUS'
+  stg2_fintxn_premium_ba_trv_data_policy_dtls: 'OPUS'
+  stg2_fintxn_premium_bjaz_trv_loader_data: 'OPUS'
+  stg2_fintxn_premium_bjaz_trv_loader_log_table: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

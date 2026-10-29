@@ -3,7 +3,7 @@
 -- TRAVEL STANDARD-MODEL sat() for SAT_COVERAGE_CONDITIONS (parent HUB_COVERAGE).
 
 {%- set yaml_metadata -%}
-source_model: 'stg2_coverage_conditions_bjaz_trv_plan_mv'
+source_model: 'stg2_coverage_conditions_bjaz_trv_plan'
 src_pk: 'COVERAGE_HKEY'
 src_payload:
   - 'CONDITION_DESCRIPTION'

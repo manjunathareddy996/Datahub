@@ -28,7 +28,7 @@ cross-checks against the source mapping) but never compiled or executed.
 - `mapper_correspondence/MAPPER_REPLIES_TRAVEL.md` — the mapper's replies, round 2 and round 3
   (same file, extended in place): round 2 confirmed both judgment calls and both
   subject/grain questions, corrected 3 of the "no-key" gaps; round 3 confirmed the
-  `BA_TRV_DATA_POLICY_DTLS_MV` fan-out join, supplied real cover codes, and re-targeted
+  `BA_TRV_DATA_POLICY_DTLS` fan-out join, supplied real cover codes, and re-targeted
   `RIDER_PREMIUM` in the workbook itself (matching what this build had already done
   proactively in round 2).
 - `benefit_catalog.json` (project root, round 3) — the real `HUB_COVERAGE` cover code + name
@@ -64,8 +64,8 @@ Health as M3 ("a load-time provenance label, not a fabricated business key").
 this LOB traces to exactly one source column, so a stitch would add indirection without
 bypassing anything (this was true and confirmed for the whole build through round 2).
 `stitch_risk_person_travel_trip_attrs.sql` is the one genuine exception: the mapper confirmed
-`BA_TRV_DATA_POLICY_DTLS_MV` shares the exact same `POLICY_REF` value space as
-`BJAZ_TRV_LOADER_DATA_MV`, so its trip attributes (Destination, Trip Duration, Geographical
+`BA_TRV_DATA_POLICY_DTLS` shares the exact same `POLICY_REF` value space as
+`BJAZ_TRV_LOADER_DATA`, so its trip attributes (Destination, Trip Duration, Geographical
 Zone, Visa Type) need to be joined in and fanned out to every traveller on the policy. Raw
 staging in, `LEFT JOIN` on `POLICY_REF`, zero hashing — the same convention Health/Partner's
 `stitched/` views use, just needed for the first time here.
@@ -90,12 +90,12 @@ Partner).
 The mapping has no explicit `KEY:HUB_RISK_OBJECT` row (unlike the other 13 hubs). Two
 resolutions, both synthetic and both documented in the relevant `stg2_hub_*.sql` header:
 
-1. **`BJAZ_TRV_LOADER_DATA_MV`** (the wide multi-traveller table, `MEMBER1..5` ×
+1. **`BJAZ_TRV_LOADER_DATA`** (the wide multi-traveller table, `MEMBER1..5` ×
    NAME/GENDER/PASSPORTNO/RELATION/DISEASE/DOB) — **mapper-specified** composite key
    `POLICY_REF || '|MEMBERn'`, per `mapper_correspondence/TRAVEL_FIXES_APPLIED.md` Fix 1: gives each of up to 5
    travellers on a policy their own `HUB_RISK_OBJECT` node instead of collapsing onto the
    payer party (the bug the fix corrected).
-2. **`BJAZ_TRV_LOADER_LOG_TABLE_MV`** — a separate, single-traveller source feed (confirmed:
+2. **`BJAZ_TRV_LOADER_LOG_TABLE`** — a separate, single-traveller source feed (confirmed:
    no `MEMBER`-prefixed columns anywhere in its real schema) that also carries risk-object
    attributes (vehicle/motor fields, trip dates). **Not mapper-specified** — this build
    synthesizes one risk-object per policy by reusing its own `POLICYNUMBER` (the same raw
@@ -104,11 +104,11 @@ resolutions, both synthetic and both documented in the relevant `stg2_hub_*.sql`
    in `docs/MAPPER_QUESTIONS_TRAVEL.md`.
 
 Every OTHER table with `HUB_RISK_OBJECT`-parented attributes in the mapping
-(`BJAZ_TRV_PLAN_MV`, `BJAZ_TRV_RATE_MASTER_MV`, `BJAZ_TRV_RIDER_DTLS_MV`, `BJAZ_TRV_DETLS_EXTN`)
+(`BJAZ_TRV_PLAN`, `BJAZ_TRV_RATE_MASTER`, `BJAZ_TRV_RIDER_DTLS`, `BJAZ_TRV_DETLS_EXTN`)
 has **no** risk-object-compatible key at all and no confirmed join to one — those columns are
-not built; see Known gaps. **`BA_TRV_DATA_POLICY_DTLS_MV` is the one exception** (round 3):
+not built; see Known gaps. **`BA_TRV_DATA_POLICY_DTLS` is the one exception** (round 3):
 it carries its own `POLICY_REF` (the same column, same value space, as
-`BJAZ_TRV_LOADER_DATA_MV`'s), so its trip attributes are joined in via
+`BJAZ_TRV_LOADER_DATA`'s), so its trip attributes are joined in via
 `stitch_risk_person_travel_trip_attrs.sql` and fanned out to every traveller — see the
 `stitched/` note above.
 
@@ -168,7 +168,7 @@ Materializations: `staging` and `automate_dv.standard.staging` are views; `hubs`
   (`TRANSITFROM`'s key was silently discarded in favour of `TRANSITTO`'s — affected 5 hubs:
   `HUB_DISTRIBUTION_CHANNEL`, `HUB_LOCATION`, `HUB_ORG_UNIT`, `HUB_PARTY`, `HUB_PRODUCT`), then
   again in the augmented-track generator (`SAT_AUG_PRODUCT_TERMS` silently lost 2 of its 3
-  `BA_TRV_PLAN_MST_MV` attributes). Both generators fixed (stage filenames now include the
+  `BA_TRV_PLAN_MST` attributes). Both generators fixed (stage filenames now include the
   column name), all affected files rebuilt, and the new cross-check would catch a recurrence.
 - **Never compiled or run.** No `dbt compile`, no `dbt run`, no Snowflake execution.
 - **Column types: real for all 9 source tables**, read from `OPUS_TRAVEL_SCHEMA_with_DATA_TYPE.csv`
@@ -187,21 +187,21 @@ Materializations: `staging` and `automate_dv.standard.staging` are views; `hubs`
   fixed.** The mapper supplied real cover codes (`benefit_catalog.json` / the workbook's new
   Benefit Catalog sheet) — the 17 wide-benefit `HUB_COVERAGE` keys now use
   `POLICY_REF || <real cover code>` instead of the raw column name placeholder. The
-  trip-attribute fan-out for `BA_TRV_DATA_POLICY_DTLS_MV` is now built (confirmed: it shares
-  the exact `POLICY_REF` value space with `BJAZ_TRV_LOADER_DATA_MV`) — this needed the one
+  trip-attribute fan-out for `BA_TRV_DATA_POLICY_DTLS` is now built (confirmed: it shares
+  the exact `POLICY_REF` value space with `BJAZ_TRV_LOADER_DATA`) — this needed the one
   genuine join in this LOB, see the `stitched/` note above. While rebuilding that satellite,
-  found a second, independent gap (not from the mapper): `BJAZ_TRV_LOADER_DATA_MV`'s own trip
+  found a second, independent gap (not from the mapper): `BJAZ_TRV_LOADER_DATA`'s own trip
   columns with no `MemberN` prefix (`AREAPLAN`, `DEPARTUREDATE`, `NOOFJOURNEYDAYS`,
   `PRJOURNEY`, `RETURNDATE`) were valid mapped columns that the original per-member generator
   silently never built at all — its filter only matched columns literally containing
   `MEMBERn`, so these 5 matched none of the 5 per-member branches and were dropped with zero
   trace, not even a documented gap. Now fanned out to all 5 travellers, `COALESCE`d against
-  the joined `BA_TRV_DATA_POLICY_DTLS_MV` values where both could populate the same canonical
+  the joined `BA_TRV_DATA_POLICY_DTLS` values where both could populate the same canonical
   attribute (`Geographical Zone`, `Trip Duration`, `Destination Country` — `data_5b` has one
   slot for each, not separate per-source variants).
 - **Judgment calls applied without an explicit mapper instruction, both confirmed correct in
   round 2** (`mapper_correspondence/MAPPER_REPLIES_TRAVEL.md`): the `HUB_RISK_OBJECT` synthetic key for
-  `BJAZ_TRV_LOADER_LOG_TABLE_MV`; re-anchoring `BJAZ_TRV_LOADER_DATA_MV.AGENTEMAILID` to the
+  `BJAZ_TRV_LOADER_LOG_TABLE`; re-anchoring `BJAZ_TRV_LOADER_DATA.AGENTEMAILID` to the
   agent via `INTERMEDIARY` (now recorded explicitly in the workbook too).
 
 ## Round 4: multi-active rekey (cross-LOB, from the Motor review)
@@ -213,13 +213,13 @@ attributes this build already populates.
 
 - **`SAT_FINTXN_COMMISSION`** — converted `sat()` → `ma_sat()`, child key
   `COMMISSION_TYPE_CK`, literal `'Standard'` on both contributing tables (no real
-  commission-type discriminator on either `BA_TRV_DATA_POLICY_DTLS_MV` or
-  `BJAZ_TRV_LOADER_DATA_MV`).
+  commission-type discriminator on either `BA_TRV_DATA_POLICY_DTLS` or
+  `BJAZ_TRV_LOADER_DATA`).
 - **`SAT_FIN_CHARGE_RATE`** — **a real collision bug, not just a missing declaration.**
-  `BA_TRV_DATA_POLICY_DTLS_MV` was forcing two genuinely different charge concepts
+  `BA_TRV_DATA_POLICY_DTLS` was forcing two genuinely different charge concepts
   (`LOADING_PER`, an additional loading rate, and `SERVICE_CHARGE`, a service charge amount)
   onto one row with no discriminator at all. Split into two branches
-  (`'Additional Loading'` / `'Service Charge'`); `BJAZ_TRV_LOADER_LOG_TABLE_MV`'s existing
+  (`'Additional Loading'` / `'Service Charge'`); `BJAZ_TRV_LOADER_LOG_TABLE`'s existing
   contribution keeps the `'Service Charge'` literal (same concept, different table).
 - **Flagged, not folded**: `SAT_AUG_FINTXN_PREMIUM` (augmented track) already carries a
   `DISCOUNT_PERCENTAGE` column that lines up with the note's "also live in `data_7`"
@@ -235,9 +235,9 @@ The Travel mapping was originally built against `data_v5a`; this pass re-points 
 nothing renamed out. Three build actions, two of which turned out to already be correct:
 
 - **`SAT_FINTXN_PREMIUM.Discount Percentage` — folded in.** `DISCOUNT_PER`
-  (`BA_TRV_DATA_POLICY_DTLS_MV`) was build-side augmentation (`SAT_AUG_FINTXN_PREMIUM`);
+  (`BA_TRV_DATA_POLICY_DTLS`) was build-side augmentation (`SAT_AUG_FINTXN_PREMIUM`);
   `data_7` canonicalised it. Folded directly into the existing
-  `stg2_fintxn_premium_ba_trv_data_policy_dtls_mv.sql` branch (same table, same row — no
+  `stg2_fintxn_premium_ba_trv_data_policy_dtls.sql` branch (same table, same row — no
   need for a separate stage file) and removed from the augmented satellite. The two
   special-discount columns (`SP_DISCOUNT_PER`/`SP_DISCOUNT_AMT`/`SPDISCOUNT`) stay
   augmented — `data_7` gave a home to standard discount, not special discount.
@@ -258,31 +258,31 @@ nothing renamed out. Three build actions, two of which turned out to already be 
 ## Known gaps and open items
 
 **Resolved in round 2** (see `mapper_correspondence/MAPPER_REPLIES_TRAVEL.md` for full reasoning):
-- `SAT_COMMON_ADDRESS` — was a real bug, not just a gap: `BJAZ_TRV_LOADER_LOG_TABLE_MV`'s
+- `SAT_COMMON_ADDRESS` — was a real bug, not just a gap: `BJAZ_TRV_LOADER_LOG_TABLE`'s
   rows were wrongly keyed via `TRANSITFROM` (a trip-transit code, unrelated to a person's
   address) due to the stage-filename collision bug above. Fixed: both loader tables now key
   `HUB_LOCATION` on a content hash of the full normalized address (mapper-confirmed —
   `SAT_COMMON_ADDRESS` is single-active and a pincode covers many distinct addresses, so
   pincode alone would collapse unrelated addresses onto one row).
-- Premium on `BA_TRV_DATA_POLICY_DTLS_MV` was already correctly keyed via `TRANSACTION_ID`.
-  For the two txn-less loader tables, `BJAZ_TRV_LOADER_LOG_TABLE_MV` now has a **degenerate**
+- Premium on `BA_TRV_DATA_POLICY_DTLS` was already correctly keyed via `TRANSACTION_ID`.
+  For the two txn-less loader tables, `BJAZ_TRV_LOADER_LOG_TABLE` now has a **degenerate**
   `HUB_FINANCIAL_TRANSACTION` key (reuses `POLICYNUMBER`, one premium record per policy) —
   unblocks `SAT_FINTXN_PREMIUM`, `SAT_FINTXN_HEADER` (new), `SAT_FINTXN_TAX`,
   `SAT_FIN_CHARGE_RATE`, and the `SPDISCOUNT` augmentation on that table.
-- The 17 "Free Cover Limit" benefit columns on `BJAZ_TRV_LOADER_DATA_MV` are a wide-benefit
+- The 17 "Free Cover Limit" benefit columns on `BJAZ_TRV_LOADER_DATA` are a wide-benefit
   unpivot (the Health pattern) — each column is its own coverage instance, keyed
   `HUB_COVERAGE` = `POLICY_REF || Cover Code`. **Round 3**: the mapper's round-2 reply
   claimed a benefit→cover-code catalog existed but it wasn't actually in the re-exported
   workbook then — flagged, and in round 3 the mapper supplied a real one (`benefit_catalog.json`
   + the workbook's new Benefit Catalog sheet). All 17 keys now use the real cover code
   (e.g. `TRV_ACC_HOSP_EXP`) instead of the earlier raw-column-name placeholder.
-- `BJAZ_TRV_PLAN_MV`/`BJAZ_TRV_RATE_MASTER_MV.AREA` — confirmed mistargeted (plan/rate
+- `BJAZ_TRV_PLAN`/`BJAZ_TRV_RATE_MASTER.AREA` — confirmed mistargeted (plan/rate
   applicability zone, not a traveller's destination). Moved to build-side
   `SAT_AUG_PRODUCT_TERMS.Plan Geographical Zone`, keyed via each table's own `HUB_PRODUCT` key.
-- `BJAZ_TRV_RIDER_RATE_MAST_MV`'s 4 rating columns — confirmed mistargeted (coverage-level,
+- `BJAZ_TRV_RIDER_RATE_MAST`'s 4 rating columns — confirmed mistargeted (coverage-level,
   not product-level; the model has no coverage-rating satellite at all). Moved to new
   build-side `SAT_AUG_COVERAGE_RATING`, keyed via `RIDER_SEQ_NO → HUB_COVERAGE`.
-  `BJAZ_TRV_RIDER_DTLS_MV.RIDER_PREMIUM` (previously mapped to
+  `BJAZ_TRV_RIDER_DTLS.RIDER_PREMIUM` (previously mapped to
   `SAT_FINTXN_PREMIUM.Gross Premium` with no key on that table) moved here too, keyed via
   `RIDER_NO`. Flagged for Motor as a promote-to-canonical candidate.
 - `MODEOFTRANSPORT`/`ALTITUDE` — confirmed these are trip-level facts and
@@ -293,18 +293,18 @@ nothing renamed out. Three build actions, two of which turned out to already be 
 
 **Resolved in round 3** (see `docs/MAPPER_FOLLOWUP_ROUND2_TRAVEL.md` for the original
 question and `mapper_correspondence/MAPPER_REPLIES_TRAVEL.md`'s round-3 update for the mapper's answer):
-- **`BA_TRV_DATA_POLICY_DTLS_MV`'s trip attributes** (Destination, Trip Duration,
+- **`BA_TRV_DATA_POLICY_DTLS`'s trip attributes** (Destination, Trip Duration,
   Geographical Zone code/name, Visa Type) — confirmed buildable: this table shares the exact
-  `POLICY_REF` value space with `BJAZ_TRV_LOADER_DATA_MV`. Built via the one genuine join in
+  `POLICY_REF` value space with `BJAZ_TRV_LOADER_DATA`. Built via the one genuine join in
   this LOB (`stitched/stitch_risk_person_travel_trip_attrs.sql`), fanned out to every
-  traveller. `BJAZ_TRV_DETLS_EXTN` and `BJAZ_TRV_RIDER_DTLS_MV`'s trip attributes remain
+  traveller. `BJAZ_TRV_DETLS_EXTN` and `BJAZ_TRV_RIDER_DTLS`'s trip attributes remain
   correctly unbuilt — the mapper confirmed they have no `POLICY_REF` and the join to the
   loader table is unconfirmed (same data-dependent class as the 10th table below).
 - **RIDER_PREMIUM** — round 2 already applied the mapper's stated intent (moved to
   `SAT_AUG_COVERAGE_RATING`, keyed via `RIDER_NO`) even though the workbook row hadn't caught
   up yet; round 3's re-exported workbook now shows the row itself updated to match exactly.
   No build change needed.
-- **A self-caught gap, found while rebuilding the fan-out**: `BJAZ_TRV_LOADER_DATA_MV`'s own
+- **A self-caught gap, found while rebuilding the fan-out**: `BJAZ_TRV_LOADER_DATA`'s own
   trip columns with no `MemberN` prefix (`AREAPLAN`, `DEPARTUREDATE`, `NOOFJOURNEYDAYS`,
   `PRJOURNEY`, `RETURNDATE`) were silently never built at all — not from the mapper, not
   previously documented as a gap. Now fanned out to all 5 travellers.
@@ -319,10 +319,10 @@ question and `mapper_correspondence/MAPPER_REPLIES_TRAVEL.md`'s round-3 update f
   data: does `MEMBER_ID` line up positionally with `MEMBER1..5`, or is it a global surrogate?
   The answer decides whether it re-keys the traveller grain or lands as its own feed.
 - **The cross-table fan-out for trip attributes on `BJAZ_TRV_DETLS_EXTN`/
-  `BJAZ_TRV_RIDER_DTLS_MV`** (Trip dates, Trip Duration, `TRP_DLY_PRM`) remains **not built** —
+  `BJAZ_TRV_RIDER_DTLS`** (Trip dates, Trip Duration, `TRP_DLY_PRM`) remains **not built** —
   mapper-confirmed (round 3): these tables carry `CONTRACT_ID`/`TRAVEL_REQ_NO`/`TRV_DATA_NO`,
-  not `POLICY_REF`, and the value-space match to `BJAZ_TRV_LOADER_DATA_MV.POLICY_REF` is
-  unconfirmed — same data-dependent class as the 10th table. `BA_TRV_DATA_POLICY_DTLS_MV`'s
+  not `POLICY_REF`, and the value-space match to `BJAZ_TRV_LOADER_DATA.POLICY_REF` is
+  unconfirmed — same data-dependent class as the 10th table. `BA_TRV_DATA_POLICY_DTLS`'s
   trip attributes were the one case that *was* confirmed and built (see "Resolved in round 3"
   above).
 - `TRP_DLY_WAY` (`SAT_AUG_COVERAGE_CONDITIONS`) and `STUDENT_PLAN_YN` (`SAT_AUG_PRODUCT_TERMS`)
@@ -330,7 +330,7 @@ question and `mapper_correspondence/MAPPER_REPLIES_TRAVEL.md`'s round-3 update f
   available yet.
 - **~18 more "no key on this table" gaps** across the standard model (down from 59 before
   round 2 — most of the rest were resolved across rounds 2/3): `SAT_POLICY_HEADER` (3),
-  `BJAZ_TRV_DETLS_EXTN`/`BJAZ_TRV_RIDER_DTLS_MV`'s remaining `SAT_RISK_PERSON_TRAVEL` trip
+  `BJAZ_TRV_DETLS_EXTN`/`BJAZ_TRV_RIDER_DTLS`'s remaining `SAT_RISK_PERSON_TRAVEL` trip
   attributes (4, see above), `SAT_COVERAGE_LIMITS` (2), and single columns each on
   `SAT_COMMON_CLASSIFICATION`, `SAT_COVERAGE_DEFINITION` (`BJAZ_TRV_DETLS_EXTN.TRP_DLY_YN`
   only — the 17 loader-table columns are now built), `SAT_DOCUMENT_DEFINITION`,

@@ -2,6 +2,7 @@
    DM-T2  |  Load Audit - Hash Key Integrity (DV2.0, Travel LOB)  (OPUS)
    Hash keys generated consistently; no null; no unexpected collisions.
 
+   MEMBER SPLIT: sections 1..60 assigned M1 x 20, M2 x 20, M3 x 20 -- contiguous thirds in listed order.
    Check ID: DM-T2
    Category: Load audit
    Sign-off criterion: Hash key integrity (DV2.0)
@@ -33,7 +34,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. OPUS — Hash column types (all tables)   [Implemented]
+-- 1. OPUS — Hash column types (all tables)   [Implemented]  [M1]
 -- Every *_HKEY and HASHDIFF column of the project's hubs, links and satellites must be
 -- BINARY(16) (MD5_BINARY).
 ----------------------------------------------------------------------------------------
@@ -48,7 +49,7 @@ select 'OPUS' as project, table_name, column_name, data_type, character_maximum_
 
 
 ----------------------------------------------------------------------------------------
--- 2. OPUS — HUB  HUB_AGREEMENT   [Implemented]
+-- 2. OPUS — HUB  HUB_AGREEMENT   [Implemented]  [M1]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal AGREEMENT_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -56,7 +57,7 @@ select 'OPUS' as project, table_name, column_name, data_type, character_maximum_
 ----------------------------------------------------------------------------------------
 with c as (
     select AGREEMENT_HKEY as hkey, count(distinct PARENT_BK) as bks
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGREEMENT where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV') group by AGREEMENT_HKEY having count(distinct PARENT_BK) > 1
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGREEMENT where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RATE_MASTER') group by AGREEMENT_HKEY having count(distinct PARENT_BK) > 1
 )
 select 'OPUS' as project, 'hub' as table_type, 'HUB_AGREEMENT' as table_name,
        count(*) as rows_in_scope,
@@ -66,12 +67,12 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_AGREEMENT' as table_name,
        (select count(*) from c) as collisions,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGREEMENT
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RATE_MASTER');
 
 
 
 ----------------------------------------------------------------------------------------
--- 3. OPUS — HUB  HUB_ASSESSMENT   [Implemented]
+-- 3. OPUS — HUB  HUB_ASSESSMENT   [Implemented]  [M1]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal ASSESSMENT_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -79,7 +80,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_AGREEMENT' as table_name,
 ----------------------------------------------------------------------------------------
 with c as (
     select ASSESSMENT_HKEY as hkey, count(distinct PARENT_BK) as bks
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV') group by ASSESSMENT_HKEY having count(distinct PARENT_BK) > 1
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA') group by ASSESSMENT_HKEY having count(distinct PARENT_BK) > 1
 )
 select 'OPUS' as project, 'hub' as table_type, 'HUB_ASSESSMENT' as table_name,
        count(*) as rows_in_scope,
@@ -89,12 +90,12 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_ASSESSMENT' as table_name,
        (select count(*) from c) as collisions,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 4. OPUS — HUB  HUB_COVERAGE   [Implemented]
+-- 4. OPUS — HUB  HUB_COVERAGE   [Implemented]  [M1]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal COVERAGE_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -102,7 +103,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_ASSESSMENT' as table_name,
 ----------------------------------------------------------------------------------------
 with c as (
     select COVERAGE_HKEY as hkey, count(distinct PARENT_BK) as bks
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV') group by COVERAGE_HKEY having count(distinct PARENT_BK) > 1
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST') group by COVERAGE_HKEY having count(distinct PARENT_BK) > 1
 )
 select 'OPUS' as project, 'hub' as table_type, 'HUB_COVERAGE' as table_name,
        count(*) as rows_in_scope,
@@ -112,12 +113,12 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_COVERAGE' as table_name,
        (select count(*) from c) as collisions,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST');
 
 
 
 ----------------------------------------------------------------------------------------
--- 5. OPUS — HUB  HUB_DISTRIBUTION_CHANNEL   [Implemented]
+-- 5. OPUS — HUB  HUB_DISTRIBUTION_CHANNEL   [Implemented]  [M1]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal DISTRIBUTION_CHANNEL_HKEY. collisions = hash keys carrying more than one
 -- PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and
@@ -125,7 +126,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_COVERAGE' as table_name,
 ----------------------------------------------------------------------------------------
 with c as (
     select DISTRIBUTION_CHANNEL_HKEY as hkey, count(distinct PARENT_BK) as bks
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV') group by DISTRIBUTION_CHANNEL_HKEY having count(distinct PARENT_BK) > 1
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by DISTRIBUTION_CHANNEL_HKEY having count(distinct PARENT_BK) > 1
 )
 select 'OPUS' as project, 'hub' as table_type, 'HUB_DISTRIBUTION_CHANNEL' as table_name,
        count(*) as rows_in_scope,
@@ -135,12 +136,12 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_DISTRIBUTION_CHANNEL' as tab
        (select count(*) from c) as collisions,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 6. OPUS — HUB  HUB_FINANCIAL_ACCOUNT   [Implemented]
+-- 6. OPUS — HUB  HUB_FINANCIAL_ACCOUNT   [Implemented]  [M1]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal FINANCIAL_ACCOUNT_HKEY. collisions = hash keys carrying more than one
 -- PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and
@@ -148,7 +149,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_DISTRIBUTION_CHANNEL' as tab
 ----------------------------------------------------------------------------------------
 with c as (
     select FINANCIAL_ACCOUNT_HKEY as hkey, count(distinct PARENT_BK) as bks
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_ACCOUNT where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV') group by FINANCIAL_ACCOUNT_HKEY having count(distinct PARENT_BK) > 1
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_ACCOUNT where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA') group by FINANCIAL_ACCOUNT_HKEY having count(distinct PARENT_BK) > 1
 )
 select 'OPUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_ACCOUNT' as table_name,
        count(*) as rows_in_scope,
@@ -158,12 +159,12 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_ACCOUNT' as table_
        (select count(*) from c) as collisions,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_ACCOUNT
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 7. OPUS — HUB  HUB_FINANCIAL_TRANSACTION   [Implemented]
+-- 7. OPUS — HUB  HUB_FINANCIAL_TRANSACTION   [Implemented]  [M1]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal FINANCIAL_TRANSACTION_HKEY. collisions = hash keys carrying more than one
 -- PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and
@@ -171,7 +172,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_ACCOUNT' as table_
 ----------------------------------------------------------------------------------------
 with c as (
     select FINANCIAL_TRANSACTION_HKEY as hkey, count(distinct PARENT_BK) as bks
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV') group by FINANCIAL_TRANSACTION_HKEY having count(distinct PARENT_BK) > 1
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by FINANCIAL_TRANSACTION_HKEY having count(distinct PARENT_BK) > 1
 )
 select 'OPUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_TRANSACTION' as table_name,
        count(*) as rows_in_scope,
@@ -181,12 +182,12 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_TRANSACTION' as ta
        (select count(*) from c) as collisions,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 8. OPUS — HUB  HUB_LOCATION   [Implemented]
+-- 8. OPUS — HUB  HUB_LOCATION   [Implemented]  [M1]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal LOCATION_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -194,7 +195,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_TRANSACTION' as ta
 ----------------------------------------------------------------------------------------
 with c as (
     select LOCATION_HKEY as hkey, count(distinct PARENT_BK) as bks
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV') group by LOCATION_HKEY having count(distinct PARENT_BK) > 1
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by LOCATION_HKEY having count(distinct PARENT_BK) > 1
 )
 select 'OPUS' as project, 'hub' as table_type, 'HUB_LOCATION' as table_name,
        count(*) as rows_in_scope,
@@ -204,12 +205,12 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_LOCATION' as table_name,
        (select count(*) from c) as collisions,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 9. OPUS — HUB  HUB_ORG_UNIT   [Implemented]
+-- 9. OPUS — HUB  HUB_ORG_UNIT   [Implemented]  [M1]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal ORG_UNIT_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -217,7 +218,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_LOCATION' as table_name,
 ----------------------------------------------------------------------------------------
 with c as (
     select ORG_UNIT_HKEY as hkey, count(distinct PARENT_BK) as bks
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ORG_UNIT where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV') group by ORG_UNIT_HKEY having count(distinct PARENT_BK) > 1
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ORG_UNIT where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by ORG_UNIT_HKEY having count(distinct PARENT_BK) > 1
 )
 select 'OPUS' as project, 'hub' as table_type, 'HUB_ORG_UNIT' as table_name,
        count(*) as rows_in_scope,
@@ -227,12 +228,12 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_ORG_UNIT' as table_name,
        (select count(*) from c) as collisions,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ORG_UNIT
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 10. OPUS — HUB  HUB_PARTY   [Implemented]
+-- 10. OPUS — HUB  HUB_PARTY   [Implemented]  [M1]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal PARTY_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -240,7 +241,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_ORG_UNIT' as table_name,
 ----------------------------------------------------------------------------------------
 with c as (
     select PARTY_HKEY as hkey, count(distinct PARENT_BK) as bks
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV') group by PARTY_HKEY having count(distinct PARENT_BK) > 1
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by PARTY_HKEY having count(distinct PARENT_BK) > 1
 )
 select 'OPUS' as project, 'hub' as table_type, 'HUB_PARTY' as table_name,
        count(*) as rows_in_scope,
@@ -250,12 +251,12 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PARTY' as table_name,
        (select count(*) from c) as collisions,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 11. OPUS — HUB  HUB_POLICY   [Implemented]
+-- 11. OPUS — HUB  HUB_POLICY   [Implemented]  [M1]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal POLICY_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -263,7 +264,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PARTY' as table_name,
 ----------------------------------------------------------------------------------------
 with c as (
     select POLICY_HKEY as hkey, count(distinct PARENT_BK) as bks
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV') group by POLICY_HKEY having count(distinct PARENT_BK) > 1
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS') group by POLICY_HKEY having count(distinct PARENT_BK) > 1
 )
 select 'OPUS' as project, 'hub' as table_type, 'HUB_POLICY' as table_name,
        count(*) as rows_in_scope,
@@ -273,12 +274,12 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_POLICY' as table_name,
        (select count(*) from c) as collisions,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 12. OPUS — HUB  HUB_PRODUCT   [Implemented]
+-- 12. OPUS — HUB  HUB_PRODUCT   [Implemented]  [M1]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal PRODUCT_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -286,7 +287,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_POLICY' as table_name,
 ----------------------------------------------------------------------------------------
 with c as (
     select PRODUCT_HKEY as hkey, count(distinct PARENT_BK) as bks
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV') group by PRODUCT_HKEY having count(distinct PARENT_BK) > 1
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RATE_MASTER') group by PRODUCT_HKEY having count(distinct PARENT_BK) > 1
 )
 select 'OPUS' as project, 'hub' as table_type, 'HUB_PRODUCT' as table_name,
        count(*) as rows_in_scope,
@@ -296,12 +297,12 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PRODUCT' as table_name,
        (select count(*) from c) as collisions,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RATE_MASTER');
 
 
 
 ----------------------------------------------------------------------------------------
--- 13. OPUS — HUB  HUB_PROPOSAL   [Implemented]
+-- 13. OPUS — HUB  HUB_PROPOSAL   [Implemented]  [M1]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal PROPOSAL_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -309,7 +310,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PRODUCT' as table_name,
 ----------------------------------------------------------------------------------------
 with c as (
     select PROPOSAL_HKEY as hkey, count(distinct PARENT_BK) as bks
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PROPOSAL where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN') group by PROPOSAL_HKEY having count(distinct PARENT_BK) > 1
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PROPOSAL where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN') group by PROPOSAL_HKEY having count(distinct PARENT_BK) > 1
 )
 select 'OPUS' as project, 'hub' as table_type, 'HUB_PROPOSAL' as table_name,
        count(*) as rows_in_scope,
@@ -319,12 +320,12 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PROPOSAL' as table_name,
        (select count(*) from c) as collisions,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PROPOSAL
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 14. OPUS — HUB  HUB_QUOTE   [Implemented]
+-- 14. OPUS — HUB  HUB_QUOTE   [Implemented]  [M1]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal QUOTE_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -332,7 +333,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PROPOSAL' as table_name,
 ----------------------------------------------------------------------------------------
 with c as (
     select QUOTE_HKEY as hkey, count(distinct PARENT_BK) as bks
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV') group by QUOTE_HKEY having count(distinct PARENT_BK) > 1
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS') group by QUOTE_HKEY having count(distinct PARENT_BK) > 1
 )
 select 'OPUS' as project, 'hub' as table_type, 'HUB_QUOTE' as table_name,
        count(*) as rows_in_scope,
@@ -342,12 +343,12 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_QUOTE' as table_name,
        (select count(*) from c) as collisions,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 15. OPUS — HUB  HUB_RISK_OBJECT   [Implemented]
+-- 15. OPUS — HUB  HUB_RISK_OBJECT   [Implemented]  [M1]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal RISK_OBJECT_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -355,7 +356,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_QUOTE' as table_name,
 ----------------------------------------------------------------------------------------
 with c as (
     select RISK_OBJECT_HKEY as hkey, count(distinct PARENT_BK) as bks
-      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV') group by RISK_OBJECT_HKEY having count(distinct PARENT_BK) > 1
+      from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE') group by RISK_OBJECT_HKEY having count(distinct PARENT_BK) > 1
 )
 select 'OPUS' as project, 'hub' as table_type, 'HUB_RISK_OBJECT' as table_name,
        count(*) as rows_in_scope,
@@ -365,12 +366,12 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_RISK_OBJECT' as table_name,
        (select count(*) from c) as collisions,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and coalesce(hkey_not_recomputable, 0) = 0 and collisions = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 16. OPUS — SATELLITE  SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 16. OPUS — SATELLITE  SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M1]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -381,12 +382,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_COMMUNICATI
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — SATELLITE  SAT_AUG_COVERAGE_DEFINITION   [Implemented]
+-- 17. OPUS — SATELLITE  SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M1]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -397,12 +398,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_DEFINITIO
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_DEFINITION
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 18. OPUS — SATELLITE  SAT_AUG_COVERAGE_LIMITS   [Implemented]
+-- 18. OPUS — SATELLITE  SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M1]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -413,12 +414,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_LIMITS' a
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_LIMITS
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 19. OPUS — SATELLITE  SAT_AUG_COVERAGE_RATING   [Implemented]
+-- 19. OPUS — SATELLITE  SAT_AUG_COVERAGE_RATING   [Implemented]  [M1]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -429,12 +430,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_RATING' a
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_RATING
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_RATE_MAST', 'OPUS_BJAZ_TRV_RIDER_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 20. OPUS — SATELLITE  SAT_AUG_FINTXN_PREMIUM   [Implemented]
+-- 20. OPUS — SATELLITE  SAT_AUG_FINTXN_PREMIUM   [Implemented]  [M1]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -445,12 +446,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_FINTXN_PREMIUM' as
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 21. OPUS — SATELLITE  SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 21. OPUS — SATELLITE  SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -461,12 +462,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_PARTY_ROLE_COR
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_PARTY_ROLE_CORE
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 22. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 22. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -477,12 +478,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_CUSTOMER'
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 23. OPUS — SATELLITE  SAT_AUG_PARTY_BANKING   [Implemented]
+-- 23. OPUS — SATELLITE  SAT_AUG_PARTY_BANKING   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -493,12 +494,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_BANKING' as 
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_BANKING
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 24. OPUS — SATELLITE  SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
+-- 24. OPUS — SATELLITE  SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -509,12 +510,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_EMPLOYMENT' 
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 25. OPUS — SATELLITE  SAT_AUG_PRODUCT_TERMS   [Implemented]
+-- 25. OPUS — SATELLITE  SAT_AUG_PRODUCT_TERMS   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -525,12 +526,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PRODUCT_TERMS' as 
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
- where RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV', 'OPUS_BJAZ_TRV_PLAN_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_RATE_MASTER', 'OPUS_BJAZ_TRV_PLAN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — SATELLITE  SAT_AUG_RISK_PERSON_INSURED   [Implemented]
+-- 26. OPUS — SATELLITE  SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -541,12 +542,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_INSURE
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_INSURED
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — SATELLITE  SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
+-- 27. OPUS — SATELLITE  SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -557,12 +558,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_TRAVEL
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_TRAVEL
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]
+-- 28. OPUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -573,12 +574,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_ADDRESS' as tab
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 29. OPUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -589,12 +590,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CLASSIFICATION'
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 30. OPUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]
+-- 30. OPUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -605,12 +606,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONTACT' as tab
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 31. OPUS — SATELLITE  SAT_COVERAGE_CONDITIONS   [Implemented]
+-- 31. OPUS — SATELLITE  SAT_COVERAGE_CONDITIONS   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -621,12 +622,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_CONDITIONS' a
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_CONDITIONS
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 32. OPUS — SATELLITE  SAT_COVERAGE_DEFINITION   [Implemented]
+-- 32. OPUS — SATELLITE  SAT_COVERAGE_DEFINITION   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -637,12 +638,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_DEFINITION' a
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 33. OPUS — SATELLITE  SAT_COVERAGE_LIMITS   [Implemented]
+-- 33. OPUS — SATELLITE  SAT_COVERAGE_LIMITS   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -653,12 +654,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_LIMITS' as ta
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST');
 
 
 
 ----------------------------------------------------------------------------------------
--- 34. OPUS — SATELLITE  SAT_FINTXN_COMMISSION   [Implemented]
+-- 34. OPUS — SATELLITE  SAT_FINTXN_COMMISSION   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -669,12 +670,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_COMMISSION' as 
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_COMMISSION
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 35. OPUS — SATELLITE  SAT_FINTXN_HEADER   [Implemented]
+-- 35. OPUS — SATELLITE  SAT_FINTXN_HEADER   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -685,12 +686,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_HEADER' as tabl
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_HEADER
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 36. OPUS — SATELLITE  SAT_FINTXN_PREMIUM   [Implemented]
+-- 36. OPUS — SATELLITE  SAT_FINTXN_PREMIUM   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -701,12 +702,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_PREMIUM' as tab
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 37. OPUS — SATELLITE  SAT_FINTXN_TAX   [Implemented]
+-- 37. OPUS — SATELLITE  SAT_FINTXN_TAX   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -717,12 +718,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_TAX' as table_n
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_TAX
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 38. OPUS — SATELLITE  SAT_FIN_CHARGE_RATE   [Implemented]
+-- 38. OPUS — SATELLITE  SAT_FIN_CHARGE_RATE   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -733,12 +734,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FIN_CHARGE_RATE' as ta
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_CHARGE_RATE
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 39. OPUS — SATELLITE  SAT_FIN_RECEIPT   [Implemented]
+-- 39. OPUS — SATELLITE  SAT_FIN_RECEIPT   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -749,12 +750,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FIN_RECEIPT' as table_
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 40. OPUS — SATELLITE  SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 40. OPUS — SATELLITE  SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M2]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -765,12 +766,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_NOMINEE_BENEF
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 41. OPUS — SATELLITE  SAT_ORG_UNIT_DEFINITION   [Implemented]
+-- 41. OPUS — SATELLITE  SAT_ORG_UNIT_DEFINITION   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -781,12 +782,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_ORG_UNIT_DEFINITION' a
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ORG_UNIT_DEFINITION
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 42. OPUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 42. OPUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -797,12 +798,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_EMPLOYMENT' as t
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 43. OPUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 43. OPUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -813,12 +814,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_HEALTH_PROFILE' 
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 44. OPUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 44. OPUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -829,12 +830,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTIFICATION' 
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 45. OPUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]
+-- 45. OPUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -845,12 +846,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTITY' as tab
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 46. OPUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 46. OPUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -861,12 +862,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_INDIVIDUAL_DEMOG
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 47. OPUS — SATELLITE  SAT_POLICY_CLASSIFICATION   [Implemented]
+-- 47. OPUS — SATELLITE  SAT_POLICY_CLASSIFICATION   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -877,12 +878,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_CLASSIFICATION'
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 48. OPUS — SATELLITE  SAT_POLICY_HEADER   [Implemented]
+-- 48. OPUS — SATELLITE  SAT_POLICY_HEADER   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -893,12 +894,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_HEADER' as tabl
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 49. OPUS — SATELLITE  SAT_POLICY_TERMS   [Implemented]
+-- 49. OPUS — SATELLITE  SAT_POLICY_TERMS   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -909,12 +910,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_TERMS' as table
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 50. OPUS — SATELLITE  SAT_PRODUCT_DEFINITION   [Implemented]
+-- 50. OPUS — SATELLITE  SAT_PRODUCT_DEFINITION   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -925,12 +926,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_DEFINITION' as
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 51. OPUS — SATELLITE  SAT_PRODUCT_RATING_FACTOR   [Implemented]
+-- 51. OPUS — SATELLITE  SAT_PRODUCT_RATING_FACTOR   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -941,12 +942,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_RATING_FACTOR'
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_FACTOR
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER');
 
 
 
 ----------------------------------------------------------------------------------------
--- 52. OPUS — SATELLITE  SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
+-- 52. OPUS — SATELLITE  SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -957,12 +958,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_RATING_STRUCTU
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_STRUCTURE
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER');
 
 
 
 ----------------------------------------------------------------------------------------
--- 53. OPUS — SATELLITE  SAT_PRODUCT_TERMS   [Implemented]
+-- 53. OPUS — SATELLITE  SAT_PRODUCT_TERMS   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -973,12 +974,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_TERMS' as tabl
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS
- where RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_PLAN_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_PLAN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 54. OPUS — SATELLITE  SAT_PROPOSAL_UNDERWRITING   [Implemented]
+-- 54. OPUS — SATELLITE  SAT_PROPOSAL_UNDERWRITING   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -989,12 +990,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PROPOSAL_UNDERWRITING'
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROPOSAL_UNDERWRITING
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 55. OPUS — SATELLITE  SAT_QUOTE_HEADER   [Implemented]
+-- 55. OPUS — SATELLITE  SAT_QUOTE_HEADER   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1005,12 +1006,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_QUOTE_HEADER' as table
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_HEADER
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 56. OPUS — SATELLITE  SAT_RISK_MOTOR_DRIVER   [Implemented]
+-- 56. OPUS — SATELLITE  SAT_RISK_MOTOR_DRIVER   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1021,12 +1022,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_MOTOR_DRIVER' as 
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_DRIVER
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 57. OPUS — SATELLITE  SAT_RISK_MOTOR_VEHICLE   [Implemented]
+-- 57. OPUS — SATELLITE  SAT_RISK_MOTOR_VEHICLE   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1037,12 +1038,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_MOTOR_VEHICLE' as
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_VEHICLE
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 58. OPUS — SATELLITE  SAT_RISK_OBJECT_CORE   [Implemented]
+-- 58. OPUS — SATELLITE  SAT_RISK_OBJECT_CORE   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1053,12 +1054,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_OBJECT_CORE' as t
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_CORE
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 59. OPUS — SATELLITE  SAT_RISK_PERSON_INSURED   [Implemented]
+-- 59. OPUS — SATELLITE  SAT_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1069,12 +1070,12 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_PERSON_INSURED' a
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_INSURED
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 60. OPUS — SATELLITE  SAT_RISK_PERSON_TRAVEL   [Implemented]
+-- 60. OPUS — SATELLITE  SAT_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1085,4 +1086,4 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_PERSON_TRAVEL' as
        count_if(HASHDIFF is null) as null_hashdiff,
        iff(null_hkey = 0 and wrong_length_hkey = 0 and null_hashdiff = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');

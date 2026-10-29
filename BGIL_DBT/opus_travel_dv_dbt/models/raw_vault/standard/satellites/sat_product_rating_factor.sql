@@ -5,10 +5,10 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_product_rating_factor_bjaz_trv_rate_master_mv_0'
-  - 'stg2_product_rating_factor_bjaz_trv_rate_master_mv_1'
-  - 'stg2_product_rating_factor_bjaz_trv_rate_master_mv_2'
-  - 'stg2_product_rating_factor_bjaz_trv_rate_master_mv_3'
+  - 'stg2_product_rating_factor_bjaz_trv_rate_master_0'
+  - 'stg2_product_rating_factor_bjaz_trv_rate_master_1'
+  - 'stg2_product_rating_factor_bjaz_trv_rate_master_2'
+  - 'stg2_product_rating_factor_bjaz_trv_rate_master_3'
 src_pk: 'PRODUCT_HKEY'
 src_cdk:
   - 'ACTIVE_SEQUENCE_NUMBER'
@@ -19,10 +19,10 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_product_rating_factor_bjaz_trv_rate_master_mv_0: 'OPUS'
-  stg2_product_rating_factor_bjaz_trv_rate_master_mv_1: 'OPUS'
-  stg2_product_rating_factor_bjaz_trv_rate_master_mv_2: 'OPUS'
-  stg2_product_rating_factor_bjaz_trv_rate_master_mv_3: 'OPUS'
+  stg2_product_rating_factor_bjaz_trv_rate_master_0: 'OPUS'
+  stg2_product_rating_factor_bjaz_trv_rate_master_1: 'OPUS'
+  stg2_product_rating_factor_bjaz_trv_rate_master_2: 'OPUS'
+  stg2_product_rating_factor_bjaz_trv_rate_master_3: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

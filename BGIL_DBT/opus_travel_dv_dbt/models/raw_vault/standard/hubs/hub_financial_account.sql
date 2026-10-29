@@ -3,7 +3,7 @@
 -- TRAVEL STANDARD-MODEL hub() for HUB_FINANCIAL_ACCOUNT, 1 contributing table(s).
 
 {%- set yaml_metadata -%}
-source_model: 'stg2_hub_bjaz_trv_loader_data_mv__financial_account'
+source_model: 'stg2_hub_bjaz_trv_loader_data__financial_account'
 src_pk: 'FINANCIAL_ACCOUNT_HKEY'
 src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'

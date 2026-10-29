@@ -8,11 +8,11 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_nb_prm_excluding_st'
-  - 'stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_extn_prm_excluding_st'
-  - 'stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_min_extn_prm'
-  - 'stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_min_nb_prm'
-  - 'stg2_aug_coverage_rating_bjaz_trv_rider_dtls_mv_rider_premium'
+  - 'stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_nb_prm_excluding_st'
+  - 'stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_extn_prm_excluding_st'
+  - 'stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_min_extn_prm'
+  - 'stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_min_nb_prm'
+  - 'stg2_aug_coverage_rating_bjaz_trv_rider_dtls_rider_premium'
 src_pk: 'COVERAGE_HKEY'
 src_payload:
   - 'EXTENSION_PREMIUM_EXCLUDING_ST'
@@ -24,11 +24,11 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_nb_prm_excluding_st: 'OPUS'
-  stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_extn_prm_excluding_st: 'OPUS'
-  stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_min_extn_prm: 'OPUS'
-  stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_min_nb_prm: 'OPUS'
-  stg2_aug_coverage_rating_bjaz_trv_rider_dtls_mv_rider_premium: 'OPUS'
+  stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_nb_prm_excluding_st: 'OPUS'
+  stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_extn_prm_excluding_st: 'OPUS'
+  stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_min_extn_prm: 'OPUS'
+  stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_min_nb_prm: 'OPUS'
+  stg2_aug_coverage_rating_bjaz_trv_rider_dtls_rider_premium: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

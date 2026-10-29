@@ -4,10 +4,10 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_hub_ba_trv_data_policy_dtls_mv__agreement'
-  - 'stg2_hub_ba_trv_plan_mst_mv__agreement'
-  - 'stg2_hub_bjaz_trv_loader_log_table_mv__agreement'
-  - 'stg2_hub_bjaz_trv_rate_master_mv__agreement'
+  - 'stg2_hub_ba_trv_data_policy_dtls__agreement'
+  - 'stg2_hub_ba_trv_plan_mst__agreement'
+  - 'stg2_hub_bjaz_trv_loader_log_table__agreement'
+  - 'stg2_hub_bjaz_trv_rate_master__agreement'
   - 'stg2_hub_bjaz_trv_detls_extn__agreement'
 src_pk: 'AGREEMENT_HKEY'
 src_nk: 'PARENT_BK'

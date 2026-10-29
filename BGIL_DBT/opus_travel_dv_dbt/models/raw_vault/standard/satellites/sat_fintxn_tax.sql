@@ -3,13 +3,13 @@
 -- TRAVEL STANDARD-MODEL ma_sat() for SAT_FINTXN_TAX (parent HUB_FINANCIAL_TRANSACTION), per data_5b
 -- canonical childkey "Tax Type".
 
--- Round-2: added BJAZ_TRV_LOADER_LOG_TABLE_MV.SERVICETAX via the new degenerate txn key.
+-- Round-2: added BJAZ_TRV_LOADER_LOG_TABLE.SERVICETAX via the new degenerate txn key.
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_fintxn_tax_ba_trv_data_policy_dtls_mv_0'
-  - 'stg2_fintxn_tax_ba_trv_data_policy_dtls_mv_1'
-  - 'stg2_fintxn_tax_bjaz_trv_loader_log_table_mv_2'
+  - 'stg2_fintxn_tax_ba_trv_data_policy_dtls_0'
+  - 'stg2_fintxn_tax_ba_trv_data_policy_dtls_1'
+  - 'stg2_fintxn_tax_bjaz_trv_loader_log_table_2'
 src_pk: 'FINANCIAL_TRANSACTION_HKEY'
 src_cdk:
   - 'TAX_TYPE'
@@ -20,9 +20,9 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_fintxn_tax_ba_trv_data_policy_dtls_mv_0: 'OPUS'
-  stg2_fintxn_tax_ba_trv_data_policy_dtls_mv_1: 'OPUS'
-  stg2_fintxn_tax_bjaz_trv_loader_log_table_mv_2: 'OPUS'
+  stg2_fintxn_tax_ba_trv_data_policy_dtls_0: 'OPUS'
+  stg2_fintxn_tax_ba_trv_data_policy_dtls_1: 'OPUS'
+  stg2_fintxn_tax_bjaz_trv_loader_log_table_2: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

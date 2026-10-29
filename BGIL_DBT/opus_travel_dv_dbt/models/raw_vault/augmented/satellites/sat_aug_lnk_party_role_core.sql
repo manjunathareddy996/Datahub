@@ -5,7 +5,7 @@
 
 
 {%- set yaml_metadata -%}
-source_model: 'stg2_aug_lnk_party_role_core_bjaz_trv_loader_log_table_mv'
+source_model: 'stg2_aug_lnk_party_role_core_bjaz_trv_loader_log_table'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'PREMIUM_PAYER_INDICATOR'

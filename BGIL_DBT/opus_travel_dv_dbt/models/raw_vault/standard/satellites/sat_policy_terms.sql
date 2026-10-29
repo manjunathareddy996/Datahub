@@ -4,8 +4,8 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_policy_terms_ba_trv_data_policy_dtls_mv'
-  - 'stg2_policy_terms_bjaz_trv_loader_log_table_mv'
+  - 'stg2_policy_terms_ba_trv_data_policy_dtls'
+  - 'stg2_policy_terms_bjaz_trv_loader_log_table'
 src_pk: 'POLICY_HKEY'
 src_payload:
   - 'SPECIAL_CONDITIONS'
@@ -13,8 +13,8 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_policy_terms_ba_trv_data_policy_dtls_mv: 'OPUS'
-  stg2_policy_terms_bjaz_trv_loader_log_table_mv: 'OPUS'
+  stg2_policy_terms_ba_trv_data_policy_dtls: 'OPUS'
+  stg2_policy_terms_bjaz_trv_loader_log_table: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

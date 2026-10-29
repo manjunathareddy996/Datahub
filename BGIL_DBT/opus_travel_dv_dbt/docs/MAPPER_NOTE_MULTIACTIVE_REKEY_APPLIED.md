@@ -13,13 +13,13 @@ a real, pre-existing collision bug — same class as the one found in Health's
 ## `SAT_FINTXN_COMMISSION` — straightforward, no collision found
 
 Converted `sat()` → `ma_sat()`, child key `COMMISSION_TYPE_CK`. Two contributing tables
-(`BA_TRV_DATA_POLICY_DTLS_MV`, `BJAZ_TRV_LOADER_DATA_MV`), neither with a real
+(`BA_TRV_DATA_POLICY_DTLS`, `BJAZ_TRV_LOADER_DATA`), neither with a real
 commission-type discriminator, so both use the literal `'Standard'`. Different `transaction_
 id`/`transactionid` namespaces per table mean no cross-table collision risk in practice.
 
 ## `SAT_FIN_CHARGE_RATE` — a real bug, found because of your note
 
-`BA_TRV_DATA_POLICY_DTLS_MV` was forcing two genuinely different charge concepts onto one
+`BA_TRV_DATA_POLICY_DTLS` was forcing two genuinely different charge concepts onto one
 row with **no discriminator at all** (this satellite had no child key declared before this
 rekey, so it wasn't even a stale-literal case like Health's — the two concepts were just
 merged):
@@ -28,7 +28,7 @@ merged):
 - `SERVICE_CHARGE` → Charge Amount
 
 Split into two branches (`'Additional Loading'` / `'Service Charge'`).
-`BJAZ_TRV_LOADER_LOG_TABLE_MV`'s existing single-column contribution keeps the
+`BJAZ_TRV_LOADER_LOG_TABLE`'s existing single-column contribution keeps the
 `'Service Charge'` literal, since it's the same charge concept from a different table.
 **Please sanity-check**: if `LOADING_PER` and `SERVICE_CHARGE` are actually meant to be
 read together as one charge line (not two), let me know and I'll recombine them.

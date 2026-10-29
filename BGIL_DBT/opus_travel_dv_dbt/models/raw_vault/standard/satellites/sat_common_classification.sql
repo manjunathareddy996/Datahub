@@ -4,8 +4,8 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_common_classification_ba_trv_data_policy_dtls_mv_payer'
-  - 'stg2_common_classification_bjaz_trv_loader_data_mv_payer'
+  - 'stg2_common_classification_ba_trv_data_policy_dtls_payer'
+  - 'stg2_common_classification_bjaz_trv_loader_data_payer'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'CATEGORY_CODE'
@@ -13,8 +13,8 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_common_classification_ba_trv_data_policy_dtls_mv_payer: 'OPUS'
-  stg2_common_classification_bjaz_trv_loader_data_mv_payer: 'OPUS'
+  stg2_common_classification_ba_trv_data_policy_dtls_payer: 'OPUS'
+  stg2_common_classification_bjaz_trv_loader_data_payer: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

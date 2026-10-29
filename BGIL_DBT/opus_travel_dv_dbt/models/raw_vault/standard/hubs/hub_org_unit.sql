@@ -4,11 +4,11 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_hub_ba_trv_data_policy_dtls_mv__org_unit_location_code'
-  - 'stg2_hub_ba_trv_data_policy_dtls_mv__org_unit_co_org_unit'
-  - 'stg2_hub_bjaz_trv_loader_data_mv__org_unit'
-  - 'stg2_hub_bjaz_trv_loader_log_table_mv__org_unit_locationcode'
-  - 'stg2_hub_bjaz_trv_loader_log_table_mv__org_unit_coorgunit'
+  - 'stg2_hub_ba_trv_data_policy_dtls__org_unit_location_code'
+  - 'stg2_hub_ba_trv_data_policy_dtls__org_unit_co_org_unit'
+  - 'stg2_hub_bjaz_trv_loader_data__org_unit'
+  - 'stg2_hub_bjaz_trv_loader_log_table__org_unit_locationcode'
+  - 'stg2_hub_bjaz_trv_loader_log_table__org_unit_coorgunit'
 src_pk: 'ORG_UNIT_HKEY'
 src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'

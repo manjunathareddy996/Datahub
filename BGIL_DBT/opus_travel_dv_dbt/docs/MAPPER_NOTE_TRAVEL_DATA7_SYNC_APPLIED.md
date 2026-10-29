@@ -7,7 +7,7 @@ Applied. Two of the three items were already correct in this build; one real act
 
 ## 1. `DISCOUNT_PER` → `SAT_FINTXN_PREMIUM.Discount Percentage` — folded
 
-Moved `DISCOUNT_PERCENTAGE` (source: `BA_TRV_DATA_POLICY_DTLS_MV.DISCOUNT_PER`) out of
+Moved `DISCOUNT_PERCENTAGE` (source: `BA_TRV_DATA_POLICY_DTLS.DISCOUNT_PER`) out of
 `SAT_AUG_FINTXN_PREMIUM` and into canonical `SAT_FINTXN_PREMIUM`. Folded it directly into
 the existing per-table stage file for that branch rather than adding a new one — same
 table, same row, same `HUB_FINANCIAL_TRANSACTION` key, no reason for a separate branch.

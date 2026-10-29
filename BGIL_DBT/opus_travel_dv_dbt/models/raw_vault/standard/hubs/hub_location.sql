@@ -6,10 +6,10 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_hub_bjaz_trv_loader_log_table_mv__location_transitfrom'
-  - 'stg2_hub_bjaz_trv_loader_log_table_mv__location_transitto'
-  - 'stg2_hub_bjaz_trv_loader_data_mv__location_addr'
-  - 'stg2_hub_bjaz_trv_loader_log_table_mv__location_addr'
+  - 'stg2_hub_bjaz_trv_loader_log_table__location_transitfrom'
+  - 'stg2_hub_bjaz_trv_loader_log_table__location_transitto'
+  - 'stg2_hub_bjaz_trv_loader_data__location_addr'
+  - 'stg2_hub_bjaz_trv_loader_log_table__location_addr'
 src_pk: 'LOCATION_HKEY'
 src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'

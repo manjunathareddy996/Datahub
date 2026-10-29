@@ -4,9 +4,9 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_coverage_limits_bjaz_trv_plan_mv'
-  - 'stg2_coverage_limits_bjaz_trv_rider_dtls_mv'
-  - 'stg2_coverage_limits_bjaz_trv_rider_rate_mast_mv'
+  - 'stg2_coverage_limits_bjaz_trv_plan'
+  - 'stg2_coverage_limits_bjaz_trv_rider_dtls'
+  - 'stg2_coverage_limits_bjaz_trv_rider_rate_mast'
 src_pk: 'COVERAGE_HKEY'
 src_payload:
   - 'DEDUCTIBLE_AMOUNT'
@@ -15,9 +15,9 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_coverage_limits_bjaz_trv_plan_mv: 'OPUS'
-  stg2_coverage_limits_bjaz_trv_rider_dtls_mv: 'OPUS'
-  stg2_coverage_limits_bjaz_trv_rider_rate_mast_mv: 'OPUS'
+  stg2_coverage_limits_bjaz_trv_plan: 'OPUS'
+  stg2_coverage_limits_bjaz_trv_rider_dtls: 'OPUS'
+  stg2_coverage_limits_bjaz_trv_rider_rate_mast: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -4,7 +4,7 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_hub_ba_trv_data_policy_dtls_mv__proposal'
+  - 'stg2_hub_ba_trv_data_policy_dtls__proposal'
   - 'stg2_hub_bjaz_trv_detls_extn__proposal'
 src_pk: 'PROPOSAL_HKEY'
 src_nk: 'PARENT_BK'

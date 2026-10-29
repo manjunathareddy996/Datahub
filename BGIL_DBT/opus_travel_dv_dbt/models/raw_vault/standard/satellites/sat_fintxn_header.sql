@@ -2,10 +2,10 @@
 
 -- TRAVEL STANDARD-MODEL sat() for SAT_FINTXN_HEADER (parent HUB_FINANCIAL_TRANSACTION).
 -- New in round 2 -- previously unbuildable (its one contributing table,
--- BJAZ_TRV_LOADER_LOG_TABLE_MV, had no transaction key until the degenerate key was added).
+-- BJAZ_TRV_LOADER_LOG_TABLE, had no transaction key until the degenerate key was added).
 
 {%- set yaml_metadata -%}
-source_model: 'stg2_fintxn_header_bjaz_trv_loader_log_table_mv'
+source_model: 'stg2_fintxn_header_bjaz_trv_loader_log_table'
 src_pk: 'FINANCIAL_TRANSACTION_HKEY'
 src_payload:
   - 'GROSS_AMOUNT'

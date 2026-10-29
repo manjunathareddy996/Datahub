@@ -5,12 +5,12 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_party_identification_ba_trv_data_policy_dtls_mv_0'
-  - 'stg2_party_identification_bjaz_trv_loader_data_mv_1'
-  - 'stg2_party_identification_bjaz_trv_loader_data_mv_2'
-  - 'stg2_party_identification_bjaz_trv_loader_data_mv_3'
-  - 'stg2_party_identification_bjaz_trv_loader_data_mv_4'
-  - 'stg2_party_identification_bjaz_trv_loader_log_table_mv_5'
+  - 'stg2_party_identification_ba_trv_data_policy_dtls_0'
+  - 'stg2_party_identification_bjaz_trv_loader_data_1'
+  - 'stg2_party_identification_bjaz_trv_loader_data_2'
+  - 'stg2_party_identification_bjaz_trv_loader_data_3'
+  - 'stg2_party_identification_bjaz_trv_loader_data_4'
+  - 'stg2_party_identification_bjaz_trv_loader_log_table_5'
 src_pk: 'PARTY_HKEY'
 src_cdk:
   - 'IDENTIFICATION_TYPE_CODE'
@@ -23,12 +23,12 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_party_identification_ba_trv_data_policy_dtls_mv_0: 'OPUS'
-  stg2_party_identification_bjaz_trv_loader_data_mv_1: 'OPUS'
-  stg2_party_identification_bjaz_trv_loader_data_mv_2: 'OPUS'
-  stg2_party_identification_bjaz_trv_loader_data_mv_3: 'OPUS'
-  stg2_party_identification_bjaz_trv_loader_data_mv_4: 'OPUS'
-  stg2_party_identification_bjaz_trv_loader_log_table_mv_5: 'OPUS'
+  stg2_party_identification_ba_trv_data_policy_dtls_0: 'OPUS'
+  stg2_party_identification_bjaz_trv_loader_data_1: 'OPUS'
+  stg2_party_identification_bjaz_trv_loader_data_2: 'OPUS'
+  stg2_party_identification_bjaz_trv_loader_data_3: 'OPUS'
+  stg2_party_identification_bjaz_trv_loader_data_4: 'OPUS'
+  stg2_party_identification_bjaz_trv_loader_log_table_5: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

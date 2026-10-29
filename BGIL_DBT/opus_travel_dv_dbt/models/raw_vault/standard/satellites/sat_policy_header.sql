@@ -4,10 +4,10 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_policy_header_ba_trv_data_policy_dtls_mv'
-  - 'stg2_policy_header_bjaz_trv_loader_data_mv'
-  - 'stg2_policy_header_bjaz_trv_loader_log_table_mv'
-  - 'stg2_policy_header_bjaz_trv_rider_dtls_mv'
+  - 'stg2_policy_header_ba_trv_data_policy_dtls'
+  - 'stg2_policy_header_bjaz_trv_loader_data'
+  - 'stg2_policy_header_bjaz_trv_loader_log_table'
+  - 'stg2_policy_header_bjaz_trv_rider_dtls'
 src_pk: 'POLICY_HKEY'
 src_payload:
   - 'COVER_NOTE_DATE'
@@ -25,10 +25,10 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_policy_header_ba_trv_data_policy_dtls_mv: 'OPUS'
-  stg2_policy_header_bjaz_trv_loader_data_mv: 'OPUS'
-  stg2_policy_header_bjaz_trv_loader_log_table_mv: 'OPUS'
-  stg2_policy_header_bjaz_trv_rider_dtls_mv: 'OPUS'
+  stg2_policy_header_ba_trv_data_policy_dtls: 'OPUS'
+  stg2_policy_header_bjaz_trv_loader_data: 'OPUS'
+  stg2_policy_header_bjaz_trv_loader_log_table: 'OPUS'
+  stg2_policy_header_bjaz_trv_rider_dtls: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

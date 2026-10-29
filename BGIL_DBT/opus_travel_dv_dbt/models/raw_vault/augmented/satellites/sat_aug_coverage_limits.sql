@@ -6,9 +6,9 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_aug_coverage_limits_bjaz_trv_plan_mv_currency'
-  - 'stg2_aug_coverage_limits_bjaz_trv_plan_mv_deductible_desc'
-  - 'stg2_aug_coverage_limits_bjaz_trv_plan_mv_limit_desc'
+  - 'stg2_aug_coverage_limits_bjaz_trv_plan_currency'
+  - 'stg2_aug_coverage_limits_bjaz_trv_plan_deductible_desc'
+  - 'stg2_aug_coverage_limits_bjaz_trv_plan_limit_desc'
 src_pk: 'COVERAGE_HKEY'
 src_payload:
   - 'CURRENCY_CODE'
@@ -18,9 +18,9 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_aug_coverage_limits_bjaz_trv_plan_mv_currency: 'OPUS'
-  stg2_aug_coverage_limits_bjaz_trv_plan_mv_deductible_desc: 'OPUS'
-  stg2_aug_coverage_limits_bjaz_trv_plan_mv_limit_desc: 'OPUS'
+  stg2_aug_coverage_limits_bjaz_trv_plan_currency: 'OPUS'
+  stg2_aug_coverage_limits_bjaz_trv_plan_deductible_desc: 'OPUS'
+  stg2_aug_coverage_limits_bjaz_trv_plan_limit_desc: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

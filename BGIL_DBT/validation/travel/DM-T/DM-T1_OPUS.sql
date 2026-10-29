@@ -2,6 +2,7 @@
    DM-T1  |  Load Audit - Load Metadata Populated (Travel LOB)  (OPUS)
    Load date/timestamp and record source populated and correct. Pass criterion: 0 rows with missing metadata.
 
+   MEMBER SPLIT: sections 1..60 assigned M1 x 20, M2 x 20, M3 x 20 -- contiguous thirds in listed order.
    Check ID: DM-T1
    Category: Load audit
    Sign-off criterion: Load metadata populated
@@ -34,7 +35,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. OPUS — Summary: every OPUS hub, link and satellite in one query   [Implemented]
+-- 1. OPUS — Summary: every OPUS hub, link and satellite in one query   [Implemented]  [M1]
 -- The same per-table query as the sections below, unioned -- run this for the evidence
 -- and use the sections to drill into a FAIL.
 ----------------------------------------------------------------------------------------
@@ -47,13 +48,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RATE_MASTER'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RATE_MASTER')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGREEMENT
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RATE_MASTER')
     union all
     select 'OPUS' as project, 'hub' as table_type, 'HUB_ASSESSMENT' as table_name,
            count(*) as rows_in_scope,
@@ -63,13 +64,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
     union all
     select 'OPUS' as project, 'hub' as table_type, 'HUB_COVERAGE' as table_name,
            count(*) as rows_in_scope,
@@ -79,13 +80,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST')
     union all
     select 'OPUS' as project, 'hub' as table_type, 'HUB_DISTRIBUTION_CHANNEL' as table_name,
            count(*) as rows_in_scope,
@@ -95,13 +96,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_ACCOUNT' as table_name,
            count(*) as rows_in_scope,
@@ -111,13 +112,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_ACCOUNT
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
     union all
     select 'OPUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_TRANSACTION' as table_name,
            count(*) as rows_in_scope,
@@ -127,13 +128,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'hub' as table_type, 'HUB_LOCATION' as table_name,
            count(*) as rows_in_scope,
@@ -143,13 +144,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'hub' as table_type, 'HUB_ORG_UNIT' as table_name,
            count(*) as rows_in_scope,
@@ -159,13 +160,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ORG_UNIT
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'hub' as table_type, 'HUB_PARTY' as table_name,
            count(*) as rows_in_scope,
@@ -175,13 +176,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'hub' as table_type, 'HUB_POLICY' as table_name,
            count(*) as rows_in_scope,
@@ -191,13 +192,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS')
     union all
     select 'OPUS' as project, 'hub' as table_type, 'HUB_PRODUCT' as table_name,
            count(*) as rows_in_scope,
@@ -207,13 +208,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RATE_MASTER'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RATE_MASTER')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RATE_MASTER')
     union all
     select 'OPUS' as project, 'hub' as table_type, 'HUB_PROPOSAL' as table_name,
            count(*) as rows_in_scope,
@@ -223,13 +224,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PROPOSAL
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN')
     union all
     select 'OPUS' as project, 'hub' as table_type, 'HUB_QUOTE' as table_name,
            count(*) as rows_in_scope,
@@ -239,13 +240,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')
     union all
     select 'OPUS' as project, 'hub' as table_type, 'HUB_RISK_OBJECT' as table_name,
            count(*) as rows_in_scope,
@@ -255,13 +256,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as table_name,
            count(*) as rows_in_scope,
@@ -271,13 +272,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_DEFINITION' as table_name,
            count(*) as rows_in_scope,
@@ -287,13 +288,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_DEFINITION
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_LIMITS' as table_name,
            count(*) as rows_in_scope,
@@ -303,13 +304,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_LIMITS
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_RATING' as table_name,
            count(*) as rows_in_scope,
@@ -319,13 +320,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_RATE_MAST', 'OPUS_BJAZ_TRV_RIDER_DTLS'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_RATE_MAST', 'OPUS_BJAZ_TRV_RIDER_DTLS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_RATING
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_RATE_MAST', 'OPUS_BJAZ_TRV_RIDER_DTLS')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_FINTXN_PREMIUM' as table_name,
            count(*) as rows_in_scope,
@@ -335,13 +336,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_PARTY_ROLE_CORE' as table_name,
            count(*) as rows_in_scope,
@@ -351,13 +352,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_PARTY_ROLE_CORE
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_CUSTOMER' as table_name,
            count(*) as rows_in_scope,
@@ -367,13 +368,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_BANKING' as table_name,
            count(*) as rows_in_scope,
@@ -383,13 +384,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_BANKING
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_EMPLOYMENT' as table_name,
            count(*) as rows_in_scope,
@@ -399,13 +400,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PRODUCT_TERMS' as table_name,
            count(*) as rows_in_scope,
@@ -415,13 +416,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV', 'OPUS_BJAZ_TRV_PLAN_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV', 'OPUS_BJAZ_TRV_PLAN_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_RATE_MASTER', 'OPUS_BJAZ_TRV_PLAN'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_RATE_MASTER', 'OPUS_BJAZ_TRV_PLAN')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
-     where RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV', 'OPUS_BJAZ_TRV_PLAN_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_RATE_MASTER', 'OPUS_BJAZ_TRV_PLAN')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_INSURED' as table_name,
            count(*) as rows_in_scope,
@@ -431,13 +432,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_INSURED
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_TRAVEL' as table_name,
            count(*) as rows_in_scope,
@@ -447,13 +448,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_TRAVEL
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_ADDRESS' as table_name,
            count(*) as rows_in_scope,
@@ -463,13 +464,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CLASSIFICATION' as table_name,
            count(*) as rows_in_scope,
@@ -479,13 +480,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONTACT' as table_name,
            count(*) as rows_in_scope,
@@ -495,13 +496,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_CONDITIONS' as table_name,
            count(*) as rows_in_scope,
@@ -511,13 +512,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_CONDITIONS
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_DEFINITION' as table_name,
            count(*) as rows_in_scope,
@@ -527,13 +528,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_LIMITS' as table_name,
            count(*) as rows_in_scope,
@@ -543,13 +544,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_COMMISSION' as table_name,
            count(*) as rows_in_scope,
@@ -559,13 +560,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_COMMISSION
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_HEADER' as table_name,
            count(*) as rows_in_scope,
@@ -575,13 +576,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_HEADER
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_PREMIUM' as table_name,
            count(*) as rows_in_scope,
@@ -591,13 +592,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_TAX' as table_name,
            count(*) as rows_in_scope,
@@ -607,13 +608,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_TAX
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_FIN_CHARGE_RATE' as table_name,
            count(*) as rows_in_scope,
@@ -623,13 +624,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_CHARGE_RATE
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_FIN_RECEIPT' as table_name,
            count(*) as rows_in_scope,
@@ -639,13 +640,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as table_name,
            count(*) as rows_in_scope,
@@ -655,13 +656,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_ORG_UNIT_DEFINITION' as table_name,
            count(*) as rows_in_scope,
@@ -671,13 +672,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ORG_UNIT_DEFINITION
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_EMPLOYMENT' as table_name,
            count(*) as rows_in_scope,
@@ -687,13 +688,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_HEALTH_PROFILE' as table_name,
            count(*) as rows_in_scope,
@@ -703,13 +704,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTIFICATION' as table_name,
            count(*) as rows_in_scope,
@@ -719,13 +720,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTITY' as table_name,
            count(*) as rows_in_scope,
@@ -735,13 +736,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as table_name,
            count(*) as rows_in_scope,
@@ -751,13 +752,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_CLASSIFICATION' as table_name,
            count(*) as rows_in_scope,
@@ -767,13 +768,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_HEADER' as table_name,
            count(*) as rows_in_scope,
@@ -783,13 +784,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_TERMS' as table_name,
            count(*) as rows_in_scope,
@@ -799,13 +800,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_DEFINITION' as table_name,
            count(*) as rows_in_scope,
@@ -815,13 +816,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_RATING_FACTOR' as table_name,
            count(*) as rows_in_scope,
@@ -831,13 +832,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_FACTOR
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_RATING_STRUCTURE' as table_name,
            count(*) as rows_in_scope,
@@ -847,13 +848,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_STRUCTURE
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_TERMS' as table_name,
            count(*) as rows_in_scope,
@@ -863,13 +864,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_PLAN_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_PLAN_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_PLAN'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_PLAN')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS
-     where RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_PLAN_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_PLAN')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_PROPOSAL_UNDERWRITING' as table_name,
            count(*) as rows_in_scope,
@@ -879,13 +880,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROPOSAL_UNDERWRITING
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_QUOTE_HEADER' as table_name,
            count(*) as rows_in_scope,
@@ -895,13 +896,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_HEADER
-     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV')
+     where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_MOTOR_DRIVER' as table_name,
            count(*) as rows_in_scope,
@@ -911,13 +912,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_DRIVER
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_MOTOR_VEHICLE' as table_name,
            count(*) as rows_in_scope,
@@ -927,13 +928,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_VEHICLE
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_OBJECT_CORE' as table_name,
            count(*) as rows_in_scope,
@@ -943,13 +944,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            null as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_CORE
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_PERSON_INSURED' as table_name,
            count(*) as rows_in_scope,
@@ -959,13 +960,13 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_INSURED
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
     union all
     select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_PERSON_TRAVEL' as table_name,
            count(*) as rows_in_scope,
@@ -975,26 +976,25 @@ select * from (
            count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
            count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
            count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+           count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+           array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
            iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
                and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
                and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
-     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+     where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
 )
 order by iff(status = 'FAIL', 0, 1), table_type, table_name;
 
 
 
 ----------------------------------------------------------------------------------------
--- 2. OPUS — HUB  HUB_AGREEMENT   [Implemented]
--- hub HUB_AGREEMENT; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV',
--- 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN',
--- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV'). Expected
--- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BA_TRV_PLAN_MST_MV,
--- OPUS_BJAZ_TRV_DETLS_EXTN, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV,
--- OPUS_BJAZ_TRV_RATE_MASTER_MV. No DBT_RUN_TS column on this table.
+-- 2. OPUS — HUB  HUB_AGREEMENT   [Implemented]  [M1]
+-- hub HUB_AGREEMENT; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS',
+-- 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE',
+-- 'OPUS_BJAZ_TRV_RATE_MASTER'). Expected RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS,
+-- OPUS_BA_TRV_PLAN_MST, OPUS_BJAZ_TRV_DETLS_EXTN, OPUS_BJAZ_TRV_LOADER_LOG_TABLE,
+-- OPUS_BJAZ_TRV_RATE_MASTER. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'hub' as table_type, 'HUB_AGREEMENT' as table_name,
        count(*) as rows_in_scope,
@@ -1004,22 +1004,21 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_AGREEMENT' as table_name,
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RATE_MASTER'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RATE_MASTER')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGREEMENT
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RATE_MASTER');
 
 
 
 ----------------------------------------------------------------------------------------
--- 3. OPUS — HUB  HUB_ASSESSMENT   [Implemented]
--- hub HUB_ASSESSMENT; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected
--- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV. No
--- DBT_RUN_TS column on this table.
+-- 3. OPUS — HUB  HUB_ASSESSMENT   [Implemented]  [M1]
+-- hub HUB_ASSESSMENT; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS',
+-- 'OPUS_BJAZ_TRV_LOADER_DATA'). Expected RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS,
+-- OPUS_BJAZ_TRV_LOADER_DATA. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'hub' as table_type, 'HUB_ASSESSMENT' as table_name,
        count(*) as rows_in_scope,
@@ -1029,23 +1028,23 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_ASSESSMENT' as table_name,
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 4. OPUS — HUB  HUB_COVERAGE   [Implemented]
--- hub HUB_COVERAGE; rows scoped to RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV',
--- 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV',
--- 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV'). Expected RECORD_SOURCE:
--- OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_PLAN_MV, OPUS_BJAZ_TRV_RIDER_DTLS_MV,
--- OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV. No DBT_RUN_TS column on this table.
+-- 4. OPUS — HUB  HUB_COVERAGE   [Implemented]  [M1]
+-- hub HUB_COVERAGE; rows scoped to RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA',
+-- 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST').
+-- Expected RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA, OPUS_BJAZ_TRV_PLAN,
+-- OPUS_BJAZ_TRV_RIDER_DTLS, OPUS_BJAZ_TRV_RIDER_RATE_MAST. No DBT_RUN_TS column on this
+-- table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'hub' as table_type, 'HUB_COVERAGE' as table_name,
        count(*) as rows_in_scope,
@@ -1055,24 +1054,24 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_COVERAGE' as table_name,
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST');
 
 
 
 ----------------------------------------------------------------------------------------
--- 5. OPUS — HUB  HUB_DISTRIBUTION_CHANNEL   [Implemented]
+-- 5. OPUS — HUB  HUB_DISTRIBUTION_CHANNEL   [Implemented]  [M1]
 -- hub HUB_DISTRIBUTION_CHANNEL; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN',
--- 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
--- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_DETLS_EXTN,
--- OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column
--- on this table.
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN',
+-- 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected
+-- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_DETLS_EXTN,
+-- OPUS_BJAZ_TRV_LOADER_DATA, OPUS_BJAZ_TRV_LOADER_LOG_TABLE. No DBT_RUN_TS column on
+-- this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'hub' as table_type, 'HUB_DISTRIBUTION_CHANNEL' as table_name,
        count(*) as rows_in_scope,
@@ -1082,21 +1081,21 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_DISTRIBUTION_CHANNEL' as tab
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 6. OPUS — HUB  HUB_FINANCIAL_ACCOUNT   [Implemented]
+-- 6. OPUS — HUB  HUB_FINANCIAL_ACCOUNT   [Implemented]  [M1]
 -- hub HUB_FINANCIAL_ACCOUNT; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected RECORD_SOURCE:
--- OPUS_BJAZ_TRV_LOADER_DATA_MV. No DBT_RUN_TS column on this table.
+-- ('OPUS_BJAZ_TRV_LOADER_DATA'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA. No
+-- DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_ACCOUNT' as table_name,
        count(*) as rows_in_scope,
@@ -1106,23 +1105,23 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_ACCOUNT' as table_
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_ACCOUNT
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 7. OPUS — HUB  HUB_FINANCIAL_TRANSACTION   [Implemented]
+-- 7. OPUS — HUB  HUB_FINANCIAL_TRANSACTION   [Implemented]  [M1]
 -- hub HUB_FINANCIAL_TRANSACTION; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
--- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column on this table.
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA',
+-- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected RECORD_SOURCE:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_TRANSACTION' as table_name,
        count(*) as rows_in_scope,
@@ -1132,22 +1131,21 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_TRANSACTION' as ta
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 8. OPUS — HUB  HUB_LOCATION   [Implemented]
--- hub HUB_LOCATION; rows scoped to RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV',
--- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
--- OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column
--- on this table.
+-- 8. OPUS — HUB  HUB_LOCATION   [Implemented]  [M1]
+-- hub HUB_LOCATION; rows scoped to RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA',
+-- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'hub' as table_type, 'HUB_LOCATION' as table_name,
        count(*) as rows_in_scope,
@@ -1157,22 +1155,22 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_LOCATION' as table_name,
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 9. OPUS — HUB  HUB_ORG_UNIT   [Implemented]
--- hub HUB_ORG_UNIT; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV',
--- 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
--- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column on this table.
+-- 9. OPUS — HUB  HUB_ORG_UNIT   [Implemented]  [M1]
+-- hub HUB_ORG_UNIT; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS',
+-- 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected
+-- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'hub' as table_type, 'HUB_ORG_UNIT' as table_name,
        count(*) as rows_in_scope,
@@ -1182,24 +1180,23 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_ORG_UNIT' as table_name,
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ORG_UNIT
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 10. OPUS — HUB  HUB_PARTY   [Implemented]
--- hub HUB_PARTY; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV',
--- 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
--- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BA_TRV_PLAN_MST_MV,
--- OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column
--- on this table.
+-- 10. OPUS — HUB  HUB_PARTY   [Implemented]  [M1]
+-- hub HUB_PARTY; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS',
+-- 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA',
+-- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected RECORD_SOURCE:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BA_TRV_PLAN_MST, OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'hub' as table_type, 'HUB_PARTY' as table_name,
        count(*) as rows_in_scope,
@@ -1209,24 +1206,23 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PARTY' as table_name,
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 11. OPUS — HUB  HUB_POLICY   [Implemented]
--- hub HUB_POLICY; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV',
--- 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV',
--- 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'). Expected RECORD_SOURCE:
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV, OPUS_BJAZ_TRV_RIDER_DTLS_MV. No DBT_RUN_TS column
--- on this table.
+-- 11. OPUS — HUB  HUB_POLICY   [Implemented]  [M1]
+-- hub HUB_POLICY; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS',
+-- 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE',
+-- 'OPUS_BJAZ_TRV_RIDER_DTLS'). Expected RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS,
+-- OPUS_BJAZ_TRV_LOADER_DATA, OPUS_BJAZ_TRV_LOADER_LOG_TABLE, OPUS_BJAZ_TRV_RIDER_DTLS.
+-- No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'hub' as table_type, 'HUB_POLICY' as table_name,
        count(*) as rows_in_scope,
@@ -1236,25 +1232,24 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_POLICY' as table_name,
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 12. OPUS — HUB  HUB_PRODUCT   [Implemented]
--- hub HUB_PRODUCT; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV',
--- 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
--- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_PLAN_MV',
--- 'OPUS_BJAZ_TRV_RATE_MASTER_MV'). Expected RECORD_SOURCE:
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BA_TRV_PLAN_MST_MV, OPUS_BJAZ_TRV_DETLS_EXTN,
--- OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV, OPUS_BJAZ_TRV_PLAN_MV
--- (+1 more). No DBT_RUN_TS column on this table.
+-- 12. OPUS — HUB  HUB_PRODUCT   [Implemented]  [M1]
+-- hub HUB_PRODUCT; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS',
+-- 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA',
+-- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RATE_MASTER').
+-- Expected RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BA_TRV_PLAN_MST,
+-- OPUS_BJAZ_TRV_DETLS_EXTN, OPUS_BJAZ_TRV_LOADER_DATA, OPUS_BJAZ_TRV_LOADER_LOG_TABLE,
+-- OPUS_BJAZ_TRV_PLAN (+1 more). No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'hub' as table_type, 'HUB_PRODUCT' as table_name,
        count(*) as rows_in_scope,
@@ -1264,20 +1259,20 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PRODUCT' as table_name,
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RATE_MASTER'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RATE_MASTER')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RATE_MASTER');
 
 
 
 ----------------------------------------------------------------------------------------
--- 13. OPUS — HUB  HUB_PROPOSAL   [Implemented]
--- hub HUB_PROPOSAL; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV',
--- 'OPUS_BJAZ_TRV_DETLS_EXTN'). Expected RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV,
+-- 13. OPUS — HUB  HUB_PROPOSAL   [Implemented]  [M1]
+-- hub HUB_PROPOSAL; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS',
+-- 'OPUS_BJAZ_TRV_DETLS_EXTN'). Expected RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS,
 -- OPUS_BJAZ_TRV_DETLS_EXTN. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'hub' as table_type, 'HUB_PROPOSAL' as table_name,
@@ -1288,20 +1283,20 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PROPOSAL' as table_name,
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PROPOSAL
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 14. OPUS — HUB  HUB_QUOTE   [Implemented]
--- hub HUB_QUOTE; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV').
--- Expected RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV. No DBT_RUN_TS column on this
+-- 14. OPUS — HUB  HUB_QUOTE   [Implemented]  [M1]
+-- hub HUB_QUOTE; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS').
+-- Expected RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS. No DBT_RUN_TS column on this
 -- table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'hub' as table_type, 'HUB_QUOTE' as table_name,
@@ -1312,22 +1307,21 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_QUOTE' as table_name,
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 15. OPUS — HUB  HUB_RISK_OBJECT   [Implemented]
--- hub HUB_RISK_OBJECT; rows scoped to RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV',
--- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
--- OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column
--- on this table.
+-- 15. OPUS — HUB  HUB_RISK_OBJECT   [Implemented]  [M1]
+-- hub HUB_RISK_OBJECT; rows scoped to RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA',
+-- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'hub' as table_type, 'HUB_RISK_OBJECT' as table_name,
        count(*) as rows_in_scope,
@@ -1337,21 +1331,21 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_RISK_OBJECT' as table_name,
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 16. OPUS — SATELLITE  SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 16. OPUS — SATELLITE  SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M1]
 -- satellite SAT_AUG_COMMON_COMMUNICATION_PREFERENCE; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected RECORD_SOURCE:
--- OPUS_BJAZ_TRV_LOADER_DATA_MV. No DBT_RUN_TS column on this table.
+-- ('OPUS_BJAZ_TRV_LOADER_DATA'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA. No
+-- DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as table_name,
        count(*) as rows_in_scope,
@@ -1361,21 +1355,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_COMMUNICATI
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — SATELLITE  SAT_AUG_COVERAGE_DEFINITION   [Implemented]
+-- 17. OPUS — SATELLITE  SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M1]
 -- satellite SAT_AUG_COVERAGE_DEFINITION; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_PLAN_MV'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_PLAN_MV. DBT_RUN_TS
--- present (load_after_run_ts checked).
+-- ('OPUS_BJAZ_TRV_PLAN'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_PLAN. DBT_RUN_TS present
+-- (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_DEFINITION' as table_name,
        count(*) as rows_in_scope,
@@ -1385,21 +1379,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_DEFINITIO
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_DEFINITION
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 18. OPUS — SATELLITE  SAT_AUG_COVERAGE_LIMITS   [Implemented]
+-- 18. OPUS — SATELLITE  SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M1]
 -- satellite SAT_AUG_COVERAGE_LIMITS; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_PLAN_MV'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_PLAN_MV. DBT_RUN_TS
--- present (load_after_run_ts checked).
+-- ('OPUS_BJAZ_TRV_PLAN'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_PLAN. DBT_RUN_TS present
+-- (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_LIMITS' as table_name,
        count(*) as rows_in_scope,
@@ -1409,22 +1403,22 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_LIMITS' a
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_LIMITS
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 19. OPUS — SATELLITE  SAT_AUG_COVERAGE_RATING   [Implemented]
+-- 19. OPUS — SATELLITE  SAT_AUG_COVERAGE_RATING   [Implemented]  [M1]
 -- satellite SAT_AUG_COVERAGE_RATING; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'). Expected
--- RECORD_SOURCE: OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV, OPUS_BJAZ_TRV_RIDER_DTLS_MV.
--- DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BJAZ_TRV_RIDER_RATE_MAST', 'OPUS_BJAZ_TRV_RIDER_DTLS'). Expected RECORD_SOURCE:
+-- OPUS_BJAZ_TRV_RIDER_RATE_MAST, OPUS_BJAZ_TRV_RIDER_DTLS. DBT_RUN_TS present
+-- (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_RATING' as table_name,
        count(*) as rows_in_scope,
@@ -1434,23 +1428,23 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_RATING' a
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_RATE_MAST', 'OPUS_BJAZ_TRV_RIDER_DTLS'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_RATE_MAST', 'OPUS_BJAZ_TRV_RIDER_DTLS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_RATING
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_RATE_MAST', 'OPUS_BJAZ_TRV_RIDER_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 20. OPUS — SATELLITE  SAT_AUG_FINTXN_PREMIUM   [Implemented]
+-- 20. OPUS — SATELLITE  SAT_AUG_FINTXN_PREMIUM   [Implemented]  [M1]
 -- satellite SAT_AUG_FINTXN_PREMIUM; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
--- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA',
+-- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected RECORD_SOURCE:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE. DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_FINTXN_PREMIUM' as table_name,
        count(*) as rows_in_scope,
@@ -1460,21 +1454,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_FINTXN_PREMIUM' as
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 21. OPUS — SATELLITE  SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 21. OPUS — SATELLITE  SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]  [M2]
 -- satellite SAT_AUG_LNK_PARTY_ROLE_CORE; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column on this table.
+-- ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected RECORD_SOURCE:
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_PARTY_ROLE_CORE' as table_name,
        count(*) as rows_in_scope,
@@ -1484,22 +1478,22 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_PARTY_ROLE_COR
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_PARTY_ROLE_CORE
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 22. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 22. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M2]
 -- satellite SAT_AUG_LNK_ROLE_CUSTOMER; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected
--- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV.
--- DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'). Expected RECORD_SOURCE:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA. DBT_RUN_TS present
+-- (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_CUSTOMER' as table_name,
        count(*) as rows_in_scope,
@@ -1509,21 +1503,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_CUSTOMER'
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 23. OPUS — SATELLITE  SAT_AUG_PARTY_BANKING   [Implemented]
+-- 23. OPUS — SATELLITE  SAT_AUG_PARTY_BANKING   [Implemented]  [M2]
 -- satellite SAT_AUG_PARTY_BANKING; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected RECORD_SOURCE:
--- OPUS_BJAZ_TRV_LOADER_DATA_MV. No DBT_RUN_TS column on this table.
+-- ('OPUS_BJAZ_TRV_LOADER_DATA'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA. No
+-- DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_BANKING' as table_name,
        count(*) as rows_in_scope,
@@ -1533,21 +1527,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_BANKING' as 
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_BANKING
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 24. OPUS — SATELLITE  SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
+-- 24. OPUS — SATELLITE  SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M2]
 -- satellite SAT_AUG_PARTY_EMPLOYMENT; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
--- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected
+-- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_LOG_TABLE.
 -- DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_EMPLOYMENT' as table_name,
@@ -1558,22 +1552,22 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_EMPLOYMENT' 
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 25. OPUS — SATELLITE  SAT_AUG_PRODUCT_TERMS   [Implemented]
+-- 25. OPUS — SATELLITE  SAT_AUG_PRODUCT_TERMS   [Implemented]  [M2]
 -- satellite SAT_AUG_PRODUCT_TERMS; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV', 'OPUS_BJAZ_TRV_PLAN_MV').
--- Expected RECORD_SOURCE: OPUS_BA_TRV_PLAN_MST_MV, OPUS_BJAZ_TRV_RATE_MASTER_MV,
--- OPUS_BJAZ_TRV_PLAN_MV. DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_RATE_MASTER', 'OPUS_BJAZ_TRV_PLAN'). Expected
+-- RECORD_SOURCE: OPUS_BA_TRV_PLAN_MST, OPUS_BJAZ_TRV_RATE_MASTER, OPUS_BJAZ_TRV_PLAN.
+-- DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PRODUCT_TERMS' as table_name,
        count(*) as rows_in_scope,
@@ -1583,21 +1577,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PRODUCT_TERMS' as 
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV', 'OPUS_BJAZ_TRV_PLAN_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV', 'OPUS_BJAZ_TRV_PLAN_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_RATE_MASTER', 'OPUS_BJAZ_TRV_PLAN'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_RATE_MASTER', 'OPUS_BJAZ_TRV_PLAN')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
- where RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV', 'OPUS_BJAZ_TRV_PLAN_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_RATE_MASTER', 'OPUS_BJAZ_TRV_PLAN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — SATELLITE  SAT_AUG_RISK_PERSON_INSURED   [Implemented]
+-- 26. OPUS — SATELLITE  SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M2]
 -- satellite SAT_AUG_RISK_PERSON_INSURED; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected RECORD_SOURCE:
--- OPUS_BJAZ_TRV_LOADER_DATA_MV. DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BJAZ_TRV_LOADER_DATA'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA.
+-- DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_INSURED' as table_name,
        count(*) as rows_in_scope,
@@ -1607,21 +1601,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_INSURE
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_INSURED
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — SATELLITE  SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
+-- 27. OPUS — SATELLITE  SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M2]
 -- satellite SAT_AUG_RISK_PERSON_TRAVEL; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected RECORD_SOURCE:
--- OPUS_BJAZ_TRV_LOADER_DATA_MV. DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BJAZ_TRV_LOADER_DATA'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA.
+-- DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_TRAVEL' as table_name,
        count(*) as rows_in_scope,
@@ -1631,22 +1625,22 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_TRAVEL
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_TRAVEL
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]
+-- 28. OPUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]  [M2]
 -- satellite SAT_COMMON_ADDRESS; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
--- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
--- DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected
+-- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA, OPUS_BJAZ_TRV_LOADER_LOG_TABLE. DBT_RUN_TS
+-- present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_ADDRESS' as table_name,
        count(*) as rows_in_scope,
@@ -1656,22 +1650,22 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_ADDRESS' as tab
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 29. OPUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]  [M2]
 -- satellite SAT_COMMON_CLASSIFICATION; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected
--- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV.
--- DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'). Expected RECORD_SOURCE:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA. DBT_RUN_TS present
+-- (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CLASSIFICATION' as table_name,
        count(*) as rows_in_scope,
@@ -1681,22 +1675,22 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CLASSIFICATION'
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 30. OPUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]
+-- 30. OPUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]  [M2]
 -- satellite SAT_COMMON_CONTACT; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
--- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
--- DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected
+-- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA, OPUS_BJAZ_TRV_LOADER_LOG_TABLE. DBT_RUN_TS
+-- present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONTACT' as table_name,
        count(*) as rows_in_scope,
@@ -1706,21 +1700,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONTACT' as tab
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 31. OPUS — SATELLITE  SAT_COVERAGE_CONDITIONS   [Implemented]
+-- 31. OPUS — SATELLITE  SAT_COVERAGE_CONDITIONS   [Implemented]  [M2]
 -- satellite SAT_COVERAGE_CONDITIONS; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_PLAN_MV'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_PLAN_MV. No
--- DBT_RUN_TS column on this table.
+-- ('OPUS_BJAZ_TRV_PLAN'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_PLAN. No DBT_RUN_TS
+-- column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_CONDITIONS' as table_name,
        count(*) as rows_in_scope,
@@ -1730,23 +1724,22 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_CONDITIONS' a
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_CONDITIONS
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 32. OPUS — SATELLITE  SAT_COVERAGE_DEFINITION   [Implemented]
+-- 32. OPUS — SATELLITE  SAT_COVERAGE_DEFINITION   [Implemented]  [M2]
 -- satellite SAT_COVERAGE_DEFINITION; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV',
--- 'OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_PLAN_MV,
--- OPUS_BJAZ_TRV_RIDER_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV. DBT_RUN_TS present
--- (load_after_run_ts checked).
+-- ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA').
+-- Expected RECORD_SOURCE: OPUS_BJAZ_TRV_PLAN, OPUS_BJAZ_TRV_RIDER_DTLS,
+-- OPUS_BJAZ_TRV_LOADER_DATA. DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_DEFINITION' as table_name,
        count(*) as rows_in_scope,
@@ -1756,23 +1749,22 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_DEFINITION' a
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 33. OPUS — SATELLITE  SAT_COVERAGE_LIMITS   [Implemented]
--- satellite SAT_COVERAGE_LIMITS; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV',
--- 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_PLAN_MV,
--- OPUS_BJAZ_TRV_RIDER_DTLS_MV, OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV. DBT_RUN_TS present
--- (load_after_run_ts checked).
+-- 33. OPUS — SATELLITE  SAT_COVERAGE_LIMITS   [Implemented]  [M2]
+-- satellite SAT_COVERAGE_LIMITS; rows scoped to RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN',
+-- 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST'). Expected RECORD_SOURCE:
+-- OPUS_BJAZ_TRV_PLAN, OPUS_BJAZ_TRV_RIDER_DTLS, OPUS_BJAZ_TRV_RIDER_RATE_MAST.
+-- DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_LIMITS' as table_name,
        count(*) as rows_in_scope,
@@ -1782,22 +1774,22 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_LIMITS' as ta
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST');
 
 
 
 ----------------------------------------------------------------------------------------
--- 34. OPUS — SATELLITE  SAT_FINTXN_COMMISSION   [Implemented]
+-- 34. OPUS — SATELLITE  SAT_FINTXN_COMMISSION   [Implemented]  [M2]
 -- satellite SAT_FINTXN_COMMISSION; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected
--- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV.
--- DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'). Expected RECORD_SOURCE:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA. DBT_RUN_TS present
+-- (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_COMMISSION' as table_name,
        count(*) as rows_in_scope,
@@ -1807,21 +1799,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_COMMISSION' as 
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_COMMISSION
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 35. OPUS — SATELLITE  SAT_FINTXN_HEADER   [Implemented]
+-- 35. OPUS — SATELLITE  SAT_FINTXN_HEADER   [Implemented]  [M2]
 -- satellite SAT_FINTXN_HEADER; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column on this table.
+-- ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected RECORD_SOURCE:
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_HEADER' as table_name,
        count(*) as rows_in_scope,
@@ -1831,23 +1823,23 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_HEADER' as tabl
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_HEADER
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 36. OPUS — SATELLITE  SAT_FINTXN_PREMIUM   [Implemented]
+-- 36. OPUS — SATELLITE  SAT_FINTXN_PREMIUM   [Implemented]  [M2]
 -- satellite SAT_FINTXN_PREMIUM; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
--- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA',
+-- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected RECORD_SOURCE:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE. DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_PREMIUM' as table_name,
        count(*) as rows_in_scope,
@@ -1857,21 +1849,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_PREMIUM' as tab
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 37. OPUS — SATELLITE  SAT_FINTXN_TAX   [Implemented]
+-- 37. OPUS — SATELLITE  SAT_FINTXN_TAX   [Implemented]  [M2]
 -- satellite SAT_FINTXN_TAX; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
--- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected
+-- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_LOG_TABLE.
 -- DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_TAX' as table_name,
@@ -1882,21 +1874,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_TAX' as table_n
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_TAX
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 38. OPUS — SATELLITE  SAT_FIN_CHARGE_RATE   [Implemented]
+-- 38. OPUS — SATELLITE  SAT_FIN_CHARGE_RATE   [Implemented]  [M2]
 -- satellite SAT_FIN_CHARGE_RATE; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
--- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected
+-- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_LOG_TABLE.
 -- DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_FIN_CHARGE_RATE' as table_name,
@@ -1907,22 +1899,22 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FIN_CHARGE_RATE' as ta
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_CHARGE_RATE
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 39. OPUS — SATELLITE  SAT_FIN_RECEIPT   [Implemented]
+-- 39. OPUS — SATELLITE  SAT_FIN_RECEIPT   [Implemented]  [M2]
 -- satellite SAT_FIN_RECEIPT; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected
--- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV.
--- DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'). Expected RECORD_SOURCE:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA. DBT_RUN_TS present
+-- (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_FIN_RECEIPT' as table_name,
        count(*) as rows_in_scope,
@@ -1932,22 +1924,22 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FIN_RECEIPT' as table_
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 40. OPUS — SATELLITE  SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 40. OPUS — SATELLITE  SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M2]
 -- satellite SAT_LNK_ROLE_NOMINEE_BENEFICIARY; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
--- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
--- DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected
+-- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA, OPUS_BJAZ_TRV_LOADER_LOG_TABLE. DBT_RUN_TS
+-- present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as table_name,
        count(*) as rows_in_scope,
@@ -1957,21 +1949,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_NOMINEE_BENEF
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 41. OPUS — SATELLITE  SAT_ORG_UNIT_DEFINITION   [Implemented]
+-- 41. OPUS — SATELLITE  SAT_ORG_UNIT_DEFINITION   [Implemented]  [M3]
 -- satellite SAT_ORG_UNIT_DEFINITION; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV'). Expected RECORD_SOURCE:
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV. No DBT_RUN_TS column on this table.
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS'). Expected RECORD_SOURCE:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_ORG_UNIT_DEFINITION' as table_name,
        count(*) as rows_in_scope,
@@ -1981,22 +1973,22 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_ORG_UNIT_DEFINITION' a
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ORG_UNIT_DEFINITION
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 42. OPUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 42. OPUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]  [M3]
 -- satellite SAT_PARTY_EMPLOYMENT; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
--- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
--- DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected
+-- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA, OPUS_BJAZ_TRV_LOADER_LOG_TABLE. DBT_RUN_TS
+-- present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_EMPLOYMENT' as table_name,
        count(*) as rows_in_scope,
@@ -2006,22 +1998,22 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_EMPLOYMENT' as t
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 43. OPUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 43. OPUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M3]
 -- satellite SAT_PARTY_HEALTH_PROFILE; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected
--- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV.
--- DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'). Expected RECORD_SOURCE:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA. DBT_RUN_TS present
+-- (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_HEALTH_PROFILE' as table_name,
        count(*) as rows_in_scope,
@@ -2031,23 +2023,23 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_HEALTH_PROFILE' 
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 44. OPUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 44. OPUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]  [M3]
 -- satellite SAT_PARTY_IDENTIFICATION; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
--- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA',
+-- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected RECORD_SOURCE:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE. DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTIFICATION' as table_name,
        count(*) as rows_in_scope,
@@ -2057,23 +2049,23 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTIFICATION' 
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 45. OPUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]
+-- 45. OPUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]  [M3]
 -- satellite SAT_PARTY_IDENTITY; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
--- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA',
+-- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected RECORD_SOURCE:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE. DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTITY' as table_name,
        count(*) as rows_in_scope,
@@ -2083,22 +2075,22 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTITY' as tab
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 46. OPUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 46. OPUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M3]
 -- satellite SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
--- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
--- DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected
+-- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA, OPUS_BJAZ_TRV_LOADER_LOG_TABLE. DBT_RUN_TS
+-- present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as table_name,
        count(*) as rows_in_scope,
@@ -2108,23 +2100,23 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_INDIVIDUAL_DEMOG
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 47. OPUS — SATELLITE  SAT_POLICY_CLASSIFICATION   [Implemented]
+-- 47. OPUS — SATELLITE  SAT_POLICY_CLASSIFICATION   [Implemented]  [M3]
 -- satellite SAT_POLICY_CLASSIFICATION; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
--- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA',
+-- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected RECORD_SOURCE:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE. DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_CLASSIFICATION' as table_name,
        count(*) as rows_in_scope,
@@ -2134,23 +2126,23 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_CLASSIFICATION'
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 48. OPUS — SATELLITE  SAT_POLICY_HEADER   [Implemented]
+-- 48. OPUS — SATELLITE  SAT_POLICY_HEADER   [Implemented]  [M3]
 -- satellite SAT_POLICY_HEADER; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV',
--- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'). Expected
--- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV, OPUS_BJAZ_TRV_RIDER_DTLS_MV. DBT_RUN_TS present
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA',
+-- 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS'). Expected RECORD_SOURCE:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE, OPUS_BJAZ_TRV_RIDER_DTLS. DBT_RUN_TS present
 -- (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_HEADER' as table_name,
@@ -2161,21 +2153,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_HEADER' as tabl
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 49. OPUS — SATELLITE  SAT_POLICY_TERMS   [Implemented]
+-- 49. OPUS — SATELLITE  SAT_POLICY_TERMS   [Implemented]  [M3]
 -- satellite SAT_POLICY_TERMS; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
--- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected
+-- RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_LOG_TABLE.
 -- DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_TERMS' as table_name,
@@ -2186,23 +2178,22 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_TERMS' as table
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 50. OPUS — SATELLITE  SAT_PRODUCT_DEFINITION   [Implemented]
+-- 50. OPUS — SATELLITE  SAT_PRODUCT_DEFINITION   [Implemented]  [M3]
 -- satellite SAT_PRODUCT_DEFINITION; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV',
--- 'OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected RECORD_SOURCE:
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BA_TRV_PLAN_MST_MV,
--- OPUS_BJAZ_TRV_LOADER_DATA_MV. DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA').
+-- Expected RECORD_SOURCE: OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BA_TRV_PLAN_MST,
+-- OPUS_BJAZ_TRV_LOADER_DATA. DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_DEFINITION' as table_name,
        count(*) as rows_in_scope,
@@ -2212,21 +2203,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_DEFINITION' as
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 51. OPUS — SATELLITE  SAT_PRODUCT_RATING_FACTOR   [Implemented]
+-- 51. OPUS — SATELLITE  SAT_PRODUCT_RATING_FACTOR   [Implemented]  [M3]
 -- satellite SAT_PRODUCT_RATING_FACTOR; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_RATE_MASTER_MV'). Expected RECORD_SOURCE:
--- OPUS_BJAZ_TRV_RATE_MASTER_MV. DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BJAZ_TRV_RATE_MASTER'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_RATE_MASTER.
+-- DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_RATING_FACTOR' as table_name,
        count(*) as rows_in_scope,
@@ -2236,21 +2227,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_RATING_FACTOR'
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_FACTOR
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER');
 
 
 
 ----------------------------------------------------------------------------------------
--- 52. OPUS — SATELLITE  SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
+-- 52. OPUS — SATELLITE  SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M3]
 -- satellite SAT_PRODUCT_RATING_STRUCTURE; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_RATE_MASTER_MV'). Expected RECORD_SOURCE:
--- OPUS_BJAZ_TRV_RATE_MASTER_MV. No DBT_RUN_TS column on this table.
+-- ('OPUS_BJAZ_TRV_RATE_MASTER'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_RATE_MASTER. No
+-- DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_RATING_STRUCTURE' as table_name,
        count(*) as rows_in_scope,
@@ -2260,22 +2251,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_RATING_STRUCTU
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_STRUCTURE
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER');
 
 
 
 ----------------------------------------------------------------------------------------
--- 53. OPUS — SATELLITE  SAT_PRODUCT_TERMS   [Implemented]
--- satellite SAT_PRODUCT_TERMS; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_PLAN_MV'). Expected RECORD_SOURCE:
--- OPUS_BA_TRV_PLAN_MST_MV, OPUS_BJAZ_TRV_PLAN_MV. DBT_RUN_TS present (load_after_run_ts
--- checked).
+-- 53. OPUS — SATELLITE  SAT_PRODUCT_TERMS   [Implemented]  [M3]
+-- satellite SAT_PRODUCT_TERMS; rows scoped to RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST',
+-- 'OPUS_BJAZ_TRV_PLAN'). Expected RECORD_SOURCE: OPUS_BA_TRV_PLAN_MST,
+-- OPUS_BJAZ_TRV_PLAN. DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_TERMS' as table_name,
        count(*) as rows_in_scope,
@@ -2285,21 +2275,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_TERMS' as tabl
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_PLAN_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_PLAN_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_PLAN'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_PLAN')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS
- where RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_PLAN_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_PLAN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 54. OPUS — SATELLITE  SAT_PROPOSAL_UNDERWRITING   [Implemented]
+-- 54. OPUS — SATELLITE  SAT_PROPOSAL_UNDERWRITING   [Implemented]  [M3]
 -- satellite SAT_PROPOSAL_UNDERWRITING; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV'). Expected RECORD_SOURCE:
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV. No DBT_RUN_TS column on this table.
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS'). Expected RECORD_SOURCE:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_PROPOSAL_UNDERWRITING' as table_name,
        count(*) as rows_in_scope,
@@ -2309,21 +2299,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PROPOSAL_UNDERWRITING'
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROPOSAL_UNDERWRITING
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 55. OPUS — SATELLITE  SAT_QUOTE_HEADER   [Implemented]
+-- 55. OPUS — SATELLITE  SAT_QUOTE_HEADER   [Implemented]  [M3]
 -- satellite SAT_QUOTE_HEADER; rows scoped to RECORD_SOURCE in
--- ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV'). Expected RECORD_SOURCE:
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV. No DBT_RUN_TS column on this table.
+-- ('OPUS_BA_TRV_DATA_POLICY_DTLS'). Expected RECORD_SOURCE:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_QUOTE_HEADER' as table_name,
        count(*) as rows_in_scope,
@@ -2333,21 +2323,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_QUOTE_HEADER' as table
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_HEADER
- where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV');
+ where RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 56. OPUS — SATELLITE  SAT_RISK_MOTOR_DRIVER   [Implemented]
+-- 56. OPUS — SATELLITE  SAT_RISK_MOTOR_DRIVER   [Implemented]  [M3]
 -- satellite SAT_RISK_MOTOR_DRIVER; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column on this table.
+-- ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected RECORD_SOURCE:
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_MOTOR_DRIVER' as table_name,
        count(*) as rows_in_scope,
@@ -2357,21 +2347,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_MOTOR_DRIVER' as 
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_DRIVER
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 57. OPUS — SATELLITE  SAT_RISK_MOTOR_VEHICLE   [Implemented]
+-- 57. OPUS — SATELLITE  SAT_RISK_MOTOR_VEHICLE   [Implemented]  [M3]
 -- satellite SAT_RISK_MOTOR_VEHICLE; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column on this table.
+-- ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected RECORD_SOURCE:
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_MOTOR_VEHICLE' as table_name,
        count(*) as rows_in_scope,
@@ -2381,21 +2371,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_MOTOR_VEHICLE' as
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_VEHICLE
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 58. OPUS — SATELLITE  SAT_RISK_OBJECT_CORE   [Implemented]
+-- 58. OPUS — SATELLITE  SAT_RISK_OBJECT_CORE   [Implemented]  [M3]
 -- satellite SAT_RISK_OBJECT_CORE; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected RECORD_SOURCE:
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV. No DBT_RUN_TS column on this table.
+-- ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected RECORD_SOURCE:
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE. No DBT_RUN_TS column on this table.
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_OBJECT_CORE' as table_name,
        count(*) as rows_in_scope,
@@ -2405,21 +2395,21 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_OBJECT_CORE' as t
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        null as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_CORE
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 59. OPUS — SATELLITE  SAT_RISK_PERSON_INSURED   [Implemented]
+-- 59. OPUS — SATELLITE  SAT_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- satellite SAT_RISK_PERSON_INSURED; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_DATA_MV'). Expected RECORD_SOURCE:
--- OPUS_BJAZ_TRV_LOADER_DATA_MV. DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BJAZ_TRV_LOADER_DATA'). Expected RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA.
+-- DBT_RUN_TS present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_PERSON_INSURED' as table_name,
        count(*) as rows_in_scope,
@@ -2429,22 +2419,22 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_PERSON_INSURED' a
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_INSURED
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 60. OPUS — SATELLITE  SAT_RISK_PERSON_TRAVEL   [Implemented]
+-- 60. OPUS — SATELLITE  SAT_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- satellite SAT_RISK_PERSON_TRAVEL; rows scoped to RECORD_SOURCE in
--- ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'). Expected
--- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
--- DBT_RUN_TS present (load_after_run_ts checked).
+-- ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'). Expected
+-- RECORD_SOURCE: OPUS_BJAZ_TRV_LOADER_DATA, OPUS_BJAZ_TRV_LOADER_LOG_TABLE. DBT_RUN_TS
+-- present (load_after_run_ts checked).
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_PERSON_TRAVEL' as table_name,
        count(*) as rows_in_scope,
@@ -2454,10 +2444,10 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_PERSON_TRAVEL' as
        count_if(LOAD_DATETIME < '1990-01-01') as placeholder_load_datetime,
        count_if(LOAD_DATETIME > dateadd(day, 1, current_timestamp()::timestamp_ntz)) as future_load_datetime,
        count_if(LOAD_DATETIME > DBT_RUN_TS) as load_after_run_ts,
-       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'))) as unexpected_record_source,
-       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
+       count_if(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'))) as unexpected_record_source,
+       array_slice(array_agg(distinct iff(not (RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')), RECORD_SOURCE, null)), 0, 5) as unexpected_examples,
        iff(null_load_datetime = 0 and null_record_source = 0 and coalesce(null_dbt_run_ts, 0) = 0
            and placeholder_load_datetime = 0 and future_load_datetime = 0 and coalesce(load_after_run_ts, 0) = 0
            and coalesce(unexpected_record_source, 0) = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
- where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');

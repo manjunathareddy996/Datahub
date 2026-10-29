@@ -2,15 +2,15 @@
 
 -- TRAVEL STANDARD-MODEL stitch: the ONE genuine join needed anywhere in this LOB build
 -- (every other satellite here is a plain per-table union -- see README Architecture
--- section for why). Full passthrough of BJAZ_TRV_LOADER_DATA_MV's own traveller
+-- section for why). Full passthrough of BJAZ_TRV_LOADER_DATA's own traveller
 -- columns (policy_ref, each MEMBERn's passport number, and the 5 non-MemberN-prefixed
--- trip columns -- see Fix A note below) PLUS BA_TRV_DATA_POLICY_DTLS_MV's trip
+-- trip columns -- see Fix A note below) PLUS BA_TRV_DATA_POLICY_DTLS's trip
 -- attributes joined on POLICY_REF (round 3, mapper-confirmed: both tables carry the
 -- same POLICY_REF, same value space -- 'BUILDABLE (same-named policy key on both)').
 -- LEFT JOIN from the loader-data side so every traveller-bearing policy is preserved
--- even where no matching BA_TRV_DATA_POLICY_DTLS_MV row exists. Attribute-level
+-- even where no matching BA_TRV_DATA_POLICY_DTLS row exists. Attribute-level
 -- COALESCE between the two sources happens downstream, per-attribute, in each member's
--- stage() (see stg2_risk_person_travel_bjaz_trv_loader_data_mv_memberN.sql) -- kept out
+-- stage() (see stg2_risk_person_travel_bjaz_trv_loader_data_memberN.sql) -- kept out
 -- of this stitch since AutomateDV's hashing/derivation happens at the stage() layer,
 -- not here (this view stays raw, zero hashing, matching the Health/Partner convention).
 --
@@ -34,7 +34,7 @@ with loader as (
         noofjourneydays,
         prjourney,
         returndate
-    from {{ ref('stg_travel__bjaz_trv_loader_data_mv') }}
+    from {{ ref('stg_travel__bjaz_trv_loader_data') }}
 
 ),
 
@@ -47,7 +47,7 @@ trip_attrs as (
         travel_area_plan_nm,
         travel_area_plan_no,
         type_of_visa
-    from {{ ref('stg_travel__ba_trv_data_policy_dtls_mv') }}
+    from {{ ref('stg_travel__ba_trv_data_policy_dtls') }}
 
 )
 

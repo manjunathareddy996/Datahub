@@ -6,8 +6,8 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_fintxn_commission_ba_trv_data_policy_dtls_mv'
-  - 'stg2_fintxn_commission_bjaz_trv_loader_data_mv'
+  - 'stg2_fintxn_commission_ba_trv_data_policy_dtls'
+  - 'stg2_fintxn_commission_bjaz_trv_loader_data'
 src_pk: 'FINANCIAL_TRANSACTION_HKEY'
 src_cdk:
   - 'COMMISSION_TYPE_CK'
@@ -18,8 +18,8 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_fintxn_commission_ba_trv_data_policy_dtls_mv: 'OPUS'
-  stg2_fintxn_commission_bjaz_trv_loader_data_mv: 'OPUS'
+  stg2_fintxn_commission_ba_trv_data_policy_dtls: 'OPUS'
+  stg2_fintxn_commission_bjaz_trv_loader_data: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

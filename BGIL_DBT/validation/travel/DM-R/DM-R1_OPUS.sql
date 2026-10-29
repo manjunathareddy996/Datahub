@@ -2,6 +2,7 @@
    DM-R1  |  Referential Integrity - No Orphan Satellite Rows (Travel LOB)  (OPUS)
    Every satellite row references a valid hub (or link) key. Pass criterion: 0 orphan rows.
 
+   MEMBER SPLIT: sections 1..46 assigned M1 x 16, M2 x 15, M3 x 15 -- contiguous thirds in listed order.
    Check ID: DM-R1
    Category: Referential integrity
    Sign-off criterion: No orphan satellite rows
@@ -34,7 +35,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. OPUS — Summary: all OPUS satellites in one query   [Implemented]
+-- 1. OPUS — Summary: all OPUS satellites in one query   [Implemented]  [M1]
 -- One row per satellite (no RECORD_SOURCE split) -- quick evidence for the whole
 -- project. The per-satellite sections below give the RECORD_SOURCE breakdown and orphan
 -- examples.
@@ -317,16 +318,15 @@ select 'OPUS' as project, satellite, parent_table, sat_rows, orphan_or_null_rows
 
 
 ----------------------------------------------------------------------------------------
--- 2. OPUS — SAT_COMMON_ADDRESS   [Implemented]
+-- 2. OPUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
 -- Parent hub HUB_LOCATION (src_pk LOCATION_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
 -- sat_multi_source; PK LOCATION_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [5 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [6 col(s)].
--- stg2_common_address_bjaz_trv_loader_data_mv: column(s) COUNTRY_NAME could not be
--- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries).
+-- OPUS_BJAZ_TRV_LOADER_DATA [5 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [6 col(s)].
+-- stg2_common_address_bjaz_trv_loader_data: column(s) COUNTRY_NAME could not be traced
+-- to RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__
+-- views or joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct LOCATION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION
@@ -341,7 +341,7 @@ select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'HUB_LOCATION' as p
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS s
   left join p on p.k = s.LOCATION_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.LOCATION_HKEY is null or s.LOCATION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -349,12 +349,12 @@ select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'HUB_LOCATION' as p
 
 
 ----------------------------------------------------------------------------------------
--- 3. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 3. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
 -- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -369,7 +369,7 @@ select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'HUB_PARTY' 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -377,38 +377,38 @@ select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'HUB_PARTY' 
 
 
 ----------------------------------------------------------------------------------------
--- 4. OPUS — SAT_COMMON_CONTACT   [Implemented]
+-- 4. OPUS — SAT_COMMON_CONTACT   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
 -- ma_sat_multi_source; PK PARTY_HKEY, child key CONTACT_POINT_TYPE,
--- CONTACT_PRIORITY_ORDER; 2 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA_MV [4
--- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [4 col(s)]. Multi-active: compared per
--- (key, child key); latest = max LOAD_DATETIME per member.
--- stg2_common_contact_bjaz_trv_loader_data_mv_0: column(s) FAX_NUMBER, LANDLINE_NUMBER,
+-- CONTACT_PRIORITY_ORDER; 2 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA [4
+-- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [4 col(s)]. Multi-active: compared per (key,
+-- child key); latest = max LOAD_DATETIME per member.
+-- stg2_common_contact_bjaz_trv_loader_data_0: column(s) FAX_NUMBER, LANDLINE_NUMBER,
 -- MOBILE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_mv_1: column(s)
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_1: column(s)
 -- FAX_NUMBER, LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at least one
 -- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
 -- columns are not yet inlined into the sampled queries).
--- stg2_common_contact_bjaz_trv_loader_data_mv_2: column(s) LANDLINE_NUMBER,
--- MOBILE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_mv_3: column(s)
+-- stg2_common_contact_bjaz_trv_loader_data_2: column(s) LANDLINE_NUMBER, MOBILE_NUMBER
+-- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
+-- sampled queries). stg2_common_contact_bjaz_trv_loader_data_3: column(s)
 -- LANDLINE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_mv_5:
--- column(s) FAX_NUMBER, LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
--- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_common_contact_bjaz_trv_loader_log_table_mv_6: column(s) LANDLINE_NUMBER,
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_5: column(s)
+-- FAX_NUMBER, LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at least one
+-- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
+-- columns are not yet inlined into the sampled queries).
+-- stg2_common_contact_bjaz_trv_loader_log_table_6: column(s) LANDLINE_NUMBER,
 -- MOBILE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_mv_7:
--- column(s) LANDLINE_NUMBER could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries).
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_7: column(s)
+-- LANDLINE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries).
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -423,7 +423,7 @@ select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'HUB_PARTY' as pare
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -431,11 +431,11 @@ select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'HUB_PARTY' as pare
 
 
 ----------------------------------------------------------------------------------------
--- 5. OPUS — SAT_COVERAGE_CONDITIONS   [Implemented]
+-- 5. OPUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat;
--- PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN_MV [2 col(s)].
+-- PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct COVERAGE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE
@@ -450,7 +450,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite, 'HUB_COVERAGE'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_CONDITIONS s
   left join p on p.k = s.COVERAGE_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN')
    and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -458,88 +458,87 @@ select 'OPUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite, 'HUB_COVERAGE'
 
 
 ----------------------------------------------------------------------------------------
--- 6. OPUS — SAT_COVERAGE_DEFINITION   [Implemented]
+-- 6. OPUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
--- sat_multi_source; PK COVERAGE_HKEY; 3 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN_MV [2
--- col(s)], OPUS_BJAZ_TRV_RIDER_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1
--- col(s)]. stg2_coverage_definition_bjaz_trv_plan_mv: column(s) COVERAGE_NAME,
--- FREE_COVER_LIMIT could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_rider_dtls_mv: column(s) COVERAGE_DESCRIPTION,
--- FREE_COVER_LIMIT, PERIL_COVERED could not be traced to RAW on at least one arm --
--- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
--- are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_acchospexp: column(s)
+-- sat_multi_source; PK COVERAGE_HKEY; 3 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN [2
+-- col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)].
+-- stg2_coverage_definition_bjaz_trv_plan: column(s) COVERAGE_NAME, FREE_COVER_LIMIT
+-- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
+-- sampled queries). stg2_coverage_definition_bjaz_trv_rider_dtls: column(s)
+-- COVERAGE_DESCRIPTION, FREE_COVER_LIMIT, PERIL_COVERED could not be traced to RAW on at
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
+-- joined-in stitch columns are not yet inlined into the sampled queries).
+-- stg2_coverage_definition_bjaz_trv_loader_data_acchospexp: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_adventuresportbenefit: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_adventuresportbenefit: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_bouncedhotel: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_bouncedhotel: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_compvisitfamilymember: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_compvisitfamilymember: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_delayofcheckedbaggage: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_delayofcheckedbaggage: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_emergencyhotelextension: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_emergencyhotelextension: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_emermedicalevac: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_emermedicalevac: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_homeburglaryinsurance: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_homeburglaryinsurance: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_hospdailyallow: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_hospdailyallow: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_lossofbaggage: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_lossofbaggage: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_lossofcheckedbaggage: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_lossofcheckedbaggage: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_missedconnection: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_missedconnection: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_personalliability: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_personalliability: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_repatonofremains: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_repatonofremains: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_tripcancellation: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_tripcancellation: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_tripcurtailment: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_tripcurtailment: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_tripdelaybyscheduledaircraft:
--- column(s) COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to
--- RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views
--- or joined-in stitch columns are not yet inlined into the sampled queries).
+-- stg2_coverage_definition_bjaz_trv_loader_data_tripdelaybyscheduledaircraft: column(s)
+-- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
+-- joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct COVERAGE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE
@@ -554,7 +553,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'HUB_COVERAGE'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION s
   left join p on p.k = s.COVERAGE_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS')
    and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -562,19 +561,19 @@ select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'HUB_COVERAGE'
 
 
 ----------------------------------------------------------------------------------------
--- 7. OPUS — SAT_COVERAGE_LIMITS   [Implemented]
+-- 7. OPUS — SAT_COVERAGE_LIMITS   [Implemented]  [M1]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
--- sat_multi_source; PK COVERAGE_HKEY; 3 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN_MV [2
--- col(s)], OPUS_BJAZ_TRV_RIDER_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV [1
--- col(s)]. stg2_coverage_limits_bjaz_trv_rider_dtls_mv: column(s) DEDUCTIBLE_AMOUNT
+-- sat_multi_source; PK COVERAGE_HKEY; 3 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN [2
+-- col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [1 col(s)], OPUS_BJAZ_TRV_RIDER_RATE_MAST [1
+-- col(s)]. stg2_coverage_limits_bjaz_trv_rider_dtls: column(s) DEDUCTIBLE_AMOUNT could
+-- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). stg2_coverage_limits_bjaz_trv_rider_rate_mast: column(s) DEDUCTIBLE_AMOUNT
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
 -- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_coverage_limits_bjaz_trv_rider_rate_mast_mv: column(s)
--- DEDUCTIBLE_AMOUNT could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries).
+-- sampled queries).
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct COVERAGE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE
@@ -589,7 +588,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'HUB_COVERAGE' as 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS s
   left join p on p.k = s.COVERAGE_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST')
    and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -597,18 +596,17 @@ select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'HUB_COVERAGE' as 
 
 
 ----------------------------------------------------------------------------------------
--- 8. OPUS — SAT_FINTXN_COMMISSION   [Implemented]
+-- 8. OPUS — SAT_FINTXN_COMMISSION   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard
 -- satellite, ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key
--- COMMISSION_TYPE_CK; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2
--- col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)]. Multi-active: compared per (key,
--- child key); latest = max LOAD_DATETIME per member.
--- stg2_fintxn_commission_bjaz_trv_loader_data_mv: column(s) COMMISSION_AMOUNT could not
--- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries).
+-- COMMISSION_TYPE_CK; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. Multi-active: compared per (key, child key);
+-- latest = max LOAD_DATETIME per member. stg2_fintxn_commission_bjaz_trv_loader_data:
+-- column(s) COMMISSION_AMOUNT could not be traced to RAW on at least one arm -- excluded
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION
@@ -623,7 +621,7 @@ select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'HUB_FINANCIAL_T
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_COMMISSION s
   left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
    and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -631,12 +629,12 @@ select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'HUB_FINANCIAL_T
 
 
 ----------------------------------------------------------------------------------------
--- 9. OPUS — SAT_FINTXN_HEADER   [Implemented]
+-- 9. OPUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard
 -- satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct FINANCIAL_TRANSACTION_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION
@@ -651,7 +649,7 @@ select 'OPUS' as project, 'SAT_FINTXN_HEADER' as satellite, 'HUB_FINANCIAL_TRANS
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_HEADER s
   left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -659,20 +657,20 @@ select 'OPUS' as project, 'SAT_FINTXN_HEADER' as satellite, 'HUB_FINANCIAL_TRANS
 
 
 ----------------------------------------------------------------------------------------
--- 10. OPUS — SAT_FINTXN_PREMIUM   [Implemented]
+-- 10. OPUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard
 -- satellite, sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [6 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [5 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [4 col(s)].
--- stg2_fintxn_premium_ba_trv_data_policy_dtls_mv: column(s) BASE_PREMIUM could not be
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [6 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [5 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [4 col(s)].
+-- stg2_fintxn_premium_ba_trv_data_policy_dtls: column(s) BASE_PREMIUM could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_fintxn_premium_bjaz_trv_loader_data_mv: column(s) DISCOUNT_PERCENTAGE,
+-- queries). stg2_fintxn_premium_bjaz_trv_loader_data: column(s) DISCOUNT_PERCENTAGE,
 -- NET_PREMIUM could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_fintxn_premium_bjaz_trv_loader_log_table_mv: column(s)
+-- into the sampled queries). stg2_fintxn_premium_bjaz_trv_loader_log_table: column(s)
 -- BASE_PREMIUM, DISCOUNT_PERCENTAGE, NET_PREMIUM could not be traced to RAW on at least
 -- one arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in
 -- stitch columns are not yet inlined into the sampled queries).
@@ -690,7 +688,7 @@ select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'HUB_FINANCIAL_TRAN
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM s
   left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -698,19 +696,19 @@ select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'HUB_FINANCIAL_TRAN
 
 
 ----------------------------------------------------------------------------------------
--- 11. OPUS — SAT_FINTXN_TAX   [Implemented]
+-- 11. OPUS — SAT_FINTXN_TAX   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard
 -- satellite, ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key TAX_TYPE; 2
--- RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)]. Multi-active: compared per (key, child
+-- RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. Multi-active: compared per (key, child
 -- key); latest = max LOAD_DATETIME per member.
--- stg2_fintxn_tax_ba_trv_data_policy_dtls_mv_0: column(s) SERVICE_TAX_AMOUNT could not
--- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- stg2_fintxn_tax_ba_trv_data_policy_dtls_0: column(s) SERVICE_TAX_AMOUNT could not be
+-- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_fintxn_tax_bjaz_trv_loader_log_table_mv_2: column(s) CESS_AMOUNT could
--- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- queries). stg2_fintxn_tax_bjaz_trv_loader_log_table_2: column(s) CESS_AMOUNT could not
+-- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
@@ -727,7 +725,7 @@ select 'OPUS' as project, 'SAT_FINTXN_TAX' as satellite, 'HUB_FINANCIAL_TRANSACT
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_TAX s
   left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -735,18 +733,18 @@ select 'OPUS' as project, 'SAT_FINTXN_TAX' as satellite, 'HUB_FINANCIAL_TRANSACT
 
 
 ----------------------------------------------------------------------------------------
--- 12. OPUS — SAT_FIN_CHARGE_RATE   [Implemented]
+-- 12. OPUS — SAT_FIN_CHARGE_RATE   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard
 -- satellite, ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key
--- CHARGE_TYPE_CK; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)]. Multi-active: compared per (key, child
+-- CHARGE_TYPE_CK; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. Multi-active: compared per (key, child
 -- key); latest = max LOAD_DATETIME per member.
--- stg2_fin_charge_rate_ba_trv_data_policy_dtls_mv: column(s) ADDITIONAL_LOADING_RATE
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_fin_charge_rate_bjaz_trv_loader_log_table_mv: column(s)
+-- stg2_fin_charge_rate_ba_trv_data_policy_dtls: column(s) ADDITIONAL_LOADING_RATE could
+-- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). stg2_fin_charge_rate_bjaz_trv_loader_log_table: column(s)
 -- ADDITIONAL_LOADING_RATE could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
@@ -764,7 +762,7 @@ select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite, 'HUB_FINANCIAL_TRA
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_CHARGE_RATE s
   left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -772,16 +770,16 @@ select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite, 'HUB_FINANCIAL_TRA
 
 
 ----------------------------------------------------------------------------------------
--- 13. OPUS — SAT_FIN_RECEIPT   [Implemented]
+-- 13. OPUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. standard
 -- satellite, sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [3 col(s)].
--- stg2_fin_receipt_ba_trv_data_policy_dtls_mv: column(s) AMOUNT_RECEIVED,
--- INSTRUMENT_DATE could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_fin_receipt_bjaz_trv_loader_data_mv: column(s)
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [3 col(s)].
+-- stg2_fin_receipt_ba_trv_data_policy_dtls: column(s) AMOUNT_RECEIVED, INSTRUMENT_DATE
+-- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
+-- sampled queries). stg2_fin_receipt_bjaz_trv_loader_data: column(s)
 -- PAYMENT_GATEWAY_REFERENCE could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
@@ -799,7 +797,7 @@ select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'HUB_FINANCIAL_TRANSAC
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT s
   left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
    and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -807,12 +805,12 @@ select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'HUB_FINANCIAL_TRANSAC
 
 
 ----------------------------------------------------------------------------------------
--- 14. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 14. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA
+-- [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -827,7 +825,7 @@ select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'HUB_
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -835,12 +833,11 @@ select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'HUB_
 
 
 ----------------------------------------------------------------------------------------
--- 15. OPUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
+-- 15. OPUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
 -- Parent hub HUB_ORG_UNIT (src_pk ORG_UNIT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat;
--- PK ORG_UNIT_HKEY; 1 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1
--- col(s)].
+-- PK ORG_UNIT_HKEY; 1 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct ORG_UNIT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ORG_UNIT
@@ -855,7 +852,7 @@ select 'OPUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite, 'HUB_ORG_UNIT'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ORG_UNIT_DEFINITION s
   left join p on p.k = s.ORG_UNIT_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')
    and (s.ORG_UNIT_HKEY is null or s.ORG_UNIT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -863,14 +860,14 @@ select 'OPUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite, 'HUB_ORG_UNIT'
 
 
 ----------------------------------------------------------------------------------------
--- 16. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 16. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M1]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [2 col(s)].
--- stg2_party_employment_bjaz_trv_loader_data_mv_payer: column(s) DESIGNATION could not
--- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA
+-- [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [2 col(s)].
+-- stg2_party_employment_bjaz_trv_loader_data_payer: column(s) DESIGNATION could not be
+-- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
@@ -887,7 +884,7 @@ select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY' as pa
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -895,12 +892,12 @@ select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY' as pa
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 17. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M2]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
 -- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -915,7 +912,7 @@ select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'HUB_PARTY' a
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -923,29 +920,29 @@ select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'HUB_PARTY' a
 
 
 ----------------------------------------------------------------------------------------
--- 18. OPUS — SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 18. OPUS — SAT_PARTY_IDENTIFICATION   [Implemented]  [M2]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
 -- ma_sat_multi_source; PK PARTY_HKEY, child key IDENTIFICATION_TYPE_CODE; 3
--- RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)],
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [4 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_DATA [4 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 -- Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
--- stg2_party_identification_ba_trv_data_policy_dtls_mv_0: column(s) AADHAAR_NUMBER,
+-- stg2_party_identification_ba_trv_data_policy_dtls_0: column(s) AADHAAR_NUMBER,
 -- EIA_NUMBER, GSTIN could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
--- stg2_party_identification_bjaz_trv_loader_data_mv_1: column(s) EIA_NUMBER, GSTIN,
+-- stg2_party_identification_bjaz_trv_loader_data_1: column(s) EIA_NUMBER, GSTIN,
 -- PASSPORT_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_party_identification_bjaz_trv_loader_data_mv_2:
--- column(s) GSTIN, PASSPORT_NUMBER could not be traced to RAW on at least one arm --
--- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
--- are not yet inlined into the sampled queries).
--- stg2_party_identification_bjaz_trv_loader_data_mv_3: column(s) PASSPORT_NUMBER could
--- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- into the sampled queries). stg2_party_identification_bjaz_trv_loader_data_2: column(s)
+-- GSTIN, PASSPORT_NUMBER could not be traced to RAW on at least one arm -- excluded
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
+-- stg2_party_identification_bjaz_trv_loader_data_3: column(s) PASSPORT_NUMBER could not
+-- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_party_identification_bjaz_trv_loader_log_table_mv_5: column(s)
+-- queries). stg2_party_identification_bjaz_trv_loader_log_table_5: column(s)
 -- AADHAAR_NUMBER, EIA_NUMBER, GSTIN could not be traced to RAW on at least one arm --
 -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
 -- are not yet inlined into the sampled queries).
@@ -963,7 +960,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'HUB_PARTY' a
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -971,29 +968,28 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'HUB_PARTY' a
 
 
 ----------------------------------------------------------------------------------------
--- 19. OPUS — SAT_PARTY_IDENTITY   [Implemented]
+-- 19. OPUS — SAT_PARTY_IDENTITY   [Implemented]  [M2]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
 -- sat_multi_source; PK PARTY_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [3 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [6 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [8 col(s)].
--- stg2_party_identity_ba_trv_data_policy_dtls_mv_payer: column(s) FIRST_NAME,
--- GENDER_CODE, LAST_NAME, MIDDLE_NAME, PARTY_FULL_NAME, PARTY_LEGAL_NAME, TITLE_CODE
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_party_identity_ba_trv_data_policy_dtls_mv_agent: column(s)
--- FIRST_NAME, GENDER_CODE, LAST_NAME, MIDDLE_NAME, PARTY_LEGAL_NAME, TITLE_CODE could
--- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [3 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [6 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [8 col(s)].
+-- stg2_party_identity_ba_trv_data_policy_dtls_payer: column(s) FIRST_NAME, GENDER_CODE,
+-- LAST_NAME, MIDDLE_NAME, PARTY_FULL_NAME, PARTY_LEGAL_NAME, TITLE_CODE could not be
+-- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_party_identity_bjaz_trv_loader_data_mv_payer: column(s) AGE,
--- PARTY_FULL_NAME, TITLE_CODE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries).
--- stg2_party_identity_bjaz_trv_loader_log_table_mv_payer: column(s) PARTY_FULL_NAME
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries).
+-- queries). stg2_party_identity_ba_trv_data_policy_dtls_agent: column(s) FIRST_NAME,
+-- GENDER_CODE, LAST_NAME, MIDDLE_NAME, PARTY_LEGAL_NAME, TITLE_CODE could not be traced
+-- to RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__
+-- views or joined-in stitch columns are not yet inlined into the sampled queries).
+-- stg2_party_identity_bjaz_trv_loader_data_payer: column(s) AGE, PARTY_FULL_NAME,
+-- TITLE_CODE could not be traced to RAW on at least one arm -- excluded (first-cut: walk
+-- columns from resolved_mt__ views or joined-in stitch columns are not yet inlined into
+-- the sampled queries). stg2_party_identity_bjaz_trv_loader_log_table_payer: column(s)
+-- PARTY_FULL_NAME could not be traced to RAW on at least one arm -- excluded (first-cut:
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries).
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -1008,7 +1004,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'HUB_PARTY' as pare
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1016,12 +1012,12 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'HUB_PARTY' as pare
 
 
 ----------------------------------------------------------------------------------------
--- 20. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 20. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M2]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA
+-- [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -1036,7 +1032,7 @@ select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'HUB
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1044,14 +1040,14 @@ select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'HUB
 
 
 ----------------------------------------------------------------------------------------
--- 21. OPUS — SAT_POLICY_CLASSIFICATION   [Implemented]
+-- 21. OPUS — SAT_POLICY_CLASSIFICATION   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
 -- ma_sat_multi_source; PK POLICY_HKEY, child key CLASSIFICATION_TYPE; 3 RECORD_SOURCE
--- group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1
--- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)]. Multi-active: compared per
--- (key, child key); latest = max LOAD_DATETIME per member.
+-- group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1
+-- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. Multi-active: compared per (key,
+-- child key); latest = max LOAD_DATETIME per member.
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
@@ -1066,7 +1062,7 @@ select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'HUB_POLICY'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1074,28 +1070,27 @@ select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'HUB_POLICY'
 
 
 ----------------------------------------------------------------------------------------
--- 22. OPUS — SAT_POLICY_HEADER   [Implemented]
+-- 22. OPUS — SAT_POLICY_HEADER   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
 -- sat_multi_source; PK POLICY_HKEY; 4 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [9 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [2 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [8 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS_MV [2 col(s)].
--- stg2_policy_header_ba_trv_data_policy_dtls_mv: column(s) POLICY_TYPE,
--- SUM_INSURED_TOTAL could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries). stg2_policy_header_bjaz_trv_loader_data_mv:
--- column(s) COVER_NOTE_DATE, COVER_NOTE_REFERENCE, ISSUE_DATE, MASTER_POLICY_REFERENCE,
--- POLICY_NUMBER, POLICY_TYPE, RISK_EXPIRY_DATE, RISK_INCEPTION_DATE, SUM_INSURED_TOTAL
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [9 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [2 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [8 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [2 col(s)].
+-- stg2_policy_header_ba_trv_data_policy_dtls: column(s) POLICY_TYPE, SUM_INSURED_TOTAL
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
 -- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_policy_header_bjaz_trv_loader_log_table_mv: column(s)
--- NUMBER_OF_LIVES_COVERED, POLICY_NUMBER, POLICY_TYPE could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
+-- sampled queries). stg2_policy_header_bjaz_trv_loader_data: column(s) COVER_NOTE_DATE,
+-- COVER_NOTE_REFERENCE, ISSUE_DATE, MASTER_POLICY_REFERENCE, POLICY_NUMBER, POLICY_TYPE,
+-- RISK_EXPIRY_DATE, RISK_INCEPTION_DATE, SUM_INSURED_TOTAL could not be traced to RAW on
+-- at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_policy_header_bjaz_trv_rider_dtls_mv: column(s) COVER_NOTE_DATE,
--- COVER_NOTE_REFERENCE, ISSUE_DATE, MASTER_POLICY_REFERENCE, POLICY_NUMBER,
--- RISK_EXPIRY_DATE, RISK_INCEPTION_DATE, RURAL_SECTOR_POLICY_INDICATOR,
+-- stg2_policy_header_bjaz_trv_loader_log_table: column(s) NUMBER_OF_LIVES_COVERED,
+-- POLICY_NUMBER, POLICY_TYPE could not be traced to RAW on at least one arm -- excluded
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries). stg2_policy_header_bjaz_trv_rider_dtls:
+-- column(s) COVER_NOTE_DATE, COVER_NOTE_REFERENCE, ISSUE_DATE, MASTER_POLICY_REFERENCE,
+-- POLICY_NUMBER, RISK_EXPIRY_DATE, RISK_INCEPTION_DATE, RURAL_SECTOR_POLICY_INDICATOR,
 -- SUM_INSURED_TOTAL could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
@@ -1113,7 +1108,7 @@ select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'HUB_POLICY' as pare
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1121,13 +1116,12 @@ select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'HUB_POLICY' as pare
 
 
 ----------------------------------------------------------------------------------------
--- 23. OPUS — SAT_POLICY_TERMS   [Implemented]
+-- 23. OPUS — SAT_POLICY_TERMS   [Implemented]  [M2]
 -- Parent hub HUB_POLICY (src_pk POLICY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
 -- sat_multi_source; PK POLICY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1
--- col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct POLICY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY
@@ -1142,7 +1136,7 @@ select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite, 'HUB_POLICY' as paren
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS s
   left join p on p.k = s.POLICY_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.POLICY_HKEY is null or s.POLICY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1150,20 +1144,20 @@ select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite, 'HUB_POLICY' as paren
 
 
 ----------------------------------------------------------------------------------------
--- 24. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]
+-- 24. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
 -- sat_multi_source; PK PRODUCT_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [3 col(s)], OPUS_BA_TRV_PLAN_MST_MV [5 col(s)],
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
--- stg2_product_definition_ba_trv_data_policy_dtls_mv: column(s) PRODUCT_DISPLAY_NAME,
--- PRODUCT_STATUS could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_product_definition_bjaz_trv_loader_data_mv: column(s)
--- PRODUCT_CODE, PRODUCT_DISPLAY_NAME, PRODUCT_NAME, PRODUCT_STATUS could not be traced
--- to RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__
--- views or joined-in stitch columns are not yet inlined into the sampled queries).
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [3 col(s)], OPUS_BA_TRV_PLAN_MST [5 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. stg2_product_definition_ba_trv_data_policy_dtls:
+-- column(s) PRODUCT_DISPLAY_NAME, PRODUCT_STATUS could not be traced to RAW on at least
+-- one arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in
+-- stitch columns are not yet inlined into the sampled queries).
+-- stg2_product_definition_bjaz_trv_loader_data: column(s) PRODUCT_CODE,
+-- PRODUCT_DISPLAY_NAME, PRODUCT_NAME, PRODUCT_STATUS could not be traced to RAW on at
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
+-- joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PRODUCT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT
@@ -1178,7 +1172,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'HUB_PRODUCT' a
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION s
   left join p on p.k = s.PRODUCT_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA')
    and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1186,15 +1180,15 @@ select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'HUB_PRODUCT' a
 
 
 ----------------------------------------------------------------------------------------
--- 25. OPUS — SAT_PRODUCT_RATING_FACTOR   [Implemented]
+-- 25. OPUS — SAT_PRODUCT_RATING_FACTOR   [Implemented]  [M2]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
 -- ma_sat_multi_source; PK PRODUCT_HKEY, child key ACTIVE_SEQUENCE_NUMBER; 1
--- RECORD_SOURCE group(s): OPUS_BJAZ_TRV_RATE_MASTER_MV [2 col(s)]. Multi-active:
--- compared per (key, child key); latest = max LOAD_DATETIME per member.
--- stg2_product_rating_factor_bjaz_trv_rate_master_mv_0: column(s) VALUE_RANGE_TO could
--- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- RECORD_SOURCE group(s): OPUS_BJAZ_TRV_RATE_MASTER [2 col(s)]. Multi-active: compared
+-- per (key, child key); latest = max LOAD_DATETIME per member.
+-- stg2_product_rating_factor_bjaz_trv_rate_master_0: column(s) VALUE_RANGE_TO could not
+-- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
@@ -1211,7 +1205,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_RATING_FACTOR' as satellite, 'HUB_PRODUCT
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_FACTOR s
   left join p on p.k = s.PRODUCT_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER')
    and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1219,11 +1213,11 @@ select 'OPUS' as project, 'SAT_PRODUCT_RATING_FACTOR' as satellite, 'HUB_PRODUCT
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
+-- 26. OPUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat;
--- PK PRODUCT_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_RATE_MASTER_MV [1 col(s)].
+-- PK PRODUCT_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_RATE_MASTER [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PRODUCT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT
@@ -1238,7 +1232,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite, 'HUB_PROD
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_STRUCTURE s
   left join p on p.k = s.PRODUCT_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_RATE_MASTER')
    and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1246,16 +1240,16 @@ select 'OPUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite, 'HUB_PROD
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — SAT_PRODUCT_TERMS   [Implemented]
+-- 27. OPUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
--- sat_multi_source; PK PRODUCT_HKEY; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_PLAN_MST_MV
--- [6 col(s)], OPUS_BJAZ_TRV_PLAN_MV [1 col(s)]. stg2_product_terms_bjaz_trv_plan_mv:
--- column(s) FAMILY_DEFINITION, GEOGRAPHY_RESTRICTION, MAXIMUM_ENTRY_AGE,
--- MINIMUM_ENTRY_AGE, MINIMUM_POLICY_TERM could not be traced to RAW on at least one arm
--- -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
--- columns are not yet inlined into the sampled queries).
+-- sat_multi_source; PK PRODUCT_HKEY; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_PLAN_MST [6
+-- col(s)], OPUS_BJAZ_TRV_PLAN [1 col(s)]. stg2_product_terms_bjaz_trv_plan: column(s)
+-- FAMILY_DEFINITION, GEOGRAPHY_RESTRICTION, MAXIMUM_ENTRY_AGE, MINIMUM_ENTRY_AGE,
+-- MINIMUM_POLICY_TERM could not be traced to RAW on at least one arm -- excluded
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PRODUCT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT
@@ -1270,7 +1264,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'HUB_PRODUCT' as par
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS s
   left join p on p.k = s.PRODUCT_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_PLAN_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_PLAN')
    and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1278,12 +1272,11 @@ select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'HUB_PRODUCT' as par
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — SAT_PROPOSAL_UNDERWRITING   [Implemented]
+-- 28. OPUS — SAT_PROPOSAL_UNDERWRITING   [Implemented]  [M2]
 -- Parent hub HUB_PROPOSAL (src_pk PROPOSAL_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat;
--- PK PROPOSAL_HKEY; 1 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2
--- col(s)].
+-- PK PROPOSAL_HKEY; 1 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PROPOSAL_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PROPOSAL
@@ -1298,7 +1291,7 @@ select 'OPUS' as project, 'SAT_PROPOSAL_UNDERWRITING' as satellite, 'HUB_PROPOSA
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROPOSAL_UNDERWRITING s
   left join p on p.k = s.PROPOSAL_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')
    and (s.PROPOSAL_HKEY is null or s.PROPOSAL_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1306,11 +1299,11 @@ select 'OPUS' as project, 'SAT_PROPOSAL_UNDERWRITING' as satellite, 'HUB_PROPOSA
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — SAT_QUOTE_HEADER   [Implemented]
+-- 29. OPUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
 -- Parent hub HUB_QUOTE (src_pk QUOTE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. standard satellite, automate_dv.sat;
--- PK QUOTE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)].
+-- PK QUOTE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct QUOTE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE
@@ -1325,7 +1318,7 @@ select 'OPUS' as project, 'SAT_QUOTE_HEADER' as satellite, 'HUB_QUOTE' as parent
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_HEADER s
   left join p on p.k = s.QUOTE_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')
    and (s.QUOTE_HKEY is null or s.QUOTE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1333,12 +1326,12 @@ select 'OPUS' as project, 'SAT_QUOTE_HEADER' as satellite, 'HUB_QUOTE' as parent
 
 
 ----------------------------------------------------------------------------------------
--- 30. OPUS — SAT_RISK_MOTOR_DRIVER   [Implemented]
+-- 30. OPUS — SAT_RISK_MOTOR_DRIVER   [Implemented]  [M2]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT
@@ -1353,7 +1346,7 @@ select 'OPUS' as project, 'SAT_RISK_MOTOR_DRIVER' as satellite, 'HUB_RISK_OBJECT
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_DRIVER s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1361,12 +1354,12 @@ select 'OPUS' as project, 'SAT_RISK_MOTOR_DRIVER' as satellite, 'HUB_RISK_OBJECT
 
 
 ----------------------------------------------------------------------------------------
--- 31. OPUS — SAT_RISK_MOTOR_VEHICLE   [Implemented]
+-- 31. OPUS — SAT_RISK_MOTOR_VEHICLE   [Implemented]  [M2]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [9 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [9 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT
@@ -1381,7 +1374,7 @@ select 'OPUS' as project, 'SAT_RISK_MOTOR_VEHICLE' as satellite, 'HUB_RISK_OBJEC
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_VEHICLE s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1389,12 +1382,12 @@ select 'OPUS' as project, 'SAT_RISK_MOTOR_VEHICLE' as satellite, 'HUB_RISK_OBJEC
 
 
 ----------------------------------------------------------------------------------------
--- 32. OPUS — SAT_RISK_OBJECT_CORE   [Implemented]
+-- 32. OPUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT
@@ -1409,7 +1402,7 @@ select 'OPUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite, 'HUB_RISK_OBJECT'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_CORE s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1417,12 +1410,12 @@ select 'OPUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite, 'HUB_RISK_OBJECT'
 
 
 ----------------------------------------------------------------------------------------
--- 33. OPUS — SAT_RISK_PERSON_INSURED   [Implemented]
+-- 33. OPUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
 -- sat_multi_source; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [4 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_DATA [4 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT
@@ -1437,7 +1430,7 @@ select 'OPUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, 'HUB_RISK_OBJE
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_INSURED s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1445,13 +1438,13 @@ select 'OPUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, 'HUB_RISK_OBJE
 
 
 ----------------------------------------------------------------------------------------
--- 34. OPUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
+-- 34. OPUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to OPUS; one output row per RECORD_SOURCE. standard satellite,
 -- sat_multi_source; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [8 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [2 col(s)].
--- stg2_risk_person_travel_bjaz_trv_loader_log_table_mv: column(s) PASSPORT_NUMBER,
+-- OPUS_BJAZ_TRV_LOADER_DATA [8 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [2 col(s)].
+-- stg2_risk_person_travel_bjaz_trv_loader_log_table: column(s) PASSPORT_NUMBER,
 -- TRIP_DURATION, TRIP_END_DATE, TRIP_START_DATE, TRIP_TYPE, VISA_TYPE could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
@@ -1470,7 +1463,7 @@ select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'HUB_RISK_OBJEC
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1478,12 +1471,12 @@ select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'HUB_RISK_OBJEC
 
 
 ----------------------------------------------------------------------------------------
--- 35. OPUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 35. OPUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA_MV
--- [1 col(s)].
+-- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA [1
+-- col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -1498,7 +1491,7 @@ select 'OPUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satellite
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1506,12 +1499,12 @@ select 'OPUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satellite
 
 
 ----------------------------------------------------------------------------------------
--- 36. OPUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
+-- 36. OPUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M3]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
--- sat_multi_source; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN_MV [2
--- col(s)]. stg2_aug_coverage_definition_bjaz_trv_plan_mv_eff_date: column(s)
+-- sat_multi_source; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN [2
+-- col(s)]. stg2_aug_coverage_definition_bjaz_trv_plan_eff_date: column(s)
 -- COVERAGE_SEQUENCE could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
@@ -1529,7 +1522,7 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite, 'HUB_COVER
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_DEFINITION s
   left join p on p.k = s.COVERAGE_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN')
    and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1537,16 +1530,16 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite, 'HUB_COVER
 
 
 ----------------------------------------------------------------------------------------
--- 37. OPUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
+-- 37. OPUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M3]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
--- sat_multi_source; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN_MV [3
--- col(s)]. stg2_aug_coverage_limits_bjaz_trv_plan_mv_currency: column(s)
+-- sat_multi_source; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN [3
+-- col(s)]. stg2_aug_coverage_limits_bjaz_trv_plan_currency: column(s)
 -- DEDUCTIBLE_DESCRIPTION, LIMIT_DESCRIPTION could not be traced to RAW on at least one
 -- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
 -- columns are not yet inlined into the sampled queries).
--- stg2_aug_coverage_limits_bjaz_trv_plan_mv_deductible_desc: column(s) LIMIT_DESCRIPTION
+-- stg2_aug_coverage_limits_bjaz_trv_plan_deductible_desc: column(s) LIMIT_DESCRIPTION
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
 -- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries).
@@ -1564,7 +1557,7 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, 'HUB_COVERAGE'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_LIMITS s
   left join p on p.k = s.COVERAGE_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_PLAN')
    and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1572,31 +1565,30 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, 'HUB_COVERAGE'
 
 
 ----------------------------------------------------------------------------------------
--- 38. OPUS — SAT_AUG_COVERAGE_RATING   [Implemented]
+-- 38. OPUS — SAT_AUG_COVERAGE_RATING   [Implemented]  [M3]
 -- Parent hub HUB_COVERAGE (src_pk COVERAGE_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
 -- sat_multi_source; PK COVERAGE_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV [4 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS_MV [1 col(s)].
--- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_nb_prm_excluding_st: column(s)
+-- OPUS_BJAZ_TRV_RIDER_RATE_MAST [4 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [1 col(s)].
+-- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_nb_prm_excluding_st: column(s)
 -- EXTENSION_PREMIUM_EXCLUDING_ST, MINIMUM_EXTENSION_PREMIUM,
 -- MINIMUM_NEW_BUSINESS_PREMIUM, RIDER_PREMIUM could not be traced to RAW on at least one
 -- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
 -- columns are not yet inlined into the sampled queries).
--- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_extn_prm_excluding_st: column(s)
+-- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_extn_prm_excluding_st: column(s)
 -- MINIMUM_EXTENSION_PREMIUM, MINIMUM_NEW_BUSINESS_PREMIUM, RIDER_PREMIUM could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_min_extn_prm: column(s)
+-- queries). stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_min_extn_prm: column(s)
 -- MINIMUM_NEW_BUSINESS_PREMIUM, RIDER_PREMIUM could not be traced to RAW on at least one
 -- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
 -- columns are not yet inlined into the sampled queries).
--- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_min_nb_prm: column(s)
--- RIDER_PREMIUM could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries).
--- stg2_aug_coverage_rating_bjaz_trv_rider_dtls_mv_rider_premium: column(s)
--- EXTENSION_PREMIUM_EXCLUDING_ST, MINIMUM_EXTENSION_PREMIUM,
+-- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_min_nb_prm: column(s) RIDER_PREMIUM
+-- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
+-- sampled queries). stg2_aug_coverage_rating_bjaz_trv_rider_dtls_rider_premium:
+-- column(s) EXTENSION_PREMIUM_EXCLUDING_ST, MINIMUM_EXTENSION_PREMIUM,
 -- MINIMUM_NEW_BUSINESS_PREMIUM, NEW_BUSINESS_PREMIUM_EXCLUDING_ST could not be traced to
 -- RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views
 -- or joined-in stitch columns are not yet inlined into the sampled queries).
@@ -1614,7 +1606,7 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'HUB_COVERAGE'
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_RATING s
   left join p on p.k = s.COVERAGE_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST')
    and (s.COVERAGE_HKEY is null or s.COVERAGE_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1622,22 +1614,22 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'HUB_COVERAGE'
 
 
 ----------------------------------------------------------------------------------------
--- 39. OPUS — SAT_AUG_FINTXN_PREMIUM   [Implemented]
+-- 39. OPUS — SAT_AUG_FINTXN_PREMIUM   [Implemented]  [M3]
 -- Parent hub HUB_FINANCIAL_TRANSACTION (src_pk FINANCIAL_TRANSACTION_HKEY); checked
 -- across all rows of the parent (shared vault: the key may have been loaded by the other
 -- project). Satellite rows scoped to OPUS; one output row per RECORD_SOURCE. augmented
 -- satellite, sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
--- stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_mv_sp_discount_per: column(s)
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
+-- stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_sp_discount_per: column(s)
 -- SPECIAL_DISCOUNT_AMOUNT could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
--- stg2_aug_fintxn_premium_bjaz_trv_loader_data_mv_spdiscount: column(s)
+-- stg2_aug_fintxn_premium_bjaz_trv_loader_data_spdiscount: column(s)
 -- SPECIAL_DISCOUNT_PERCENTAGE could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
--- stg2_aug_fintxn_premium_bjaz_trv_loader_log_table_mv_spdiscount: column(s)
+-- stg2_aug_fintxn_premium_bjaz_trv_loader_log_table_spdiscount: column(s)
 -- SPECIAL_DISCOUNT_PERCENTAGE could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
@@ -1655,7 +1647,7 @@ select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'HUB_FINANCIAL_
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM s
   left join p on p.k = s.FINANCIAL_TRANSACTION_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.FINANCIAL_TRANSACTION_HKEY is null or s.FINANCIAL_TRANSACTION_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1663,12 +1655,12 @@ select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'HUB_FINANCIAL_
 
 
 ----------------------------------------------------------------------------------------
--- 40. OPUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 40. OPUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -1683,7 +1675,7 @@ select 'OPUS' as project, 'SAT_AUG_LNK_PARTY_ROLE_CORE' as satellite, 'HUB_PARTY
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_PARTY_ROLE_CORE s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1691,12 +1683,12 @@ select 'OPUS' as project, 'SAT_AUG_LNK_PARTY_ROLE_CORE' as satellite, 'HUB_PARTY
 
 
 ----------------------------------------------------------------------------------------
--- 41. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 41. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
 -- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -1711,7 +1703,7 @@ select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'HUB_PARTY' 
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1719,12 +1711,12 @@ select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'HUB_PARTY' 
 
 
 ----------------------------------------------------------------------------------------
--- 42. OPUS — SAT_AUG_PARTY_BANKING   [Implemented]
+-- 42. OPUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA_MV
--- [1 col(s)].
+-- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA [1
+-- col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -1739,7 +1731,7 @@ select 'OPUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite, 'HUB_PARTY' as p
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_BANKING s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1747,13 +1739,12 @@ select 'OPUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite, 'HUB_PARTY' as p
 
 
 ----------------------------------------------------------------------------------------
--- 43. OPUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
+-- 43. OPUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
 -- Parent hub HUB_PARTY (src_pk PARTY_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
 -- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1
--- col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY
@@ -1768,7 +1759,7 @@ select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY' a
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT s
   left join p on p.k = s.PARTY_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and (s.PARTY_HKEY is null or s.PARTY_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1776,32 +1767,32 @@ select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'HUB_PARTY' a
 
 
 ----------------------------------------------------------------------------------------
--- 44. OPUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
+-- 44. OPUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
 -- Parent hub HUB_PRODUCT (src_pk PRODUCT_HKEY); checked across all rows of the parent
 -- (shared vault: the key may have been loaded by the other project). Satellite rows
 -- scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
--- sat_multi_source; PK PRODUCT_HKEY; 3 RECORD_SOURCE group(s): OPUS_BA_TRV_PLAN_MST_MV
--- [3 col(s)], OPUS_BJAZ_TRV_RATE_MASTER_MV [2 col(s)], OPUS_BJAZ_TRV_PLAN_MV [1 col(s)].
--- stg2_aug_product_terms_ba_trv_plan_mst_mv_multi_year_yn: column(s)
+-- sat_multi_source; PK PRODUCT_HKEY; 3 RECORD_SOURCE group(s): OPUS_BA_TRV_PLAN_MST [3
+-- col(s)], OPUS_BJAZ_TRV_RATE_MASTER [2 col(s)], OPUS_BJAZ_TRV_PLAN [1 col(s)].
+-- stg2_aug_product_terms_ba_trv_plan_mst_multi_year_yn: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, CFT_ELIGIBLE_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_aug_product_terms_ba_trv_plan_mst_mv_age_bypass_yn: column(s)
+-- queries). stg2_aug_product_terms_ba_trv_plan_mst_age_bypass_yn: column(s)
 -- CFT_ELIGIBLE_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could not be traced to RAW on at least
 -- one arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in
 -- stitch columns are not yet inlined into the sampled queries).
--- stg2_aug_product_terms_ba_trv_plan_mst_mv_cft_yn: column(s) PLAN_GEOGRAPHICAL_ZONE
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_aug_product_terms_bjaz_trv_rate_master_mv_cft_yn: column(s)
+-- stg2_aug_product_terms_ba_trv_plan_mst_cft_yn: column(s) PLAN_GEOGRAPHICAL_ZONE could
+-- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). stg2_aug_product_terms_bjaz_trv_rate_master_cft_yn: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, MULTI_YEAR_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_aug_product_terms_bjaz_trv_plan_mv_area: column(s)
+-- queries). stg2_aug_product_terms_bjaz_trv_plan_area: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, CFT_ELIGIBLE_INDICATOR, MULTI_YEAR_INDICATOR could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_aug_product_terms_bjaz_trv_rate_master_mv_area: column(s)
+-- queries). stg2_aug_product_terms_bjaz_trv_rate_master_area: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, MULTI_YEAR_INDICATOR could not be traced to RAW on
 -- at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
@@ -1819,7 +1810,7 @@ select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'HUB_PRODUCT' as
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS s
   left join p on p.k = s.PRODUCT_HKEY
- where s.RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV')
+ where s.RECORD_SOURCE in ('OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RATE_MASTER')
    and (s.PRODUCT_HKEY is null or s.PRODUCT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1827,12 +1818,12 @@ select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'HUB_PRODUCT' as
 
 
 ----------------------------------------------------------------------------------------
--- 45. OPUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
+-- 45. OPUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
 -- sat_multi_source; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT
@@ -1847,7 +1838,7 @@ select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite, 'HUB_RISK_
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_INSURED s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;
@@ -1855,12 +1846,12 @@ select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite, 'HUB_RISK_
 
 
 ----------------------------------------------------------------------------------------
--- 46. OPUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
+-- 46. OPUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- Parent hub HUB_RISK_OBJECT (src_pk RISK_OBJECT_HKEY); checked across all rows of the
 -- parent (shared vault: the key may have been loaded by the other project). Satellite
 -- rows scoped to OPUS; one output row per RECORD_SOURCE. augmented satellite,
 -- sat_multi_source; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [2 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_DATA [2 col(s)].
 ----------------------------------------------------------------------------------------
 with p as (  -- every key of the parent table(s), any project
         select distinct RISK_OBJECT_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT
@@ -1875,7 +1866,7 @@ select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, 'HUB_RISK_O
        iff(null_key_rows = 0 and orphan_rows = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_TRAVEL s
   left join p on p.k = s.RISK_OBJECT_HKEY
- where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where s.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
    and (s.RISK_OBJECT_HKEY is null or s.RISK_OBJECT_HKEY <> TO_BINARY(REPEAT('0', 32), 'HEX'))
  group by s.RECORD_SOURCE
  order by iff(status = 'FAIL', 0, 1), s.RECORD_SOURCE;

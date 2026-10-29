@@ -1679,42 +1679,41 @@ select 'MAXIMUS' as project, 'HUB_PAYMENT_INSTRUMENT' as hub,
 -- 16. OPUS — HUB_PARTY   [Implemented]  [M2]
 -- Hub rows scoped by RECORD_SOURCE value set (travel feeds only) to avoid colliding with
 -- the partner build in the shared vault. 6 RAW key branch(es):
--- BA_TRV_DATA_POLICY_DTLS_MV.CFT_MST_COMP_REF, BA_TRV_DATA_POLICY_DTLS_MV.PAYER_PART_ID,
--- BA_TRV_PLAN_MST_MV.CFT_MST_COMP_REF, BJAZ_TRV_LOADER_DATA_MV.PREMIUMPAYERID,
--- BJAZ_TRV_LOADER_DATA_MV.PART_ID, BJAZ_TRV_LOADER_LOG_TABLE_MV.PREMIUMPAYERID. Travel
--- RECORD_SOURCE value(s) parsed from feeds: OPUS_BA_TRV_DATA_POLICY_DTLS_MV,
--- OPUS_BA_TRV_PLAN_MST_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
+-- BA_TRV_DATA_POLICY_DTLS.CFT_MST_COMP_REF, BA_TRV_DATA_POLICY_DTLS.PAYER_PART_ID,
+-- BA_TRV_PLAN_MST.CFT_MST_COMP_REF, BJAZ_TRV_LOADER_DATA.PREMIUMPAYERID,
+-- BJAZ_TRV_LOADER_DATA.PART_ID, BJAZ_TRV_LOADER_LOG_TABLE.PREMIUMPAYERID. Travel
+-- RECORD_SOURCE value(s) parsed from feeds: OPUS_BA_TRV_DATA_POLICY_DTLS,
+-- OPUS_BA_TRV_PLAN_MST, OPUS_BJAZ_TRV_LOADER_DATA, OPUS_BJAZ_TRV_LOADER_LOG_TABLE.
 ----------------------------------------------------------------------------------------
 with src as (
-    -- via stg2_hub_ba_trv_data_policy_dtls_mv__party_cft_mst_comp_ref
+    -- via stg2_hub_ba_trv_data_policy_dtls__party_cft_mst_comp_ref
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(to_varchar("CFT_MST_COMP_REF")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
     union all
-    -- via stg2_hub_ba_trv_data_policy_dtls_mv__party_payer_part_id
+    -- via stg2_hub_ba_trv_data_policy_dtls__party_payer_part_id
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(to_varchar("PAYER_PART_ID")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
     union all
-    -- via stg2_hub_ba_trv_plan_mst_mv__party
+    -- via stg2_hub_ba_trv_plan_mst__party
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(to_varchar("CFT_MST_COMP_REF")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_PLAN_MST_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_PLAN_MST
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__party_premiumpayerid
+    -- via stg2_hub_bjaz_trv_loader_data__party_premiumpayerid
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(to_varchar("PREMIUMPAYERID")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__party_part_id
+    -- via stg2_hub_bjaz_trv_loader_data__party_part_id
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(to_varchar("PART_ID")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__party
+    -- via stg2_hub_bjaz_trv_loader_log_table__party
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(to_varchar("PREMIUMPAYERID")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
 )
 select 'OPUS' as project, 'HUB_PARTY' as hub,
        h.PARENT_BK as unexpected_bk, h.PARTY_HKEY as unexpected_hkey, h.RECORD_SOURCE, h.LOAD_DATETIME
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY h
- where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and not exists (select 1 from src s where s.hkey = h.PARTY_HKEY)
  order by h.RECORD_SOURCE, unexpected_bk;
 
@@ -1724,33 +1723,32 @@ select 'OPUS' as project, 'HUB_PARTY' as hub,
 -- 17. OPUS — HUB_POLICY   [Implemented]  [M2]
 -- Hub rows scoped by RECORD_SOURCE value set (travel feeds only) to avoid colliding with
 -- the partner build in the shared vault. 4 RAW key branch(es):
--- BA_TRV_DATA_POLICY_DTLS_MV.TRV_DATA_NO, BJAZ_TRV_LOADER_DATA_MV.POLICY_REF,
--- BJAZ_TRV_LOADER_LOG_TABLE_MV.POLICYNUMBER, BJAZ_TRV_RIDER_DTLS_MV.TRV_DATA_NO. Travel
--- RECORD_SOURCE value(s) parsed from feeds: OPUS_BA_TRV_DATA_POLICY_DTLS_MV,
--- OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV,
--- OPUS_BJAZ_TRV_RIDER_DTLS_MV.
+-- BA_TRV_DATA_POLICY_DTLS.TRV_DATA_NO, BJAZ_TRV_LOADER_DATA.POLICY_REF,
+-- BJAZ_TRV_LOADER_LOG_TABLE.POLICYNUMBER, BJAZ_TRV_RIDER_DTLS.TRV_DATA_NO. Travel
+-- RECORD_SOURCE value(s) parsed from feeds: OPUS_BA_TRV_DATA_POLICY_DTLS,
+-- OPUS_BJAZ_TRV_LOADER_DATA, OPUS_BJAZ_TRV_LOADER_LOG_TABLE, OPUS_BJAZ_TRV_RIDER_DTLS.
 ----------------------------------------------------------------------------------------
 with src as (
-    -- via stg2_hub_ba_trv_data_policy_dtls_mv__policy
+    -- via stg2_hub_ba_trv_data_policy_dtls__policy
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(to_varchar("TRV_DATA_NO")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__policy
+    -- via stg2_hub_bjaz_trv_loader_data__policy
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(to_varchar("POLICY_REF")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__policy
+    -- via stg2_hub_bjaz_trv_loader_log_table__policy
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(to_varchar("POLICYNUMBER")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
     union all
-    -- via stg2_hub_bjaz_trv_rider_dtls_mv__policy
+    -- via stg2_hub_bjaz_trv_rider_dtls__policy
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(to_varchar("TRV_DATA_NO")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RIDER_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RIDER_DTLS
 )
 select 'OPUS' as project, 'HUB_POLICY' as hub,
        h.PARENT_BK as unexpected_bk, h.POLICY_HKEY as unexpected_hkey, h.RECORD_SOURCE, h.LOAD_DATETIME
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_POLICY h
- where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV')
+ where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RIDER_DTLS')
    and not exists (select 1 from src s where s.hkey = h.POLICY_HKEY)
  order by h.RECORD_SOURCE, unexpected_bk;
 
@@ -1760,60 +1758,59 @@ select 'OPUS' as project, 'HUB_POLICY' as hub,
 -- 18. OPUS — HUB_PRODUCT   [Implemented]  [M2]
 -- Hub rows scoped by RECORD_SOURCE value set (travel feeds only) to avoid colliding with
 -- the partner build in the shared vault. 10 RAW key branch(es):
--- BA_TRV_DATA_POLICY_DTLS_MV.PRODUCT_CODE, BA_TRV_DATA_POLICY_DTLS_MV.TRAVEL_PLAN_NO,
--- BA_TRV_PLAN_MST_MV.PLAN_NO, BJAZ_TRV_LOADER_DATA_MV.PLAN,
--- BJAZ_TRV_LOADER_LOG_TABLE_MV.PLANID, BJAZ_TRV_LOADER_LOG_TABLE_MV.TRAVELPLAN,
--- BJAZ_TRV_LOADER_LOG_TABLE_MV.PRODUCT, BJAZ_TRV_PLAN_MV.PLAN_ID,
--- BJAZ_TRV_RATE_MASTER_MV.PLAN, BJAZ_TRV_DETLS_EXTN.TRV_PLAN. Travel RECORD_SOURCE
--- value(s) parsed from feeds: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BA_TRV_PLAN_MST_MV,
--- OPUS_BJAZ_TRV_DETLS_EXTN, OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV, OPUS_BJAZ_TRV_PLAN_MV (+1 more).
+-- BA_TRV_DATA_POLICY_DTLS.PRODUCT_CODE, BA_TRV_DATA_POLICY_DTLS.TRAVEL_PLAN_NO,
+-- BA_TRV_PLAN_MST.PLAN_NO, BJAZ_TRV_LOADER_DATA.PLAN, BJAZ_TRV_LOADER_LOG_TABLE.PLANID,
+-- BJAZ_TRV_LOADER_LOG_TABLE.TRAVELPLAN, BJAZ_TRV_LOADER_LOG_TABLE.PRODUCT,
+-- BJAZ_TRV_PLAN.PLAN_ID, BJAZ_TRV_RATE_MASTER.PLAN, BJAZ_TRV_DETLS_EXTN.TRV_PLAN. Travel
+-- RECORD_SOURCE value(s) parsed from feeds: OPUS_BA_TRV_DATA_POLICY_DTLS,
+-- OPUS_BA_TRV_PLAN_MST, OPUS_BJAZ_TRV_DETLS_EXTN, OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE, OPUS_BJAZ_TRV_PLAN (+1 more).
 ----------------------------------------------------------------------------------------
 with src as (
-    -- via stg2_hub_ba_trv_data_policy_dtls_mv__product_product_code
+    -- via stg2_hub_ba_trv_data_policy_dtls__product_product_code
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(to_varchar("PRODUCT_CODE")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
     union all
-    -- via stg2_hub_ba_trv_data_policy_dtls_mv__product_travel_plan_no
+    -- via stg2_hub_ba_trv_data_policy_dtls__product_travel_plan_no
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(to_varchar("TRAVEL_PLAN_NO")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
     union all
-    -- via stg2_hub_ba_trv_plan_mst_mv__product
+    -- via stg2_hub_ba_trv_plan_mst__product
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(to_varchar("PLAN_NO")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_PLAN_MST_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_PLAN_MST
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__product
+    -- via stg2_hub_bjaz_trv_loader_data__product
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(to_varchar("PLAN")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__product_planid
+    -- via stg2_hub_bjaz_trv_loader_log_table__product_planid
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(to_varchar("PLANID")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
     union all
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__product_travelplan
+    -- via stg2_hub_bjaz_trv_loader_log_table__product_travelplan
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(to_varchar("TRAVELPLAN")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
     union all
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__product_product
+    -- via stg2_hub_bjaz_trv_loader_log_table__product_product
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(to_varchar("PRODUCT")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
     union all
-    -- via stg2_hub_bjaz_trv_plan_mv__product
+    -- via stg2_hub_bjaz_trv_plan__product
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(to_varchar("PLAN_ID")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_PLAN_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_PLAN
     union all
-    -- via stg2_hub_bjaz_trv_rate_master_mv__product
+    -- via stg2_hub_bjaz_trv_rate_master__product
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(to_varchar("PLAN")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RATE_MASTER_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RATE_MASTER
     union all
     -- via stg2_hub_bjaz_trv_detls_extn__product
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(to_varchar("TRV_PLAN")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_DETLS_EXTN
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_DETLS_EXTN
 )
 select 'OPUS' as project, 'HUB_PRODUCT' as hub,
        h.PARENT_BK as unexpected_bk, h.PRODUCT_HKEY as unexpected_hkey, h.RECORD_SOURCE, h.LOAD_DATETIME
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PRODUCT h
- where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV')
+ where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RATE_MASTER')
    and not exists (select 1 from src s where s.hkey = h.PRODUCT_HKEY)
  order by h.RECORD_SOURCE, unexpected_bk;
 
@@ -1823,104 +1820,104 @@ select 'OPUS' as project, 'HUB_PRODUCT' as hub,
 -- 19. OPUS — HUB_COVERAGE   [Implemented]  [M2]
 -- Hub rows scoped by RECORD_SOURCE value set (travel feeds only) to avoid colliding with
 -- the partner build in the shared vault. 20 RAW key branch(es):
--- BJAZ_TRV_PLAN_MV.COVER_CODE, BJAZ_TRV_RIDER_DTLS_MV.RIDER_NO,
--- BJAZ_TRV_RIDER_RATE_MAST_MV.RIDER_SEQ_NO, BJAZ_TRV_LOADER_DATA_MV.POLICY_REF,
--- BJAZ_TRV_LOADER_DATA_MV.POLICY_REF, BJAZ_TRV_LOADER_DATA_MV.POLICY_REF,
--- BJAZ_TRV_LOADER_DATA_MV.POLICY_REF, BJAZ_TRV_LOADER_DATA_MV.POLICY_REF,
--- BJAZ_TRV_LOADER_DATA_MV.POLICY_REF, BJAZ_TRV_LOADER_DATA_MV.POLICY_REF,
--- BJAZ_TRV_LOADER_DATA_MV.POLICY_REF, BJAZ_TRV_LOADER_DATA_MV.POLICY_REF,
--- BJAZ_TRV_LOADER_DATA_MV.POLICY_REF, BJAZ_TRV_LOADER_DATA_MV.POLICY_REF,
--- BJAZ_TRV_LOADER_DATA_MV.POLICY_REF, BJAZ_TRV_LOADER_DATA_MV.POLICY_REF,
--- BJAZ_TRV_LOADER_DATA_MV.POLICY_REF, BJAZ_TRV_LOADER_DATA_MV.POLICY_REF,
--- BJAZ_TRV_LOADER_DATA_MV.POLICY_REF, BJAZ_TRV_LOADER_DATA_MV.POLICY_REF. Travel
--- RECORD_SOURCE value(s) parsed from feeds: OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_PLAN_MV, OPUS_BJAZ_TRV_RIDER_DTLS_MV, OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV.
+-- BJAZ_TRV_PLAN.COVER_CODE, BJAZ_TRV_RIDER_DTLS.RIDER_NO,
+-- BJAZ_TRV_RIDER_RATE_MAST.RIDER_SEQ_NO, BJAZ_TRV_LOADER_DATA.POLICY_REF,
+-- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_DATA.POLICY_REF,
+-- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_DATA.POLICY_REF,
+-- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_DATA.POLICY_REF,
+-- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_DATA.POLICY_REF,
+-- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_DATA.POLICY_REF,
+-- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_DATA.POLICY_REF,
+-- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_DATA.POLICY_REF,
+-- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_DATA.POLICY_REF. Travel RECORD_SOURCE
+-- value(s) parsed from feeds: OPUS_BJAZ_TRV_LOADER_DATA, OPUS_BJAZ_TRV_PLAN,
+-- OPUS_BJAZ_TRV_RIDER_DTLS, OPUS_BJAZ_TRV_RIDER_RATE_MAST.
 ----------------------------------------------------------------------------------------
 with src as (
-    -- via stg2_hub_bjaz_trv_plan_mv__coverage
+    -- via stg2_hub_bjaz_trv_plan__coverage
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("COVER_CODE")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_PLAN_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_PLAN
     union all
-    -- via stg2_hub_bjaz_trv_rider_dtls_mv__coverage
+    -- via stg2_hub_bjaz_trv_rider_dtls__coverage
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("RIDER_NO")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RIDER_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RIDER_DTLS
     union all
-    -- via stg2_hub_bjaz_trv_rider_rate_mast_mv__coverage
+    -- via stg2_hub_bjaz_trv_rider_rate_mast__coverage
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("RIDER_SEQ_NO")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RIDER_RATE_MAST_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RIDER_RATE_MAST
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_acchospexp
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_acchospexp
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_ACC_HOSP_EXP') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_adventuresportbenefit
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_adventuresportbenefit
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_ADVENTURE_SPORT') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_bouncedhotel
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_bouncedhotel
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_BOUNCED_HOTEL') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_compvisitfamilymember
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_compvisitfamilymember
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_COMPASSIONATE_VISIT') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_delayofcheckedbaggage
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_delayofcheckedbaggage
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_BAGGAGE_DELAY') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_emergencyhotelextension
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_emergencyhotelextension
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_EMER_HOTEL_EXT') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_emermedicalevac
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_emermedicalevac
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_EMER_MED_EVAC') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_homeburglaryinsurance
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_homeburglaryinsurance
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_HOME_BURGLARY') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_hospdailyallow
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_hospdailyallow
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_HOSP_DAILY_ALLOW') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_lossofbaggage
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_lossofbaggage
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_BAGGAGE_LOSS') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_lossofcheckedbaggage
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_lossofcheckedbaggage
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_CHECKED_BAGGAGE_LOSS') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_missedconnection
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_missedconnection
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_MISSED_CONNECTION') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_personalliability
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_personalliability
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_PERSONAL_LIABILITY') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_repatonofremains
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_repatonofremains
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_REPAT_REMAINS') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_tripcancellation
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_tripcancellation
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_TRIP_CANCEL') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_tripcurtailment
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_tripcurtailment
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_TRIP_CURTAILMENT') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__coverage_tripdelaybyscheduledaircraft
+    -- via stg2_hub_bjaz_trv_loader_data__coverage_tripdelaybyscheduledaircraft
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|' || 'TRV_TRIP_DELAY') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
 )
 select 'OPUS' as project, 'HUB_COVERAGE' as hub,
        h.PARENT_BK as unexpected_bk, h.COVERAGE_HKEY as unexpected_hkey, h.RECORD_SOURCE, h.LOAD_DATETIME
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_COVERAGE h
- where h.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_PLAN_MV', 'OPUS_BJAZ_TRV_RIDER_DTLS_MV', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV')
+ where h.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_PLAN', 'OPUS_BJAZ_TRV_RIDER_DTLS', 'OPUS_BJAZ_TRV_RIDER_RATE_MAST')
    and not exists (select 1 from src s where s.hkey = h.COVERAGE_HKEY)
  order by h.RECORD_SOURCE, unexpected_bk;
 
@@ -1930,33 +1927,33 @@ select 'OPUS' as project, 'HUB_COVERAGE' as hub,
 -- 20. OPUS — HUB_LOCATION   [Implemented]  [M2]
 -- Hub rows scoped by RECORD_SOURCE value set (travel feeds only) to avoid colliding with
 -- the partner build in the shared vault. 4 RAW key branch(es):
--- BJAZ_TRV_LOADER_LOG_TABLE_MV.TRANSITFROM, BJAZ_TRV_LOADER_LOG_TABLE_MV.TRANSITTO,
--- BJAZ_TRV_LOADER_DATA_MV.[BUILDING+STREETNAME+SUBAREACITY+STATE+PINCODE],
--- BJAZ_TRV_LOADER_LOG_TABLE_MV.[BUILDING+STREETNAME+CITY+STATE+PINCODE+COUNTRY]. Travel
--- RECORD_SOURCE value(s) parsed from feeds: OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
+-- BJAZ_TRV_LOADER_LOG_TABLE.TRANSITFROM, BJAZ_TRV_LOADER_LOG_TABLE.TRANSITTO,
+-- BJAZ_TRV_LOADER_DATA.[BUILDING+STREETNAME+SUBAREACITY+STATE+PINCODE],
+-- BJAZ_TRV_LOADER_LOG_TABLE.[BUILDING+STREETNAME+CITY+STATE+PINCODE+COUNTRY]. Travel
+-- RECORD_SOURCE value(s) parsed from feeds: OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE.
 ----------------------------------------------------------------------------------------
 with src as (
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__location_transitfrom
+    -- via stg2_hub_bjaz_trv_loader_log_table__location_transitfrom
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(to_varchar("TRANSITFROM")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
     union all
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__location_transitto
+    -- via stg2_hub_bjaz_trv_loader_log_table__location_transitto
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(to_varchar("TRANSITTO")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__location_addr
+    -- via stg2_hub_bjaz_trv_loader_data__location_addr
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (coalesce(nullif(trim(to_varchar("BUILDING")), ''), '') || '|' || coalesce(nullif(trim(to_varchar("STREETNAME")), ''), '') || '|' || coalesce(nullif(trim(to_varchar("SUBAREACITY")), ''), '') || '|' || coalesce(nullif(trim(to_varchar("STATE")), ''), '') || '|' || coalesce(nullif(trim(to_varchar("PINCODE")), ''), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__location_addr
+    -- via stg2_hub_bjaz_trv_loader_log_table__location_addr
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (coalesce(nullif(trim(to_varchar("BUILDING")), ''), '') || '|' || coalesce(nullif(trim(to_varchar("STREETNAME")), ''), '') || '|' || coalesce(nullif(trim(to_varchar("CITY")), ''), '') || '|' || coalesce(nullif(trim(to_varchar("STATE")), ''), '') || '|' || coalesce(nullif(trim(to_varchar("PINCODE")), ''), '') || '|' || coalesce(nullif(trim(to_varchar("COUNTRY")), ''), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
 )
 select 'OPUS' as project, 'HUB_LOCATION' as hub,
        h.PARENT_BK as unexpected_bk, h.LOCATION_HKEY as unexpected_hkey, h.RECORD_SOURCE, h.LOAD_DATETIME
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_LOCATION h
- where h.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where h.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and not exists (select 1 from src s where s.hkey = h.LOCATION_HKEY)
  order by h.RECORD_SOURCE, unexpected_bk;
 
@@ -1966,37 +1963,37 @@ select 'OPUS' as project, 'HUB_LOCATION' as hub,
 -- 21. OPUS — HUB_ORG_UNIT   [Implemented]  [M3]
 -- Hub rows scoped by RECORD_SOURCE value set (travel feeds only) to avoid colliding with
 -- the partner build in the shared vault. 5 RAW key branch(es):
--- BA_TRV_DATA_POLICY_DTLS_MV.LOCATION_CODE, BA_TRV_DATA_POLICY_DTLS_MV.CO_ORG_UNIT,
--- BJAZ_TRV_LOADER_DATA_MV.LOCATION, BJAZ_TRV_LOADER_LOG_TABLE_MV.LOCATIONCODE,
--- BJAZ_TRV_LOADER_LOG_TABLE_MV.COORGUNIT. Travel RECORD_SOURCE value(s) parsed from
--- feeds: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
+-- BA_TRV_DATA_POLICY_DTLS.LOCATION_CODE, BA_TRV_DATA_POLICY_DTLS.CO_ORG_UNIT,
+-- BJAZ_TRV_LOADER_DATA.LOCATION, BJAZ_TRV_LOADER_LOG_TABLE.LOCATIONCODE,
+-- BJAZ_TRV_LOADER_LOG_TABLE.COORGUNIT. Travel RECORD_SOURCE value(s) parsed from feeds:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE.
 ----------------------------------------------------------------------------------------
 with src as (
-    -- via stg2_hub_ba_trv_data_policy_dtls_mv__org_unit_location_code
+    -- via stg2_hub_ba_trv_data_policy_dtls__org_unit_location_code
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(to_varchar("LOCATION_CODE")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
     union all
-    -- via stg2_hub_ba_trv_data_policy_dtls_mv__org_unit_co_org_unit
+    -- via stg2_hub_ba_trv_data_policy_dtls__org_unit_co_org_unit
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(to_varchar("CO_ORG_UNIT")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__org_unit
+    -- via stg2_hub_bjaz_trv_loader_data__org_unit
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(to_varchar("LOCATION")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__org_unit_locationcode
+    -- via stg2_hub_bjaz_trv_loader_log_table__org_unit_locationcode
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(to_varchar("LOCATIONCODE")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
     union all
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__org_unit_coorgunit
+    -- via stg2_hub_bjaz_trv_loader_log_table__org_unit_coorgunit
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(to_varchar("COORGUNIT")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
 )
 select 'OPUS' as project, 'HUB_ORG_UNIT' as hub,
        h.PARENT_BK as unexpected_bk, h.ORG_UNIT_HKEY as unexpected_hkey, h.RECORD_SOURCE, h.LOAD_DATETIME
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ORG_UNIT h
- where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and not exists (select 1 from src s where s.hkey = h.ORG_UNIT_HKEY)
  order by h.RECORD_SOURCE, unexpected_bk;
 
@@ -2006,73 +2003,73 @@ select 'OPUS' as project, 'HUB_ORG_UNIT' as hub,
 -- 22. OPUS — HUB_DISTRIBUTION_CHANNEL   [Implemented]  [M3]
 -- Hub rows scoped by RECORD_SOURCE value set (travel feeds only) to avoid colliding with
 -- the partner build in the shared vault. 13 RAW key branch(es):
--- BA_TRV_DATA_POLICY_DTLS_MV.PARTNER_ID, BA_TRV_DATA_POLICY_DTLS_MV.INTERMEDIARY_CODE,
--- BA_TRV_DATA_POLICY_DTLS_MV.SUBAGENT_CODE, BJAZ_TRV_LOADER_DATA_MV.INTERMEDIARY,
--- BJAZ_TRV_LOADER_DATA_MV.SUBIMD, BJAZ_TRV_LOADER_DATA_MV.BAGICECODE,
--- BJAZ_TRV_LOADER_DATA_MV.BANKRMCODE, BJAZ_TRV_LOADER_DATA_MV.BANKECODE,
--- BJAZ_TRV_LOADER_LOG_TABLE_MV.INTERMEDIARY, BJAZ_TRV_LOADER_LOG_TABLE_MV.PARTNERID,
--- BJAZ_TRV_LOADER_LOG_TABLE_MV.SUBAGENTCODE, BJAZ_TRV_LOADER_LOG_TABLE_MV.DEALERCODE,
+-- BA_TRV_DATA_POLICY_DTLS.PARTNER_ID, BA_TRV_DATA_POLICY_DTLS.INTERMEDIARY_CODE,
+-- BA_TRV_DATA_POLICY_DTLS.SUBAGENT_CODE, BJAZ_TRV_LOADER_DATA.INTERMEDIARY,
+-- BJAZ_TRV_LOADER_DATA.SUBIMD, BJAZ_TRV_LOADER_DATA.BAGICECODE,
+-- BJAZ_TRV_LOADER_DATA.BANKRMCODE, BJAZ_TRV_LOADER_DATA.BANKECODE,
+-- BJAZ_TRV_LOADER_LOG_TABLE.INTERMEDIARY, BJAZ_TRV_LOADER_LOG_TABLE.PARTNERID,
+-- BJAZ_TRV_LOADER_LOG_TABLE.SUBAGENTCODE, BJAZ_TRV_LOADER_LOG_TABLE.DEALERCODE,
 -- BJAZ_TRV_DETLS_EXTN.MARKETING_AGENT. Travel RECORD_SOURCE value(s) parsed from feeds:
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_DETLS_EXTN,
--- OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
+-- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_DETLS_EXTN, OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE.
 ----------------------------------------------------------------------------------------
 with src as (
-    -- via stg2_hub_ba_trv_data_policy_dtls_mv__distribution_channel_partner_id
+    -- via stg2_hub_ba_trv_data_policy_dtls__distribution_channel_partner_id
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(to_varchar("PARTNER_ID")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
     union all
-    -- via stg2_hub_ba_trv_data_policy_dtls_mv__distribution_channel_intermediary_code
+    -- via stg2_hub_ba_trv_data_policy_dtls__distribution_channel_intermediary_code
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(to_varchar("INTERMEDIARY_CODE")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
     union all
-    -- via stg2_hub_ba_trv_data_policy_dtls_mv__distribution_channel_subagent_code
+    -- via stg2_hub_ba_trv_data_policy_dtls__distribution_channel_subagent_code
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(to_varchar("SUBAGENT_CODE")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__distribution_channel_intermediary
+    -- via stg2_hub_bjaz_trv_loader_data__distribution_channel_intermediary
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(to_varchar("INTERMEDIARY")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__distribution_channel_subimd
+    -- via stg2_hub_bjaz_trv_loader_data__distribution_channel_subimd
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(to_varchar("SUBIMD")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__distribution_channel_bagicecode
+    -- via stg2_hub_bjaz_trv_loader_data__distribution_channel_bagicecode
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(to_varchar("BAGICECODE")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__distribution_channel_bankrmcode
+    -- via stg2_hub_bjaz_trv_loader_data__distribution_channel_bankrmcode
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(to_varchar("BANKRMCODE")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__distribution_channel_bankecode
+    -- via stg2_hub_bjaz_trv_loader_data__distribution_channel_bankecode
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(to_varchar("BANKECODE")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__distribution_channel_intermediary
+    -- via stg2_hub_bjaz_trv_loader_log_table__distribution_channel_intermediary
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(to_varchar("INTERMEDIARY")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
     union all
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__distribution_channel_partnerid
+    -- via stg2_hub_bjaz_trv_loader_log_table__distribution_channel_partnerid
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(to_varchar("PARTNERID")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
     union all
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__distribution_channel_subagentcode
+    -- via stg2_hub_bjaz_trv_loader_log_table__distribution_channel_subagentcode
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(to_varchar("SUBAGENTCODE")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
     union all
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__distribution_channel_dealercode
+    -- via stg2_hub_bjaz_trv_loader_log_table__distribution_channel_dealercode
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(to_varchar("DEALERCODE")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
     union all
     -- via stg2_hub_bjaz_trv_detls_extn__distribution_channel
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(to_varchar("MARKETING_AGENT")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_DETLS_EXTN
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_DETLS_EXTN
 )
 select 'OPUS' as project, 'HUB_DISTRIBUTION_CHANNEL' as hub,
        h.PARENT_BK as unexpected_bk, h.DISTRIBUTION_CHANNEL_HKEY as unexpected_hkey, h.RECORD_SOURCE, h.LOAD_DATETIME
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_DISTRIBUTION_CHANNEL h
- where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and not exists (select 1 from src s where s.hkey = h.DISTRIBUTION_CHANNEL_HKEY)
  order by h.RECORD_SOURCE, unexpected_bk;
 
@@ -2082,18 +2079,18 @@ select 'OPUS' as project, 'HUB_DISTRIBUTION_CHANNEL' as hub,
 -- 23. OPUS — HUB_FINANCIAL_ACCOUNT   [Implemented]  [M3]
 -- Hub rows scoped by RECORD_SOURCE value set (travel feeds only) to avoid colliding with
 -- the partner build in the shared vault. 1 RAW key branch(es):
--- BJAZ_TRV_LOADER_DATA_MV.LANNO. Travel RECORD_SOURCE value(s) parsed from feeds:
--- OPUS_BJAZ_TRV_LOADER_DATA_MV.
+-- BJAZ_TRV_LOADER_DATA.LANNO. Travel RECORD_SOURCE value(s) parsed from feeds:
+-- OPUS_BJAZ_TRV_LOADER_DATA.
 ----------------------------------------------------------------------------------------
 with src as (
-    -- via stg2_hub_bjaz_trv_loader_data_mv__financial_account
+    -- via stg2_hub_bjaz_trv_loader_data__financial_account
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_ACCOUNT|' || (nullif(trim(to_varchar("LANNO")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
 )
 select 'OPUS' as project, 'HUB_FINANCIAL_ACCOUNT' as hub,
        h.PARENT_BK as unexpected_bk, h.FINANCIAL_ACCOUNT_HKEY as unexpected_hkey, h.RECORD_SOURCE, h.LOAD_DATETIME
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_ACCOUNT h
- where h.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where h.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA')
    and not exists (select 1 from src s where s.hkey = h.FINANCIAL_ACCOUNT_HKEY)
  order by h.RECORD_SOURCE, unexpected_bk;
 
@@ -2103,28 +2100,28 @@ select 'OPUS' as project, 'HUB_FINANCIAL_ACCOUNT' as hub,
 -- 24. OPUS — HUB_FINANCIAL_TRANSACTION   [Implemented]  [M3]
 -- Hub rows scoped by RECORD_SOURCE value set (travel feeds only) to avoid colliding with
 -- the partner build in the shared vault. 3 RAW key branch(es):
--- BA_TRV_DATA_POLICY_DTLS_MV.TRANSACTION_ID, BJAZ_TRV_LOADER_DATA_MV.TRANSACTIONID,
--- BJAZ_TRV_LOADER_LOG_TABLE_MV.POLICYNUMBER. Travel RECORD_SOURCE value(s) parsed from
--- feeds: OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
+-- BA_TRV_DATA_POLICY_DTLS.TRANSACTION_ID, BJAZ_TRV_LOADER_DATA.TRANSACTIONID,
+-- BJAZ_TRV_LOADER_LOG_TABLE.POLICYNUMBER. Travel RECORD_SOURCE value(s) parsed from
+-- feeds: OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE.
 ----------------------------------------------------------------------------------------
 with src as (
-    -- via stg2_hub_ba_trv_data_policy_dtls_mv__financial_transaction
+    -- via stg2_hub_ba_trv_data_policy_dtls__financial_transaction
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(to_varchar("TRANSACTION_ID")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__financial_transaction
+    -- via stg2_hub_bjaz_trv_loader_data__financial_transaction
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(to_varchar("TRANSACTIONID")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__financial_transaction_degenerate
+    -- via stg2_hub_bjaz_trv_loader_log_table__financial_transaction_degenerate
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(to_varchar("POLICYNUMBER")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
 )
 select 'OPUS' as project, 'HUB_FINANCIAL_TRANSACTION' as hub,
        h.PARENT_BK as unexpected_bk, h.FINANCIAL_TRANSACTION_HKEY as unexpected_hkey, h.RECORD_SOURCE, h.LOAD_DATETIME
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_FINANCIAL_TRANSACTION h
- where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and not exists (select 1 from src s where s.hkey = h.FINANCIAL_TRANSACTION_HKEY)
  order by h.RECORD_SOURCE, unexpected_bk;
 
@@ -2134,38 +2131,37 @@ select 'OPUS' as project, 'HUB_FINANCIAL_TRANSACTION' as hub,
 -- 25. OPUS — HUB_AGREEMENT   [Implemented]  [M3]
 -- Hub rows scoped by RECORD_SOURCE value set (travel feeds only) to avoid colliding with
 -- the partner build in the shared vault. 5 RAW key branch(es):
--- BA_TRV_DATA_POLICY_DTLS_MV.CFT_MST_CONTRACT_ID,
--- BA_TRV_PLAN_MST_MV.CFT_MST_CONTRACT_ID, BJAZ_TRV_LOADER_LOG_TABLE_MV.CONTRACTID,
--- BJAZ_TRV_RATE_MASTER_MV.CFT_MST_CONTRACT_ID, BJAZ_TRV_DETLS_EXTN.CONTRACT_ID. Travel
--- RECORD_SOURCE value(s) parsed from feeds: OPUS_BA_TRV_DATA_POLICY_DTLS_MV,
--- OPUS_BA_TRV_PLAN_MST_MV, OPUS_BJAZ_TRV_DETLS_EXTN, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV,
--- OPUS_BJAZ_TRV_RATE_MASTER_MV.
+-- BA_TRV_DATA_POLICY_DTLS.CFT_MST_CONTRACT_ID, BA_TRV_PLAN_MST.CFT_MST_CONTRACT_ID,
+-- BJAZ_TRV_LOADER_LOG_TABLE.CONTRACTID, BJAZ_TRV_RATE_MASTER.CFT_MST_CONTRACT_ID,
+-- BJAZ_TRV_DETLS_EXTN.CONTRACT_ID. Travel RECORD_SOURCE value(s) parsed from feeds:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BA_TRV_PLAN_MST, OPUS_BJAZ_TRV_DETLS_EXTN,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE, OPUS_BJAZ_TRV_RATE_MASTER.
 ----------------------------------------------------------------------------------------
 with src as (
-    -- via stg2_hub_ba_trv_data_policy_dtls_mv__agreement
+    -- via stg2_hub_ba_trv_data_policy_dtls__agreement
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_AGREEMENT|' || (nullif(trim(to_varchar("CFT_MST_CONTRACT_ID")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
     union all
-    -- via stg2_hub_ba_trv_plan_mst_mv__agreement
+    -- via stg2_hub_ba_trv_plan_mst__agreement
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_AGREEMENT|' || (nullif(trim(to_varchar("CFT_MST_CONTRACT_ID")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_PLAN_MST_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_PLAN_MST
     union all
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__agreement
+    -- via stg2_hub_bjaz_trv_loader_log_table__agreement
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_AGREEMENT|' || (nullif(trim(to_varchar("CONTRACTID")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
     union all
-    -- via stg2_hub_bjaz_trv_rate_master_mv__agreement
+    -- via stg2_hub_bjaz_trv_rate_master__agreement
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_AGREEMENT|' || (nullif(trim(to_varchar("CFT_MST_CONTRACT_ID")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RATE_MASTER_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RATE_MASTER
     union all
     -- via stg2_hub_bjaz_trv_detls_extn__agreement
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_AGREEMENT|' || (nullif(trim(to_varchar("CONTRACT_ID")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_DETLS_EXTN
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_DETLS_EXTN
 )
 select 'OPUS' as project, 'HUB_AGREEMENT' as hub,
        h.PARENT_BK as unexpected_bk, h.AGREEMENT_HKEY as unexpected_hkey, h.RECORD_SOURCE, h.LOAD_DATETIME
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_AGREEMENT h
- where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BA_TRV_PLAN_MST_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV', 'OPUS_BJAZ_TRV_RATE_MASTER_MV')
+ where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BA_TRV_PLAN_MST', 'OPUS_BJAZ_TRV_DETLS_EXTN', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE', 'OPUS_BJAZ_TRV_RATE_MASTER')
    and not exists (select 1 from src s where s.hkey = h.AGREEMENT_HKEY)
  order by h.RECORD_SOURCE, unexpected_bk;
 
@@ -2175,23 +2171,23 @@ select 'OPUS' as project, 'HUB_AGREEMENT' as hub,
 -- 26. OPUS — HUB_ASSESSMENT   [Implemented]  [M3]
 -- Hub rows scoped by RECORD_SOURCE value set (travel feeds only) to avoid colliding with
 -- the partner build in the shared vault. 2 RAW key branch(es):
--- BA_TRV_DATA_POLICY_DTLS_MV.SCRUTINY_NO, BJAZ_TRV_LOADER_DATA_MV.SCRUTINY_NO. Travel
--- RECORD_SOURCE value(s) parsed from feeds: OPUS_BA_TRV_DATA_POLICY_DTLS_MV,
--- OPUS_BJAZ_TRV_LOADER_DATA_MV.
+-- BA_TRV_DATA_POLICY_DTLS.SCRUTINY_NO, BJAZ_TRV_LOADER_DATA.SCRUTINY_NO. Travel
+-- RECORD_SOURCE value(s) parsed from feeds: OPUS_BA_TRV_DATA_POLICY_DTLS,
+-- OPUS_BJAZ_TRV_LOADER_DATA.
 ----------------------------------------------------------------------------------------
 with src as (
-    -- via stg2_hub_ba_trv_data_policy_dtls_mv__assessment
+    -- via stg2_hub_ba_trv_data_policy_dtls__assessment
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ASSESSMENT|' || (nullif(trim(to_varchar("SCRUTINY_NO")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__assessment
+    -- via stg2_hub_bjaz_trv_loader_data__assessment
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ASSESSMENT|' || (nullif(trim(to_varchar("SCRUTINY_NO")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
 )
 select 'OPUS' as project, 'HUB_ASSESSMENT' as hub,
        h.PARENT_BK as unexpected_bk, h.ASSESSMENT_HKEY as unexpected_hkey, h.RECORD_SOURCE, h.LOAD_DATETIME
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_ASSESSMENT h
- where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_LOADER_DATA')
    and not exists (select 1 from src s where s.hkey = h.ASSESSMENT_HKEY)
  order by h.RECORD_SOURCE, unexpected_bk;
 
@@ -2201,23 +2197,23 @@ select 'OPUS' as project, 'HUB_ASSESSMENT' as hub,
 -- 27. OPUS — HUB_PROPOSAL   [Implemented]  [M3]
 -- Hub rows scoped by RECORD_SOURCE value set (travel feeds only) to avoid colliding with
 -- the partner build in the shared vault. 2 RAW key branch(es):
--- BA_TRV_DATA_POLICY_DTLS_MV.TRAVEL_REQ_NO, BJAZ_TRV_DETLS_EXTN.TRAVEL_REQ_NO. Travel
--- RECORD_SOURCE value(s) parsed from feeds: OPUS_BA_TRV_DATA_POLICY_DTLS_MV,
+-- BA_TRV_DATA_POLICY_DTLS.TRAVEL_REQ_NO, BJAZ_TRV_DETLS_EXTN.TRAVEL_REQ_NO. Travel
+-- RECORD_SOURCE value(s) parsed from feeds: OPUS_BA_TRV_DATA_POLICY_DTLS,
 -- OPUS_BJAZ_TRV_DETLS_EXTN.
 ----------------------------------------------------------------------------------------
 with src as (
-    -- via stg2_hub_ba_trv_data_policy_dtls_mv__proposal
+    -- via stg2_hub_ba_trv_data_policy_dtls__proposal
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PROPOSAL|' || (nullif(trim(to_varchar("TRAVEL_REQ_NO")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
     union all
     -- via stg2_hub_bjaz_trv_detls_extn__proposal
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PROPOSAL|' || (nullif(trim(to_varchar("TRAVEL_REQ_NO")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_DETLS_EXTN
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_DETLS_EXTN
 )
 select 'OPUS' as project, 'HUB_PROPOSAL' as hub,
        h.PARENT_BK as unexpected_bk, h.PROPOSAL_HKEY as unexpected_hkey, h.RECORD_SOURCE, h.LOAD_DATETIME
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PROPOSAL h
- where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV', 'OPUS_BJAZ_TRV_DETLS_EXTN')
+ where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS', 'OPUS_BJAZ_TRV_DETLS_EXTN')
    and not exists (select 1 from src s where s.hkey = h.PROPOSAL_HKEY)
  order by h.RECORD_SOURCE, unexpected_bk;
 
@@ -2227,18 +2223,18 @@ select 'OPUS' as project, 'HUB_PROPOSAL' as hub,
 -- 28. OPUS — HUB_QUOTE   [Implemented]  [M3]
 -- Hub rows scoped by RECORD_SOURCE value set (travel feeds only) to avoid colliding with
 -- the partner build in the shared vault. 1 RAW key branch(es):
--- BA_TRV_DATA_POLICY_DTLS_MV.QUOTE_NO. Travel RECORD_SOURCE value(s) parsed from feeds:
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV.
+-- BA_TRV_DATA_POLICY_DTLS.QUOTE_NO. Travel RECORD_SOURCE value(s) parsed from feeds:
+-- OPUS_BA_TRV_DATA_POLICY_DTLS.
 ----------------------------------------------------------------------------------------
 with src as (
-    -- via stg2_hub_ba_trv_data_policy_dtls_mv__quote
+    -- via stg2_hub_ba_trv_data_policy_dtls__quote
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(to_varchar("QUOTE_NO")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
 )
 select 'OPUS' as project, 'HUB_QUOTE' as hub,
        h.PARENT_BK as unexpected_bk, h.QUOTE_HKEY as unexpected_hkey, h.RECORD_SOURCE, h.LOAD_DATETIME
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_QUOTE h
- where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS_MV')
+ where h.RECORD_SOURCE in ('OPUS_BA_TRV_DATA_POLICY_DTLS')
    and not exists (select 1 from src s where s.hkey = h.QUOTE_HKEY)
  order by h.RECORD_SOURCE, unexpected_bk;
 
@@ -2248,40 +2244,40 @@ select 'OPUS' as project, 'HUB_QUOTE' as hub,
 -- 29. OPUS — HUB_RISK_OBJECT   [Implemented]  [M3]
 -- Hub rows scoped by RECORD_SOURCE value set (travel feeds only) to avoid colliding with
 -- the partner build in the shared vault. 6 RAW key branch(es):
--- BJAZ_TRV_LOADER_DATA_MV.POLICY_REF, BJAZ_TRV_LOADER_DATA_MV.POLICY_REF,
--- BJAZ_TRV_LOADER_DATA_MV.POLICY_REF, BJAZ_TRV_LOADER_DATA_MV.POLICY_REF,
--- BJAZ_TRV_LOADER_DATA_MV.POLICY_REF, BJAZ_TRV_LOADER_LOG_TABLE_MV.POLICYNUMBER. Travel
--- RECORD_SOURCE value(s) parsed from feeds: OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV.
+-- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_DATA.POLICY_REF,
+-- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_DATA.POLICY_REF,
+-- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_LOG_TABLE.POLICYNUMBER. Travel
+-- RECORD_SOURCE value(s) parsed from feeds: OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE.
 ----------------------------------------------------------------------------------------
 with src as (
-    -- via stg2_hub_bjaz_trv_loader_data_mv__risk_object_member1
+    -- via stg2_hub_bjaz_trv_loader_data__risk_object_member1
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|MEMBER1') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__risk_object_member2
+    -- via stg2_hub_bjaz_trv_loader_data__risk_object_member2
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|MEMBER2') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__risk_object_member3
+    -- via stg2_hub_bjaz_trv_loader_data__risk_object_member3
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|MEMBER3') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__risk_object_member4
+    -- via stg2_hub_bjaz_trv_loader_data__risk_object_member4
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|MEMBER4') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_data_mv__risk_object_member5
+    -- via stg2_hub_bjaz_trv_loader_data__risk_object_member5
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (nullif(trim(to_varchar("POLICY_REF")), '') || '|MEMBER5') AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
     union all
-    -- via stg2_hub_bjaz_trv_loader_log_table_mv__risk_object
+    -- via stg2_hub_bjaz_trv_loader_log_table__risk_object
     select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (nullif(trim(to_varchar("POLICYNUMBER")), '')) AS VARCHAR))), '')) as hkey
-      from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+      from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
 )
 select 'OPUS' as project, 'HUB_RISK_OBJECT' as hub,
        h.PARENT_BK as unexpected_bk, h.RISK_OBJECT_HKEY as unexpected_hkey, h.RECORD_SOURCE, h.LOAD_DATETIME
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_RISK_OBJECT h
- where h.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA_MV', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where h.RECORD_SOURCE in ('OPUS_BJAZ_TRV_LOADER_DATA', 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
    and not exists (select 1 from src s where s.hkey = h.RISK_OBJECT_HKEY)
  order by h.RECORD_SOURCE, unexpected_bk;

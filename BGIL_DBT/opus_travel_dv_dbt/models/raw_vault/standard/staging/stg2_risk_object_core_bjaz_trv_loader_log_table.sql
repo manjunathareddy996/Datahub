@@ -1,0 +1,26 @@
+{{ config(materialized='view') }}
+
+-- TRAVEL STANDARD-MODEL per-table stage() for SAT_RISK_OBJECT_CORE, table 'BJAZ_TRV_LOADER_LOG_TABLE'.
+
+{%- set yaml_metadata -%}
+source_model: 'stg_travel__bjaz_trv_loader_log_table'
+hashed_columns:
+  RISK_OBJECT_HKEY: 'PARENT_NK'
+  HASHDIFF:
+    is_hashdiff: true
+    columns:
+      - 'EXPOSURE_QUANTITY'
+derived_columns:
+  PARENT_BK: 'policynumber'
+  PARENT_NK: "'HUB_RISK_OBJECT|' || (policynumber)"
+  EXPOSURE_QUANTITY: 'distance'
+  LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
+  RECORD_SOURCE: '!OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ automate_dv.stage(include_source_columns=false,
+                      source_model=metadata_dict['source_model'],
+                      hashed_columns=metadata_dict['hashed_columns'],
+                      derived_columns=metadata_dict['derived_columns']) }}

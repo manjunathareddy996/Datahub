@@ -8,10 +8,10 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_mv_sp_discount_per'
-  - 'stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_mv_sp_discount_amt'
-  - 'stg2_aug_fintxn_premium_bjaz_trv_loader_data_mv_spdiscount'
-  - 'stg2_aug_fintxn_premium_bjaz_trv_loader_log_table_mv_spdiscount'
+  - 'stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_sp_discount_per'
+  - 'stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_sp_discount_amt'
+  - 'stg2_aug_fintxn_premium_bjaz_trv_loader_data_spdiscount'
+  - 'stg2_aug_fintxn_premium_bjaz_trv_loader_log_table_spdiscount'
 src_pk: 'FINANCIAL_TRANSACTION_HKEY'
 src_payload:
   - 'SPECIAL_DISCOUNT_AMOUNT'
@@ -20,10 +20,10 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_mv_sp_discount_per: 'OPUS'
-  stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_mv_sp_discount_amt: 'OPUS'
-  stg2_aug_fintxn_premium_bjaz_trv_loader_data_mv_spdiscount: 'OPUS'
-  stg2_aug_fintxn_premium_bjaz_trv_loader_log_table_mv_spdiscount: 'OPUS'
+  stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_sp_discount_per: 'OPUS'
+  stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_sp_discount_amt: 'OPUS'
+  stg2_aug_fintxn_premium_bjaz_trv_loader_data_spdiscount: 'OPUS'
+  stg2_aug_fintxn_premium_bjaz_trv_loader_log_table_spdiscount: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

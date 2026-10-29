@@ -4,8 +4,8 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_product_terms_ba_trv_plan_mst_mv'
-  - 'stg2_product_terms_bjaz_trv_plan_mv'
+  - 'stg2_product_terms_ba_trv_plan_mst'
+  - 'stg2_product_terms_bjaz_trv_plan'
 src_pk: 'PRODUCT_HKEY'
 src_payload:
   - 'FAMILY_DEFINITION'
@@ -18,8 +18,8 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_product_terms_ba_trv_plan_mst_mv: 'OPUS'
-  stg2_product_terms_bjaz_trv_plan_mv: 'OPUS'
+  stg2_product_terms_ba_trv_plan_mst: 'OPUS'
+  stg2_product_terms_bjaz_trv_plan: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

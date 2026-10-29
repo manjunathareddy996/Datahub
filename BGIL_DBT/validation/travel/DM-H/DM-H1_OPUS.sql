@@ -2,6 +2,7 @@
    DM-H1  |  History - Change Creates a New Satellite Row (Travel LOB)  (OPUS)
    A record changed in source creates a new satellite row.
 
+   MEMBER SPLIT: sections 1..48 assigned M1 x 16, M2 x 16, M3 x 16 -- contiguous thirds in listed order.
    Check ID: DM-H1
    Category: History checks
    Sign-off criterion: Change creates a new satellite row
@@ -37,7 +38,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. SETUP — CDC test set-up (run once)   [Procedure]
+-- 1. SETUP — CDC test set-up (run once)   [Procedure]  [M1]
 -- Creates the snapshot tables used by DM-H1 (b), DM-H2 (b) and DM-H3 (b). Needs CREATE
 -- SCHEMA / TABLE rights on the scratch schema; change VALIDATION_SCHEMA in gen_dm_h.py
 -- to use another one.
@@ -58,7 +59,7 @@ create transient table if not exists BAGIC_PREPROD_CURATED_DB.UTILS.DM_H_RELOAD_
 
 
 ----------------------------------------------------------------------------------------
--- 2. OPUS — CDC before / after test procedure   [Procedure]
+-- 2. OPUS — CDC before / after test procedure   [Procedure]  [M1]
 -- Optional (test RAW BAGIC_PREPROD_CURATED_DB.UTILS only): UPDATE one payload column of
 -- a few sampled keys so H1 has changed keys to prove -- e.g. pick hkeys from the BEFORE
 -- rows of BAGIC_PREPROD_CURATED_DB.UTILS.DM_H_CDC_SNAPSHOT.
@@ -85,44 +86,43 @@ set DM_H_PHASE = 'AFTER';
 
 
 ----------------------------------------------------------------------------------------
--- 3. OPUS — SAT_COMMON_ADDRESS   [Implemented]
+-- 3. OPUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- sat_multi_source; PK LOCATION_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [5 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [6 col(s)].
--- stg2_common_address_bjaz_trv_loader_data_mv: column(s) COUNTRY_NAME could not be
--- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries).
+-- OPUS_BJAZ_TRV_LOADER_DATA [5 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [6 col(s)].
+-- stg2_common_address_bjaz_trv_loader_data: column(s) COUNTRY_NAME could not be traced
+-- to RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__
+-- views or joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as scope,
+select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BUILDING_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CITY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(POSTAL_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STATE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STREET_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BUILDING_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CITY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(POSTAL_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STATE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STREET_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(LOCATION_HKEY, 'HEX'), null)) within group (order by LOCATION_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA')
 union all
-select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as scope,
+select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BUILDING_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CITY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(COUNTRY_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(POSTAL_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STATE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STREET_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BUILDING_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CITY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(COUNTRY_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(POSTAL_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STATE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(STREET_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(LOCATION_HKEY, 'HEX'), null)) within group (order by LOCATION_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 4. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 4. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)].
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
@@ -131,210 +131,209 @@ select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, '2 RECORD_SO
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CATEGORY_CODE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
- where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 5. OPUS — SAT_COMMON_CONTACT   [Design finding]
--- HASHDIFF of OPUS_BJAZ_TRV_LOADER_DATA_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV
--- (stg2_common_contact_bjaz_trv_loader_data_mv_0,
--- stg2_common_contact_bjaz_trv_loader_data_mv_1,
--- stg2_common_contact_bjaz_trv_loader_data_mv_2,
--- stg2_common_contact_bjaz_trv_loader_data_mv_3,
--- stg2_common_contact_bjaz_trv_loader_data_mv_4) also hashes CONTACT_POINT_TYPE,
+-- 5. OPUS — SAT_COMMON_CONTACT   [Design finding]  [M1]
+-- HASHDIFF of OPUS_BJAZ_TRV_LOADER_DATA, OPUS_BJAZ_TRV_LOADER_LOG_TABLE
+-- (stg2_common_contact_bjaz_trv_loader_data_0,
+-- stg2_common_contact_bjaz_trv_loader_data_1,
+-- stg2_common_contact_bjaz_trv_loader_data_2,
+-- stg2_common_contact_bjaz_trv_loader_data_3,
+-- stg2_common_contact_bjaz_trv_loader_data_4) also hashes CONTACT_POINT_TYPE,
 -- CONTACT_PRIORITY_ORDER, which this satellite does not store (a shared stage feeding
 -- several satellites). A change in only those columns gives a new HASHDIFF and so a NEW
 -- ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a)
 -- unchanged_payload_reinserts. The HASHDIFF cannot be recomputed from the satellite row.
 -- standard satellite, ma_sat_multi_source; PK PARTY_HKEY, child key CONTACT_POINT_TYPE,
--- CONTACT_PRIORITY_ORDER; 2 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA_MV [4
--- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [4 col(s)]. Multi-active: compared per
--- (key, child key); latest = max LOAD_DATETIME per member.
--- stg2_common_contact_bjaz_trv_loader_data_mv_0: column(s) FAX_NUMBER, LANDLINE_NUMBER,
+-- CONTACT_PRIORITY_ORDER; 2 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA [4
+-- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [4 col(s)]. Multi-active: compared per (key,
+-- child key); latest = max LOAD_DATETIME per member.
+-- stg2_common_contact_bjaz_trv_loader_data_0: column(s) FAX_NUMBER, LANDLINE_NUMBER,
 -- MOBILE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_mv_1: column(s)
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_1: column(s)
 -- FAX_NUMBER, LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at least one
 -- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
 -- columns are not yet inlined into the sampled queries).
--- stg2_common_contact_bjaz_trv_loader_data_mv_2: column(s) LANDLINE_NUMBER,
--- MOBILE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_mv_3: column(s)
+-- stg2_common_contact_bjaz_trv_loader_data_2: column(s) LANDLINE_NUMBER, MOBILE_NUMBER
+-- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
+-- sampled queries). stg2_common_contact_bjaz_trv_loader_data_3: column(s)
 -- LANDLINE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_mv_5:
--- column(s) FAX_NUMBER, LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
--- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_common_contact_bjaz_trv_loader_log_table_mv_6: column(s) LANDLINE_NUMBER,
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_5: column(s)
+-- FAX_NUMBER, LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at least one
+-- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
+-- columns are not yet inlined into the sampled queries).
+-- stg2_common_contact_bjaz_trv_loader_log_table_6: column(s) LANDLINE_NUMBER,
 -- MOBILE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_mv_7:
--- column(s) LANDLINE_NUMBER could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries).
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_7: column(s)
+-- LANDLINE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries).
 ----------------------------------------------------------------------------------------
 -- DM-H1 (a) OPUS SAT_COMMON_CONTACT: HASHDIFF not recomputable -- see note
 
 
 
 ----------------------------------------------------------------------------------------
--- 6. OPUS — SAT_COVERAGE_CONDITIONS   [Implemented]
+-- 6. OPUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN_MV [2
+-- automate_dv.sat; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN [2
 -- col(s)].
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite, 'OPUS_BJAZ_TRV_PLAN_MV' as scope,
+select 'OPUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite, 'OPUS_BJAZ_TRV_PLAN' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CONDITION_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WAITING_PERIOD_CONDITION AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CONDITION_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(WAITING_PERIOD_CONDITION AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(COVERAGE_HKEY, 'HEX'), null)) within group (order by COVERAGE_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_CONDITIONS
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 7. OPUS — SAT_COVERAGE_DEFINITION   [Implemented]
+-- 7. OPUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK COVERAGE_HKEY; 3 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN_MV [2
--- col(s)], OPUS_BJAZ_TRV_RIDER_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1
--- col(s)]. stg2_coverage_definition_bjaz_trv_plan_mv: column(s) COVERAGE_NAME,
--- FREE_COVER_LIMIT could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_rider_dtls_mv: column(s) COVERAGE_DESCRIPTION,
--- FREE_COVER_LIMIT, PERIL_COVERED could not be traced to RAW on at least one arm --
--- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
--- are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_acchospexp: column(s)
+-- sat_multi_source; PK COVERAGE_HKEY; 3 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN [2
+-- col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)].
+-- stg2_coverage_definition_bjaz_trv_plan: column(s) COVERAGE_NAME, FREE_COVER_LIMIT
+-- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
+-- sampled queries). stg2_coverage_definition_bjaz_trv_rider_dtls: column(s)
+-- COVERAGE_DESCRIPTION, FREE_COVER_LIMIT, PERIL_COVERED could not be traced to RAW on at
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
+-- joined-in stitch columns are not yet inlined into the sampled queries).
+-- stg2_coverage_definition_bjaz_trv_loader_data_acchospexp: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_adventuresportbenefit: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_adventuresportbenefit: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_bouncedhotel: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_bouncedhotel: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_compvisitfamilymember: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_compvisitfamilymember: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_delayofcheckedbaggage: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_delayofcheckedbaggage: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_emergencyhotelextension: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_emergencyhotelextension: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_emermedicalevac: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_emermedicalevac: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_homeburglaryinsurance: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_homeburglaryinsurance: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_hospdailyallow: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_hospdailyallow: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_lossofbaggage: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_lossofbaggage: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_lossofcheckedbaggage: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_lossofcheckedbaggage: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_missedconnection: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_missedconnection: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_personalliability: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_personalliability: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_repatonofremains: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_repatonofremains: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_tripcancellation: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_tripcancellation: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_tripcurtailment: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_tripcurtailment: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_tripdelaybyscheduledaircraft:
--- column(s) COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to
--- RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views
--- or joined-in stitch columns are not yet inlined into the sampled queries).
+-- stg2_coverage_definition_bjaz_trv_loader_data_tripdelaybyscheduledaircraft: column(s)
+-- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
+-- joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_PLAN_MV' as scope,
+select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_PLAN' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(COVERAGE_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PERIL_COVERED AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(COVERAGE_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PERIL_COVERED AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(COVERAGE_HKEY, 'HEX'), null)) within group (order by COVERAGE_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV')
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN')
 union all
-select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS_MV' as scope,
+select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(COVERAGE_NAME AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(COVERAGE_NAME AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(COVERAGE_HKEY, 'HEX'), null)) within group (order by COVERAGE_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS_MV')
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS')
 union all
-select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as scope,
+select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(FREE_COVER_LIMIT AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(FREE_COVER_LIMIT AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(COVERAGE_HKEY, 'HEX'), null)) within group (order by COVERAGE_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 8. OPUS — SAT_COVERAGE_LIMITS   [Implemented]
+-- 8. OPUS — SAT_COVERAGE_LIMITS   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK COVERAGE_HKEY; 3 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN_MV [2
--- col(s)], OPUS_BJAZ_TRV_RIDER_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV [1
--- col(s)]. stg2_coverage_limits_bjaz_trv_rider_dtls_mv: column(s) DEDUCTIBLE_AMOUNT
+-- sat_multi_source; PK COVERAGE_HKEY; 3 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN [2
+-- col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [1 col(s)], OPUS_BJAZ_TRV_RIDER_RATE_MAST [1
+-- col(s)]. stg2_coverage_limits_bjaz_trv_rider_dtls: column(s) DEDUCTIBLE_AMOUNT could
+-- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). stg2_coverage_limits_bjaz_trv_rider_rate_mast: column(s) DEDUCTIBLE_AMOUNT
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
 -- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_coverage_limits_bjaz_trv_rider_rate_mast_mv: column(s)
--- DEDUCTIBLE_AMOUNT could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries).
+-- sampled queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_PLAN_MV' as scope,
+select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_PLAN' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DEDUCTIBLE_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LIMIT_AMOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DEDUCTIBLE_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LIMIT_AMOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(COVERAGE_HKEY, 'HEX'), null)) within group (order by COVERAGE_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV')
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN')
 union all
 select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
@@ -343,152 +342,151 @@ select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, '2 RECORD_SOURCEs 
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(LIMIT_AMOUNT AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(COVERAGE_HKEY, 'HEX'), null)) within group (order by COVERAGE_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS_MV') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_RATE_MAST');
 
 
 
 ----------------------------------------------------------------------------------------
--- 9. OPUS — SAT_FINTXN_COMMISSION   [Implemented]
+-- 9. OPUS — SAT_FINTXN_COMMISSION   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key COMMISSION_TYPE_CK; 2
--- RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2 col(s)],
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)]. Multi-active: compared per (key, child key);
--- latest = max LOAD_DATETIME per member. stg2_fintxn_commission_bjaz_trv_loader_data_mv:
+-- RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. Multi-active: compared per (key, child key);
+-- latest = max LOAD_DATETIME per member. stg2_fintxn_commission_bjaz_trv_loader_data:
 -- column(s) COMMISSION_AMOUNT could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as scope,
+select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(COMMISSION_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(COMMISSION_RATE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(COMMISSION_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(COMMISSION_RATE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_COMMISSION
- where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV')
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS')
 union all
-select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as scope,
+select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(COMMISSION_RATE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(COMMISSION_RATE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_COMMISSION
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 10. OPUS — SAT_FINTXN_HEADER   [Implemented]
+-- 10. OPUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_FINTXN_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as scope,
+select 'OPUS' as project, 'SAT_FINTXN_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(GROSS_AMOUNT AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(GROSS_AMOUNT AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_HEADER
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 11. OPUS — SAT_FINTXN_PREMIUM   [Implemented]
+-- 11. OPUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [6 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [5 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [4 col(s)].
--- stg2_fintxn_premium_ba_trv_data_policy_dtls_mv: column(s) BASE_PREMIUM could not be
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [6 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [5 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [4 col(s)].
+-- stg2_fintxn_premium_ba_trv_data_policy_dtls: column(s) BASE_PREMIUM could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_fintxn_premium_bjaz_trv_loader_data_mv: column(s) DISCOUNT_PERCENTAGE,
+-- queries). stg2_fintxn_premium_bjaz_trv_loader_data: column(s) DISCOUNT_PERCENTAGE,
 -- NET_PREMIUM could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_fintxn_premium_bjaz_trv_loader_log_table_mv: column(s)
+-- into the sampled queries). stg2_fintxn_premium_bjaz_trv_loader_log_table: column(s)
 -- BASE_PREMIUM, DISCOUNT_PERCENTAGE, NET_PREMIUM could not be traced to RAW on at least
 -- one arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in
 -- stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as scope,
+select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(COLLECTION_MODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DISCOUNT_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DISCOUNT_PERCENTAGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GROSS_PREMIUM AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOADING_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NET_PREMIUM AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(COLLECTION_MODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DISCOUNT_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DISCOUNT_PERCENTAGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GROSS_PREMIUM AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOADING_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NET_PREMIUM AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
- where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV')
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS')
 union all
-select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as scope,
+select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BASE_PREMIUM AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(COLLECTION_MODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DISCOUNT_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GROSS_PREMIUM AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOADING_AMOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(BASE_PREMIUM AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(COLLECTION_MODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DISCOUNT_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GROSS_PREMIUM AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOADING_AMOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA')
 union all
-select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as scope,
+select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(COLLECTION_MODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DISCOUNT_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GROSS_PREMIUM AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOADING_AMOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(COLLECTION_MODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DISCOUNT_AMOUNT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GROSS_PREMIUM AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LOADING_AMOUNT AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 12. OPUS — SAT_FINTXN_TAX   [Design finding]
--- HASHDIFF of OPUS_BA_TRV_DATA_POLICY_DTLS_MV
--- (stg2_fintxn_tax_ba_trv_data_policy_dtls_mv_0,
--- stg2_fintxn_tax_ba_trv_data_policy_dtls_mv_1) also hashes TAX_TYPE, which this
--- satellite does not store (a shared stage feeding several satellites). A change in only
--- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
--- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
--- recomputed from the satellite row. HASHDIFF of OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV
--- (stg2_fintxn_tax_bjaz_trv_loader_log_table_mv_2) also hashes TAX_TYPE, which this
+-- 12. OPUS — SAT_FINTXN_TAX   [Design finding]  [M1]
+-- HASHDIFF of OPUS_BA_TRV_DATA_POLICY_DTLS (stg2_fintxn_tax_ba_trv_data_policy_dtls_0,
+-- stg2_fintxn_tax_ba_trv_data_policy_dtls_1) also hashes TAX_TYPE, which this satellite
+-- does not store (a shared stage feeding several satellites). A change in only those
+-- columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here -- breaks
+-- DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be recomputed
+-- from the satellite row. HASHDIFF of OPUS_BJAZ_TRV_LOADER_LOG_TABLE
+-- (stg2_fintxn_tax_bjaz_trv_loader_log_table_2) also hashes TAX_TYPE, which this
 -- satellite does not store (a shared stage feeding several satellites). A change in only
 -- those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED PAYLOAD here --
 -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF cannot be
 -- recomputed from the satellite row. standard satellite, ma_sat_multi_source; PK
 -- FINANCIAL_TRANSACTION_HKEY, child key TAX_TYPE; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1
--- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
--- member. stg2_fintxn_tax_ba_trv_data_policy_dtls_mv_0: column(s) SERVICE_TAX_AMOUNT
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_fintxn_tax_bjaz_trv_loader_log_table_mv_2: column(s)
--- CESS_AMOUNT could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries).
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
+-- Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per member.
+-- stg2_fintxn_tax_ba_trv_data_policy_dtls_0: column(s) SERVICE_TAX_AMOUNT could not be
+-- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). stg2_fintxn_tax_bjaz_trv_loader_log_table_2: column(s) CESS_AMOUNT could not
+-- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries).
 ----------------------------------------------------------------------------------------
 -- DM-H1 (a) OPUS SAT_FINTXN_TAX: HASHDIFF not recomputable -- see note
 
 
 
 ----------------------------------------------------------------------------------------
--- 13. OPUS — SAT_FIN_CHARGE_RATE   [Implemented]
+-- 13. OPUS — SAT_FIN_CHARGE_RATE   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key CHARGE_TYPE_CK; 2
--- RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)]. Multi-active: compared per (key, child
+-- RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. Multi-active: compared per (key, child
 -- key); latest = max LOAD_DATETIME per member.
--- stg2_fin_charge_rate_ba_trv_data_policy_dtls_mv: column(s) ADDITIONAL_LOADING_RATE
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_fin_charge_rate_bjaz_trv_loader_log_table_mv: column(s)
+-- stg2_fin_charge_rate_ba_trv_data_policy_dtls: column(s) ADDITIONAL_LOADING_RATE could
+-- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). stg2_fin_charge_rate_bjaz_trv_loader_log_table: column(s)
 -- ADDITIONAL_LOADING_RATE could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
@@ -500,52 +498,52 @@ select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite, '2 RECORD_SOURCEs 
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CHARGE_AMOUNT AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_CHARGE_RATE
- where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 14. OPUS — SAT_FIN_RECEIPT   [Implemented]
+-- 14. OPUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [3 col(s)].
--- stg2_fin_receipt_ba_trv_data_policy_dtls_mv: column(s) AMOUNT_RECEIVED,
--- INSTRUMENT_DATE could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_fin_receipt_bjaz_trv_loader_data_mv: column(s)
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [3 col(s)].
+-- stg2_fin_receipt_ba_trv_data_policy_dtls: column(s) AMOUNT_RECEIVED, INSTRUMENT_DATE
+-- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
+-- sampled queries). stg2_fin_receipt_bjaz_trv_loader_data: column(s)
 -- PAYMENT_GATEWAY_REFERENCE could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as scope,
+select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PAYMENT_GATEWAY_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RECEIPT_NUMBER AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PAYMENT_GATEWAY_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RECEIPT_NUMBER AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT
- where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV')
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS')
 union all
-select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as scope,
+select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(AMOUNT_RECEIVED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSTRUMENT_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RECEIPT_NUMBER AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(AMOUNT_RECEIVED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSTRUMENT_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RECEIPT_NUMBER AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 15. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 15. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA
+-- [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
@@ -554,68 +552,68 @@ select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, '2 RE
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(RELATIONSHIP_TO_INSURED AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 16. OPUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
+-- 16. OPUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK ORG_UNIT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)].
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as scope,
+select 'OPUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(COST_CENTRE_CODE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(COST_CENTRE_CODE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(ORG_UNIT_HKEY, 'HEX'), null)) within group (order by ORG_UNIT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ORG_UNIT_DEFINITION
- where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV');
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 17. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [2 col(s)].
--- stg2_party_employment_bjaz_trv_loader_data_mv_payer: column(s) DESIGNATION could not
--- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA
+-- [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [2 col(s)].
+-- stg2_party_employment_bjaz_trv_loader_data_payer: column(s) DESIGNATION could not be
+-- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as scope,
+select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(EMPLOYMENT_STATUS AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(EMPLOYMENT_STATUS AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA')
 union all
-select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as scope,
+select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DESIGNATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EMPLOYMENT_STATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DESIGNATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(EMPLOYMENT_STATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 18. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 18. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)].
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
@@ -624,46 +622,46 @@ select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, '2 RECORD_SOU
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PRE_EXISTING_DISEASE_DESCRIPTION AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
- where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 19. OPUS — SAT_PARTY_IDENTIFICATION   [Design finding]
--- HASHDIFF of OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV
--- (stg2_party_identification_ba_trv_data_policy_dtls_mv_0) also hashes
+-- 19. OPUS — SAT_PARTY_IDENTIFICATION   [Design finding]  [M2]
+-- HASHDIFF of OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_LOG_TABLE
+-- (stg2_party_identification_ba_trv_data_policy_dtls_0) also hashes
 -- IDENTIFICATION_TYPE_CODE, which this satellite does not store (a shared stage feeding
 -- several satellites). A change in only those columns gives a new HASHDIFF and so a NEW
 -- ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a)
 -- unchanged_payload_reinserts. The HASHDIFF cannot be recomputed from the satellite row.
--- HASHDIFF of OPUS_BJAZ_TRV_LOADER_DATA_MV
--- (stg2_party_identification_bjaz_trv_loader_data_mv_1,
--- stg2_party_identification_bjaz_trv_loader_data_mv_2,
--- stg2_party_identification_bjaz_trv_loader_data_mv_3,
--- stg2_party_identification_bjaz_trv_loader_data_mv_4) also hashes
+-- HASHDIFF of OPUS_BJAZ_TRV_LOADER_DATA
+-- (stg2_party_identification_bjaz_trv_loader_data_1,
+-- stg2_party_identification_bjaz_trv_loader_data_2,
+-- stg2_party_identification_bjaz_trv_loader_data_3,
+-- stg2_party_identification_bjaz_trv_loader_data_4) also hashes
 -- IDENTIFICATION_TYPE_CODE, which this satellite does not store (a shared stage feeding
 -- several satellites). A change in only those columns gives a new HASHDIFF and so a NEW
 -- ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a)
 -- unchanged_payload_reinserts. The HASHDIFF cannot be recomputed from the satellite row.
 -- standard satellite, ma_sat_multi_source; PK PARTY_HKEY, child key
--- IDENTIFICATION_TYPE_CODE; 3 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1
--- col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [4 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1
+-- IDENTIFICATION_TYPE_CODE; 3 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [1
+-- col(s)], OPUS_BJAZ_TRV_LOADER_DATA [4 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1
 -- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
--- member. stg2_party_identification_ba_trv_data_policy_dtls_mv_0: column(s)
--- AADHAAR_NUMBER, EIA_NUMBER, GSTIN could not be traced to RAW on at least one arm --
--- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
--- are not yet inlined into the sampled queries).
--- stg2_party_identification_bjaz_trv_loader_data_mv_1: column(s) EIA_NUMBER, GSTIN,
+-- member. stg2_party_identification_ba_trv_data_policy_dtls_0: column(s) AADHAAR_NUMBER,
+-- EIA_NUMBER, GSTIN could not be traced to RAW on at least one arm -- excluded
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
+-- stg2_party_identification_bjaz_trv_loader_data_1: column(s) EIA_NUMBER, GSTIN,
 -- PASSPORT_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_party_identification_bjaz_trv_loader_data_mv_2:
--- column(s) GSTIN, PASSPORT_NUMBER could not be traced to RAW on at least one arm --
--- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
--- are not yet inlined into the sampled queries).
--- stg2_party_identification_bjaz_trv_loader_data_mv_3: column(s) PASSPORT_NUMBER could
--- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- into the sampled queries). stg2_party_identification_bjaz_trv_loader_data_2: column(s)
+-- GSTIN, PASSPORT_NUMBER could not be traced to RAW on at least one arm -- excluded
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
+-- stg2_party_identification_bjaz_trv_loader_data_3: column(s) PASSPORT_NUMBER could not
+-- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_party_identification_bjaz_trv_loader_log_table_mv_5: column(s)
+-- queries). stg2_party_identification_bjaz_trv_loader_log_table_5: column(s)
 -- AADHAAR_NUMBER, EIA_NUMBER, GSTIN could not be traced to RAW on at least one arm --
 -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
 -- are not yet inlined into the sampled queries).
@@ -673,66 +671,65 @@ select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, '2 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 20. OPUS — SAT_PARTY_IDENTITY   [Implemented]
+-- 20. OPUS — SAT_PARTY_IDENTITY   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- sat_multi_source; PK PARTY_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [3 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [6 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [8 col(s)].
--- stg2_party_identity_ba_trv_data_policy_dtls_mv_payer: column(s) FIRST_NAME,
--- GENDER_CODE, LAST_NAME, MIDDLE_NAME, PARTY_FULL_NAME, PARTY_LEGAL_NAME, TITLE_CODE
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_party_identity_ba_trv_data_policy_dtls_mv_agent: column(s)
--- FIRST_NAME, GENDER_CODE, LAST_NAME, MIDDLE_NAME, PARTY_LEGAL_NAME, TITLE_CODE could
--- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [3 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [6 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [8 col(s)].
+-- stg2_party_identity_ba_trv_data_policy_dtls_payer: column(s) FIRST_NAME, GENDER_CODE,
+-- LAST_NAME, MIDDLE_NAME, PARTY_FULL_NAME, PARTY_LEGAL_NAME, TITLE_CODE could not be
+-- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_party_identity_bjaz_trv_loader_data_mv_payer: column(s) AGE,
--- PARTY_FULL_NAME, TITLE_CODE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries).
--- stg2_party_identity_bjaz_trv_loader_log_table_mv_payer: column(s) PARTY_FULL_NAME
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries).
+-- queries). stg2_party_identity_ba_trv_data_policy_dtls_agent: column(s) FIRST_NAME,
+-- GENDER_CODE, LAST_NAME, MIDDLE_NAME, PARTY_LEGAL_NAME, TITLE_CODE could not be traced
+-- to RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__
+-- views or joined-in stitch columns are not yet inlined into the sampled queries).
+-- stg2_party_identity_bjaz_trv_loader_data_payer: column(s) AGE, PARTY_FULL_NAME,
+-- TITLE_CODE could not be traced to RAW on at least one arm -- excluded (first-cut: walk
+-- columns from resolved_mt__ views or joined-in stitch columns are not yet inlined into
+-- the sampled queries). stg2_party_identity_bjaz_trv_loader_log_table_payer: column(s)
+-- PARTY_FULL_NAME could not be traced to RAW on at least one arm -- excluded (first-cut:
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as scope,
+select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(AGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_BIRTH AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(AGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_BIRTH AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
- where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV')
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS')
 union all
-select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as scope,
+select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_BIRTH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIRST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GENDER_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LAST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MIDDLE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PARTY_LEGAL_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_BIRTH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIRST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GENDER_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LAST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MIDDLE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PARTY_LEGAL_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA')
 union all
-select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as scope,
+select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(AGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_BIRTH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIRST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GENDER_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LAST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MIDDLE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PARTY_LEGAL_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TITLE_CODE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(AGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_BIRTH AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(FIRST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GENDER_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(LAST_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MIDDLE_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PARTY_LEGAL_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TITLE_CODE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 21. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 21. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA
+-- [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
@@ -741,104 +738,100 @@ select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, '2 R
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(MARITAL_STATUS AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 22. OPUS — SAT_POLICY_CLASSIFICATION   [Design finding]
--- HASHDIFF of OPUS_BA_TRV_DATA_POLICY_DTLS_MV, OPUS_BJAZ_TRV_LOADER_DATA_MV,
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV
--- (stg2_policy_classification_ba_trv_data_policy_dtls_mv_0,
--- stg2_policy_classification_ba_trv_data_policy_dtls_mv_1,
--- stg2_policy_classification_ba_trv_data_policy_dtls_mv_2) also hashes
--- CLASSIFICATION_TYPE, which this satellite does not store (a shared stage feeding
--- several satellites). A change in only those columns gives a new HASHDIFF and so a NEW
--- ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a)
--- unchanged_payload_reinserts. The HASHDIFF cannot be recomputed from the satellite row.
--- standard satellite, ma_sat_multi_source; PK POLICY_HKEY, child key
--- CLASSIFICATION_TYPE; 3 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1
--- col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1
--- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
--- member.
+-- 22. OPUS — SAT_POLICY_CLASSIFICATION   [Design finding]  [M2]
+-- HASHDIFF of OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA,
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE (stg2_policy_classification_ba_trv_data_policy_dtls_0,
+-- stg2_policy_classification_ba_trv_data_policy_dtls_1,
+-- stg2_policy_classification_ba_trv_data_policy_dtls_2) also hashes CLASSIFICATION_TYPE,
+-- which this satellite does not store (a shared stage feeding several satellites). A
+-- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
+-- PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF
+-- cannot be recomputed from the satellite row. standard satellite, ma_sat_multi_source;
+-- PK POLICY_HKEY, child key CLASSIFICATION_TYPE; 3 RECORD_SOURCE group(s):
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. Multi-active: compared per (key, child
+-- key); latest = max LOAD_DATETIME per member.
 ----------------------------------------------------------------------------------------
 -- DM-H1 (a) OPUS SAT_POLICY_CLASSIFICATION: HASHDIFF not recomputable -- see note
 
 
 
 ----------------------------------------------------------------------------------------
--- 23. OPUS — SAT_POLICY_HEADER   [Implemented]
+-- 23. OPUS — SAT_POLICY_HEADER   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- sat_multi_source; PK POLICY_HKEY; 4 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [9 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [2 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [8 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS_MV [2 col(s)].
--- stg2_policy_header_ba_trv_data_policy_dtls_mv: column(s) POLICY_TYPE,
--- SUM_INSURED_TOTAL could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries). stg2_policy_header_bjaz_trv_loader_data_mv:
--- column(s) COVER_NOTE_DATE, COVER_NOTE_REFERENCE, ISSUE_DATE, MASTER_POLICY_REFERENCE,
--- POLICY_NUMBER, POLICY_TYPE, RISK_EXPIRY_DATE, RISK_INCEPTION_DATE, SUM_INSURED_TOTAL
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [9 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [2 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [8 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [2 col(s)].
+-- stg2_policy_header_ba_trv_data_policy_dtls: column(s) POLICY_TYPE, SUM_INSURED_TOTAL
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
 -- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_policy_header_bjaz_trv_loader_log_table_mv: column(s)
--- NUMBER_OF_LIVES_COVERED, POLICY_NUMBER, POLICY_TYPE could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
+-- sampled queries). stg2_policy_header_bjaz_trv_loader_data: column(s) COVER_NOTE_DATE,
+-- COVER_NOTE_REFERENCE, ISSUE_DATE, MASTER_POLICY_REFERENCE, POLICY_NUMBER, POLICY_TYPE,
+-- RISK_EXPIRY_DATE, RISK_INCEPTION_DATE, SUM_INSURED_TOTAL could not be traced to RAW on
+-- at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_policy_header_bjaz_trv_rider_dtls_mv: column(s) COVER_NOTE_DATE,
--- COVER_NOTE_REFERENCE, ISSUE_DATE, MASTER_POLICY_REFERENCE, POLICY_NUMBER,
--- RISK_EXPIRY_DATE, RISK_INCEPTION_DATE, RURAL_SECTOR_POLICY_INDICATOR,
+-- stg2_policy_header_bjaz_trv_loader_log_table: column(s) NUMBER_OF_LIVES_COVERED,
+-- POLICY_NUMBER, POLICY_TYPE could not be traced to RAW on at least one arm -- excluded
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries). stg2_policy_header_bjaz_trv_rider_dtls:
+-- column(s) COVER_NOTE_DATE, COVER_NOTE_REFERENCE, ISSUE_DATE, MASTER_POLICY_REFERENCE,
+-- POLICY_NUMBER, RISK_EXPIRY_DATE, RISK_INCEPTION_DATE, RURAL_SECTOR_POLICY_INDICATOR,
 -- SUM_INSURED_TOTAL could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as scope,
+select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(COVER_NOTE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(COVER_NOTE_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ISSUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MASTER_POLICY_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NUMBER_OF_LIVES_COVERED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(POLICY_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RISK_EXPIRY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RISK_INCEPTION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RURAL_SECTOR_POLICY_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(COVER_NOTE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(COVER_NOTE_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ISSUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MASTER_POLICY_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(NUMBER_OF_LIVES_COVERED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(POLICY_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RISK_EXPIRY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RISK_INCEPTION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RURAL_SECTOR_POLICY_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
- where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV')
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS')
 union all
-select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as scope,
+select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(NUMBER_OF_LIVES_COVERED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RURAL_SECTOR_POLICY_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(NUMBER_OF_LIVES_COVERED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RURAL_SECTOR_POLICY_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA')
 union all
-select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as scope,
+select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(COVER_NOTE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(COVER_NOTE_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ISSUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MASTER_POLICY_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RISK_EXPIRY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RISK_INCEPTION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RURAL_SECTOR_POLICY_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SUM_INSURED_TOTAL AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(COVER_NOTE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(COVER_NOTE_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ISSUE_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MASTER_POLICY_REFERENCE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RISK_EXPIRY_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RISK_INCEPTION_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RURAL_SECTOR_POLICY_INDICATOR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SUM_INSURED_TOTAL AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV')
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE')
 union all
-select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS_MV' as scope,
+select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(NUMBER_OF_LIVES_COVERED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(POLICY_TYPE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(NUMBER_OF_LIVES_COVERED AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(POLICY_TYPE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 24. OPUS — SAT_POLICY_TERMS   [Implemented]
+-- 24. OPUS — SAT_POLICY_TERMS   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- sat_multi_source; PK POLICY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1
--- col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
@@ -847,422 +840,421 @@ select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite, '2 RECORD_SOURCEs sha
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_CONDITIONS AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(POLICY_HKEY, 'HEX'), null)) within group (order by POLICY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS
- where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 25. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]
+-- 25. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- sat_multi_source; PK PRODUCT_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [3 col(s)], OPUS_BA_TRV_PLAN_MST_MV [5 col(s)],
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
--- stg2_product_definition_ba_trv_data_policy_dtls_mv: column(s) PRODUCT_DISPLAY_NAME,
--- PRODUCT_STATUS could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_product_definition_bjaz_trv_loader_data_mv: column(s)
--- PRODUCT_CODE, PRODUCT_DISPLAY_NAME, PRODUCT_NAME, PRODUCT_STATUS could not be traced
--- to RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__
--- views or joined-in stitch columns are not yet inlined into the sampled queries).
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [3 col(s)], OPUS_BA_TRV_PLAN_MST [5 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. stg2_product_definition_ba_trv_data_policy_dtls:
+-- column(s) PRODUCT_DISPLAY_NAME, PRODUCT_STATUS could not be traced to RAW on at least
+-- one arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in
+-- stitch columns are not yet inlined into the sampled queries).
+-- stg2_product_definition_bjaz_trv_loader_data: column(s) PRODUCT_CODE,
+-- PRODUCT_DISPLAY_NAME, PRODUCT_NAME, PRODUCT_STATUS could not be traced to RAW on at
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
+-- joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as scope,
+select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCT_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCT_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCT_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCT_NAME AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PRODUCT_HKEY, 'HEX'), null)) within group (order by PRODUCT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
- where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV')
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS')
 union all
-select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BA_TRV_PLAN_MST_MV' as scope,
+select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BA_TRV_PLAN_MST' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCT_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCT_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCT_DISPLAY_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCT_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCT_STATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCT_CATEGORY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCT_CODE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCT_DISPLAY_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCT_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCT_STATUS AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PRODUCT_HKEY, 'HEX'), null)) within group (order by PRODUCT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
- where (RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST_MV')
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST')
 union all
-select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as scope,
+select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCT_CATEGORY AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PRODUCT_CATEGORY AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PRODUCT_HKEY, 'HEX'), null)) within group (order by PRODUCT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — SAT_PRODUCT_RATING_FACTOR   [Design finding]
--- HASHDIFF of OPUS_BJAZ_TRV_RATE_MASTER_MV
--- (stg2_product_rating_factor_bjaz_trv_rate_master_mv_0,
--- stg2_product_rating_factor_bjaz_trv_rate_master_mv_1,
--- stg2_product_rating_factor_bjaz_trv_rate_master_mv_2,
--- stg2_product_rating_factor_bjaz_trv_rate_master_mv_3) also hashes
--- ACTIVE_SEQUENCE_NUMBER, which this satellite does not store (a shared stage feeding
--- several satellites). A change in only those columns gives a new HASHDIFF and so a NEW
--- ROW WITH AN UNCHANGED PAYLOAD here -- breaks DM-H2; see DM-H2 (a)
--- unchanged_payload_reinserts. The HASHDIFF cannot be recomputed from the satellite row.
--- standard satellite, ma_sat_multi_source; PK PRODUCT_HKEY, child key
--- ACTIVE_SEQUENCE_NUMBER; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_RATE_MASTER_MV [2
--- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
--- member. stg2_product_rating_factor_bjaz_trv_rate_master_mv_0: column(s) VALUE_RANGE_TO
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries).
+-- 26. OPUS — SAT_PRODUCT_RATING_FACTOR   [Design finding]  [M2]
+-- HASHDIFF of OPUS_BJAZ_TRV_RATE_MASTER
+-- (stg2_product_rating_factor_bjaz_trv_rate_master_0,
+-- stg2_product_rating_factor_bjaz_trv_rate_master_1,
+-- stg2_product_rating_factor_bjaz_trv_rate_master_2,
+-- stg2_product_rating_factor_bjaz_trv_rate_master_3) also hashes ACTIVE_SEQUENCE_NUMBER,
+-- which this satellite does not store (a shared stage feeding several satellites). A
+-- change in only those columns gives a new HASHDIFF and so a NEW ROW WITH AN UNCHANGED
+-- PAYLOAD here -- breaks DM-H2; see DM-H2 (a) unchanged_payload_reinserts. The HASHDIFF
+-- cannot be recomputed from the satellite row. standard satellite, ma_sat_multi_source;
+-- PK PRODUCT_HKEY, child key ACTIVE_SEQUENCE_NUMBER; 1 RECORD_SOURCE group(s):
+-- OPUS_BJAZ_TRV_RATE_MASTER [2 col(s)]. Multi-active: compared per (key, child key);
+-- latest = max LOAD_DATETIME per member.
+-- stg2_product_rating_factor_bjaz_trv_rate_master_0: column(s) VALUE_RANGE_TO could not
+-- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries).
 ----------------------------------------------------------------------------------------
 -- DM-H1 (a) OPUS SAT_PRODUCT_RATING_FACTOR: HASHDIFF not recomputable -- see note
 
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
+-- 27. OPUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK PRODUCT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_RATE_MASTER_MV [1 col(s)].
+-- automate_dv.sat; PK PRODUCT_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_RATE_MASTER
+-- [1 col(s)].
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite, 'OPUS_BJAZ_TRV_RATE_MASTER_MV' as scope,
+select 'OPUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite, 'OPUS_BJAZ_TRV_RATE_MASTER' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PRICING_EFFECTIVE_DATE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PRICING_EFFECTIVE_DATE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PRODUCT_HKEY, 'HEX'), null)) within group (order by PRODUCT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_STRUCTURE
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER');
 
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — SAT_PRODUCT_TERMS   [Implemented]
+-- 28. OPUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- sat_multi_source; PK PRODUCT_HKEY; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_PLAN_MST_MV
--- [6 col(s)], OPUS_BJAZ_TRV_PLAN_MV [1 col(s)]. stg2_product_terms_bjaz_trv_plan_mv:
--- column(s) FAMILY_DEFINITION, GEOGRAPHY_RESTRICTION, MAXIMUM_ENTRY_AGE,
--- MINIMUM_ENTRY_AGE, MINIMUM_POLICY_TERM could not be traced to RAW on at least one arm
--- -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
--- columns are not yet inlined into the sampled queries).
+-- sat_multi_source; PK PRODUCT_HKEY; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_PLAN_MST [6
+-- col(s)], OPUS_BJAZ_TRV_PLAN [1 col(s)]. stg2_product_terms_bjaz_trv_plan: column(s)
+-- FAMILY_DEFINITION, GEOGRAPHY_RESTRICTION, MAXIMUM_ENTRY_AGE, MINIMUM_ENTRY_AGE,
+-- MINIMUM_POLICY_TERM could not be traced to RAW on at least one arm -- excluded
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'OPUS_BA_TRV_PLAN_MST_MV' as scope,
+select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'OPUS_BA_TRV_PLAN_MST' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(FAMILY_DEFINITION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GEOGRAPHY_RESTRICTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MAXIMUM_ENTRY_AGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MAXIMUM_POLICY_TERM AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MINIMUM_ENTRY_AGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MINIMUM_POLICY_TERM AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(FAMILY_DEFINITION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GEOGRAPHY_RESTRICTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MAXIMUM_ENTRY_AGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MAXIMUM_POLICY_TERM AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MINIMUM_ENTRY_AGE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MINIMUM_POLICY_TERM AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PRODUCT_HKEY, 'HEX'), null)) within group (order by PRODUCT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS
- where (RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST_MV')
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST')
 union all
-select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_PLAN_MV' as scope,
+select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_PLAN' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(MAXIMUM_POLICY_TERM AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(MAXIMUM_POLICY_TERM AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PRODUCT_HKEY, 'HEX'), null)) within group (order by PRODUCT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — SAT_PROPOSAL_UNDERWRITING   [Implemented]
+-- 29. OPUS — SAT_PROPOSAL_UNDERWRITING   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK PROPOSAL_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2 col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)].
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_PROPOSAL_UNDERWRITING' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as scope,
+select 'OPUS' as project, 'SAT_PROPOSAL_UNDERWRITING' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(REFERRAL_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REFERRAL_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(REFERRAL_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REFERRAL_INDICATOR AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(PROPOSAL_HKEY, 'HEX'), null)) within group (order by PROPOSAL_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROPOSAL_UNDERWRITING
- where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV');
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 30. OPUS — SAT_QUOTE_HEADER   [Implemented]
+-- 30. OPUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
--- automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)].
+-- automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS
+-- [1 col(s)].
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_QUOTE_HEADER' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as scope,
+select 'OPUS' as project, 'SAT_QUOTE_HEADER' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(QUOTE_DATE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(QUOTE_DATE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(QUOTE_HKEY, 'HEX'), null)) within group (order by QUOTE_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_HEADER
- where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV');
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 31. OPUS — SAT_RISK_MOTOR_DRIVER   [Implemented]
+-- 31. OPUS — SAT_RISK_MOTOR_DRIVER   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_RISK_MOTOR_DRIVER' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as scope,
+select 'OPUS' as project, 'SAT_RISK_MOTOR_DRIVER' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(OWNER_DRIVER_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(OWNER_DRIVER_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(RISK_OBJECT_HKEY, 'HEX'), null)) within group (order by RISK_OBJECT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_DRIVER
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 32. OPUS — SAT_RISK_MOTOR_VEHICLE   [Implemented]
+-- 32. OPUS — SAT_RISK_MOTOR_VEHICLE   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [9 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [9 col(s)].
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_RISK_MOTOR_VEHICLE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as scope,
+select 'OPUS' as project, 'SAT_RISK_MOTOR_VEHICLE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CHASSIS_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CUBIC_CAPACITY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ENGINE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MAKE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MANUFACTURING_YEAR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MODEL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REGISTRATION_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SEATING_CAPACITY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VEHICLE_SUB_CLASS AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(CHASSIS_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(CUBIC_CAPACITY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(ENGINE_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MAKE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MANUFACTURING_YEAR AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MODEL AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(REGISTRATION_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(SEATING_CAPACITY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VEHICLE_SUB_CLASS AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(RISK_OBJECT_HKEY, 'HEX'), null)) within group (order by RISK_OBJECT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_VEHICLE
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 33. OPUS — SAT_RISK_OBJECT_CORE   [Implemented]
+-- 33. OPUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as scope,
+select 'OPUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(EXPOSURE_QUANTITY AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(EXPOSURE_QUANTITY AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(RISK_OBJECT_HKEY, 'HEX'), null)) within group (order by RISK_OBJECT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_CORE
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 34. OPUS — SAT_RISK_PERSON_INSURED   [Implemented]
+-- 34. OPUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- sat_multi_source; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [4 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_DATA [4 col(s)].
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as scope,
+select 'OPUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(GENDER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_MEMBER_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRE_EXISTING_DISEASE_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RELATIONSHIP_TO_PROPOSER AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(GENDER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(INSURED_MEMBER_NAME AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PRE_EXISTING_DISEASE_DESCRIPTION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(RELATIONSHIP_TO_PROPOSER AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(RISK_OBJECT_HKEY, 'HEX'), null)) within group (order by RISK_OBJECT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_INSURED
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 35. OPUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
+-- 35. OPUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
 -- sat_multi_source; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [8 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [2 col(s)].
--- stg2_risk_person_travel_bjaz_trv_loader_log_table_mv: column(s) PASSPORT_NUMBER,
+-- OPUS_BJAZ_TRV_LOADER_DATA [8 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [2 col(s)].
+-- stg2_risk_person_travel_bjaz_trv_loader_log_table: column(s) PASSPORT_NUMBER,
 -- TRIP_DURATION, TRIP_END_DATE, TRIP_START_DATE, TRIP_TYPE, VISA_TYPE could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as scope,
+select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DESTINATION_COUNTRY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GEOGRAPHICAL_ZONE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PASSPORT_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TRIP_DURATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TRIP_END_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TRIP_START_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TRIP_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VISA_TYPE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DESTINATION_COUNTRY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GEOGRAPHICAL_ZONE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(PASSPORT_NUMBER AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TRIP_DURATION AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TRIP_END_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TRIP_START_DATE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(TRIP_TYPE AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(VISA_TYPE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(RISK_OBJECT_HKEY, 'HEX'), null)) within group (order by RISK_OBJECT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV')
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA')
 union all
-select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as scope,
+select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DESTINATION_COUNTRY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GEOGRAPHICAL_ZONE AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(DESTINATION_COUNTRY AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(GEOGRAPHICAL_ZONE AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(RISK_OBJECT_HKEY, 'HEX'), null)) within group (order by RISK_OBJECT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 36. OPUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 36. OPUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA_MV
--- [1 col(s)].
+-- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA [1
+-- col(s)].
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as scope,
+select 'OPUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CUSTOMER_CONSENT_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CUSTOMER_CONSENT_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 37. OPUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
+-- 37. OPUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- sat_multi_source; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN_MV [2
--- col(s)]. stg2_aug_coverage_definition_bjaz_trv_plan_mv_eff_date: column(s)
+-- sat_multi_source; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN [2
+-- col(s)]. stg2_aug_coverage_definition_bjaz_trv_plan_eff_date: column(s)
 -- COVERAGE_SEQUENCE could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_PLAN_MV' as scope,
+select 'OPUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_PLAN' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(EFFECTIVE_DATE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(EFFECTIVE_DATE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(COVERAGE_HKEY, 'HEX'), null)) within group (order by COVERAGE_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_DEFINITION
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 38. OPUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
+-- 38. OPUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- sat_multi_source; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN_MV [3
--- col(s)]. stg2_aug_coverage_limits_bjaz_trv_plan_mv_currency: column(s)
+-- sat_multi_source; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_PLAN [3
+-- col(s)]. stg2_aug_coverage_limits_bjaz_trv_plan_currency: column(s)
 -- DEDUCTIBLE_DESCRIPTION, LIMIT_DESCRIPTION could not be traced to RAW on at least one
 -- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
 -- columns are not yet inlined into the sampled queries).
--- stg2_aug_coverage_limits_bjaz_trv_plan_mv_deductible_desc: column(s) LIMIT_DESCRIPTION
+-- stg2_aug_coverage_limits_bjaz_trv_plan_deductible_desc: column(s) LIMIT_DESCRIPTION
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
 -- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_PLAN_MV' as scope,
+select 'OPUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_PLAN' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CURRENCY_CODE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CURRENCY_CODE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(COVERAGE_HKEY, 'HEX'), null)) within group (order by COVERAGE_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_LIMITS
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 39. OPUS — SAT_AUG_COVERAGE_RATING   [Implemented]
+-- 39. OPUS — SAT_AUG_COVERAGE_RATING   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
 -- sat_multi_source; PK COVERAGE_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV [4 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS_MV [1 col(s)].
--- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_nb_prm_excluding_st: column(s)
+-- OPUS_BJAZ_TRV_RIDER_RATE_MAST [4 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [1 col(s)].
+-- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_nb_prm_excluding_st: column(s)
 -- EXTENSION_PREMIUM_EXCLUDING_ST, MINIMUM_EXTENSION_PREMIUM,
 -- MINIMUM_NEW_BUSINESS_PREMIUM, RIDER_PREMIUM could not be traced to RAW on at least one
 -- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
 -- columns are not yet inlined into the sampled queries).
--- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_extn_prm_excluding_st: column(s)
+-- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_extn_prm_excluding_st: column(s)
 -- MINIMUM_EXTENSION_PREMIUM, MINIMUM_NEW_BUSINESS_PREMIUM, RIDER_PREMIUM could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_min_extn_prm: column(s)
+-- queries). stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_min_extn_prm: column(s)
 -- MINIMUM_NEW_BUSINESS_PREMIUM, RIDER_PREMIUM could not be traced to RAW on at least one
 -- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
 -- columns are not yet inlined into the sampled queries).
--- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_min_nb_prm: column(s)
--- RIDER_PREMIUM could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries).
--- stg2_aug_coverage_rating_bjaz_trv_rider_dtls_mv_rider_premium: column(s)
--- EXTENSION_PREMIUM_EXCLUDING_ST, MINIMUM_EXTENSION_PREMIUM,
+-- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_min_nb_prm: column(s) RIDER_PREMIUM
+-- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
+-- sampled queries). stg2_aug_coverage_rating_bjaz_trv_rider_dtls_rider_premium:
+-- column(s) EXTENSION_PREMIUM_EXCLUDING_ST, MINIMUM_EXTENSION_PREMIUM,
 -- MINIMUM_NEW_BUSINESS_PREMIUM, NEW_BUSINESS_PREMIUM_EXCLUDING_ST could not be traced to
 -- RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views
 -- or joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV' as scope,
+select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'OPUS_BJAZ_TRV_RIDER_RATE_MAST' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(NEW_BUSINESS_PREMIUM_EXCLUDING_ST AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(NEW_BUSINESS_PREMIUM_EXCLUDING_ST AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(COVERAGE_HKEY, 'HEX'), null)) within group (order by COVERAGE_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_RATING
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV')
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_RATE_MAST')
 union all
-select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS_MV' as scope,
+select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(RIDER_PREMIUM AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(RIDER_PREMIUM AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(COVERAGE_HKEY, 'HEX'), null)) within group (order by COVERAGE_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_RATING
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS');
 
 
 
 ----------------------------------------------------------------------------------------
--- 40. OPUS — SAT_AUG_FINTXN_PREMIUM   [Implemented]
+-- 40. OPUS — SAT_AUG_FINTXN_PREMIUM   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
 -- sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
--- stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_mv_sp_discount_per: column(s)
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
+-- stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_sp_discount_per: column(s)
 -- SPECIAL_DISCOUNT_AMOUNT could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
--- stg2_aug_fintxn_premium_bjaz_trv_loader_data_mv_spdiscount: column(s)
+-- stg2_aug_fintxn_premium_bjaz_trv_loader_data_spdiscount: column(s)
 -- SPECIAL_DISCOUNT_PERCENTAGE could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
--- stg2_aug_fintxn_premium_bjaz_trv_loader_log_table_mv_spdiscount: column(s)
+-- stg2_aug_fintxn_premium_bjaz_trv_loader_log_table_spdiscount: column(s)
 -- SPECIAL_DISCOUNT_PERCENTAGE could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as scope,
+select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_DISCOUNT_PERCENTAGE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_DISCOUNT_PERCENTAGE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
- where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV')
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS')
 union all
 select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
@@ -1271,36 +1263,36 @@ select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, '2 RECORD_SOURC
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(SPECIAL_DISCOUNT_AMOUNT AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(FINANCIAL_TRANSACTION_HKEY, 'HEX'), null)) within group (order by FINANCIAL_TRANSACTION_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 41. OPUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 41. OPUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
 -- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_AUG_LNK_PARTY_ROLE_CORE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as scope,
+select 'OPUS' as project, 'SAT_AUG_LNK_PARTY_ROLE_CORE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PREMIUM_PAYER_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PREMIUM_PAYER_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_PARTY_ROLE_CORE
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 42. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 42. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
 -- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)].
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
@@ -1309,37 +1301,36 @@ select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, '2 RECORD_SO
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PROPOSER_IS_TRAVELLER_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
- where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 43. OPUS — SAT_AUG_PARTY_BANKING   [Implemented]
+-- 43. OPUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA_MV
--- [1 col(s)].
+-- automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA [1
+-- col(s)].
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as scope,
+select 'OPUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(BANK_CUSTOMER_IDENTIFIER AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(BANK_CUSTOMER_IDENTIFIER AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_BANKING
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 44. OPUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
+-- 44. OPUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
 -- sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1
--- col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, '2 RECORD_SOURCEs sharing one HASHDIFF column list' as scope,
        count(*) as rows_checked,
@@ -1348,110 +1339,110 @@ select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, '2 RECORD_SOU
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(EMPLOYEE_NUMBER AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PARTY_HKEY, 'HEX'), null)) within group (order by PARTY_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT
- where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV');
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS') or (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE');
 
 
 
 ----------------------------------------------------------------------------------------
--- 45. OPUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
+-- 45. OPUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
--- sat_multi_source; PK PRODUCT_HKEY; 3 RECORD_SOURCE group(s): OPUS_BA_TRV_PLAN_MST_MV
--- [3 col(s)], OPUS_BJAZ_TRV_RATE_MASTER_MV [2 col(s)], OPUS_BJAZ_TRV_PLAN_MV [1 col(s)].
--- stg2_aug_product_terms_ba_trv_plan_mst_mv_multi_year_yn: column(s)
+-- sat_multi_source; PK PRODUCT_HKEY; 3 RECORD_SOURCE group(s): OPUS_BA_TRV_PLAN_MST [3
+-- col(s)], OPUS_BJAZ_TRV_RATE_MASTER [2 col(s)], OPUS_BJAZ_TRV_PLAN [1 col(s)].
+-- stg2_aug_product_terms_ba_trv_plan_mst_multi_year_yn: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, CFT_ELIGIBLE_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_aug_product_terms_ba_trv_plan_mst_mv_age_bypass_yn: column(s)
+-- queries). stg2_aug_product_terms_ba_trv_plan_mst_age_bypass_yn: column(s)
 -- CFT_ELIGIBLE_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could not be traced to RAW on at least
 -- one arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in
 -- stitch columns are not yet inlined into the sampled queries).
--- stg2_aug_product_terms_ba_trv_plan_mst_mv_cft_yn: column(s) PLAN_GEOGRAPHICAL_ZONE
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_aug_product_terms_bjaz_trv_rate_master_mv_cft_yn: column(s)
+-- stg2_aug_product_terms_ba_trv_plan_mst_cft_yn: column(s) PLAN_GEOGRAPHICAL_ZONE could
+-- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). stg2_aug_product_terms_bjaz_trv_rate_master_cft_yn: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, MULTI_YEAR_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_aug_product_terms_bjaz_trv_plan_mv_area: column(s)
+-- queries). stg2_aug_product_terms_bjaz_trv_plan_area: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, CFT_ELIGIBLE_INDICATOR, MULTI_YEAR_INDICATOR could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_aug_product_terms_bjaz_trv_rate_master_mv_area: column(s)
+-- queries). stg2_aug_product_terms_bjaz_trv_rate_master_area: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, MULTI_YEAR_INDICATOR could not be traced to RAW on
 -- at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BA_TRV_PLAN_MST_MV' as scope,
+select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BA_TRV_PLAN_MST' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(MULTI_YEAR_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(MULTI_YEAR_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PRODUCT_HKEY, 'HEX'), null)) within group (order by PRODUCT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
- where (RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST_MV')
+ where (RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST')
 union all
-select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_RATE_MASTER_MV' as scope,
+select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_RATE_MASTER' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CFT_ELIGIBLE_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(CFT_ELIGIBLE_INDICATOR AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PRODUCT_HKEY, 'HEX'), null)) within group (order by PRODUCT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER_MV')
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER')
 union all
-select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_PLAN_MV' as scope,
+select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_PLAN' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PLAN_GEOGRAPHICAL_ZONE AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(PLAN_GEOGRAPHICAL_ZONE AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(PRODUCT_HKEY, 'HEX'), null)) within group (order by PRODUCT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN');
 
 
 
 ----------------------------------------------------------------------------------------
--- 46. OPUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
+-- 46. OPUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
 -- sat_multi_source; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)].
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as scope,
+select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_BIRTH AS VARCHAR))), ''), '^^')) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(IFNULL(NULLIF(UPPER(TRIM(CAST(DATE_OF_BIRTH AS VARCHAR))), ''), '^^')) AS BINARY(16)), to_varchar(RISK_OBJECT_HKEY, 'HEX'), null)) within group (order by RISK_OBJECT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_INSURED
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 47. OPUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
+-- 47. OPUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
 -- sat_multi_source; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [2 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_DATA [2 col(s)].
 ----------------------------------------------------------------------------------------
-select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as scope,
+select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as scope,
        count(*) as rows_checked,
        count_if(HASHDIFF is null) as null_hashdiff,
        count_if(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ALTITUDE_LIMIT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MODE_OF_TRANSPORT AS VARCHAR))), ''), '^^'))) AS BINARY(16))) as hashdiff_mismatch,
        array_slice(array_agg(iff(HASHDIFF <> CAST(MD5_BINARY(CONCAT_WS('||', IFNULL(NULLIF(UPPER(TRIM(CAST(ALTITUDE_LIMIT AS VARCHAR))), ''), '^^'), IFNULL(NULLIF(UPPER(TRIM(CAST(MODE_OF_TRANSPORT AS VARCHAR))), ''), '^^'))) AS BINARY(16)), to_varchar(RISK_OBJECT_HKEY, 'HEX'), null)) within group (order by RISK_OBJECT_HKEY), 0, 3) as mismatch_examples,
        iff(null_hashdiff = 0 and hashdiff_mismatch = 0, 'PASS', 'FAIL') as status
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_TRAVEL
- where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV');
+ where (RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA');
 
 
 
 ----------------------------------------------------------------------------------------
--- 48. OPUS — CDC result (all satellites)   [Implemented]
+-- 48. OPUS — CDC result (all satellites)   [Implemented]  [M3]
 -- Joins the BEFORE and AFTER captures of the same run id. raw_changed compares the
 -- normalised RAW payload hash (same UPPER/TRIM/NULL rules as the HASHDIFF, so a
 -- case-only RAW edit is not a change); new_rows = satellite rows added for the key

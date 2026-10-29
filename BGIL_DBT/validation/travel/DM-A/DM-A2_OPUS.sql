@@ -44,15 +44,14 @@
 ----------------------------------------------------------------------------------------
 -- 1. OPUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
 -- standard satellite, sat_multi_source; PK LOCATION_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [5 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [6 col(s)].
--- stg2_common_address_bjaz_trv_loader_data_mv: column(s) COUNTRY_NAME could not be
--- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries).
+-- OPUS_BJAZ_TRV_LOADER_DATA [5 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [6 col(s)].
+-- stg2_common_address_bjaz_trv_loader_data: column(s) COUNTRY_NAME could not be traced
+-- to RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__
+-- views or joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct LOCATION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -64,14 +63,14 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(STATE_NAME) as STATE_NAME,
            to_varchar(STREET_NAME) as STREET_NAME
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and LOCATION_HKEY in (select hkey from s1)
     qualify rank() over (partition by LOCATION_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (coalesce((nullif(trim(to_varchar("BUILDING")), '')), '') || '|' || coalesce((nullif(trim(to_varchar("STREETNAME")), '')), '') || '|' || coalesce((nullif(trim(to_varchar("SUBAREACITY")), '')), '') || '|' || coalesce((nullif(trim(to_varchar("STATE")), '')), '') || '|' || coalesce((nullif(trim(to_varchar("PINCODE")), '')), '')) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("BUILDING")), ''))) as BUILDING_NAME,
@@ -79,7 +78,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PINCODE")), ''))) as POSTAL_CODE,
                to_varchar((nullif(trim(to_varchar("STATE")), ''))) as STATE_NAME,
                to_varchar((nullif(trim(to_varchar("STREETNAME")), ''))) as STREET_NAME
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -112,7 +111,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct LOCATION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -125,14 +124,14 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(STATE_NAME) as STATE_NAME,
            to_varchar(STREET_NAME) as STREET_NAME
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and LOCATION_HKEY in (select hkey from s2)
     qualify rank() over (partition by LOCATION_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (coalesce((nullif(trim(to_varchar("BUILDING")), '')), '') || '|' || coalesce((nullif(trim(to_varchar("STREETNAME")), '')), '') || '|' || coalesce(((nullif(trim(to_varchar("CITY")), ''))), '') || '|' || coalesce((nullif(trim(to_varchar("STATE")), '')), '') || '|' || coalesce((nullif(trim(to_varchar("PINCODE")), '')), '') || '|' || coalesce((nullif(trim(to_varchar("COUNTRY")), '')), '')) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("BUILDING")), ''))) as BUILDING_NAME,
@@ -141,7 +140,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PINCODE")), ''))) as POSTAL_CODE,
                to_varchar((nullif(trim(to_varchar("STATE")), ''))) as STATE_NAME,
                to_varchar((nullif(trim(to_varchar("STREETNAME")), ''))) as STREET_NAME
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -177,7 +176,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.STREET_NAME
 )
-select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -188,7 +187,7 @@ select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'OPUS_BJAZ_TRV_LOAD
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -205,11 +204,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 2. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -217,18 +216,18 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(CATEGORY_CODE) as CATEGORY_CODE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PAYER_PART_ID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("USER_TYPE")), ''))) as CATEGORY_CODE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -241,7 +240,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -249,18 +248,18 @@ c2 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(CATEGORY_CODE) as CATEGORY_CODE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("CUSTOMERTYPE")), ''))) as CATEGORY_CODE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -271,7 +270,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.CATEGORY_CODE
 )
-select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -282,7 +281,7 @@ select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'OPUS_BA_TRV
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -299,37 +298,37 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 3. OPUS — SAT_COMMON_CONTACT   [Implemented]  [M1]
 -- standard satellite, ma_sat_multi_source; PK PARTY_HKEY, child key CONTACT_POINT_TYPE,
--- CONTACT_PRIORITY_ORDER; 2 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA_MV [4
--- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [4 col(s)]. Multi-active: compared per
--- (key, child key); latest = max LOAD_DATETIME per member.
--- stg2_common_contact_bjaz_trv_loader_data_mv_0: column(s) FAX_NUMBER, LANDLINE_NUMBER,
+-- CONTACT_PRIORITY_ORDER; 2 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA [4
+-- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [4 col(s)]. Multi-active: compared per (key,
+-- child key); latest = max LOAD_DATETIME per member.
+-- stg2_common_contact_bjaz_trv_loader_data_0: column(s) FAX_NUMBER, LANDLINE_NUMBER,
 -- MOBILE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_mv_1: column(s)
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_1: column(s)
 -- FAX_NUMBER, LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at least one
 -- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
 -- columns are not yet inlined into the sampled queries).
--- stg2_common_contact_bjaz_trv_loader_data_mv_2: column(s) LANDLINE_NUMBER,
--- MOBILE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_common_contact_bjaz_trv_loader_data_mv_3: column(s)
+-- stg2_common_contact_bjaz_trv_loader_data_2: column(s) LANDLINE_NUMBER, MOBILE_NUMBER
+-- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
+-- sampled queries). stg2_common_contact_bjaz_trv_loader_data_3: column(s)
 -- LANDLINE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_mv_5:
--- column(s) FAX_NUMBER, LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
--- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_common_contact_bjaz_trv_loader_log_table_mv_6: column(s) LANDLINE_NUMBER,
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_5: column(s)
+-- FAX_NUMBER, LANDLINE_NUMBER, MOBILE_NUMBER could not be traced to RAW on at least one
+-- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
+-- columns are not yet inlined into the sampled queries).
+-- stg2_common_contact_bjaz_trv_loader_log_table_6: column(s) LANDLINE_NUMBER,
 -- MOBILE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_mv_7:
--- column(s) LANDLINE_NUMBER could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries).
+-- into the sampled queries). stg2_common_contact_bjaz_trv_loader_log_table_7: column(s)
+-- LANDLINE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -342,14 +341,14 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(MOBILE_NUMBER) as MOBILE_NUMBER,
            to_varchar(LANDLINE_NUMBER) as LANDLINE_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY, CONTACT_POINT_TYPE, CONTACT_PRIORITY_ORDER order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("INTERMEDIARY")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('email') as cdk_1,
                to_varchar('1') as cdk_2,
@@ -358,9 +357,9 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as FAX_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                cast(null as varchar) as LANDLINE_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('email') as cdk_1,
                to_varchar('1') as cdk_2,
@@ -369,9 +368,9 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as FAX_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                cast(null as varchar) as LANDLINE_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('fax') as cdk_1,
                to_varchar('1') as cdk_2,
@@ -380,9 +379,9 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("FAX")), ''))) as FAX_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                cast(null as varchar) as LANDLINE_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('mobile') as cdk_1,
                to_varchar('1') as cdk_2,
@@ -391,9 +390,9 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as FAX_NUMBER,
                to_varchar((nullif(trim(to_varchar("MOBILENUMBER")), ''))) as MOBILE_NUMBER,
                cast(null as varchar) as LANDLINE_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('landline') as cdk_1,
                to_varchar('1') as cdk_2,
@@ -402,7 +401,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as FAX_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                to_varchar((nullif(trim(to_varchar("TELEPHONE")), ''))) as LANDLINE_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -430,7 +429,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -443,14 +442,14 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(MOBILE_NUMBER) as MOBILE_NUMBER,
            to_varchar(LANDLINE_NUMBER) as LANDLINE_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY, CONTACT_POINT_TYPE, CONTACT_PRIORITY_ORDER order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('email') as cdk_1,
                to_varchar('1') as cdk_2,
@@ -459,9 +458,9 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as FAX_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                cast(null as varchar) as LANDLINE_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
         union all
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('fax') as cdk_1,
                to_varchar('1') as cdk_2,
@@ -470,9 +469,9 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("FAX")), ''))) as FAX_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                cast(null as varchar) as LANDLINE_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
         union all
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('mobile') as cdk_1,
                to_varchar('1') as cdk_2,
@@ -481,9 +480,9 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as FAX_NUMBER,
                to_varchar((nullif(trim(to_varchar("MOBILENUMBER")), ''))) as MOBILE_NUMBER,
                cast(null as varchar) as LANDLINE_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
         union all
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('landline') as cdk_1,
                to_varchar('1') as cdk_2,
@@ -492,7 +491,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as FAX_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                to_varchar((nullif(trim(to_varchar("TELEPHONE")), ''))) as LANDLINE_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -518,7 +517,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey and equal_null(e.cdk_1, c.cdk_1) and equal_null(e.cdk_2, c.cdk_2)
      group by c.hkey, c.cdk_1, c.cdk_2, c.LANDLINE_NUMBER
 )
-select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -529,7 +528,7 @@ select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'OPUS_BJAZ_TRV_LOAD
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -546,11 +545,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 4. OPUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
 -- standard satellite, automate_dv.sat; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_PLAN_MV [2 col(s)].
+-- OPUS_BJAZ_TRV_PLAN [2 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_CONDITIONS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
      order by hkey
      limit 100
 ),
@@ -559,19 +558,19 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(CONDITION_DESCRIPTION) as CONDITION_DESCRIPTION,
            to_varchar(WAITING_PERIOD_CONDITION) as WAITING_PERIOD_CONDITION
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_CONDITIONS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
        and COVERAGE_HKEY in (select hkey from s1)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_plan_mv
+        -- via stg_travel__bjaz_trv_plan
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("COVER_CODE")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("CLAIM_COVER_DESC")), ''))) as CONDITION_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("DEDUCTABLE_TIME")), ''))) as WAITING_PERIOD_CONDITION
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_PLAN_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_PLAN
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -587,7 +586,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.WAITING_PERIOD_CONDITION
 )
-select 'OPUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite, 'OPUS_BJAZ_TRV_PLAN_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite, 'OPUS_BJAZ_TRV_PLAN' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -604,87 +603,87 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 5. OPUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
 -- standard satellite, sat_multi_source; PK COVERAGE_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_PLAN_MV [2 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS_MV [1 col(s)],
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)]. stg2_coverage_definition_bjaz_trv_plan_mv:
+-- OPUS_BJAZ_TRV_PLAN [2 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [1 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. stg2_coverage_definition_bjaz_trv_plan:
 -- column(s) COVERAGE_NAME, FREE_COVER_LIMIT could not be traced to RAW on at least one
 -- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
 -- columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_rider_dtls_mv: column(s) COVERAGE_DESCRIPTION,
+-- stg2_coverage_definition_bjaz_trv_rider_dtls: column(s) COVERAGE_DESCRIPTION,
 -- FREE_COVER_LIMIT, PERIL_COVERED could not be traced to RAW on at least one arm --
 -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
 -- are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_acchospexp: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_acchospexp: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_adventuresportbenefit: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_adventuresportbenefit: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_bouncedhotel: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_bouncedhotel: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_compvisitfamilymember: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_compvisitfamilymember: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_delayofcheckedbaggage: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_delayofcheckedbaggage: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_emergencyhotelextension: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_emergencyhotelextension: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_emermedicalevac: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_emermedicalevac: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_homeburglaryinsurance: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_homeburglaryinsurance: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_hospdailyallow: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_hospdailyallow: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_lossofbaggage: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_lossofbaggage: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_lossofcheckedbaggage: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_lossofcheckedbaggage: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_missedconnection: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_missedconnection: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_personalliability: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_personalliability: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_repatonofremains: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_repatonofremains: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_tripcancellation: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_tripcancellation: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_tripcurtailment: column(s)
+-- stg2_coverage_definition_bjaz_trv_loader_data_tripcurtailment: column(s)
 -- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_coverage_definition_bjaz_trv_loader_data_mv_tripdelaybyscheduledaircraft:
--- column(s) COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to
--- RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views
--- or joined-in stitch columns are not yet inlined into the sampled queries).
+-- stg2_coverage_definition_bjaz_trv_loader_data_tripdelaybyscheduledaircraft: column(s)
+-- COVERAGE_DESCRIPTION, COVERAGE_NAME, PERIL_COVERED could not be traced to RAW on at
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
+-- joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
      order by hkey
      limit 100
 ),
@@ -693,19 +692,19 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(COVERAGE_DESCRIPTION) as COVERAGE_DESCRIPTION,
            to_varchar(PERIL_COVERED) as PERIL_COVERED
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
        and COVERAGE_HKEY in (select hkey from s1)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_plan_mv
+        -- via stg_travel__bjaz_trv_plan
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("COVER_CODE")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_DESC")), ''))) as COVERAGE_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_CLAIM")), ''))) as PERIL_COVERED
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_PLAN_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_PLAN
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -723,7 +722,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS'
      order by hkey
      limit 100
 ),
@@ -731,18 +730,18 @@ c2 as (  -- latest satellite row per sampled key
     select COVERAGE_HKEY as hkey,
            to_varchar(COVERAGE_NAME) as COVERAGE_NAME
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS'
        and COVERAGE_HKEY in (select hkey from s2)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_rider_dtls_mv
+        -- via stg_travel__bjaz_trv_rider_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("RIDER_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("RIDER_NAME")), ''))) as COVERAGE_NAME
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RIDER_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RIDER_DTLS
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -755,7 +754,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -763,114 +762,114 @@ c3 as (  -- latest satellite row per sampled key
     select COVERAGE_HKEY as hkey,
            to_varchar(FREE_COVER_LIMIT) as FREE_COVER_LIMIT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and COVERAGE_HKEY in (select hkey from s3)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_ACC_HOSP_EXP') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("ACCHOSPEXP")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_ADVENTURE_SPORT') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("ADVENTURESPORTBENEFIT")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_BOUNCED_HOTEL') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("BOUNCEDHOTEL")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_COMPASSIONATE_VISIT') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("COMPVISITFAMILYMEMBER")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_BAGGAGE_DELAY') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("DELAYOFCHECKEDBAGGAGE")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_EMER_HOTEL_EXT') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("EMERGENCYHOTELEXTENSION")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_EMER_MED_EVAC') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("EMERMEDICALEVAC")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_HOME_BURGLARY') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("HOMEBURGLARYINSURANCE")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_HOSP_DAILY_ALLOW') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("HOSPDAILYALLOW")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_BAGGAGE_LOSS') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("LOSSOFBAGGAGE")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_CHECKED_BAGGAGE_LOSS') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("LOSSOFCHECKEDBAGGAGE")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_MISSED_CONNECTION') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("MISSEDCONNECTION")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_PERSONAL_LIABILITY') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("PERSONALLIABILITY")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_REPAT_REMAINS') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("REPATONOFREMAINS")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_TRIP_CANCEL') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("TRIPCANCELLATION")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_TRIP_CURTAILMENT') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("TRIPCURTAILMENT")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|' || 'TRV_TRIP_DELAY') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("TRIPDELAYBYSCHEDULEDAIRCRAFT")), ''))) as FREE_COVER_LIMIT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -881,7 +880,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey
      group by c.hkey, c.FREE_COVER_LIMIT
 )
-select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_PLAN_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_PLAN' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -892,7 +891,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -903,7 +902,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV
   from r2
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -920,19 +919,18 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 6. OPUS — SAT_COVERAGE_LIMITS   [Implemented]  [M1]
 -- standard satellite, sat_multi_source; PK COVERAGE_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_PLAN_MV [2 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS_MV [1 col(s)],
--- OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV [1 col(s)].
--- stg2_coverage_limits_bjaz_trv_rider_dtls_mv: column(s) DEDUCTIBLE_AMOUNT could not be
--- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_coverage_limits_bjaz_trv_rider_rate_mast_mv: column(s)
--- DEDUCTIBLE_AMOUNT could not be traced to RAW on at least one arm -- excluded
+-- OPUS_BJAZ_TRV_PLAN [2 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [1 col(s)],
+-- OPUS_BJAZ_TRV_RIDER_RATE_MAST [1 col(s)]. stg2_coverage_limits_bjaz_trv_rider_dtls:
+-- column(s) DEDUCTIBLE_AMOUNT could not be traced to RAW on at least one arm -- excluded
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries). stg2_coverage_limits_bjaz_trv_rider_rate_mast:
+-- column(s) DEDUCTIBLE_AMOUNT could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
      order by hkey
      limit 100
 ),
@@ -941,19 +939,19 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(DEDUCTIBLE_AMOUNT) as DEDUCTIBLE_AMOUNT,
            to_varchar(LIMIT_AMOUNT) as LIMIT_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
        and COVERAGE_HKEY in (select hkey from s1)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_plan_mv
+        -- via stg_travel__bjaz_trv_plan
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("COVER_CODE")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("DEDUCTABLE_AMT"::number)) as DEDUCTIBLE_AMOUNT,
                to_varchar(("LIMIT"::number)) as LIMIT_AMOUNT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_PLAN_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_PLAN
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -971,7 +969,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS'
      order by hkey
      limit 100
 ),
@@ -979,18 +977,18 @@ c2 as (  -- latest satellite row per sampled key
     select COVERAGE_HKEY as hkey,
            to_varchar(LIMIT_AMOUNT) as LIMIT_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS'
        and COVERAGE_HKEY in (select hkey from s2)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_rider_dtls_mv
+        -- via stg_travel__bjaz_trv_rider_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("RIDER_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("RIDER_SI"::number)) as LIMIT_AMOUNT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RIDER_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RIDER_DTLS
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1003,7 +1001,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_RATE_MAST'
      order by hkey
      limit 100
 ),
@@ -1011,18 +1009,18 @@ c3 as (  -- latest satellite row per sampled key
     select COVERAGE_HKEY as hkey,
            to_varchar(LIMIT_AMOUNT) as LIMIT_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_RATE_MAST'
        and COVERAGE_HKEY in (select hkey from s3)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_rider_rate_mast_mv
+        -- via stg_travel__bjaz_trv_rider_rate_mast
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("RIDER_SEQ_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("RIDER_SI"::number)) as LIMIT_AMOUNT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RIDER_RATE_MAST_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RIDER_RATE_MAST
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1033,7 +1031,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey
      group by c.hkey, c.LIMIT_AMOUNT
 )
-select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_PLAN_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_PLAN' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1044,7 +1042,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_PLA
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1055,7 +1053,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_RID
   from r2
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_RIDER_RATE_MAST' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1072,17 +1070,16 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 7. OPUS — SAT_FINTXN_COMMISSION   [Implemented]  [M1]
 -- standard satellite, ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key
--- COMMISSION_TYPE_CK; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2
--- col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)]. Multi-active: compared per (key,
--- child key); latest = max LOAD_DATETIME per member.
--- stg2_fintxn_commission_bjaz_trv_loader_data_mv: column(s) COMMISSION_AMOUNT could not
--- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries).
+-- COMMISSION_TYPE_CK; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. Multi-active: compared per (key, child key);
+-- latest = max LOAD_DATETIME per member. stg2_fintxn_commission_bjaz_trv_loader_data:
+-- column(s) COMMISSION_AMOUNT could not be traced to RAW on at least one arm -- excluded
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_COMMISSION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -1092,20 +1089,20 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(COMMISSION_AMOUNT) as COMMISSION_AMOUNT,
            to_varchar(COMMISSION_RATE) as COMMISSION_RATE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_COMMISSION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s1)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY, COMMISSION_TYPE_CK order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("TRANSACTION_ID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('Standard') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("COMMISSION_AMT")), ''))) as COMMISSION_AMOUNT,
                to_varchar(("COMMISSION_RATE"::number)) as COMMISSION_RATE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -1123,7 +1120,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_COMMISSION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -1132,19 +1129,19 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(COMMISSION_TYPE_CK) as cdk_1,
            to_varchar(COMMISSION_RATE) as COMMISSION_RATE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_COMMISSION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s2)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY, COMMISSION_TYPE_CK order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("TRANSACTIONID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('Standard') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("COMMISSIONRATE")), ''))) as COMMISSION_RATE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -1155,7 +1152,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey and equal_null(e.cdk_1, c.cdk_1)
      group by c.hkey, c.cdk_1, c.COMMISSION_RATE
 )
-select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1166,7 +1163,7 @@ select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'OPUS_BA_TRV_DAT
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1183,11 +1180,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 8. OPUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
 -- standard satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE
--- group(s): OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- group(s): OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_HEADER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -1195,18 +1192,18 @@ c1 as (  -- latest satellite row per sampled key
     select FINANCIAL_TRANSACTION_HKEY as hkey,
            to_varchar(GROSS_AMOUNT) as GROSS_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_HEADER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s1)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("POLICYNUMBER")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("TOTALPREMIUM")), ''))) as GROSS_AMOUNT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1217,7 +1214,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.GROSS_AMOUNT
 )
-select 'OPUS' as project, 'SAT_FINTXN_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_FINTXN_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1234,22 +1231,22 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 9. OPUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
 -- standard satellite, sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY; 3 RECORD_SOURCE
--- group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [6 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [5
--- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [4 col(s)].
--- stg2_fintxn_premium_ba_trv_data_policy_dtls_mv: column(s) BASE_PREMIUM could not be
+-- group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [6 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [5
+-- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [4 col(s)].
+-- stg2_fintxn_premium_ba_trv_data_policy_dtls: column(s) BASE_PREMIUM could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_fintxn_premium_bjaz_trv_loader_data_mv: column(s) DISCOUNT_PERCENTAGE,
+-- queries). stg2_fintxn_premium_bjaz_trv_loader_data: column(s) DISCOUNT_PERCENTAGE,
 -- NET_PREMIUM could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_fintxn_premium_bjaz_trv_loader_log_table_mv: column(s)
+-- into the sampled queries). stg2_fintxn_premium_bjaz_trv_loader_log_table: column(s)
 -- BASE_PREMIUM, DISCOUNT_PERCENTAGE, NET_PREMIUM could not be traced to RAW on at least
 -- one arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in
 -- stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -1262,14 +1259,14 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(LOADING_AMOUNT) as LOADING_AMOUNT,
            to_varchar(NET_PREMIUM) as NET_PREMIUM
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s1)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("TRANSACTION_ID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("PAYMENT_MODE")), ''))) as COLLECTION_MODE,
@@ -1278,7 +1275,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(("FINAL_PREMIUM"::number)) as GROSS_PREMIUM,
                to_varchar((nullif(trim(to_varchar("LOADING_AMT")), ''))) as LOADING_AMOUNT,
                to_varchar(("NET_PREMIUM"::number)) as NET_PREMIUM
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1316,7 +1313,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -1328,14 +1325,14 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(GROSS_PREMIUM) as GROSS_PREMIUM,
            to_varchar(LOADING_AMOUNT) as LOADING_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s2)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("TRANSACTIONID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("POLICY_PREMIUM"::number)) as BASE_PREMIUM,
@@ -1343,7 +1340,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DISCOUNT")), ''))) as DISCOUNT_AMOUNT,
                to_varchar((nullif(trim(to_varchar("TOTALPREMIUM")), ''))) as GROSS_PREMIUM,
                to_varchar((nullif(trim(to_varchar("LOADING")), ''))) as LOADING_AMOUNT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1376,7 +1373,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -1387,21 +1384,21 @@ c3 as (  -- latest satellite row per sampled key
            to_varchar(GROSS_PREMIUM) as GROSS_PREMIUM,
            to_varchar(LOADING_AMOUNT) as LOADING_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s3)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("POLICYNUMBER")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("PAYMENTMODE")), ''))) as COLLECTION_MODE,
                to_varchar((nullif(trim(to_varchar("DISCOUNT")), ''))) as DISCOUNT_AMOUNT,
                to_varchar((nullif(trim(to_varchar("GROSSPREMIUM")), ''))) as GROSS_PREMIUM,
                to_varchar((nullif(trim(to_varchar("LOADING")), ''))) as LOADING_AMOUNT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1427,7 +1424,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey
      group by c.hkey, c.LOADING_AMOUNT
 )
-select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1438,7 +1435,7 @@ select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BA_TRV_DATA_P
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1449,7 +1446,7 @@ select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOAD
   from r2
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1466,20 +1463,20 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 10. OPUS — SAT_FINTXN_TAX   [Implemented]  [M1]
 -- standard satellite, ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key
--- TAX_TYPE; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)]. Multi-active: compared per (key, child
+-- TAX_TYPE; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. Multi-active: compared per (key, child
 -- key); latest = max LOAD_DATETIME per member.
--- stg2_fintxn_tax_ba_trv_data_policy_dtls_mv_0: column(s) SERVICE_TAX_AMOUNT could not
--- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- stg2_fintxn_tax_ba_trv_data_policy_dtls_0: column(s) SERVICE_TAX_AMOUNT could not be
+-- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_fintxn_tax_bjaz_trv_loader_log_table_mv_2: column(s) CESS_AMOUNT could
--- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- queries). stg2_fintxn_tax_bjaz_trv_loader_log_table_2: column(s) CESS_AMOUNT could not
+-- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_TAX
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -1489,28 +1486,28 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(CESS_AMOUNT) as CESS_AMOUNT,
            to_varchar(SERVICE_TAX_AMOUNT) as SERVICE_TAX_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_TAX
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s1)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY, TAX_TYPE order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("TRANSACTION_ID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('cess') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("EDU_CESS_AMT"::number)) as CESS_AMOUNT,
                cast(null as varchar) as SERVICE_TAX_AMOUNT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
         union all
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("TRANSACTION_ID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('service_tax') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                cast(null as varchar) as CESS_AMOUNT,
                to_varchar(("SERVICE_TAX_AMT"::number)) as SERVICE_TAX_AMOUNT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -1528,7 +1525,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_TAX
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -1537,19 +1534,19 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(TAX_TYPE) as cdk_1,
            to_varchar(SERVICE_TAX_AMOUNT) as SERVICE_TAX_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_TAX
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s2)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY, TAX_TYPE order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("POLICYNUMBER")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('service_tax') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("SERVICETAX")), ''))) as SERVICE_TAX_AMOUNT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -1560,7 +1557,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey and equal_null(e.cdk_1, c.cdk_1)
      group by c.hkey, c.cdk_1, c.SERVICE_TAX_AMOUNT
 )
-select 'OPUS' as project, 'SAT_FINTXN_TAX' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_FINTXN_TAX' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1571,7 +1568,7 @@ select 'OPUS' as project, 'SAT_FINTXN_TAX' as satellite, 'OPUS_BA_TRV_DATA_POLIC
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_FINTXN_TAX' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_FINTXN_TAX' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1588,20 +1585,20 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 11. OPUS — SAT_FIN_CHARGE_RATE   [Implemented]  [M1]
 -- standard satellite, ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key
--- CHARGE_TYPE_CK; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)]. Multi-active: compared per (key, child
+-- CHARGE_TYPE_CK; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. Multi-active: compared per (key, child
 -- key); latest = max LOAD_DATETIME per member.
--- stg2_fin_charge_rate_ba_trv_data_policy_dtls_mv: column(s) ADDITIONAL_LOADING_RATE
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_fin_charge_rate_bjaz_trv_loader_log_table_mv: column(s)
+-- stg2_fin_charge_rate_ba_trv_data_policy_dtls: column(s) ADDITIONAL_LOADING_RATE could
+-- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). stg2_fin_charge_rate_bjaz_trv_loader_log_table: column(s)
 -- ADDITIONAL_LOADING_RATE could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_CHARGE_RATE
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -1611,28 +1608,28 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(CHARGE_AMOUNT) as CHARGE_AMOUNT,
            to_varchar(ADDITIONAL_LOADING_RATE) as ADDITIONAL_LOADING_RATE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_CHARGE_RATE
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s1)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY, CHARGE_TYPE_CK order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("TRANSACTION_ID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('Service Charge') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("SERVICE_CHARGE")), ''))) as CHARGE_AMOUNT,
                cast(null as varchar) as ADDITIONAL_LOADING_RATE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
         union all
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("TRANSACTION_ID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('Additional Loading') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                cast(null as varchar) as CHARGE_AMOUNT,
                to_varchar(("LOADING_PER"::number)) as ADDITIONAL_LOADING_RATE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -1650,7 +1647,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_CHARGE_RATE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -1659,19 +1656,19 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(CHARGE_TYPE_CK) as cdk_1,
            to_varchar(CHARGE_AMOUNT) as CHARGE_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_CHARGE_RATE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s2)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY, CHARGE_TYPE_CK order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("POLICYNUMBER")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('Service Charge') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("SERVICECHARGE")), ''))) as CHARGE_AMOUNT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -1682,7 +1679,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey and equal_null(e.cdk_1, c.cdk_1)
      group by c.hkey, c.cdk_1, c.CHARGE_AMOUNT
 )
-select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1693,7 +1690,7 @@ select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite, 'OPUS_BA_TRV_DATA_
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1710,18 +1707,18 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 12. OPUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
 -- standard satellite, sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY; 2 RECORD_SOURCE
--- group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [3
--- col(s)]. stg2_fin_receipt_ba_trv_data_policy_dtls_mv: column(s) AMOUNT_RECEIVED,
+-- group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [3
+-- col(s)]. stg2_fin_receipt_ba_trv_data_policy_dtls: column(s) AMOUNT_RECEIVED,
 -- INSTRUMENT_DATE could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_fin_receipt_bjaz_trv_loader_data_mv: column(s)
+-- into the sampled queries). stg2_fin_receipt_bjaz_trv_loader_data: column(s)
 -- PAYMENT_GATEWAY_REFERENCE could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -1730,19 +1727,19 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(PAYMENT_GATEWAY_REFERENCE) as PAYMENT_GATEWAY_REFERENCE,
            to_varchar(RECEIPT_NUMBER) as RECEIPT_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s1)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("TRANSACTION_ID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("ONLINE_TRANS_NO")), ''))) as PAYMENT_GATEWAY_REFERENCE,
                to_varchar((nullif(trim(to_varchar("RECEIPT_NOS_LIST")), ''))) as RECEIPT_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1760,7 +1757,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -1770,20 +1767,20 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(INSTRUMENT_DATE) as INSTRUMENT_DATE,
            to_varchar(RECEIPT_NUMBER) as RECEIPT_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s2)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("TRANSACTIONID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("CAAMT")), ''))) as AMOUNT_RECEIVED,
                to_varchar((nullif(trim(to_varchar("CADATE")), ''))) as INSTRUMENT_DATE,
                to_varchar((nullif(trim(to_varchar("RECEIPTNO")), ''))) as RECEIPT_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1804,7 +1801,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.RECEIPT_NUMBER
 )
-select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1815,7 +1812,7 @@ select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'OPUS_BA_TRV_DATA_POLI
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1832,11 +1829,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 13. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -1844,18 +1841,18 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(RELATIONSHIP_TO_INSURED) as RELATIONSHIP_TO_INSURED
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("NOMINEERELATIONSHIP")), ''))) as RELATIONSHIP_TO_INSURED
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1868,7 +1865,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -1876,18 +1873,18 @@ c2 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(RELATIONSHIP_TO_INSURED) as RELATIONSHIP_TO_INSURED
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("RELATION")), ''))) as RELATIONSHIP_TO_INSURED
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1898,7 +1895,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.RELATIONSHIP_TO_INSURED
 )
-select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1909,7 +1906,7 @@ select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'OPUS
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1926,11 +1923,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 14. OPUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
 -- standard satellite, automate_dv.sat; PK ORG_UNIT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct ORG_UNIT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ORG_UNIT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -1938,18 +1935,18 @@ c1 as (  -- latest satellite row per sampled key
     select ORG_UNIT_HKEY as hkey,
            to_varchar(COST_CENTRE_CODE) as COST_CENTRE_CODE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ORG_UNIT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and ORG_UNIT_HKEY in (select hkey from s1)
     qualify rank() over (partition by ORG_UNIT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || ((nullif(trim(to_varchar("LOCATION_CODE")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("COST_CENTER")), ''))) as COST_CENTRE_CODE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1960,7 +1957,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.COST_CENTRE_CODE
 )
-select 'OPUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -1977,15 +1974,15 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 15. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M1]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [2 col(s)].
--- stg2_party_employment_bjaz_trv_loader_data_mv_payer: column(s) DESIGNATION could not
--- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [2 col(s)].
+-- stg2_party_employment_bjaz_trv_loader_data_payer: column(s) DESIGNATION could not be
+-- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -1993,18 +1990,18 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(EMPLOYMENT_STATUS) as EMPLOYMENT_STATUS
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("EMPLOYMENTSTATUS")), ''))) as EMPLOYMENT_STATUS
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -2017,7 +2014,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -2026,19 +2023,19 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(DESIGNATION) as DESIGNATION,
            to_varchar(EMPLOYMENT_STATUS) as EMPLOYMENT_STATUS
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("DESIGNATION")), ''))) as DESIGNATION,
                to_varchar((nullif(trim(to_varchar("EMPSTATUS")), ''))) as EMPLOYMENT_STATUS
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -2054,7 +2051,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.EMPLOYMENT_STATUS
 )
-select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -2065,7 +2062,7 @@ select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'OPUS_BJAZ_TRV_LO
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -2082,11 +2079,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 16. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M2]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -2094,18 +2091,18 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(PRE_EXISTING_DISEASE_DESCRIPTION) as PRE_EXISTING_DISEASE_DESCRIPTION
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PAYER_PART_ID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("DISEASE_CODES")), ''))) as PRE_EXISTING_DISEASE_DESCRIPTION
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -2118,7 +2115,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -2126,18 +2123,18 @@ c2 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(PRE_EXISTING_DISEASE_DESCRIPTION) as PRE_EXISTING_DISEASE_DESCRIPTION
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("PROPOSERDEASES")), ''))) as PRE_EXISTING_DISEASE_DESCRIPTION
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -2148,7 +2145,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.PRE_EXISTING_DISEASE_DESCRIPTION
 )
-select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -2159,7 +2156,7 @@ select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'OPUS_BA_TRV_
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -2176,31 +2173,31 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 17. OPUS — SAT_PARTY_IDENTIFICATION   [Implemented]  [M2]
 -- standard satellite, ma_sat_multi_source; PK PARTY_HKEY, child key
--- IDENTIFICATION_TYPE_CODE; 3 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1
--- col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [4 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1
+-- IDENTIFICATION_TYPE_CODE; 3 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [1
+-- col(s)], OPUS_BJAZ_TRV_LOADER_DATA [4 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1
 -- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
--- member. stg2_party_identification_ba_trv_data_policy_dtls_mv_0: column(s)
--- AADHAAR_NUMBER, EIA_NUMBER, GSTIN could not be traced to RAW on at least one arm --
--- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
--- are not yet inlined into the sampled queries).
--- stg2_party_identification_bjaz_trv_loader_data_mv_1: column(s) EIA_NUMBER, GSTIN,
+-- member. stg2_party_identification_ba_trv_data_policy_dtls_0: column(s) AADHAAR_NUMBER,
+-- EIA_NUMBER, GSTIN could not be traced to RAW on at least one arm -- excluded
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
+-- stg2_party_identification_bjaz_trv_loader_data_1: column(s) EIA_NUMBER, GSTIN,
 -- PASSPORT_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_party_identification_bjaz_trv_loader_data_mv_2:
--- column(s) GSTIN, PASSPORT_NUMBER could not be traced to RAW on at least one arm --
--- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
--- are not yet inlined into the sampled queries).
--- stg2_party_identification_bjaz_trv_loader_data_mv_3: column(s) PASSPORT_NUMBER could
--- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- into the sampled queries). stg2_party_identification_bjaz_trv_loader_data_2: column(s)
+-- GSTIN, PASSPORT_NUMBER could not be traced to RAW on at least one arm -- excluded
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
+-- stg2_party_identification_bjaz_trv_loader_data_3: column(s) PASSPORT_NUMBER could not
+-- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_party_identification_bjaz_trv_loader_log_table_mv_5: column(s)
+-- queries). stg2_party_identification_bjaz_trv_loader_log_table_5: column(s)
 -- AADHAAR_NUMBER, EIA_NUMBER, GSTIN could not be traced to RAW on at least one arm --
 -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns
 -- are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -2209,19 +2206,19 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(IDENTIFICATION_TYPE_CODE) as cdk_1,
            to_varchar(PASSPORT_NUMBER) as PASSPORT_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY, IDENTIFICATION_TYPE_CODE order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PAYER_PART_ID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('passport') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("PASSPORT_NO")), ''))) as PASSPORT_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -2234,7 +2231,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -2246,14 +2243,14 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(GSTIN) as GSTIN,
            to_varchar(PASSPORT_NUMBER) as PASSPORT_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY, IDENTIFICATION_TYPE_CODE order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('aadhaar') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
@@ -2261,9 +2258,9 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as EIA_NUMBER,
                cast(null as varchar) as GSTIN,
                cast(null as varchar) as PASSPORT_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('eia') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
@@ -2271,9 +2268,9 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("EIANO")), ''))) as EIA_NUMBER,
                cast(null as varchar) as GSTIN,
                cast(null as varchar) as PASSPORT_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('gstin') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
@@ -2281,9 +2278,9 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as EIA_NUMBER,
                to_varchar((nullif(trim(to_varchar("GSTIN_UIN")), ''))) as GSTIN,
                cast(null as varchar) as PASSPORT_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('passport') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
@@ -2291,7 +2288,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as EIA_NUMBER,
                cast(null as varchar) as GSTIN,
                to_varchar((nullif(trim(to_varchar("PASSPORTNO")), ''))) as PASSPORT_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -2319,7 +2316,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -2328,19 +2325,19 @@ c3 as (  -- latest satellite row per sampled key
            to_varchar(IDENTIFICATION_TYPE_CODE) as cdk_1,
            to_varchar(PASSPORT_NUMBER) as PASSPORT_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s3)
     qualify rank() over (partition by PARTY_HKEY, IDENTIFICATION_TYPE_CODE order by LOAD_DATETIME desc) = 1
 ),
 e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('passport') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("PASSPORTNO")), ''))) as PASSPORT_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -2351,7 +2348,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey and equal_null(e.cdk_1, c.cdk_1)
      group by c.hkey, c.cdk_1, c.PASSPORT_NUMBER
 )
-select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -2362,7 +2359,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BA_TRV_
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -2373,7 +2370,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BJAZ_TR
   from r2
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -2390,28 +2387,27 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 18. OPUS — SAT_PARTY_IDENTITY   [Implemented]  [M2]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [3 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [6 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [8 col(s)].
--- stg2_party_identity_ba_trv_data_policy_dtls_mv_payer: column(s) FIRST_NAME,
--- GENDER_CODE, LAST_NAME, MIDDLE_NAME, PARTY_FULL_NAME, PARTY_LEGAL_NAME, TITLE_CODE
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_party_identity_ba_trv_data_policy_dtls_mv_agent: column(s)
--- FIRST_NAME, GENDER_CODE, LAST_NAME, MIDDLE_NAME, PARTY_LEGAL_NAME, TITLE_CODE could
--- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [3 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [6 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [8 col(s)].
+-- stg2_party_identity_ba_trv_data_policy_dtls_payer: column(s) FIRST_NAME, GENDER_CODE,
+-- LAST_NAME, MIDDLE_NAME, PARTY_FULL_NAME, PARTY_LEGAL_NAME, TITLE_CODE could not be
+-- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_party_identity_bjaz_trv_loader_data_mv_payer: column(s) AGE,
--- PARTY_FULL_NAME, TITLE_CODE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries).
--- stg2_party_identity_bjaz_trv_loader_log_table_mv_payer: column(s) PARTY_FULL_NAME
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries).
+-- queries). stg2_party_identity_ba_trv_data_policy_dtls_agent: column(s) FIRST_NAME,
+-- GENDER_CODE, LAST_NAME, MIDDLE_NAME, PARTY_LEGAL_NAME, TITLE_CODE could not be traced
+-- to RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__
+-- views or joined-in stitch columns are not yet inlined into the sampled queries).
+-- stg2_party_identity_bjaz_trv_loader_data_payer: column(s) AGE, PARTY_FULL_NAME,
+-- TITLE_CODE could not be traced to RAW on at least one arm -- excluded (first-cut: walk
+-- columns from resolved_mt__ views or joined-in stitch columns are not yet inlined into
+-- the sampled queries). stg2_party_identity_bjaz_trv_loader_log_table_payer: column(s)
+-- PARTY_FULL_NAME could not be traced to RAW on at least one arm -- excluded (first-cut:
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -2421,28 +2417,28 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(DATE_OF_BIRTH) as DATE_OF_BIRTH,
            to_varchar(PARTY_FULL_NAME) as PARTY_FULL_NAME
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PAYER_PART_ID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("AGE_ARRAY_COMMA_SEPARATED")), ''))) as AGE,
                to_varchar(("DATE_OF_BIRTH"::timestamp_ntz)) as DATE_OF_BIRTH,
                cast(null as varchar) as PARTY_FULL_NAME
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
         union all
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("INTERMEDIARY_CODE")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                cast(null as varchar) as AGE,
                to_varchar("DATE_OF_BIRTH"::timestamp_ntz) as DATE_OF_BIRTH,
                to_varchar((nullif(trim(to_varchar("TRAVEL_AGENT_NAME")), ''))) as PARTY_FULL_NAME
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -2465,7 +2461,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -2478,14 +2474,14 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(MIDDLE_NAME) as MIDDLE_NAME,
            to_varchar(PARTY_LEGAL_NAME) as PARTY_LEGAL_NAME
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("DATEOFBIRTH")), ''))) as DATE_OF_BIRTH,
@@ -2494,7 +2490,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("SURNAME")), ''))) as LAST_NAME,
                to_varchar((nullif(trim(to_varchar("MIDDLENAME")), ''))) as MIDDLE_NAME,
                to_varchar((nullif(trim(to_varchar("COMPANYNAME")), ''))) as PARTY_LEGAL_NAME
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -2532,7 +2528,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -2547,14 +2543,14 @@ c3 as (  -- latest satellite row per sampled key
            to_varchar(PARTY_LEGAL_NAME) as PARTY_LEGAL_NAME,
            to_varchar(TITLE_CODE) as TITLE_CODE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s3)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("AGE")), ''))) as AGE,
@@ -2565,7 +2561,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("MIDDLENAME")), ''))) as MIDDLE_NAME,
                to_varchar((nullif(trim(to_varchar("COMPANYNAME")), ''))) as PARTY_LEGAL_NAME,
                to_varchar((nullif(trim(to_varchar("TITLE")), ''))) as TITLE_CODE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -2611,7 +2607,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey
      group by c.hkey, c.TITLE_CODE
 )
-select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -2622,7 +2618,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BA_TRV_DATA_P
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -2633,7 +2629,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BJAZ_TRV_LOAD
   from r2
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -2650,11 +2646,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 19. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M2]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -2662,18 +2658,18 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(MARITAL_STATUS) as MARITAL_STATUS
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("MARITALSTATUS")), ''))) as MARITAL_STATUS
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -2686,7 +2682,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -2694,18 +2690,18 @@ c2 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(MARITAL_STATUS) as MARITAL_STATUS
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("MARITALSTATUS")), ''))) as MARITAL_STATUS
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -2716,7 +2712,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.MARITAL_STATUS
 )
-select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -2727,7 +2723,7 @@ select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'OPU
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -2744,14 +2740,14 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 20. OPUS — SAT_POLICY_CLASSIFICATION   [Implemented]  [M2]
 -- standard satellite, ma_sat_multi_source; PK POLICY_HKEY, child key
--- CLASSIFICATION_TYPE; 3 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1
--- col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1
+-- CLASSIFICATION_TYPE; 3 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [1
+-- col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1
 -- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
 -- member.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -2760,33 +2756,33 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(CLASSIFICATION_TYPE) as cdk_1,
            to_varchar(CLASSIFICATION_VALUE) as CLASSIFICATION_VALUE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and POLICY_HKEY in (select hkey from s1)
     qualify rank() over (partition by POLICY_HKEY, CLASSIFICATION_TYPE order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim(to_varchar("TRV_DATA_NO")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('cft') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("CFT_FLAG")), ''))) as CLASSIFICATION_VALUE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
         union all
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim(to_varchar("TRV_DATA_NO")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('family_plan') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("FAMILY_FLAG")), ''))) as CLASSIFICATION_VALUE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
         union all
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim(to_varchar("TRV_DATA_NO")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('business_type') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_BUSINESS")), ''))) as CLASSIFICATION_VALUE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -2799,7 +2795,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -2808,19 +2804,19 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(CLASSIFICATION_TYPE) as cdk_1,
            to_varchar(CLASSIFICATION_VALUE) as CLASSIFICATION_VALUE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and POLICY_HKEY in (select hkey from s2)
     qualify rank() over (partition by POLICY_HKEY, CLASSIFICATION_TYPE order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim(to_varchar("POLICY_REF")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('family_plan') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("FAMILYFLAG")), ''))) as CLASSIFICATION_VALUE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -2833,7 +2829,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -2842,26 +2838,26 @@ c3 as (  -- latest satellite row per sampled key
            to_varchar(CLASSIFICATION_TYPE) as cdk_1,
            to_varchar(CLASSIFICATION_VALUE) as CLASSIFICATION_VALUE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and POLICY_HKEY in (select hkey from s3)
     qualify rank() over (partition by POLICY_HKEY, CLASSIFICATION_TYPE order by LOAD_DATETIME desc) = 1
 ),
 e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim(to_varchar("POLICYNUMBER")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('family_plan') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("FAMILYFLAG")), ''))) as CLASSIFICATION_VALUE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
         union all
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim(to_varchar("POLICYNUMBER")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('scheme_code') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("SCHEMECODE")), ''))) as CLASSIFICATION_VALUE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -2872,7 +2868,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey and equal_null(e.cdk_1, c.cdk_1)
      group by c.hkey, c.cdk_1, c.CLASSIFICATION_VALUE
 )
-select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -2883,7 +2879,7 @@ select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'OPUS_BA_TRV
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -2894,7 +2890,7 @@ select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'OPUS_BJAZ_T
   from r2
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -2911,30 +2907,29 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 21. OPUS — SAT_POLICY_HEADER   [Implemented]  [M2]
 -- standard satellite, sat_multi_source; PK POLICY_HKEY; 4 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [9 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [2 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [8 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS_MV [2 col(s)].
--- stg2_policy_header_ba_trv_data_policy_dtls_mv: column(s) POLICY_TYPE,
--- SUM_INSURED_TOTAL could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries). stg2_policy_header_bjaz_trv_loader_data_mv:
--- column(s) COVER_NOTE_DATE, COVER_NOTE_REFERENCE, ISSUE_DATE, MASTER_POLICY_REFERENCE,
--- POLICY_NUMBER, POLICY_TYPE, RISK_EXPIRY_DATE, RISK_INCEPTION_DATE, SUM_INSURED_TOTAL
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [9 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [2 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [8 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [2 col(s)].
+-- stg2_policy_header_ba_trv_data_policy_dtls: column(s) POLICY_TYPE, SUM_INSURED_TOTAL
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
 -- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_policy_header_bjaz_trv_loader_log_table_mv: column(s)
--- NUMBER_OF_LIVES_COVERED, POLICY_NUMBER, POLICY_TYPE could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
+-- sampled queries). stg2_policy_header_bjaz_trv_loader_data: column(s) COVER_NOTE_DATE,
+-- COVER_NOTE_REFERENCE, ISSUE_DATE, MASTER_POLICY_REFERENCE, POLICY_NUMBER, POLICY_TYPE,
+-- RISK_EXPIRY_DATE, RISK_INCEPTION_DATE, SUM_INSURED_TOTAL could not be traced to RAW on
+-- at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_policy_header_bjaz_trv_rider_dtls_mv: column(s) COVER_NOTE_DATE,
--- COVER_NOTE_REFERENCE, ISSUE_DATE, MASTER_POLICY_REFERENCE, POLICY_NUMBER,
--- RISK_EXPIRY_DATE, RISK_INCEPTION_DATE, RURAL_SECTOR_POLICY_INDICATOR,
+-- stg2_policy_header_bjaz_trv_loader_log_table: column(s) NUMBER_OF_LIVES_COVERED,
+-- POLICY_NUMBER, POLICY_TYPE could not be traced to RAW on at least one arm -- excluded
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries). stg2_policy_header_bjaz_trv_rider_dtls:
+-- column(s) COVER_NOTE_DATE, COVER_NOTE_REFERENCE, ISSUE_DATE, MASTER_POLICY_REFERENCE,
+-- POLICY_NUMBER, RISK_EXPIRY_DATE, RISK_INCEPTION_DATE, RURAL_SECTOR_POLICY_INDICATOR,
 -- SUM_INSURED_TOTAL could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -2950,14 +2945,14 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(RISK_INCEPTION_DATE) as RISK_INCEPTION_DATE,
            to_varchar(RURAL_SECTOR_POLICY_INDICATOR) as RURAL_SECTOR_POLICY_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and POLICY_HKEY in (select hkey from s1)
     qualify rank() over (partition by POLICY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim(to_varchar("TRV_DATA_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("COVER_NOTE_DATE"::timestamp_ntz)) as COVER_NOTE_DATE,
@@ -2969,7 +2964,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(("TERM_END_DATE"::timestamp_ntz)) as RISK_EXPIRY_DATE,
                to_varchar(("TERM_START_DATE"::timestamp_ntz)) as RISK_INCEPTION_DATE,
                to_varchar((nullif(trim(to_varchar("RURAL_FLAG")), ''))) as RURAL_SECTOR_POLICY_INDICATOR
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3022,7 +3017,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -3031,19 +3026,19 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(NUMBER_OF_LIVES_COVERED) as NUMBER_OF_LIVES_COVERED,
            to_varchar(RURAL_SECTOR_POLICY_INDICATOR) as RURAL_SECTOR_POLICY_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and POLICY_HKEY in (select hkey from s2)
     qualify rank() over (partition by POLICY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim(to_varchar("POLICY_REF")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("NOOFFAMILYMEMBERS")), ''))) as NUMBER_OF_LIVES_COVERED,
                to_varchar((nullif(trim(to_varchar("RURALFLAG")), ''))) as RURAL_SECTOR_POLICY_INDICATOR
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3061,7 +3056,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -3076,14 +3071,14 @@ c3 as (  -- latest satellite row per sampled key
            to_varchar(RURAL_SECTOR_POLICY_INDICATOR) as RURAL_SECTOR_POLICY_INDICATOR,
            to_varchar(SUM_INSURED_TOTAL) as SUM_INSURED_TOTAL
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and POLICY_HKEY in (select hkey from s3)
     qualify rank() over (partition by POLICY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim(to_varchar("POLICYNUMBER")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("COVERNOTEDATE")), ''))) as COVER_NOTE_DATE,
@@ -3094,7 +3089,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("STARTDATE")), ''))) as RISK_INCEPTION_DATE,
                to_varchar((nullif(trim(to_varchar("RURALFLAG")), ''))) as RURAL_SECTOR_POLICY_INDICATOR,
                to_varchar((nullif(trim(to_varchar("SUMINSURED")), ''))) as SUM_INSURED_TOTAL
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3142,7 +3137,7 @@ r3 as (
 ),
 s4 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS'
      order by hkey
      limit 100
 ),
@@ -3151,19 +3146,19 @@ c4 as (  -- latest satellite row per sampled key
            to_varchar(NUMBER_OF_LIVES_COVERED) as NUMBER_OF_LIVES_COVERED,
            to_varchar(POLICY_TYPE) as POLICY_TYPE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS'
        and POLICY_HKEY in (select hkey from s4)
     qualify rank() over (partition by POLICY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_rider_dtls_mv
+        -- via stg_travel__bjaz_trv_rider_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim(to_varchar("TRV_DATA_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("NO_MEMBERS"::number)) as NUMBER_OF_LIVES_COVERED,
                to_varchar((nullif(trim(to_varchar("P_POLICY_TYPE")), ''))) as POLICY_TYPE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RIDER_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RIDER_DTLS
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3179,7 +3174,7 @@ r4 as (
       from c4 c left join e4 e on e.hkey = c.hkey
      group by c.hkey, c.POLICY_TYPE
 )
-select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -3190,7 +3185,7 @@ select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BA_TRV_DATA_PO
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -3201,7 +3196,7 @@ select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADE
   from r2
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -3212,7 +3207,7 @@ select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADE
   from r3
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -3229,12 +3224,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 22. OPUS — SAT_POLICY_TERMS   [Implemented]  [M2]
 -- standard satellite, sat_multi_source; PK POLICY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1
--- col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -3242,18 +3236,18 @@ c1 as (  -- latest satellite row per sampled key
     select POLICY_HKEY as hkey,
            to_varchar(SPECIAL_CONDITIONS) as SPECIAL_CONDITIONS
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and POLICY_HKEY in (select hkey from s1)
     qualify rank() over (partition by POLICY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim(to_varchar("TRV_DATA_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("SP_CONDITION")), ''))) as SPECIAL_CONDITIONS
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3266,7 +3260,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -3274,18 +3268,18 @@ c2 as (  -- latest satellite row per sampled key
     select POLICY_HKEY as hkey,
            to_varchar(SPECIAL_CONDITIONS) as SPECIAL_CONDITIONS
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and POLICY_HKEY in (select hkey from s2)
     qualify rank() over (partition by POLICY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || ((nullif(trim(to_varchar("POLICYNUMBER")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("SPCONDITION")), ''))) as SPECIAL_CONDITIONS
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3296,7 +3290,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.SPECIAL_CONDITIONS
 )
-select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -3307,7 +3301,7 @@ select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite, 'OPUS_BA_TRV_DATA_POL
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -3324,19 +3318,19 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 23. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
 -- standard satellite, sat_multi_source; PK PRODUCT_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [3 col(s)], OPUS_BA_TRV_PLAN_MST_MV [5 col(s)],
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
--- stg2_product_definition_ba_trv_data_policy_dtls_mv: column(s) PRODUCT_DISPLAY_NAME,
--- PRODUCT_STATUS could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_product_definition_bjaz_trv_loader_data_mv: column(s)
--- PRODUCT_CODE, PRODUCT_DISPLAY_NAME, PRODUCT_NAME, PRODUCT_STATUS could not be traced
--- to RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__
--- views or joined-in stitch columns are not yet inlined into the sampled queries).
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [3 col(s)], OPUS_BA_TRV_PLAN_MST [5 col(s)],
+-- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. stg2_product_definition_ba_trv_data_policy_dtls:
+-- column(s) PRODUCT_DISPLAY_NAME, PRODUCT_STATUS could not be traced to RAW on at least
+-- one arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in
+-- stitch columns are not yet inlined into the sampled queries).
+-- stg2_product_definition_bjaz_trv_loader_data: column(s) PRODUCT_CODE,
+-- PRODUCT_DISPLAY_NAME, PRODUCT_NAME, PRODUCT_STATUS could not be traced to RAW on at
+-- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
+-- joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -3346,20 +3340,20 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(PRODUCT_CODE) as PRODUCT_CODE,
            to_varchar(PRODUCT_NAME) as PRODUCT_NAME
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and PRODUCT_HKEY in (select hkey from s1)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || ((nullif(trim(to_varchar("PRODUCT_CODE")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("TRAVEL_CATEGORY_NM")), ''))) as PRODUCT_CATEGORY,
                to_varchar(nullif(trim(to_varchar("PRODUCT_CODE")), '')) as PRODUCT_CODE,
                to_varchar((nullif(trim(to_varchar("TRAVEL_PLAN_NM")), ''))) as PRODUCT_NAME
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3382,7 +3376,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST'
      order by hkey
      limit 100
 ),
@@ -3394,14 +3388,14 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(PRODUCT_NAME) as PRODUCT_NAME,
            to_varchar(PRODUCT_STATUS) as PRODUCT_STATUS
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST'
        and PRODUCT_HKEY in (select hkey from s2)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_plan_mst_mv
+        -- via stg_travel__ba_trv_plan_mst
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || ((nullif(trim(to_varchar("PLAN_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("PLAN_CATEGORY_NAME")), ''))) as PRODUCT_CATEGORY,
@@ -3409,7 +3403,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PLAN_DISP_NAME")), ''))) as PRODUCT_DISPLAY_NAME,
                to_varchar((nullif(trim(to_varchar("PLAN_NAME")), ''))) as PRODUCT_NAME,
                to_varchar((nullif(trim(to_varchar("ACTIVE_STATUS")), ''))) as PRODUCT_STATUS
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_PLAN_MST_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_PLAN_MST
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3442,7 +3436,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -3450,18 +3444,18 @@ c3 as (  -- latest satellite row per sampled key
     select PRODUCT_HKEY as hkey,
            to_varchar(PRODUCT_CATEGORY) as PRODUCT_CATEGORY
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and PRODUCT_HKEY in (select hkey from s3)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || ((nullif(trim(to_varchar("PLAN")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("TRAVELPLANCATEGORY")), ''))) as PRODUCT_CATEGORY
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3472,7 +3466,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey
      group by c.hkey, c.PRODUCT_CATEGORY
 )
-select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -3483,7 +3477,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BA_TRV_DA
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BA_TRV_PLAN_MST_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BA_TRV_PLAN_MST' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -3494,7 +3488,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BA_TRV_PL
   from r2
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -3511,16 +3505,16 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 24. OPUS — SAT_PRODUCT_RATING_FACTOR   [Implemented]  [M2]
 -- standard satellite, ma_sat_multi_source; PK PRODUCT_HKEY, child key
--- ACTIVE_SEQUENCE_NUMBER; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_RATE_MASTER_MV [2
+-- ACTIVE_SEQUENCE_NUMBER; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_RATE_MASTER [2
 -- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
--- member. stg2_product_rating_factor_bjaz_trv_rate_master_mv_0: column(s) VALUE_RANGE_TO
+-- member. stg2_product_rating_factor_bjaz_trv_rate_master_0: column(s) VALUE_RANGE_TO
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
 -- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_FACTOR
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER'
      order by hkey
      limit 100
 ),
@@ -3530,44 +3524,44 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(VALUE_RANGE_FROM) as VALUE_RANGE_FROM,
            to_varchar(VALUE_RANGE_TO) as VALUE_RANGE_TO
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_FACTOR
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER'
        and PRODUCT_HKEY in (select hkey from s1)
     qualify rank() over (partition by PRODUCT_HKEY, ACTIVE_SEQUENCE_NUMBER order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_rate_master_mv
+        -- via stg_travel__bjaz_trv_rate_master
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || ((nullif(trim(to_varchar("PLAN")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('age_band') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("AGE_FROM"::number)) as VALUE_RANGE_FROM,
                cast(null as varchar) as VALUE_RANGE_TO
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RATE_MASTER_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RATE_MASTER
         union all
-        -- via stg_travel__bjaz_trv_rate_master_mv
+        -- via stg_travel__bjaz_trv_rate_master
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || ((nullif(trim(to_varchar("PLAN")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('age_band') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                cast(null as varchar) as VALUE_RANGE_FROM,
                to_varchar(("AGE_TO"::number)) as VALUE_RANGE_TO
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RATE_MASTER_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RATE_MASTER
         union all
-        -- via stg_travel__bjaz_trv_rate_master_mv
+        -- via stg_travel__bjaz_trv_rate_master
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || ((nullif(trim(to_varchar("PLAN")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('days_band') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("DAYS_FROM"::number)) as VALUE_RANGE_FROM,
                cast(null as varchar) as VALUE_RANGE_TO
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RATE_MASTER_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RATE_MASTER
         union all
-        -- via stg_travel__bjaz_trv_rate_master_mv
+        -- via stg_travel__bjaz_trv_rate_master
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || ((nullif(trim(to_varchar("PLAN")), ''))) AS VARCHAR))), '')) as hkey,
                to_varchar('days_band') as cdk_1,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                cast(null as varchar) as VALUE_RANGE_FROM,
                to_varchar(("DAYS_TO"::number)) as VALUE_RANGE_TO
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RATE_MASTER_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RATE_MASTER
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -3583,7 +3577,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey and equal_null(e.cdk_1, c.cdk_1)
      group by c.hkey, c.cdk_1, c.VALUE_RANGE_TO
 )
-select 'OPUS' as project, 'SAT_PRODUCT_RATING_FACTOR' as satellite, 'OPUS_BJAZ_TRV_RATE_MASTER_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PRODUCT_RATING_FACTOR' as satellite, 'OPUS_BJAZ_TRV_RATE_MASTER' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -3600,11 +3594,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 25. OPUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
 -- standard satellite, automate_dv.sat; PK PRODUCT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_RATE_MASTER_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_RATE_MASTER [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_STRUCTURE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER'
      order by hkey
      limit 100
 ),
@@ -3612,18 +3606,18 @@ c1 as (  -- latest satellite row per sampled key
     select PRODUCT_HKEY as hkey,
            to_varchar(PRICING_EFFECTIVE_DATE) as PRICING_EFFECTIVE_DATE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_STRUCTURE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER'
        and PRODUCT_HKEY in (select hkey from s1)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_rate_master_mv
+        -- via stg_travel__bjaz_trv_rate_master
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || ((nullif(trim(to_varchar("PLAN")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("EFFECTIVE_DATE"::timestamp_ntz)) as PRICING_EFFECTIVE_DATE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RATE_MASTER_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RATE_MASTER
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3634,7 +3628,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.PRICING_EFFECTIVE_DATE
 )
-select 'OPUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite, 'OPUS_BJAZ_TRV_RATE_MASTER_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite, 'OPUS_BJAZ_TRV_RATE_MASTER' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -3651,16 +3645,15 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 26. OPUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
 -- standard satellite, sat_multi_source; PK PRODUCT_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_PLAN_MST_MV [6 col(s)], OPUS_BJAZ_TRV_PLAN_MV [1 col(s)].
--- stg2_product_terms_bjaz_trv_plan_mv: column(s) FAMILY_DEFINITION,
--- GEOGRAPHY_RESTRICTION, MAXIMUM_ENTRY_AGE, MINIMUM_ENTRY_AGE, MINIMUM_POLICY_TERM could
--- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries).
+-- OPUS_BA_TRV_PLAN_MST [6 col(s)], OPUS_BJAZ_TRV_PLAN [1 col(s)].
+-- stg2_product_terms_bjaz_trv_plan: column(s) FAMILY_DEFINITION, GEOGRAPHY_RESTRICTION,
+-- MAXIMUM_ENTRY_AGE, MINIMUM_ENTRY_AGE, MINIMUM_POLICY_TERM could not be traced to RAW
+-- on at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
+-- joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST'
      order by hkey
      limit 100
 ),
@@ -3673,14 +3666,14 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(MINIMUM_ENTRY_AGE) as MINIMUM_ENTRY_AGE,
            to_varchar(MINIMUM_POLICY_TERM) as MINIMUM_POLICY_TERM
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST'
        and PRODUCT_HKEY in (select hkey from s1)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_plan_mst_mv
+        -- via stg_travel__ba_trv_plan_mst
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || ((nullif(trim(to_varchar("PLAN_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("FAMILY_PLAN_YN")), ''))) as FAMILY_DEFINITION,
@@ -3689,7 +3682,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(("PLAN_MAX_DAYS"::number)) as MAXIMUM_POLICY_TERM,
                to_varchar(("PLAN_MIN_AGE_FROM"::number)) as MINIMUM_ENTRY_AGE,
                to_varchar(("PLAN_MIN_DAYS"::number)) as MINIMUM_POLICY_TERM
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_PLAN_MST_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_PLAN_MST
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3727,7 +3720,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
      order by hkey
      limit 100
 ),
@@ -3735,18 +3728,18 @@ c2 as (  -- latest satellite row per sampled key
     select PRODUCT_HKEY as hkey,
            to_varchar(MAXIMUM_POLICY_TERM) as MAXIMUM_POLICY_TERM
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
        and PRODUCT_HKEY in (select hkey from s2)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_plan_mv
+        -- via stg_travel__bjaz_trv_plan
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || ((nullif(trim(to_varchar("PLAN_ID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("MAX_DAYS"::number)) as MAXIMUM_POLICY_TERM
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_PLAN_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_PLAN
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3757,7 +3750,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.MAXIMUM_POLICY_TERM
 )
-select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'OPUS_BA_TRV_PLAN_MST_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'OPUS_BA_TRV_PLAN_MST' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -3768,7 +3761,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'OPUS_BA_TRV_PLAN_MS
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_PLAN_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_PLAN' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -3785,11 +3778,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 27. OPUS — SAT_PROPOSAL_UNDERWRITING   [Implemented]  [M2]
 -- standard satellite, automate_dv.sat; PK PROPOSAL_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2 col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PROPOSAL_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROPOSAL_UNDERWRITING
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -3798,19 +3791,19 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(REFERRAL_DATE) as REFERRAL_DATE,
            to_varchar(REFERRAL_INDICATOR) as REFERRAL_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROPOSAL_UNDERWRITING
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and PROPOSAL_HKEY in (select hkey from s1)
     qualify rank() over (partition by PROPOSAL_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PROPOSAL|' || ((nullif(trim(to_varchar("TRAVEL_REQ_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("REFER_DATE"::timestamp_ntz)) as REFERRAL_DATE,
                to_varchar((nullif(trim(to_varchar("REFER_FLAG")), ''))) as REFERRAL_INDICATOR
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3826,7 +3819,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.REFERRAL_INDICATOR
 )
-select 'OPUS' as project, 'SAT_PROPOSAL_UNDERWRITING' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_PROPOSAL_UNDERWRITING' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -3843,11 +3836,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 28. OPUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
 -- standard satellite, automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct QUOTE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_HEADER
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -3855,18 +3848,18 @@ c1 as (  -- latest satellite row per sampled key
     select QUOTE_HKEY as hkey,
            to_varchar(QUOTE_DATE) as QUOTE_DATE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_HEADER
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and QUOTE_HKEY in (select hkey from s1)
     qualify rank() over (partition by QUOTE_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || ((nullif(trim(to_varchar("QUOTE_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("QUOTE_DATE"::timestamp_ntz)) as QUOTE_DATE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3877,7 +3870,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.QUOTE_DATE
 )
-select 'OPUS' as project, 'SAT_QUOTE_HEADER' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_QUOTE_HEADER' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -3894,11 +3887,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 29. OPUS — SAT_RISK_MOTOR_DRIVER   [Implemented]  [M2]
 -- standard satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_DRIVER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -3906,18 +3899,18 @@ c1 as (  -- latest satellite row per sampled key
     select RISK_OBJECT_HKEY as hkey,
            to_varchar(OWNER_DRIVER_INDICATOR) as OWNER_DRIVER_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_DRIVER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and RISK_OBJECT_HKEY in (select hkey from s1)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICYNUMBER")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("DRIVERYN")), ''))) as OWNER_DRIVER_INDICATOR
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3928,7 +3921,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.OWNER_DRIVER_INDICATOR
 )
-select 'OPUS' as project, 'SAT_RISK_MOTOR_DRIVER' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_RISK_MOTOR_DRIVER' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -3945,11 +3938,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 30. OPUS — SAT_RISK_MOTOR_VEHICLE   [Implemented]  [M2]
 -- standard satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [9 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [9 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_VEHICLE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -3965,14 +3958,14 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(SEATING_CAPACITY) as SEATING_CAPACITY,
            to_varchar(VEHICLE_SUB_CLASS) as VEHICLE_SUB_CLASS
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_VEHICLE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and RISK_OBJECT_HKEY in (select hkey from s1)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICYNUMBER")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("CHASSISNO")), ''))) as CHASSIS_NUMBER,
@@ -3984,7 +3977,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("REGISTRATIONNO")), ''))) as REGISTRATION_NUMBER,
                to_varchar((nullif(trim(to_varchar("SEATINGCAPACITY")), ''))) as SEATING_CAPACITY,
                to_varchar((nullif(trim(to_varchar("SUBTYPE")), ''))) as VEHICLE_SUB_CLASS
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4035,7 +4028,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.VEHICLE_SUB_CLASS
 )
-select 'OPUS' as project, 'SAT_RISK_MOTOR_VEHICLE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_RISK_MOTOR_VEHICLE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -4052,11 +4045,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 31. OPUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M3]
 -- standard satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_CORE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -4064,18 +4057,18 @@ c1 as (  -- latest satellite row per sampled key
     select RISK_OBJECT_HKEY as hkey,
            to_varchar(EXPOSURE_QUANTITY) as EXPOSURE_QUANTITY
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_CORE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and RISK_OBJECT_HKEY in (select hkey from s1)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICYNUMBER")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("DISTANCE")), ''))) as EXPOSURE_QUANTITY
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4086,7 +4079,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.EXPOSURE_QUANTITY
 )
-select 'OPUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -4103,11 +4096,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 32. OPUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- standard satellite, sat_multi_source; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [4 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_DATA [4 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_INSURED
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -4118,57 +4111,57 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(PRE_EXISTING_DISEASE_DESCRIPTION) as PRE_EXISTING_DISEASE_DESCRIPTION,
            to_varchar(RELATIONSHIP_TO_PROPOSER) as RELATIONSHIP_TO_PROPOSER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_INSURED
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and RISK_OBJECT_HKEY in (select hkey from s1)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|MEMBER1') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("MEMBER1GENDER")), ''))) as GENDER,
                to_varchar((nullif(trim(to_varchar("MEMBER1NAME")), ''))) as INSURED_MEMBER_NAME,
                to_varchar((nullif(trim(to_varchar("MEMBER1DESEASE")), ''))) as PRE_EXISTING_DISEASE_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("MEMBER1RELATION")), ''))) as RELATIONSHIP_TO_PROPOSER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|MEMBER2') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("MEMBER2GENDER")), ''))) as GENDER,
                to_varchar((nullif(trim(to_varchar("MEMBER2NAME")), ''))) as INSURED_MEMBER_NAME,
                to_varchar((nullif(trim(to_varchar("MEMBER2DESEASE")), ''))) as PRE_EXISTING_DISEASE_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("MEMBER2RELATION")), ''))) as RELATIONSHIP_TO_PROPOSER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|MEMBER3') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("MEMBER3GENDER")), ''))) as GENDER,
                to_varchar((nullif(trim(to_varchar("MEMBER3NAME")), ''))) as INSURED_MEMBER_NAME,
                to_varchar((nullif(trim(to_varchar("MEMBER3DESEASE")), ''))) as PRE_EXISTING_DISEASE_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("MEMBER3RELATION")), ''))) as RELATIONSHIP_TO_PROPOSER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|MEMBER4') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("MEMBER4GENDER")), ''))) as GENDER,
                to_varchar((nullif(trim(to_varchar("MEMBER4NAME")), ''))) as INSURED_MEMBER_NAME,
                to_varchar((nullif(trim(to_varchar("MEMBER4DESEASE")), ''))) as PRE_EXISTING_DISEASE_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("MEMBER4RELATION")), ''))) as RELATIONSHIP_TO_PROPOSER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|MEMBER5') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("MEMBER5GENDER")), ''))) as GENDER,
                to_varchar((nullif(trim(to_varchar("MEMBER5NAME")), ''))) as INSURED_MEMBER_NAME,
                to_varchar((nullif(trim(to_varchar("MEMBER5DESEASE")), ''))) as PRE_EXISTING_DISEASE_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("MEMBER5RELATION")), ''))) as RELATIONSHIP_TO_PROPOSER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4194,7 +4187,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.RELATIONSHIP_TO_PROPOSER
 )
-select 'OPUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -4211,8 +4204,8 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 33. OPUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- standard satellite, sat_multi_source; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [8 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [2 col(s)].
--- stg2_risk_person_travel_bjaz_trv_loader_log_table_mv: column(s) PASSPORT_NUMBER,
+-- OPUS_BJAZ_TRV_LOADER_DATA [8 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [2 col(s)].
+-- stg2_risk_person_travel_bjaz_trv_loader_log_table: column(s) PASSPORT_NUMBER,
 -- TRIP_DURATION, TRIP_END_DATE, TRIP_START_DATE, TRIP_TYPE, VISA_TYPE could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
@@ -4220,7 +4213,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -4235,7 +4228,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(TRIP_TYPE) as TRIP_TYPE,
            to_varchar(VISA_TYPE) as VISA_TYPE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and RISK_OBJECT_HKEY in (select hkey from s1)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -4253,7 +4246,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DEPARTUREDATE")), ''))) as TRIP_START_DATE,
                to_varchar((nullif(trim(to_varchar("PRJOURNEY")), ''))) as TRIP_TYPE,
                to_varchar(type_of_visa) as VISA_TYPE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
         -- via stitch_risk_person_travel_trip_attrs (plain-join; joined columns unresolved)
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|MEMBER2') AS VARCHAR))), '')) as hkey,
@@ -4266,7 +4259,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DEPARTUREDATE")), ''))) as TRIP_START_DATE,
                to_varchar((nullif(trim(to_varchar("PRJOURNEY")), ''))) as TRIP_TYPE,
                to_varchar(type_of_visa) as VISA_TYPE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
         -- via stitch_risk_person_travel_trip_attrs (plain-join; joined columns unresolved)
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|MEMBER3') AS VARCHAR))), '')) as hkey,
@@ -4279,7 +4272,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DEPARTUREDATE")), ''))) as TRIP_START_DATE,
                to_varchar((nullif(trim(to_varchar("PRJOURNEY")), ''))) as TRIP_TYPE,
                to_varchar(type_of_visa) as VISA_TYPE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
         -- via stitch_risk_person_travel_trip_attrs (plain-join; joined columns unresolved)
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|MEMBER4') AS VARCHAR))), '')) as hkey,
@@ -4292,7 +4285,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DEPARTUREDATE")), ''))) as TRIP_START_DATE,
                to_varchar((nullif(trim(to_varchar("PRJOURNEY")), ''))) as TRIP_TYPE,
                to_varchar(type_of_visa) as VISA_TYPE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
         -- via stitch_risk_person_travel_trip_attrs (plain-join; joined columns unresolved)
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|MEMBER5') AS VARCHAR))), '')) as hkey,
@@ -4305,7 +4298,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DEPARTUREDATE")), ''))) as TRIP_START_DATE,
                to_varchar((nullif(trim(to_varchar("PRJOURNEY")), ''))) as TRIP_TYPE,
                to_varchar(type_of_visa) as VISA_TYPE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4353,7 +4346,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -4362,19 +4355,19 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(DESTINATION_COUNTRY) as DESTINATION_COUNTRY,
            to_varchar(GEOGRAPHICAL_ZONE) as GEOGRAPHICAL_ZONE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and RISK_OBJECT_HKEY in (select hkey from s2)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICYNUMBER")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("DESTINATION")), ''))) as DESTINATION_COUNTRY,
                to_varchar((nullif(trim(to_varchar("PAREAPLAN")), ''))) as GEOGRAPHICAL_ZONE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4390,7 +4383,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.GEOGRAPHICAL_ZONE
 )
-select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -4401,7 +4394,7 @@ select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -4418,11 +4411,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 34. OPUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M3]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -4430,18 +4423,18 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(CUSTOMER_CONSENT_INDICATOR) as CUSTOMER_CONSENT_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("CUSTCONSENT")), ''))) as CUSTOMER_CONSENT_INDICATOR
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4452,7 +4445,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.CUSTOMER_CONSENT_INDICATOR
 )
-select 'OPUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -4469,15 +4462,14 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 35. OPUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_PLAN_MV [2 col(s)].
--- stg2_aug_coverage_definition_bjaz_trv_plan_mv_eff_date: column(s) COVERAGE_SEQUENCE
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries).
+-- OPUS_BJAZ_TRV_PLAN [2 col(s)]. stg2_aug_coverage_definition_bjaz_trv_plan_eff_date:
+-- column(s) COVERAGE_SEQUENCE could not be traced to RAW on at least one arm -- excluded
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
      order by hkey
      limit 100
 ),
@@ -4486,26 +4478,26 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(EFFECTIVE_DATE) as EFFECTIVE_DATE,
            to_varchar(COVERAGE_SEQUENCE) as COVERAGE_SEQUENCE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
        and COVERAGE_HKEY in (select hkey from s1)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_plan_mv
+        -- via stg_travel__bjaz_trv_plan
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("COVER_CODE")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("EFF_DATE"::timestamp_ntz)) as EFFECTIVE_DATE,
                cast(null as varchar) as COVERAGE_SEQUENCE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_PLAN_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_PLAN
         union all
-        -- via stg_travel__bjaz_trv_plan_mv
+        -- via stg_travel__bjaz_trv_plan
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("COVER_CODE")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                cast(null as varchar) as EFFECTIVE_DATE,
                to_varchar(("SEQUENCE_COVERS"::number)) as COVERAGE_SEQUENCE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_PLAN_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_PLAN
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4521,7 +4513,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.COVERAGE_SEQUENCE
 )
-select 'OPUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_PLAN_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_PLAN' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -4538,18 +4530,18 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 36. OPUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_PLAN_MV [3 col(s)]. stg2_aug_coverage_limits_bjaz_trv_plan_mv_currency:
+-- OPUS_BJAZ_TRV_PLAN [3 col(s)]. stg2_aug_coverage_limits_bjaz_trv_plan_currency:
 -- column(s) DEDUCTIBLE_DESCRIPTION, LIMIT_DESCRIPTION could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
--- stg2_aug_coverage_limits_bjaz_trv_plan_mv_deductible_desc: column(s) LIMIT_DESCRIPTION
+-- stg2_aug_coverage_limits_bjaz_trv_plan_deductible_desc: column(s) LIMIT_DESCRIPTION
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
 -- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
 -- sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_LIMITS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
      order by hkey
      limit 100
 ),
@@ -4559,36 +4551,36 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(DEDUCTIBLE_DESCRIPTION) as DEDUCTIBLE_DESCRIPTION,
            to_varchar(LIMIT_DESCRIPTION) as LIMIT_DESCRIPTION
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_LIMITS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
        and COVERAGE_HKEY in (select hkey from s1)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_plan_mv
+        -- via stg_travel__bjaz_trv_plan
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("COVER_CODE")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("CURRENCY")), ''))) as CURRENCY_CODE,
                cast(null as varchar) as DEDUCTIBLE_DESCRIPTION,
                cast(null as varchar) as LIMIT_DESCRIPTION
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_PLAN_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_PLAN
         union all
-        -- via stg_travel__bjaz_trv_plan_mv
+        -- via stg_travel__bjaz_trv_plan
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("COVER_CODE")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                cast(null as varchar) as CURRENCY_CODE,
                to_varchar((nullif(trim(to_varchar("DEDUCTIBLE_DESC")), ''))) as DEDUCTIBLE_DESCRIPTION,
                cast(null as varchar) as LIMIT_DESCRIPTION
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_PLAN_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_PLAN
         union all
-        -- via stg_travel__bjaz_trv_plan_mv
+        -- via stg_travel__bjaz_trv_plan
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("COVER_CODE")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                cast(null as varchar) as CURRENCY_CODE,
                cast(null as varchar) as DEDUCTIBLE_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("LIMIT_DESC")), ''))) as LIMIT_DESCRIPTION
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_PLAN_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_PLAN
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4609,7 +4601,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.LIMIT_DESCRIPTION
 )
-select 'OPUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_PLAN_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_PLAN' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -4626,33 +4618,32 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 37. OPUS — SAT_AUG_COVERAGE_RATING   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK COVERAGE_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV [4 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS_MV [1 col(s)].
--- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_nb_prm_excluding_st: column(s)
+-- OPUS_BJAZ_TRV_RIDER_RATE_MAST [4 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [1 col(s)].
+-- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_nb_prm_excluding_st: column(s)
 -- EXTENSION_PREMIUM_EXCLUDING_ST, MINIMUM_EXTENSION_PREMIUM,
 -- MINIMUM_NEW_BUSINESS_PREMIUM, RIDER_PREMIUM could not be traced to RAW on at least one
 -- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
 -- columns are not yet inlined into the sampled queries).
--- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_extn_prm_excluding_st: column(s)
+-- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_extn_prm_excluding_st: column(s)
 -- MINIMUM_EXTENSION_PREMIUM, MINIMUM_NEW_BUSINESS_PREMIUM, RIDER_PREMIUM could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_min_extn_prm: column(s)
+-- queries). stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_min_extn_prm: column(s)
 -- MINIMUM_NEW_BUSINESS_PREMIUM, RIDER_PREMIUM could not be traced to RAW on at least one
 -- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
 -- columns are not yet inlined into the sampled queries).
--- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_mv_min_nb_prm: column(s)
--- RIDER_PREMIUM could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries).
--- stg2_aug_coverage_rating_bjaz_trv_rider_dtls_mv_rider_premium: column(s)
--- EXTENSION_PREMIUM_EXCLUDING_ST, MINIMUM_EXTENSION_PREMIUM,
+-- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_min_nb_prm: column(s) RIDER_PREMIUM
+-- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
+-- sampled queries). stg2_aug_coverage_rating_bjaz_trv_rider_dtls_rider_premium:
+-- column(s) EXTENSION_PREMIUM_EXCLUDING_ST, MINIMUM_EXTENSION_PREMIUM,
 -- MINIMUM_NEW_BUSINESS_PREMIUM, NEW_BUSINESS_PREMIUM_EXCLUDING_ST could not be traced to
 -- RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views
 -- or joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_RATING
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_RATE_MAST'
      order by hkey
      limit 100
 ),
@@ -4663,48 +4654,48 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(MINIMUM_EXTENSION_PREMIUM) as MINIMUM_EXTENSION_PREMIUM,
            to_varchar(MINIMUM_NEW_BUSINESS_PREMIUM) as MINIMUM_NEW_BUSINESS_PREMIUM
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_RATING
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_RATE_MAST'
        and COVERAGE_HKEY in (select hkey from s1)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_rider_rate_mast_mv
+        -- via stg_travel__bjaz_trv_rider_rate_mast
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("RIDER_SEQ_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("NB_PRM_EXCLUDING_ST"::number)) as NEW_BUSINESS_PREMIUM_EXCLUDING_ST,
                cast(null as varchar) as EXTENSION_PREMIUM_EXCLUDING_ST,
                cast(null as varchar) as MINIMUM_EXTENSION_PREMIUM,
                cast(null as varchar) as MINIMUM_NEW_BUSINESS_PREMIUM
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RIDER_RATE_MAST_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RIDER_RATE_MAST
         union all
-        -- via stg_travel__bjaz_trv_rider_rate_mast_mv
+        -- via stg_travel__bjaz_trv_rider_rate_mast
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("RIDER_SEQ_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                cast(null as varchar) as NEW_BUSINESS_PREMIUM_EXCLUDING_ST,
                to_varchar(("EXTN_PRM_EXCLUDING_ST"::number)) as EXTENSION_PREMIUM_EXCLUDING_ST,
                cast(null as varchar) as MINIMUM_EXTENSION_PREMIUM,
                cast(null as varchar) as MINIMUM_NEW_BUSINESS_PREMIUM
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RIDER_RATE_MAST_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RIDER_RATE_MAST
         union all
-        -- via stg_travel__bjaz_trv_rider_rate_mast_mv
+        -- via stg_travel__bjaz_trv_rider_rate_mast
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("RIDER_SEQ_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                cast(null as varchar) as NEW_BUSINESS_PREMIUM_EXCLUDING_ST,
                cast(null as varchar) as EXTENSION_PREMIUM_EXCLUDING_ST,
                to_varchar(("MIN_EXTN_PRM"::number)) as MINIMUM_EXTENSION_PREMIUM,
                cast(null as varchar) as MINIMUM_NEW_BUSINESS_PREMIUM
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RIDER_RATE_MAST_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RIDER_RATE_MAST
         union all
-        -- via stg_travel__bjaz_trv_rider_rate_mast_mv
+        -- via stg_travel__bjaz_trv_rider_rate_mast
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("RIDER_SEQ_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                cast(null as varchar) as NEW_BUSINESS_PREMIUM_EXCLUDING_ST,
                cast(null as varchar) as EXTENSION_PREMIUM_EXCLUDING_ST,
                cast(null as varchar) as MINIMUM_EXTENSION_PREMIUM,
                to_varchar(("MIN_NB_PRM"::number)) as MINIMUM_NEW_BUSINESS_PREMIUM
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RIDER_RATE_MAST_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RIDER_RATE_MAST
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4732,7 +4723,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_RATING
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS'
      order by hkey
      limit 100
 ),
@@ -4740,18 +4731,18 @@ c2 as (  -- latest satellite row per sampled key
     select COVERAGE_HKEY as hkey,
            to_varchar(RIDER_PREMIUM) as RIDER_PREMIUM
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_RATING
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS'
        and COVERAGE_HKEY in (select hkey from s2)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_rider_dtls_mv
+        -- via stg_travel__bjaz_trv_rider_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || ((nullif(trim(to_varchar("RIDER_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("RIDER_PREMIUM"::number)) as RIDER_PREMIUM
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RIDER_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RIDER_DTLS
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4762,7 +4753,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.RIDER_PREMIUM
 )
-select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'OPUS_BJAZ_TRV_RIDER_RATE_MAST_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'OPUS_BJAZ_TRV_RIDER_RATE_MAST' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -4773,7 +4764,7 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'OPUS_BJAZ_TRV
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -4790,24 +4781,24 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 38. OPUS — SAT_AUG_FINTXN_PREMIUM   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY; 3 RECORD_SOURCE
--- group(s): OPUS_BA_TRV_DATA_POLICY_DTLS_MV [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1
--- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
--- stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_mv_sp_discount_per: column(s)
+-- group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1
+-- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
+-- stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_sp_discount_per: column(s)
 -- SPECIAL_DISCOUNT_AMOUNT could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
--- stg2_aug_fintxn_premium_bjaz_trv_loader_data_mv_spdiscount: column(s)
+-- stg2_aug_fintxn_premium_bjaz_trv_loader_data_spdiscount: column(s)
 -- SPECIAL_DISCOUNT_PERCENTAGE could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
--- stg2_aug_fintxn_premium_bjaz_trv_loader_log_table_mv_spdiscount: column(s)
+-- stg2_aug_fintxn_premium_bjaz_trv_loader_log_table_spdiscount: column(s)
 -- SPECIAL_DISCOUNT_PERCENTAGE could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -4816,26 +4807,26 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(SPECIAL_DISCOUNT_PERCENTAGE) as SPECIAL_DISCOUNT_PERCENTAGE,
            to_varchar(SPECIAL_DISCOUNT_AMOUNT) as SPECIAL_DISCOUNT_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s1)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("TRANSACTION_ID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar(("SP_DISCOUNT_PER"::number)) as SPECIAL_DISCOUNT_PERCENTAGE,
                cast(null as varchar) as SPECIAL_DISCOUNT_AMOUNT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
         union all
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("TRANSACTION_ID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                cast(null as varchar) as SPECIAL_DISCOUNT_PERCENTAGE,
                to_varchar((nullif(trim(to_varchar("SP_DISCOUNT_AMT")), ''))) as SPECIAL_DISCOUNT_AMOUNT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4853,7 +4844,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -4861,18 +4852,18 @@ c2 as (  -- latest satellite row per sampled key
     select FINANCIAL_TRANSACTION_HKEY as hkey,
            to_varchar(SPECIAL_DISCOUNT_AMOUNT) as SPECIAL_DISCOUNT_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s2)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("TRANSACTIONID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("SPDISCOUNT")), ''))) as SPECIAL_DISCOUNT_AMOUNT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4885,7 +4876,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -4893,18 +4884,18 @@ c3 as (  -- latest satellite row per sampled key
     select FINANCIAL_TRANSACTION_HKEY as hkey,
            to_varchar(SPECIAL_DISCOUNT_AMOUNT) as SPECIAL_DISCOUNT_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s3)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(to_varchar("POLICYNUMBER")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("SPDISCOUNT")), ''))) as SPECIAL_DISCOUNT_AMOUNT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4915,7 +4906,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey
      group by c.hkey, c.SPECIAL_DISCOUNT_AMOUNT
 )
-select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -4926,7 +4917,7 @@ select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_BA_TRV_DA
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -4937,7 +4928,7 @@ select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_
   from r2
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -4954,11 +4945,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 39. OPUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]  [M3]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_PARTY_ROLE_CORE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -4966,18 +4957,18 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(PREMIUM_PAYER_INDICATOR) as PREMIUM_PAYER_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_PARTY_ROLE_CORE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("PREMIUMPAYERFLAG")), ''))) as PREMIUM_PAYER_INDICATOR
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4988,7 +4979,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.PREMIUM_PAYER_INDICATOR
 )
-select 'OPUS' as project, 'SAT_AUG_LNK_PARTY_ROLE_CORE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_LNK_PARTY_ROLE_CORE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -5005,11 +4996,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 40. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -5017,18 +5008,18 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(PROPOSER_IS_TRAVELLER_INDICATOR) as PROPOSER_IS_TRAVELLER_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PAYER_PART_ID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("PROPASTRAVELLER")), ''))) as PROPOSER_IS_TRAVELLER_INDICATOR
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -5041,7 +5032,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -5049,18 +5040,18 @@ c2 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(PROPOSER_IS_TRAVELLER_INDICATOR) as PROPOSER_IS_TRAVELLER_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("PROPASTRAVELLER")), ''))) as PROPOSER_IS_TRAVELLER_INDICATOR
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -5071,7 +5062,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.PROPOSER_IS_TRAVELLER_INDICATOR
 )
-select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -5082,7 +5073,7 @@ select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'OPUS_BA_TRV
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -5099,11 +5090,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 41. OPUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_BANKING
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -5111,18 +5102,18 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(BANK_CUSTOMER_IDENTIFIER) as BANK_CUSTOMER_IDENTIFIER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_BANKING
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("BANKCUSTID")), ''))) as BANK_CUSTOMER_IDENTIFIER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -5133,7 +5124,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.BANK_CUSTOMER_IDENTIFIER
 )
-select 'OPUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -5150,12 +5141,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 42. OPUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS_MV [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV [1
--- col(s)].
+-- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -5163,18 +5153,18 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(EMPLOYEE_NUMBER) as EMPLOYEE_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_data_policy_dtls_mv
+        -- via stg_travel__ba_trv_data_policy_dtls
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PAYER_PART_ID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("CFT_EMP_NO")), ''))) as EMPLOYEE_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_DATA_POLICY_DTLS_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_DATA_POLICY_DTLS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -5187,7 +5177,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -5195,18 +5185,18 @@ c2 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(EMPLOYEE_NUMBER) as EMPLOYEE_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_log_table_mv
+        -- via stg_travel__bjaz_trv_loader_log_table
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(to_varchar("PREMIUMPAYERID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("EMPNO")), ''))) as EMPLOYEE_NUMBER
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_LOG_TABLE_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_LOG_TABLE
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -5217,7 +5207,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.EMPLOYEE_NUMBER
 )
-select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -5228,7 +5218,7 @@ select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'OPUS_BA_TRV_
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -5245,35 +5235,35 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 43. OPUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK PRODUCT_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_PLAN_MST_MV [3 col(s)], OPUS_BJAZ_TRV_RATE_MASTER_MV [2 col(s)],
--- OPUS_BJAZ_TRV_PLAN_MV [1 col(s)].
--- stg2_aug_product_terms_ba_trv_plan_mst_mv_multi_year_yn: column(s)
--- AGE_ELIGIBILITY_BYPASS_INDICATOR, CFT_ELIGIBLE_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could
--- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
--- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_aug_product_terms_ba_trv_plan_mst_mv_age_bypass_yn: column(s)
+-- OPUS_BA_TRV_PLAN_MST [3 col(s)], OPUS_BJAZ_TRV_RATE_MASTER [2 col(s)],
+-- OPUS_BJAZ_TRV_PLAN [1 col(s)]. stg2_aug_product_terms_ba_trv_plan_mst_multi_year_yn:
+-- column(s) AGE_ELIGIBILITY_BYPASS_INDICATOR, CFT_ELIGIBLE_INDICATOR,
+-- PLAN_GEOGRAPHICAL_ZONE could not be traced to RAW on at least one arm -- excluded
+-- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
+-- yet inlined into the sampled queries).
+-- stg2_aug_product_terms_ba_trv_plan_mst_age_bypass_yn: column(s)
 -- CFT_ELIGIBLE_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could not be traced to RAW on at least
 -- one arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in
 -- stitch columns are not yet inlined into the sampled queries).
--- stg2_aug_product_terms_ba_trv_plan_mst_mv_cft_yn: column(s) PLAN_GEOGRAPHICAL_ZONE
--- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
--- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
--- sampled queries). stg2_aug_product_terms_bjaz_trv_rate_master_mv_cft_yn: column(s)
+-- stg2_aug_product_terms_ba_trv_plan_mst_cft_yn: column(s) PLAN_GEOGRAPHICAL_ZONE could
+-- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). stg2_aug_product_terms_bjaz_trv_rate_master_cft_yn: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, MULTI_YEAR_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_aug_product_terms_bjaz_trv_plan_mv_area: column(s)
+-- queries). stg2_aug_product_terms_bjaz_trv_plan_area: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, CFT_ELIGIBLE_INDICATOR, MULTI_YEAR_INDICATOR could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
--- queries). stg2_aug_product_terms_bjaz_trv_rate_master_mv_area: column(s)
+-- queries). stg2_aug_product_terms_bjaz_trv_rate_master_area: column(s)
 -- AGE_ELIGIBILITY_BYPASS_INDICATOR, MULTI_YEAR_INDICATOR could not be traced to RAW on
 -- at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST'
      order by hkey
      limit 100
 ),
@@ -5283,36 +5273,36 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(AGE_ELIGIBILITY_BYPASS_INDICATOR) as AGE_ELIGIBILITY_BYPASS_INDICATOR,
            to_varchar(CFT_ELIGIBLE_INDICATOR) as CFT_ELIGIBLE_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST_MV'
+     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST'
        and PRODUCT_HKEY in (select hkey from s1)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__ba_trv_plan_mst_mv
+        -- via stg_travel__ba_trv_plan_mst
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || ((nullif(trim(to_varchar("PLAN_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("MULTI_YEAR_YN")), ''))) as MULTI_YEAR_INDICATOR,
                cast(null as varchar) as AGE_ELIGIBILITY_BYPASS_INDICATOR,
                cast(null as varchar) as CFT_ELIGIBLE_INDICATOR
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_PLAN_MST_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_PLAN_MST
         union all
-        -- via stg_travel__ba_trv_plan_mst_mv
+        -- via stg_travel__ba_trv_plan_mst
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || ((nullif(trim(to_varchar("PLAN_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                cast(null as varchar) as MULTI_YEAR_INDICATOR,
                to_varchar((nullif(trim(to_varchar("AGE_BYPASS_YN")), ''))) as AGE_ELIGIBILITY_BYPASS_INDICATOR,
                cast(null as varchar) as CFT_ELIGIBLE_INDICATOR
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_PLAN_MST_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_PLAN_MST
         union all
-        -- via stg_travel__ba_trv_plan_mst_mv
+        -- via stg_travel__ba_trv_plan_mst
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || ((nullif(trim(to_varchar("PLAN_NO")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                cast(null as varchar) as MULTI_YEAR_INDICATOR,
                cast(null as varchar) as AGE_ELIGIBILITY_BYPASS_INDICATOR,
                to_varchar((nullif(trim(to_varchar("CFT_YN")), ''))) as CFT_ELIGIBLE_INDICATOR
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BA_TRV_PLAN_MST_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BA_TRV_PLAN_MST
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -5335,7 +5325,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER'
      order by hkey
      limit 100
 ),
@@ -5344,26 +5334,26 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(CFT_ELIGIBLE_INDICATOR) as CFT_ELIGIBLE_INDICATOR,
            to_varchar(PLAN_GEOGRAPHICAL_ZONE) as PLAN_GEOGRAPHICAL_ZONE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER'
        and PRODUCT_HKEY in (select hkey from s2)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_rate_master_mv
+        -- via stg_travel__bjaz_trv_rate_master
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || ((nullif(trim(to_varchar("PLAN")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("CFT_YN")), ''))) as CFT_ELIGIBLE_INDICATOR,
                cast(null as varchar) as PLAN_GEOGRAPHICAL_ZONE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RATE_MASTER_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RATE_MASTER
         union all
-        -- via stg_travel__bjaz_trv_rate_master_mv
+        -- via stg_travel__bjaz_trv_rate_master
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || ((nullif(trim(to_varchar("PLAN")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                cast(null as varchar) as CFT_ELIGIBLE_INDICATOR,
                to_varchar((nullif(trim(to_varchar("AREA")), ''))) as PLAN_GEOGRAPHICAL_ZONE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_RATE_MASTER_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_RATE_MASTER
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -5381,7 +5371,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
      order by hkey
      limit 100
 ),
@@ -5389,18 +5379,18 @@ c3 as (  -- latest satellite row per sampled key
     select PRODUCT_HKEY as hkey,
            to_varchar(PLAN_GEOGRAPHICAL_ZONE) as PLAN_GEOGRAPHICAL_ZONE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
        and PRODUCT_HKEY in (select hkey from s3)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_plan_mv
+        -- via stg_travel__bjaz_trv_plan
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || ((nullif(trim(to_varchar("PLAN_ID")), ''))) AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("AREA")), ''))) as PLAN_GEOGRAPHICAL_ZONE
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_PLAN_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_PLAN
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -5411,7 +5401,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey
      group by c.hkey, c.PLAN_GEOGRAPHICAL_ZONE
 )
-select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BA_TRV_PLAN_MST_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BA_TRV_PLAN_MST' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -5422,7 +5412,7 @@ select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BA_TRV_PLA
   from r1
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_RATE_MASTER_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_RATE_MASTER' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -5433,7 +5423,7 @@ select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_R
   from r2
  group by column_name
 union all
-select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_PLAN_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_PLAN' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -5450,11 +5440,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 44. OPUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [1 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_INSURED
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -5462,42 +5452,42 @@ c1 as (  -- latest satellite row per sampled key
     select RISK_OBJECT_HKEY as hkey,
            to_varchar(DATE_OF_BIRTH) as DATE_OF_BIRTH
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_INSURED
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and RISK_OBJECT_HKEY in (select hkey from s1)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|member1') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("MEMBER1DOB")), ''))) as DATE_OF_BIRTH
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|member2') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("MEMBER2DOB")), ''))) as DATE_OF_BIRTH
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|member3') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("MEMBER3DOB")), ''))) as DATE_OF_BIRTH
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|member4') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("MEMBER4DOB")), ''))) as DATE_OF_BIRTH
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|member5') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("MEMBER5DOB")), ''))) as DATE_OF_BIRTH
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -5508,7 +5498,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.DATE_OF_BIRTH
 )
-select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,
@@ -5525,11 +5515,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 45. OPUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA_MV [2 col(s)].
+-- OPUS_BJAZ_TRV_LOADER_DATA [2 col(s)].
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_TRAVEL
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -5538,47 +5528,47 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(ALTITUDE_LIMIT) as ALTITUDE_LIMIT,
            to_varchar(MODE_OF_TRANSPORT) as MODE_OF_TRANSPORT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_TRAVEL
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA_MV'
+     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and RISK_OBJECT_HKEY in (select hkey from s1)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|member1') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("ALTITUDE")), ''))) as ALTITUDE_LIMIT,
                to_varchar((nullif(trim(to_varchar("MODEOFTRANSPORT")), ''))) as MODE_OF_TRANSPORT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|member2') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("ALTITUDE")), ''))) as ALTITUDE_LIMIT,
                to_varchar((nullif(trim(to_varchar("MODEOFTRANSPORT")), ''))) as MODE_OF_TRANSPORT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|member3') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("ALTITUDE")), ''))) as ALTITUDE_LIMIT,
                to_varchar((nullif(trim(to_varchar("MODEOFTRANSPORT")), ''))) as MODE_OF_TRANSPORT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|member4') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("ALTITUDE")), ''))) as ALTITUDE_LIMIT,
                to_varchar((nullif(trim(to_varchar("MODEOFTRANSPORT")), ''))) as MODE_OF_TRANSPORT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
         union all
-        -- via stg_travel__bjaz_trv_loader_data_mv
+        -- via stg_travel__bjaz_trv_loader_data
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || ((nullif(trim(to_varchar("POLICY_REF")), '')) || '|member5') AS VARCHAR))), '')) as hkey,
                ("INC_JOB_UPDATED_AT"::timestamp_ntz) as ldts,
                to_varchar((nullif(trim(to_varchar("ALTITUDE")), ''))) as ALTITUDE_LIMIT,
                to_varchar((nullif(trim(to_varchar("MODEOFTRANSPORT")), ''))) as MODE_OF_TRANSPORT
-          from BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE.BJAZ_TRV_LOADER_DATA_MV
+          from BAGIC_PREPROD_CURATED_DB.UTILS.BJAZ_TRV_LOADER_DATA
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -5594,7 +5584,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.MODE_OF_TRANSPORT
 )
-select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA_MV' as record_source, column_name,
+select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source, column_name,
        count(*) as keys_compared,
        count_if(src_rows > 0 and matched = 1) as matched,
        count_if(src_rows > 0 and matched = 0) as mismatched,

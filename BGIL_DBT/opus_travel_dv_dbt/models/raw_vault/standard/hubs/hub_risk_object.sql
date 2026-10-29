@@ -1,17 +1,17 @@
 {{ config(materialized='incremental') }}
 
 -- TRAVEL STANDARD-MODEL hub() for HUB_RISK_OBJECT, 6 contributing branches (5 traveller
--- members on BJAZ_TRV_LOADER_DATA_MV + 1 synthetic per-policy branch on
--- BJAZ_TRV_LOADER_LOG_TABLE_MV -- see stage file headers for the key formulas).
+-- members on BJAZ_TRV_LOADER_DATA + 1 synthetic per-policy branch on
+-- BJAZ_TRV_LOADER_LOG_TABLE -- see stage file headers for the key formulas).
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_hub_bjaz_trv_loader_data_mv__risk_object_member1'
-  - 'stg2_hub_bjaz_trv_loader_data_mv__risk_object_member2'
-  - 'stg2_hub_bjaz_trv_loader_data_mv__risk_object_member3'
-  - 'stg2_hub_bjaz_trv_loader_data_mv__risk_object_member4'
-  - 'stg2_hub_bjaz_trv_loader_data_mv__risk_object_member5'
-  - 'stg2_hub_bjaz_trv_loader_log_table_mv__risk_object'
+  - 'stg2_hub_bjaz_trv_loader_data__risk_object_member1'
+  - 'stg2_hub_bjaz_trv_loader_data__risk_object_member2'
+  - 'stg2_hub_bjaz_trv_loader_data__risk_object_member3'
+  - 'stg2_hub_bjaz_trv_loader_data__risk_object_member4'
+  - 'stg2_hub_bjaz_trv_loader_data__risk_object_member5'
+  - 'stg2_hub_bjaz_trv_loader_log_table__risk_object'
 src_pk: 'RISK_OBJECT_HKEY'
 src_nk: 'PARENT_BK'
 src_ldts: 'LOAD_DATETIME'

@@ -42,12 +42,12 @@ HUB_COVERAGE`), same home as the rider rate factors — matches what you built. 
 
 **4. Trip-attribute fan-out — you're right to split it, and here's the confirmed vs held breakdown.**
 I verified the actual policy-id columns on all three tables:
-- **`BA_TRV_DATA_POLICY_DTLS_MV` — BUILDABLE.** It **does** carry its own `POLICY_REF`, the same
-  column name as `BJAZ_TRV_LOADER_DATA_MV.POLICY_REF` (and it's distinct from the `CFT_MST_POLICY_REF`
+- **`BA_TRV_DATA_POLICY_DTLS` — BUILDABLE.** It **does** carry its own `POLICY_REF`, the same
+  column name as `BJAZ_TRV_LOADER_DATA.POLICY_REF` (and it's distinct from the `CFT_MST_POLICY_REF`
   master ref on the same table). So the fan-out join is `POLICY_REF = POLICY_REF` — a same-named
   business-key join, as safe as any in this project. Build it: replicate its trip attrs to each
   `POLICY_REF ‖ MEMBERn` traveller. The key column now states this join explicitly.
-- **`BJAZ_TRV_DETLS_EXTN` and `BJAZ_TRV_RIDER_DTLS_MV` — HOLD, you're correct.** Neither carries
+- **`BJAZ_TRV_DETLS_EXTN` and `BJAZ_TRV_RIDER_DTLS` — HOLD, you're correct.** Neither carries
   `POLICY_REF`. `DETLS_EXTN` has `CONTRACT_ID`/`TRAVEL_REQ_NO`; `RIDER_DTLS` has `TRV_DATA_NO`.
   Joining either to the loader's `POLICY_REF` needs a **data-confirmed value-space match**, which
   I can't verify from schema alone — exactly your objection, and I won't fabricate the join. These
@@ -72,9 +72,9 @@ not modeling disagreements — we agree on the shape; we just can't confirm the 
 
 1. **`BJAZ_TRV_MEMBER_DTLS_EXTN.MEMBER_ID`** — distinct-values-per-policy: positional (1..n) →
    re-key travellers on the real key; global surrogate → separate per-member feed.
-2. **`BJAZ_TRV_DETLS_EXTN.CONTRACT_ID`/`TRAVEL_REQ_NO`** = `BJAZ_TRV_LOADER_DATA_MV.POLICY_REF`?
+2. **`BJAZ_TRV_DETLS_EXTN.CONTRACT_ID`/`TRAVEL_REQ_NO`** = `BJAZ_TRV_LOADER_DATA.POLICY_REF`?
    (needed to build that table's trip-attribute fan-out).
-3. **`BJAZ_TRV_RIDER_DTLS_MV.TRV_DATA_NO`** = the loader's `POLICY_REF`? (same, for rider trip
+3. **`BJAZ_TRV_RIDER_DTLS.TRV_DATA_NO`** = the loader's `POLICY_REF`? (same, for rider trip
    attrs).
 
 A single profiling pass over those three tables answers all three. Everything else in Travel is

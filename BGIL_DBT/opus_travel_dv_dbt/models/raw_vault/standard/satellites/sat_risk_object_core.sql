@@ -3,7 +3,7 @@
 -- TRAVEL STANDARD-MODEL sat() for SAT_RISK_OBJECT_CORE (parent HUB_RISK_OBJECT).
 
 {%- set yaml_metadata -%}
-source_model: 'stg2_risk_object_core_bjaz_trv_loader_log_table_mv'
+source_model: 'stg2_risk_object_core_bjaz_trv_loader_log_table'
 src_pk: 'RISK_OBJECT_HKEY'
 src_payload:
   - 'EXPOSURE_QUANTITY'

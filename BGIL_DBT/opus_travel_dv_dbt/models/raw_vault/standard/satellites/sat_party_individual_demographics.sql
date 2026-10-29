@@ -4,8 +4,8 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_party_individual_demographics_bjaz_trv_loader_data_mv_payer'
-  - 'stg2_party_individual_demographics_bjaz_trv_loader_log_table_mv_payer'
+  - 'stg2_party_individual_demographics_bjaz_trv_loader_data_payer'
+  - 'stg2_party_individual_demographics_bjaz_trv_loader_log_table_payer'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'MARITAL_STATUS'
@@ -13,8 +13,8 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_party_individual_demographics_bjaz_trv_loader_data_mv_payer: 'OPUS'
-  stg2_party_individual_demographics_bjaz_trv_loader_log_table_mv_payer: 'OPUS'
+  stg2_party_individual_demographics_bjaz_trv_loader_data_payer: 'OPUS'
+  stg2_party_individual_demographics_bjaz_trv_loader_log_table_payer: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

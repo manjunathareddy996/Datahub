@@ -6,12 +6,12 @@
 
 {%- set yaml_metadata -%}
 source_model:
-  - 'stg2_aug_product_terms_ba_trv_plan_mst_mv_multi_year_yn'
-  - 'stg2_aug_product_terms_ba_trv_plan_mst_mv_age_bypass_yn'
-  - 'stg2_aug_product_terms_ba_trv_plan_mst_mv_cft_yn'
-  - 'stg2_aug_product_terms_bjaz_trv_rate_master_mv_cft_yn'
-  - 'stg2_aug_product_terms_bjaz_trv_plan_mv_area'
-  - 'stg2_aug_product_terms_bjaz_trv_rate_master_mv_area'
+  - 'stg2_aug_product_terms_ba_trv_plan_mst_multi_year_yn'
+  - 'stg2_aug_product_terms_ba_trv_plan_mst_age_bypass_yn'
+  - 'stg2_aug_product_terms_ba_trv_plan_mst_cft_yn'
+  - 'stg2_aug_product_terms_bjaz_trv_rate_master_cft_yn'
+  - 'stg2_aug_product_terms_bjaz_trv_plan_area'
+  - 'stg2_aug_product_terms_bjaz_trv_rate_master_area'
 src_pk: 'PRODUCT_HKEY'
 src_payload:
   - 'AGE_ELIGIBILITY_BYPASS_INDICATOR'
@@ -22,12 +22,12 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_aug_product_terms_ba_trv_plan_mst_mv_multi_year_yn: 'OPUS'
-  stg2_aug_product_terms_ba_trv_plan_mst_mv_age_bypass_yn: 'OPUS'
-  stg2_aug_product_terms_ba_trv_plan_mst_mv_cft_yn: 'OPUS'
-  stg2_aug_product_terms_bjaz_trv_rate_master_mv_cft_yn: 'OPUS'
-  stg2_aug_product_terms_bjaz_trv_plan_mv_area: 'OPUS'
-  stg2_aug_product_terms_bjaz_trv_rate_master_mv_area: 'OPUS'
+  stg2_aug_product_terms_ba_trv_plan_mst_multi_year_yn: 'OPUS'
+  stg2_aug_product_terms_ba_trv_plan_mst_age_bypass_yn: 'OPUS'
+  stg2_aug_product_terms_ba_trv_plan_mst_cft_yn: 'OPUS'
+  stg2_aug_product_terms_bjaz_trv_rate_master_cft_yn: 'OPUS'
+  stg2_aug_product_terms_bjaz_trv_plan_area: 'OPUS'
+  stg2_aug_product_terms_bjaz_trv_rate_master_area: 'OPUS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
