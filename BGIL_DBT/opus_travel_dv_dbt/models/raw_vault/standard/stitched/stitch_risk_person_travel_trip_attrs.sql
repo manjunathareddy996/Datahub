@@ -33,7 +33,8 @@ with loader as (
         departuredate,
         noofjourneydays,
         prjourney,
-        returndate
+        returndate,
+        inc_job_updated_at
     from {{ ref('stg_travel__bjaz_trv_loader_data') }}
 
 ),
@@ -63,6 +64,7 @@ select
     loader.noofjourneydays,
     loader.prjourney,
     loader.returndate,
+    loader.inc_job_updated_at,
     trip_attrs.destination,
     trip_attrs.no_of_days,
     trip_attrs.travel_area_plan_nm,
