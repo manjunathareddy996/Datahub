@@ -171,10 +171,21 @@
         {%- endfor -%}
     {%- else -%}
         {%- set sat_rel = adapter.get_relation(database=this.database, schema=this.schema, identifier=this.identifier) -%}
+        {#-- If the target exists but was created by a sibling project that never wrote DBT_RUN_TS,
+             a MAX(DBT_RUN_TS) watermark query errors with 'invalid identifier'. The column will be
+             appended on this run via on_schema_change='append_new_columns'; until then fall back to
+             the sentinel so first-run compilation succeeds. --#}
+        {%- set has_run_ts = false -%}
+        {%- if sat_rel is not none -%}
+            {%- set target_columns = adapter.get_columns_in_relation(sat_rel) | map(attribute='name') | map('upper') | list -%}
+            {%- if (src_run_ts | upper) in target_columns -%}
+                {%- set has_run_ts = true -%}
+            {%- endif -%}
+        {%- endif -%}
         {%- for model_name in source_model -%}
             {%- set source_group = src_record_source_map[model_name] -%}
             {%- if source_group not in source_watermarks -%}
-                {%- if sat_rel is none -%}
+                {%- if sat_rel is none or not has_run_ts -%}
                     {%- do source_watermarks.update({source_group: "'" ~ sentinel ~ "'"}) -%}
                 {%- else -%}
                     {%- set wm_query -%}
