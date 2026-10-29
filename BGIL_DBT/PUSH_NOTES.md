@@ -4,6 +4,43 @@ Running log of pushes to this repo. Newest first.
 
 ---
 
+## 2026-10-29 — Merge 25 High `sat_aug_*` satellites into their standard twins (mtv2)
+
+**Target:** `main` (`9169ccb`, committed directly, no feature branch)
+**What:** 25 of the 46 `High` merge candidates in `maximus_travel_v2_dv_dbt`
+collapsed into their standard twins. 88 augmented payload columns carried over;
+the augmented satellites, satfeeds and stages retired. 174 files changed.
+MAXIMUS satellites 234 → 209; attribute total unchanged at 1,355
+(standard 425 → 513, augmented 930 → 842).
+
+**Per pair:** every feeder wide stage gains the columns in `derived_columns`
+(real expression on the views that supply them, `cast(null as varchar)` on the
+rest, per BUILD_RULES 6) and in its `HASHDIFF_<SAT>` input list; the satfeed
+gains them in every union branch; `src_payload` extended.
+
+**⚠ Operational consequence:** the `HASHDIFF` input list changed on all 25
+satellites, so they need a **full refresh**, not an incremental run. History
+cannot continue across the hashdiff change without a migration step.
+
+**Verification:** `maximus_travel_v2_dv_dbt/verify_merge.py` checks the result
+against the pre-merge files recovered from git, not against the edit script's
+own intent. Gates G1–G7 pass, 177 payload columns accounted for, 0 lost.
+`dbt parse` / `dbt compile` **not run** — dbt is not installed in the
+environment this was prepared in. That gate is still outstanding.
+
+**Held back deliberately:**
+- 12 pairs (30 cols) whose standard satellite is also written by
+  `opus_travel_dv_dbt` into the same vault table — cross-project contract,
+  needs sibling sign-off. Run `merge_high_pairs.py --only-c`.
+- 9 pairs (33 cols) whose augmented view is not already a feeder, so the
+  satfeed needs a new branch.
+
+25 + 12 + 9 = 46 pairs, 88 + 30 + 33 = 151 columns.
+
+**Not pushed.** `myrepo/main` is still at `5bc9980`.
+
+---
+
 ## 2026-10-28 — Round-2 single-source satellite collapse (travel)
 
 **Target:** `main` (`ede6885`)
