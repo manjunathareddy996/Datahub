@@ -5,18 +5,18 @@ maximus_travel_dbt:
       type: snowflake
       account: "_" # overwritten by Snowflake CLI connection (env var) at deploy time
       user: "_"    # overwritten by Snowflake CLI connection (env var) at deploy time
-      role: "{{ env_var('BGIL_DEV_ROLE') }}"
-      warehouse: "{{ env_var('BGIL_WH') }}"
-      database: "{{ env_var('BGIL_TARGET_DB_DEV') }}"
-      schema: "{{ env_var('BGIL_VAULT_SCHEMA') }}"
+      role: INGESTION_PREPROD_ROLE
+      warehouse: BAGIC_DPM_MAXI_RAW_WH
+      database: BAGIC_PREPROD_CURATED_DB
+      schema: BGIL_DATA_MODEL
       threads: 7
 
     prod:
       type: snowflake
-      role: "{{ env_var('BGIL_PROD_ROLE') }}"
-      warehouse: "{{ env_var('BGIL_WH') }}"
-      database: "{{ env_var('BGIL_TARGET_DB_PROD') }}"
-      schema: "{{ env_var('BGIL_VAULT_SCHEMA') }}"
+      role: EMPOWER_FOUNDATION_ROLE
+      warehouse: BAGIC_DPM_MAXI_RAW_WH
+      database: BAGIC_PREPROD_CURATED_DB
+      schema: BGIL_DATA_MODEL
       account: 'not needed'
-      user: 'not needed'
+      user: 'not needed' 
       threads: 4
