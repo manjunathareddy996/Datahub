@@ -2,7 +2,6 @@
    DM-T2  |  Load Audit - Hash Key Integrity (DV2.0, Travel LOB)  (OPUS)
    Hash keys generated consistently; no null; no unexpected collisions.
 
-   MEMBER SPLIT: sections 1..60 assigned M1 x 20, M2 x 20, M3 x 20 -- contiguous thirds in listed order.
    Check ID: DM-T2
    Category: Load audit
    Sign-off criterion: Hash key integrity (DV2.0)
@@ -34,7 +33,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. OPUS — Hash column types (all tables)   [Implemented]  [M1]
+-- 1. OPUS — Hash column types (all tables)   [Implemented]
 -- Every *_HKEY and HASHDIFF column of the project's hubs, links and satellites must be
 -- BINARY(16) (MD5_BINARY).
 ----------------------------------------------------------------------------------------
@@ -49,7 +48,7 @@ select 'OPUS' as project, table_name, column_name, data_type, character_maximum_
 
 
 ----------------------------------------------------------------------------------------
--- 2. OPUS — HUB  HUB_AGREEMENT   [Implemented]  [M1]
+-- 2. OPUS — HUB  HUB_AGREEMENT   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal AGREEMENT_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -72,7 +71,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_AGREEMENT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 3. OPUS — HUB  HUB_ASSESSMENT   [Implemented]  [M1]
+-- 3. OPUS — HUB  HUB_ASSESSMENT   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal ASSESSMENT_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -95,7 +94,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_ASSESSMENT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 4. OPUS — HUB  HUB_COVERAGE   [Implemented]  [M1]
+-- 4. OPUS — HUB  HUB_COVERAGE   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal COVERAGE_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -118,7 +117,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_COVERAGE' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 5. OPUS — HUB  HUB_DISTRIBUTION_CHANNEL   [Implemented]  [M1]
+-- 5. OPUS — HUB  HUB_DISTRIBUTION_CHANNEL   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal DISTRIBUTION_CHANNEL_HKEY. collisions = hash keys carrying more than one
 -- PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and
@@ -141,7 +140,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_DISTRIBUTION_CHANNEL' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 6. OPUS — HUB  HUB_FINANCIAL_ACCOUNT   [Implemented]  [M1]
+-- 6. OPUS — HUB  HUB_FINANCIAL_ACCOUNT   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal FINANCIAL_ACCOUNT_HKEY. collisions = hash keys carrying more than one
 -- PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and
@@ -164,7 +163,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_ACCOUNT' as table_
 
 
 ----------------------------------------------------------------------------------------
--- 7. OPUS — HUB  HUB_FINANCIAL_TRANSACTION   [Implemented]  [M1]
+-- 7. OPUS — HUB  HUB_FINANCIAL_TRANSACTION   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal FINANCIAL_TRANSACTION_HKEY. collisions = hash keys carrying more than one
 -- PARENT_BK. Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and
@@ -187,7 +186,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_FINANCIAL_TRANSACTION' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 8. OPUS — HUB  HUB_LOCATION   [Implemented]  [M1]
+-- 8. OPUS — HUB  HUB_LOCATION   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal LOCATION_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -210,7 +209,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_LOCATION' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 9. OPUS — HUB  HUB_ORG_UNIT   [Implemented]  [M1]
+-- 9. OPUS — HUB  HUB_ORG_UNIT   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal ORG_UNIT_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -233,7 +232,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_ORG_UNIT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 10. OPUS — HUB  HUB_PARTY   [Implemented]  [M1]
+-- 10. OPUS — HUB  HUB_PARTY   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal PARTY_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -256,7 +255,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PARTY' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 11. OPUS — HUB  HUB_POLICY   [Implemented]  [M1]
+-- 11. OPUS — HUB  HUB_POLICY   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal POLICY_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -279,7 +278,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_POLICY' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 12. OPUS — HUB  HUB_PRODUCT   [Implemented]  [M1]
+-- 12. OPUS — HUB  HUB_PRODUCT   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal PRODUCT_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -302,7 +301,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PRODUCT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 13. OPUS — HUB  HUB_PROPOSAL   [Implemented]  [M1]
+-- 13. OPUS — HUB  HUB_PROPOSAL   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal PROPOSAL_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -325,7 +324,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_PROPOSAL' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 14. OPUS — HUB  HUB_QUOTE   [Implemented]  [M1]
+-- 14. OPUS — HUB  HUB_QUOTE   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal QUOTE_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -348,7 +347,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_QUOTE' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 15. OPUS — HUB  HUB_RISK_OBJECT   [Implemented]  [M1]
+-- 15. OPUS — HUB  HUB_RISK_OBJECT   [Implemented]
 -- Recompute: MD5_BINARY(NULLIF(UPPER(TRIM(CAST('OPUS_' || PARENT_BK AS VARCHAR))), ''))
 -- must equal RISK_OBJECT_HKEY. collisions = hash keys carrying more than one PARENT_BK.
 -- Overlaps DM-K3 (nulls) and DM-K4 (uniqueness) but adds the recompute and length
@@ -371,7 +370,7 @@ select 'OPUS' as project, 'hub' as table_type, 'HUB_RISK_OBJECT' as table_name,
 
 
 ----------------------------------------------------------------------------------------
--- 16. OPUS — SATELLITE  SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M1]
+-- 16. OPUS — SATELLITE  SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -387,7 +386,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COMMON_COMMUNICATI
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — SATELLITE  SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M1]
+-- 17. OPUS — SATELLITE  SAT_AUG_COVERAGE_DEFINITION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -403,7 +402,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_DEFINITIO
 
 
 ----------------------------------------------------------------------------------------
--- 18. OPUS — SATELLITE  SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M1]
+-- 18. OPUS — SATELLITE  SAT_AUG_COVERAGE_LIMITS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -419,7 +418,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_LIMITS' a
 
 
 ----------------------------------------------------------------------------------------
--- 19. OPUS — SATELLITE  SAT_AUG_COVERAGE_RATING   [Implemented]  [M1]
+-- 19. OPUS — SATELLITE  SAT_AUG_COVERAGE_RATING   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -435,7 +434,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_COVERAGE_RATING' a
 
 
 ----------------------------------------------------------------------------------------
--- 20. OPUS — SATELLITE  SAT_AUG_FINTXN_PREMIUM   [Implemented]  [M1]
+-- 20. OPUS — SATELLITE  SAT_AUG_FINTXN_PREMIUM   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -451,7 +450,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_FINTXN_PREMIUM' as
 
 
 ----------------------------------------------------------------------------------------
--- 21. OPUS — SATELLITE  SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]  [M2]
+-- 21. OPUS — SATELLITE  SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -467,7 +466,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_PARTY_ROLE_COR
 
 
 ----------------------------------------------------------------------------------------
--- 22. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M2]
+-- 22. OPUS — SATELLITE  SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -483,7 +482,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_LNK_ROLE_CUSTOMER'
 
 
 ----------------------------------------------------------------------------------------
--- 23. OPUS — SATELLITE  SAT_AUG_PARTY_BANKING   [Implemented]  [M2]
+-- 23. OPUS — SATELLITE  SAT_AUG_PARTY_BANKING   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -499,7 +498,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_BANKING' as 
 
 
 ----------------------------------------------------------------------------------------
--- 24. OPUS — SATELLITE  SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M2]
+-- 24. OPUS — SATELLITE  SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -515,7 +514,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PARTY_EMPLOYMENT' 
 
 
 ----------------------------------------------------------------------------------------
--- 25. OPUS — SATELLITE  SAT_AUG_PRODUCT_TERMS   [Implemented]  [M2]
+-- 25. OPUS — SATELLITE  SAT_AUG_PRODUCT_TERMS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -531,7 +530,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_PRODUCT_TERMS' as 
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — SATELLITE  SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M2]
+-- 26. OPUS — SATELLITE  SAT_AUG_RISK_PERSON_INSURED   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -547,7 +546,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_INSURE
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — SATELLITE  SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M2]
+-- 27. OPUS — SATELLITE  SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -563,7 +562,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_AUG_RISK_PERSON_TRAVEL
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]  [M2]
+-- 28. OPUS — SATELLITE  SAT_COMMON_ADDRESS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -579,7 +578,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_ADDRESS' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]  [M2]
+-- 29. OPUS — SATELLITE  SAT_COMMON_CLASSIFICATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -595,7 +594,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CLASSIFICATION'
 
 
 ----------------------------------------------------------------------------------------
--- 30. OPUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]  [M2]
+-- 30. OPUS — SATELLITE  SAT_COMMON_CONTACT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -611,7 +610,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COMMON_CONTACT' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 31. OPUS — SATELLITE  SAT_COVERAGE_CONDITIONS   [Implemented]  [M2]
+-- 31. OPUS — SATELLITE  SAT_COVERAGE_CONDITIONS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -627,7 +626,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_CONDITIONS' a
 
 
 ----------------------------------------------------------------------------------------
--- 32. OPUS — SATELLITE  SAT_COVERAGE_DEFINITION   [Implemented]  [M2]
+-- 32. OPUS — SATELLITE  SAT_COVERAGE_DEFINITION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -643,7 +642,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_DEFINITION' a
 
 
 ----------------------------------------------------------------------------------------
--- 33. OPUS — SATELLITE  SAT_COVERAGE_LIMITS   [Implemented]  [M2]
+-- 33. OPUS — SATELLITE  SAT_COVERAGE_LIMITS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -659,7 +658,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_COVERAGE_LIMITS' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 34. OPUS — SATELLITE  SAT_FINTXN_COMMISSION   [Implemented]  [M2]
+-- 34. OPUS — SATELLITE  SAT_FINTXN_COMMISSION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -675,7 +674,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_COMMISSION' as 
 
 
 ----------------------------------------------------------------------------------------
--- 35. OPUS — SATELLITE  SAT_FINTXN_HEADER   [Implemented]  [M2]
+-- 35. OPUS — SATELLITE  SAT_FINTXN_HEADER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -691,7 +690,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_HEADER' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 36. OPUS — SATELLITE  SAT_FINTXN_PREMIUM   [Implemented]  [M2]
+-- 36. OPUS — SATELLITE  SAT_FINTXN_PREMIUM   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -707,7 +706,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_PREMIUM' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 37. OPUS — SATELLITE  SAT_FINTXN_TAX   [Implemented]  [M2]
+-- 37. OPUS — SATELLITE  SAT_FINTXN_TAX   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -723,7 +722,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FINTXN_TAX' as table_n
 
 
 ----------------------------------------------------------------------------------------
--- 38. OPUS — SATELLITE  SAT_FIN_CHARGE_RATE   [Implemented]  [M2]
+-- 38. OPUS — SATELLITE  SAT_FIN_CHARGE_RATE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -739,7 +738,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FIN_CHARGE_RATE' as ta
 
 
 ----------------------------------------------------------------------------------------
--- 39. OPUS — SATELLITE  SAT_FIN_RECEIPT   [Implemented]  [M2]
+-- 39. OPUS — SATELLITE  SAT_FIN_RECEIPT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -755,7 +754,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_FIN_RECEIPT' as table_
 
 
 ----------------------------------------------------------------------------------------
--- 40. OPUS — SATELLITE  SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M2]
+-- 40. OPUS — SATELLITE  SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -771,7 +770,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_LNK_ROLE_NOMINEE_BENEF
 
 
 ----------------------------------------------------------------------------------------
--- 41. OPUS — SATELLITE  SAT_ORG_UNIT_DEFINITION   [Implemented]  [M3]
+-- 41. OPUS — SATELLITE  SAT_ORG_UNIT_DEFINITION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -787,7 +786,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_ORG_UNIT_DEFINITION' a
 
 
 ----------------------------------------------------------------------------------------
--- 42. OPUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]  [M3]
+-- 42. OPUS — SATELLITE  SAT_PARTY_EMPLOYMENT   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -803,7 +802,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_EMPLOYMENT' as t
 
 
 ----------------------------------------------------------------------------------------
--- 43. OPUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M3]
+-- 43. OPUS — SATELLITE  SAT_PARTY_HEALTH_PROFILE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -819,7 +818,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_HEALTH_PROFILE' 
 
 
 ----------------------------------------------------------------------------------------
--- 44. OPUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]  [M3]
+-- 44. OPUS — SATELLITE  SAT_PARTY_IDENTIFICATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -835,7 +834,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTIFICATION' 
 
 
 ----------------------------------------------------------------------------------------
--- 45. OPUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]  [M3]
+-- 45. OPUS — SATELLITE  SAT_PARTY_IDENTITY   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -851,7 +850,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_IDENTITY' as tab
 
 
 ----------------------------------------------------------------------------------------
--- 46. OPUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M3]
+-- 46. OPUS — SATELLITE  SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -867,7 +866,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PARTY_INDIVIDUAL_DEMOG
 
 
 ----------------------------------------------------------------------------------------
--- 47. OPUS — SATELLITE  SAT_POLICY_CLASSIFICATION   [Implemented]  [M3]
+-- 47. OPUS — SATELLITE  SAT_POLICY_CLASSIFICATION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -883,7 +882,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_CLASSIFICATION'
 
 
 ----------------------------------------------------------------------------------------
--- 48. OPUS — SATELLITE  SAT_POLICY_HEADER   [Implemented]  [M3]
+-- 48. OPUS — SATELLITE  SAT_POLICY_HEADER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -899,7 +898,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_HEADER' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 49. OPUS — SATELLITE  SAT_POLICY_TERMS   [Implemented]  [M3]
+-- 49. OPUS — SATELLITE  SAT_POLICY_TERMS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -915,7 +914,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_POLICY_TERMS' as table
 
 
 ----------------------------------------------------------------------------------------
--- 50. OPUS — SATELLITE  SAT_PRODUCT_DEFINITION   [Implemented]  [M3]
+-- 50. OPUS — SATELLITE  SAT_PRODUCT_DEFINITION   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -931,7 +930,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_DEFINITION' as
 
 
 ----------------------------------------------------------------------------------------
--- 51. OPUS — SATELLITE  SAT_PRODUCT_RATING_FACTOR   [Implemented]  [M3]
+-- 51. OPUS — SATELLITE  SAT_PRODUCT_RATING_FACTOR   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -947,7 +946,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_RATING_FACTOR'
 
 
 ----------------------------------------------------------------------------------------
--- 52. OPUS — SATELLITE  SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M3]
+-- 52. OPUS — SATELLITE  SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -963,7 +962,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_RATING_STRUCTU
 
 
 ----------------------------------------------------------------------------------------
--- 53. OPUS — SATELLITE  SAT_PRODUCT_TERMS   [Implemented]  [M3]
+-- 53. OPUS — SATELLITE  SAT_PRODUCT_TERMS   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -979,7 +978,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PRODUCT_TERMS' as tabl
 
 
 ----------------------------------------------------------------------------------------
--- 54. OPUS — SATELLITE  SAT_PROPOSAL_UNDERWRITING   [Implemented]  [M3]
+-- 54. OPUS — SATELLITE  SAT_PROPOSAL_UNDERWRITING   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -995,7 +994,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_PROPOSAL_UNDERWRITING'
 
 
 ----------------------------------------------------------------------------------------
--- 55. OPUS — SATELLITE  SAT_QUOTE_HEADER   [Implemented]  [M3]
+-- 55. OPUS — SATELLITE  SAT_QUOTE_HEADER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1011,7 +1010,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_QUOTE_HEADER' as table
 
 
 ----------------------------------------------------------------------------------------
--- 56. OPUS — SATELLITE  SAT_RISK_MOTOR_DRIVER   [Implemented]  [M3]
+-- 56. OPUS — SATELLITE  SAT_RISK_MOTOR_DRIVER   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1027,7 +1026,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_MOTOR_DRIVER' as 
 
 
 ----------------------------------------------------------------------------------------
--- 57. OPUS — SATELLITE  SAT_RISK_MOTOR_VEHICLE   [Implemented]  [M3]
+-- 57. OPUS — SATELLITE  SAT_RISK_MOTOR_VEHICLE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1043,7 +1042,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_MOTOR_VEHICLE' as
 
 
 ----------------------------------------------------------------------------------------
--- 58. OPUS — SATELLITE  SAT_RISK_OBJECT_CORE   [Implemented]  [M3]
+-- 58. OPUS — SATELLITE  SAT_RISK_OBJECT_CORE   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1059,7 +1058,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_OBJECT_CORE' as t
 
 
 ----------------------------------------------------------------------------------------
--- 59. OPUS — SATELLITE  SAT_RISK_PERSON_INSURED   [Implemented]  [M3]
+-- 59. OPUS — SATELLITE  SAT_RISK_PERSON_INSURED   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------
@@ -1075,7 +1074,7 @@ select 'OPUS' as project, 'satellite' as table_type, 'SAT_RISK_PERSON_INSURED' a
 
 
 ----------------------------------------------------------------------------------------
--- 60. OPUS — SATELLITE  SAT_RISK_PERSON_TRAVEL   [Implemented]  [M3]
+-- 60. OPUS — SATELLITE  SAT_RISK_PERSON_TRAVEL   [Implemented]
 -- Satellite hash key and HASHDIFF populated and 16 bytes. HASHDIFF correctness itself is
 -- DM-H1 (a).
 ----------------------------------------------------------------------------------------

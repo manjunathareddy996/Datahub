@@ -2,7 +2,6 @@
    DM-H4  |  History - Current-view Correctness (Travel LOB)  (MAXIMUS)
    Latest satellite row per key matches the latest source record.
 
-   MEMBER SPLIT: sections 1..209 assigned M1 x 70, M2 x 70, M3 x 69 -- contiguous thirds in listed order.
    Check ID: DM-H4
    Category: History checks
    Sign-off criterion: Current-view correctness
@@ -37,7 +36,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]  [M1]
+-- 1. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -66,7 +65,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol_tele
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ASSESSMENT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))),'')) is not null then 'TELEVERIF:' || nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ASSESSMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))),'') is not null then 'TELEVERIF:' || nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("END_TIME")), ''))) as ASSESSMENT_END_TIME,
                to_varchar((nullif(trim(to_varchar("START_TIME")), ''))) as ASSESSMENT_START_TIME,
@@ -113,7 +112,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]  [M1]
+-- 2. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -146,7 +145,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("INTERMEDIARY_CODE")), ''))),'')) is not null then 'IMD:' || nullif(trim((nullif(trim(to_varchar("INTERMEDIARY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("INTERMEDIARY_CODE")), ''))),'') is not null then 'IMD:' || nullif(trim((nullif(trim(to_varchar("INTERMEDIARY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("INTERMEDIARY_NAME")), ''))) as CHANNEL_NAME
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
@@ -179,7 +178,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_polp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("IMD_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("IMD_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("IMD_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("IMD_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PARTNER_NAME")), ''))) as CHANNEL_NAME
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -215,7 +214,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_pp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTNER_REF")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTNER_REF")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTNER_REF")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTNER_REF")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PARTNER_DETAILS")), ''))) as CHANNEL_REMARKS,
                to_varchar((nullif(trim(to_varchar("PARTNER_TYPE")), ''))) as CHANNEL_TYPE,
@@ -266,7 +265,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("IMD_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("IMD_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("IMD_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("IMD_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PARTNER_NAME")), ''))) as CHANNEL_NAME
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
@@ -328,7 +327,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M1]
+-- 3. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -354,7 +353,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__clm_clmd
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NET_ASSESSED_AMOUNT")), ''))) as NET_ASSESSED_AMOUNT
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
@@ -383,7 +382,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Implemented]  [M1]
+-- 4. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -636,7 +635,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]  [M1]
+-- 5. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -745,7 +744,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]  [M1]
+-- 6. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -773,7 +772,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__clm_clmd
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("LOSSDESC")), ''))) as PRELIMINARY_LOSS_DESCRIPTION
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
@@ -937,7 +936,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]  [M1]
+-- 7. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1173,7 +1172,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]  [M1]
+-- 8. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1212,7 +1211,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__clm_clmd
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CLAIM_BUCKET")), ''))) as CLAIM_CATEGORY,
                to_varchar((nullif(trim(to_varchar("SUBCLAIMNO")), ''))) as CLAIM_REFERENCE_NUMBER,
@@ -1517,7 +1516,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]  [M1]
+-- 9. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1837,7 +1836,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]  [M1]
+-- 10. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1897,7 +1896,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]  [M1]
+-- 11. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2006,7 +2005,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — SAT_CLAIM_NOTE   [Implemented]  [M1]
+-- 12. MAXIMUS — SAT_CLAIM_NOTE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2210,7 +2209,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M1]
+-- 13. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2448,7 +2447,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]  [M1]
+-- 14. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2511,7 +2510,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Implemented]  [M1]
+-- 15. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2600,7 +2599,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 16. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M1]
+-- 16. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2656,7 +2655,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 17. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]  [M1]
+-- 17. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2765,7 +2764,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 18. MAXIMUS — SAT_CLAIM_RESERVE   [Implemented]  [M1]
+-- 18. MAXIMUS — SAT_CLAIM_RESERVE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2898,7 +2897,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 19. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Implemented]  [M1]
+-- 19. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2965,7 +2964,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 20. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]  [M1]
+-- 20. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -3021,7 +3020,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 21. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]  [M1]
+-- 21. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -3047,7 +3046,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__clm_clmd
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("STATUSCHANGEDATE")), ''))) as LAST_ACTION_DATE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
@@ -3076,7 +3075,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 22. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]  [M1]
+-- 22. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -3146,7 +3145,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 23. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]  [M1]
+-- 23. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -3336,7 +3335,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 24. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
+-- 24. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -3441,7 +3440,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("ADDRESS_FOR_REFERENCE")), ''))),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim((nullif(trim(to_varchar("ADDRESS_FOR_REFERENCE")), ''))), '')), '[[:space:]]+', ' '))) end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("ADDRESS_FOR_REFERENCE")), ''))),'') is not null then md5(upper(regexp_replace(trim(nullif(trim((nullif(trim(to_varchar("ADDRESS_FOR_REFERENCE")), ''))), '')), '[[:space:]]+', ' '))) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("ADDRESS_FOR_REFERENCE")), '')), (nullif(trim(to_varchar("CORRESPONDENCE_ADDRESS")), '')), (nullif(trim(to_varchar("SELECT_INSPECTION_ADDRESS")), '')))) as ADDRESS_LINE_1,
                to_varchar((nullif(trim(to_varchar("CITY")), ''))) as CITY,
@@ -3557,7 +3556,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("ADDRESS")), ''))),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim((nullif(trim(to_varchar("ADDRESS")), ''))), '')), '[[:space:]]+', ' '))) end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("ADDRESS")), ''))),'') is not null then md5(upper(regexp_replace(trim(nullif(trim((nullif(trim(to_varchar("ADDRESS")), ''))), '')), '[[:space:]]+', ' '))) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ADDRESS")), ''))) as ADDRESS_LINE_1
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -4544,7 +4543,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 25. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]  [M1]
+-- 25. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -4628,7 +4627,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 26. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]  [M1]
+-- 26. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -4744,7 +4743,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 27. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
+-- 27. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -4775,7 +4774,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_TYPE_RETAIL_OR_INSTITUTIONAL")), ''))) as CATEGORY_CODE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
@@ -4920,7 +4919,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 28. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M1]
+-- 28. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -5142,7 +5141,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 29. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]  [M1]
+-- 29. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -5173,7 +5172,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_DIGITAL_CLAIM_FORM_CONSENT_RECEIVED")), ''))) as CONSENT_GIVEN_INDICATOR
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
@@ -5297,7 +5296,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]  [M1]
+-- 30. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -5346,7 +5345,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('EMAIL') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5359,7 +5358,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("EMAIL")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('EMAIL_COMMUNICATION') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5372,7 +5371,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("COMMUNICATION_EMAIL_ID")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('EMAIL_INSURED') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5424,7 +5423,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("MOBILE_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#7
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE_ALTERNATE') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5437,7 +5436,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ALTERNATE_MOBILE_NUMBER_BELONGS_TO")), '')) is not null or (nullif(trim(to_varchar("ALTERNATE_MOBILE_NUMBERCLAIMS")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#8
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE_COMMUNICATION') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5450,7 +5449,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("COMMUNICATION_CONTACT_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#9
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE_INSURED') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5463,7 +5462,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("INSURED_MOBILE_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#10
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE_INSURED_CONTACT') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5476,7 +5475,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("INSURED_CONTACT_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#11
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('MOBILE_KEY_CONTACT') as cdk_1,
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
@@ -5551,7 +5550,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmrsk_rska_properties_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("HOSPITAL_ID")), ''))),'')) is not null then 'PROVIDER:' || nullif(trim((nullif(trim(to_varchar("HOSPITAL_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("HOSPITAL_ID")), ''))),'') is not null then 'PROVIDER:' || nullif(trim((nullif(trim(to_varchar("HOSPITAL_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('LANDLINE_HOSPITAL') as cdk_1,
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
@@ -6299,7 +6298,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 31. MAXIMUS — SAT_COMMON_GEO   [Implemented]  [M1]
+-- 31. MAXIMUS — SAT_COMMON_GEO   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -6489,7 +6488,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 32. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]  [M1]
+-- 32. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -6545,7 +6544,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 33. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]  [M1]
+-- 33. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -6624,7 +6623,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_qpd
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))),'')) is not null then 'QUOTEPREM:' || nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))),'') is not null then 'QUOTEPREM:' || nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BASE_CURRENCY")), ''))) as BASE_CURRENCY_CODE,
                to_varchar((nullif(trim(to_varchar("BASE_CURRENCY_RATE")), ''))) as BASE_CURRENCY_EXCHANGE_RATE,
@@ -6791,7 +6790,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 34. MAXIMUS — SAT_COMMON_STATUS   [Implemented]  [M1]
+-- 34. MAXIMUS — SAT_COMMON_STATUS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -6847,7 +6846,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 35. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
+-- 35. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -6913,7 +6912,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_rskp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'')) is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUB_CONDITION1")), ''))) as CONDITION_DESCRIPTION
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -6979,7 +6978,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'')) is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUB_CONDITION1")), ''))) as CONDITION_DESCRIPTION
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
@@ -7041,7 +7040,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 36. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
+-- 36. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -7076,7 +7075,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_cov
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'')) is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_NAME")), ''))) as COVERAGE_NAME
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS
@@ -7143,7 +7142,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_rskp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'')) is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_NAME")), ''))) as COVERAGE_NAME,
                to_varchar((nullif(trim(to_varchar("NATURE_OF_LOSS")), ''))) as PERIL_COVERED
@@ -7216,7 +7215,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'')) is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_NAME")), ''))) as COVERAGE_NAME,
                to_varchar((nullif(trim(to_varchar("NATURE_OF_LOSS")), ''))) as PERIL_COVERED
@@ -7295,7 +7294,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 37. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M1]
+-- 37. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -7369,7 +7368,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 38. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]  [M1]
+-- 38. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -7419,7 +7418,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clma_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))),'')) is not null then 'INWARD:' || nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))),'') is not null then 'INWARD:' || nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COURIER_NAME")), ''))) as COURIER_NAME,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_DETAILS")), ''))) as DOCUMENT_DETAILS_TEXT,
@@ -7505,7 +7504,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))),'')) is not null then 'INWARD:' || nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))),'') is not null then 'INWARD:' || nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COURIER_NAME")), ''))) as COURIER_NAME,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_DETAILS")), ''))) as DOCUMENT_DETAILS_TEXT,
@@ -7571,7 +7570,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmcov_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))),'')) is not null then 'INWARD:' || nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))),'') is not null then 'INWARD:' || nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_DETAILS")), ''))) as DOCUMENT_NAME,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_TYPE_INWARD")), ''))) as DOCUMENT_TYPE,
@@ -7624,7 +7623,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__clm_clmd_doc
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))),'')) is not null then 'DOC:' || nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))),'') is not null then 'DOC:' || nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_NAME")), ''))) as DOCUMENT_NAME,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_TYPE")), ''))) as DOCUMENT_TYPE,
@@ -7671,7 +7670,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol_doc
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))),'')) is not null then 'DOC:' || nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))),'') is not null then 'DOC:' || nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_NAME")), ''))) as DOCUMENT_NAME,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_TYPE")), ''))) as DOCUMENT_TYPE,
@@ -7718,7 +7717,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol_ins_doc
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))),'')) is not null then 'DOC:' || nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))),'') is not null then 'DOC:' || nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_NAME")), ''))) as DOCUMENT_NAME,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_TYPE")), ''))) as DOCUMENT_TYPE,
@@ -7765,7 +7764,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol_ins_mbr_document_detail
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))),'')) is not null then 'DOC:' || nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))),'') is not null then 'DOC:' || nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_NAME")), ''))) as DOCUMENT_NAME,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_TYPE")), ''))) as DOCUMENT_TYPE,
@@ -7810,7 +7809,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_polp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("COI_NUMBER")), ''))),'')) is not null then 'COI:' || nullif(trim((nullif(trim(to_varchar("COI_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COI_NUMBER")), ''))),'') is not null then 'COI:' || nullif(trim((nullif(trim(to_varchar("COI_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COI_NUMBER")), ''))) as DOCUMENT_REFERENCE_NUMBER
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -7845,7 +7844,7 @@ e9 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol_prp_document_detail
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))),'')) is not null then 'DOC:' || nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))),'') is not null then 'DOC:' || nullif(trim((nullif(trim(to_varchar("DOCUMENT_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_NAME")), ''))) as DOCUMENT_NAME,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_TYPE")), ''))) as DOCUMENT_TYPE,
@@ -7890,7 +7889,7 @@ e10 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("COI_NUMBER")), ''))),'')) is not null then 'COI:' || nullif(trim((nullif(trim(to_varchar("COI_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COI_NUMBER")), ''))),'') is not null then 'COI:' || nullif(trim((nullif(trim(to_varchar("COI_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COI_NUMBER")), ''))) as DOCUMENT_REFERENCE_NUMBER
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
@@ -8018,7 +8017,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 39. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]  [M1]
+-- 39. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -8074,7 +8073,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 40. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]  [M1]
+-- 40. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -8179,7 +8178,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 41. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
+-- 41. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -8267,7 +8266,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol_policy_payment_information
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUB_CODE")), ''))) as ORG_UNIT_CODE,
                to_varchar((nullif(trim(to_varchar("COLLECTION_SOURCE")), ''))) as TRANSACTION_CHANNEL,
@@ -8407,7 +8406,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 42. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
+-- 42. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -8437,7 +8436,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol_policy_payment_information
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COLLECTION_MODE")), ''))) as COLLECTION_MODE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
@@ -8554,7 +8553,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 43. MAXIMUS — SAT_FINTXN_TAX   [Implemented]  [M1]
+-- 43. MAXIMUS — SAT_FINTXN_TAX   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -8736,7 +8735,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv__sat_fintxn_tax#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("INVOICE_NUMBER")), ''))),'')) is not null then 'INV:' || nullif(trim((nullif(trim(to_varchar("INVOICE_NUMBER")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("INVOICE_NUMBER")), ''))),'') is not null then 'INV:' || nullif(trim((nullif(trim(to_varchar("INVOICE_NUMBER")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('GST') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("CGST")), '')))) as CGST_AMOUNT,
@@ -8856,7 +8855,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 44. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
+-- 44. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -8890,7 +8889,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol_policy_payment_information
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COLLECTION_AMOUNT")), ''))) as AMOUNT_RECEIVED,
                to_varchar((nullif(trim(to_varchar("CHEQUE_REALISATION_DATE")), ''))) as REALISATION_DATE,
@@ -9031,7 +9030,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 45. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]  [M1]
+-- 45. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -9062,7 +9061,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmpay_payp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PAYMENT_INSTRUMENT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("ACCOUNT_NUMBER")), ''))),'')) is not null then 'ACCT:' || nullif(trim((nullif(trim(to_varchar("ACCOUNT_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PAYMENT_INSTRUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("ACCOUNT_NUMBER")), ''))),'') is not null then 'ACCT:' || nullif(trim((nullif(trim(to_varchar("ACCOUNT_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ACCOUNT_CATEGORY_CODE")), ''))) as ACCOUNT_CATEGORY_CODE,
                to_varchar((nullif(trim(to_varchar("ACCOUNT_TYPE")), ''))) as ACCOUNT_TYPE,
@@ -9113,7 +9112,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol_policy_payment_information
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PAYMENT_INSTRUMENT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CHEQUE_NUMBER")), ''))),'')) is not null then 'CHEQUE:' || nullif(trim((nullif(trim(to_varchar("CHEQUE_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PAYMENT_INSTRUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CHEQUE_NUMBER")), ''))),'') is not null then 'CHEQUE:' || nullif(trim((nullif(trim(to_varchar("CHEQUE_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CHEQUE_STATUS")), ''))) as INSTRUMENT_STATUS
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
@@ -9153,7 +9152,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 46. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]  [M1]
+-- 46. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -9275,7 +9274,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 47. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Implemented]  [M1]
+-- 47. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -9312,7 +9311,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when nullif(trim(w0_policy_number),'') is not null then nullif(trim(w0_policy_number), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when nullif(trim(w0_policy_number),'') is not null then nullif(trim(w0_policy_number), '') end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('INSURED_MEMBER') as cdk_1,
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
@@ -9355,7 +9354,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr_party_relation
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim("FOREIGN_KEY"),'')) is not null then nullif(trim("FOREIGN_KEY"), '') end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when nullif(trim("FOREIGN_KEY"),'') is not null then nullif(trim("FOREIGN_KEY"), '') end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("STAKE_NAME")), ''))), ''),'')) as cdk_1,
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
@@ -9392,7 +9391,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_policy_relation
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("STAKE_CODE")), ''))), ''),'')) as cdk_1,
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
@@ -9430,7 +9429,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when nullif(trim(w0_policy_number),'') is not null then nullif(trim(w0_policy_number), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when nullif(trim(w0_policy_number),'') is not null then nullif(trim(w0_policy_number), '') end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('PROPOSER') as cdk_1,
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
@@ -9473,7 +9472,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp_party_relation
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when coalesce(nullif(trim("FOREIGN_KEY"),'')) is not null then nullif(trim("FOREIGN_KEY"), '') end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_POLICY_PARTY|' || (coalesce(nullif(trim(case when nullif(trim("FOREIGN_KEY"),'') is not null then nullif(trim("FOREIGN_KEY"), '') end),''),'') || '|' || coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("STAKE_NAME")), ''))), ''),'')) as cdk_1,
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
@@ -9548,7 +9547,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 48. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]  [M1]
+-- 48. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -9660,7 +9659,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 49. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]  [M1]
+-- 49. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -9815,7 +9814,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 50. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]  [M1]
+-- 50. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -9881,7 +9880,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_polp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("BAGIC_RM_ECODE")), ''))),'')) is not null then 'EMP:' || nullif(trim((nullif(trim(to_varchar("BAGIC_RM_ECODE")), ''))), '') end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when nullif(trim((nullif(trim(to_varchar("BAGIC_RM_ECODE")), ''))),'') is not null then 'EMP:' || nullif(trim((nullif(trim(to_varchar("BAGIC_RM_ECODE")), ''))), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BAGIC_RM_ECODE")), ''))) as EMPLOYEE_CODE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -9947,7 +9946,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("BAGIC_RM_ECODE")), ''))),'')) is not null then 'EMP:' || nullif(trim((nullif(trim(to_varchar("BAGIC_RM_ECODE")), ''))), '') end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when nullif(trim((nullif(trim(to_varchar("BAGIC_RM_ECODE")), ''))),'') is not null then 'EMP:' || nullif(trim((nullif(trim(to_varchar("BAGIC_RM_ECODE")), ''))), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BAGIC_RM_ECODE")), ''))) as EMPLOYEE_CODE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
@@ -10009,7 +10008,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 51. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
+-- 51. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -10040,7 +10039,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))),'')) is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))), '')))) end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))),'') is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))), '')))) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("APPOINTEE_NAME")), ''))) as APPOINTEE_NAME,
                to_varchar((nullif(trim(to_varchar("ALLOCATION_PERCENTAGE")), ''))) as NOMINATION_PERCENTAGE,
@@ -10087,7 +10086,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_msp_imsd_inp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))),'')) is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))), '')))) end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))),'') is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))), '')))) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("APPOINTEE_NAME")), ''))) as APPOINTEE_NAME,
                to_varchar((nullif(trim(to_varchar("ALLOCATION_PERCENTAGE")), ''))) as NOMINATION_PERCENTAGE,
@@ -10139,7 +10138,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 52. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]  [M1]
+-- 52. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -10244,7 +10243,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 53. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]  [M1]
+-- 53. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -10300,7 +10299,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 54. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Implemented]  [M1]
+-- 54. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -10377,7 +10376,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 55. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
+-- 55. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -10407,7 +10406,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("POLICY_BRANCH_NAME")), ''))),'')) is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim((nullif(trim(to_varchar("POLICY_BRANCH_NAME")), ''))), '')))) end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_BRANCH_NAME")), ''))),'') is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim((nullif(trim(to_varchar("POLICY_BRANCH_NAME")), ''))), '')))) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("POLICY_BRANCH_NAME")), ''))) as ORG_UNIT_NAME
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
@@ -10440,7 +10439,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_polp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("BRANCH_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("BRANCH_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("BRANCH_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("BRANCH_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COST_CENTER")), ''))) as COST_CENTRE_CODE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -10473,7 +10472,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_qpd
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("POLICY_BRANCH_NAME")), ''))),'')) is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim((nullif(trim(to_varchar("POLICY_BRANCH_NAME")), ''))), '')))) end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_BRANCH_NAME")), ''))),'') is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim((nullif(trim(to_varchar("POLICY_BRANCH_NAME")), ''))), '')))) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("POLICY_BRANCH_NAME")), ''))) as ORG_UNIT_NAME
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
@@ -10506,7 +10505,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("BRANCH_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("BRANCH_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("BRANCH_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("BRANCH_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COST_CENTER")), ''))) as COST_CENTRE_CODE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
@@ -10568,7 +10567,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 56. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]  [M1]
+-- 56. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -10670,7 +10669,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 57. MAXIMUS — SAT_PARTY_BANKING   [Implemented]  [M1]
+-- 57. MAXIMUS — SAT_PARTY_BANKING   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -10709,7 +10708,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("BANK_ACCOUNT_NUMBER")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NAME_ON_BANK_AC")), ''))) as ACCOUNT_HOLDER_NAME,
@@ -10945,7 +10944,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 58. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]  [M1]
+-- 58. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -11001,7 +11000,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 59. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M1]
+-- 59. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -11117,7 +11116,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 60. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M1]
+-- 60. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -11149,7 +11148,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("OCCUPATION")), ''))) as OCCUPATION_DESCRIPTION
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
@@ -11229,7 +11228,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("OCCUPATION")), ''))) as OCCUPATION_DESCRIPTION
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS
@@ -11345,7 +11344,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 61. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]  [M1]
+-- 61. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -11374,7 +11373,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CREDITSCORE")), ''))) as CREDIT_SCORE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
@@ -11447,7 +11446,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 62. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]  [M1]
+-- 62. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -11591,7 +11590,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 63. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M1]
+-- 63. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -11763,7 +11762,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 64. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]  [M1]
+-- 64. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -11810,7 +11809,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__clm_clmd_clmap_pv__sat_party_identification#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('AADHAAR') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("INSURED_AADHAR_NUMBER")), '')))) as AADHAAR_NUMBER,
@@ -11824,7 +11823,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("INSURED_AADHAR_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_party_identification#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('CKYC') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as AADHAAR_NUMBER,
@@ -11838,7 +11837,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("ENTER_CKYC_NO")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_party_identification#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('GENERIC_DECLARED_ID') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as AADHAAR_NUMBER,
@@ -11852,7 +11851,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("IDENTIFICATION_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_party_identification#4
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('GSTIN') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as AADHAAR_NUMBER,
@@ -11880,7 +11879,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("PAN_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_party_identification#6
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('PAN_INSURED') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as AADHAAR_NUMBER,
@@ -11908,7 +11907,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("PASSPORT_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_party_identification#8
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('VOTER_ID') as cdk_1,
                rec_refresh_at as ldts,
                cast(null as varchar) as AADHAAR_NUMBER,
@@ -11980,7 +11979,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmpty
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTYCODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTYCODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTYCODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTYCODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('NIF') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NIF")), ''))) as IDENTIFICATION_NUMBER
@@ -12015,7 +12014,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmrsk_party
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTYCODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTYCODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTYCODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTYCODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('NIF') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NIF")), ''))) as IDENTIFICATION_NUMBER
@@ -12050,7 +12049,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('PAN') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("PAN_NO")), '')), (nullif(trim(to_varchar("TDS_PAN_NUMBER")), '')))) as PAN_NUMBER
@@ -13895,7 +13894,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 65. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]  [M1]
+-- 65. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -13943,7 +13942,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ENTER_DOB")), ''))) as DATE_OF_BIRTH,
                to_varchar(coalesce((nullif(trim(to_varchar("INSURED_NAME")), '')), (nullif(trim(to_varchar("MEMBER_NAME")), '')), (nullif(trim(to_varchar("SUB_IMD_NAME")), '')))) as PARTY_FULL_NAME
@@ -13985,7 +13984,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmpty
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTYCODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTYCODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTYCODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTYCODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("FIRSTNAME")), ''))) as FIRST_NAME,
                to_varchar((nullif(trim(to_varchar("LASTNAME")), ''))) as LAST_NAME,
@@ -14039,7 +14038,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmrsk_party
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTYCODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTYCODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTYCODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTYCODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("FIRSTNAME")), ''))) as FIRST_NAME,
                to_varchar((nullif(trim(to_varchar("LASTNAME")), ''))) as LAST_NAME,
@@ -14090,7 +14089,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_NAME_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_NAME_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_NAME_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_NAME_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PARTY_NAME")), ''))) as PARTY_FULL_NAME
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -14123,7 +14122,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmrsk_rska_properties_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("HOSPITAL_ID")), ''))),'')) is not null then 'PROVIDER:' || nullif(trim((nullif(trim(to_varchar("HOSPITAL_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("HOSPITAL_ID")), ''))),'') is not null then 'PROVIDER:' || nullif(trim((nullif(trim(to_varchar("HOSPITAL_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("HOSPITAL_NAME")), ''))) as PARTY_FULL_NAME
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
@@ -14165,7 +14164,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DATE_OF_BIRTH")), ''))) as DATE_OF_BIRTH,
                to_varchar((nullif(trim(to_varchar("FIRST_NAME")), ''))) as FIRST_NAME,
@@ -14327,7 +14326,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))),'')) is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))), '')))) end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))),'') is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))), '')))) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NOMINEE_NAME")), ''))) as PARTY_FULL_NAME
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -14393,7 +14392,7 @@ e10 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_policy_relation
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PARTY_NAME")), ''))) as PARTY_FULL_NAME
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION
@@ -14435,7 +14434,7 @@ e11 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DATE_OF_BIRTH")), ''))) as DATE_OF_BIRTH,
                to_varchar((nullif(trim(to_varchar("FIRST_NAME")), ''))) as FIRST_NAME,
@@ -14618,7 +14617,7 @@ e13 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_msp_imsd_inp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))),'')) is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))), '')))) end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))),'') is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))), '')))) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NOMINEE_NAME")), ''))) as PARTY_FULL_NAME
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
@@ -14823,7 +14822,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 66. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M1]
+-- 66. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -14981,7 +14980,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 67. MAXIMUS — SAT_PARTY_KYC   [Implemented]  [M1]
+-- 67. MAXIMUS — SAT_PARTY_KYC   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -15167,7 +15166,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 68. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Implemented]  [M1]
+-- 68. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -15293,7 +15292,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 69. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M1]
+-- 69. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -15370,7 +15369,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 70. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]  [M1]
+-- 70. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -15404,7 +15403,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("REGISTRATION_NO")), ''))) as BUSINESS_REGISTRATION_NUMBER,
                to_varchar((nullif(trim(to_varchar("REGISTRATION_DATE")), ''))) as DATE_OF_INCORPORATION,
@@ -15575,7 +15574,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("REGISTRATION_NO")), ''))) as BUSINESS_REGISTRATION_NUMBER,
                to_varchar((nullif(trim(to_varchar("REGISTRATION_DATE")), ''))) as DATE_OF_INCORPORATION,
@@ -15801,7 +15800,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 71. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]  [M2]
+-- 71. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -15857,7 +15856,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 72. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]  [M2]
+-- 72. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -15913,7 +15912,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 73. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M2]
+-- 73. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -16018,7 +16017,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 74. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M2]
+-- 74. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -16074,7 +16073,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 75. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]  [M2]
+-- 75. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -16158,7 +16157,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 76. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Implemented]  [M2]
+-- 76. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -16348,7 +16347,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 77. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M2]
+-- 77. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -16729,7 +16728,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 78. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M2]
+-- 78. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -17044,7 +17043,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 79. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Implemented]  [M2]
+-- 79. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -17214,7 +17213,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 80. MAXIMUS — SAT_POLICY_GROUP   [Implemented]  [M2]
+-- 80. MAXIMUS — SAT_POLICY_GROUP   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -17312,7 +17311,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 81. MAXIMUS — SAT_POLICY_HEADER   [Implemented]  [M2]
+-- 81. MAXIMUS — SAT_POLICY_HEADER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -17439,7 +17438,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("POLICY_STATUS")), ''))) as POLICY_STATUS,
                to_varchar((nullif(trim(to_varchar("POLICY_DURATION")), ''))) as POLICY_TERM,
@@ -17705,7 +17704,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol_prevpol
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PRODUCT_CODE")), ''))) as PRODUCT_REFERENCE,
                to_varchar((nullif(trim(to_varchar("POLICY_EXPIRY_DATE")), ''))) as RISK_EXPIRY_DATE,
@@ -17757,7 +17756,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_polp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MASTER_POLICY_TYPE")), ''))) as POLICY_TYPE,
                to_varchar((nullif(trim(to_varchar("EXPIRING_POLICY_EXPIRY_DATE")), ''))) as RISK_EXPIRY_DATE
@@ -17858,7 +17857,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 82. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M2]
+-- 82. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -17888,7 +17887,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce('AGENT:' || nullif(trim((nullif(trim(to_varchar("AGENT_CODE")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COMMISION")), ''))) as COMMISSION_AMOUNT
@@ -17964,7 +17963,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 83. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]  [M2]
+-- 83. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -18020,7 +18019,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 84. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Implemented]  [M2]
+-- 84. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -18555,7 +18554,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 85. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]  [M2]
+-- 85. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -18587,7 +18586,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TOTAL_PREMIUM")), ''))) as GROSS_PREMIUM,
                to_varchar((nullif(trim(to_varchar("NET_PREMIUM")), ''))) as NET_PREMIUM
@@ -18734,7 +18733,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol_prevpol
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TOTAL_PREMIUM")), ''))) as GROSS_PREMIUM
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS
@@ -18847,7 +18846,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 86. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]  [M2]
+-- 86. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -18910,7 +18909,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 87. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]  [M2]
+-- 87. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -18966,7 +18965,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 88. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M2]
+-- 88. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -19129,7 +19128,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 89. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]  [M2]
+-- 89. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -19157,7 +19156,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("STAMP_DUTY")), ''))) as STAMP_DUTY_AMOUNT
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
@@ -19286,7 +19285,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 90. MAXIMUS — SAT_POLICY_TAX_HEAD   [Implemented]  [M2]
+-- 90. MAXIMUS — SAT_POLICY_TAX_HEAD   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -19318,7 +19317,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('GST') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("GST")), ''))) as TAX_AMOUNT
@@ -19440,7 +19439,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 91. MAXIMUS — SAT_POLICY_TERMS   [Implemented]  [M2]
+-- 91. MAXIMUS — SAT_POLICY_TERMS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -19496,7 +19495,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 92. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
+-- 92. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -19533,7 +19532,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("STORED_PRODUCT_CODE")), ''))),'')) is not null then 'PROD:' || nullif(trim((nullif(trim(to_varchar("STORED_PRODUCT_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("STORED_PRODUCT_CODE")), ''))),'') is not null then 'PROD:' || nullif(trim((nullif(trim(to_varchar("STORED_PRODUCT_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("STORED_LOB_CODE")), ''))) as LINE_OF_BUSINESS,
                to_varchar((nullif(trim(to_varchar("PRODUCTPLAN")), ''))) as PRODUCT_NAME
@@ -19572,7 +19571,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PRODUCT_CODE")), ''))),'')) is not null then 'PROD:' || nullif(trim((nullif(trim(to_varchar("PRODUCT_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PRODUCT_CODE")), ''))),'') is not null then 'PROD:' || nullif(trim((nullif(trim(to_varchar("PRODUCT_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PRODUCT_NAME")), ''))) as PRODUCT_NAME
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
@@ -19685,7 +19684,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol_prevpol
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PRODUCT_CODE")), ''))),'')) is not null then 'PROD:' || nullif(trim((nullif(trim(to_varchar("PRODUCT_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PRODUCT_CODE")), ''))),'') is not null then 'PROD:' || nullif(trim((nullif(trim(to_varchar("PRODUCT_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PRODUCT_NAME")), ''))) as PRODUCT_NAME
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS
@@ -19860,7 +19859,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 93. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
+-- 93. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -19976,7 +19975,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 94. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
+-- 94. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -20078,7 +20077,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 95. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
+-- 95. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -20111,7 +20110,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_qpd
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("APPLICATION_CODE")), ''))) as QUOTE_SOURCE,
                to_varchar((nullif(trim(to_varchar("POLICY_STATUS_CODE")), ''))) as QUOTE_STATUS,
@@ -20302,7 +20301,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 96. MAXIMUS — SAT_QUOTE_RATING   [Implemented]  [M2]
+-- 96. MAXIMUS — SAT_QUOTE_RATING   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -20334,7 +20333,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_qpd
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TOTAL_DISCOUNT_AMOUNT")), ''))) as DISCOUNT_AMOUNT,
                to_varchar((nullif(trim(to_varchar("TOTAL_LOADING_AMOUNT")), ''))) as LOADING_AMOUNT,
@@ -20491,7 +20490,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 97. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Implemented]  [M2]
+-- 97. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -21056,7 +21055,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 98. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M2]
+-- 98. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -21224,7 +21223,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 99. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M2]
+-- 99. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -21575,7 +21574,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 100. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]  [M2]
+-- 100. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -21794,7 +21793,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 101. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M2]
+-- 101. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -21952,7 +21951,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 102. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Implemented]  [M2]
+-- 102. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -22060,7 +22059,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 103. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M2]
+-- 103. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -22518,7 +22517,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 104. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]  [M2]
+-- 104. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -22711,7 +22710,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 105. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M2]
+-- 105. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -22741,7 +22740,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__clm_clmd
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SAVING_AMOUNT")), ''))) as SAVINGS_AMOUNT
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
@@ -22907,7 +22906,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 106. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]  [M2]
+-- 106. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -23154,7 +23153,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 107. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]  [M2]
+-- 107. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -23263,7 +23262,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 108. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]  [M2]
+-- 108. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -23319,7 +23318,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 109. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]  [M2]
+-- 109. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -23400,7 +23399,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 110. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]  [M2]
+-- 110. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -23491,7 +23490,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 111. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]  [M2]
+-- 111. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -23554,7 +23553,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 112. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]  [M2]
+-- 112. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -23655,7 +23654,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 113. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]  [M2]
+-- 113. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -23788,7 +23787,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 114. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]  [M2]
+-- 114. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -23927,7 +23926,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 115. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]  [M2]
+-- 115. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -24219,7 +24218,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 116. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]  [M2]
+-- 116. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -24252,7 +24251,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__clm_clmd
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PRIMARYCAUSECODE")), ''))) as PRIMARY_CAUSE_OF_LOSS_CODE,
                to_varchar((nullif(trim(to_varchar("PRIMARYCAUSEDESC")), ''))) as PRIMARY_CAUSE_OF_LOSS_DESCRIPTION,
@@ -24457,7 +24456,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 117. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]  [M2]
+-- 117. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -24668,7 +24667,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 118. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]  [M2]
+-- 118. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -24770,7 +24769,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 119. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M2]
+-- 119. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25015,7 +25014,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 120. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]  [M2]
+-- 120. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25145,7 +25144,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 121. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]  [M2]
+-- 121. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25358,7 +25357,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 122. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]  [M2]
+-- 122. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25414,7 +25413,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 123. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M2]
+-- 123. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25516,7 +25515,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 124. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]  [M2]
+-- 124. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25664,7 +25663,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 125. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]  [M2]
+-- 125. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25829,7 +25828,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 126. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]  [M2]
+-- 126. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -25989,7 +25988,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 127. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]  [M2]
+-- 127. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26045,7 +26044,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 128. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]  [M2]
+-- 128. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26108,7 +26107,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 129. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]  [M2]
+-- 129. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26136,7 +26135,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__clm_clmd
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NO_OF_DAYS_AVAILED_CONV")), ''))) as BENEFIT_DAYS_AVAILED
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
@@ -26300,7 +26299,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 130. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]  [M2]
+-- 130. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26461,7 +26460,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 131. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]  [M2]
+-- 131. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26563,7 +26562,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 132. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M2]
+-- 132. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26665,7 +26664,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 133. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]  [M2]
+-- 133. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26694,7 +26693,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_rskp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'')) is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUB1")), ''))) as SUB_CONDITION_VALUE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -26727,7 +26726,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'')) is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUB1")), ''))) as SUB_CONDITION_VALUE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
@@ -26767,7 +26766,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 134. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M2]
+-- 134. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -26834,7 +26833,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_rskp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'')) is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_PLAN")), ''))) as COVERAGE_PLAN_VARIANT,
                to_varchar((nullif(trim(to_varchar("LEADING_COVER")), ''))) as LEADING_COVER_INDICATOR
@@ -26907,7 +26906,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'')) is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_PLAN")), ''))) as COVERAGE_PLAN_VARIANT,
                to_varchar((nullif(trim(to_varchar("LEADING_COVER")), ''))) as LEADING_COVER_INDICATOR
@@ -26975,7 +26974,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 135. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M2]
+-- 135. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -27004,7 +27003,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_rskp_sp_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'')) is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PER_TRIP_LIMIT_IN_DAYS")), ''))) as PER_TRIP_DAY_LIMIT
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -27037,7 +27036,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_qpd_rskl_rskp_rl_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'')) is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PER_TRIP_LIMIT_IN_DAYS")), ''))) as PER_TRIP_DAY_LIMIT
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
@@ -27077,7 +27076,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 136. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M2]
+-- 136. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -27249,7 +27248,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 137. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]  [M2]
+-- 137. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -27334,7 +27333,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 138. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]  [M2]
+-- 138. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -27366,7 +27365,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clma_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))),'')) is not null then 'INWARD:' || nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))),'') is not null then 'INWARD:' || nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("REQUIREMENT_TYPE_NAME")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("RESPONSE")), ''))) as REQUIREMENT_RESPONSE_TEXT,
@@ -27408,7 +27407,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 139. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]  [M2]
+-- 139. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -27440,7 +27439,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmcov_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))),'')) is not null then 'INWARD:' || nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))),'') is not null then 'INWARD:' || nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COURIER_NAME")), ''))) as COURIER_NAME,
                to_varchar((nullif(trim(to_varchar("INWARD_DATE")), ''))) as INWARD_DATE,
@@ -27499,7 +27498,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 140. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]  [M2]
+-- 140. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -27529,7 +27528,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__clm_clmd_clma_msp_msd_prop_pv__aug_sat_aug_document_requirement_reminder#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))),'')) is not null then 'INWARD:' || nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))),'') is not null then 'INWARD:' || nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('1') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("1ST_REMINDER_DATE")), '')))) as REMINDER_DATE
@@ -27537,7 +27536,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("1ST_REMINDER_DATE")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clma_msp_msd_prop_pv__aug_sat_aug_document_requirement_reminder#2
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))),'')) is not null then 'INWARD:' || nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))),'') is not null then 'INWARD:' || nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('2') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("2ND_REMINDER_DATE")), '')))) as REMINDER_DATE
@@ -27545,7 +27544,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
          where (nullif(trim(to_varchar("2ND_REMINDER_DATE")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clma_msp_msd_prop_pv__aug_sat_aug_document_requirement_reminder#3
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))),'')) is not null then 'INWARD:' || nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))),'') is not null then 'INWARD:' || nullif(trim((nullif(trim(to_varchar("INWARD_NUMBER")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('3') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("3RD_REMINDER_DATE")), '')))) as REMINDER_DATE
@@ -27576,7 +27575,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 141. MAXIMUS — SAT_AUG_FINTXN_TAX   [Implemented]  [M3]
+-- 141. MAXIMUS — SAT_AUG_FINTXN_TAX   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -27700,7 +27699,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via up_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv__aug_sat_aug_fintxn_tax#1
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PAYMENT_ID")), ''))),'')) is not null then 'PAY:' || nullif(trim((nullif(trim(to_varchar("PAYMENT_ID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (((nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PAYMENT_ID")), ''))),'') is not null then 'PAY:' || nullif(trim((nullif(trim(to_varchar("PAYMENT_ID")), ''))), '') end),'')))) AS VARCHAR))), '')) as hkey,
                to_varchar('TDS') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("TDS_CERTIFICATE")), '')))) as TDS_CERTIFICATE_NUMBER,
@@ -27841,7 +27840,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 142. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]  [M3]
+-- 142. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -27871,7 +27870,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol_policy_payment_information
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COLLECTION_DATE")), ''))) as COLLECTION_DATE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
@@ -27988,7 +27987,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 143. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M3]
+-- 143. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28044,7 +28043,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 144. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]  [M3]
+-- 144. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28107,7 +28106,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 145. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Implemented]  [M3]
+-- 145. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28232,7 +28231,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 146. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
+-- 146. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28510,7 +28509,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 147. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]  [M3]
+-- 147. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28640,7 +28639,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 148. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]  [M3]
+-- 148. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28742,7 +28741,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 149. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M3]
+-- 149. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28774,7 +28773,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_LOCATION|' || (coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_ADDRESS")), ''))),''), nullif(trim((nullif(trim(to_varchar("AREA")), ''))),''), nullif(trim((nullif(trim(to_varchar("CITY")), ''))),''), nullif(trim((nullif(trim(to_varchar("STATE")), ''))),''), nullif(trim((nullif(trim(to_varchar("PIN_CODE")), ''))),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_ADDRESS")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("AREA")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CITY")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("STATE")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("PIN_CODE")), ''))), ''), '')), '||||')), '[[:space:]]+', ' '))) end),''),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_LOCATION|' || (coalesce(nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),''),'') || '|' || coalesce(nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_ADDRESS")), ''))),''), nullif(trim((nullif(trim(to_varchar("AREA")), ''))),''), nullif(trim((nullif(trim(to_varchar("CITY")), ''))),''), nullif(trim((nullif(trim(to_varchar("STATE")), ''))),''), nullif(trim((nullif(trim(to_varchar("PIN_CODE")), ''))),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim((nullif(trim(to_varchar("CORRESPONDENCE_ADDRESS")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("AREA")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CITY")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("STATE")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("PIN_CODE")), ''))), ''), '')), '||||')), '[[:space:]]+', ' '))) end),''),'')) AS VARCHAR))), '')) as hkey,
                to_varchar('CORRESPONDENCE') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("IS_THE_CORRESPONDENCE_ADDRESS_IS_SAME_AS_MENTIONED_ON_POLICY")), ''))) as SAME_AS_POLICY_ADDRESS_INDICATOR
@@ -28857,7 +28856,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 150. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]  [M3]
+-- 150. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -28917,7 +28916,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 151. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
+-- 151. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -29033,7 +29032,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 152. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]  [M3]
+-- 152. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -29064,7 +29063,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_INCOME_SEGMENT")), ''))) as INCOME_SEGMENT
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
@@ -29265,7 +29264,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 153. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]  [M3]
+-- 153. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -29321,7 +29320,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 154. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]  [M3]
+-- 154. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -29451,7 +29450,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 155. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]  [M3]
+-- 155. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -29521,7 +29520,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 156. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]  [M3]
+-- 156. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -30282,7 +30281,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 157. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]  [M3]
+-- 157. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -30316,7 +30315,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("GUARDIAN_NAME")), ''))) as GUARDIAN_NAME
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -30350,7 +30349,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CREATED_BY")), ''))) as CREATED_BY_USER_REFERENCE,
                to_varchar((nullif(trim(to_varchar("PARTY_LAST_MODIFICATION_DATE")), ''))) as RECORD_LAST_MODIFIED_DATE
@@ -30430,7 +30429,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CREATED_BY")), ''))) as CREATED_BY_USER_REFERENCE,
                to_varchar((nullif(trim(to_varchar("PARTY_LAST_MODIFICATION_DATE")), ''))) as RECORD_LAST_MODIFIED_DATE
@@ -30542,7 +30541,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 158. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M3]
+-- 158. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -30573,7 +30572,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__clm_clmd_clmap_pv
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_AGE_SLAB")), ''))) as AGE_BAND
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
@@ -30844,7 +30843,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 159. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]  [M3]
+-- 159. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -30921,7 +30920,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 160. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M3]
+-- 160. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -31121,7 +31120,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 161. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]  [M3]
+-- 161. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -31265,7 +31264,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 162. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]  [M3]
+-- 162. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -31381,7 +31380,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 163. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M3]
+-- 163. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -31413,7 +31412,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_ins_mbr
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("RELATED_PARTY")), ''))) as RELATED_PARTY_REFERENCE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
@@ -31500,7 +31499,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via resolved_mt__uwr_pol_prp
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("RELATED_PARTY")), ''))) as RELATED_PARTY_REFERENCE
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS
@@ -31616,7 +31615,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 164. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]  [M3]
+-- 164. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -31672,7 +31671,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 165. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]  [M3]
+-- 165. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -31742,7 +31741,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 166. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M3]
+-- 166. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -32121,7 +32120,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 167. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]  [M3]
+-- 167. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -32177,7 +32176,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 168. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]  [M3]
+-- 168. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -32298,7 +32297,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 169. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]  [M3]
+-- 169. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -32364,7 +32363,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("POLICY_INTIMATION_DATE")), ''))) as POLICY_INTIMATION_DATE,
                to_varchar((nullif(trim(to_varchar("POLICY_DURATIONUNIT")), ''))) as POLICY_TERM_UNIT,
@@ -32623,7 +32622,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 170. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]  [M3]
+-- 170. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -32686,7 +32685,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 171. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]  [M3]
+-- 171. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -32770,7 +32769,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 172. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M3]
+-- 172. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -32878,7 +32877,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 173. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]  [M3]
+-- 173. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -32955,7 +32954,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 174. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]  [M3]
+-- 174. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -33075,7 +33074,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 175. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]  [M3]
+-- 175. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -33310,7 +33309,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 176. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]  [M3]
+-- 176. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -33387,7 +33386,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 177. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]  [M3]
+-- 177. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -33415,7 +33414,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_pol
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("RENEWAL_FLAG")), ''))) as RENEWAL_INDICATOR
           from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
@@ -33530,7 +33529,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 178. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]  [M3]
+-- 178. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -33628,7 +33627,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 179. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]  [M3]
+-- 179. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -33740,7 +33739,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 180. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
+-- 180. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -33852,7 +33851,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 181. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]  [M3]
+-- 181. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -33978,7 +33977,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 182. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]  [M3]
+-- 182. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -34068,7 +34067,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 183. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]  [M3]
+-- 183. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -34170,7 +34169,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 184. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
+-- 184. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -34272,7 +34271,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 185. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]  [M3]
+-- 185. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -34342,7 +34341,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 186. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]  [M3]
+-- 186. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -34776,7 +34775,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 187. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]  [M3]
+-- 187. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -35005,7 +35004,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 188. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]  [M3]
+-- 188. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -35165,7 +35164,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 189. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]  [M3]
+-- 189. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -35241,7 +35240,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_qpd
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BILLING_STAKE")), ''))) as BILLING_STAKE_CODE,
                to_varchar((nullif(trim(to_varchar("INTIMATION_DATE")), ''))) as INTIMATION_DATE,
@@ -36025,7 +36024,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 190. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]  [M3]
+-- 190. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -36088,7 +36087,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 191. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]  [M3]
+-- 191. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -36172,7 +36171,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 192. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]  [M3]
+-- 192. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -36249,7 +36248,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 193. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]  [M3]
+-- 193. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -36353,7 +36352,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 194. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]  [M3]
+-- 194. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -36430,7 +36429,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 195. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]  [M3]
+-- 195. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -36462,7 +36461,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
       from (
         -- via stg_mt__uwr_qpd
-        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))),'')) is not null then nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
+        select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COMMISSION")), ''))) as COMMISSION_AMOUNT,
                to_varchar((nullif(trim(to_varchar("NEW_PREM_INDICATOR")), ''))) as NEW_PREMIUM_INDICATOR,
@@ -36927,7 +36926,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 196. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]  [M3]
+-- 196. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -37010,7 +37009,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 197. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]  [M3]
+-- 197. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -37087,7 +37086,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 198. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]  [M3]
+-- 198. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -37250,7 +37249,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 199. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]  [M3]
+-- 199. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -37383,7 +37382,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 200. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
+-- 200. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -37495,7 +37494,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 201. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]  [M3]
+-- 201. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -37621,7 +37620,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 202. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]  [M3]
+-- 202. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -37782,7 +37781,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 203. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]  [M3]
+-- 203. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -37844,7 +37843,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 204. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
+-- 204. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -38072,7 +38071,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 205. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
+-- 205. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -38628,7 +38627,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 206. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]  [M3]
+-- 206. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -38866,7 +38865,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 207. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]  [M3]
+-- 207. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -39051,7 +39050,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 208. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]  [M3]
+-- 208. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -39167,7 +39166,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 209. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]  [M3]
+-- 209. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,

@@ -2,7 +2,6 @@
    DM-K1  |  Key Checks - No Missing Keys (Travel LOB)
    Hub key reconciliation (RAW source -> hub). Pass criterion: 0 rows returned (0 missing business keys, or documented exceptions).
 
-   MEMBER SPLIT: sections 1..29 assigned M1 x 10, M2 x 10, M3 x 9 -- contiguous thirds in listed order.
    Check ID: DM-K1
    Category: Key checks
    Sign-off criterion: No missing keys
@@ -38,7 +37,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. MAXIMUS — HUB_PARTY   [Implemented]  [M1]
+-- 1. MAXIMUS — HUB_PARTY   [Implemented]
 -- 49 RAW key branch(es): NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE.RESERVPARTY
 -- (PARTY_HKEY),
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.CUSTOMERID
@@ -183,20 +182,20 @@
 with src as (
     -- via hubfeed_mt_party <- stg2_mt__clm_clmd_claim_reserve
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE.RESERVPARTY (PARTY_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("RESERVPARTY")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("RESERVPARTY")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("RESERVPARTY")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("RESERVPARTY")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("RESERVPARTY")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("RESERVPARTY")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("RESERVPARTY")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("RESERVPARTY")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE
     union all
     -- via hubfeed_mt_party <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.CUSTOMERID (PARTY_HKEY__CLAIMANT_CORRESPONDENCE_ADDRESS)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("CUSTOMERID")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("CUSTOMERID")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("CUSTOMERID")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("CUSTOMERID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("CUSTOMERID")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("CUSTOMERID")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("CUSTOMERID")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("CUSTOMERID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.CLAIM_COURT_PARTY_CODE (PARTY_HKEY__CLAIM_COURT_COUNTERPARTY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("CLAIM_COURT_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("CLAIM_COURT_PARTY_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("CLAIM_COURT_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("CLAIM_COURT_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("CLAIM_COURT_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("CLAIM_COURT_PARTY_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("CLAIM_COURT_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("CLAIM_COURT_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__clm_clmd_clmap_pv
@@ -207,98 +206,98 @@ with src as (
     union all
     -- via hubfeed_mt_party <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.MEMBER_UHC_CODE (PARTY_HKEY__INSURED_MEMBER)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("MEMBER_UHC_CODE")), '')),'')) is not null then 'MEMBER:' || nullif(trim(nullif(trim(to_varchar("MEMBER_UHC_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("MEMBER_UHC_CODE")), '')),'')) is not null then 'MEMBER:' || nullif(trim(nullif(trim(to_varchar("MEMBER_UHC_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("MEMBER_UHC_CODE")), '')),'') is not null then 'MEMBER:' || nullif(trim(nullif(trim(to_varchar("MEMBER_UHC_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("MEMBER_UHC_CODE")), '')),'') is not null then 'MEMBER:' || nullif(trim(nullif(trim(to_varchar("MEMBER_UHC_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.PTPARTNERID (PARTY_HKEY__SERVICE_PARTNER)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PTPARTNERID")), '')),'')) is not null then 'PTPARTNER:' || nullif(trim(nullif(trim(to_varchar("PTPARTNERID")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PTPARTNERID")), '')),'')) is not null then 'PTPARTNER:' || nullif(trim(nullif(trim(to_varchar("PTPARTNERID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PTPARTNERID")), '')),'') is not null then 'PTPARTNER:' || nullif(trim(nullif(trim(to_varchar("PTPARTNERID")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PTPARTNERID")), '')),'') is not null then 'PTPARTNER:' || nullif(trim(nullif(trim(to_varchar("PTPARTNERID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.SUB_IMD_CODE (PARTY_HKEY__SUB_INTERMEDIARY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("SUB_IMD_CODE")), '')),'')) is not null then 'IMD:' || nullif(trim(nullif(trim(to_varchar("SUB_IMD_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("SUB_IMD_CODE")), '')),'')) is not null then 'IMD:' || nullif(trim(nullif(trim(to_varchar("SUB_IMD_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("SUB_IMD_CODE")), '')),'') is not null then 'IMD:' || nullif(trim(nullif(trim(to_varchar("SUB_IMD_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("SUB_IMD_CODE")), '')),'') is not null then 'IMD:' || nullif(trim(nullif(trim(to_varchar("SUB_IMD_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__clm_clmd_clmpay
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT.PAYMENTPARTYCODE (PARTY_HKEY__CLAIM_PAYEE)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PAYMENTPARTYCODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PAYMENTPARTYCODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PAYMENTPARTYCODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PAYMENTPARTYCODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PAYMENTPARTYCODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PAYMENTPARTYCODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PAYMENTPARTYCODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PAYMENTPARTYCODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT
     union all
     -- via hubfeed_mt_party <- stg2_mt__clm_clmd_clmpty
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY.PARTYCODE (PARTY_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTYCODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTYCODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTYCODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTYCODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTYCODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTYCODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTYCODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTYCODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY
     union all
     -- via hubfeed_mt_party <- stg2_mt__clm_clmd_clmrsk_party
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY.PARTYCODE (PARTY_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTYCODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTYCODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTYCODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTYCODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTYCODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTYCODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTYCODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTYCODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY
     union all
     -- via hubfeed_mt_party <- stg2_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.CLAIMANT_PARTY_CODE (PARTY_HKEY__CLAIMANT)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.PARTY_NAME_CODE (PARTY_HKEY__EXPENSE_LINE_PARTY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTY_NAME_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTY_NAME_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTY_NAME_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTY_NAME_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTY_NAME_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTY_NAME_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTY_NAME_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTY_NAME_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.EXPENSE_PAYEE_PARTY_CODE (PARTY_HKEY__EXPENSE_PAYEE)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("EXPENSE_PAYEE_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("EXPENSE_PAYEE_PARTY_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("EXPENSE_PAYEE_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("EXPENSE_PAYEE_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("EXPENSE_PAYEE_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("EXPENSE_PAYEE_PARTY_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("EXPENSE_PAYEE_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("EXPENSE_PAYEE_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.PAYEE_CODE (PARTY_HKEY__PAYEE)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PAYEE_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PAYEE_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PAYEE_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PAYEE_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PAYEE_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PAYEE_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PAYEE_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PAYEE_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.TDS_CLAIMANT_PARTY_CODE (PARTY_HKEY__TDS_DEDUCTEE)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("TDS_CLAIMANT_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("TDS_CLAIMANT_PARTY_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("TDS_CLAIMANT_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("TDS_CLAIMANT_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("TDS_CLAIMANT_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("TDS_CLAIMANT_PARTY_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("TDS_CLAIMANT_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("TDS_CLAIMANT_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__clm_clmd_clmrsk_rska_properties_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW.HOSPITAL_ID (PARTY_HKEY__TREATING_HOSPITAL_PROVIDER)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("HOSPITAL_ID")), '')),'')) is not null then 'PROVIDER:' || nullif(trim(nullif(trim(to_varchar("HOSPITAL_ID")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("HOSPITAL_ID")), '')),'')) is not null then 'PROVIDER:' || nullif(trim(nullif(trim(to_varchar("HOSPITAL_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("HOSPITAL_ID")), '')),'') is not null then 'PROVIDER:' || nullif(trim(nullif(trim(to_varchar("HOSPITAL_ID")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("HOSPITAL_ID")), '')),'') is not null then 'PROVIDER:' || nullif(trim(nullif(trim(to_varchar("HOSPITAL_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS.AGENT_CODE (PARTY_HKEY__AGENT)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("AGENT_CODE")), '')),'')) is not null then 'AGENT:' || nullif(trim(nullif(trim(to_varchar("AGENT_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("AGENT_CODE")), '')),'')) is not null then 'AGENT:' || nullif(trim(nullif(trim(to_varchar("AGENT_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("AGENT_CODE")), '')),'') is not null then 'AGENT:' || nullif(trim(nullif(trim(to_varchar("AGENT_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("AGENT_CODE")), '')),'') is not null then 'AGENT:' || nullif(trim(nullif(trim(to_varchar("AGENT_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS.POLICY_HOLDER_CODE (PARTY_HKEY__POLICYHOLDER)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICY_HOLDER_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("POLICY_HOLDER_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICY_HOLDER_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("POLICY_HOLDER_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICY_HOLDER_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("POLICY_HOLDER_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICY_HOLDER_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("POLICY_HOLDER_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol_ins_mbr
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS.PARTY_CODE (PARTY_HKEY__INSURED_MEMBER)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol_ins_mbr
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS.PARENT_PARTY_CODE (PARTY_HKEY__PARENT_PARTY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol_ins_mbr_pa_address_prop_pv
@@ -321,14 +320,14 @@ with src as (
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol_ins_mbr_pp_sp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.PARENT_PARTY_CODE (PARTY_HKEY__PARENT_PARTY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol_ins_rskp_msp_msd_prop_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.NOMINEE_NAME (PARTY_HKEY__NOMINEE)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("NOMINEE_NAME")), '')),'')) is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim(nullif(trim(to_varchar("NOMINEE_NAME")), '')), '')))) end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("NOMINEE_NAME")), '')),'')) is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim(nullif(trim(to_varchar("NOMINEE_NAME")), '')), '')))) end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("NOMINEE_NAME")), '')),'') is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim(nullif(trim(to_varchar("NOMINEE_NAME")), '')), '')))) end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("NOMINEE_NAME")), '')),'') is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim(nullif(trim(to_varchar("NOMINEE_NAME")), '')), '')))) end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol_ins_rskp_sp_pv
@@ -339,8 +338,8 @@ with src as (
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol_policy_relation
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION.PARTY_CODE (PARTY_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol_polp_sp_pv
@@ -351,20 +350,20 @@ with src as (
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol_polp_sp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.BAGIC_RM_ECODE (PARTY_HKEY__RELATIONSHIP_MANAGER)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')),'')) is not null then 'EMP:' || nullif(trim(nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')),'')) is not null then 'EMP:' || nullif(trim(nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')),'') is not null then 'EMP:' || nullif(trim(nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')),'') is not null then 'EMP:' || nullif(trim(nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol_prp
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS.PARENT_PARTY_CODE (PARTY_HKEY__PARENT_PARTY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol_prp
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS.PARTY_CODE (PARTY_HKEY__PROPOSER)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol_prp_pa_address_prop_pv
@@ -381,14 +380,14 @@ with src as (
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol_prp_pp_sp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.BAGIC_EMPLOYEE_CODE (PARTY_HKEY__BAGIC_EMPLOYEE)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("BAGIC_EMPLOYEE_CODE")), '')),'')) is not null then 'EMP:' || nullif(trim(nullif(trim(to_varchar("BAGIC_EMPLOYEE_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("BAGIC_EMPLOYEE_CODE")), '')),'')) is not null then 'EMP:' || nullif(trim(nullif(trim(to_varchar("BAGIC_EMPLOYEE_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("BAGIC_EMPLOYEE_CODE")), '')),'') is not null then 'EMP:' || nullif(trim(nullif(trim(to_varchar("BAGIC_EMPLOYEE_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("BAGIC_EMPLOYEE_CODE")), '')),'') is not null then 'EMP:' || nullif(trim(nullif(trim(to_varchar("BAGIC_EMPLOYEE_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol_prp_pp_sp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.PARENT_PARTY_CODE (PARTY_HKEY__PARENT_PARTY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARENT_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_pol_prp_pp_sp_pv
@@ -399,8 +398,8 @@ with src as (
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_qpd
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS.POLICY_HOLDER_CODE (PARTY_HKEY__POLICYHOLDER)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICY_HOLDER_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("POLICY_HOLDER_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICY_HOLDER_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("POLICY_HOLDER_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICY_HOLDER_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("POLICY_HOLDER_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICY_HOLDER_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("POLICY_HOLDER_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_qpd_polp_rl_pv
@@ -411,32 +410,32 @@ with src as (
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_qpd_polp_rl_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW.BAGIC_RM_ECODE (PARTY_HKEY__RELATIONSHIP_MANAGER)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')),'')) is not null then 'EMP:' || nullif(trim(nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')),'')) is not null then 'EMP:' || nullif(trim(nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')),'') is not null then 'EMP:' || nullif(trim(nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')),'') is not null then 'EMP:' || nullif(trim(nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_qpd_polp_rl_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW.SUB_IMD_CODE (PARTY_HKEY__SUB_INTERMEDIARY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("SUB_IMD_CODE")), '')),'')) is not null then 'IMD:' || nullif(trim(nullif(trim(to_varchar("SUB_IMD_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("SUB_IMD_CODE")), '')),'')) is not null then 'IMD:' || nullif(trim(nullif(trim(to_varchar("SUB_IMD_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("SUB_IMD_CODE")), '')),'') is not null then 'IMD:' || nullif(trim(nullif(trim(to_varchar("SUB_IMD_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("SUB_IMD_CODE")), '')),'') is not null then 'IMD:' || nullif(trim(nullif(trim(to_varchar("SUB_IMD_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_qpd_rskl
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST.PARTY_CODE (PARTY_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_qpd_rskl
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST.ADDITIONAL_PARTY_CODE (PARTY_HKEY__ADDITIONAL_PARTY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("ADDITIONAL_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("ADDITIONAL_PARTY_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("ADDITIONAL_PARTY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("ADDITIONAL_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("ADDITIONAL_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("ADDITIONAL_PARTY_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("ADDITIONAL_PARTY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("ADDITIONAL_PARTY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_qpd_rskl_msp_imsd_inp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW.NOMINEE_NAME (PARTY_HKEY__NOMINEE)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("NOMINEE_NAME")), '')),'')) is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim(nullif(trim(to_varchar("NOMINEE_NAME")), '')), '')))) end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("NOMINEE_NAME")), '')),'')) is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim(nullif(trim(to_varchar("NOMINEE_NAME")), '')), '')))) end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("NOMINEE_NAME")), '')),'') is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim(nullif(trim(to_varchar("NOMINEE_NAME")), '')), '')))) end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("NOMINEE_NAME")), '')),'') is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim(nullif(trim(to_varchar("NOMINEE_NAME")), '')), '')))) end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_party <- stg2_mt__uwr_qpd_rskl_rskp_rl_pv
@@ -447,8 +446,8 @@ with src as (
     union all
     -- via hubfeed_mt_party <- stg2_mt_up__clm_clmd_clmap_pv__sat_common_contact <- up_mt__clm_clmd_clmap_pv__sat_common_contact  (+1 more feed(s) on the same RAW table + key)
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.CUSTOMERID (PARTY_HKEY__CLAIMANT_CUSTOMER / sat_common_contact)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("CUSTOMERID")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("CUSTOMERID")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("CUSTOMERID")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("CUSTOMERID")), '')), '') end),''))) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("CUSTOMERID")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("CUSTOMERID")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || ((nullif(trim(case when nullif(trim(nullif(trim(to_varchar("CUSTOMERID")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("CUSTOMERID")), '')), '') end),''))) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
      where (nullif(trim(to_varchar("EMAIL")), '') is not null) or (nullif(trim(to_varchar("COMMUNICATION_EMAIL_ID")), '') is not null) or (nullif(trim(to_varchar("INSURED_EMAIL_ID")), '') is not null) or (nullif(trim(to_varchar("ALTERNATE_MOBILE_NUMBER_BELONGS_TO")), '') is not null or nullif(trim(to_varchar("ALTERNATE_MOBILE_NUMBERCLAIMS")), '') is not null) or (nullif(trim(to_varchar("COMMUNICATION_CONTACT_NUMBER")), '') is not null) or (nullif(trim(to_varchar("INSURED_MOBILE_NUMBER")), '') is not null) or (nullif(trim(to_varchar("INSURED_CONTACT_NUMBER")), '') is not null) or (nullif(trim(to_varchar("KEY_CONTACT_NUMBER")), '') is not null) or (nullif(trim(to_varchar("INSURED_AADHAR_NUMBER")), '') is not null) or (nullif(trim(to_varchar("ENTER_CKYC_NO")), '') is not null) or (nullif(trim(to_varchar("IDENTIFICATION_NUMBER")), '') is not null) or (nullif(trim(to_varchar("GSTN_NUMBER")), '') is not null) or (nullif(trim(to_varchar("INSURED_PAN_NUMBER")), '') is not null) or (nullif(trim(to_varchar("ENTER_VOTER_ID")), '') is not null)
     union all
@@ -493,7 +492,7 @@ select 'MAXIMUS' as project, 'HUB_PARTY' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — HUB_POLICY   [Implemented]  [M1]
+-- 2. MAXIMUS — HUB_POLICY   [Implemented]
 -- 12 RAW key branch(es): NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS.POLICYNO (POLICY_HKEY),
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.MASTER_POLICY_NUMBER
 -- (POLICY_HKEY__MASTER_POLICY), NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS.POLICY_NUMBER
@@ -686,20 +685,20 @@ select 'MAXIMUS' as project, 'HUB_PARTY' as hub,
 with src as (
     -- via hubfeed_mt_policy <- stg2_mt__clm_clmd
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS.POLICYNO (POLICY_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICYNO")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("POLICYNO")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICYNO")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("POLICYNO")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICYNO")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("POLICYNO")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICYNO")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("POLICYNO")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
     union all
     -- via hubfeed_mt_policy <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.MASTER_POLICY_NUMBER (POLICY_HKEY__MASTER_POLICY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_policy <- stg2_mt__uwr_pol
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS.POLICY_NUMBER (POLICY_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICY_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("POLICY_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICY_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("POLICY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICY_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("POLICY_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICY_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("POLICY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
     union all
     -- via hubfeed_mt_policy <- stg2_mt__uwr_pol_ins_mbr
@@ -710,50 +709,50 @@ with src as (
     union all
     -- via hubfeed_mt_policy <- stg2_mt__uwr_pol_ins_mbr_party_relation
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION.FOREIGN_KEY (POLICY_HKEY__INSURED_MEMBER)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(("FOREIGN_KEY")),'')) is not null then nullif(trim(("FOREIGN_KEY")), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(("FOREIGN_KEY")),'')) is not null then nullif(trim(("FOREIGN_KEY")), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(("FOREIGN_KEY")),'') is not null then nullif(trim(("FOREIGN_KEY")), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(("FOREIGN_KEY")),'') is not null then nullif(trim(("FOREIGN_KEY")), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION
     union all
     -- via hubfeed_mt_policy <- stg2_mt__uwr_pol_polp_sp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.MASTER_POLICY_NUMBER (POLICY_HKEY__MASTER_POLICY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_policy <- stg2_mt__uwr_pol_polp_sp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.EXPIRING_POLICY_NUMBER (POLICY_HKEY__PREVIOUS_POLICY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_policy <- stg2_mt__uwr_pol_prevpol
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS.POLICY_NUMBER (POLICY_HKEY__PREVIOUS_POLICY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICY_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("POLICY_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICY_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("POLICY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICY_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("POLICY_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICY_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("POLICY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS
     union all
     -- via hubfeed_mt_policy <- stg2_mt__uwr_pol_prp_party_relation
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION.FOREIGN_KEY (POLICY_HKEY__PROPOSER)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(("FOREIGN_KEY")),'')) is not null then nullif(trim(("FOREIGN_KEY")), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(("FOREIGN_KEY")),'')) is not null then nullif(trim(("FOREIGN_KEY")), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(("FOREIGN_KEY")),'') is not null then nullif(trim(("FOREIGN_KEY")), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(("FOREIGN_KEY")),'') is not null then nullif(trim(("FOREIGN_KEY")), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION
     union all
     -- via hubfeed_mt_policy <- stg2_mt__uwr_qpd_polp_rl_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW.MASTER_POLICY_NUMBER (POLICY_HKEY__MASTER_POLICY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("MASTER_POLICY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
     union all
     -- via hubfeed_mt_policy <- stg2_mt__uwr_qpd_polp_rl_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW.EXPIRING_POLICY_NUMBER (POLICY_HKEY__PREVIOUS_POLICY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("EXPIRING_POLICY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
     union all
     -- via hubfeed_mt_policy <- stg2_mt__uwr_qpd_polp_rl_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW.PREVIOUS_POLICY_NUMBER (POLICY_HKEY__PREVIOUS_POLICY_PORTABILITY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PREVIOUS_POLICY_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PREVIOUS_POLICY_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PREVIOUS_POLICY_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PREVIOUS_POLICY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PREVIOUS_POLICY_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PREVIOUS_POLICY_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PREVIOUS_POLICY_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PREVIOUS_POLICY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 )
 select 'MAXIMUS' as project, 'HUB_POLICY' as hub,
@@ -769,7 +768,7 @@ select 'MAXIMUS' as project, 'HUB_POLICY' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — HUB_PRODUCT   [Implemented]  [M1]
+-- 3. MAXIMUS — HUB_PRODUCT   [Implemented]
 -- 8 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.STORED_PRODUCT_CODE
 -- (PRODUCT_HKEY), NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS.PRODUCT_CODE (PRODUCT_HKEY),
@@ -794,14 +793,14 @@ select 'MAXIMUS' as project, 'HUB_POLICY' as hub,
 with src as (
     -- via hubfeed_mt_product <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.STORED_PRODUCT_CODE (PRODUCT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("STORED_PRODUCT_CODE")), '')),'')) is not null then 'PROD:' || nullif(trim(nullif(trim(to_varchar("STORED_PRODUCT_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("STORED_PRODUCT_CODE")), '')),'')) is not null then 'PROD:' || nullif(trim(nullif(trim(to_varchar("STORED_PRODUCT_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("STORED_PRODUCT_CODE")), '')),'') is not null then 'PROD:' || nullif(trim(nullif(trim(to_varchar("STORED_PRODUCT_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("STORED_PRODUCT_CODE")), '')),'') is not null then 'PROD:' || nullif(trim(nullif(trim(to_varchar("STORED_PRODUCT_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_product <- stg2_mt__uwr_pol
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS.PRODUCT_CODE (PRODUCT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')),'')) is not null then 'PROD:' || nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')),'')) is not null then 'PROD:' || nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')),'') is not null then 'PROD:' || nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')),'') is not null then 'PROD:' || nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
     union all
     -- via hubfeed_mt_product <- stg2_mt__uwr_pol_ins_rskp_sp_pv
@@ -818,14 +817,14 @@ with src as (
     union all
     -- via hubfeed_mt_product <- stg2_mt__uwr_pol_prevpol
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS.PRODUCT_CODE (PRODUCT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')),'')) is not null then 'PROD:' || nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')),'')) is not null then 'PROD:' || nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')),'') is not null then 'PROD:' || nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')),'') is not null then 'PROD:' || nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS
     union all
     -- via hubfeed_mt_product <- stg2_mt__uwr_qpd
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS.PRODUCT_CODE (PRODUCT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')),'')) is not null then 'PROD:' || nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')),'')) is not null then 'PROD:' || nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')),'') is not null then 'PROD:' || nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')),'') is not null then 'PROD:' || nullif(trim(nullif(trim(to_varchar("PRODUCT_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
     union all
     -- via hubfeed_mt_product <- stg2_mt__uwr_qpd_polp_rl_pv
@@ -853,7 +852,7 @@ select 'MAXIMUS' as project, 'HUB_PRODUCT' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — HUB_COVERAGE   [Implemented]  [M1]
+-- 4. MAXIMUS — HUB_COVERAGE   [Implemented]
 -- 8 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW.COVER_CODE
 -- (COVERAGE_HKEY),
@@ -881,14 +880,14 @@ select 'MAXIMUS' as project, 'HUB_PRODUCT' as hub,
 with src as (
     -- via hubfeed_mt_coverage <- stg2_mt__clm_clmd_clmrsk_rska_properties_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW.COVER_CODE (COVERAGE_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'')) is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'')) is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'') is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'') is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_coverage <- stg2_mt__uwr_pol_ins_cov
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS.COVER_CODE (COVERAGE_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'')) is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'')) is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'') is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'') is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS
     union all
     -- via hubfeed_mt_coverage <- stg2_mt__uwr_pol_ins_cov_covp_msp_msd_prop_pv
@@ -905,14 +904,14 @@ with src as (
     union all
     -- via hubfeed_mt_coverage <- stg2_mt__uwr_pol_ins_rskp_sp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.COVER_CODE (COVERAGE_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'')) is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'')) is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'') is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'') is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_coverage <- stg2_mt__uwr_qpd_rskl_rskc
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER.COVER_CODE (COVERAGE_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'')) is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'')) is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'') is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'') is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER
     union all
     -- via hubfeed_mt_coverage <- stg2_mt__uwr_qpd_rskl_rskc_rskc_prop_rl_pv
@@ -923,8 +922,8 @@ with src as (
     union all
     -- via hubfeed_mt_coverage <- stg2_mt__uwr_qpd_rskl_rskp_rl_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW.COVER_CODE (COVERAGE_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'')) is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'')) is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'') is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')),'') is not null then 'COV:' || nullif(trim(nullif(trim(to_varchar("COVER_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
 )
 select 'MAXIMUS' as project, 'HUB_COVERAGE' as hub,
@@ -940,7 +939,7 @@ select 'MAXIMUS' as project, 'HUB_COVERAGE' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — HUB_LOCATION   [Implemented]  [M1]
+-- 5. MAXIMUS — HUB_LOCATION   [Implemented]
 -- 25 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.[CITY+STATE+PIN_CODE]
 -- (LOCATION_HKEY__DOCUMENT_INWARD_ORIGIN_ADDRESS),
@@ -1027,8 +1026,8 @@ with src as (
     union all
     -- via hubfeed_mt_location <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.ADDRESS_FOR_REFERENCE (LOCATION_HKEY__CLAIM_REFERENCE_ADDRESS)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("ADDRESS_FOR_REFERENCE")), '')),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(nullif(trim(to_varchar("ADDRESS_FOR_REFERENCE")), '')), '')), '[[:space:]]+', ' '))) end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("ADDRESS_FOR_REFERENCE")), '')),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(nullif(trim(to_varchar("ADDRESS_FOR_REFERENCE")), '')), '')), '[[:space:]]+', ' '))) end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("ADDRESS_FOR_REFERENCE")), '')),'') is not null then md5(upper(regexp_replace(trim(nullif(trim(nullif(trim(to_varchar("ADDRESS_FOR_REFERENCE")), '')), '')), '[[:space:]]+', ' '))) end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("ADDRESS_FOR_REFERENCE")), '')),'') is not null then md5(upper(regexp_replace(trim(nullif(trim(nullif(trim(to_varchar("ADDRESS_FOR_REFERENCE")), '')), '')), '[[:space:]]+', ' '))) end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_location <- stg2_mt__clm_clmd_clmap_pv
@@ -1039,20 +1038,20 @@ with src as (
     union all
     -- via hubfeed_mt_location <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.SELECT_INSPECTION_ADDRESS (LOCATION_HKEY__INSPECTION_ADDRESS)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("SELECT_INSPECTION_ADDRESS")), '')),'')) is not null then md5(upper(regexp_replace(trim(upper(nullif(trim(nullif(trim(to_varchar("SELECT_INSPECTION_ADDRESS")), '')), ''))), '[[:space:]]+', ' '))) end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("SELECT_INSPECTION_ADDRESS")), '')),'')) is not null then md5(upper(regexp_replace(trim(upper(nullif(trim(nullif(trim(to_varchar("SELECT_INSPECTION_ADDRESS")), '')), ''))), '[[:space:]]+', ' '))) end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("SELECT_INSPECTION_ADDRESS")), '')),'') is not null then md5(upper(regexp_replace(trim(upper(nullif(trim(nullif(trim(to_varchar("SELECT_INSPECTION_ADDRESS")), '')), ''))), '[[:space:]]+', ' '))) end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("SELECT_INSPECTION_ADDRESS")), '')),'') is not null then md5(upper(regexp_replace(trim(upper(nullif(trim(nullif(trim(to_varchar("SELECT_INSPECTION_ADDRESS")), '')), ''))), '[[:space:]]+', ' '))) end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_location <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.STORED_COUNTRY_CODE (LOCATION_HKEY__STORED_COUNTRY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("STORED_COUNTRY_CODE")), '')),'')) is not null then 'GEO:COUNTRY:' || nullif(trim(nullif(trim(to_varchar("STORED_COUNTRY_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("STORED_COUNTRY_CODE")), '')),'')) is not null then 'GEO:COUNTRY:' || nullif(trim(nullif(trim(to_varchar("STORED_COUNTRY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("STORED_COUNTRY_CODE")), '')),'') is not null then 'GEO:COUNTRY:' || nullif(trim(nullif(trim(to_varchar("STORED_COUNTRY_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("STORED_COUNTRY_CODE")), '')),'') is not null then 'GEO:COUNTRY:' || nullif(trim(nullif(trim(to_varchar("STORED_COUNTRY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_location <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.STORED_STATE_CODE (LOCATION_HKEY__STORED_STATE)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("STORED_STATE_CODE")), '')),'')) is not null then 'GEO:STATE:' || nullif(trim(nullif(trim(to_varchar("STORED_STATE_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("STORED_STATE_CODE")), '')),'')) is not null then 'GEO:STATE:' || nullif(trim(nullif(trim(to_varchar("STORED_STATE_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("STORED_STATE_CODE")), '')),'') is not null then 'GEO:STATE:' || nullif(trim(nullif(trim(to_varchar("STORED_STATE_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("STORED_STATE_CODE")), '')),'') is not null then 'GEO:STATE:' || nullif(trim(nullif(trim(to_varchar("STORED_STATE_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_location <- stg2_mt__clm_clmd_clmcov_msd_prop_pv
@@ -1063,8 +1062,8 @@ with src as (
     union all
     -- via hubfeed_mt_location <- stg2_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.ADDRESS (LOCATION_HKEY__CLAIM_EXPENSE_PARTY_ADDRESS)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("ADDRESS")), '')),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(nullif(trim(to_varchar("ADDRESS")), '')), '')), '[[:space:]]+', ' '))) end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("ADDRESS")), '')),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(nullif(trim(to_varchar("ADDRESS")), '')), '')), '[[:space:]]+', ' '))) end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("ADDRESS")), '')),'') is not null then md5(upper(regexp_replace(trim(nullif(trim(nullif(trim(to_varchar("ADDRESS")), '')), '')), '[[:space:]]+', ' '))) end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("ADDRESS")), '')),'') is not null then md5(upper(regexp_replace(trim(nullif(trim(nullif(trim(to_varchar("ADDRESS")), '')), '')), '[[:space:]]+', ' '))) end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_location <- stg2_mt__clm_clmd_clmrsk_rska_properties_pv
@@ -1164,7 +1163,7 @@ select 'MAXIMUS' as project, 'HUB_LOCATION' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — HUB_ORG_UNIT   [Implemented]  [M1]
+-- 6. MAXIMUS — HUB_ORG_UNIT   [Implemented]
 -- 9 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.STORED_COMPANY_CODE
 -- (ORG_UNIT_HKEY__COMPANY),
@@ -1195,26 +1194,26 @@ select 'MAXIMUS' as project, 'HUB_LOCATION' as hub,
 with src as (
     -- via hubfeed_mt_org_unit <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.STORED_COMPANY_CODE (ORG_UNIT_HKEY__COMPANY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("STORED_COMPANY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("STORED_COMPANY_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("STORED_COMPANY_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("STORED_COMPANY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("STORED_COMPANY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("STORED_COMPANY_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("STORED_COMPANY_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("STORED_COMPANY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_org_unit <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.HUB_LOCATION (ORG_UNIT_HKEY__OPERATING_HUB)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("HUB_LOCATION")), '')),'')) is not null then 'ORGHUB:' || nullif(trim(nullif(trim(to_varchar("HUB_LOCATION")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("HUB_LOCATION")), '')),'')) is not null then 'ORGHUB:' || nullif(trim(nullif(trim(to_varchar("HUB_LOCATION")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("HUB_LOCATION")), '')),'') is not null then 'ORGHUB:' || nullif(trim(nullif(trim(to_varchar("HUB_LOCATION")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("HUB_LOCATION")), '')),'') is not null then 'ORGHUB:' || nullif(trim(nullif(trim(to_varchar("HUB_LOCATION")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_org_unit <- stg2_mt__uwr_pol
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS.POLICY_BRANCH_NAME (ORG_UNIT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICY_BRANCH_NAME")), '')),'')) is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim(nullif(trim(to_varchar("POLICY_BRANCH_NAME")), '')), '')))) end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICY_BRANCH_NAME")), '')),'')) is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim(nullif(trim(to_varchar("POLICY_BRANCH_NAME")), '')), '')))) end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICY_BRANCH_NAME")), '')),'') is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim(nullif(trim(to_varchar("POLICY_BRANCH_NAME")), '')), '')))) end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICY_BRANCH_NAME")), '')),'') is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim(nullif(trim(to_varchar("POLICY_BRANCH_NAME")), '')), '')))) end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
     union all
     -- via hubfeed_mt_org_unit <- stg2_mt__uwr_pol_off
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS.OFFICE_CODE (ORG_UNIT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("OFFICE_CODE")), '')),'')) is not null then 'ORGUNIT:' || nullif(trim(nullif(trim(to_varchar("OFFICE_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("OFFICE_CODE")), '')),'')) is not null then 'ORGUNIT:' || nullif(trim(nullif(trim(to_varchar("OFFICE_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("OFFICE_CODE")), '')),'') is not null then 'ORGUNIT:' || nullif(trim(nullif(trim(to_varchar("OFFICE_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("OFFICE_CODE")), '')),'') is not null then 'ORGUNIT:' || nullif(trim(nullif(trim(to_varchar("OFFICE_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS
     union all
     -- via hubfeed_mt_org_unit <- stg2_mt__uwr_pol_off_oa_address_prop_pv
@@ -1225,26 +1224,26 @@ with src as (
     union all
     -- via hubfeed_mt_org_unit <- stg2_mt__uwr_pol_polp_sp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.BRANCH_CODE (ORG_UNIT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("BRANCH_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("BRANCH_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("BRANCH_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("BRANCH_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("BRANCH_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("BRANCH_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("BRANCH_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("BRANCH_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_org_unit <- stg2_mt__uwr_pol_prp_pp_sp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.LOCATION_CODE (ORG_UNIT_HKEY__SERVICING_BRANCH)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("LOCATION_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("LOCATION_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("LOCATION_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("LOCATION_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("LOCATION_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("LOCATION_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("LOCATION_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("LOCATION_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_org_unit <- stg2_mt__uwr_qpd
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS.POLICY_BRANCH_NAME (ORG_UNIT_HKEY__POLICY_ISSUING_BRANCH)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICY_BRANCH_NAME")), '')),'')) is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim(nullif(trim(to_varchar("POLICY_BRANCH_NAME")), '')), '')))) end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICY_BRANCH_NAME")), '')),'')) is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim(nullif(trim(to_varchar("POLICY_BRANCH_NAME")), '')), '')))) end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICY_BRANCH_NAME")), '')),'') is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim(nullif(trim(to_varchar("POLICY_BRANCH_NAME")), '')), '')))) end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICY_BRANCH_NAME")), '')),'') is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim(nullif(trim(to_varchar("POLICY_BRANCH_NAME")), '')), '')))) end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
     union all
     -- via hubfeed_mt_org_unit <- stg2_mt__uwr_qpd_polp_rl_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW.BRANCH_CODE (ORG_UNIT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("BRANCH_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("BRANCH_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("BRANCH_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("BRANCH_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("BRANCH_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("BRANCH_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("BRANCH_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("BRANCH_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 )
 select 'MAXIMUS' as project, 'HUB_ORG_UNIT' as hub,
@@ -1260,7 +1259,7 @@ select 'MAXIMUS' as project, 'HUB_ORG_UNIT' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — HUB_DISTRIBUTION_CHANNEL   [Implemented]  [M1]
+-- 7. MAXIMUS — HUB_DISTRIBUTION_CHANNEL   [Implemented]
 -- 8 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.DEALER_CODE
 -- (DISTRIBUTION_CHANNEL_HKEY__DEALER),
@@ -1287,50 +1286,50 @@ select 'MAXIMUS' as project, 'HUB_ORG_UNIT' as hub,
 with src as (
     -- via hubfeed_mt_distribution_channel <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.DEALER_CODE (DISTRIBUTION_CHANNEL_HKEY__DEALER)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("DEALER_CODE")), '')),'')) is not null then 'DEALER:' || nullif(trim(nullif(trim(to_varchar("DEALER_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("DEALER_CODE")), '')),'')) is not null then 'DEALER:' || nullif(trim(nullif(trim(to_varchar("DEALER_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("DEALER_CODE")), '')),'') is not null then 'DEALER:' || nullif(trim(nullif(trim(to_varchar("DEALER_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("DEALER_CODE")), '')),'') is not null then 'DEALER:' || nullif(trim(nullif(trim(to_varchar("DEALER_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_distribution_channel <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.INTERMEDIARY_CODE (DISTRIBUTION_CHANNEL_HKEY__INTERMEDIARY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("INTERMEDIARY_CODE")), '')),'')) is not null then 'IMD:' || nullif(trim(nullif(trim(to_varchar("INTERMEDIARY_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("INTERMEDIARY_CODE")), '')),'')) is not null then 'IMD:' || nullif(trim(nullif(trim(to_varchar("INTERMEDIARY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("INTERMEDIARY_CODE")), '')),'') is not null then 'IMD:' || nullif(trim(nullif(trim(to_varchar("INTERMEDIARY_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("INTERMEDIARY_CODE")), '')),'') is not null then 'IMD:' || nullif(trim(nullif(trim(to_varchar("INTERMEDIARY_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_distribution_channel <- stg2_mt__uwr_pol_ins_mbr_pp_sp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.PARTNER_REF (DISTRIBUTION_CHANNEL_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTNER_REF")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTNER_REF")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTNER_REF")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTNER_REF")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTNER_REF")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTNER_REF")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTNER_REF")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTNER_REF")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_distribution_channel <- stg2_mt__uwr_pol_polp_sp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.IMD_CODE (DISTRIBUTION_CHANNEL_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("IMD_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("IMD_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("IMD_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("IMD_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("IMD_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("IMD_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("IMD_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("IMD_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_distribution_channel <- stg2_mt__uwr_pol_prp_pp_sp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.AGENT_CHANNEL (DISTRIBUTION_CHANNEL_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("AGENT_CHANNEL")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("AGENT_CHANNEL")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("AGENT_CHANNEL")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("AGENT_CHANNEL")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("AGENT_CHANNEL")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("AGENT_CHANNEL")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("AGENT_CHANNEL")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("AGENT_CHANNEL")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_distribution_channel <- stg2_mt__uwr_pol_prp_pp_sp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.PARTNER_REF (DISTRIBUTION_CHANNEL_HKEY__V2)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTNER_REF")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTNER_REF")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PARTNER_REF")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("PARTNER_REF")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTNER_REF")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTNER_REF")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PARTNER_REF")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("PARTNER_REF")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_distribution_channel <- stg2_mt__uwr_qpd
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS.AGENT_CODE (DISTRIBUTION_CHANNEL_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("AGENT_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("AGENT_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("AGENT_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("AGENT_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("AGENT_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("AGENT_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("AGENT_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("AGENT_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
     union all
     -- via hubfeed_mt_distribution_channel <- stg2_mt__uwr_qpd_polp_rl_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW.IMD_CODE (DISTRIBUTION_CHANNEL_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("IMD_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("IMD_CODE")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("IMD_CODE")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("IMD_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("IMD_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("IMD_CODE")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("IMD_CODE")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("IMD_CODE")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 )
 select 'MAXIMUS' as project, 'HUB_DISTRIBUTION_CHANNEL' as hub,
@@ -1346,7 +1345,7 @@ select 'MAXIMUS' as project, 'HUB_DISTRIBUTION_CHANNEL' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — HUB_FINANCIAL_TRANSACTION   [Implemented]  [M1]
+-- 8. MAXIMUS — HUB_FINANCIAL_TRANSACTION   [Implemented]
 -- 9 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW.[]
 -- (FINANCIAL_TRANSACTION_HKEY__CLAIM_PAYMENT),
@@ -1386,20 +1385,20 @@ with src as (
     union all
     -- via hubfeed_mt_financial_transaction <- stg2_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.INVOICE_NUMBER (FINANCIAL_TRANSACTION_HKEY__CLAIM_BILL_INVOICE)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("INVOICE_NUMBER")), '')),'')) is not null then 'INV:' || nullif(trim(nullif(trim(to_varchar("INVOICE_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("INVOICE_NUMBER")), '')),'')) is not null then 'INV:' || nullif(trim(nullif(trim(to_varchar("INVOICE_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("INVOICE_NUMBER")), '')),'') is not null then 'INV:' || nullif(trim(nullif(trim(to_varchar("INVOICE_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("INVOICE_NUMBER")), '')),'') is not null then 'INV:' || nullif(trim(nullif(trim(to_varchar("INVOICE_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_financial_transaction <- stg2_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.PAYMENT_ID (FINANCIAL_TRANSACTION_HKEY__CLAIM_PAYMENT)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PAYMENT_ID")), '')),'')) is not null then 'PAY:' || nullif(trim(nullif(trim(to_varchar("PAYMENT_ID")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("PAYMENT_ID")), '')),'')) is not null then 'PAY:' || nullif(trim(nullif(trim(to_varchar("PAYMENT_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PAYMENT_ID")), '')),'') is not null then 'PAY:' || nullif(trim(nullif(trim(to_varchar("PAYMENT_ID")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("PAYMENT_ID")), '')),'') is not null then 'PAY:' || nullif(trim(nullif(trim(to_varchar("PAYMENT_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_financial_transaction <- stg2_mt__uwr_pol_policy_payment_information
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION.TRANSACTION_ID (FINANCIAL_TRANSACTION_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("TRANSACTION_ID")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("TRANSACTION_ID")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("TRANSACTION_ID")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("TRANSACTION_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("TRANSACTION_ID")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("TRANSACTION_ID")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("TRANSACTION_ID")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("TRANSACTION_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
     union all
     -- via hubfeed_mt_financial_transaction <- stg2_mt__uwr_pol_polp_sp_pv
@@ -1410,8 +1409,8 @@ with src as (
     union all
     -- via hubfeed_mt_financial_transaction <- stg2_mt__uwr_qpd
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS.POLICY_QUOTE_NUMBER (FINANCIAL_TRANSACTION_HKEY__QUOTE_PREMIUM)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), '')),'')) is not null then 'QUOTEPREM:' || nullif(trim(nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), '')),'')) is not null then 'QUOTEPREM:' || nullif(trim(nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), '')),'') is not null then 'QUOTEPREM:' || nullif(trim(nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), '')),'') is not null then 'QUOTEPREM:' || nullif(trim(nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
     union all
     -- via hubfeed_mt_financial_transaction <- stg2_mt__uwr_qpd_polp_rl_pv
@@ -1429,8 +1428,8 @@ with src as (
     union all
     -- via hubfeed_mt_financial_transaction <- stg2_mt_up__clm_clmd_clmrsk_rska_msp_msd_prop_pv__sat_fintxn_tax <- up_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv__sat_fintxn_tax
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.INVOICE_NUMBER (FINANCIAL_TRANSACTION_HKEY__CLAIM_BILL_INVOICE / sat_fintxn_tax)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("INVOICE_NUMBER")), '')),'')) is not null then 'INV:' || nullif(trim(nullif(trim(to_varchar("INVOICE_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("INVOICE_NUMBER")), '')),'')) is not null then 'INV:' || nullif(trim(nullif(trim(to_varchar("INVOICE_NUMBER")), '')), '') end),''))) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("INVOICE_NUMBER")), '')),'') is not null then 'INV:' || nullif(trim(nullif(trim(to_varchar("INVOICE_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || ((nullif(trim(case when nullif(trim(nullif(trim(to_varchar("INVOICE_NUMBER")), '')),'') is not null then 'INV:' || nullif(trim(nullif(trim(to_varchar("INVOICE_NUMBER")), '')), '') end),''))) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
      where (nullif(trim(to_varchar("CGST")), '') is not null or nullif(trim(to_varchar("CGST_PERCENTAGE")), '') is not null or nullif(trim(to_varchar("GST_APPLICABILITY")), '') is not null or nullif(trim(to_varchar("IGST")), '') is not null or nullif(trim(to_varchar("IGST_PERCENTAGE")), '') is not null or nullif(trim(to_varchar("INVOICE_NUMBER")), '') is not null or nullif(trim(to_varchar("SGST")), '') is not null or nullif(trim(to_varchar("SGST_PERCENTAGE")), '') is not null or nullif(trim(to_varchar("TOTAL_GST_PERCENTAGE")), '') is not null)
 )
@@ -1447,7 +1446,7 @@ select 'MAXIMUS' as project, 'HUB_FINANCIAL_TRANSACTION' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — HUB_ASSESSMENT   [Implemented]  [M1]
+-- 9. MAXIMUS — HUB_ASSESSMENT   [Implemented]
 -- 3 RAW key branch(es):
 -- NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.BAGIC_SCRUTINY_NUMBER
 -- (ASSESSMENT_HKEY),
@@ -1462,20 +1461,20 @@ select 'MAXIMUS' as project, 'HUB_FINANCIAL_TRANSACTION' as hub,
 with src as (
     -- via hubfeed_mt_assessment <- stg2_mt__uwr_pol_polp_sp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.BAGIC_SCRUTINY_NUMBER (ASSESSMENT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("BAGIC_SCRUTINY_NUMBER")), '')),'')) is not null then 'SCRUTINY:' || nullif(trim(nullif(trim(to_varchar("BAGIC_SCRUTINY_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ASSESSMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("BAGIC_SCRUTINY_NUMBER")), '')),'')) is not null then 'SCRUTINY:' || nullif(trim(nullif(trim(to_varchar("BAGIC_SCRUTINY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("BAGIC_SCRUTINY_NUMBER")), '')),'') is not null then 'SCRUTINY:' || nullif(trim(nullif(trim(to_varchar("BAGIC_SCRUTINY_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ASSESSMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("BAGIC_SCRUTINY_NUMBER")), '')),'') is not null then 'SCRUTINY:' || nullif(trim(nullif(trim(to_varchar("BAGIC_SCRUTINY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_assessment <- stg2_mt__uwr_pol_tele
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS.TRANSACTION_ID (ASSESSMENT_HKEY__TELE_VERIFICATION)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("TRANSACTION_ID")), '')),'')) is not null then 'TELEVERIF:' || nullif(trim(nullif(trim(to_varchar("TRANSACTION_ID")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ASSESSMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("TRANSACTION_ID")), '')),'')) is not null then 'TELEVERIF:' || nullif(trim(nullif(trim(to_varchar("TRANSACTION_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("TRANSACTION_ID")), '')),'') is not null then 'TELEVERIF:' || nullif(trim(nullif(trim(to_varchar("TRANSACTION_ID")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ASSESSMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("TRANSACTION_ID")), '')),'') is not null then 'TELEVERIF:' || nullif(trim(nullif(trim(to_varchar("TRANSACTION_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS
     union all
     -- via hubfeed_mt_assessment <- stg2_mt__uwr_qpd_polp_rl_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW.BAGIC_SCRUTINY_NUMBER (ASSESSMENT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("BAGIC_SCRUTINY_NUMBER")), '')),'')) is not null then 'SCRUTINY:' || nullif(trim(nullif(trim(to_varchar("BAGIC_SCRUTINY_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ASSESSMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("BAGIC_SCRUTINY_NUMBER")), '')),'')) is not null then 'SCRUTINY:' || nullif(trim(nullif(trim(to_varchar("BAGIC_SCRUTINY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("BAGIC_SCRUTINY_NUMBER")), '')),'') is not null then 'SCRUTINY:' || nullif(trim(nullif(trim(to_varchar("BAGIC_SCRUTINY_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ASSESSMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("BAGIC_SCRUTINY_NUMBER")), '')),'') is not null then 'SCRUTINY:' || nullif(trim(nullif(trim(to_varchar("BAGIC_SCRUTINY_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 )
 select 'MAXIMUS' as project, 'HUB_ASSESSMENT' as hub,
@@ -1491,7 +1490,7 @@ select 'MAXIMUS' as project, 'HUB_ASSESSMENT' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — HUB_QUOTE   [Implemented]  [M1]
+-- 10. MAXIMUS — HUB_QUOTE   [Implemented]
 -- 13 RAW key branch(es): NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS.QUOTATION_NUMBER
 -- (QUOTE_HKEY),
 -- NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.[]
@@ -1531,8 +1530,8 @@ select 'MAXIMUS' as project, 'HUB_ASSESSMENT' as hub,
 with src as (
     -- via hubfeed_mt_quote <- stg2_mt__uwr_pol
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS.QUOTATION_NUMBER (QUOTE_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("QUOTATION_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("QUOTATION_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("QUOTATION_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("QUOTATION_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("QUOTATION_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("QUOTATION_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("QUOTATION_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("QUOTATION_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
     union all
     -- via hubfeed_mt_quote <- stg2_mt__uwr_pol_ins_mbr_pp_sp_pv
@@ -1543,8 +1542,8 @@ with src as (
     union all
     -- via hubfeed_mt_quote <- stg2_mt__uwr_qpd
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS.POLICY_QUOTE_NUMBER (QUOTE_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("POLICY_QUOTE_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
     union all
     -- via hubfeed_mt_quote <- stg2_mt__uwr_qpd_polp_msp_imsd_inp_pv
@@ -1622,7 +1621,7 @@ select 'MAXIMUS' as project, 'HUB_QUOTE' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — HUB_RISK_OBJECT   [Implemented]  [M2]
+-- 11. MAXIMUS — HUB_RISK_OBJECT   [Implemented]
 -- 5 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.RISK_CODE
 -- (RISK_OBJECT_HKEY__CLAIMED_RISK_ITEM),
@@ -1708,7 +1707,7 @@ select 'MAXIMUS' as project, 'HUB_RISK_OBJECT' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — HUB_CLAIM   [Implemented]  [M2]
+-- 12. MAXIMUS — HUB_CLAIM   [Implemented]
 -- 5 RAW key branch(es): NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS.CLAIMNO (CLAIM_HKEY),
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.LINKED_CLAIM_NUMBER
 -- (CLAIM_HKEY__LINKED_CLAIM),
@@ -1803,32 +1802,32 @@ select 'MAXIMUS' as project, 'HUB_RISK_OBJECT' as hub,
 with src as (
     -- via hubfeed_mt_claim <- stg2_mt__clm_clmd
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS.CLAIMNO (CLAIM_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("CLAIMNO")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("CLAIMNO")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("CLAIMNO")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("CLAIMNO")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("CLAIMNO")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("CLAIMNO")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("CLAIMNO")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("CLAIMNO")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
     union all
     -- via hubfeed_mt_claim <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.LINKED_CLAIM_NUMBER (CLAIM_HKEY__LINKED_CLAIM)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("LINKED_CLAIM_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("LINKED_CLAIM_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("LINKED_CLAIM_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("LINKED_CLAIM_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("LINKED_CLAIM_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("LINKED_CLAIM_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("LINKED_CLAIM_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("LINKED_CLAIM_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_claim <- stg2_mt__clm_clmd_clmrsk_rska_properties_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW.LINKED_DELAY_OF_BAGGAGE_CLAIM (CLAIM_HKEY__LINKED_BAGGAGE_DELAY_CLAIM)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("LINKED_DELAY_OF_BAGGAGE_CLAIM")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("LINKED_DELAY_OF_BAGGAGE_CLAIM")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("LINKED_DELAY_OF_BAGGAGE_CLAIM")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("LINKED_DELAY_OF_BAGGAGE_CLAIM")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("LINKED_DELAY_OF_BAGGAGE_CLAIM")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("LINKED_DELAY_OF_BAGGAGE_CLAIM")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("LINKED_DELAY_OF_BAGGAGE_CLAIM")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("LINKED_DELAY_OF_BAGGAGE_CLAIM")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_claim <- stg2_mt__clm_clmd_clmrsk_rska_properties_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW.LINKED_HEALTH_CLAIM (CLAIM_HKEY__LINKED_HEALTH_CLAIM)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("LINKED_HEALTH_CLAIM")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("LINKED_HEALTH_CLAIM")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("LINKED_HEALTH_CLAIM")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("LINKED_HEALTH_CLAIM")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("LINKED_HEALTH_CLAIM")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("LINKED_HEALTH_CLAIM")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("LINKED_HEALTH_CLAIM")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("LINKED_HEALTH_CLAIM")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_claim <- stg2_mt__clm_clmd_clmrsk_rska_properties_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW.LINKED_TRIP_DELAY_CLAIM_NUMBER (CLAIM_HKEY__LINKED_TRIP_DELAY_CLAIM)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("LINKED_TRIP_DELAY_CLAIM_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("LINKED_TRIP_DELAY_CLAIM_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("LINKED_TRIP_DELAY_CLAIM_NUMBER")), '')),'')) is not null then nullif(trim(nullif(trim(to_varchar("LINKED_TRIP_DELAY_CLAIM_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("LINKED_TRIP_DELAY_CLAIM_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("LINKED_TRIP_DELAY_CLAIM_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("LINKED_TRIP_DELAY_CLAIM_NUMBER")), '')),'') is not null then nullif(trim(nullif(trim(to_varchar("LINKED_TRIP_DELAY_CLAIM_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 )
 select 'MAXIMUS' as project, 'HUB_CLAIM' as hub,
@@ -1844,7 +1843,7 @@ select 'MAXIMUS' as project, 'HUB_CLAIM' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — HUB_DOCUMENT   [Implemented]  [M2]
+-- 13. MAXIMUS — HUB_DOCUMENT   [Implemented]
 -- 14 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.INWARD_NUMBER
 -- (DOCUMENT_HKEY__CLAIM_INWARD_DOCUMENT_SET),
@@ -1883,86 +1882,86 @@ select 'MAXIMUS' as project, 'HUB_CLAIM' as hub,
 with src as (
     -- via hubfeed_mt_document <- stg2_mt__clm_clmd_clma_msp_msd_prop_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.INWARD_NUMBER (DOCUMENT_HKEY__CLAIM_INWARD_DOCUMENT_SET)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')),'')) is not null then 'INWARD:' || nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')),'')) is not null then 'INWARD:' || nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')),'') is not null then 'INWARD:' || nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')),'') is not null then 'INWARD:' || nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_document <- stg2_mt__clm_clmd_clmap_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.INWARD_NUMBER (DOCUMENT_HKEY__CLAIM_INWARD)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')),'')) is not null then 'INWARD:' || nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')),'')) is not null then 'INWARD:' || nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')),'') is not null then 'INWARD:' || nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')),'') is not null then 'INWARD:' || nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
     union all
     -- via hubfeed_mt_document <- stg2_mt__clm_clmd_clmcov_msd_prop_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.INWARD_NUMBER (DOCUMENT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')),'')) is not null then 'INWARD:' || nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')),'')) is not null then 'INWARD:' || nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')),'') is not null then 'INWARD:' || nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')),'') is not null then 'INWARD:' || nullif(trim(nullif(trim(to_varchar("INWARD_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_document <- stg2_mt__clm_clmd_doc
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS.DOCUMENT_ID (DOCUMENT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'')) is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'')) is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'') is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'') is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS
     union all
     -- via hubfeed_mt_document <- stg2_mt__uwr_pol_doc
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS.DOCUMENT_ID (DOCUMENT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'')) is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'')) is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'') is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'') is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS
     union all
     -- via hubfeed_mt_document <- stg2_mt__uwr_pol_ins_doc
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS.DOCUMENT_ID (DOCUMENT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'')) is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'')) is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'') is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'') is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS
     union all
     -- via hubfeed_mt_document <- stg2_mt__uwr_pol_ins_mbr_document_detail
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL.DOCUMENT_ID (DOCUMENT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'')) is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'')) is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'') is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'') is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL
     union all
     -- via hubfeed_mt_document <- stg2_mt__uwr_pol_polp_sp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.COI_NUMBER (DOCUMENT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("COI_NUMBER")), '')),'')) is not null then 'COI:' || nullif(trim(nullif(trim(to_varchar("COI_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("COI_NUMBER")), '')),'')) is not null then 'COI:' || nullif(trim(nullif(trim(to_varchar("COI_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("COI_NUMBER")), '')),'') is not null then 'COI:' || nullif(trim(nullif(trim(to_varchar("COI_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("COI_NUMBER")), '')),'') is not null then 'COI:' || nullif(trim(nullif(trim(to_varchar("COI_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_document <- stg2_mt__uwr_pol_polp_sp_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.OLD_COI_NUMBER (DOCUMENT_HKEY__PREVIOUS_CERTIFICATE)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("OLD_COI_NUMBER")), '')),'')) is not null then 'COI:' || nullif(trim(nullif(trim(to_varchar("OLD_COI_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("OLD_COI_NUMBER")), '')),'')) is not null then 'COI:' || nullif(trim(nullif(trim(to_varchar("OLD_COI_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("OLD_COI_NUMBER")), '')),'') is not null then 'COI:' || nullif(trim(nullif(trim(to_varchar("OLD_COI_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("OLD_COI_NUMBER")), '')),'') is not null then 'COI:' || nullif(trim(nullif(trim(to_varchar("OLD_COI_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_document <- stg2_mt__uwr_pol_prp_document_detail
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL.DOCUMENT_ID (DOCUMENT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'')) is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'')) is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'') is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'') is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL
     union all
     -- via hubfeed_mt_document <- stg2_mt__uwr_qpd
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS.DOCUMENT_ID (DOCUMENT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'')) is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'')) is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'') is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'') is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
     union all
     -- via hubfeed_mt_document <- stg2_mt__uwr_qpd_polp_rl_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW.COI_NUMBER (DOCUMENT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("COI_NUMBER")), '')),'')) is not null then 'COI:' || nullif(trim(nullif(trim(to_varchar("COI_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("COI_NUMBER")), '')),'')) is not null then 'COI:' || nullif(trim(nullif(trim(to_varchar("COI_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("COI_NUMBER")), '')),'') is not null then 'COI:' || nullif(trim(nullif(trim(to_varchar("COI_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("COI_NUMBER")), '')),'') is not null then 'COI:' || nullif(trim(nullif(trim(to_varchar("COI_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
     union all
     -- via hubfeed_mt_document <- stg2_mt__uwr_qpd_polp_rl_pv
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW.OLD_COI_NUMBER (DOCUMENT_HKEY__PREVIOUS_CERTIFICATE)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("OLD_COI_NUMBER")), '')),'')) is not null then 'COI:' || nullif(trim(nullif(trim(to_varchar("OLD_COI_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("OLD_COI_NUMBER")), '')),'')) is not null then 'COI:' || nullif(trim(nullif(trim(to_varchar("OLD_COI_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("OLD_COI_NUMBER")), '')),'') is not null then 'COI:' || nullif(trim(nullif(trim(to_varchar("OLD_COI_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("OLD_COI_NUMBER")), '')),'') is not null then 'COI:' || nullif(trim(nullif(trim(to_varchar("OLD_COI_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
     union all
     -- via hubfeed_mt_document <- stg2_mt__uwr_qpd_rskl
     select 'NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST.DOCUMENT_ID (DOCUMENT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'')) is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'')) is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'') is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')),'') is not null then 'DOC:' || nullif(trim(nullif(trim(to_varchar("DOCUMENT_ID")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
 )
 select 'MAXIMUS' as project, 'HUB_DOCUMENT' as hub,
@@ -1978,7 +1977,7 @@ select 'MAXIMUS' as project, 'HUB_DOCUMENT' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — HUB_LOSS_EVENT   [Implemented]  [M2]
+-- 14. MAXIMUS — HUB_LOSS_EVENT   [Implemented]
 -- 2 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.[INTIMATION_NUMBER+CLAIMNO]
 -- (LOSS_EVENT_HKEY),
@@ -2012,7 +2011,7 @@ select 'MAXIMUS' as project, 'HUB_LOSS_EVENT' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — HUB_PAYMENT_INSTRUMENT   [Implemented]  [M2]
+-- 15. MAXIMUS — HUB_PAYMENT_INSTRUMENT   [Implemented]
 -- 2 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW.ACCOUNT_NUMBER
 -- (PAYMENT_INSTRUMENT_HKEY__PAYEE_BANK_ACCOUNT),
@@ -2024,14 +2023,14 @@ select 'MAXIMUS' as project, 'HUB_LOSS_EVENT' as hub,
 with src as (
     -- via hubfeed_mt_payment_instrument <- stg2_mt__clm_clmd_clmpay_payp_pv
     select 'NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW.ACCOUNT_NUMBER (PAYMENT_INSTRUMENT_HKEY__PAYEE_BANK_ACCOUNT)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("ACCOUNT_NUMBER")), '')),'')) is not null then 'ACCT:' || nullif(trim(nullif(trim(to_varchar("ACCOUNT_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PAYMENT_INSTRUMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("ACCOUNT_NUMBER")), '')),'')) is not null then 'ACCT:' || nullif(trim(nullif(trim(to_varchar("ACCOUNT_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("ACCOUNT_NUMBER")), '')),'') is not null then 'ACCT:' || nullif(trim(nullif(trim(to_varchar("ACCOUNT_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PAYMENT_INSTRUMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("ACCOUNT_NUMBER")), '')),'') is not null then 'ACCT:' || nullif(trim(nullif(trim(to_varchar("ACCOUNT_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
     union all
     -- via hubfeed_mt_payment_instrument <- stg2_mt__uwr_pol_policy_payment_information
     select 'NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION.CHEQUE_NUMBER (PAYMENT_INSTRUMENT_HKEY)' as src_branch,
-           nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("CHEQUE_NUMBER")), '')),'')) is not null then 'CHEQUE:' || nullif(trim(nullif(trim(to_varchar("CHEQUE_NUMBER")), '')), '') end),'') as bk,
-           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PAYMENT_INSTRUMENT|' || (nullif(trim(case when coalesce(nullif(trim(nullif(trim(to_varchar("CHEQUE_NUMBER")), '')),'')) is not null then 'CHEQUE:' || nullif(trim(nullif(trim(to_varchar("CHEQUE_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
+           nullif(trim(case when nullif(trim(nullif(trim(to_varchar("CHEQUE_NUMBER")), '')),'') is not null then 'CHEQUE:' || nullif(trim(nullif(trim(to_varchar("CHEQUE_NUMBER")), '')), '') end),'') as bk,
+           MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PAYMENT_INSTRUMENT|' || (nullif(trim(case when nullif(trim(nullif(trim(to_varchar("CHEQUE_NUMBER")), '')),'') is not null then 'CHEQUE:' || nullif(trim(nullif(trim(to_varchar("CHEQUE_NUMBER")), '')), '') end),'')) AS VARCHAR))), '')) as hkey
       from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
 )
 select 'MAXIMUS' as project, 'HUB_PAYMENT_INSTRUMENT' as hub,
@@ -2047,7 +2046,7 @@ select 'MAXIMUS' as project, 'HUB_PAYMENT_INSTRUMENT' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 16. OPUS — HUB_PARTY   [Implemented]  [M2]
+-- 16. OPUS — HUB_PARTY   [Implemented]
 -- 6 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.CFT_MST_COMP_REF,
 -- BA_TRV_DATA_POLICY_DTLS.PAYER_PART_ID, BA_TRV_PLAN_MST.CFT_MST_COMP_REF,
 -- BJAZ_TRV_LOADER_DATA.PREMIUMPAYERID, BJAZ_TRV_LOADER_DATA.PART_ID,
@@ -2105,7 +2104,7 @@ select 'OPUS' as project, 'HUB_PARTY' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — HUB_POLICY   [Implemented]  [M2]
+-- 17. OPUS — HUB_POLICY   [Implemented]
 -- 4 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.TRV_DATA_NO,
 -- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_LOG_TABLE.POLICYNUMBER,
 -- BJAZ_TRV_RIDER_DTLS.TRV_DATA_NO. Travel RECORD_SOURCE value(s) parsed from feeds:
@@ -2150,7 +2149,7 @@ select 'OPUS' as project, 'HUB_POLICY' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 18. OPUS — HUB_PRODUCT   [Implemented]  [M2]
+-- 18. OPUS — HUB_PRODUCT   [Implemented]
 -- 10 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.PRODUCT_CODE,
 -- BA_TRV_DATA_POLICY_DTLS.TRAVEL_PLAN_NO, BA_TRV_PLAN_MST.PLAN_NO,
 -- BJAZ_TRV_LOADER_DATA.PLAN, BJAZ_TRV_LOADER_LOG_TABLE.PLANID,
@@ -2234,7 +2233,7 @@ select 'OPUS' as project, 'HUB_PRODUCT' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 19. OPUS — HUB_COVERAGE   [Implemented]  [M2]
+-- 19. OPUS — HUB_COVERAGE   [Implemented]
 -- 20 RAW key branch(es): BJAZ_TRV_PLAN.COVER_CODE, BJAZ_TRV_RIDER_DTLS.RIDER_NO,
 -- BJAZ_TRV_RIDER_RATE_MAST.RIDER_SEQ_NO, BJAZ_TRV_LOADER_DATA.POLICY_REF,
 -- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_DATA.POLICY_REF,
@@ -2382,7 +2381,7 @@ select 'OPUS' as project, 'HUB_COVERAGE' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 20. OPUS — HUB_LOCATION   [Implemented]  [M2]
+-- 20. OPUS — HUB_LOCATION   [Implemented]
 -- 4 RAW key branch(es): BJAZ_TRV_LOADER_LOG_TABLE.TRANSITFROM,
 -- BJAZ_TRV_LOADER_LOG_TABLE.TRANSITTO,
 -- BJAZ_TRV_LOADER_DATA.[BUILDING+STREETNAME+SUBAREACITY+STATE+PINCODE],
@@ -2428,7 +2427,7 @@ select 'OPUS' as project, 'HUB_LOCATION' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 21. OPUS — HUB_ORG_UNIT   [Implemented]  [M3]
+-- 21. OPUS — HUB_ORG_UNIT   [Implemented]
 -- 5 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.LOCATION_CODE,
 -- BA_TRV_DATA_POLICY_DTLS.CO_ORG_UNIT, BJAZ_TRV_LOADER_DATA.LOCATION,
 -- BJAZ_TRV_LOADER_LOG_TABLE.LOCATIONCODE, BJAZ_TRV_LOADER_LOG_TABLE.COORGUNIT. Travel
@@ -2479,7 +2478,7 @@ select 'OPUS' as project, 'HUB_ORG_UNIT' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 22. OPUS — HUB_DISTRIBUTION_CHANNEL   [Implemented]  [M3]
+-- 22. OPUS — HUB_DISTRIBUTION_CHANNEL   [Implemented]
 -- 13 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.PARTNER_ID,
 -- BA_TRV_DATA_POLICY_DTLS.INTERMEDIARY_CODE, BA_TRV_DATA_POLICY_DTLS.SUBAGENT_CODE,
 -- BJAZ_TRV_LOADER_DATA.INTERMEDIARY, BJAZ_TRV_LOADER_DATA.SUBIMD,
@@ -2582,7 +2581,7 @@ select 'OPUS' as project, 'HUB_DISTRIBUTION_CHANNEL' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 23. OPUS — HUB_FINANCIAL_ACCOUNT   [Implemented]  [M3]
+-- 23. OPUS — HUB_FINANCIAL_ACCOUNT   [Implemented]
 -- 1 RAW key branch(es): BJAZ_TRV_LOADER_DATA.LANNO. Travel RECORD_SOURCE value(s) parsed
 -- from feeds: OPUS_BJAZ_TRV_LOADER_DATA.
 ----------------------------------------------------------------------------------------
@@ -2606,7 +2605,7 @@ select 'OPUS' as project, 'HUB_FINANCIAL_ACCOUNT' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 24. OPUS — HUB_FINANCIAL_TRANSACTION   [Implemented]  [M3]
+-- 24. OPUS — HUB_FINANCIAL_TRANSACTION   [Implemented]
 -- 3 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.TRANSACTION_ID,
 -- BJAZ_TRV_LOADER_DATA.TRANSACTIONID, BJAZ_TRV_LOADER_LOG_TABLE.POLICYNUMBER. Travel
 -- RECORD_SOURCE value(s) parsed from feeds: OPUS_BA_TRV_DATA_POLICY_DTLS,
@@ -2644,7 +2643,7 @@ select 'OPUS' as project, 'HUB_FINANCIAL_TRANSACTION' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 25. OPUS — HUB_AGREEMENT   [Implemented]  [M3]
+-- 25. OPUS — HUB_AGREEMENT   [Implemented]
 -- 5 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.CFT_MST_CONTRACT_ID,
 -- BA_TRV_PLAN_MST.CFT_MST_CONTRACT_ID, BJAZ_TRV_LOADER_LOG_TABLE.CONTRACTID,
 -- BJAZ_TRV_RATE_MASTER.CFT_MST_CONTRACT_ID, BJAZ_TRV_DETLS_EXTN.CONTRACT_ID. Travel
@@ -2696,7 +2695,7 @@ select 'OPUS' as project, 'HUB_AGREEMENT' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — HUB_ASSESSMENT   [Implemented]  [M3]
+-- 26. OPUS — HUB_ASSESSMENT   [Implemented]
 -- 2 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.SCRUTINY_NO,
 -- BJAZ_TRV_LOADER_DATA.SCRUTINY_NO. Travel RECORD_SOURCE value(s) parsed from feeds:
 -- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA.
@@ -2727,7 +2726,7 @@ select 'OPUS' as project, 'HUB_ASSESSMENT' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — HUB_PROPOSAL   [Implemented]  [M3]
+-- 27. OPUS — HUB_PROPOSAL   [Implemented]
 -- 2 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.TRAVEL_REQ_NO,
 -- BJAZ_TRV_DETLS_EXTN.TRAVEL_REQ_NO. Travel RECORD_SOURCE value(s) parsed from feeds:
 -- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_DETLS_EXTN.
@@ -2758,7 +2757,7 @@ select 'OPUS' as project, 'HUB_PROPOSAL' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — HUB_QUOTE   [Implemented]  [M3]
+-- 28. OPUS — HUB_QUOTE   [Implemented]
 -- 1 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.QUOTE_NO. Travel RECORD_SOURCE value(s)
 -- parsed from feeds: OPUS_BA_TRV_DATA_POLICY_DTLS.
 ----------------------------------------------------------------------------------------
@@ -2782,7 +2781,7 @@ select 'OPUS' as project, 'HUB_QUOTE' as hub,
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — HUB_RISK_OBJECT   [Implemented]  [M3]
+-- 29. OPUS — HUB_RISK_OBJECT   [Implemented]
 -- 6 RAW key branch(es): BJAZ_TRV_LOADER_DATA.POLICY_REF,
 -- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_DATA.POLICY_REF,
 -- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_DATA.POLICY_REF,

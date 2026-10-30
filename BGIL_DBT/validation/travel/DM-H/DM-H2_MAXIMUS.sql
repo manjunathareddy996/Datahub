@@ -2,7 +2,6 @@
    DM-H2  |  History - No Change Creates No New Row (Travel LOB)  (MAXIMUS)
    An unchanged record creates no new satellite row.
 
-   MEMBER SPLIT: sections 1..210 assigned M1 x 70, M2 x 70, M3 x 70 -- contiguous thirds in listed order.
    Check ID: DM-H2
    Category: History checks
    Sign-off criterion: No change creates no new row
@@ -38,7 +37,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]  [M1]
+-- 1. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -70,7 +69,7 @@ select 'MAXIMUS' as project, 'SAT_ASSESSMENT_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]  [M1]
+-- 2. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -109,7 +108,7 @@ select 'MAXIMUS' as project, 'SAT_CHANNEL_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M1]
+-- 3. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -141,7 +140,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_ASSESSMENT_SUMMARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Implemented]  [M1]
+-- 4. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key BENEFIT_HEAD_CODE; 4 RECORD_SOURCE
@@ -176,7 +175,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_BENEFIT_HEAD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]  [M1]
+-- 5. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -211,7 +210,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_CO_RI_SHARE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]  [M1]
+-- 6. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -245,7 +244,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_FNOL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]  [M1]
+-- 7. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -284,7 +283,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_FRAUD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]  [M1]
+-- 8. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -324,7 +323,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]  [M1]
+-- 9. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -363,7 +362,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEALTH_DETAIL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]  [M1]
+-- 10. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key FINDING_SEQUENCE; 1 RECORD_SOURCE
@@ -392,7 +391,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_INVESTIGATION_FINDING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]  [M1]
+-- 11. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -427,7 +426,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_LITIGATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — SAT_CLAIM_NOTE   [Implemented]  [M1]
+-- 12. MAXIMUS — SAT_CLAIM_NOTE   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key NOTE_SEQUENCE; 2 RECORD_SOURCE group(s):
@@ -457,7 +456,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_NOTE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M1]
+-- 13. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key TRANCHE_NUMBER; 3 RECORD_SOURCE group(s):
@@ -488,7 +487,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PAYMENT_TRANCHE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]  [M1]
+-- 14. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -521,7 +520,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PA_DETAIL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Implemented]  [M1]
+-- 15. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key BILL_NUMBER; 2 RECORD_SOURCE group(s):
@@ -551,7 +550,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PROVIDER_BILLING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 16. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M1]
+-- 16. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -584,7 +583,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RECOVERY_SALVAGE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 17. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]  [M1]
+-- 17. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -619,7 +618,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_REPUDIATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 18. MAXIMUS — SAT_CLAIM_RESERVE   [Implemented]  [M1]
+-- 18. MAXIMUS — SAT_CLAIM_RESERVE   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key RESERVE_HEAD; 2 RECORD_SOURCE group(s):
@@ -647,7 +646,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RESERVE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 19. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Implemented]  [M1]
+-- 19. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key RESERVE_HEAD_CODE; 1 RECORD_SOURCE
@@ -676,7 +675,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RESERVE_HEAD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 20. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]  [M1]
+-- 20. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -709,7 +708,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_SETTLEMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 21. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]  [M1]
+-- 21. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -741,7 +740,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_SLA_TRACKING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 22. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]  [M1]
+-- 22. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -774,7 +773,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_TP_FORENSIC' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 23. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]  [M1]
+-- 23. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -811,7 +810,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_TRAVEL_DETAIL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 24. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
+-- 24. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -869,7 +868,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADDRESS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 25. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]  [M1]
+-- 25. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -902,7 +901,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADMIN_GEOGRAPHY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 26. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]  [M1]
+-- 26. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -937,7 +936,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_BUSINESS_AUDIT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 27. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
+-- 27. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -974,7 +973,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 28. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M1]
+-- 28. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1013,7 +1012,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 29. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]  [M1]
+-- 29. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1050,7 +1049,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONSENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]  [M1]
+-- 30. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK PARTY_HKEY, child key CONTACT_POINT_TYPE,
@@ -1093,7 +1092,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONTACT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 31. MAXIMUS — SAT_COMMON_GEO   [Implemented]  [M1]
+-- 31. MAXIMUS — SAT_COMMON_GEO   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1130,7 +1129,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_GEO' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 32. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]  [M1]
+-- 32. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1163,7 +1162,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_LIFECYCLE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 33. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]  [M1]
+-- 33. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1198,7 +1197,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_MONETARY_CONTEXT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 34. MAXIMUS — SAT_COMMON_STATUS   [Implemented]  [M1]
+-- 34. MAXIMUS — SAT_COMMON_STATUS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1231,7 +1230,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_STATUS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 35. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
+-- 35. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1270,7 +1269,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 36. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
+-- 36. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1311,7 +1310,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 37. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M1]
+-- 37. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK COVERAGE_HKEY, child key ACTIVE_SEQUENCE_NUMBER; 1
@@ -1340,7 +1339,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_SUBLIMIT_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 38. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]  [M1]
+-- 38. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1388,7 +1387,7 @@ select 'MAXIMUS' as project, 'SAT_DOCUMENT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 39. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]  [M1]
+-- 39. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1421,7 +1420,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_ACCOUNTING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 40. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]  [M1]
+-- 40. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1454,7 +1453,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_CLAIM_PAYMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 41. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
+-- 41. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1492,7 +1491,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 42. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
+-- 42. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1528,7 +1527,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_PREMIUM' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 43. MAXIMUS — SAT_FINTXN_TAX   [Implemented]  [M1]
+-- 43. MAXIMUS — SAT_FINTXN_TAX   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK FINANCIAL_TRANSACTION_HKEY, child key TAX_TYPE; 2 RECORD_SOURCE
@@ -1559,7 +1558,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_TAX' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 44. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
+-- 44. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1595,7 +1594,7 @@ select 'MAXIMUS' as project, 'SAT_FIN_RECEIPT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 45. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]  [M1]
+-- 45. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1629,7 +1628,7 @@ select 'MAXIMUS' as project, 'SAT_INSTRUMENT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 46. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]  [M1]
+-- 46. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK PARTY_HKEY, child key ROLE_CODE, ROLE_SEQUENCE; 2 RECORD_SOURCE
@@ -1660,7 +1659,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_PARTY_ROLE_CORE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 47. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Implemented]  [M1]
+-- 47. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_PARTY_HKEY, child key PARTY_ROLE_TYPE, ROLE_SEQUENCE; 5
@@ -1694,7 +1693,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_POLICY_PARTY_ROLE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 48. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]  [M1]
+-- 48. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1727,7 +1726,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_AGENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 49. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]  [M1]
+-- 49. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1764,7 +1763,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_CUSTOMER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 50. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]  [M1]
+-- 50. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1803,7 +1802,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_EMPLOYEE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 51. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
+-- 51. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1838,7 +1837,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 52. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]  [M1]
+-- 52. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1871,7 +1870,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_DETAIL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 53. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]  [M1]
+-- 53. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1904,7 +1903,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_NOTIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 54. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Implemented]  [M1]
+-- 54. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1937,7 +1936,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_LOCATION_ADDRESS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 55. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
+-- 55. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -1973,7 +1972,7 @@ select 'MAXIMUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 56. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]  [M1]
+-- 56. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2008,7 +2007,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_AML_SCREENING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 57. MAXIMUS — SAT_PARTY_BANKING   [Implemented]  [M1]
+-- 57. MAXIMUS — SAT_PARTY_BANKING   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK PARTY_HKEY, child key ACCOUNT_NUMBER_MASKED; 3 RECORD_SOURCE
@@ -2041,7 +2040,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_BANKING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 58. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]  [M1]
+-- 58. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2074,7 +2073,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 59. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M1]
+-- 59. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK PARTY_LOCATION_HKEY, child key ADDRESS_USAGE_TYPE; 6
@@ -2113,7 +2112,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CONTACT_ADDRESS_LINK' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 60. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M1]
+-- 60. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2151,7 +2150,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 61. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]  [M1]
+-- 61. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2186,7 +2185,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FINANCIAL_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 62. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]  [M1]
+-- 62. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2221,7 +2220,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FRAUD_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 63. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M1]
+-- 63. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2256,7 +2255,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 64. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]  [M1]
+-- 64. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK PARTY_HKEY, child key IDENTIFICATION_TYPE_CODE; 8 RECORD_SOURCE
@@ -2296,7 +2295,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 65. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]  [M1]
+-- 65. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2349,7 +2348,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_IDENTITY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 66. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M1]
+-- 66. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2384,7 +2383,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 67. MAXIMUS — SAT_PARTY_KYC   [Implemented]  [M1]
+-- 67. MAXIMUS — SAT_PARTY_KYC   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2419,7 +2418,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 68. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Implemented]  [M1]
+-- 68. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK PARTY_HKEY, child key KYC_REFERENCE_TYPE; 2 RECORD_SOURCE
@@ -2450,7 +2449,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC_REFERENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 69. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M1]
+-- 69. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2483,7 +2482,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ONBOARDING_JOURNEY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 70. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]  [M1]
+-- 70. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2521,7 +2520,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ORGANISATION_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 71. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]  [M2]
+-- 71. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2554,7 +2553,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PAYOUT_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 72. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]  [M2]
+-- 72. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2587,7 +2586,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_POLICY_HISTORY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 73. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M2]
+-- 73. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2620,7 +2619,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PORTFOLIO_SUMMARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 74. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M2]
+-- 74. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2653,7 +2652,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_RELATIONSHIP_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 75. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]  [M2]
+-- 75. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2686,7 +2685,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 76. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Implemented]  [M2]
+-- 76. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key CLASSIFICATION_TYPE; 3 RECORD_SOURCE
@@ -2719,7 +2718,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 77. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M2]
+-- 77. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key COVERAGE_REFERENCE, COVERAGE_SEQUENCE; 6
@@ -2757,7 +2756,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_COVERAGE_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 78. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M2]
+-- 78. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key ITEM_CODE; 3 RECORD_SOURCE group(s):
@@ -2789,7 +2788,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_DISCOUNT_LOADING_APPLIED' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 79. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Implemented]  [M2]
+-- 79. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key ENDORSEMENT_NUMBER; 2 RECORD_SOURCE
@@ -2819,7 +2818,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_ENDORSEMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 80. MAXIMUS — SAT_POLICY_GROUP   [Implemented]  [M2]
+-- 80. MAXIMUS — SAT_POLICY_GROUP   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2852,7 +2851,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_GROUP' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 81. MAXIMUS — SAT_POLICY_HEADER   [Implemented]  [M2]
+-- 81. MAXIMUS — SAT_POLICY_HEADER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2894,7 +2893,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 82. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M2]
+-- 82. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key INTERMEDIARY_REFERENCE; 2 RECORD_SOURCE
@@ -2923,7 +2922,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_INTERMEDIARY_SPLIT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 83. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]  [M2]
+-- 83. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -2956,7 +2955,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PORTABILITY_MIGRATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 84. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Implemented]  [M2]
+-- 84. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key ADJUSTED_INDICATOR, COVERAGE_REFERENCE,
@@ -2991,7 +2990,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PREMIUM_HEAD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 85. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]  [M2]
+-- 85. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3028,7 +3027,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PREMIUM_SUMMARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 86. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]  [M2]
+-- 86. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3061,7 +3060,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_RENEWAL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 87. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]  [M2]
+-- 87. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3094,7 +3093,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SERVICING_SUMMARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 88. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M2]
+-- 88. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key SUM_INSURED_HEAD; 3 RECORD_SOURCE
@@ -3127,7 +3126,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SUM_INSURED_BREAKUP' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 89. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]  [M2]
+-- 89. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3161,7 +3160,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TAX_BREAKUP' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 90. MAXIMUS — SAT_POLICY_TAX_HEAD   [Implemented]  [M2]
+-- 90. MAXIMUS — SAT_POLICY_TAX_HEAD   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key TAX_HEAD_CODE; 3 RECORD_SOURCE group(s):
@@ -3192,7 +3191,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TAX_HEAD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 91. MAXIMUS — SAT_POLICY_TERMS   [Implemented]  [M2]
+-- 91. MAXIMUS — SAT_POLICY_TERMS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3225,7 +3224,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 92. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
+-- 92. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3267,7 +3266,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 93. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
+-- 93. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3302,7 +3301,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 94. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
+-- 94. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3337,7 +3336,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 95. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
+-- 95. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3373,7 +3372,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 96. MAXIMUS — SAT_QUOTE_RATING   [Implemented]  [M2]
+-- 96. MAXIMUS — SAT_QUOTE_RATING   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3409,7 +3408,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 97. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Implemented]  [M2]
+-- 97. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK QUOTE_HKEY, child key FACTOR_CODE; 5 RECORD_SOURCE group(s):
@@ -3445,7 +3444,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING_INPUT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 98. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M2]
+-- 98. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key CONDITION_CODE, MEMBER_REFERENCE; 2
@@ -3476,7 +3475,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_HEALTH_MEMBER_MEDICAL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 99. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M2]
+-- 99. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3514,7 +3513,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 100. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]  [M2]
+-- 100. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3550,7 +3549,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_VALUATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 101. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M2]
+-- 101. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3585,7 +3584,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 102. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Implemented]  [M2]
+-- 102. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. standard satellite,
 -- automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key MEMBER_SEQUENCE; 2 RECORD_SOURCE
@@ -3616,7 +3615,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_MEMBER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 103. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M2]
+-- 103. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3661,7 +3660,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 104. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]  [M2]
+-- 104. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3696,7 +3695,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_APPROVAL_ACTION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 105. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M2]
+-- 105. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3732,7 +3731,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_ASSESSMENT_SUMMARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 106. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]  [M2]
+-- 106. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key BENEFIT_HEAD_CODE; 3 RECORD_SOURCE
@@ -3765,7 +3764,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_BENEFIT_HEAD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 107. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]  [M2]
+-- 107. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3800,7 +3799,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_CO_RI_SHARE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 108. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]  [M2]
+-- 108. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3833,7 +3832,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DEDUCTION_WAIVER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 109. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]  [M2]
+-- 109. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key REMINDER_SEQUENCE, REQUIREMENT_TYPE_NAME;
@@ -3862,7 +3861,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DOCUMENT_REMINDER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 110. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]  [M2]
+-- 110. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3895,7 +3894,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 111. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]  [M2]
+-- 111. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3928,7 +3927,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EVIDENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 112. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]  [M2]
+-- 112. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key EXCLUSION_SET_CODE; 1 RECORD_SOURCE
@@ -3957,7 +3956,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EXCLUSION_APPLIED' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 113. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]  [M2]
+-- 113. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -3990,7 +3989,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EXPENSE_LINE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 114. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]  [M2]
+-- 114. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4022,7 +4021,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FOLLOWUP_TASK' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 115. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]  [M2]
+-- 115. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4061,7 +4060,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FRAUD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 116. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]  [M2]
+-- 116. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4097,7 +4096,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 117. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]  [M2]
+-- 117. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4134,7 +4133,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_LITIGATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 118. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]  [M2]
+-- 118. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4169,7 +4168,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_NETWORK_VERIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 119. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M2]
+-- 119. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key TRANCHE_NUMBER; 3 RECORD_SOURCE group(s):
@@ -4200,7 +4199,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PAYMENT_TRANCHE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 120. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]  [M2]
+-- 120. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4235,7 +4234,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PA_DETAIL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 121. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]  [M2]
+-- 121. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK CLAIM_HKEY, child key BILL_NUMBER; 1 RECORD_SOURCE group(s):
@@ -4263,7 +4262,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PROVIDER_BILLING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 122. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]  [M2]
+-- 122. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4296,7 +4295,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_QUALITY_AUDIT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 123. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M2]
+-- 123. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4331,7 +4330,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_RECOVERY_SALVAGE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 124. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]  [M2]
+-- 124. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4368,7 +4367,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SETTLEMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 125. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]  [M2]
+-- 125. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4403,7 +4402,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SLA_TRACKING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 126. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]  [M2]
+-- 126. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4435,7 +4434,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_STATUS_HISTORY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 127. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]  [M2]
+-- 127. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4468,7 +4467,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SURVEY_APPOINTMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 128. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]  [M2]
+-- 128. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4501,7 +4500,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TPA_INTERACTION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 129. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]  [M2]
+-- 129. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4535,7 +4534,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TRAVEL_DETAIL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 130. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]  [M2]
+-- 130. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4568,7 +4567,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TRAVEL_SECTOR' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 131. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]  [M2]
+-- 131. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4603,7 +4602,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_ADDRESS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 132. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M2]
+-- 132. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4638,7 +4637,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satell
 
 
 ----------------------------------------------------------------------------------------
--- 133. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]  [M2]
+-- 133. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4673,7 +4672,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_CONDITIONS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 134. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M2]
+-- 134. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4712,7 +4711,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 135. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M2]
+-- 135. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4747,7 +4746,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 136. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M2]
+-- 136. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK COVERAGE_HKEY, child key ACTIVE_SEQUENCE_NUMBER; 1
@@ -4776,7 +4775,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 137. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]  [M2]
+-- 137. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK COVERAGE_HKEY, child key SUB_COVER_CODE; 1 RECORD_SOURCE
@@ -4805,7 +4804,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_SUB_COVER_ELEMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 138. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]  [M2]
+-- 138. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK DOCUMENT_HKEY, child key REQUIRED_DOCUMENT_TYPE; 1
@@ -4834,7 +4833,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_CHECKLIST' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 139. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]  [M2]
+-- 139. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4867,7 +4866,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_DISPATCH' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 140. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]  [M2]
+-- 140. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK DOCUMENT_HKEY, child key REMINDER_SEQUENCE; 1 RECORD_SOURCE
@@ -4896,7 +4895,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER' as satellit
 
 
 ----------------------------------------------------------------------------------------
--- 141. MAXIMUS — SAT_AUG_FINTXN_TAX   [Implemented]  [M3]
+-- 141. MAXIMUS — SAT_AUG_FINTXN_TAX   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK FINANCIAL_TRANSACTION_HKEY, child key TAX_TYPE; 2 RECORD_SOURCE
@@ -4927,7 +4926,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_FINTXN_TAX' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 142. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]  [M3]
+-- 142. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4963,7 +4962,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_FIN_RECEIPT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 143. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M3]
+-- 143. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -4996,7 +4995,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 144. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]  [M3]
+-- 144. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5029,7 +5028,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 145. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Implemented]  [M3]
+-- 145. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK ORG_UNIT_HKEY, child key CONTACT_POINT_TYPE; 1 RECORD_SOURCE
@@ -5058,7 +5057,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_ORG_UNIT_CONTACT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 146. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
+-- 146. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5097,7 +5096,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 147. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]  [M3]
+-- 147. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5132,7 +5131,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CLAIM_HISTORY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 148. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]  [M3]
+-- 148. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5167,7 +5166,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONSENT_MANDATE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 149. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M3]
+-- 149. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK PARTY_LOCATION_HKEY, child key ADDRESS_USAGE_TYPE; 2
@@ -5198,7 +5197,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONTACT_ADDRESS_LINK' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 150. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]  [M3]
+-- 150. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK PARTY_HKEY, child key DISPATCH_REFERENCE; 1 RECORD_SOURCE
@@ -5227,7 +5226,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CORRESPONDENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 151. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
+-- 151. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5262,7 +5261,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 152. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]  [M3]
+-- 152. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5299,7 +5298,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_FINANCIAL_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 153. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]  [M3]
+-- 153. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5332,7 +5331,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_GROUP_SCHEME' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 154. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]  [M3]
+-- 154. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5367,7 +5366,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HEALTH_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 155. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]  [M3]
+-- 155. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5400,7 +5399,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HIERARCHY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 156. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]  [M3]
+-- 156. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK PARTY_HKEY, child key IDENTIFICATION_TYPE_CODE; 5 RECORD_SOURCE
@@ -5437,7 +5436,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_IDENTIFICATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 157. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]  [M3]
+-- 157. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5477,7 +5476,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_IDENTITY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 158. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M3]
+-- 158. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5514,7 +5513,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellit
 
 
 ----------------------------------------------------------------------------------------
--- 159. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]  [M3]
+-- 159. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK PARTY_HKEY, child key LOYALTY_CLASSIFICATION_TYPE; 1
@@ -5543,7 +5542,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_LOYALTY_CLASSIFICATION' as satellite
 
 
 ----------------------------------------------------------------------------------------
--- 160. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M3]
+-- 160. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5578,7 +5577,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_ONBOARDING_JOURNEY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 161. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]  [M3]
+-- 161. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5613,7 +5612,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PAYOUT_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 162. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]  [M3]
+-- 162. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5648,7 +5647,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PREFERENCE_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 163. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M3]
+-- 163. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5686,7 +5685,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RELATIONSHIP_PROFILE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 164. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]  [M3]
+-- 164. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5719,7 +5718,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RISK_ANALYTICS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 165. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]  [M3]
+-- 165. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5752,7 +5751,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_CLAIM_EXPERIENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 166. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M3]
+-- 166. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key COVERAGE_REFERENCE, COVERAGE_SEQUENCE; 3
@@ -5785,7 +5784,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_COVERAGE_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 167. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]  [M3]
+-- 167. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5818,7 +5817,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DELIVERY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 168. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]  [M3]
+-- 168. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key DISPATCH_SERIAL_NUMBER; 1 RECORD_SOURCE
@@ -5845,7 +5844,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DOCUMENT_DISPATCH' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 169. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]  [M3]
+-- 169. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5882,7 +5881,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 170. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]  [M3]
+-- 170. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5915,7 +5914,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_HEALTH_DECLARATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 171. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]  [M3]
+-- 171. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -5948,7 +5947,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_INSURED_DECLARATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 172. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M3]
+-- 172. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key INTERMEDIARY_REFERENCE; 2 RECORD_SOURCE
@@ -5979,7 +5978,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_INTERMEDIARY_SPLIT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 173. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]  [M3]
+-- 173. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6012,7 +6011,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_NOMINEE_DECLARATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 174. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]  [M3]
+-- 174. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK POLICY_HKEY, child key ADJUSTED_INDICATOR, COVERAGE_REFERENCE,
@@ -6043,7 +6042,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PREMIUM_HEAD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 175. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]  [M3]
+-- 175. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6078,7 +6077,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PREMIUM_SUMMARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 176. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]  [M3]
+-- 176. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6111,7 +6110,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PROPERTY_LINE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 177. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]  [M3]
+-- 177. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6145,7 +6144,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_RENEWAL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 178. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]  [M3]
+-- 178. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6178,7 +6177,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 179. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]  [M3]
+-- 179. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6211,7 +6210,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TRAVEL_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 180. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
+-- 180. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6244,7 +6243,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 181. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]  [M3]
+-- 181. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6277,7 +6276,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_UW_QUERY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 182. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]  [M3]
+-- 182. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6309,7 +6308,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_WORK_ITEM' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 183. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]  [M3]
+-- 183. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6344,7 +6343,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PRODUCT_RATING_STRUCTURE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 184. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
+-- 184. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6379,7 +6378,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 185. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]  [M3]
+-- 185. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6412,7 +6411,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_CLAIM_EXPERIENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 186. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]  [M3]
+-- 186. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6448,7 +6447,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_LINE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 187. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]  [M3]
+-- 187. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK QUOTE_HKEY, child key COVERAGE_REFERENCE; 1 RECORD_SOURCE
@@ -6477,7 +6476,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 188. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]  [M3]
+-- 188. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK QUOTE_HKEY, child key COVERAGE_REFERENCE, COVERAGE_SEQUENCE; 1
@@ -6506,7 +6505,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVER_DETAIL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 189. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]  [M3]
+-- 189. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6550,7 +6549,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_HEADER' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 190. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]  [M3]
+-- 190. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6583,7 +6582,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_HEALTH_DECLARATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 191. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]  [M3]
+-- 191. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6616,7 +6615,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_INSURED_DECLARATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 192. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]  [M3]
+-- 192. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6649,7 +6648,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_NOMINEE_DECLARATION' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 193. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]  [M3]
+-- 193. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK QUOTE_HKEY, child key PREMIUM_HEAD_CODE; 1 RECORD_SOURCE
@@ -6678,7 +6677,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_PREMIUM_HEAD' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 194. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]  [M3]
+-- 194. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6711,7 +6710,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_PROPERTY_LINE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 195. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]  [M3]
+-- 195. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6747,7 +6746,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RATING' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 196. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]  [M3]
+-- 196. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6779,7 +6778,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RISK_LINE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 197. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]  [M3]
+-- 197. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK QUOTE_HKEY, child key SUM_INSURED_HEAD; 1 RECORD_SOURCE
@@ -6808,7 +6807,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_SUM_INSURED_BREAKUP' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 198. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]  [M3]
+-- 198. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6841,7 +6840,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 199. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]  [M3]
+-- 199. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6874,7 +6873,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TRAVEL_TRIP' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 200. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
+-- 200. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6907,7 +6906,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 201. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]  [M3]
+-- 201. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6940,7 +6939,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_UW_QUERY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 202. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]  [M3]
+-- 202. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -6976,7 +6975,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_CORE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 203. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]  [M3]
+-- 203. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -7008,7 +7007,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_PREMIUM' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 204. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
+-- 204. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -7043,7 +7042,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 205. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
+-- 205. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -7088,7 +7087,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 206. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]  [M3]
+-- 206. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key SUB_COVER_CODE; 2 RECORD_SOURCE
@@ -7119,7 +7118,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_COVER_TERMS' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 207. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]  [M3]
+-- 207. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]
 -- Multi-active: a version is the whole member set loaded at one LOAD_DATETIME; two
 -- consecutive identical sets = an unchanged group was re-inserted. augmented satellite,
 -- automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key RATING_INPUT_CODE; 1 RECORD_SOURCE
@@ -7148,7 +7147,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_RATING_INPUT' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 208. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]  [M3]
+-- 208. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -7183,7 +7182,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_SPONSOR' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 209. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]  [M3]
+-- 209. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]
 -- Consecutive versions of a key (per RECORD_SOURCE, by LOAD_DATETIME) must differ in
 -- HASHDIFF (unchanged_reinserts) AND in the stored payload itself
 -- (unchanged_payload_reinserts -- catches a HASHDIFF that hashes columns this satellite
@@ -7218,7 +7217,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 210. MAXIMUS — CDC result (all satellites)   [Implemented]  [M3]
+-- 210. MAXIMUS — CDC result (all satellites)   [Implemented]
 -- Joins the BEFORE and AFTER captures of the same run id. raw_changed compares the
 -- normalised RAW payload hash (same UPPER/TRIM/NULL rules as the HASHDIFF, so a
 -- case-only RAW edit is not a change); new_rows = satellite rows added for the key

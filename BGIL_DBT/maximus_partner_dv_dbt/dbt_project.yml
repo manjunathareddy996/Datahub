@@ -53,6 +53,9 @@ models:
         hubfeed:
           +materialized: view
           +tags: ["hubfeed"]
+        satfeed:
+          +materialized: view
+          +tags: ["satfeed"]
         hubs:
           +materialized: incremental
           +tags: ["hub"]
@@ -72,6 +75,9 @@ models:
         staging:
           +materialized: view
           +tags: ["aug_stg2"]
+        satfeed:
+          +materialized: view
+          +tags: ["aug_satfeed"]
         satellites:
           +materialized: incremental
           +tags: ["aug_sat"]

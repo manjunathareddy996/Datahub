@@ -2,7 +2,6 @@
    DM-H4  |  History - Current-view Correctness (Travel LOB)  (OPUS)
    Latest satellite row per key matches the latest source record.
 
-   MEMBER SPLIT: sections 1..45 assigned M1 x 15, M2 x 15, M3 x 15 -- contiguous thirds in listed order.
    Check ID: DM-H4
    Category: History checks
    Sign-off criterion: Current-view correctness
@@ -37,7 +36,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. OPUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
+-- 1. OPUS — SAT_COMMON_ADDRESS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -202,7 +201,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 2. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
+-- 2. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -301,7 +300,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 3. OPUS — SAT_COMMON_CONTACT   [Implemented]  [M1]
+-- 3. OPUS — SAT_COMMON_CONTACT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -553,7 +552,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 4. OPUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
+-- 4. OPUS — SAT_COVERAGE_CONDITIONS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -615,7 +614,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 5. OPUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
+-- 5. OPUS — SAT_COVERAGE_DEFINITION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -936,7 +935,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 6. OPUS — SAT_COVERAGE_LIMITS   [Implemented]  [M1]
+-- 6. OPUS — SAT_COVERAGE_LIMITS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1093,7 +1092,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 7. OPUS — SAT_FINTXN_COMMISSION   [Implemented]  [M1]
+-- 7. OPUS — SAT_FINTXN_COMMISSION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1208,7 +1207,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 8. OPUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
+-- 8. OPUS — SAT_FINTXN_HEADER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1263,7 +1262,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 9. OPUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
+-- 9. OPUS — SAT_FINTXN_PREMIUM   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1501,7 +1500,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 10. OPUS — SAT_FINTXN_TAX   [Implemented]  [M1]
+-- 10. OPUS — SAT_FINTXN_TAX   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1628,7 +1627,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 11. OPUS — SAT_FIN_CHARGE_RATE   [Implemented]  [M1]
+-- 11. OPUS — SAT_FIN_CHARGE_RATE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1755,7 +1754,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 12. OPUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
+-- 12. OPUS — SAT_FIN_RECEIPT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1882,7 +1881,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 13. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
+-- 13. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -1981,7 +1980,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 14. OPUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
+-- 14. OPUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2036,7 +2035,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 15. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M1]
+-- 15. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2146,7 +2145,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 16. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M2]
+-- 16. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2245,7 +2244,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — SAT_PARTY_IDENTIFICATION   [Implemented]  [M2]
+-- 17. OPUS — SAT_PARTY_IDENTIFICATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2465,7 +2464,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 18. OPUS — SAT_PARTY_IDENTITY   [Implemented]  [M2]
+-- 18. OPUS — SAT_PARTY_IDENTITY   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2730,7 +2729,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 19. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M2]
+-- 19. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -2829,7 +2828,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 20. OPUS — SAT_POLICY_CLASSIFICATION   [Implemented]  [M2]
+-- 20. OPUS — SAT_POLICY_CLASSIFICATION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -3001,7 +3000,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 21. OPUS — SAT_POLICY_HEADER   [Implemented]  [M2]
+-- 21. OPUS — SAT_POLICY_HEADER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -3325,7 +3324,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 22. OPUS — SAT_POLICY_TERMS   [Implemented]  [M2]
+-- 22. OPUS — SAT_POLICY_TERMS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -3424,7 +3423,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 23. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
+-- 23. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -3617,7 +3616,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 24. OPUS — SAT_PRODUCT_RATING_FACTOR   [Implemented]  [M2]
+-- 24. OPUS — SAT_PRODUCT_RATING_FACTOR   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -3710,7 +3709,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 25. OPUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
+-- 25. OPUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -3765,7 +3764,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
+-- 26. OPUS — SAT_PRODUCT_TERMS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -3903,7 +3902,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — SAT_PROPOSAL_UNDERWRITING   [Implemented]  [M2]
+-- 27. OPUS — SAT_PROPOSAL_UNDERWRITING   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -3965,7 +3964,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
+-- 28. OPUS — SAT_QUOTE_HEADER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -4020,7 +4019,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — SAT_RISK_MOTOR_DRIVER   [Implemented]  [M2]
+-- 29. OPUS — SAT_RISK_MOTOR_DRIVER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -4075,7 +4074,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 30. OPUS — SAT_RISK_MOTOR_VEHICLE   [Implemented]  [M2]
+-- 30. OPUS — SAT_RISK_MOTOR_VEHICLE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -4186,7 +4185,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 31. OPUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M3]
+-- 31. OPUS — SAT_RISK_OBJECT_CORE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -4241,7 +4240,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 32. OPUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M3]
+-- 32. OPUS — SAT_RISK_PERSON_INSURED   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -4353,7 +4352,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 33. OPUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M3]
+-- 33. OPUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. standard satellite,
@@ -4565,7 +4564,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 34. OPUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M3]
+-- 34. OPUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -4620,7 +4619,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 35. OPUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M3]
+-- 35. OPUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -4692,7 +4691,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 36. OPUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M3]
+-- 36. OPUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -4784,7 +4783,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 37. OPUS — SAT_AUG_COVERAGE_RATING   [Implemented]  [M3]
+-- 37. OPUS — SAT_AUG_COVERAGE_RATING   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -4952,7 +4951,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 38. OPUS — SAT_AUG_FINTXN_PREMIUM   [Implemented]  [M3]
+-- 38. OPUS — SAT_AUG_FINTXN_PREMIUM   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -5122,7 +5121,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 39. OPUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]  [M3]
+-- 39. OPUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -5177,7 +5176,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 40. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M3]
+-- 40. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -5276,7 +5275,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 41. OPUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
+-- 41. OPUS — SAT_AUG_PARTY_BANKING   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -5331,7 +5330,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 42. OPUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
+-- 42. OPUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -5430,7 +5429,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 43. OPUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
+-- 43. OPUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -5640,7 +5639,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 44. OPUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
+-- 44. OPUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,
@@ -5719,7 +5718,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 45. OPUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
+-- 45. OPUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
 -- Same comparison as DM-A2 (latest satellite row vs the latest RAW record, model logic
 -- recomputed from RAW) but the sample is the most recently loaded keys, i.e. the keys
 -- that just changed -- where a stale current row would show. augmented satellite,

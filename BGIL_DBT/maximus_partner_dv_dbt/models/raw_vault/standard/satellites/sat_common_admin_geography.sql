@@ -6,7 +6,7 @@
 -- payload Maximus populates, which is what removes any need to back-patch the other project.
 
 {%- set yaml_metadata -%}
-source_model: 'stg2_mp_sat__common_admin_geography'
+source_model: 'satfeed_mp_sat__common_admin_geography'
 src_pk: 'LOCATION_HKEY'
 src_payload:
   - 'CITYCLASSCODE'
