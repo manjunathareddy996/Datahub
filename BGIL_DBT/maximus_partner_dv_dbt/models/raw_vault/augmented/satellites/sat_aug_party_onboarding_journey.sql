@@ -7,7 +7,7 @@
 -- fact that already has one. NOT part of the canonical model.
 
 {%- set yaml_metadata -%}
-source_model: 'stg2_aug_mp__pd_prop_sp_pv__party'
+source_model: 'satfeed_mp_sat__aug_party_onboarding_journey'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'APPLICATIONREJECTIONREASON'
@@ -34,7 +34,7 @@ src_payload:
   - 'REGISTEREDINDICATOR'
   - 'TRAINEDPRODUCTREFERENCE'
   - 'TRAININGREQUIREDINDICATOR'
-src_hashdiff: 'HASHDIFF_AUG_PARTY_ONBOARDING_JOURNEY'
+src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}

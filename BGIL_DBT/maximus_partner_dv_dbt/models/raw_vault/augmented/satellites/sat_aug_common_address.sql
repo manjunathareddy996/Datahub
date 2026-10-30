@@ -7,11 +7,11 @@
 -- fact that already has one. NOT part of the canonical model.
 
 {%- set yaml_metadata -%}
-source_model: 'stg2_aug_mp__pd_prop_sp_pv__location'
+source_model: 'satfeed_mp_sat__aug_common_address'
 src_pk: 'LOCATION_HKEY'
 src_payload:
   - 'FULLADDRESSTEXT'
-src_hashdiff: 'HASHDIFF_AUG_COMMON_ADDRESS'
+src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}
