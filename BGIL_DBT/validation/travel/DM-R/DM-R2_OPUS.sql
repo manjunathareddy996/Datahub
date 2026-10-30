@@ -2,6 +2,7 @@
    DM-R2  |  Referential Integrity - Links Reconcile (Travel LOB)  (OPUS)
    Every valid source relationship exists as a link row; no orphan links.
 
+   MEMBER SPLIT: sections 1..1 assigned M1 x 1, M2 x 0, M3 x 0 -- contiguous thirds in listed order.
    Check ID: DM-R2
    Category: Referential integrity
    Sign-off criterion: Relationships / links reconcile
@@ -34,7 +35,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. OPUS — No links in this project   [NA]
+-- 1. OPUS — No links in this project   [NA]  [M1]
 -- OPUS travel has 0 link models.
 ----------------------------------------------------------------------------------------
 -- OPUS travel: no links yet

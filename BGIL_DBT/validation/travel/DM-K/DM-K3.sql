@@ -2,6 +2,7 @@
    DM-K3  |  Key Checks - No Null / Blank Business Keys (Travel LOB)
    Hub key integrity. Pass criterion: 0 null / blank keys loaded without a default, ghost record present.
 
+   MEMBER SPLIT: sections 1..30 assigned M1 x 10, M2 x 10, M3 x 10 -- contiguous thirds in listed order.
    Check ID: DM-K3
    Category: Key checks
    Sign-off criterion: No null / blank business keys
@@ -34,7 +35,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. MAXIMUS — HUB_PARTY   [Implemented]
+-- 1. MAXIMUS — HUB_PARTY   [Implemented]  [M1]
 -- 49 RAW key branch(es): NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE.RESERVPARTY
 -- (PARTY_HKEY),
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.CUSTOMERID
@@ -450,7 +451,7 @@ select 'MAXIMUS' as project, 'HUB_PARTY' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — HUB_POLICY   [Implemented]
+-- 2. MAXIMUS — HUB_POLICY   [Implemented]  [M1]
 -- 12 RAW key branch(es): NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS.POLICYNO (POLICY_HKEY),
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.MASTER_POLICY_NUMBER
 -- (POLICY_HKEY__MASTER_POLICY), NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS.POLICY_NUMBER
@@ -724,7 +725,7 @@ select 'MAXIMUS' as project, 'HUB_POLICY' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — HUB_PRODUCT   [Implemented]
+-- 3. MAXIMUS — HUB_PRODUCT   [Implemented]  [M1]
 -- 8 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.STORED_PRODUCT_CODE
 -- (PRODUCT_HKEY), NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS.PRODUCT_CODE (PRODUCT_HKEY),
@@ -810,7 +811,7 @@ select 'MAXIMUS' as project, 'HUB_PRODUCT' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — HUB_COVERAGE   [Implemented]
+-- 4. MAXIMUS — HUB_COVERAGE   [Implemented]  [M1]
 -- 8 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW.COVER_CODE
 -- (COVERAGE_HKEY),
@@ -899,7 +900,7 @@ select 'MAXIMUS' as project, 'HUB_COVERAGE' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — HUB_LOCATION   [Implemented]
+-- 5. MAXIMUS — HUB_LOCATION   [Implemented]  [M1]
 -- 25 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.[CITY+STATE+PIN_CODE]
 -- (LOCATION_HKEY__DOCUMENT_INWARD_ORIGIN_ADDRESS),
@@ -1108,7 +1109,7 @@ select 'MAXIMUS' as project, 'HUB_LOCATION' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — HUB_ORG_UNIT   [Implemented]
+-- 6. MAXIMUS — HUB_ORG_UNIT   [Implemented]  [M1]
 -- 9 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.STORED_COMPANY_CODE
 -- (ORG_UNIT_HKEY__COMPANY),
@@ -1205,7 +1206,7 @@ select 'MAXIMUS' as project, 'HUB_ORG_UNIT' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — HUB_DISTRIBUTION_CHANNEL   [Implemented]
+-- 7. MAXIMUS — HUB_DISTRIBUTION_CHANNEL   [Implemented]  [M1]
 -- 8 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.DEALER_CODE
 -- (DISTRIBUTION_CHANNEL_HKEY__DEALER),
@@ -1293,7 +1294,7 @@ select 'MAXIMUS' as project, 'HUB_DISTRIBUTION_CHANNEL' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — HUB_FINANCIAL_TRANSACTION   [Implemented]
+-- 8. MAXIMUS — HUB_FINANCIAL_TRANSACTION   [Implemented]  [M1]
 -- 9 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW.[]
 -- (FINANCIAL_TRANSACTION_HKEY__CLAIM_PAYMENT),
@@ -1395,7 +1396,7 @@ select 'MAXIMUS' as project, 'HUB_FINANCIAL_TRANSACTION' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — HUB_ASSESSMENT   [Implemented]
+-- 9. MAXIMUS — HUB_ASSESSMENT   [Implemented]  [M1]
 -- 3 RAW key branch(es):
 -- NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.BAGIC_SCRUTINY_NUMBER
 -- (ASSESSMENT_HKEY),
@@ -1446,7 +1447,7 @@ select 'MAXIMUS' as project, 'HUB_ASSESSMENT' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — HUB_QUOTE   [Implemented]
+-- 10. MAXIMUS — HUB_QUOTE   [Implemented]  [M1]
 -- 13 RAW key branch(es): NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS.QUOTATION_NUMBER
 -- (QUOTE_HKEY),
 -- NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW.[]
@@ -1574,7 +1575,7 @@ select 'MAXIMUS' as project, 'HUB_QUOTE' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — HUB_RISK_OBJECT   [Implemented]
+-- 11. MAXIMUS — HUB_RISK_OBJECT   [Implemented]  [M2]
 -- 5 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.RISK_CODE
 -- (RISK_OBJECT_HKEY__CLAIMED_RISK_ITEM),
@@ -1665,7 +1666,7 @@ select 'MAXIMUS' as project, 'HUB_RISK_OBJECT' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — HUB_CLAIM   [Implemented]
+-- 12. MAXIMUS — HUB_CLAIM   [Implemented]  [M2]
 -- 5 RAW key branch(es): NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS.CLAIMNO (CLAIM_HKEY),
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.LINKED_CLAIM_NUMBER
 -- (CLAIM_HKEY__LINKED_CLAIM),
@@ -1806,7 +1807,7 @@ select 'MAXIMUS' as project, 'HUB_CLAIM' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — HUB_DOCUMENT   [Implemented]
+-- 13. MAXIMUS — HUB_DOCUMENT   [Implemented]  [M2]
 -- 14 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.INWARD_NUMBER
 -- (DOCUMENT_HKEY__CLAIM_INWARD_DOCUMENT_SET),
@@ -1936,7 +1937,7 @@ select 'MAXIMUS' as project, 'HUB_DOCUMENT' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — HUB_LOSS_EVENT   [Implemented]
+-- 14. MAXIMUS — HUB_LOSS_EVENT   [Implemented]  [M2]
 -- 2 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW.[INTIMATION_NUMBER+CLAIMNO]
 -- (LOSS_EVENT_HKEY),
@@ -1978,7 +1979,7 @@ select 'MAXIMUS' as project, 'HUB_LOSS_EVENT' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — HUB_PAYMENT_INSTRUMENT   [Implemented]
+-- 15. MAXIMUS — HUB_PAYMENT_INSTRUMENT   [Implemented]  [M2]
 -- 2 RAW key branch(es):
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW.ACCOUNT_NUMBER
 -- (PAYMENT_INSTRUMENT_HKEY__PAYEE_BANK_ACCOUNT),
@@ -2021,7 +2022,7 @@ select 'MAXIMUS' as project, 'HUB_PAYMENT_INSTRUMENT' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 16. OPUS — HUB_PARTY   [Implemented]
+-- 16. OPUS — HUB_PARTY   [Implemented]  [M2]
 -- 6 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.CFT_MST_COMP_REF,
 -- BA_TRV_DATA_POLICY_DTLS.PAYER_PART_ID, BA_TRV_PLAN_MST.CFT_MST_COMP_REF,
 -- BJAZ_TRV_LOADER_DATA.PREMIUMPAYERID, BJAZ_TRV_LOADER_DATA.PART_ID,
@@ -2083,7 +2084,7 @@ select 'OPUS' as project, 'HUB_PARTY' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — HUB_POLICY   [Implemented]
+-- 17. OPUS — HUB_POLICY   [Implemented]  [M2]
 -- 4 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.TRV_DATA_NO,
 -- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_LOG_TABLE.POLICYNUMBER,
 -- BJAZ_TRV_RIDER_DTLS.TRV_DATA_NO. Travel RECORD_SOURCE value(s) parsed from feeds:
@@ -2134,7 +2135,7 @@ select 'OPUS' as project, 'HUB_POLICY' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 18. OPUS — HUB_PRODUCT   [Implemented]
+-- 18. OPUS — HUB_PRODUCT   [Implemented]  [M2]
 -- 10 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.PRODUCT_CODE,
 -- BA_TRV_DATA_POLICY_DTLS.TRAVEL_PLAN_NO, BA_TRV_PLAN_MST.PLAN_NO,
 -- BJAZ_TRV_LOADER_DATA.PLAN, BJAZ_TRV_LOADER_LOG_TABLE.PLANID,
@@ -2218,7 +2219,7 @@ select 'OPUS' as project, 'HUB_PRODUCT' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 19. OPUS — HUB_COVERAGE   [Implemented]
+-- 19. OPUS — HUB_COVERAGE   [Implemented]  [M2]
 -- 20 RAW key branch(es): BJAZ_TRV_PLAN.COVER_CODE, BJAZ_TRV_RIDER_DTLS.RIDER_NO,
 -- BJAZ_TRV_RIDER_RATE_MAST.RIDER_SEQ_NO, BJAZ_TRV_LOADER_DATA.POLICY_REF,
 -- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_DATA.POLICY_REF,
@@ -2356,7 +2357,7 @@ select 'OPUS' as project, 'HUB_COVERAGE' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 20. OPUS — HUB_LOCATION   [Implemented]
+-- 20. OPUS — HUB_LOCATION   [Implemented]  [M2]
 -- 4 RAW key branch(es): BJAZ_TRV_LOADER_LOG_TABLE.TRANSITFROM,
 -- BJAZ_TRV_LOADER_LOG_TABLE.TRANSITTO,
 -- BJAZ_TRV_LOADER_DATA.[BUILDING+STREETNAME+SUBAREACITY+STATE+PINCODE],
@@ -2408,7 +2409,7 @@ select 'OPUS' as project, 'HUB_LOCATION' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 21. OPUS — HUB_ORG_UNIT   [Implemented]
+-- 21. OPUS — HUB_ORG_UNIT   [Implemented]  [M3]
 -- 5 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.LOCATION_CODE,
 -- BA_TRV_DATA_POLICY_DTLS.CO_ORG_UNIT, BJAZ_TRV_LOADER_DATA.LOCATION,
 -- BJAZ_TRV_LOADER_LOG_TABLE.LOCATIONCODE, BJAZ_TRV_LOADER_LOG_TABLE.COORGUNIT. Travel
@@ -2464,7 +2465,7 @@ select 'OPUS' as project, 'HUB_ORG_UNIT' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 22. OPUS — HUB_DISTRIBUTION_CHANNEL   [Implemented]
+-- 22. OPUS — HUB_DISTRIBUTION_CHANNEL   [Implemented]  [M3]
 -- 13 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.PARTNER_ID,
 -- BA_TRV_DATA_POLICY_DTLS.INTERMEDIARY_CODE, BA_TRV_DATA_POLICY_DTLS.SUBAGENT_CODE,
 -- BJAZ_TRV_LOADER_DATA.INTERMEDIARY, BJAZ_TRV_LOADER_DATA.SUBIMD,
@@ -2564,7 +2565,7 @@ select 'OPUS' as project, 'HUB_DISTRIBUTION_CHANNEL' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 23. OPUS — HUB_FINANCIAL_ACCOUNT   [Implemented]
+-- 23. OPUS — HUB_FINANCIAL_ACCOUNT   [Implemented]  [M3]
 -- 1 RAW key branch(es): BJAZ_TRV_LOADER_DATA.LANNO. Travel RECORD_SOURCE value(s) parsed
 -- from feeds: OPUS_BJAZ_TRV_LOADER_DATA.
 ----------------------------------------------------------------------------------------
@@ -2597,7 +2598,7 @@ select 'OPUS' as project, 'HUB_FINANCIAL_ACCOUNT' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 24. OPUS — HUB_FINANCIAL_TRANSACTION   [Implemented]
+-- 24. OPUS — HUB_FINANCIAL_TRANSACTION   [Implemented]  [M3]
 -- 3 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.TRANSACTION_ID,
 -- BJAZ_TRV_LOADER_DATA.TRANSACTIONID, BJAZ_TRV_LOADER_LOG_TABLE.POLICYNUMBER. Travel
 -- RECORD_SOURCE value(s) parsed from feeds: OPUS_BA_TRV_DATA_POLICY_DTLS,
@@ -2642,7 +2643,7 @@ select 'OPUS' as project, 'HUB_FINANCIAL_TRANSACTION' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 25. OPUS — HUB_AGREEMENT   [Implemented]
+-- 25. OPUS — HUB_AGREEMENT   [Implemented]  [M3]
 -- 5 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.CFT_MST_CONTRACT_ID,
 -- BA_TRV_PLAN_MST.CFT_MST_CONTRACT_ID, BJAZ_TRV_LOADER_LOG_TABLE.CONTRACTID,
 -- BJAZ_TRV_RATE_MASTER.CFT_MST_CONTRACT_ID, BJAZ_TRV_DETLS_EXTN.CONTRACT_ID. Travel
@@ -2699,7 +2700,7 @@ select 'OPUS' as project, 'HUB_AGREEMENT' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — HUB_ASSESSMENT   [Implemented]
+-- 26. OPUS — HUB_ASSESSMENT   [Implemented]  [M3]
 -- 2 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.SCRUTINY_NO,
 -- BJAZ_TRV_LOADER_DATA.SCRUTINY_NO. Travel RECORD_SOURCE value(s) parsed from feeds:
 -- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_LOADER_DATA.
@@ -2738,7 +2739,7 @@ select 'OPUS' as project, 'HUB_ASSESSMENT' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — HUB_PROPOSAL   [Implemented]
+-- 27. OPUS — HUB_PROPOSAL   [Implemented]  [M3]
 -- 2 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.TRAVEL_REQ_NO,
 -- BJAZ_TRV_DETLS_EXTN.TRAVEL_REQ_NO. Travel RECORD_SOURCE value(s) parsed from feeds:
 -- OPUS_BA_TRV_DATA_POLICY_DTLS, OPUS_BJAZ_TRV_DETLS_EXTN.
@@ -2777,7 +2778,7 @@ select 'OPUS' as project, 'HUB_PROPOSAL' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — HUB_QUOTE   [Implemented]
+-- 28. OPUS — HUB_QUOTE   [Implemented]  [M3]
 -- 1 RAW key branch(es): BA_TRV_DATA_POLICY_DTLS.QUOTE_NO. Travel RECORD_SOURCE value(s)
 -- parsed from feeds: OPUS_BA_TRV_DATA_POLICY_DTLS.
 ----------------------------------------------------------------------------------------
@@ -2810,7 +2811,7 @@ select 'OPUS' as project, 'HUB_QUOTE' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — HUB_RISK_OBJECT   [Implemented]
+-- 29. OPUS — HUB_RISK_OBJECT   [Implemented]  [M3]
 -- 6 RAW key branch(es): BJAZ_TRV_LOADER_DATA.POLICY_REF,
 -- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_DATA.POLICY_REF,
 -- BJAZ_TRV_LOADER_DATA.POLICY_REF, BJAZ_TRV_LOADER_DATA.POLICY_REF,
@@ -2871,7 +2872,7 @@ select 'OPUS' as project, 'HUB_RISK_OBJECT' as hub, src_branch,
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS + OPUS — Null / blank / degenerate key detail (all hubs)   [Drill-down]
+-- 30. MAXIMUS + OPUS — Null / blank / degenerate key detail (all hubs)   [Drill-down]  [M3]
 -- Drill-down evidence behind any null_key_status = FAIL; not a separate criterion.
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'HUB_PARTY' as hub, PARTY_HKEY as hkey, PARENT_BK as bk, RECORD_SOURCE, LOAD_DATETIME

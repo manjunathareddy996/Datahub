@@ -2,6 +2,7 @@
    DM-A1  |  Attribute Checks - Data Type & Format Preserved (Travel LOB)  (OPUS)
    Dates, decimals and trailing spaces not truncated or altered on load. Pass criterion: types & formats match source.
 
+   MEMBER SPLIT: sections 1..46 assigned M1 x 16, M2 x 15, M3 x 15 -- contiguous thirds in listed order.
    Check ID: DM-A1
    Category: Attribute checks
    Sign-off criterion: Data type & format preserved
@@ -42,7 +43,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. OPUS — Type / length / scale comparison (all OPUS satellites)   [Implemented]
+-- 1. OPUS — Type / length / scale comparison (all OPUS satellites)   [Implemented]  [M1]
 -- 241 (satellite column <- RAW column) pairs: every payload column that the model maps
 -- from exactly one RAW column (stitch columns: every coalesce source). STORED_AS_TEXT is
 -- by design: sat_multi_source / ma_sat_multi_source CAST every payload column to VARCHAR
@@ -327,7 +328,7 @@ select * from x
 
 
 ----------------------------------------------------------------------------------------
--- 2. OPUS — SAT_COMMON_ADDRESS   [Implemented]
+-- 2. OPUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
 -- standard satellite, sat_multi_source; PK LOCATION_HKEY; 2 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_LOADER_DATA [5 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [6 col(s)].
 -- stg2_common_address_bjaz_trv_loader_data: column(s) COUNTRY_NAME could not be traced
@@ -606,7 +607,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 3. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 3. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. TRIMMED
 -- / BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim rule
@@ -738,7 +739,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 4. OPUS — SAT_COMMON_CONTACT   [Implemented]
+-- 4. OPUS — SAT_COMMON_CONTACT   [Implemented]  [M1]
 -- standard satellite, ma_sat_multi_source; PK PARTY_HKEY, child key CONTACT_POINT_TYPE,
 -- CONTACT_PRIORITY_ORDER; 2 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA [4
 -- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [4 col(s)]. Multi-active: compared per (key,
@@ -1076,7 +1077,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 5. OPUS — SAT_COVERAGE_CONDITIONS   [Implemented]
+-- 5. OPUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
 -- standard satellite, automate_dv.sat; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_PLAN [2 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns =
 -- documented exception (staging trim rule retained by design), not a failure.
@@ -1162,7 +1163,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 6. OPUS — SAT_COVERAGE_DEFINITION   [Implemented]
+-- 6. OPUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
 -- standard satellite, sat_multi_source; PK COVERAGE_HKEY; 3 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_PLAN [2 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [1 col(s)],
 -- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. stg2_coverage_definition_bjaz_trv_plan:
@@ -1543,7 +1544,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 7. OPUS — SAT_COVERAGE_LIMITS   [Implemented]
+-- 7. OPUS — SAT_COVERAGE_LIMITS   [Implemented]  [M1]
 -- standard satellite, sat_multi_source; PK COVERAGE_HKEY; 3 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_PLAN [2 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [1 col(s)],
 -- OPUS_BJAZ_TRV_RIDER_RATE_MAST [1 col(s)]. stg2_coverage_limits_bjaz_trv_rider_dtls:
@@ -1758,7 +1759,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 8. OPUS — SAT_FINTXN_COMMISSION   [Implemented]
+-- 8. OPUS — SAT_FINTXN_COMMISSION   [Implemented]  [M1]
 -- standard satellite, ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key
 -- COMMISSION_TYPE_CK; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
 -- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. Multi-active: compared per (key, child key);
@@ -1914,7 +1915,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 9. OPUS — SAT_FINTXN_HEADER   [Implemented]
+-- 9. OPUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
 -- standard satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE
 -- group(s): OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim /
 -- nullif columns = documented exception (staging trim rule retained by design), not a
@@ -1985,7 +1986,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 10. OPUS — SAT_FINTXN_PREMIUM   [Implemented]
+-- 10. OPUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
 -- standard satellite, sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY; 3 RECORD_SOURCE
 -- group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [6 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [5
 -- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [4 col(s)].
@@ -2381,7 +2382,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 11. OPUS — SAT_FINTXN_TAX   [Implemented]
+-- 11. OPUS — SAT_FINTXN_TAX   [Implemented]  [M1]
 -- standard satellite, ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key
 -- TAX_TYPE; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
 -- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. Multi-active: compared per (key, child
@@ -2549,7 +2550,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 12. OPUS — SAT_FIN_CHARGE_RATE   [Implemented]
+-- 12. OPUS — SAT_FIN_CHARGE_RATE   [Implemented]  [M1]
 -- standard satellite, ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key
 -- CHARGE_TYPE_CK; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
 -- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. Multi-active: compared per (key, child
@@ -2717,7 +2718,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 13. OPUS — SAT_FIN_RECEIPT   [Implemented]
+-- 13. OPUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
 -- standard satellite, sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY; 2 RECORD_SOURCE
 -- group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [3
 -- col(s)]. stg2_fin_receipt_ba_trv_data_policy_dtls: column(s) AMOUNT_RECEIVED,
@@ -2903,7 +2904,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 14. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 14. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 -- TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim
@@ -3035,7 +3036,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 15. OPUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
+-- 15. OPUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
 -- standard satellite, automate_dv.sat; PK ORG_UNIT_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
 -- columns = documented exception (staging trim rule retained by design), not a failure.
@@ -3105,7 +3106,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 16. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 16. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M1]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [2 col(s)].
 -- stg2_party_employment_bjaz_trv_loader_data_payer: column(s) DESIGNATION could not be
@@ -3256,7 +3257,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 17. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 17. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M2]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. TRIMMED
 -- / BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim rule
@@ -3388,7 +3389,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 18. OPUS — SAT_PARTY_IDENTIFICATION   [Implemented]
+-- 18. OPUS — SAT_PARTY_IDENTIFICATION   [Implemented]  [M2]
 -- standard satellite, ma_sat_multi_source; PK PARTY_HKEY, child key
 -- IDENTIFICATION_TYPE_CODE; 3 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [1
 -- col(s)], OPUS_BJAZ_TRV_LOADER_DATA [4 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1
@@ -3685,7 +3686,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 19. OPUS — SAT_PARTY_IDENTITY   [Implemented]
+-- 19. OPUS — SAT_PARTY_IDENTITY   [Implemented]  [M2]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 3 RECORD_SOURCE group(s):
 -- OPUS_BA_TRV_DATA_POLICY_DTLS [3 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [6 col(s)],
 -- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [8 col(s)].
@@ -4125,7 +4126,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 20. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 20. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M2]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 -- TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim
@@ -4257,7 +4258,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 21. OPUS — SAT_POLICY_CLASSIFICATION   [Implemented]
+-- 21. OPUS — SAT_POLICY_CLASSIFICATION   [Implemented]  [M2]
 -- standard satellite, ma_sat_multi_source; PK POLICY_HKEY, child key
 -- CLASSIFICATION_TYPE; 3 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [1
 -- col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1
@@ -4479,7 +4480,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 22. OPUS — SAT_POLICY_HEADER   [Implemented]
+-- 22. OPUS — SAT_POLICY_HEADER   [Implemented]  [M2]
 -- standard satellite, sat_multi_source; PK POLICY_HKEY; 4 RECORD_SOURCE group(s):
 -- OPUS_BA_TRV_DATA_POLICY_DTLS [9 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [2 col(s)],
 -- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [8 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [2 col(s)].
@@ -5022,7 +5023,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 23. OPUS — SAT_POLICY_TERMS   [Implemented]
+-- 23. OPUS — SAT_POLICY_TERMS   [Implemented]  [M2]
 -- standard satellite, sat_multi_source; PK POLICY_HKEY; 2 RECORD_SOURCE group(s):
 -- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 -- TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim
@@ -5154,7 +5155,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 24. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]
+-- 24. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
 -- standard satellite, sat_multi_source; PK PRODUCT_HKEY; 3 RECORD_SOURCE group(s):
 -- OPUS_BA_TRV_DATA_POLICY_DTLS [3 col(s)], OPUS_BA_TRV_PLAN_MST [5 col(s)],
 -- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. stg2_product_definition_ba_trv_data_policy_dtls:
@@ -5451,7 +5452,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 25. OPUS — SAT_PRODUCT_RATING_FACTOR   [Implemented]
+-- 25. OPUS — SAT_PRODUCT_RATING_FACTOR   [Implemented]  [M2]
 -- standard satellite, ma_sat_multi_source; PK PRODUCT_HKEY, child key
 -- ACTIVE_SEQUENCE_NUMBER; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_RATE_MASTER [2
 -- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
@@ -5568,7 +5569,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 26. OPUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
+-- 26. OPUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
 -- standard satellite, automate_dv.sat; PK PRODUCT_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_RATE_MASTER [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns
 -- = documented exception (staging trim rule retained by design), not a failure.
@@ -5638,7 +5639,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 27. OPUS — SAT_PRODUCT_TERMS   [Implemented]
+-- 27. OPUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
 -- standard satellite, sat_multi_source; PK PRODUCT_HKEY; 2 RECORD_SOURCE group(s):
 -- OPUS_BA_TRV_PLAN_MST [6 col(s)], OPUS_BJAZ_TRV_PLAN [1 col(s)].
 -- stg2_product_terms_bjaz_trv_plan: column(s) FAMILY_DEFINITION, GEOGRAPHY_RESTRICTION,
@@ -5854,7 +5855,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 28. OPUS — SAT_PROPOSAL_UNDERWRITING   [Implemented]
+-- 28. OPUS — SAT_PROPOSAL_UNDERWRITING   [Implemented]  [M2]
 -- standard satellite, automate_dv.sat; PK PROPOSAL_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
 -- columns = documented exception (staging trim rule retained by design), not a failure.
@@ -5940,7 +5941,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 29. OPUS — SAT_QUOTE_HEADER   [Implemented]
+-- 29. OPUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
 -- standard satellite, automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
 -- columns = documented exception (staging trim rule retained by design), not a failure.
@@ -6010,7 +6011,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 30. OPUS — SAT_RISK_MOTOR_DRIVER   [Implemented]
+-- 30. OPUS — SAT_RISK_MOTOR_DRIVER   [Implemented]  [M2]
 -- standard satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
 -- columns = documented exception (staging trim rule retained by design), not a failure.
@@ -6080,7 +6081,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 31. OPUS — SAT_RISK_MOTOR_VEHICLE   [Implemented]
+-- 31. OPUS — SAT_RISK_MOTOR_VEHICLE   [Implemented]  [M2]
 -- standard satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [9 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
 -- columns = documented exception (staging trim rule retained by design), not a failure.
@@ -6278,7 +6279,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 32. OPUS — SAT_RISK_OBJECT_CORE   [Implemented]
+-- 32. OPUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M3]
 -- standard satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
 -- columns = documented exception (staging trim rule retained by design), not a failure.
@@ -6348,7 +6349,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 33. OPUS — SAT_RISK_PERSON_INSURED   [Implemented]
+-- 33. OPUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- standard satellite, sat_multi_source; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_LOADER_DATA [4 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns
 -- = documented exception (staging trim rule retained by design), not a failure.
@@ -6502,7 +6503,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 34. OPUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
+-- 34. OPUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- standard satellite, sat_multi_source; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_LOADER_DATA [8 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [2 col(s)].
 -- stg2_risk_person_travel_bjaz_trv_loader_log_table: column(s) PASSPORT_NUMBER,
@@ -6778,7 +6779,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 35. OPUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 35. OPUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M3]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns
 -- = documented exception (staging trim rule retained by design), not a failure.
@@ -6848,7 +6849,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 36. OPUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
+-- 36. OPUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_PLAN [2 col(s)]. stg2_aug_coverage_definition_bjaz_trv_plan_eff_date:
 -- column(s) COVERAGE_SEQUENCE could not be traced to RAW on at least one arm -- excluded
@@ -6944,7 +6945,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 37. OPUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
+-- 37. OPUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_PLAN [3 col(s)]. stg2_aug_coverage_limits_bjaz_trv_plan_currency:
 -- column(s) DEDUCTIBLE_DESCRIPTION, LIMIT_DESCRIPTION could not be traced to RAW on at
@@ -7069,7 +7070,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 38. OPUS — SAT_AUG_COVERAGE_RATING   [Implemented]
+-- 38. OPUS — SAT_AUG_COVERAGE_RATING   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK COVERAGE_HKEY; 2 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_RIDER_RATE_MAST [4 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [1 col(s)].
 -- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_nb_prm_excluding_st: column(s)
@@ -7297,7 +7298,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 39. OPUS — SAT_AUG_FINTXN_PREMIUM   [Implemented]
+-- 39. OPUS — SAT_AUG_FINTXN_PREMIUM   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY; 3 RECORD_SOURCE
 -- group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1
 -- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
@@ -7525,7 +7526,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 40. OPUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]
+-- 40. OPUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]  [M3]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
 -- columns = documented exception (staging trim rule retained by design), not a failure.
@@ -7595,7 +7596,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 41. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 41. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. TRIMMED
 -- / BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim rule
@@ -7727,7 +7728,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 42. OPUS — SAT_AUG_PARTY_BANKING   [Implemented]
+-- 42. OPUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns
 -- = documented exception (staging trim rule retained by design), not a failure.
@@ -7797,7 +7798,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 43. OPUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
+-- 43. OPUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
 -- TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim
@@ -7929,7 +7930,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 44. OPUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
+-- 44. OPUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK PRODUCT_HKEY; 3 RECORD_SOURCE group(s):
 -- OPUS_BA_TRV_PLAN_MST [3 col(s)], OPUS_BJAZ_TRV_RATE_MASTER [2 col(s)],
 -- OPUS_BJAZ_TRV_PLAN [1 col(s)]. stg2_aug_product_terms_ba_trv_plan_mst_multi_year_yn:
@@ -8217,7 +8218,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 45. OPUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
+-- 45. OPUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns
 -- = documented exception (staging trim rule retained by design), not a failure.
@@ -8311,7 +8312,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 46. OPUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
+-- 46. OPUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- augmented satellite, sat_multi_source; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
 -- OPUS_BJAZ_TRV_LOADER_DATA [2 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns
 -- = documented exception (staging trim rule retained by design), not a failure.

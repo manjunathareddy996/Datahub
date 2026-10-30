@@ -2,6 +2,7 @@
    DM-H1  |  History - Change Creates a New Satellite Row (Travel LOB)  (MAXIMUS)
    A record changed in source creates a new satellite row.
 
+   MEMBER SPLIT: sections 1..212 assigned M1 x 71, M2 x 71, M3 x 70 -- contiguous thirds in listed order.
    Check ID: DM-H1
    Category: History checks
    Sign-off criterion: Change creates a new satellite row
@@ -37,7 +38,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. SETUP — CDC test set-up (run once)   [Procedure]
+-- 1. SETUP — CDC test set-up (run once)   [Procedure]  [M1]
 -- Creates the snapshot tables used by DM-H1 (b), DM-H2 (b) and DM-H3 (b). Needs CREATE
 -- SCHEMA / TABLE rights on the scratch schema; change VALIDATION_SCHEMA in gen_dm_h.py
 -- to use another one.
@@ -58,7 +59,7 @@ create transient table if not exists BAGIC_PREPROD_CURATED_DB.UTILS.DM_H_RELOAD_
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — CDC before / after test procedure   [Procedure]
+-- 2. MAXIMUS — CDC before / after test procedure   [Procedure]  [M1]
 -- MAXIMUS RAW is the production mirror -- do NOT modify it. Let one normal load cycle
 -- land source changes between BEFORE and AFTER; a satellite whose sample saw no change
 -- reports NOT TESTED.
@@ -85,7 +86,7 @@ set DM_H_PHASE = 'AFTER';
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]
+-- 3. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -104,7 +105,7 @@ select 'MAXIMUS' as project, 'SAT_ASSESSMENT_HEADER' as satellite, 'MAXIMUS_NONH
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]
+-- 4. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -130,7 +131,7 @@ select 'MAXIMUS' as project, 'SAT_CHANNEL_DEFINITION' as satellite, '4 RECORD_SO
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
+-- 5. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -149,7 +150,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_ASSESSMENT_SUMMARY' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Design finding]
+-- 6. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
@@ -176,7 +177,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_ASSESSMENT_SUMMARY' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]
+-- 7. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -198,7 +199,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_CO_RI_SHARE' as satellite, '2 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]
+-- 8. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -219,7 +220,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_FNOL' as satellite, '2 RECORD_SOURCEs sh
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]
+-- 9. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -245,7 +246,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_FRAUD' as satellite, '4 RECORD_SOURCEs s
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]
+-- 10. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -272,7 +273,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEADER' as satellite, '5 RECORD_SOURCEs 
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]
+-- 11. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -298,7 +299,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEALTH_DETAIL' as satellite, '4 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Design finding]
+-- 12. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- (satfeed_mt_sat_claim_investigation_finding) also hashes FINDING_SEQUENCE, which this
@@ -316,7 +317,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_HEALTH_DETAIL' as satellite, '4 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]
+-- 13. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -338,7 +339,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_LITIGATION' as satellite, '2 RECORD_SOUR
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — SAT_CLAIM_NOTE   [Design finding]
+-- 14. MAXIMUS — SAT_CLAIM_NOTE   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
@@ -359,7 +360,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_LITIGATION' as satellite, '2 RECORD_SOUR
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Design finding]
+-- 15. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Design finding]  [M1]
 -- HASHDIFF of MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -381,7 +382,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_LITIGATION' as satellite, '2 RECORD_SOUR
 
 
 ----------------------------------------------------------------------------------------
--- 16. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]
+-- 16. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -401,7 +402,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PA_DETAIL' as satellite, 'MAXIMUS_NONHLT
 
 
 ----------------------------------------------------------------------------------------
--- 17. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Design finding]
+-- 17. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -422,7 +423,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_PA_DETAIL' as satellite, 'MAXIMUS_NONHLT
 
 
 ----------------------------------------------------------------------------------------
--- 18. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]
+-- 18. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -442,7 +443,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_RECOVERY_SALVAGE' as satellite, 'MAXIMUS
 
 
 ----------------------------------------------------------------------------------------
--- 19. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]
+-- 19. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -464,7 +465,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_REPUDIATION' as satellite, '2 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 20. MAXIMUS — SAT_CLAIM_RESERVE   [Design finding]
+-- 20. MAXIMUS — SAT_CLAIM_RESERVE   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE
@@ -483,7 +484,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_REPUDIATION' as satellite, '2 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 21. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Design finding]
+-- 21. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- (satfeed_mt_sat_claim_reserve_head) also hashes RESERVE_HEAD_CODE, which this
@@ -501,7 +502,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_REPUDIATION' as satellite, '2 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 22. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]
+-- 22. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -521,7 +522,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_SETTLEMENT' as satellite, 'MAXIMUS_NONHL
 
 
 ----------------------------------------------------------------------------------------
--- 23. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]
+-- 23. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -540,7 +541,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_SLA_TRACKING' as satellite, 'MAXIMUS_NON
 
 
 ----------------------------------------------------------------------------------------
--- 24. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]
+-- 24. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -560,7 +561,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_TP_FORENSIC' as satellite, 'MAXIMUS_NONH
 
 
 ----------------------------------------------------------------------------------------
--- 25. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]
+-- 25. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -584,7 +585,7 @@ select 'MAXIMUS' as project, 'SAT_CLAIM_TRAVEL_DETAIL' as satellite, '3 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 26. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]
+-- 26. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -629,7 +630,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADDRESS' as satellite, '15 RECORD_SOURC
 
 
 ----------------------------------------------------------------------------------------
--- 27. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Design finding]
+-- 27. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- (satfeed_mt_sat_common_admin_geography) also hashes
@@ -646,7 +647,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_ADDRESS' as satellite, '15 RECORD_SOURC
 
 
 ----------------------------------------------------------------------------------------
--- 28. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]
+-- 28. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -668,7 +669,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_BUSINESS_AUDIT' as satellite, '2 RECORD
 
 
 ----------------------------------------------------------------------------------------
--- 29. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]
+-- 29. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -692,7 +693,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, '3 RECORD
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 30. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -718,7 +719,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_COMMUNICATION_PREFERENCE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 31. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]
+-- 31. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -742,7 +743,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONSENT' as satellite, '3 RECORD_SOURCE
 
 
 ----------------------------------------------------------------------------------------
--- 32. MAXIMUS — SAT_COMMON_CONTACT   [Design finding]
+-- 32. MAXIMUS — SAT_COMMON_CONTACT   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW,
@@ -782,7 +783,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_CONSENT' as satellite, '3 RECORD_SOURCE
 
 
 ----------------------------------------------------------------------------------------
--- 33. MAXIMUS — SAT_COMMON_GEO   [Implemented]
+-- 33. MAXIMUS — SAT_COMMON_GEO   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -806,7 +807,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_GEO' as satellite, '3 RECORD_SOURCEs sh
 
 
 ----------------------------------------------------------------------------------------
--- 34. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]
+-- 34. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -826,7 +827,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_LIFECYCLE' as satellite, 'MAXIMUS_NONHL
 
 
 ----------------------------------------------------------------------------------------
--- 35. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]
+-- 35. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -848,7 +849,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_MONETARY_CONTEXT' as satellite, '4 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 36. MAXIMUS — SAT_COMMON_STATUS   [Implemented]
+-- 36. MAXIMUS — SAT_COMMON_STATUS   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -868,7 +869,7 @@ select 'MAXIMUS' as project, 'SAT_COMMON_STATUS' as satellite, 'MAXIMUS_NONHLTH_
 
 
 ----------------------------------------------------------------------------------------
--- 37. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]
+-- 37. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -894,7 +895,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite, '4 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 38. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]
+-- 38. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -922,7 +923,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, '5 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 39. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Design finding]
+-- 39. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- (satfeed_mt_sat_coverage_sublimit_schedule) also hashes ACTIVE_SEQUENCE_NUMBER, which
@@ -940,7 +941,7 @@ select 'MAXIMUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, '5 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 40. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]
+-- 40. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -975,7 +976,7 @@ select 'MAXIMUS' as project, 'SAT_DOCUMENT_DEFINITION' as satellite, '10 RECORD_
 
 
 ----------------------------------------------------------------------------------------
--- 41. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]
+-- 41. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -995,7 +996,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_ACCOUNTING' as satellite, 'MAXIMUS_NONH
 
 
 ----------------------------------------------------------------------------------------
--- 42. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]
+-- 42. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1015,7 +1016,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_CLAIM_PAYMENT' as satellite, 'MAXIMUS_N
 
 
 ----------------------------------------------------------------------------------------
--- 43. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]
+-- 43. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1040,7 +1041,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_HEADER' as satellite, '4 RECORD_SOURCEs
 
 
 ----------------------------------------------------------------------------------------
--- 44. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]
+-- 44. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1063,7 +1064,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, '3 RECORD_SOURCE
 
 
 ----------------------------------------------------------------------------------------
--- 45. MAXIMUS — SAT_FINTXN_TAX   [Design finding]
+-- 45. MAXIMUS — SAT_FINTXN_TAX   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -1084,7 +1085,7 @@ select 'MAXIMUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, '3 RECORD_SOURCE
 
 
 ----------------------------------------------------------------------------------------
--- 46. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]
+-- 46. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1107,7 +1108,7 @@ select 'MAXIMUS' as project, 'SAT_FIN_RECEIPT' as satellite, '3 RECORD_SOURCEs s
 
 
 ----------------------------------------------------------------------------------------
--- 47. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]
+-- 47. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1128,7 +1129,7 @@ select 'MAXIMUS' as project, 'SAT_INSTRUMENT_DEFINITION' as satellite, '2 RECORD
 
 
 ----------------------------------------------------------------------------------------
--- 48. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Design finding]
+-- 48. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -1149,7 +1150,7 @@ select 'MAXIMUS' as project, 'SAT_INSTRUMENT_DEFINITION' as satellite, '2 RECORD
 
 
 ----------------------------------------------------------------------------------------
--- 49. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Design finding]
+-- 49. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION,
@@ -1177,7 +1178,7 @@ select 'MAXIMUS' as project, 'SAT_INSTRUMENT_DEFINITION' as satellite, '2 RECORD
 
 
 ----------------------------------------------------------------------------------------
--- 50. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]
+-- 50. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1197,7 +1198,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_AGENT' as satellite, 'MAXIMUS_NONHLTH
 
 
 ----------------------------------------------------------------------------------------
--- 51. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]
+-- 51. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1221,7 +1222,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_CUSTOMER' as satellite, '3 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 52. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]
+-- 52. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1247,7 +1248,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_EMPLOYEE' as satellite, '4 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 53. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
+-- 53. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1269,7 +1270,7 @@ select 'MAXIMUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, '2
 
 
 ----------------------------------------------------------------------------------------
--- 54. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]
+-- 54. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1289,7 +1290,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_DETAIL' as satellite, 'MAXIMUS_NONH
 
 
 ----------------------------------------------------------------------------------------
--- 55. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]
+-- 55. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1309,7 +1310,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_NOTIFICATION' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 56. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Design finding]
+-- 56. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- (satfeed_mt_sat_loss_location_address) also hashes
@@ -1327,7 +1328,7 @@ select 'MAXIMUS' as project, 'SAT_LOSS_EVENT_NOTIFICATION' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 57. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
+-- 57. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1350,7 +1351,7 @@ select 'MAXIMUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite, '4 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 58. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]
+-- 58. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1372,7 +1373,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_AML_SCREENING' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 59. MAXIMUS — SAT_PARTY_BANKING   [Design finding]
+-- 59. MAXIMUS — SAT_PARTY_BANKING   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
@@ -1396,7 +1397,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_AML_SCREENING' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 60. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]
+-- 60. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1416,7 +1417,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 61. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Design finding]
+-- 61. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW,
@@ -1449,7 +1450,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_CLAIM_HISTORY' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 62. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]
+-- 62. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1474,7 +1475,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, '4 RECORD_SOUR
 
 
 ----------------------------------------------------------------------------------------
--- 63. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]
+-- 63. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1496,7 +1497,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FINANCIAL_PROFILE' as satellite, '2 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 64. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]
+-- 64. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1518,7 +1519,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_FRAUD_PROFILE' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 65. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
+-- 65. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1540,7 +1541,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, '2 RECORD_
 
 
 ----------------------------------------------------------------------------------------
--- 66. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Design finding]
+-- 66. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY,
@@ -1576,7 +1577,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, '2 RECORD_
 
 
 ----------------------------------------------------------------------------------------
--- 67. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]
+-- 67. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1616,7 +1617,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_IDENTITY' as satellite, '14 RECORD_SOURC
 
 
 ----------------------------------------------------------------------------------------
--- 68. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 68. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1638,7 +1639,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 69. MAXIMUS — SAT_PARTY_KYC   [Implemented]
+-- 69. MAXIMUS — SAT_PARTY_KYC   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1660,7 +1661,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC' as satellite, '2 RECORD_SOURCEs sha
 
 
 ----------------------------------------------------------------------------------------
--- 70. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Design finding]
+-- 70. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Design finding]  [M1]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -1681,7 +1682,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_KYC' as satellite, '2 RECORD_SOURCEs sha
 
 
 ----------------------------------------------------------------------------------------
--- 71. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]
+-- 71. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M1]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1701,7 +1702,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ONBOARDING_JOURNEY' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 72. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
+-- 72. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1726,7 +1727,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_ORGANISATION_PROFILE' as satellite, '4 R
 
 
 ----------------------------------------------------------------------------------------
--- 73. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]
+-- 73. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1746,7 +1747,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PAYOUT_PROFILE' as satellite, 'MAXIMUS_N
 
 
 ----------------------------------------------------------------------------------------
--- 74. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]
+-- 74. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1766,7 +1767,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_POLICY_HISTORY' as satellite, 'MAXIMUS_N
 
 
 ----------------------------------------------------------------------------------------
--- 75. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]
+-- 75. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1786,7 +1787,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_PORTFOLIO_SUMMARY' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 76. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]
+-- 76. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1806,7 +1807,7 @@ select 'MAXIMUS' as project, 'SAT_PARTY_RELATIONSHIP_PROFILE' as satellite, 'MAX
 
 
 ----------------------------------------------------------------------------------------
--- 77. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]
+-- 77. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1826,7 +1827,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 78. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Design finding]
+-- 78. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Design finding]  [M2]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
@@ -1850,7 +1851,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 79. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Design finding]
+-- 79. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Design finding]  [M2]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS,
@@ -1883,7 +1884,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 80. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Design finding]
+-- 80. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Design finding]  [M2]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
@@ -1907,7 +1908,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 81. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Design finding]
+-- 81. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Design finding]  [M2]
 -- HASHDIFF of MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- (satfeed_mt_sat_policy_endorsement) also hashes ENDORSEMENT_NUMBER, which this
@@ -1926,7 +1927,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_CANCELLATION' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 82. MAXIMUS — SAT_POLICY_GROUP   [Implemented]
+-- 82. MAXIMUS — SAT_POLICY_GROUP   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1946,7 +1947,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_GROUP' as satellite, 'MAXIMUS_NONHLTH_T
 
 
 ----------------------------------------------------------------------------------------
--- 83. MAXIMUS — SAT_POLICY_HEADER   [Implemented]
+-- 83. MAXIMUS — SAT_POLICY_HEADER   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -1975,7 +1976,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_HEADER' as satellite, '7 RECORD_SOURCEs
 
 
 ----------------------------------------------------------------------------------------
--- 84. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Design finding]
+-- 84. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Design finding]  [M2]
 -- HASHDIFF of MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- (satfeed_mt_sat_policy_intermediary_split) also hashes INTERMEDIARY_REFERENCE, which
@@ -1994,7 +1995,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_HEADER' as satellite, '7 RECORD_SOURCEs
 
 
 ----------------------------------------------------------------------------------------
--- 85. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]
+-- 85. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2014,7 +2015,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PORTABILITY_MIGRATION' as satellite, 'M
 
 
 ----------------------------------------------------------------------------------------
--- 86. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Design finding]
+-- 86. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Design finding]  [M2]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
@@ -2043,7 +2044,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PORTABILITY_MIGRATION' as satellite, 'M
 
 
 ----------------------------------------------------------------------------------------
--- 87. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
+-- 87. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2067,7 +2068,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_PREMIUM_SUMMARY' as satellite, '5 RECOR
 
 
 ----------------------------------------------------------------------------------------
--- 88. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]
+-- 88. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2087,7 +2088,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_RENEWAL' as satellite, 'MAXIMUS_NONHLTH
 
 
 ----------------------------------------------------------------------------------------
--- 89. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]
+-- 89. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2107,7 +2108,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SERVICING_SUMMARY' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 90. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Design finding]
+-- 90. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Design finding]  [M2]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
@@ -2131,7 +2132,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_SERVICING_SUMMARY' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 91. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]
+-- 91. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2152,7 +2153,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TAX_BREAKUP' as satellite, '2 RECORD_SO
 
 
 ----------------------------------------------------------------------------------------
--- 92. MAXIMUS — SAT_POLICY_TAX_HEAD   [Design finding]
+-- 92. MAXIMUS — SAT_POLICY_TAX_HEAD   [Design finding]  [M2]
 -- HASHDIFF of MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -2174,7 +2175,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TAX_BREAKUP' as satellite, '2 RECORD_SO
 
 
 ----------------------------------------------------------------------------------------
--- 93. MAXIMUS — SAT_POLICY_TERMS   [Implemented]
+-- 93. MAXIMUS — SAT_POLICY_TERMS   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2194,7 +2195,7 @@ select 'MAXIMUS' as project, 'SAT_POLICY_TERMS' as satellite, 'MAXIMUS_NONHLTH_T
 
 
 ----------------------------------------------------------------------------------------
--- 94. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]
+-- 94. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2223,7 +2224,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, '7 RECORD_SO
 
 
 ----------------------------------------------------------------------------------------
--- 95. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
+-- 95. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2245,7 +2246,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite, '2 REC
 
 
 ----------------------------------------------------------------------------------------
--- 96. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]
+-- 96. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2267,7 +2268,7 @@ select 'MAXIMUS' as project, 'SAT_PRODUCT_TERMS' as satellite, '2 RECORD_SOURCEs
 
 
 ----------------------------------------------------------------------------------------
--- 97. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]
+-- 97. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2290,7 +2291,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_HEADER' as satellite, '3 RECORD_SOURCEs 
 
 
 ----------------------------------------------------------------------------------------
--- 98. MAXIMUS — SAT_QUOTE_RATING   [Implemented]
+-- 98. MAXIMUS — SAT_QUOTE_RATING   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2313,7 +2314,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING' as satellite, '3 RECORD_SOURCEs 
 
 
 ----------------------------------------------------------------------------------------
--- 99. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Design finding]
+-- 99. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Design finding]  [M2]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW,
@@ -2343,7 +2344,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING' as satellite, '3 RECORD_SOURCEs 
 
 
 ----------------------------------------------------------------------------------------
--- 100. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Design finding]
+-- 100. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Design finding]  [M2]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
@@ -2365,7 +2366,7 @@ select 'MAXIMUS' as project, 'SAT_QUOTE_RATING' as satellite, '3 RECORD_SOURCEs 
 
 
 ----------------------------------------------------------------------------------------
--- 101. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]
+-- 101. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2390,7 +2391,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite, '6 RECORD_SOUR
 
 
 ----------------------------------------------------------------------------------------
--- 102. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]
+-- 102. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2413,7 +2414,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_OBJECT_VALUATION' as satellite, '4 RECORD
 
 
 ----------------------------------------------------------------------------------------
--- 103. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]
+-- 103. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2435,7 +2436,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 104. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Design finding]
+-- 104. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Design finding]  [M2]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
@@ -2456,7 +2457,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 105. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
+-- 105. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. standard satellite,
@@ -2488,7 +2489,7 @@ select 'MAXIMUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, '7 RECORD_SO
 
 
 ----------------------------------------------------------------------------------------
--- 106. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]
+-- 106. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2510,7 +2511,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_APPROVAL_ACTION' as satellite, '2 RE
 
 
 ----------------------------------------------------------------------------------------
--- 107. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
+-- 107. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2533,7 +2534,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_ASSESSMENT_SUMMARY' as satellite, '3
 
 
 ----------------------------------------------------------------------------------------
--- 108. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Design finding]
+-- 108. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Design finding]  [M2]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
@@ -2557,7 +2558,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_ASSESSMENT_SUMMARY' as satellite, '3
 
 
 ----------------------------------------------------------------------------------------
--- 109. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]
+-- 109. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2579,7 +2580,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_CO_RI_SHARE' as satellite, '2 RECORD
 
 
 ----------------------------------------------------------------------------------------
--- 110. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]
+-- 110. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2599,7 +2600,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DEDUCTION_WAIVER' as satellite, 'MAX
 
 
 ----------------------------------------------------------------------------------------
--- 111. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Design finding]
+-- 111. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Design finding]  [M2]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- (satfeed_mt_aug_sat_aug_claim_document_reminder) also hashes REMINDER_SEQUENCE,
@@ -2618,7 +2619,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DEDUCTION_WAIVER' as satellite, 'MAX
 
 
 ----------------------------------------------------------------------------------------
--- 112. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]
+-- 112. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2638,7 +2639,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 113. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]
+-- 113. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2658,7 +2659,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EVIDENCE' as satellite, 'MAXIMUS_NON
 
 
 ----------------------------------------------------------------------------------------
--- 114. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Design finding]
+-- 114. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Design finding]  [M2]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- (satfeed_mt_aug_sat_aug_claim_exclusion_applied) also hashes EXCLUSION_SET_CODE, which
@@ -2676,7 +2677,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EVIDENCE' as satellite, 'MAXIMUS_NON
 
 
 ----------------------------------------------------------------------------------------
--- 115. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]
+-- 115. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2696,7 +2697,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_EXPENSE_LINE' as satellite, 'MAXIMUS
 
 
 ----------------------------------------------------------------------------------------
--- 116. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]
+-- 116. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2715,7 +2716,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FOLLOWUP_TASK' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 117. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]
+-- 117. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2741,7 +2742,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_FRAUD' as satellite, '4 RECORD_SOURC
 
 
 ----------------------------------------------------------------------------------------
--- 118. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]
+-- 118. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2764,7 +2765,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_HEADER' as satellite, '3 RECORD_SOUR
 
 
 ----------------------------------------------------------------------------------------
--- 119. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]
+-- 119. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2788,7 +2789,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_LITIGATION' as satellite, '3 RECORD_
 
 
 ----------------------------------------------------------------------------------------
--- 120. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]
+-- 120. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2810,7 +2811,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_NETWORK_VERIFICATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 121. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Design finding]
+-- 121. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Design finding]  [M2]
 -- HASHDIFF of MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -2832,7 +2833,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_NETWORK_VERIFICATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 122. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]
+-- 122. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2854,7 +2855,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PA_DETAIL' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 123. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Design finding]
+-- 123. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Design finding]  [M2]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- (satfeed_mt_aug_sat_aug_claim_provider_billing) also hashes BILL_NUMBER, which this
@@ -2872,7 +2873,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_PA_DETAIL' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 124. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]
+-- 124. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2892,7 +2893,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_QUALITY_AUDIT' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 125. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]
+-- 125. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2914,7 +2915,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_RECOVERY_SALVAGE' as satellite, '2 R
 
 
 ----------------------------------------------------------------------------------------
--- 126. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]
+-- 126. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2938,7 +2939,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SETTLEMENT' as satellite, '3 RECORD_
 
 
 ----------------------------------------------------------------------------------------
--- 127. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]
+-- 127. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2960,7 +2961,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SLA_TRACKING' as satellite, '2 RECOR
 
 
 ----------------------------------------------------------------------------------------
--- 128. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]
+-- 128. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2979,7 +2980,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_STATUS_HISTORY' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 129. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]
+-- 129. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -2999,7 +3000,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_SURVEY_APPOINTMENT' as satellite, 'M
 
 
 ----------------------------------------------------------------------------------------
--- 130. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]
+-- 130. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3019,7 +3020,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TPA_INTERACTION' as satellite, 'MAXI
 
 
 ----------------------------------------------------------------------------------------
--- 131. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]
+-- 131. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3040,7 +3041,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TRAVEL_DETAIL' as satellite, '2 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 132. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]
+-- 132. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3060,7 +3061,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_CLAIM_TRAVEL_SECTOR' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 133. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]
+-- 133. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3082,7 +3083,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_ADDRESS' as satellite, '2 RECORD_SO
 
 
 ----------------------------------------------------------------------------------------
--- 134. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
+-- 134. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3104,7 +3105,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satell
 
 
 ----------------------------------------------------------------------------------------
--- 135. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]
+-- 135. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3126,7 +3127,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_CONDITIONS' as satellite, '2 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 136. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
+-- 136. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3152,7 +3153,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite, '4 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 137. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
+-- 137. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3174,7 +3175,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 138. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Design finding]
+-- 138. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Design finding]  [M2]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- (satfeed_mt_aug_sat_aug_coverage_sublimit_schedule) also hashes
@@ -3193,7 +3194,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 139. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Design finding]
+-- 139. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Design finding]  [M2]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- (satfeed_mt_aug_sat_aug_coverage_sub_cover_element) also hashes SUB_COVER_CODE, which
@@ -3211,7 +3212,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 140. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Design finding]
+-- 140. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Design finding]  [M2]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- (satfeed_mt_aug_sat_aug_document_checklist) also hashes REQUIRED_DOCUMENT_TYPE, which
@@ -3229,7 +3230,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, '2 RECORD_S
 
 
 ----------------------------------------------------------------------------------------
--- 141. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]
+-- 141. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]  [M2]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3249,7 +3250,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_DISPATCH' as satellite, 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 142. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Design finding]
+-- 142. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Design finding]  [M2]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- (satfeed_mt_aug_sat_aug_document_requirement_reminder) also hashes REMINDER_SEQUENCE,
@@ -3267,7 +3268,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_DISPATCH' as satellite, 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 143. MAXIMUS — SAT_AUG_FINTXN_TAX   [Design finding]
+-- 143. MAXIMUS — SAT_AUG_FINTXN_TAX   [Design finding]  [M3]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -3288,7 +3289,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_DOCUMENT_DISPATCH' as satellite, 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 144. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]
+-- 144. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3311,7 +3312,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_FIN_RECEIPT' as satellite, '3 RECORD_SOURC
 
 
 ----------------------------------------------------------------------------------------
--- 145. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
+-- 145. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3331,7 +3332,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 146. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
+-- 146. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3351,7 +3352,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite, 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 147. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Design finding]
+-- 147. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Design finding]  [M3]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
 -- (satfeed_mt_aug_sat_aug_org_unit_contact) also hashes CONTACT_POINT_TYPE, which this
@@ -3369,7 +3370,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_LNK_ROLE_PROVIDER' as satellite, 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 148. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]
+-- 148. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3395,7 +3396,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite, '4 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 149. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]
+-- 149. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3417,7 +3418,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CLAIM_HISTORY' as satellite, '2 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 150. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]
+-- 150. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3439,7 +3440,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONSENT_MANDATE' as satellite, '2 RE
 
 
 ----------------------------------------------------------------------------------------
--- 151. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Design finding]
+-- 151. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Design finding]  [M3]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -3460,7 +3461,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONSENT_MANDATE' as satellite, '2 RE
 
 
 ----------------------------------------------------------------------------------------
--- 152. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Design finding]
+-- 152. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Design finding]  [M3]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- (satfeed_mt_aug_sat_aug_party_correspondence) also hashes DISPATCH_REFERENCE, which
@@ -3478,7 +3479,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_CONSENT_MANDATE' as satellite, '2 RE
 
 
 ----------------------------------------------------------------------------------------
--- 153. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
+-- 153. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3500,7 +3501,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, '2 RECORD_
 
 
 ----------------------------------------------------------------------------------------
--- 154. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]
+-- 154. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3524,7 +3525,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_FINANCIAL_PROFILE' as satellite, '3 
 
 
 ----------------------------------------------------------------------------------------
--- 155. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]
+-- 155. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3544,7 +3545,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_GROUP_SCHEME' as satellite, 'MAXIMUS
 
 
 ----------------------------------------------------------------------------------------
--- 156. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]
+-- 156. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3566,7 +3567,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HEALTH_PROFILE' as satellite, '2 REC
 
 
 ----------------------------------------------------------------------------------------
--- 157. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]
+-- 157. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3586,7 +3587,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HIERARCHY' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 158. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Design finding]
+-- 158. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Design finding]  [M3]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
@@ -3616,7 +3617,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_HIERARCHY' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 159. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]
+-- 159. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3643,7 +3644,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_IDENTITY' as satellite, '5 RECORD_SO
 
 
 ----------------------------------------------------------------------------------------
--- 160. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
+-- 160. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3667,7 +3668,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellit
 
 
 ----------------------------------------------------------------------------------------
--- 161. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Design finding]
+-- 161. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Design finding]  [M3]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- (satfeed_mt_aug_sat_aug_party_loyalty_classification) also hashes
@@ -3686,7 +3687,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellit
 
 
 ----------------------------------------------------------------------------------------
--- 162. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]
+-- 162. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3708,7 +3709,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_ONBOARDING_JOURNEY' as satellite, '2
 
 
 ----------------------------------------------------------------------------------------
--- 163. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]
+-- 163. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3730,7 +3731,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PAYOUT_PROFILE' as satellite, '2 REC
 
 
 ----------------------------------------------------------------------------------------
--- 164. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]
+-- 164. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3752,7 +3753,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_PREFERENCE_PROFILE' as satellite, '2
 
 
 ----------------------------------------------------------------------------------------
--- 165. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]
+-- 165. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3777,7 +3778,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RELATIONSHIP_PROFILE' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 166. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]
+-- 166. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3797,7 +3798,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PARTY_RISK_ANALYTICS' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 167. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]
+-- 167. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3817,7 +3818,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_CLAIM_EXPERIENCE' as satellite, 'MA
 
 
 ----------------------------------------------------------------------------------------
--- 168. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Design finding]
+-- 168. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Design finding]  [M3]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
@@ -3842,7 +3843,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_CLAIM_EXPERIENCE' as satellite, 'MA
 
 
 ----------------------------------------------------------------------------------------
--- 169. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]
+-- 169. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3862,7 +3863,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DELIVERY' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 170. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Design finding]
+-- 170. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Design finding]  [M3]
 -- HASHDIFF of MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS
 -- (satfeed_mt_aug_sat_aug_policy_document_dispatch) also hashes DISPATCH_SERIAL_NUMBER,
 -- which this satellite does not store (a shared stage feeding several satellites). A
@@ -3878,7 +3879,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_DELIVERY' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 171. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]
+-- 171. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3902,7 +3903,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_HEADER' as satellite, '4 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 172. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]
+-- 172. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3922,7 +3923,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_HEALTH_DECLARATION' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 173. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]
+-- 173. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3942,7 +3943,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_INSURED_DECLARATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 174. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Design finding]
+-- 174. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Design finding]  [M3]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -3963,7 +3964,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_INSURED_DECLARATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 175. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]
+-- 175. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -3983,7 +3984,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_NOMINEE_DECLARATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 176. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Design finding]
+-- 176. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Design finding]  [M3]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -4005,7 +4006,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_NOMINEE_DECLARATION' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 177. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]
+-- 177. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4027,7 +4028,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PREMIUM_SUMMARY' as satellite, '2 R
 
 
 ----------------------------------------------------------------------------------------
--- 178. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]
+-- 178. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4047,7 +4048,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_PROPERTY_LINE' as satellite, 'MAXIM
 
 
 ----------------------------------------------------------------------------------------
--- 179. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]
+-- 179. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4068,7 +4069,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_RENEWAL' as satellite, '2 RECORD_SO
 
 
 ----------------------------------------------------------------------------------------
--- 180. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]
+-- 180. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4088,7 +4089,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TERMS' as satellite, 'MAXIMUS_NONHL
 
 
 ----------------------------------------------------------------------------------------
--- 181. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]
+-- 181. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4108,7 +4109,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TRAVEL_TERMS' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 182. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]
+-- 182. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4128,7 +4129,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE' as satellite,
 
 
 ----------------------------------------------------------------------------------------
--- 183. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]
+-- 183. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4148,7 +4149,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_UW_QUERY' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 184. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]
+-- 184. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4167,7 +4168,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_POLICY_WORK_ITEM' as satellite, 'MAXIMUS_N
 
 
 ----------------------------------------------------------------------------------------
--- 185. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]
+-- 185. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4189,7 +4190,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PRODUCT_RATING_STRUCTURE' as satellite, '2
 
 
 ----------------------------------------------------------------------------------------
--- 186. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
+-- 186. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4211,7 +4212,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, '2 RECORD_SOU
 
 
 ----------------------------------------------------------------------------------------
--- 187. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]
+-- 187. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4231,7 +4232,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_CLAIM_EXPERIENCE' as satellite, 'MAX
 
 
 ----------------------------------------------------------------------------------------
--- 188. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]
+-- 188. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4254,7 +4255,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_LINE' as satellite, '3 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 189. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Design finding]
+-- 189. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Design finding]  [M3]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- (satfeed_mt_aug_sat_aug_quote_coverage_schedule) also hashes COVERAGE_REFERENCE, which
@@ -4272,7 +4273,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_LINE' as satellite, '3 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 190. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Design finding]
+-- 190. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Design finding]  [M3]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
 -- (satfeed_mt_aug_sat_aug_quote_cover_detail) also hashes COVERAGE_REFERENCE,
@@ -4291,7 +4292,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_COVERAGE_LINE' as satellite, '3 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 191. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]
+-- 191. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4322,7 +4323,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_HEADER' as satellite, '9 RECORD_SOUR
 
 
 ----------------------------------------------------------------------------------------
--- 192. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]
+-- 192. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4342,7 +4343,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_HEALTH_DECLARATION' as satellite, 'M
 
 
 ----------------------------------------------------------------------------------------
--- 193. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]
+-- 193. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4362,7 +4363,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_INSURED_DECLARATION' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 194. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]
+-- 194. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4382,7 +4383,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_NOMINEE_DECLARATION' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 195. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Design finding]
+-- 195. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Design finding]  [M3]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- (satfeed_mt_aug_sat_aug_quote_premium_head) also hashes PREMIUM_HEAD_CODE, which this
@@ -4400,7 +4401,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_NOMINEE_DECLARATION' as satellite, '
 
 
 ----------------------------------------------------------------------------------------
--- 196. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]
+-- 196. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4420,7 +4421,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_PROPERTY_LINE' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 197. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]
+-- 197. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4443,7 +4444,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RATING' as satellite, '3 RECORD_SOUR
 
 
 ----------------------------------------------------------------------------------------
--- 198. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]
+-- 198. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4462,7 +4463,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RISK_LINE' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 199. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Design finding]
+-- 199. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Design finding]  [M3]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- (satfeed_mt_aug_sat_aug_quote_sum_insured_breakup) also hashes SUM_INSURED_HEAD, which
@@ -4480,7 +4481,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_RISK_LINE' as satellite, 'MAXIMUS_NO
 
 
 ----------------------------------------------------------------------------------------
--- 200. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]
+-- 200. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4500,7 +4501,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TERMS' as satellite, '2 RECORD_SOURC
 
 
 ----------------------------------------------------------------------------------------
--- 201. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]
+-- 201. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4520,7 +4521,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TRAVEL_TRIP' as satellite, 'MAXIMUS_
 
 
 ----------------------------------------------------------------------------------------
--- 202. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]
+-- 202. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4540,7 +4541,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 203. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]
+-- 203. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4560,7 +4561,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_QUOTE_UW_QUERY' as satellite, 'MAXIMUS_NON
 
 
 ----------------------------------------------------------------------------------------
--- 204. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]
+-- 204. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4583,7 +4584,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_CORE' as satellite, '3 RECORD_
 
 
 ----------------------------------------------------------------------------------------
--- 205. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]
+-- 205. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4602,7 +4603,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_OBJECT_PREMIUM' as satellite, 'MAXIMU
 
 
 ----------------------------------------------------------------------------------------
--- 206. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
+-- 206. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4624,7 +4625,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite, '2 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 207. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
+-- 207. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4656,7 +4657,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, '7 RECOR
 
 
 ----------------------------------------------------------------------------------------
--- 208. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Design finding]
+-- 208. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Design finding]  [M3]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
@@ -4677,7 +4678,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, '7 RECOR
 
 
 ----------------------------------------------------------------------------------------
--- 209. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Design finding]
+-- 209. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Design finding]  [M3]
 -- HASHDIFF of
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- (satfeed_mt_aug_sat_aug_risk_travel_rating_input) also hashes RATING_INPUT_CODE, which
@@ -4695,7 +4696,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, '7 RECOR
 
 
 ----------------------------------------------------------------------------------------
--- 210. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]
+-- 210. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4717,7 +4718,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_SPONSOR' as satellite, '2 RECO
 
 
 ----------------------------------------------------------------------------------------
--- 211. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]
+-- 211. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]  [M3]
 -- HASHDIFF column HASHDIFF. Recomputed exactly as automate_dv 0.11.5 / sat_multi_source
 -- computes it, from the payload stored on the same row. A match proves every payload
 -- change changes the HASHDIFF, which is what drives a new row. augmented satellite,
@@ -4739,7 +4740,7 @@ select 'MAXIMUS' as project, 'SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY' as satellite, 
 
 
 ----------------------------------------------------------------------------------------
--- 212. MAXIMUS — CDC result (all satellites)   [Implemented]
+-- 212. MAXIMUS — CDC result (all satellites)   [Implemented]  [M3]
 -- Joins the BEFORE and AFTER captures of the same run id. raw_changed compares the
 -- normalised RAW payload hash (same UPPER/TRIM/NULL rules as the HASHDIFF, so a
 -- case-only RAW edit is not a change); new_rows = satellite rows added for the key

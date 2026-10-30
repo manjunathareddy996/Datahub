@@ -47,34 +47,34 @@ notes like `fail(due to source issue)`) counts as **fail**; `na` as **na**;
 section failed; **PASS** if some passed and none failed; **PENDING** if
 nothing recorded.
 
-| File | Sections | pass | fail | na | untested | Status |
-|------|---------:|-----:|-----:|---:|---------:|:------:|
-| DM-K1 | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-K2 | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-K3 | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-K4 | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-K5 | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-A1_OPUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-A1_MAXIMUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-A2_OPUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-A2_MAXIMUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-H1_OPUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-H1_MAXIMUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-H2_OPUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-H2_MAXIMUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-H3_OPUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-H3_MAXIMUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-H4_OPUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-H4_MAXIMUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-R1_OPUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-R1_MAXIMUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-R2_OPUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-R2_MAXIMUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-T1_OPUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-T1_MAXIMUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-T2_OPUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-T2_MAXIMUS | tbd | 0 | 0 | 0 | tbd | pending |
-| DM-AG1–AG3 | — | — | — | — | — | NA |
+| File | Sections | M1 | M2 | M3 | pass | fail | na | untested | Status |
+|------|---------:|---:|---:|---:|-----:|-----:|---:|---------:|:------:|
+| DM-K1 | 29 | 10 | 10 | 9 | 0 | 0 | 0 | 29 | pending |
+| DM-K2 | 29 | 10 | 10 | 9 | 0 | 0 | 0 | 29 | pending |
+| DM-K3 | 30 | 10 | 10 | 10 | 0 | 0 | 0 | 30 | pending |
+| DM-K4 | 19 | 7 | 6 | 6 | 0 | 0 | 0 | 19 | pending |
+| DM-K5 | 29 | 10 | 10 | 9 | 0 | 0 | 0 | 29 | pending |
+| DM-A1_OPUS | 46 | 16 | 15 | 15 | 0 | 0 | 0 | 46 | pending |
+| DM-A1_MAXIMUS | 210 | 70 | 70 | 70 | 0 | 0 | 0 | 210 | pending |
+| DM-A2_OPUS | 45 | 15 | 15 | 15 | 0 | 0 | 0 | 45 | pending |
+| DM-A2_MAXIMUS | 209 | 70 | 70 | 69 | 0 | 0 | 0 | 209 | pending |
+| DM-H1_OPUS | 48 | 16 | 16 | 16 | 0 | 0 | 0 | 48 | pending |
+| DM-H1_MAXIMUS | 212 | 71 | 71 | 70 | 0 | 0 | 0 | 212 | pending |
+| DM-H2_OPUS | 46 | 16 | 15 | 15 | 0 | 0 | 0 | 46 | pending |
+| DM-H2_MAXIMUS | 210 | 70 | 70 | 70 | 0 | 0 | 0 | 210 | pending |
+| DM-H3_OPUS | 47 | 16 | 16 | 15 | 0 | 0 | 0 | 47 | pending |
+| DM-H3_MAXIMUS | 211 | 71 | 70 | 70 | 0 | 0 | 0 | 211 | pending |
+| DM-H4_OPUS | 45 | 15 | 15 | 15 | 0 | 0 | 0 | 45 | pending |
+| DM-H4_MAXIMUS | 209 | 70 | 70 | 69 | 0 | 0 | 0 | 209 | pending |
+| DM-R1_OPUS | 46 | 16 | 15 | 15 | 0 | 0 | 0 | 46 | pending |
+| DM-R1_MAXIMUS | 210 | 70 | 70 | 70 | 0 | 0 | 0 | 210 | pending |
+| DM-R2_OPUS | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 1 | pending |
+| DM-R2_MAXIMUS | 12 | 4 | 4 | 4 | 0 | 0 | 0 | 12 | pending |
+| DM-T1_OPUS | 60 | 20 | 20 | 20 | 0 | 0 | 0 | 60 | pending |
+| DM-T1_MAXIMUS | 229 | 77 | 76 | 76 | 0 | 0 | 0 | 229 | pending |
+| DM-T2_OPUS | 60 | 20 | 20 | 20 | 0 | 0 | 0 | 60 | pending |
+| DM-T2_MAXIMUS | 229 | 77 | 76 | 76 | 0 | 0 | 0 | 229 | pending |
+| DM-AG1–AG3 | — | — | — | — | — | — | — | — | NA |
 
 ---
 
@@ -90,5 +90,43 @@ Notes
   stg2 columns that resolve via a `resolved_mt__` walk column or a
   plain-join (non-macro) stitch are reported as unresolved rather than
   inlined into the sampled queries.
-- No DM-H member plan yet for travel; the DM-H files cover every satellite
-  in the project. Trim once a plan is agreed.
+- Sections in every `DM-*/*.sql` and `DM-*/*.docx` are split into contiguous
+  thirds M1 / M2 / M3 by `BGIL_DBT/validation/tools/tag_travel_members.py`.
+  See the member split table below.
+
+---
+
+## Member split (M1 / M2 / M3)
+
+Each file's sections are allocated to three team members in contiguous
+thirds (M1 first, M2 next, M3 last). Run
+`python3 BGIL_DBT/validation/tools/tag_travel_members.py` to (re)apply
+tags idempotently.
+
+| File | Sections | M1 | M2 | M3 |
+|------|---------:|---:|---:|---:|
+| DM-A/DM-A1_MAXIMUS | 210 | 70 | 70 | 70 |
+| DM-A/DM-A1_OPUS | 46 | 16 | 15 | 15 |
+| DM-A/DM-A2_MAXIMUS | 209 | 70 | 70 | 69 |
+| DM-A/DM-A2_OPUS | 45 | 15 | 15 | 15 |
+| DM-H/DM-H1_MAXIMUS | 212 | 71 | 71 | 70 |
+| DM-H/DM-H1_OPUS | 48 | 16 | 16 | 16 |
+| DM-H/DM-H2_MAXIMUS | 210 | 70 | 70 | 70 |
+| DM-H/DM-H2_OPUS | 46 | 16 | 15 | 15 |
+| DM-H/DM-H3_MAXIMUS | 211 | 71 | 70 | 70 |
+| DM-H/DM-H3_OPUS | 47 | 16 | 16 | 15 |
+| DM-H/DM-H4_MAXIMUS | 209 | 70 | 70 | 69 |
+| DM-H/DM-H4_OPUS | 45 | 15 | 15 | 15 |
+| DM-K/DM-K1 | 29 | 10 | 10 | 9 |
+| DM-K/DM-K2 | 29 | 10 | 10 | 9 |
+| DM-K/DM-K3 | 30 | 10 | 10 | 10 |
+| DM-K/DM-K4 | 19 | 7 | 6 | 6 |
+| DM-K/DM-K5 | 29 | 10 | 10 | 9 |
+| DM-R/DM-R1_MAXIMUS | 210 | 70 | 70 | 70 |
+| DM-R/DM-R1_OPUS | 46 | 16 | 15 | 15 |
+| DM-R/DM-R2_MAXIMUS | 12 | 4 | 4 | 4 |
+| DM-R/DM-R2_OPUS | 1 | 1 | 0 | 0 |
+| DM-T/DM-T1_MAXIMUS | 229 | 77 | 76 | 76 |
+| DM-T/DM-T1_OPUS | 60 | 20 | 20 | 20 |
+| DM-T/DM-T2_MAXIMUS | 229 | 77 | 76 | 76 |
+| DM-T/DM-T2_OPUS | 60 | 20 | 20 | 20 |

@@ -107,6 +107,62 @@ def member_run(label):
         f'<w:r><w:t xml:space="preserve">  [{label}]</w:t></w:r>')
 
 
+RESULTS_TBL = re.compile(
+    r"Results summary</w:t></w:r></w:p>\s*(<w:tbl\b.*?</w:tbl>)", re.S)
+TR = re.compile(r"<w:tr\b.*?</w:tr>", re.S)
+TC_IN_TR = re.compile(r"<w:tc\b.*?</w:tc>", re.S)
+# Last <w:t ...>...</w:t> inside a cell. We mutate the SATELLITE cell (col 3).
+LAST_WT_IN_CELL = re.compile(
+    r"(.*)(<w:t[^>]*>)([^<]*)(</w:t>)(?!.*<w:t)", re.S)
+TAIL_MEMBER_TXT = re.compile(r"\s*\[M[123]\]\s*$")
+
+
+def tag_results_table(doc_xml, buckets):
+    """Append '  [Mx]' to the Satellite cell of each data row in the first
+    Results summary table found. `buckets` is the member assignment used for
+    headings; row N inherits buckets[N-1]. Idempotent: existing trailing
+    '[Mx]' on the satellite text is stripped first."""
+    m = RESULTS_TBL.search(doc_xml)
+    if not m:
+        return doc_xml, 0
+    tbl_start, tbl_end = m.start(1), m.end(1)
+    tbl = m.group(1)
+    rows = list(TR.finditer(tbl))
+    if len(rows) <= 1:
+        return doc_xml, 0
+    data_rows = rows[1:]
+    new_tbl_parts = []
+    cur = 0
+    tagged = 0
+    for i, tr in enumerate(data_rows):
+        new_tbl_parts.append(tbl[cur:tr.start()])
+        row_xml = tr.group(0)
+        cells = list(TC_IN_TR.finditer(row_xml))
+        if len(cells) < 3 or i >= len(buckets):
+            new_tbl_parts.append(row_xml)
+            cur = tr.end()
+            continue
+        sat_cell = cells[2]
+        cell_xml = sat_cell.group(0)
+        mem = buckets[i]
+        def _append(mm):
+            prefix, open_tag, text, close_tag = mm.group(1), mm.group(2), mm.group(3), mm.group(4)
+            stripped = TAIL_MEMBER_TXT.sub("", text)
+            return f"{prefix}{open_tag}{stripped}  [{mem}]{close_tag}"
+        new_cell = LAST_WT_IN_CELL.sub(_append, cell_xml, count=1)
+        if new_cell == cell_xml:
+            new_tbl_parts.append(row_xml)
+            cur = tr.end()
+            continue
+        new_row = row_xml[:sat_cell.start()] + new_cell + row_xml[sat_cell.end():]
+        new_tbl_parts.append(new_row)
+        cur = tr.end()
+        tagged += 1
+    new_tbl_parts.append(tbl[cur:])
+    new_tbl = "".join(new_tbl_parts)
+    return doc_xml[:tbl_start] + new_tbl + doc_xml[tbl_end:], tagged
+
+
 def tag_docx_xml(doc_xml):
     """Return (new_xml, n_sections, counts). Numbering is derived from the
     heading text itself (`<N>. ...`) so we don't miscount H2 paragraphs that
@@ -131,7 +187,10 @@ def tag_docx_xml(doc_xml):
         counts[mem] += 1
         cur = m.end()
     out.append(doc_xml[cur:])
-    return "".join(out), len(heads), counts
+    new_xml = "".join(out)
+    # Second pass: tag the Results summary table rows with the SAME buckets.
+    new_xml, _ = tag_results_table(new_xml, buckets)
+    return new_xml, len(heads), counts
 
 
 def tag_docx(path, write=True):
