@@ -11,6 +11,7 @@
         'GROSS' as PREMIUM_HEAD_CODE,
         cast(null as varchar) as BASE_AMOUNT,
         gross_premium as NET_HEAD_PREMIUM,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where gross_premium is not null
@@ -20,6 +21,7 @@ union all
         'ONE_WAY_FIXED' as PREMIUM_HEAD_CODE,
         fixed_one_way_premium as BASE_AMOUNT,
         cast(null as varchar) as NET_HEAD_PREMIUM,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where fixed_one_way_premium is not null
@@ -29,6 +31,7 @@ union all
         'ONE_WAY_TRIP' as PREMIUM_HEAD_CODE,
         cast(null as varchar) as BASE_AMOUNT,
         one_way_premium as NET_HEAD_PREMIUM,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where one_way_premium is not null
@@ -38,6 +41,7 @@ union all
         'ROUND_TRIP' as PREMIUM_HEAD_CODE,
         cast(null as varchar) as BASE_AMOUNT,
         round_trip_premium as NET_HEAD_PREMIUM,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where round_trip_premium is not null
@@ -47,6 +51,7 @@ union all
         'ROUND_TRIP_FIXED' as PREMIUM_HEAD_CODE,
         fixed_round_trip_premium as BASE_AMOUNT,
         cast(null as varchar) as NET_HEAD_PREMIUM,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where fixed_round_trip_premium is not null

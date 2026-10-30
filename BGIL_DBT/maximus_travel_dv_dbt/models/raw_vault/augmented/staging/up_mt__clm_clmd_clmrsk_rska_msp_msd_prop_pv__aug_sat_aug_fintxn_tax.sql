@@ -27,6 +27,7 @@
         cast(null as varchar) as UGST_RATE,
         cast(null as varchar) as UTGST_AMOUNT,
         cast(null as varchar) as VAT_REGISTRATION_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv') }}
     where tds_certificate is not null or tds_dd_payable_at is not null or tds_dd_state is not null or tds_maximus_reference_no is not null or tds_mode_of_payment is not null or tds_nondeduction_flag is not null or tds_nondeduction_reason is not null or tds_portal_payment_reference_number is not null or tds_separate_cheque_flag is not null or tds_separate_payment_flag is not null or tds_waived_flag is not null or tds_waived_reason is not null
@@ -52,6 +53,7 @@ union all
         ugst_percentage as UGST_RATE,
         cast(null as varchar) as UTGST_AMOUNT,
         cast(null as varchar) as VAT_REGISTRATION_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv') }}
     where ugst is not null or ugst_percentage is not null

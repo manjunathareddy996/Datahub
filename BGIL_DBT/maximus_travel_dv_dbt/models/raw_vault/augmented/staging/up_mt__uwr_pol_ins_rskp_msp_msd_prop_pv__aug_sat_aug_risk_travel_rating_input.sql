@@ -12,6 +12,7 @@
         cast(null as varchar) as PREMIUM_COMPONENT_AMOUNT,
         cast(null as varchar) as PREMIUM_RATE_VALUE,
         ace_premium_type as PREMIUM_TYPE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where ace_premium_type is not null
@@ -22,6 +23,7 @@ union all
         fixed_one_way_premium as PREMIUM_COMPONENT_AMOUNT,
         cast(null as varchar) as PREMIUM_RATE_VALUE,
         cast(null as varchar) as PREMIUM_TYPE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where fixed_one_way_premium is not null
@@ -32,6 +34,7 @@ union all
         fixed_round_trip_premium as PREMIUM_COMPONENT_AMOUNT,
         cast(null as varchar) as PREMIUM_RATE_VALUE,
         cast(null as varchar) as PREMIUM_TYPE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where fixed_round_trip_premium is not null
@@ -42,6 +45,7 @@ union all
         loading_ace as PREMIUM_COMPONENT_AMOUNT,
         cast(null as varchar) as PREMIUM_RATE_VALUE,
         cast(null as varchar) as PREMIUM_TYPE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where loading_ace is not null
@@ -52,6 +56,7 @@ union all
         loading_ace_for_main_sub_cover as PREMIUM_COMPONENT_AMOUNT,
         cast(null as varchar) as PREMIUM_RATE_VALUE,
         cast(null as varchar) as PREMIUM_TYPE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where loading_ace_for_main_sub_cover is not null
@@ -62,6 +67,7 @@ union all
         cast(null as varchar) as PREMIUM_COMPONENT_AMOUNT,
         office_premium_per_mille_pa as PREMIUM_RATE_VALUE,
         cast(null as varchar) as PREMIUM_TYPE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where office_premium_per_mille_pa is not null
@@ -72,6 +78,7 @@ union all
         cast(null as varchar) as PREMIUM_COMPONENT_AMOUNT,
         office_premium_per_mille_per_trip as PREMIUM_RATE_VALUE,
         cast(null as varchar) as PREMIUM_TYPE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where office_premium_per_mille_per_trip is not null
@@ -82,6 +89,7 @@ union all
         one_way_premium as PREMIUM_COMPONENT_AMOUNT,
         cast(null as varchar) as PREMIUM_RATE_VALUE,
         cast(null as varchar) as PREMIUM_TYPE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where one_way_premium is not null
@@ -92,6 +100,7 @@ union all
         cast(null as varchar) as PREMIUM_COMPONENT_AMOUNT,
         premium_rate as PREMIUM_RATE_VALUE,
         cast(null as varchar) as PREMIUM_TYPE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where premium_rate is not null
@@ -102,6 +111,7 @@ union all
         cast(null as varchar) as PREMIUM_COMPONENT_AMOUNT,
         rate_per_trip_per_mille as PREMIUM_RATE_VALUE,
         cast(null as varchar) as PREMIUM_TYPE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where rate_per_trip_per_mille is not null
@@ -112,6 +122,7 @@ union all
         cast(null as varchar) as PREMIUM_COMPONENT_AMOUNT,
         rate_per_trip_per_mille_for_main_sub_cover as PREMIUM_RATE_VALUE,
         cast(null as varchar) as PREMIUM_TYPE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where rate_per_trip_per_mille_for_main_sub_cover is not null
@@ -122,6 +133,7 @@ union all
         round_trip_premium as PREMIUM_COMPONENT_AMOUNT,
         cast(null as varchar) as PREMIUM_RATE_VALUE,
         cast(null as varchar) as PREMIUM_TYPE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where round_trip_premium is not null

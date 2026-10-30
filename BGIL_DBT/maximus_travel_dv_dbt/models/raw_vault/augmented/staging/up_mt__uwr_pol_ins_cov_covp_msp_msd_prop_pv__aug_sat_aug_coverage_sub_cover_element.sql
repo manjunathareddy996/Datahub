@@ -10,6 +10,7 @@
         nullif(trim(case when nullif(trim(w0_cover_code),'') is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'') as COVERAGE_BK,
         'AMBULANCE' as SUB_COVER_CODE,
         ambulance_sub_cover as SUB_COVER_APPLICABILITY,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_cov_covp_msp_msd_prop_pv') }}
     where ambulance_sub_cover is not null
@@ -18,6 +19,7 @@ union all
         nullif(trim(case when nullif(trim(w0_cover_code),'') is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'') as COVERAGE_BK,
         'TRAVEL_INCONVENIENCE' as SUB_COVER_CODE,
         inconvenience_sub_cover as SUB_COVER_APPLICABILITY,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_cov_covp_msp_msd_prop_pv') }}
     where inconvenience_sub_cover is not null
@@ -26,6 +28,7 @@ union all
         nullif(trim(case when nullif(trim(w0_cover_code),'') is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'') as COVERAGE_BK,
         'TRIP_CANCELLATION' as SUB_COVER_CODE,
         cancellation_sub_cover as SUB_COVER_APPLICABILITY,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_cov_covp_msp_msd_prop_pv') }}
     where cancellation_sub_cover is not null
@@ -34,6 +37,7 @@ union all
         nullif(trim(case when nullif(trim(w0_cover_code),'') is not null then 'COV:' || nullif(trim(w0_cover_code), '') end),'') as COVERAGE_BK,
         'TRIP_CANCELLATION_MAIN' as SUB_COVER_CODE,
         cancellation_main_sub_cover as SUB_COVER_APPLICABILITY,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_cov_covp_msp_msd_prop_pv') }}
     where cancellation_main_sub_cover is not null
