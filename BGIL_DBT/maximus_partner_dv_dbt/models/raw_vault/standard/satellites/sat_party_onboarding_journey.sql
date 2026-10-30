@@ -6,13 +6,13 @@
 -- payload Maximus populates, which is what removes any need to back-patch the other project.
 
 {%- set yaml_metadata -%}
-source_model: 'stg2_mp__pd_prop_sp_pv'
+source_model: 'satfeed_mp_sat__party_onboarding_journey'
 src_pk: 'PARTY_HKEY'
 src_payload:
   - 'ONBOARDINGSTARTDATE'
   - 'PREVIOUSEMPLOYERNAME'
   - 'PRIORWORKEXPERIENCEYEARS'
-src_hashdiff: 'HASHDIFF_PARTY_ONBOARDING_JOURNEY'
+src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 {%- endset -%}
