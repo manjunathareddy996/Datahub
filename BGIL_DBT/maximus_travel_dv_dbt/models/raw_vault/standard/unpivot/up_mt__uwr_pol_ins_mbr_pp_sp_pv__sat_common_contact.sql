@@ -28,6 +28,7 @@
         claim_mobile_number as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where claim_mobile_number is not null
@@ -45,6 +46,7 @@ union all
         kyc_mobile_number as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where kyc_mobile_number is not null

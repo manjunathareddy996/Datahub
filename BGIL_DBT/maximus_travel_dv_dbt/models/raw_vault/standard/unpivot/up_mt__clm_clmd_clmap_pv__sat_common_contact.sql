@@ -38,6 +38,7 @@
         cast(null as varchar) as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where email is not null
@@ -55,6 +56,7 @@ union all
         cast(null as varchar) as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where communication_email_id is not null
@@ -72,6 +74,7 @@ union all
         cast(null as varchar) as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where insured_email_id is not null
@@ -89,6 +92,7 @@ union all
         cast(null as varchar) as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where key_email_id is not null
@@ -106,6 +110,7 @@ union all
         cast(null as varchar) as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where telephone_number is not null
@@ -123,6 +128,7 @@ union all
         mobile_number as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where mobile_number is not null
@@ -140,6 +146,7 @@ union all
         cast(null as varchar) as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where alternate_mobile_number_belongs_to is not null or alternate_mobile_numberclaims is not null
@@ -157,6 +164,7 @@ union all
         communication_contact_number as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where communication_contact_number is not null
@@ -174,6 +182,7 @@ union all
         insured_mobile_number as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where insured_mobile_number is not null
@@ -191,6 +200,7 @@ union all
         insured_contact_number as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where insured_contact_number is not null
@@ -208,6 +218,7 @@ union all
         key_contact_number as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where key_contact_number is not null
@@ -225,6 +236,7 @@ union all
         registered_mobile_number as MOBILE_NUMBER,
         cast(null as varchar) as SOCIAL_MEDIA_HANDLE,
         cast(null as varchar) as STD_CODE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where registered_mobile_number is not null

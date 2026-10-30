@@ -33,6 +33,7 @@
         gst_percentage as TAX_RATE,
         cast(null as varchar) as TDS_AMOUNT,
         cast(null as varchar) as TDS_RATE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmpay_payp_pv') }}
     where cgst_amount is not null or gst_percentage is not null or igst_amount is not null or payment_state is not null or sgst_amount is not null or tax_invoice_date is not null or tax_invoice_number is not null
@@ -53,6 +54,7 @@ union all
         cast(null as varchar) as TAX_RATE,
         tds_amount as TDS_AMOUNT,
         cast(null as varchar) as TDS_RATE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmpay_payp_pv') }}
     where tds_amount is not null
@@ -73,6 +75,7 @@ union all
         cast(null as varchar) as TAX_RATE,
         tds_on_interest as TDS_AMOUNT,
         cast(null as varchar) as TDS_RATE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmpay_payp_pv') }}
     where tds_on_interest is not null
@@ -93,6 +96,7 @@ union all
         cast(null as varchar) as TAX_RATE,
         cast(null as varchar) as TDS_AMOUNT,
         cast(null as varchar) as TDS_RATE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmpay_payp_pv') }}
     where vat_applicable is not null

@@ -33,6 +33,7 @@
         adjustment_value as AMOUNT_APPLIED,
         cast(null as varchar) as ITEM_TYPE,
         cast(null as varchar) as PERCENTAGE_APPLIED,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
     where adjustment_value is not null
@@ -43,6 +44,7 @@ union all
         claims_experience_discount as AMOUNT_APPLIED,
         cast(null as varchar) as ITEM_TYPE,
         cast(null as varchar) as PERCENTAGE_APPLIED,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
     where claims_experience_discount is not null
@@ -53,6 +55,7 @@ union all
         claims_experience_loading as AMOUNT_APPLIED,
         cast(null as varchar) as ITEM_TYPE,
         cast(null as varchar) as PERCENTAGE_APPLIED,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
     where claims_experience_loading is not null
@@ -63,6 +66,7 @@ union all
         clu_discount as AMOUNT_APPLIED,
         cast(null as varchar) as ITEM_TYPE,
         cast(null as varchar) as PERCENTAGE_APPLIED,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
     where clu_discount is not null
@@ -73,6 +77,7 @@ union all
         cast(null as varchar) as AMOUNT_APPLIED,
         type_of_discount as ITEM_TYPE,
         cast(null as varchar) as PERCENTAGE_APPLIED,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
     where type_of_discount is not null
@@ -83,6 +88,7 @@ union all
         employee_discount as AMOUNT_APPLIED,
         cast(null as varchar) as ITEM_TYPE,
         cast(null as varchar) as PERCENTAGE_APPLIED,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
     where employee_discount is not null
@@ -93,6 +99,7 @@ union all
         group_discount as AMOUNT_APPLIED,
         cast(null as varchar) as ITEM_TYPE,
         cast(null as varchar) as PERCENTAGE_APPLIED,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
     where group_discount is not null
@@ -103,6 +110,7 @@ union all
         cast(null as varchar) as AMOUNT_APPLIED,
         type_of_loading as ITEM_TYPE,
         cast(null as varchar) as PERCENTAGE_APPLIED,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
     where type_of_loading is not null
@@ -113,6 +121,7 @@ union all
         nil_commission_discount as AMOUNT_APPLIED,
         cast(null as varchar) as ITEM_TYPE,
         cast(null as varchar) as PERCENTAGE_APPLIED,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
     where nil_commission_discount is not null
@@ -123,6 +132,7 @@ union all
         online_discount as AMOUNT_APPLIED,
         cast(null as varchar) as ITEM_TYPE,
         cast(null as varchar) as PERCENTAGE_APPLIED,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
     where online_discount is not null
@@ -133,6 +143,7 @@ union all
         other_discount as AMOUNT_APPLIED,
         cast(null as varchar) as ITEM_TYPE,
         cast(null as varchar) as PERCENTAGE_APPLIED,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
     where other_discount is not null
@@ -143,6 +154,7 @@ union all
         premium_adjustment as AMOUNT_APPLIED,
         cast(null as varchar) as ITEM_TYPE,
         cast(null as varchar) as PERCENTAGE_APPLIED,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
     where premium_adjustment is not null
@@ -153,6 +165,7 @@ union all
         student_discount as AMOUNT_APPLIED,
         cast(null as varchar) as ITEM_TYPE,
         cast(null as varchar) as PERCENTAGE_APPLIED,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
     where student_discount is not null
@@ -163,6 +176,7 @@ union all
         travelling_companion_discount as AMOUNT_APPLIED,
         cast(null as varchar) as ITEM_TYPE,
         cast(null as varchar) as PERCENTAGE_APPLIED,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_polp_sp_pv') }}
     where travelling_companion_discount is not null

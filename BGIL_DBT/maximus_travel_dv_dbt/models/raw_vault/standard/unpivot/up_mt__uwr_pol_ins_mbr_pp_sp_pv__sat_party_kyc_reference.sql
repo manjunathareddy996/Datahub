@@ -19,6 +19,7 @@
         nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'PROOF_OF_ADDRESS' as KYC_REFERENCE_TYPE,
         poa_status as VERIFICATION_STATUS,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where poa_status is not null
@@ -27,6 +28,7 @@ union all
         nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'') as PARTY_BK__INSURED_MEMBER,
         'PROOF_OF_IDENTITY' as KYC_REFERENCE_TYPE,
         poi_status as VERIFICATION_STATUS,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where poi_status is not null

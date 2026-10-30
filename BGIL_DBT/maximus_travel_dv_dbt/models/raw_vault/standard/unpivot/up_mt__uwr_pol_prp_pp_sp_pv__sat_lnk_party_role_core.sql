@@ -20,6 +20,7 @@
         'INTERMEDIARY' as ROLE_CODE,
         '1' as ROLE_SEQUENCE,
         intermediary_type as ROLE_TYPE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
     where intermediary_type is not null
@@ -29,6 +30,7 @@ union all
         coalesce(nullif(trim(party_function), ''),'') as ROLE_CODE,
         '1' as ROLE_SEQUENCE,
         cast(null as varchar) as ROLE_TYPE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_prp_pp_sp_pv') }}
     where 1 = 1

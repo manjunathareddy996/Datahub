@@ -59,6 +59,7 @@ def branch_sql(branch, sat, view, spec):
             contributing.extend(srcs)
         else:
             lines.append("        cast(null as varchar) as %s," % col)
+    lines.append("        rec_refresh_at,")
     lines.append("        '%s' as record_source" % view)
     guard = " or ".join("%s is not null" % c for c in sorted(set(contributing))) or "1 = 1"
     return ("    select\n" + "\n".join(lines)

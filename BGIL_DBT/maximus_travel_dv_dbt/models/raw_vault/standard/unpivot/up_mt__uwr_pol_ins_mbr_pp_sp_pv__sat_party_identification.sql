@@ -62,6 +62,7 @@
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where id_number is not null or identification_proof_effective_date is not null
@@ -94,6 +95,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where aadhaar_number is not null or poa_aadhar_card_status is not null or uid is not null
@@ -126,6 +128,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where aadhaar_enrollment_no is not null
@@ -158,6 +161,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where vid is not null
@@ -190,6 +194,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where abha_id is not null
@@ -222,6 +227,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where dob_proof is not null
@@ -254,6 +260,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where cin_number is not null
@@ -286,6 +293,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where ckyc_number is not null or claim_ckyc_number is not null
@@ -318,6 +326,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where driving_license_expiry_date is not null or driving_license_issue_date is not null or driving_license_number is not null or driving_license_place_of_issue is not null or poa_driving_license_status is not null
@@ -350,6 +359,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where e_insurance_demat_account_verified is not null or eia_number is not null or insurance_repository_code is not null
@@ -382,6 +392,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where poi_form_60_status is not null
@@ -414,6 +425,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where expiry_date is not null
@@ -446,6 +458,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where gstin_issuance_dt is not null or gstinuin is not null or gstn_number is not null or gstn_regn_status is not null or gstn_status is not null or gstn_taxpayer_type is not null
@@ -478,6 +491,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where nrega_job_card is not null or poa_nrega_job_card_status is not null
@@ -510,6 +524,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where pan_number is not null or poi_pan_card_status is not null
@@ -542,6 +557,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where poa_passport_status is not null
@@ -574,6 +590,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where poa_document_status is not null or proof_of_address_submitted_for_current_permanent_overseas_address is not null
@@ -606,6 +623,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where poi_document_status is not null
@@ -638,6 +656,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where sez_registration_date is not null or sez_registration_no is not null
@@ -670,6 +689,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         tan_number as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where tan_number is not null
@@ -702,6 +722,7 @@ union all
         cast(null as varchar) as PASSPORT_NUMBER,
         cast(null as varchar) as TAN_NUMBER,
         voter_id as VOTER_ID_NUMBER,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_mbr_pp_sp_pv') }}
     where voter_id is not null

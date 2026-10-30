@@ -19,6 +19,7 @@
         nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),'') as POLICY_BK,
         'BANCA_POLICY' as CLASSIFICATION_TYPE,
         banca_policy as CLASSIFICATION_VALUE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_sp_pv') }}
     where banca_policy is not null
@@ -27,6 +28,7 @@ union all
         nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim(foreign_key),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim(foreign_key), '')) end),'') as POLICY_BK,
         'POLICY_PLAN' as CLASSIFICATION_TYPE,
         coalesce(policyplan, policy_plan) as CLASSIFICATION_VALUE,
+        rec_refresh_at,
         'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_sp_pv') }}
     where policy_plan is not null or policyplan is not null
