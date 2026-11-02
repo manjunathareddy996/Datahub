@@ -3422,12 +3422,12 @@ with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by h
 ),
 c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
-           to_varchar(IDENTIFICATION_TYPE_CODE) as cdk_1,
-           to_varchar(PASSPORT_NUMBER) as PASSPORT_NUMBER
+           to_varchar(IDENTIFICATIONTYPECODE) as cdk_1,
+           to_varchar(PASSPORTNUMBER) as PASSPORT_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
      where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
        and PARTY_HKEY in (select hkey from s1)
-    qualify rank() over (partition by PARTY_HKEY, IDENTIFICATION_TYPE_CODE order by LOAD_DATETIME desc) = 1
+    qualify rank() over (partition by PARTY_HKEY, IDENTIFICATIONTYPECODE order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
@@ -3465,15 +3465,15 @@ s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash k
 ),
 c2 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
-           to_varchar(IDENTIFICATION_TYPE_CODE) as cdk_1,
-           to_varchar(AADHAAR_NUMBER) as AADHAAR_NUMBER,
-           to_varchar(EIA_NUMBER) as EIA_NUMBER,
+           to_varchar(IDENTIFICATIONTYPECODE) as cdk_1,
+           to_varchar(AADHAARNUMBER) as AADHAAR_NUMBER,
+           to_varchar(EIANUMBER) as EIA_NUMBER,
            to_varchar(GSTIN) as GSTIN,
-           to_varchar(PASSPORT_NUMBER) as PASSPORT_NUMBER
+           to_varchar(PASSPORTNUMBER) as PASSPORT_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
      where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s2)
-    qualify rank() over (partition by PARTY_HKEY, IDENTIFICATION_TYPE_CODE order by LOAD_DATETIME desc) = 1
+    qualify rank() over (partition by PARTY_HKEY, IDENTIFICATIONTYPECODE order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
@@ -3586,12 +3586,12 @@ s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash k
 ),
 c3 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
-           to_varchar(IDENTIFICATION_TYPE_CODE) as cdk_1,
-           to_varchar(PASSPORT_NUMBER) as PASSPORT_NUMBER
+           to_varchar(IDENTIFICATIONTYPECODE) as cdk_1,
+           to_varchar(PASSPORTNUMBER) as PASSPORT_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
      where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s3)
-    qualify rank() over (partition by PARTY_HKEY, IDENTIFICATION_TYPE_CODE order by LOAD_DATETIME desc) = 1
+    qualify rank() over (partition by PARTY_HKEY, IDENTIFICATIONTYPECODE order by LOAD_DATETIME desc) = 1
 ),
 e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
@@ -3639,7 +3639,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BA_TRV_
            and (case_changed = 0 or any_value(r_case))
            and (number_format_changed + date_format_changed = 0 or any_value(r_conv)), 'PASS', 'FAIL') as status
   from r1
- group by column_name, raw_column, model_rule
+group by column_name, raw_column, model_rule
 union all
 select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
@@ -3659,7 +3659,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BJAZ_TR
            and (case_changed = 0 or any_value(r_case))
            and (number_format_changed + date_format_changed = 0 or any_value(r_conv)), 'PASS', 'FAIL') as status
   from r2
- group by column_name, raw_column, model_rule
+group by column_name, raw_column, model_rule
 union all
 select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
@@ -3679,7 +3679,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BJAZ_TR
            and (case_changed = 0 or any_value(r_case))
            and (number_format_changed + date_format_changed = 0 or any_value(r_conv)), 'PASS', 'FAIL') as status
   from r3
- group by column_name, raw_column, model_rule
+group by column_name, raw_column, model_rule
 order by record_source, column_name;
 
 
