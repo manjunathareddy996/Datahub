@@ -109,7 +109,7 @@
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
--- (+23 more). Excluded: hubfeed_mt_party <- stg2_mt__uwr_pol_ins_mbr_pa: key uses walk
+-- (+13 more). Excluded: hubfeed_mt_party <- stg2_mt__uwr_pol_ins_mbr_pa: key uses walk
 -- column(s) w0_party_code from parent view(s) -- not resolvable to a single RAW table in
 -- the first-cut, skipped.. Excluded: hubfeed_mt_party <- stg2_mt__uwr_pol_ins_mbr_pa:
 -- key uses walk column(s) w0_party_code from parent view(s) -- not resolvable to a
@@ -634,10 +634,10 @@ select 'MAXIMUS' as project, 'HUB_PARTY' as hub,
 -- (POLICY_HKEY__PREVIOUS_POLICY_PORTABILITY). Travel RECORD_SOURCE value(s) parsed from
 -- feeds: MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS (+14 more).
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION,
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS (+2 more).
 -- Excluded: hubfeed_mt_policy <- stg2_mt__clm_clmd_clmap_pv: key uses walk column(s)
 -- w1_policyno from parent view(s) -- not resolvable to a single RAW table in the
 -- first-cut, skipped.. Excluded: hubfeed_mt_policy <-
@@ -890,20 +890,17 @@ select 'MAXIMUS' as project, 'HUB_POLICY' as hub,
 -- (PRODUCT_HKEY). Travel RECORD_SOURCE value(s) parsed from feeds:
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS (+2 more). Excluded:
--- hubfeed_mt_product <- stg2_mt__uwr_pol_ins_rskp_sp_pv: key uses walk column(s)
--- w3_product_code from parent view(s) -- not resolvable to a single RAW table in the
--- first-cut, skipped.. Excluded: hubfeed_mt_product <- stg2_mt__uwr_pol_polp_sp_pv: key
--- uses walk column(s) w2_product_code from parent view(s) -- not resolvable to a single
--- RAW table in the first-cut, skipped.. Excluded: hubfeed_mt_product <-
--- stg2_mt__uwr_qpd_polp_rl_pv: key uses walk column(s) w1_product_code from parent
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS. Excluded: hubfeed_mt_product <-
+-- stg2_mt__uwr_pol_ins_rskp_sp_pv: key uses walk column(s) w3_product_code from parent
 -- view(s) -- not resolvable to a single RAW table in the first-cut, skipped.. Excluded:
--- hubfeed_mt_product <- stg2_mt__uwr_qpd_rskl_rskp_rl_pv: key uses walk column(s)
--- w3_product_code from parent view(s) -- not resolvable to a single RAW table in the
--- first-cut, skipped..
+-- hubfeed_mt_product <- stg2_mt__uwr_pol_polp_sp_pv: key uses walk column(s)
+-- w2_product_code from parent view(s) -- not resolvable to a single RAW table in the
+-- first-cut, skipped.. Excluded: hubfeed_mt_product <- stg2_mt__uwr_qpd_polp_rl_pv: key
+-- uses walk column(s) w1_product_code from parent view(s) -- not resolvable to a single
+-- RAW table in the first-cut, skipped.. Excluded: hubfeed_mt_product <-
+-- stg2_mt__uwr_qpd_rskl_rskp_rl_pv: key uses walk column(s) w3_product_code from parent
+-- view(s) -- not resolvable to a single RAW table in the first-cut, skipped..
 ----------------------------------------------------------------------------------------
 with src as (
     -- via hubfeed_mt_product <- stg2_mt__clm_clmd_clmap_pv
@@ -957,10 +954,9 @@ select 'MAXIMUS' as project, 'HUB_PRODUCT' as hub,
 -- (COVERAGE_HKEY). Travel RECORD_SOURCE value(s) parsed from feeds:
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER (+2 more).
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER,
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW.
 -- Excluded: hubfeed_mt_coverage <- stg2_mt__uwr_pol_ins_cov_covp_msp_msd_prop_pv: key
 -- uses walk column(s) w0_cover_code from parent view(s) -- not resolvable to a single
 -- RAW table in the first-cut, skipped.. Excluded: hubfeed_mt_coverage <-
@@ -1070,7 +1066,7 @@ select 'MAXIMUS' as project, 'HUB_COVERAGE' as hub,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS (+9 more). Excluded:
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS (+8 more). Excluded:
 -- hubfeed_mt_location <- stg2_mt__uwr_pol_off_oa_address_prop_pv: key uses walk
 -- column(s) w0_address1, w1_address2, w2_address3, w3_city, w4_state, w5_pincode from
 -- parent view(s) -- not resolvable to a single RAW table in the first-cut, skipped..
@@ -1252,14 +1248,14 @@ select 'MAXIMUS' as project, 'HUB_LOCATION' as hub,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (+3 more). Excluded: hubfeed_mt_org_unit <- stg2_mt__uwr_pol_off_oa: key uses walk
--- column(s) w0_office_code from parent view(s) -- not resolvable to a single RAW table
--- in the first-cut, skipped.. Excluded: hubfeed_mt_org_unit <-
--- stg2_mt__uwr_pol_off_oa_address_prop_pv: key uses walk column(s) w6_office_code from
--- parent view(s) -- not resolvable to a single RAW table in the first-cut, skipped..
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS (+1 more). Excluded:
+-- hubfeed_mt_org_unit <- stg2_mt__uwr_pol_off_oa: key uses walk column(s) w0_office_code
+-- from parent view(s) -- not resolvable to a single RAW table in the first-cut,
+-- skipped.. Excluded: hubfeed_mt_org_unit <- stg2_mt__uwr_pol_off_oa_address_prop_pv:
+-- key uses walk column(s) w6_office_code from parent view(s) -- not resolvable to a
+-- single RAW table in the first-cut, skipped..
 ----------------------------------------------------------------------------------------
 with src as (
     -- via hubfeed_mt_org_unit <- stg2_mt__clm_clmd_clmap_pv
@@ -1422,23 +1418,20 @@ select 'MAXIMUS' as project, 'HUB_DISTRIBUTION_CHANNEL' as hub,
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.INVOICE_NUMBER
 -- (FINANCIAL_TRANSACTION_HKEY__CLAIM_BILL_INVOICE / sat_fintxn_tax). Travel
 -- RECORD_SOURCE value(s) parsed from feeds:
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
--- (+1 more). Excluded: hubfeed_mt_financial_transaction <-
--- stg2_mt__clm_clmd_clmpay_payp_pv: key uses walk column(s) w1_claimpaymentid from
--- parent view(s) -- not resolvable to a single RAW table in the first-cut, skipped..
--- Excluded: hubfeed_mt_financial_transaction <- stg2_mt__uwr_pol_polp_sp_pv: key uses
--- walk column(s) w1_policy_number from parent view(s) -- not resolvable to a single RAW
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS. Excluded:
+-- hubfeed_mt_financial_transaction <- stg2_mt__clm_clmd_clmpay_payp_pv: key uses walk
+-- column(s) w1_claimpaymentid from parent view(s) -- not resolvable to a single RAW
 -- table in the first-cut, skipped.. Excluded: hubfeed_mt_financial_transaction <-
--- stg2_mt__uwr_qpd_polp_rl_pv: key uses walk column(s) w0_policy_quote_number from
--- parent view(s) -- not resolvable to a single RAW table in the first-cut, skipped..
--- Excluded: hubfeed_mt_financial_transaction <- stg2_mt__uwr_qpd_rskl: key uses walk
+-- stg2_mt__uwr_pol_polp_sp_pv: key uses walk column(s) w1_policy_number from parent
+-- view(s) -- not resolvable to a single RAW table in the first-cut, skipped.. Excluded:
+-- hubfeed_mt_financial_transaction <- stg2_mt__uwr_qpd_polp_rl_pv: key uses walk
 -- column(s) w0_policy_quote_number from parent view(s) -- not resolvable to a single RAW
 -- table in the first-cut, skipped.. Excluded: hubfeed_mt_financial_transaction <-
+-- stg2_mt__uwr_qpd_rskl: key uses walk column(s) w0_policy_quote_number from parent
+-- view(s) -- not resolvable to a single RAW table in the first-cut, skipped.. Excluded:
+-- hubfeed_mt_financial_transaction <-
 -- stg2_mt_up__clm_clmd_clmpay_payp_pv__sat_fintxn_tax <-
 -- up_mt__clm_clmd_clmpay_payp_pv__sat_fintxn_tax: arm uses walk column(s), skipped..
 -- Excluded: hubfeed_mt_financial_transaction <-
@@ -1545,28 +1538,24 @@ select 'MAXIMUS' as project, 'HUB_ASSESSMENT' as hub,
 -- (QUOTE_HKEY), NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS.POLICY_QUOTE_NUMBER
 -- (QUOTE_HKEY). Travel RECORD_SOURCE value(s) parsed from feeds:
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
--- (+7 more). Excluded: hubfeed_mt_quote <- stg2_mt__uwr_pol_ins_mbr_pp_sp_pv: key uses
--- walk column(s) w1_quotation_number from parent view(s) -- not resolvable to a single
--- RAW table in the first-cut, skipped.. Excluded: hubfeed_mt_quote <-
--- stg2_mt__uwr_qpd_polp: key uses walk column(s) w0_policy_quote_number from parent
--- view(s) -- not resolvable to a single RAW table in the first-cut, skipped.. Excluded:
--- hubfeed_mt_quote <- stg2_mt__uwr_qpd_polp_msp_imsd_inp_pv: key uses walk column(s)
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS. Excluded: hubfeed_mt_quote <-
+-- stg2_mt__uwr_pol_ins_mbr_pp_sp_pv: key uses walk column(s) w1_quotation_number from
+-- parent view(s) -- not resolvable to a single RAW table in the first-cut, skipped..
+-- Excluded: hubfeed_mt_quote <- stg2_mt__uwr_qpd_polp: key uses walk column(s)
 -- w0_policy_quote_number from parent view(s) -- not resolvable to a single RAW table in
--- the first-cut, skipped.. Excluded: hubfeed_mt_quote <- stg2_mt__uwr_qpd_polp_rl_pv:
+-- the first-cut, skipped.. Excluded: hubfeed_mt_quote <-
+-- stg2_mt__uwr_qpd_polp_msp_imsd_inp_pv: key uses walk column(s) w0_policy_quote_number
+-- from parent view(s) -- not resolvable to a single RAW table in the first-cut,
+-- skipped.. Excluded: hubfeed_mt_quote <- stg2_mt__uwr_qpd_polp_rl_pv: key uses walk
+-- column(s) w0_policy_quote_number from parent view(s) -- not resolvable to a single RAW
+-- table in the first-cut, skipped.. Excluded: hubfeed_mt_quote <- stg2_mt__uwr_qpd_rskl:
 -- key uses walk column(s) w0_policy_quote_number from parent view(s) -- not resolvable
 -- to a single RAW table in the first-cut, skipped.. Excluded: hubfeed_mt_quote <-
--- stg2_mt__uwr_qpd_rskl: key uses walk column(s) w0_policy_quote_number from parent
--- view(s) -- not resolvable to a single RAW table in the first-cut, skipped.. Excluded:
--- hubfeed_mt_quote <- stg2_mt__uwr_qpd_rskl_msp_imsd_inp_pv: key uses walk column(s)
--- w0_policy_quote_number from parent view(s) -- not resolvable to a single RAW table in
--- the first-cut, skipped.. Excluded: hubfeed_mt_quote <- stg2_mt__uwr_qpd_rskl_rskc: key
--- uses walk column(s) w0_policy_quote_number from parent view(s) -- not resolvable to a
--- single RAW table in the first-cut, skipped.. Excluded: hubfeed_mt_quote <-
+-- stg2_mt__uwr_qpd_rskl_msp_imsd_inp_pv: key uses walk column(s) w0_policy_quote_number
+-- from parent view(s) -- not resolvable to a single RAW table in the first-cut,
+-- skipped.. Excluded: hubfeed_mt_quote <- stg2_mt__uwr_qpd_rskl_rskc: key uses walk
+-- column(s) w0_policy_quote_number from parent view(s) -- not resolvable to a single RAW
+-- table in the first-cut, skipped.. Excluded: hubfeed_mt_quote <-
 -- stg2_mt__uwr_qpd_rskl_rskc_rskc_prop: key uses walk column(s) w0_policy_quote_number
 -- from parent view(s) -- not resolvable to a single RAW table in the first-cut,
 -- skipped.. Excluded: hubfeed_mt_quote <- stg2_mt__uwr_qpd_rskl_rskc_rskc_prop_rl_pv:
@@ -1692,22 +1681,17 @@ select 'MAXIMUS' as project, 'HUB_QUOTE' as hub,
 -- 1 RAW key branch(es):
 -- NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.[PNR+TRIP_NO]
 -- (RISK_OBJECT_HKEY). Travel RECORD_SOURCE value(s) parsed from feeds:
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
--- (+6 more). Excluded: hubfeed_mt_risk_object <- stg2_mt__clm_clmd_clmap_pv: key uses
--- walk column(s) w3_policyno from parent view(s) -- not resolvable to a single RAW table
--- in the first-cut, skipped.. Excluded: hubfeed_mt_risk_object <-
--- stg2_mt__clm_clmd_clmrsk: key uses walk column(s) w0_policyno from parent view(s) --
+-- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW.
+-- Excluded: hubfeed_mt_risk_object <- stg2_mt__clm_clmd_clmap_pv: key uses walk
+-- column(s) w3_policyno from parent view(s) -- not resolvable to a single RAW table in
+-- the first-cut, skipped.. Excluded: hubfeed_mt_risk_object <- stg2_mt__clm_clmd_clmrsk:
+-- key uses walk column(s) w0_policyno from parent view(s) -- not resolvable to a single
+-- RAW table in the first-cut, skipped.. Excluded: hubfeed_mt_risk_object <-
+-- stg2_mt__uwr_pol_ins: key uses walk column(s) w0_policy_number from parent view(s) --
 -- not resolvable to a single RAW table in the first-cut, skipped.. Excluded:
 -- hubfeed_mt_risk_object <- stg2_mt__uwr_pol_ins: key uses walk column(s)
 -- w0_policy_number from parent view(s) -- not resolvable to a single RAW table in the
--- first-cut, skipped.. Excluded: hubfeed_mt_risk_object <- stg2_mt__uwr_pol_ins: key
--- uses walk column(s) w0_policy_number from parent view(s) -- not resolvable to a single
--- RAW table in the first-cut, skipped.. Excluded: hubfeed_mt_risk_object <-
+-- first-cut, skipped.. Excluded: hubfeed_mt_risk_object <-
 -- stg2_mt__uwr_pol_ins_cov_covp_sp_pv: key uses walk column(s) w0_policy_number,
 -- w1_pol_risk_id from parent view(s) -- not resolvable to a single RAW table in the
 -- first-cut, skipped.. Excluded: hubfeed_mt_risk_object <-
@@ -1768,21 +1752,18 @@ select 'MAXIMUS' as project, 'HUB_RISK_OBJECT' as hub,
 -- NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW.LINKED_TRIP_DELAY_CLAIM_NUMBER
 -- (CLAIM_HKEY__LINKED_TRIP_DELAY_CLAIM). Travel RECORD_SOURCE value(s) parsed from
 -- feeds: MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS,
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW,
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP,
--- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY (+7 more). Excluded:
--- hubfeed_mt_claim <- stg2_mt__clm_clmd_claim_event_followup: key uses walk column(s)
--- w0_claimno from parent view(s) -- not resolvable to a single RAW table in the
--- first-cut, skipped.. Excluded: hubfeed_mt_claim <- stg2_mt__clm_clmd_claim_history:
--- key uses walk column(s) w0_claimno from parent view(s) -- not resolvable to a single
--- RAW table in the first-cut, skipped.. Excluded: hubfeed_mt_claim <-
--- stg2_mt__clm_clmd_claim_reserve: key uses walk column(s) w0_claimno from parent
+-- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW.
+-- Excluded: hubfeed_mt_claim <- stg2_mt__clm_clmd_claim_event_followup: key uses walk
+-- column(s) w0_claimno from parent view(s) -- not resolvable to a single RAW table in
+-- the first-cut, skipped.. Excluded: hubfeed_mt_claim <-
+-- stg2_mt__clm_clmd_claim_history: key uses walk column(s) w0_claimno from parent
 -- view(s) -- not resolvable to a single RAW table in the first-cut, skipped.. Excluded:
 -- hubfeed_mt_claim <- stg2_mt__clm_clmd_claim_reserve: key uses walk column(s)
--- w1_claimno from parent view(s) -- not resolvable to a single RAW table in the
--- first-cut, skipped.. Excluded: hubfeed_mt_claim <-
+-- w0_claimno from parent view(s) -- not resolvable to a single RAW table in the
+-- first-cut, skipped.. Excluded: hubfeed_mt_claim <- stg2_mt__clm_clmd_claim_reserve:
+-- key uses walk column(s) w1_claimno from parent view(s) -- not resolvable to a single
+-- RAW table in the first-cut, skipped.. Excluded: hubfeed_mt_claim <-
 -- stg2_mt__clm_clmd_clma_msp_msd_prop_pv: key uses walk column(s) w0_claimno from parent
 -- view(s) -- not resolvable to a single RAW table in the first-cut, skipped.. Excluded:
 -- hubfeed_mt_claim <- stg2_mt__clm_clmd_clmap_pv: key uses walk column(s) w0_claimno

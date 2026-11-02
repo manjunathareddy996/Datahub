@@ -207,17 +207,21 @@ def build_opus_travel():
             if nk_expr is None:
                 skipped.append(f"{s}: derived_columns[{nk_name}] missing")
                 continue
-            # Capture RECORD_SOURCE literal if present.
+            # Capture RECORD_SOURCE literal; only register it against the
+            # hub scope after we successfully build at least one branch for
+            # this feed. See MAXIMUS build for rationale.
             rs = dc.get("RECORD_SOURCE")
-            if isinstance(rs, str) and rs.startswith("!"):
-                rsrcs.add(rs[1:])
+            rs_val = rs[1:] if isinstance(rs, str) and rs.startswith("!") \
+                else None
             src_model = meta["source_model"]
+            added = 0
             try:
                 if src_model.startswith("stg_travel__"):
                     b = PK.make_branch(OPUS, src_model, dc.get("PARENT_BK", ""),
                                        nk_expr, via=s, skipped=skipped)
                     if b:
                         branches.append(b)
+                        added += 1
                 elif src_model.startswith("stitch_"):
                     for stg, key_col in PK.parse_stitch(OPUS, src_model):
                         nk = nk_expr.replace("PARENT_BK", f"({key_col})")
@@ -225,6 +229,7 @@ def build_opus_travel():
                                            via=f"{s} <- {src_model}", skipped=skipped)
                         if b:
                             branches.append(b)
+                            added += 1
                     notes.append(
                         f"{src_model} is a stitch view; row-level load windowing applies "
                         f"-- RAW rows with a NULL inc_job_updated_at never reach the hub.")
@@ -233,6 +238,8 @@ def build_opus_travel():
             except Exception as e:
                 skipped.append(f"{s}: parse error ({e})")
                 continue
+            if rs_val and added:
+                rsrcs.add(rs_val)
         hubs.append(THub("OPUS", name, pk, nk_col, PK.collapse(branches),
                          list(OrderedDict.fromkeys(notes)), skipped, rsrcs))
     return hubs
@@ -432,13 +439,14 @@ def build_maxi_travel():
                                    f"missing")
                     continue
                 rs = dc.get("RECORD_SOURCE")
-                if isinstance(rs, str) and rs.startswith("!"):
-                    rsrcs.add(rs[1:])
+                rs_val = rs[1:] if isinstance(rs, str) and rs.startswith("!") \
+                    else None
                 src_model = meta.get("source_model")
                 if not isinstance(src_model, str):
                     skipped.append(f"{stg2}: unexpected source_model {src_model}")
                     continue
                 via = f"{feed} <- {stg2}"
+                added = 0
                 try:
                     if src_model.startswith("stg_mt__") or \
                             src_model.startswith("resolved_mt__"):
@@ -446,6 +454,7 @@ def build_maxi_travel():
                                               hk_alias, via=via, skipped=skipped)
                         if b:
                             branches.append(b)
+                            added += 1
                     elif src_model.startswith("up_mt__"):
                         # stg2 is actually a stg2_mt_up__ wrapper over an
                         # up_mt__ unpivot: bk_alias name here must match the
@@ -454,12 +463,21 @@ def build_maxi_travel():
                                 MAXI, src_model, bk_name, nk_expr, hk_alias,
                                 via=via, skipped=skipped):
                             branches.append(b)
+                            added += 1
                     else:
                         skipped.append(f"{stg2}: unknown source_model shape "
                                        f"{src_model}")
                 except Exception as e:
                     skipped.append(f"{via}: parse error ({e})")
                     continue
+                # Only scope the hub by this RECORD_SOURCE if we actually
+                # rebuilt a branch for it. Scoping without a branch inflates
+                # DM-K2's "unexpected" set when a feeder is excluded (walk
+                # columns, cast(null) NK, etc.) because hub rows loaded by
+                # that feeder would be compared against a src that doesn't
+                # rebuild them.
+                if rs_val and added:
+                    rsrcs.add(rs_val)
         before = len(branches)
         branches = PK.collapse(branches)
         if before != len(branches):
