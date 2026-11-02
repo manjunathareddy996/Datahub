@@ -2,7 +2,6 @@
    DM-A2  |  Attribute Checks - Record-level Reconciliation (Sample, Travel LOB)  (MAXIMUS)
    For an agreed sample of business keys, every satellite attribute equals the SF Mirror source value.
 
-   MEMBER SPLIT: sections 1..209 assigned M1 x 70, M2 x 70, M3 x 69 -- contiguous thirds in listed order.
    Check ID: DM-A2
    Category: Attribute checks
    Sign-off criterion: Record-level attribute reconciliation (sample)
@@ -11,7 +10,7 @@
    Pass criteria / tolerance: 100% match on the sample
    Owner: LUMIQ
    Vault location: BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL
-   Maximus Travel RAW: RAW.MAXIMUS_TRAVEL
+   Maximus Travel RAW: BAGIC_PROD_MIRROR_DB.MAXI_RAW
    Opus Travel RAW (prod): BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE
    Opus Travel RAW (test): BAGIC_PREPROD_CURATED_DB.UTILS
    Scope: Every standard + augmented satellite of opus_travel_dv_dbt and
@@ -42,7 +41,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- 1. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]  [M1]
+-- 1. MAXIMUS — SAT_ASSESSMENT_HEADER   [Implemented]
 -- standard satellite, automate_dv.sat; PK ASSESSMENT_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS [4 col(s)].
 ----------------------------------------------------------------------------------------
@@ -73,7 +72,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("START_TIME")), ''))) as ASSESSMENT_START_TIME,
                to_varchar((nullif(trim(to_varchar("TELE_VARIFICATION_STATUS")), ''))) as ASSESSMENT_STATUS,
                to_varchar((nullif(trim(to_varchar("TELE_VARIFICATION_INITIATED_DATE")), ''))) as REQUESTED_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_TELE_VERIFICATION_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -114,7 +113,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 2. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]  [M1]
+-- 2. MAXIMUS — SAT_CHANNEL_DEFINITION   [Implemented]
 -- standard satellite, automate_dv.sat; PK DISTRIBUTION_CHANNEL_HKEY; 4 RECORD_SOURCE
 -- group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
@@ -147,7 +146,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("INTERMEDIARY_CODE")), ''))),'') is not null then 'IMD:' || nullif(trim((nullif(trim(to_varchar("INTERMEDIARY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("INTERMEDIARY_NAME")), ''))) as CHANNEL_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -179,7 +178,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("IMD_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("IMD_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PARTNER_NAME")), ''))) as CHANNEL_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -217,7 +216,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PARTNER_TYPE")), ''))) as CHANNEL_TYPE,
                to_varchar((nullif(trim(to_varchar("SUB_CHANNEL")), ''))) as SUB_CHANNEL_CODE,
                to_varchar((nullif(trim(to_varchar("SUB_CHANNEL_EFFECTIVE_DATE")), ''))) as SUB_CHANNEL_EFFECTIVE_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -264,7 +263,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DISTRIBUTION_CHANNEL|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("IMD_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("IMD_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PARTNER_NAME")), ''))) as CHANNEL_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -323,7 +322,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 3. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M1]
+-- 3. MAXIMUS — SAT_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
 -- standard satellite, automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)].
 ----------------------------------------------------------------------------------------
@@ -348,7 +347,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NET_ASSESSED_AMOUNT")), ''))) as NET_ASSESSED_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -374,7 +373,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 4. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Implemented]  [M1]
+-- 4. MAXIMUS — SAT_CLAIM_BENEFIT_HEAD   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK CLAIM_HKEY, child key BENEFIT_HEAD_CODE; 4
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -420,7 +419,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DISALLOWED_AMOUNT")), ''))) as DEDUCTION_AMOUNT,
                to_varchar((nullif(trim(to_varchar("DISALLOWANCE_REASON")), ''))) as DEDUCTION_REASON,
                to_varchar((nullif(trim(to_varchar("COVER_NAME")), ''))) as HEAD_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -479,7 +478,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("COVER_NAME")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_NAME")), ''))) as HEAD_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -513,7 +512,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("COVER_TAKEN")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_NAME")), ''))) as HEAD_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -551,7 +550,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DIFFERENCE_IN_AMOUNT")), ''))) as DEDUCTION_AMOUNT,
                to_varchar((nullif(trim(to_varchar("SUBCOVER_NAME")), ''))) as HEAD_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("SUBLIMIT")), ''))) as SUB_LIMIT_APPLIED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -620,7 +619,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 5. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]  [M1]
+-- 5. MAXIMUS — SAT_CLAIM_CO_RI_SHARE   [Implemented]
 -- standard satellite, automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
 -- col(s)],
@@ -650,7 +649,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COINSURANCE_CONTRIBUTION")), ''))) as CO_INSURANCE_OUR_SHARE_PERCENTAGE,
                to_varchar((nullif(trim(to_varchar("LEADERFOLLOWER")), ''))) as LEADER_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -687,7 +686,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COINSURANCE_EXPENSE_AMOUNT")), ''))) as EXPENSE_SHARE_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -724,7 +723,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 6. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]  [M1]
+-- 6. MAXIMUS — SAT_CLAIM_FNOL   [Implemented]
 -- standard satellite, automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [14
@@ -751,7 +750,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("LOSSDESC")), ''))) as PRELIMINARY_LOSS_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -809,7 +808,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CLAIM_INTIMATOR_NAME")), ''))) as REPORTED_BY_NAME,
                to_varchar((nullif(trim(to_varchar("PORTAL_FLAG")), ''))) as SELF_SERVICE_INDICATOR,
                to_varchar((nullif(trim(to_varchar("DO_YOU_WANT_THIRD_PARTY_INVOLVEMNT")), ''))) as THIRD_PARTY_INVOLVEMENT_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -911,7 +910,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 7. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]  [M1]
+-- 7. MAXIMUS — SAT_CLAIM_FRAUD   [Implemented]
 -- standard satellite, automate_dv.sat; PK CLAIM_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)],
@@ -945,7 +944,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("FRAUD_TRIGGER_TYPE")), ''))) as FRAUD_TRIGGER_REASON,
                to_varchar((nullif(trim(to_varchar("FRAUD_TYPE")), ''))) as FRAUD_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -990,7 +989,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("INVESTIGATION_ID")), ''))) as INVESTIGATION_REFERENCE,
                to_varchar((nullif(trim(to_varchar("INVESTIGATIONFLAG")), ''))) as INVESTIGATION_REFERRED_INDICATOR,
                to_varchar((nullif(trim(to_varchar("INVESTIGATION_STATUS")), ''))) as INVESTIGATION_STATUS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1044,7 +1043,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("FRAUD_TRIGGER_TYPE")), ''))) as FRAUD_TRIGGER_REASON,
                to_varchar((nullif(trim(to_varchar("FRAUD_TYPE")), ''))) as FRAUD_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1081,7 +1080,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("INVESTIGATION_NUMBER")), ''))) as INVESTIGATION_REFERENCE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1140,7 +1139,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 8. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]  [M1]
+-- 8. MAXIMUS — SAT_CLAIM_HEADER   [Implemented]
 -- standard satellite, automate_dv.sat; PK CLAIM_HKEY; 5 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [6 col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -1183,7 +1182,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CLAIMBRANCH")), ''))) as HANDLING_ORG_UNIT_CODE,
                to_varchar((nullif(trim(to_varchar("LOSSDATE")), ''))) as LOSS_DATE,
                to_varchar((nullif(trim(to_varchar("INTIMATIONDATE")), ''))) as NOTIFICATION_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1240,7 +1239,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("INTIMATION_DATE")), ''))) as NOTIFICATION_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1292,7 +1291,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DATE_OF_ACCIDENT")), ''))) as LOSS_DATE,
                to_varchar((nullif(trim(to_varchar("PRIORITY")), ''))) as PRIORITY_CODE,
                to_varchar((nullif(trim(to_varchar("CLAIM_REGISTRATION_DATE")), ''))) as REGISTRATION_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1374,7 +1373,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("INTIMATION_DATE")), ''))) as NOTIFICATION_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1406,7 +1405,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EVENT_DATE")), ''))) as LOSS_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1476,7 +1475,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 9. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]  [M1]
+-- 9. MAXIMUS — SAT_CLAIM_HEALTH_DETAIL   [Implemented]
 -- standard satellite, automate_dv.sat; PK CLAIM_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)],
@@ -1510,7 +1509,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DISEASE_CATEGORY")), ''))) as DISEASE_CATEGORY,
                to_varchar((nullif(trim(to_varchar("ICD_CODE")), ''))) as ICD_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1555,7 +1554,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("MEDICAL_COMMENTS")), ''))) as HEALTH_CLAIM_REMARKS,
                to_varchar((nullif(trim(to_varchar("ICD_DESCRIPTION")), ''))) as ICD_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("MEDICALLY_ADMISSIBLE")), ''))) as MEDICALLY_ADMISSIBLE_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1609,7 +1608,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DISEASE_CATEGORY")), ''))) as DISEASE_CATEGORY,
                to_varchar((nullif(trim(to_varchar("ICD_CODE")), ''))) as ICD_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1670,7 +1669,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("SYSTEM_OF_MEDICINE")), ''))) as SYSTEM_OF_MEDICINE,
                to_varchar((nullif(trim(to_varchar("TREATING_DOCTOR_DETAILS")), ''))) as TREATING_DOCTOR_NAME,
                to_varchar((nullif(trim(to_varchar("MODE_OF_TREATMENT")), ''))) as TREATMENT_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1789,7 +1788,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 10. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]  [M1]
+-- 10. MAXIMUS — SAT_CLAIM_INVESTIGATION_FINDING   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK CLAIM_HKEY, child key FINDING_SEQUENCE; 1
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
@@ -1819,7 +1818,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("INVESTIGATION_NUMBER")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("INVESTIGATION_FINDINGS")), ''))) as FINDING_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -1845,7 +1844,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 11. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]  [M1]
+-- 11. MAXIMUS — SAT_CLAIM_LITIGATION   [Implemented]
 -- standard satellite, automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
 -- col(s)],
@@ -1875,7 +1874,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COURT_NAME_AS_PER_INTIMATION_DETAILS")), ''))) as COURT_NAME,
                to_varchar((nullif(trim(to_varchar("COURT_TYPE")), ''))) as COURT_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1912,7 +1911,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("AWARD_AMOUNT")), ''))) as AWARD_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -1949,7 +1948,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 12. MAXIMUS — SAT_CLAIM_NOTE   [Implemented]  [M1]
+-- 12. MAXIMUS — SAT_CLAIM_NOTE   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK CLAIM_HKEY, child key NOTE_SEQUENCE; 2
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
@@ -1983,7 +1982,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("ACTION")), '')))) as ACTION_TAKEN,
                cast(null as varchar) as NOTE_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("ACTION")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_claim_note#2
@@ -1992,7 +1991,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as ACTION_TAKEN,
                to_varchar(((nullif(trim(to_varchar("CLAIM_CLOSE_REMARKS")), '')))) as NOTE_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("CLAIM_CLOSE_REMARKS")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_claim_note#3
@@ -2001,7 +2000,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as ACTION_TAKEN,
                to_varchar(((nullif(trim(to_varchar("CLAIM_STATUS_REMARK")), '')))) as NOTE_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("CLAIM_STATUS_REMARK")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_claim_note#4
@@ -2010,7 +2009,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as ACTION_TAKEN,
                to_varchar(((nullif(trim(to_varchar("COMMENTS")), '')))) as NOTE_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("COMMENTS")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_claim_note#5
@@ -2019,7 +2018,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as ACTION_TAKEN,
                to_varchar(((nullif(trim(to_varchar("INTERNAL_CLAIM_COMMENTS")), '')))) as NOTE_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("INTERNAL_CLAIM_COMMENTS")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_claim_note#6
@@ -2028,7 +2027,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as ACTION_TAKEN,
                to_varchar(((nullif(trim(to_varchar("OTHER_REMARKS")), '')))) as NOTE_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("OTHER_REMARKS")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_claim_note#7
@@ -2037,7 +2036,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as ACTION_TAKEN,
                to_varchar(((nullif(trim(to_varchar("REMARKS")), '')))) as NOTE_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("REMARKS")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_claim_note#8
@@ -2046,7 +2045,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as ACTION_TAKEN,
                to_varchar(((nullif(trim(to_varchar("ANY_SPECIAL_REMARKS")), '')))) as NOTE_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("ANY_SPECIAL_REMARKS")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_claim_note#9
@@ -2055,7 +2054,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as ACTION_TAKEN,
                to_varchar(((nullif(trim(to_varchar("GENERAL_TEAM_COMMENTS_TRACKING_COMMENTS")), '')))) as NOTE_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("GENERAL_TEAM_COMMENTS_TRACKING_COMMENTS")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -2095,7 +2094,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('GENERAL_COMMENTS') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("COMMENTS")), '')))) as NOTE_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("COMMENTS")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmrsk_rska_properties_pv__sat_claim_note#2
@@ -2103,7 +2102,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('REASON') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("REASON")), '')))) as NOTE_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("REASON")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmrsk_rska_properties_pv__sat_claim_note#3
@@ -2111,7 +2110,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('TEAM_TRACKING_COMMENTS') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("GENERAL_TEAM_COMMENTS_TRACKING_COMMENTS")), '')))) as NOTE_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("GENERAL_TEAM_COMMENTS_TRACKING_COMMENTS")), '')) is not null
       )
      where hkey in (select hkey from s2) and ldts is not null
@@ -2149,7 +2148,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 13. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M1]
+-- 13. MAXIMUS — SAT_CLAIM_PAYMENT_TRANCHE   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK CLAIM_HKEY, child key TRANCHE_NUMBER; 3
 -- RECORD_SOURCE group(s): MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT [5
 -- col(s)],
@@ -2190,7 +2189,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PAYMENTMETHOD")), ''))) as PAYMENT_MODE,
                to_varchar((nullif(trim(to_varchar("PAYMENTPURPOSE")), ''))) as PAYMENT_TYPE,
                to_varchar((nullif(trim(to_varchar("PAYMENTSTATUS")), ''))) as STATUS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -2248,7 +2247,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("TOTAL_AMOUNT_INCLUDING_TAXTRANSACTION_CURRENCY")), ''))) as GROSS_AMOUNT,
                to_varchar((nullif(trim(to_varchar("PAYMENT_TYPE")), ''))) as PAYMENT_TYPE,
                to_varchar((nullif(trim(to_varchar("CLAIM_PAYMENT_STATUS")), ''))) as STATUS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -2304,7 +2303,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PAYMENT_MODE")), ''))) as PAYMENT_MODE,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_PAYMENT")), ''))) as PAYMENT_TYPE,
                to_varchar((nullif(trim(to_varchar("PAYMENT_STATUS")), ''))) as STATUS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -2382,7 +2381,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 14. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]  [M1]
+-- 14. MAXIMUS — SAT_CLAIM_PA_DETAIL   [Implemented]
 -- standard satellite, automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [2 col(s)].
@@ -2410,7 +2409,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PERCENTAGE_OF_DISABILITY")), ''))) as DISABILITY_PERCENTAGE,
                to_varchar((nullif(trim(to_varchar("TTDPTD")), ''))) as DISABILITY_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -2441,7 +2440,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 15. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Implemented]  [M1]
+-- 15. MAXIMUS — SAT_CLAIM_PROVIDER_BILLING   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK CLAIM_HKEY, child key BILL_NUMBER; 2
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
@@ -2481,7 +2480,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("BILL_STATUS")), ''))) as BILL_STATUS_TYPE,
                to_varchar((nullif(trim(to_varchar("DISALLOWANCE_REASON")), ''))) as DISALLOWANCE_REASON,
                to_varchar((nullif(trim(to_varchar("DISALLOWED_AMOUNT")), ''))) as DISALLOWED_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -2527,7 +2526,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 16. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M1]
+-- 16. MAXIMUS — SAT_CLAIM_RECOVERY_SALVAGE   [Implemented]
 -- standard satellite, automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -2553,7 +2552,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("RECOVERY_AMOUNT")), ''))) as NET_RECOVERY_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -2579,7 +2578,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 17. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]  [M1]
+-- 17. MAXIMUS — SAT_CLAIM_REPUDIATION   [Implemented]
 -- standard satellite, automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
 -- col(s)],
@@ -2609,7 +2608,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("REPUDIATION_REASON")), ''))) as REPUDIATION_REASON,
                to_varchar((nullif(trim(to_varchar("REPUDIATION_REMARKS")), ''))) as REPUDIATION_REMARKS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -2646,7 +2645,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("GROUND_OF_REJECTION")), ''))) as REPUDIATION_REASON
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -2683,7 +2682,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 18. MAXIMUS — SAT_CLAIM_RESERVE   [Implemented]  [M1]
+-- 18. MAXIMUS — SAT_CLAIM_RESERVE   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK CLAIM_HKEY, child key RESERVE_HEAD; 2
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
@@ -2715,7 +2714,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("FINAL_RESERVE")), ''))) as CURRENT_RESERVE_AMOUNT,
                to_varchar((nullif(trim(to_varchar("INITIAL_RESERVE")), ''))) as INITIAL_RESERVE_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -2760,7 +2759,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PENDINGAMOUNT")), ''))) as OUTSTANDING_RESERVE_AMOUNT,
                to_varchar((nullif(trim(to_varchar("PAIDAMOUNT")), ''))) as PAID_TO_DATE_AMOUNT,
                to_varchar((nullif(trim(to_varchar("RESERVETYPEDESC")), ''))) as RESERVE_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RESERVE
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -2812,7 +2811,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 19. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Implemented]  [M1]
+-- 19. MAXIMUS — SAT_CLAIM_RESERVE_HEAD   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK CLAIM_HKEY, child key RESERVE_HEAD_CODE; 1
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
@@ -2844,7 +2843,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("LOSS_RESERVE_INR")), ''))) as OPENING_RESERVE,
                to_varchar((nullif(trim(to_varchar("MODIFIED_RESERVE_AGAINST_LOSS_COMPENSATION")), ''))) as REVISED_RESERVE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -2875,7 +2874,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 20. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]  [M1]
+-- 20. MAXIMUS — SAT_CLAIM_SETTLEMENT   [Implemented]
 -- standard satellite, automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -2901,7 +2900,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("INTEREST_AMOUNT")), ''))) as INTEREST_PAID_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -2927,7 +2926,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 21. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]  [M1]
+-- 21. MAXIMUS — SAT_CLAIM_SLA_TRACKING   [Implemented]
 -- standard satellite, automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)].
 ----------------------------------------------------------------------------------------
@@ -2952,7 +2951,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("STATUSCHANGEDATE")), ''))) as LAST_ACTION_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -2978,7 +2977,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 22. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]  [M1]
+-- 22. MAXIMUS — SAT_CLAIM_TP_FORENSIC   [Implemented]
 -- standard satellite, automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [3 col(s)].
@@ -3008,7 +3007,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("FIR_DATE")), ''))) as FIR_DATE,
                to_varchar((nullif(trim(to_varchar("FIR")), ''))) as FIR_NUMBER,
                to_varchar((nullif(trim(to_varchar("FIR_TIME")), ''))) as FIR_TIME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3044,7 +3043,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 23. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]  [M1]
+-- 23. MAXIMUS — SAT_CLAIM_TRAVEL_DETAIL   [Implemented]
 -- standard satellite, automate_dv.sat; PK CLAIM_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)],
@@ -3074,7 +3073,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),''), nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), ''), nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COUNTRY_OF_LOSS")), ''))) as COUNTRY_OF_INCIDENT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3108,7 +3107,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_LOSS")), ''))) as CLAIM_SUB_TYPE,
                to_varchar((nullif(trim(to_varchar("COUNTRY_OF_LOSS")), ''))) as COUNTRY_OF_INCIDENT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3155,7 +3154,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DATE_OF_INCIDENT")), ''))) as INCIDENT_DATE,
                to_varchar((nullif(trim(to_varchar("LOSS_AMOUNT")), ''))) as LOSS_AMOUNT_FOREIGN,
                to_varchar((nullif(trim(to_varchar("LOSS_AMOUNT_IN_INR")), ''))) as LOSS_AMOUNT_INR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3228,7 +3227,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 24. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]  [M1]
+-- 24. MAXIMUS — SAT_COMMON_ADDRESS   [Implemented]
 -- standard satellite, automate_dv.sat; PK LOCATION_HKEY; 15 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)],
@@ -3283,7 +3282,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CITY")), ''))) as CITY,
                to_varchar((nullif(trim(to_varchar("PIN_CODE")), ''))) as POSTAL_CODE,
                to_varchar((nullif(trim(to_varchar("STATE")), ''))) as STATE_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3337,7 +3336,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PIN_CODE")), ''))) as POSTAL_CODE,
                to_varchar((nullif(trim(to_varchar("STATE")), ''))) as STATE_NAME,
                to_varchar((nullif(trim(to_varchar("STREET")), ''))) as STREET_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3403,7 +3402,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CITY")), ''))) as CITY,
                to_varchar((nullif(trim(to_varchar("PIN_CODE")), ''))) as POSTAL_CODE,
                to_varchar((nullif(trim(to_varchar("STATE")), ''))) as STATE_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3445,7 +3444,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("ADDRESS")), ''))),'') is not null then md5(upper(regexp_replace(trim(nullif(trim((nullif(trim(to_varchar("ADDRESS")), ''))), '')), '[[:space:]]+', ' '))) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ADDRESS")), ''))) as ADDRESS_LINE_1
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3481,7 +3480,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce((nullif(trim(to_varchar("HOSPITAL_ADDRESS")), '')), (nullif(trim(to_varchar("LOCATION")), '')))) as ADDRESS_LINE_1,
                to_varchar((nullif(trim(to_varchar("CITY_NAME")), ''))) as CITY,
                to_varchar((nullif(trim(to_varchar("HOSPITAL_COUNTRY")), ''))) as COUNTRY_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3531,7 +3530,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DISTRICT")), ''))) as DISTRICT,
                to_varchar((nullif(trim(to_varchar("PIN_CODE")), ''))) as POSTAL_CODE,
                to_varchar((nullif(trim(to_varchar("STATE")), ''))) as STATE_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS
       )
      where hkey in (select hkey from s6) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3597,7 +3596,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DISTRICT")), ''))) as DISTRICT,
                to_varchar((nullif(trim(to_varchar("PINCODE")), ''))) as POSTAL_CODE,
                to_varchar((nullif(trim(to_varchar("STATE")), ''))) as STATE_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
       )
      where hkey in (select hkey from s7) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3674,7 +3673,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PINCODE")), ''))) as POSTAL_CODE,
                to_varchar((nullif(trim(to_varchar("POST_OFFICE")), ''))) as POST_OFFICE_NAME,
                to_varchar((nullif(trim(to_varchar("STATE")), ''))) as STATE_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s8) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3747,7 +3746,7 @@ e9 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT")), ''))) as DISTRICT,
                to_varchar(coalesce((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_PIN_CODE")), '')), (nullif(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE")), '')))) as POSTAL_CODE,
                to_varchar(coalesce((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_STATE")), '')), (nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_STATE_UT")), '')))) as STATE_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s9) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3835,7 +3834,7 @@ e10 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DISTRICT")), ''))) as DISTRICT,
                to_varchar((nullif(trim(to_varchar("PINCODE")), ''))) as POSTAL_CODE,
                to_varchar((nullif(trim(to_varchar("STATE")), ''))) as STATE_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS
       )
      where hkey in (select hkey from s10) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3913,7 +3912,7 @@ e11 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("LAND_MARK")), ''))) as LANDMARK,
                to_varchar((nullif(trim(to_varchar("AREA")), ''))) as LOCALITY,
                to_varchar((nullif(trim(to_varchar("POST_OFFICE")), ''))) as POST_OFFICE_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s11) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -3974,7 +3973,7 @@ e12 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DISTRICT")), ''))) as DISTRICT,
                to_varchar((nullif(trim(to_varchar("PINCODE")), ''))) as POSTAL_CODE,
                to_varchar((nullif(trim(to_varchar("STATE")), ''))) as STATE_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
       )
      where hkey in (select hkey from s12) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4051,7 +4050,7 @@ e13 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PINCODE")), ''))) as POSTAL_CODE,
                to_varchar((nullif(trim(to_varchar("POST_OFFICE")), ''))) as POST_OFFICE_NAME,
                to_varchar((nullif(trim(to_varchar("STATE")), ''))) as STATE_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s13) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4124,7 +4123,7 @@ e14 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_DISTRICT")), ''))) as DISTRICT,
                to_varchar(coalesce((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_PIN_CODE")), '')), (nullif(trim(to_varchar("LOCAL_ADDRESS_PIN_CODE")), '')))) as POSTAL_CODE,
                to_varchar(coalesce((nullif(trim(to_varchar("CORRESPONDENCE_LOCAL_ADDRESS_STATE")), '')), (nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_STATE_UT")), '')))) as STATE_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s14) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4208,7 +4207,7 @@ e15 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("COUNTRY_CODE")), ''))) as COUNTRY_CODE,
                to_varchar((nullif(trim(to_varchar("POSTAL_CODE")), ''))) as POSTAL_CODE,
                to_varchar((nullif(trim(to_varchar("STATE_CODE")), ''))) as STATE_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
       )
      where hkey in (select hkey from s15) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4418,7 +4417,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 25. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]  [M1]
+-- 25. MAXIMUS — SAT_COMMON_ADMIN_GEOGRAPHY   [Implemented]
 -- standard satellite, automate_dv.sat; PK LOCATION_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [5
 -- col(s)].
@@ -4452,7 +4451,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("STORED_STATE_CODE")), ''))) as STATE_CODE,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_LOCATION_BY_STATE")), ''))) as STATE_NAME,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_LOCATION_BY_TEHSIL")), ''))) as TALUKA_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4498,7 +4497,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 26. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]  [M1]
+-- 26. MAXIMUS — SAT_COMMON_BUSINESS_AUDIT   [Implemented]
 -- standard satellite, automate_dv.sat; PK POLICY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -4526,7 +4525,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DATA_SOURCE")), ''))) as SOURCE_APPLICATION_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4562,7 +4561,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce((nullif(trim(to_varchar("BAGIC_CREATED_BY")), '')), (nullif(trim(to_varchar("CREATED_BY")), '')))) as CREATED_BY_USER_REFERENCE,
                to_varchar((nullif(trim(to_varchar("ENTRY_DATE")), ''))) as CREATED_DATE,
                to_varchar((nullif(trim(to_varchar("ISSUANCE_SOURCE")), ''))) as SOURCE_APPLICATION_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4609,7 +4608,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 27. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]  [M1]
+-- 27. MAXIMUS — SAT_COMMON_CLASSIFICATION   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)],
@@ -4639,7 +4638,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_TYPE_RETAIL_OR_INSTITUTIONAL")), ''))) as CATEGORY_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4677,7 +4676,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PROFILE")), ''))) as SEGMENT_NAME,
                to_varchar((nullif(trim(to_varchar("PRIVE_FLAG")), ''))) as TIER_CODE,
                to_varchar((nullif(trim(to_varchar("HNI_FLAG")), ''))) as VALUE_BAND
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4726,7 +4725,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CATEGORY")), ''))) as CATEGORY_CODE,
                to_varchar((nullif(trim(to_varchar("PROFILE")), ''))) as SEGMENT_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4779,7 +4778,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 28. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M1]
+-- 28. MAXIMUS — SAT_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)],
@@ -4815,7 +4814,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("ISSUE_ALL_POLICIES_IN_ELECTRONIC_FORMAT")), ''))) as GO_GREEN_OPT_IN_INDICATOR,
                to_varchar((nullif(trim(to_varchar("PREFERRED_MODE_OF_COMMUNICATION")), ''))) as PREFERRED_CHANNEL_CODE,
                to_varchar(coalesce((nullif(trim(to_varchar("COMMUNICATION_AND_PREFERRED_LANGUAGE")), '')), (nullif(trim(to_varchar("LANGUAGES_PREFERRED")), '')))) as PREFERRED_LANGUAGE_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4857,7 +4856,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w3_policy_holder_code),'') is not null then nullif(trim(w3_policy_holder_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SMS_COMMUNICATION")), ''))) as SMS_OPT_IN_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4893,7 +4892,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("ISSUE_ALL_POLICIES_IN_ELECTRONIC_FORMAT")), ''))) as GO_GREEN_OPT_IN_INDICATOR,
                to_varchar((nullif(trim(to_varchar("PREFERRED_MODE_OF_COMMUNICATION")), ''))) as PREFERRED_CHANNEL_CODE,
                to_varchar(coalesce((nullif(trim(to_varchar("COMMUNICATION_AND_PREFERRED_LANGUAGE")), '')), (nullif(trim(to_varchar("LANGUAGES_PREFERRED")), '')))) as PREFERRED_LANGUAGE_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4935,7 +4934,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w2_policy_holder_code),'') is not null then nullif(trim(w2_policy_holder_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SMS_COMMUNICATION")), ''))) as SMS_OPT_IN_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -4994,7 +4993,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 29. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]  [M1]
+-- 29. MAXIMUS — SAT_COMMON_CONSENT   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)],
@@ -5024,7 +5023,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_DIGITAL_CLAIM_FORM_CONSENT_RECEIVED")), ''))) as CONSENT_GIVEN_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -5058,7 +5057,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_CONSENT")), ''))) as CONSENT_GIVEN_INDICATOR,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_CONSENT_FOR_DATA_SHARING")), ''))) as DATA_SHARING_CONSENT_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -5095,7 +5094,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_CONSENT")), ''))) as CONSENT_GIVEN_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -5143,7 +5142,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 30. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]  [M1]
+-- 30. MAXIMUS — SAT_COMMON_CONTACT   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK PARTY_HKEY, child key CONTACT_POINT_TYPE,
 -- CONTACT_PRIORITY_ORDER; 8 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [5
@@ -5197,7 +5196,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as MOBILE_NUMBER,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as CONTACT_POINT_USAGE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("EMAIL")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#2
@@ -5210,7 +5209,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as MOBILE_NUMBER,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as CONTACT_POINT_USAGE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("COMMUNICATION_EMAIL_ID")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#3
@@ -5223,7 +5222,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as MOBILE_NUMBER,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as CONTACT_POINT_USAGE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("INSURED_EMAIL_ID")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#4
@@ -5236,7 +5235,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as MOBILE_NUMBER,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as CONTACT_POINT_USAGE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("KEY_EMAIL_ID")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#5
@@ -5249,7 +5248,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as MOBILE_NUMBER,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as CONTACT_POINT_USAGE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("TELEPHONE_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#6
@@ -5262,7 +5261,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("MOBILE_NUMBER")), '')))) as MOBILE_NUMBER,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as CONTACT_POINT_USAGE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("MOBILE_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#7
@@ -5275,7 +5274,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("ALTERNATE_MOBILE_NUMBERCLAIMS")), '')))) as ALTERNATE_MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("ALTERNATE_MOBILE_NUMBER_BELONGS_TO")), '')))) as CONTACT_POINT_USAGE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("ALTERNATE_MOBILE_NUMBER_BELONGS_TO")), '')) is not null or (nullif(trim(to_varchar("ALTERNATE_MOBILE_NUMBERCLAIMS")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#8
@@ -5288,7 +5287,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("COMMUNICATION_CONTACT_NUMBER")), '')))) as MOBILE_NUMBER,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as CONTACT_POINT_USAGE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("COMMUNICATION_CONTACT_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#9
@@ -5301,7 +5300,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("INSURED_MOBILE_NUMBER")), '')))) as MOBILE_NUMBER,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as CONTACT_POINT_USAGE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("INSURED_MOBILE_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#10
@@ -5314,7 +5313,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("INSURED_CONTACT_NUMBER")), '')))) as MOBILE_NUMBER,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as CONTACT_POINT_USAGE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("INSURED_CONTACT_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#11
@@ -5327,7 +5326,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("KEY_CONTACT_NUMBER")), '')))) as MOBILE_NUMBER,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as CONTACT_POINT_USAGE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("KEY_CONTACT_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_common_contact#12
@@ -5340,7 +5339,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("REGISTERED_MOBILE_NUMBER")), '')))) as MOBILE_NUMBER,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as CONTACT_POINT_USAGE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("REGISTERED_MOBILE_NUMBER")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -5397,7 +5396,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("HOSPITAL_CONTACT_NO")), ''))) as LANDLINE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -5443,7 +5442,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as LANDLINE_NUMBER,
                cast(null as varchar) as STD_CODE,
                cast(null as varchar) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
          where (nullif(trim(to_varchar("EMAIL_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa__sat_common_contact#2
@@ -5457,7 +5456,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as LANDLINE_NUMBER,
                cast(null as varchar) as STD_CODE,
                cast(null as varchar) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
          where (nullif(trim(to_varchar("ALTERNATE_EMAIL_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa__sat_common_contact#3
@@ -5471,7 +5470,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as LANDLINE_NUMBER,
                cast(null as varchar) as STD_CODE,
                cast(null as varchar) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
          where (nullif(trim(to_varchar("FAX")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa__sat_common_contact#4
@@ -5485,7 +5484,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("LANDLINE_NO")), '')))) as LANDLINE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("STD_CODE")), '')))) as STD_CODE,
                cast(null as varchar) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
          where (nullif(trim(to_varchar("LANDLINE_NO")), '')) is not null or (nullif(trim(to_varchar("STD_CODE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa__sat_common_contact#5
@@ -5499,7 +5498,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("PHONE_NO")), '')))) as LANDLINE_NUMBER,
                cast(null as varchar) as STD_CODE,
                cast(null as varchar) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
          where (nullif(trim(to_varchar("PHONE_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa__sat_common_contact#6
@@ -5513,7 +5512,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("WORK_NO")), '')))) as LANDLINE_NUMBER,
                cast(null as varchar) as STD_CODE,
                cast(null as varchar) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
          where (nullif(trim(to_varchar("WORK_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa__sat_common_contact#7
@@ -5527,7 +5526,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as LANDLINE_NUMBER,
                cast(null as varchar) as STD_CODE,
                to_varchar(((nullif(trim(to_varchar("MOBILE_NO")), '')))) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
          where (nullif(trim(to_varchar("MOBILE_NO")), '')) is not null
       )
      where hkey in (select hkey from s3) and ldts is not null
@@ -5593,7 +5592,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("ALTERNATE_MOB_NUMBERLANDLINE_NUMBER")), '')))) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                cast(null as varchar) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ALTERNATE_MOB_NUMBERLANDLINE_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa_address_prop_pv__sat_common_contact#2
@@ -5604,7 +5603,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("WHATSAPP_NO")), '')))) as MOBILE_NUMBER,
                cast(null as varchar) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("WHATSAPP_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa_address_prop_pv__sat_common_contact#3
@@ -5615,7 +5614,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("FACEBOOK_ID")), '')))) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("FACEBOOK_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa_address_prop_pv__sat_common_contact#4
@@ -5626,7 +5625,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("INSTAGRAM_ID")), '')))) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("INSTAGRAM_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa_address_prop_pv__sat_common_contact#5
@@ -5637,7 +5636,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("LINKED_IN_ID")), '')))) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("LINKED_IN_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pa_address_prop_pv__sat_common_contact#6
@@ -5648,7 +5647,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("TWITTER_ID")), '')))) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("TWITTER_ID")), '')) is not null
       )
      where hkey in (select hkey from s4) and ldts is not null
@@ -5695,7 +5694,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("CLAIM_MOBILE_NUMBER")), '')))) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CLAIM_MOBILE_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_common_contact#2
@@ -5704,7 +5703,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("KYC_MOBILE_NUMBER")), '')))) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("KYC_MOBILE_NUMBER")), '')) is not null
       )
      where hkey in (select hkey from s5) and ldts is not null
@@ -5751,7 +5750,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as LANDLINE_NUMBER,
                cast(null as varchar) as STD_CODE,
                cast(null as varchar) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
          where (nullif(trim(to_varchar("EMAIL_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa__sat_common_contact#2
@@ -5765,7 +5764,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as LANDLINE_NUMBER,
                cast(null as varchar) as STD_CODE,
                cast(null as varchar) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
          where (nullif(trim(to_varchar("ALTERNATE_EMAIL_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa__sat_common_contact#3
@@ -5779,7 +5778,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as LANDLINE_NUMBER,
                cast(null as varchar) as STD_CODE,
                cast(null as varchar) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
          where (nullif(trim(to_varchar("FAX")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa__sat_common_contact#4
@@ -5793,7 +5792,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("LANDLINE_NO")), '')))) as LANDLINE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("STD_CODE")), '')))) as STD_CODE,
                cast(null as varchar) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
          where (nullif(trim(to_varchar("LANDLINE_NO")), '')) is not null or (nullif(trim(to_varchar("STD_CODE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa__sat_common_contact#5
@@ -5807,7 +5806,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("PHONE_NO")), '')))) as LANDLINE_NUMBER,
                cast(null as varchar) as STD_CODE,
                cast(null as varchar) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
          where (nullif(trim(to_varchar("PHONE_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa__sat_common_contact#6
@@ -5821,7 +5820,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("WORK_NO")), '')))) as LANDLINE_NUMBER,
                cast(null as varchar) as STD_CODE,
                cast(null as varchar) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
          where (nullif(trim(to_varchar("WORK_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa__sat_common_contact#7
@@ -5835,7 +5834,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as LANDLINE_NUMBER,
                cast(null as varchar) as STD_CODE,
                to_varchar(((nullif(trim(to_varchar("MOBILE_NO")), '')))) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS
          where (nullif(trim(to_varchar("MOBILE_NO")), '')) is not null
       )
      where hkey in (select hkey from s6) and ldts is not null
@@ -5901,7 +5900,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("ALTERNATE_MOB_NUMBERLANDLINE_NUMBER")), '')))) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                cast(null as varchar) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ALTERNATE_MOB_NUMBERLANDLINE_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa_address_prop_pv__sat_common_contact#2
@@ -5912,7 +5911,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("WHATSAPP_NO")), '')))) as MOBILE_NUMBER,
                cast(null as varchar) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("WHATSAPP_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa_address_prop_pv__sat_common_contact#3
@@ -5923,7 +5922,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("FACEBOOK_ID")), '')))) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("FACEBOOK_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa_address_prop_pv__sat_common_contact#4
@@ -5934,7 +5933,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("INSTAGRAM_ID")), '')))) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("INSTAGRAM_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa_address_prop_pv__sat_common_contact#5
@@ -5945,7 +5944,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("LINKED_IN_ID")), '')))) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("LINKED_IN_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pa_address_prop_pv__sat_common_contact#6
@@ -5956,7 +5955,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("TWITTER_ID")), '')))) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("TWITTER_ID")), '')) is not null
       )
      where hkey in (select hkey from s7) and ldts is not null
@@ -6005,7 +6004,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("ALTERNATE_MOB_NUMBERLANDLINE_NUMBER")), '')))) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ALTERNATE_MOB_NUMBERLANDLINE_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_common_contact#2
@@ -6015,7 +6014,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("CLAIM_MOBILE_NUMBER")), '')))) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CLAIM_MOBILE_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_common_contact#3
@@ -6025,7 +6024,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("KYC_MOBILE_NUMBER")), '')))) as MOBILE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("KYC_MOBILE_NUMBER")), '')) is not null
       )
      where hkey in (select hkey from s8) and ldts is not null
@@ -6134,7 +6133,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 31. MAXIMUS — SAT_COMMON_GEO   [Implemented]  [M1]
+-- 31. MAXIMUS — SAT_COMMON_GEO   [Implemented]
 -- standard satellite, automate_dv.sat; PK LOCATION_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
 -- [3 col(s)],
@@ -6168,7 +6167,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("GEO_COORDINATE_ALTITUDE")), ''))) as ALTITUDE,
                to_varchar((nullif(trim(to_varchar("GEO_COORDINATE_LATITUDE")), ''))) as LATITUDE,
                to_varchar((nullif(trim(to_varchar("GEO_COORDINATE_LONGITUDE")), ''))) as LONGITUDE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -6214,7 +6213,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("GEO_COORDINATE_ALTITUDE")), ''))) as ALTITUDE,
                to_varchar((nullif(trim(to_varchar("GEO_COORDINATE_LATITUDE")), ''))) as LATITUDE,
                to_varchar((nullif(trim(to_varchar("GEO_COORDINATE_LONGITUDE")), ''))) as LONGITUDE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -6260,7 +6259,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("GEO_COORDINATE_ALTITUDE")), ''))) as ALTITUDE,
                to_varchar((nullif(trim(to_varchar("GEO_COORDINATE_LATITUDE")), ''))) as LATITUDE,
                to_varchar((nullif(trim(to_varchar("GEO_COORDINATE_LONGITUDE")), ''))) as LONGITUDE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -6318,7 +6317,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 32. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]  [M1]
+-- 32. MAXIMUS — SAT_COMMON_LIFECYCLE   [Implemented]
 -- standard satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -6344,7 +6343,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EFFECTIVE_DATE")), ''))) as EFFECTIVE_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -6370,7 +6369,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 33. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]  [M1]
+-- 33. MAXIMUS — SAT_COMMON_MONETARY_CONTEXT   [Implemented]
 -- standard satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 4 RECORD_SOURCE
 -- group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -6403,7 +6402,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("POLICY_LEVEL_BASE_CURRENCY")), ''))) as BASE_CURRENCY_CODE,
                to_varchar((nullif(trim(to_varchar("POLICY_LEVEL_TRANSACTION_CURRENCY")), ''))) as CURRENCY_CODE,
                to_varchar((nullif(trim(to_varchar("FOREX_RATE_AT_POLICY_LEVEL")), ''))) as EXCHANGE_RATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -6451,7 +6450,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("BASE_CURRENCY_RATE")), ''))) as BASE_CURRENCY_EXCHANGE_RATE,
                to_varchar((nullif(trim(to_varchar("PREMIUM_CURRENCY")), ''))) as CURRENCY_CODE,
                to_varchar((nullif(trim(to_varchar("PREMIUM_CURRENCY_RATE")), ''))) as EXCHANGE_RATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -6502,7 +6501,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("POLICY_LEVEL_BASE_CURRENCY")), ''))) as BASE_CURRENCY_CODE,
                to_varchar((nullif(trim(to_varchar("POLICY_LEVEL_TRANSACTION_CURRENCY")), ''))) as CURRENCY_CODE,
                to_varchar((nullif(trim(to_varchar("FOREX_RATE_AT_POLICY_LEVEL")), ''))) as EXCHANGE_RATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -6546,7 +6545,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BASE_CURRENCY")), ''))) as BASE_CURRENCY_CODE,
                to_varchar((nullif(trim(to_varchar("PREM_CURRENCY")), ''))) as CURRENCY_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -6610,7 +6609,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 34. MAXIMUS — SAT_COMMON_STATUS   [Implemented]  [M1]
+-- 34. MAXIMUS — SAT_COMMON_STATUS   [Implemented]
 -- standard satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -6636,7 +6635,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("REASON")), ''))) as STATUS_REASON_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -6662,7 +6661,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 35. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]  [M1]
+-- 35. MAXIMUS — SAT_COVERAGE_CONDITIONS   [Implemented]
 -- standard satellite, automate_dv.sat; PK COVERAGE_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -6694,7 +6693,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w2_cover_code),'') is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUB_CONDITION1")), ''))) as CONDITION_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -6726,7 +6725,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUB_CONDITION1")), ''))) as CONDITION_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -6758,7 +6757,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w2_cover_code),'') is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUB_CONDITION1")), ''))) as CONDITION_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -6790,7 +6789,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUB_CONDITION1")), ''))) as CONDITION_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -6849,7 +6848,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 36. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]  [M1]
+-- 36. MAXIMUS — SAT_COVERAGE_DEFINITION   [Implemented]
 -- standard satellite, automate_dv.sat; PK COVERAGE_HKEY; 5 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS [1
 -- col(s)],
@@ -6883,7 +6882,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_NAME")), ''))) as COVERAGE_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -6915,7 +6914,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w2_cover_code),'') is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_DESCRIPTION")), ''))) as COVERAGE_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -6949,7 +6948,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_NAME")), ''))) as COVERAGE_NAME,
                to_varchar((nullif(trim(to_varchar("NATURE_OF_LOSS")), ''))) as PERIL_COVERED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -6986,7 +6985,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w2_cover_code),'') is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_DESCRIPTION")), ''))) as COVERAGE_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -7020,7 +7019,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_NAME")), ''))) as COVERAGE_NAME,
                to_varchar((nullif(trim(to_varchar("NATURE_OF_LOSS")), ''))) as PERIL_COVERED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -7095,7 +7094,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 37. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M1]
+-- 37. MAXIMUS — SAT_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK COVERAGE_HKEY, child key
 -- ACTIVE_SEQUENCE_NUMBER; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -7129,7 +7128,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("ITEMS_COVERED")), ''))) as ITEM_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("SUM_INSURED")), ''))) as SUB_LIMIT_AMOUNT,
                to_varchar((nullif(trim(to_varchar("SUBLIMIT_NAME")), ''))) as SUB_LIMIT_ITEM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -7165,7 +7164,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 38. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]  [M1]
+-- 38. MAXIMUS — SAT_DOCUMENT_DEFINITION   [Implemented]
 -- standard satellite, automate_dv.sat; PK DOCUMENT_HKEY; 10 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [9 col(s)],
@@ -7222,7 +7221,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("MODE_OF_INWARD")), ''))) as SOURCE_CHANNEL,
                to_varchar((nullif(trim(to_varchar("SPECIAL_ENCLOSURES_DETAILS")), ''))) as SPECIAL_ENCLOSURES_DETAILS,
                to_varchar((nullif(trim(to_varchar("SPECIAL_ENCLOSURES_FLAG")), ''))) as SPECIAL_ENCLOSURES_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -7304,7 +7303,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce((nullif(trim(to_varchar("DOCUMENT_RECEIVED_DATE")), '')), (nullif(trim(to_varchar("INWARD_DATE")), '')))) as RECEIVED_DATE,
                to_varchar((nullif(trim(to_varchar("ISVALID")), ''))) as RECORD_VALID_INDICATOR,
                to_varchar(coalesce((nullif(trim(to_varchar("MODE_OF_DOCUMENT_INWARD")), '')), (nullif(trim(to_varchar("MODE_OF_INWARD")), '')))) as SOURCE_CHANNEL
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -7367,7 +7366,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DOCUMENT_TYPE_INWARD")), ''))) as DOCUMENT_TYPE,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_RECEIVED_DATE")), ''))) as RECEIVED_DATE,
                to_varchar((nullif(trim(to_varchar("MODE_OF_INWARD")), ''))) as SOURCE_CHANNEL
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -7418,7 +7417,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DOCUMENT_NAME")), ''))) as DOCUMENT_NAME,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_TYPE")), ''))) as DOCUMENT_TYPE,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_GENERATION_DATE")), ''))) as ISSUE_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_DOCUMENT_DETAILS
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -7464,7 +7463,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DOCUMENT_NAME")), ''))) as DOCUMENT_NAME,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_TYPE")), ''))) as DOCUMENT_TYPE,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_GENERATION_DATE")), ''))) as ISSUE_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DOCUMENT_DETAILS
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -7510,7 +7509,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DOCUMENT_NAME")), ''))) as DOCUMENT_NAME,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_TYPE")), ''))) as DOCUMENT_TYPE,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_GENERATION_DATE")), ''))) as ISSUE_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_DOCUMENT_DETAILS
       )
      where hkey in (select hkey from s6) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -7556,7 +7555,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DOCUMENT_NAME")), ''))) as DOCUMENT_NAME,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_TYPE")), ''))) as DOCUMENT_TYPE,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_GENERATION_DATE")), ''))) as ISSUE_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_DOCUMENT_DETAIL
       )
      where hkey in (select hkey from s7) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -7598,7 +7597,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COI_NUMBER")), ''))),'') is not null then 'COI:' || nullif(trim((nullif(trim(to_varchar("COI_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COI_NUMBER")), ''))) as DOCUMENT_REFERENCE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s8) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -7634,7 +7633,7 @@ e9 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DOCUMENT_NAME")), ''))) as DOCUMENT_NAME,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_TYPE")), ''))) as DOCUMENT_TYPE,
                to_varchar((nullif(trim(to_varchar("DOCUMENT_GENERATION_DATE")), ''))) as ISSUE_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_DOCUMENT_DETAIL
       )
      where hkey in (select hkey from s9) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -7676,7 +7675,7 @@ e10 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_DOCUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COI_NUMBER")), ''))),'') is not null then 'COI:' || nullif(trim((nullif(trim(to_varchar("COI_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COI_NUMBER")), ''))) as DOCUMENT_REFERENCE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s10) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -7801,7 +7800,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 39. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]  [M1]
+-- 39. MAXIMUS — SAT_FINTXN_ACCOUNTING   [Implemented]
 -- standard satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE
 -- group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
@@ -7828,7 +7827,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(w1_claimpaymentid),'') is not null then 'PAY:' || nullif(trim(w1_claimpaymentid), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CLAIM_PAYMENT_VOUCHER")), ''))) as VOUCHER_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -7854,7 +7853,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 40. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]  [M1]
+-- 40. MAXIMUS — SAT_FINTXN_CLAIM_PAYMENT   [Implemented]
 -- standard satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE
 -- group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
@@ -7895,7 +7894,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("UTR_DATE")), ''))) as PAYMENT_DATE,
                to_varchar((nullif(trim(to_varchar("PAYMENT_MODE")), ''))) as PAYMENT_MODE,
                to_varchar((nullif(trim(to_varchar("UTR_NO")), ''))) as UTR_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -7956,7 +7955,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 41. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]  [M1]
+-- 41. MAXIMUS — SAT_FINTXN_HEADER   [Implemented]
 -- standard satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 4 RECORD_SOURCE
 -- group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
@@ -7994,7 +7993,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("REFERENCE_TYPE")), ''))) as SOURCE_REFERENCE_TYPE,
                to_varchar((nullif(trim(to_varchar("TRANSACTIONID")), ''))) as TRANSACTION_NUMBER,
                to_varchar((nullif(trim(to_varchar("PAYMENT_TRANSACTION_TYPE")), ''))) as TRANSACTION_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -8045,7 +8044,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("SUB_CODE")), ''))) as ORG_UNIT_CODE,
                to_varchar((nullif(trim(to_varchar("COLLECTION_SOURCE")), ''))) as TRANSACTION_CHANNEL,
                to_varchar((nullif(trim(to_varchar("TRANSACTION_DATE")), ''))) as TRANSACTION_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -8087,7 +8086,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(w1_policy_number),''), nullif(trim("FOREIGN_KEY"),'')) is not null then 'POLPREM:' || coalesce(nullif(trim(w1_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TRANSACTION_ID")), ''))) as TRANSACTION_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -8119,7 +8118,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TRANSACTION_ID")), ''))) as TRANSACTION_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -8178,7 +8177,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 42. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]  [M1]
+-- 42. MAXIMUS — SAT_FINTXN_PREMIUM   [Implemented]
 -- standard satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 3 RECORD_SOURCE
 -- group(s): MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION [1
 -- col(s)],
@@ -8208,7 +8207,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COLLECTION_MODE")), ''))) as COLLECTION_MODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -8240,7 +8239,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(w1_policy_number),''), nullif(trim("FOREIGN_KEY"),'')) is not null then 'POLPREM:' || coalesce(nullif(trim(w1_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MODE_OF_PAYMENT")), ''))) as COLLECTION_MODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -8272,7 +8271,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MODE_OF_PAYMENT")), ''))) as COLLECTION_MODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -8320,7 +8319,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 43. MAXIMUS — SAT_FINTXN_TAX   [Implemented]  [M1]
+-- 43. MAXIMUS — SAT_FINTXN_TAX   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK FINANCIAL_TRANSACTION_HKEY, child key
 -- TAX_TYPE; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
@@ -8368,7 +8367,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("GST_PERCENTAGE")), '')))) as TAX_RATE,
                cast(null as varchar) as TDS_AMOUNT,
                cast(null as varchar) as TAX_APPLICABLE_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CGST_AMOUNT")), '')) is not null or (nullif(trim(to_varchar("GST_PERCENTAGE")), '')) is not null or (nullif(trim(to_varchar("IGST_AMOUNT")), '')) is not null or (nullif(trim(to_varchar("PAYMENT_STATE")), '')) is not null or (nullif(trim(to_varchar("SGST_AMOUNT")), '')) is not null or (nullif(trim(to_varchar("TAX_INVOICE_DATE")), '')) is not null or (nullif(trim(to_varchar("TAX_INVOICE_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmpay_payp_pv__sat_fintxn_tax#2
@@ -8384,7 +8383,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as TAX_RATE,
                to_varchar(((nullif(trim(to_varchar("TDS_AMOUNT")), '')))) as TDS_AMOUNT,
                cast(null as varchar) as TAX_APPLICABLE_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("TDS_AMOUNT")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmpay_payp_pv__sat_fintxn_tax#3
@@ -8400,7 +8399,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as TAX_RATE,
                to_varchar(((nullif(trim(to_varchar("TDS_ON_INTEREST")), '')))) as TDS_AMOUNT,
                cast(null as varchar) as TAX_APPLICABLE_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("TDS_ON_INTEREST")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmpay_payp_pv__sat_fintxn_tax#4
@@ -8416,7 +8415,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as TAX_RATE,
                cast(null as varchar) as TDS_AMOUNT,
                to_varchar(((nullif(trim(to_varchar("VAT_APPLICABLE")), '')))) as TAX_APPLICABLE_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("VAT_APPLICABLE")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -8511,7 +8510,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("TOTAL_GST_PERCENTAGE")), '')))) as TAX_RATE,
                cast(null as varchar) as TDS_AMOUNT,
                cast(null as varchar) as TDS_RATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CGST")), '')) is not null or (nullif(trim(to_varchar("CGST_PERCENTAGE")), '')) is not null or (nullif(trim(to_varchar("GST_APPLICABILITY")), '')) is not null or (nullif(trim(to_varchar("IGST")), '')) is not null or (nullif(trim(to_varchar("IGST_PERCENTAGE")), '')) is not null or (nullif(trim(to_varchar("INVOICE_NUMBER")), '')) is not null or (nullif(trim(to_varchar("SGST")), '')) is not null or (nullif(trim(to_varchar("SGST_PERCENTAGE")), '')) is not null or (nullif(trim(to_varchar("TOTAL_GST_PERCENTAGE")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv__sat_fintxn_tax#2
@@ -8529,7 +8528,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as TAX_RATE,
                to_varchar(((nullif(trim(to_varchar("TDS_AMOUNT")), '')))) as TDS_AMOUNT,
                to_varchar(((nullif(trim(to_varchar("TDS_RATE")), '')))) as TDS_RATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("TDS_AMOUNT")), '')) is not null or (nullif(trim(to_varchar("TDS_APPLICABILITY")), '')) is not null or (nullif(trim(to_varchar("TDS_APPLICABLE_FLAG")), '')) is not null or (nullif(trim(to_varchar("TDS_RATE")), '')) is not null
       )
      where hkey in (select hkey from s2) and ldts is not null
@@ -8617,7 +8616,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 44. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]  [M1]
+-- 44. MAXIMUS — SAT_FIN_RECEIPT   [Implemented]
 -- standard satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 3 RECORD_SOURCE
 -- group(s): MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION [5
 -- col(s)],
@@ -8655,7 +8654,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("RECEIPT_GENERATION_DATE")), ''))) as RECEIPT_DATE,
                to_varchar((nullif(trim(to_varchar("RECEIPT_NUMBER")), ''))) as RECEIPT_NUMBER,
                to_varchar((nullif(trim(to_varchar("COLLECTION_TYPE")), ''))) as RECEIPT_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -8707,7 +8706,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(w1_policy_number),''), nullif(trim("FOREIGN_KEY"),'')) is not null then 'POLPREM:' || coalesce(nullif(trim(w1_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PGTRANSACTION_ID")), ''))) as PAYMENT_GATEWAY_REFERENCE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -8739,7 +8738,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PGTRANSACTION_ID")), ''))) as PAYMENT_GATEWAY_REFERENCE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -8787,7 +8786,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 45. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]  [M1]
+-- 45. MAXIMUS — SAT_INSTRUMENT_DEFINITION   [Implemented]
 -- standard satellite, automate_dv.sat; PK PAYMENT_INSTRUMENT_HKEY; 2 RECORD_SOURCE
 -- group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
@@ -8821,7 +8820,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("ACCOUNT_TYPE")), ''))) as ACCOUNT_TYPE,
                to_varchar((nullif(trim(to_varchar("BRANCH_CODE")), ''))) as BANK_BRANCH_CODE,
                to_varchar((nullif(trim(to_varchar("BANK_NAME")), ''))) as BANK_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -8868,7 +8867,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PAYMENT_INSTRUMENT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CHEQUE_NUMBER")), ''))),'') is not null then 'CHEQUE:' || nullif(trim((nullif(trim(to_varchar("CHEQUE_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CHEQUE_STATUS")), ''))) as INSTRUMENT_STATUS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -8905,7 +8904,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 46. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]  [M1]
+-- 46. MAXIMUS — SAT_LNK_PARTY_ROLE_CORE   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK PARTY_HKEY, child key ROLE_CODE,
 -- ROLE_SEQUENCE; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -8939,7 +8938,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_INSURED")), ''))) as ROLE_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -8975,7 +8974,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("INTERMEDIARY_TYPE")), '')))) as ROLE_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("INTERMEDIARY_TYPE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_lnk_party_role_core#2
@@ -8984,7 +8983,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('1') as cdk_2,
                rec_refresh_at as ldts,
                cast(null as varchar) as ROLE_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where 1 = 1
       )
      where hkey in (select hkey from s2) and ldts is not null
@@ -9022,7 +9021,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 47. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Implemented]  [M1]
+-- 47. MAXIMUS — SAT_LNK_POLICY_PARTY_ROLE   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK POLICY_PARTY_HKEY, child key
 -- PARTY_ROLE_TYPE, ROLE_SEQUENCE; 5 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS [2
@@ -9061,7 +9060,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PARTY_START_DATE")), ''))) as ROLE_EFFECTIVE_DATE,
                to_varchar((nullif(trim(to_varchar("PARTY_END_DATE")), ''))) as ROLE_END_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -9102,7 +9101,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("START_DATE")), ''))) as ROLE_EFFECTIVE_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_RELATION
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -9138,7 +9137,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PARTY_SHARE_PERCENTAGE")), ''))) as ATTRIBUTION_PERCENTAGE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -9176,7 +9175,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PARTY_START_DATE")), ''))) as ROLE_EFFECTIVE_DATE,
                to_varchar((nullif(trim(to_varchar("PARTY_END_DATE")), ''))) as ROLE_END_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -9217,7 +9216,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("START_DATE")), ''))) as ROLE_EFFECTIVE_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_RELATION
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -9287,7 +9286,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 48. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]  [M1]
+-- 48. MAXIMUS — SAT_LNK_ROLE_AGENT   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_ROLE_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [9 col(s)].
@@ -9329,7 +9328,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("LICENSE_ISSUE_DATE")), ''))) as LICENCE_ISSUE_DATE,
                to_varchar((nullif(trim(to_varchar("SPECIAL_RATE")), ''))) as SPECIAL_TDS_RATE,
                to_varchar((nullif(trim(to_varchar("SPECIAL_RATE_APPLICABLE")), ''))) as SPECIAL_TDS_RATE_APPLICABLE_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -9395,7 +9394,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 49. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]  [M1]
+-- 49. MAXIMUS — SAT_LNK_ROLE_CUSTOMER   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_ROLE_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -9425,7 +9424,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when nullif(trim(w3_policy_holder_code),'') is not null then nullif(trim(w3_policy_holder_code), '') end),''),'') || '|' || coalesce('CUSTOMER','')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PRIVE_FLAG")), ''))) as PREFERRED_CUSTOMER_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -9459,7 +9458,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_CONSENT_FOR_DATA_SHARING")), ''))) as CONSENT_FOR_DATA_SHARING_INDICATOR,
                to_varchar((nullif(trim(to_varchar("PRIVE_FLAG")), ''))) as VIP_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -9496,7 +9495,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when nullif(trim(w2_policy_holder_code),'') is not null then nullif(trim(w2_policy_holder_code), '') end),''),'') || '|' || coalesce('CUSTOMER','')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PRIVE_FLAG")), ''))) as PREFERRED_CUSTOMER_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -9544,7 +9543,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 50. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]  [M1]
+-- 50. MAXIMUS — SAT_LNK_ROLE_EMPLOYEE   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_ROLE_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -9576,7 +9575,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'') || '|' || coalesce(coalesce(nullif(trim((nullif(trim(to_varchar("PARTY_FUNCTION")), ''))), ''),''),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("STAFF_NUMBER")), ''))) as EMPLOYEE_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -9608,7 +9607,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when nullif(trim((nullif(trim(to_varchar("BAGIC_RM_ECODE")), ''))),'') is not null then 'EMP:' || nullif(trim((nullif(trim(to_varchar("BAGIC_RM_ECODE")), ''))), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BAGIC_RM_ECODE")), ''))) as EMPLOYEE_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -9640,7 +9639,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("STAFF_NUMBER")), ''))) as EMPLOYEE_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -9672,7 +9671,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case when nullif(trim((nullif(trim(to_varchar("BAGIC_RM_ECODE")), ''))),'') is not null then 'EMP:' || nullif(trim((nullif(trim(to_varchar("BAGIC_RM_ECODE")), ''))), '') end),''),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BAGIC_RM_ECODE")), ''))) as EMPLOYEE_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -9731,7 +9730,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 51. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]  [M1]
+-- 51. MAXIMUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)],
@@ -9763,7 +9762,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("APPOINTEE_NAME")), ''))) as APPOINTEE_NAME,
                to_varchar((nullif(trim(to_varchar("ALLOCATION_PERCENTAGE")), ''))) as NOMINATION_PERCENTAGE,
                to_varchar((nullif(trim(to_varchar("RELATION_WITH_INSURED")), ''))) as RELATIONSHIP_TO_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -9809,7 +9808,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("APPOINTEE_NAME")), ''))) as APPOINTEE_NAME,
                to_varchar((nullif(trim(to_varchar("ALLOCATION_PERCENTAGE")), ''))) as NOMINATION_PERCENTAGE,
                to_varchar((nullif(trim(to_varchar("RELATION_WITH_INSURED")), ''))) as RELATIONSHIP_TO_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -9856,7 +9855,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 52. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]  [M1]
+-- 52. MAXIMUS — SAT_LOSS_EVENT_DETAIL   [Implemented]
 -- standard satellite, automate_dv.sat; PK LOSS_EVENT_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [8
 -- col(s)].
@@ -9896,7 +9895,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("POLICE_REPORT_TIME")), ''))) as POLICE_REPORT_TIME,
                to_varchar((nullif(trim(to_varchar("NAME_OF_POLICE_STATION")), ''))) as POLICE_STATION_NAME,
                to_varchar((nullif(trim(to_varchar("TP_INVOLVEMENT_")), ''))) as THIRD_PARTY_INVOLVED_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -9957,7 +9956,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 53. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]  [M1]
+-- 53. MAXIMUS — SAT_LOSS_EVENT_NOTIFICATION   [Implemented]
 -- standard satellite, automate_dv.sat; PK LOSS_EVENT_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)].
@@ -9983,7 +9982,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOSS_EVENT|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),''), nullif(trim(w2_claimno),'')) is not null then 'LOSSEVT:' || coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), ''), nullif(trim(w2_claimno), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NOTIFIED_BY")), ''))) as NOTIFIED_BY_ROLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -10009,7 +10008,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 54. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Implemented]  [M1]
+-- 54. MAXIMUS — SAT_LOSS_LOCATION_ADDRESS   [Implemented]
 -- standard satellite, automate_dv.sat; PK LOSS_EVENT_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [4
 -- col(s)].
@@ -10041,7 +10040,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("LATITUDE")), ''))) as LATITUDE,
                to_varchar((nullif(trim(to_varchar("LONGITUDE")), ''))) as LONGITUDE,
                to_varchar((nullif(trim(to_varchar("PINCODE_WHERE_LOSS_HAPPENED")), ''))) as POSTAL_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -10082,7 +10081,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 55. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]  [M1]
+-- 55. MAXIMUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
 -- standard satellite, automate_dv.sat; PK ORG_UNIT_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -10111,7 +10110,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_BRANCH_NAME")), ''))),'') is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim((nullif(trim(to_varchar("POLICY_BRANCH_NAME")), ''))), '')))) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("POLICY_BRANCH_NAME")), ''))) as ORG_UNIT_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -10143,7 +10142,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("BRANCH_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("BRANCH_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COST_CENTER")), ''))) as COST_CENTRE_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -10175,7 +10174,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_BRANCH_NAME")), ''))),'') is not null then 'ORGUNIT:' || md5(upper(trim(nullif(trim((nullif(trim(to_varchar("POLICY_BRANCH_NAME")), ''))), '')))) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("POLICY_BRANCH_NAME")), ''))) as ORG_UNIT_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -10207,7 +10206,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_ORG_UNIT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("BRANCH_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("BRANCH_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COST_CENTER")), ''))) as COST_CENTRE_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -10266,7 +10265,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 56. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]  [M1]
+-- 56. MAXIMUS — SAT_PARTY_AML_SCREENING   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -10294,7 +10293,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("AML_VERIFICATION_STATUS")), '')), (nullif(trim(to_varchar("CLAIM_AML_VERIFICATION_STATUS")), '')))) as SCREENING_STATUS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -10326,7 +10325,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("AML_VERIFICATION_STATUS")), '')), (nullif(trim(to_varchar("CLAIM_AML_VERIFICATION_STATUS")), '')))) as SCREENING_STATUS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -10363,7 +10362,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 57. MAXIMUS — SAT_PARTY_BANKING   [Implemented]  [M1]
+-- 57. MAXIMUS — SAT_PARTY_BANKING   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK PARTY_HKEY, child key
 -- ACCOUNT_NUMBER_MASKED; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [6
@@ -10407,7 +10406,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("BANK_BRANCH")), ''))) as BRANCH_NAME,
                to_varchar(coalesce((nullif(trim(to_varchar("BANK_IFSC_CODE")), '')), (nullif(trim(to_varchar("IFSC")), '')))) as IFSC_CODE,
                to_varchar((nullif(trim(to_varchar("MICR_CODE")), ''))) as MICR_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -10478,7 +10477,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("IFSC")), ''))) as IFSC_CODE,
                to_varchar((nullif(trim(to_varchar("MICR")), ''))) as MICR_CODE,
                to_varchar((nullif(trim(to_varchar("PRIMARY_SECONDARY")), ''))) as PRIMARY_ACCOUNT_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -10554,7 +10553,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("IFSC")), ''))) as IFSC_CODE,
                to_varchar((nullif(trim(to_varchar("MICR")), ''))) as MICR_CODE,
                to_varchar((nullif(trim(to_varchar("PRIMARY_SECONDARY")), ''))) as PRIMARY_ACCOUNT_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -10632,7 +10631,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 58. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]  [M1]
+-- 58. MAXIMUS — SAT_PARTY_CLAIM_HISTORY   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)].
@@ -10658,7 +10657,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("UNIQUE_CUSTOMER_ID")), ''))),''), nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then coalesce(nullif(trim((nullif(trim(to_varchar("UNIQUE_CUSTOMER_ID")), ''))), ''), nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TOTAL_INCURRED_AMOUNT_FOR_CLAIMS_RAISED_BY_CUSTOMERS")), ''))) as TOTAL_CLAIM_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -10684,7 +10683,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 59. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M1]
+-- 59. MAXIMUS — SAT_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK PARTY_LOCATION_HKEY, child key
 -- ADDRESS_USAGE_TYPE; 6 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_ADDRESS
@@ -10724,7 +10723,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_TYPE")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ADDRESS_PROOF")), ''))) as ADDRESS_PROOF_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -10758,7 +10757,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_TYPE")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ADDRESS_PROOF")), ''))) as ADDRESS_PROOF_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s6) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -10795,7 +10794,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 60. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]  [M1]
+-- 60. MAXIMUS — SAT_PARTY_EMPLOYMENT   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS [1
 -- col(s)],
@@ -10826,7 +10825,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("OCCUPATION")), ''))) as OCCUPATION_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -10862,7 +10861,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("EMPLOYER_NAME")), ''))) as EMPLOYER_NAME,
                to_varchar((nullif(trim(to_varchar("OCCUPATION")), ''))) as OCCUPATION_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("CERTIFICATION_NO")), ''))) as PROFESSIONAL_REGISTRATION_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -10904,7 +10903,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("OCCUPATION")), ''))) as OCCUPATION_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -10942,7 +10941,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("OCCUPATION_LIST")), ''))) as OCCUPATION_CODE,
                to_varchar((nullif(trim(to_varchar("OCCUPATION")), ''))) as OCCUPATION_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("CERTIFICATION_NO")), ''))) as PROFESSIONAL_REGISTRATION_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -11016,7 +11015,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 61. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]  [M1]
+-- 61. MAXIMUS — SAT_PARTY_FINANCIAL_PROFILE   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)],
@@ -11044,7 +11043,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CREDITSCORE")), ''))) as CREDIT_SCORE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -11076,7 +11075,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("INCOME_SOURCE")), ''))) as INCOME_SOURCE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -11113,7 +11112,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 62. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]  [M1]
+-- 62. MAXIMUS — SAT_PARTY_FRAUD_PROFILE   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [4 col(s)],
@@ -11147,7 +11146,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("BLACKLISTED")), ''))) as NEGATIVE_LIST_INDICATOR,
                to_varchar(coalesce((nullif(trim(to_varchar("BLACKLIST_DETAILS")), '')), (nullif(trim(to_varchar("REASON_FOR_BLACKLISTING")), '')))) as NEGATIVE_LIST_REASON,
                to_varchar((nullif(trim(to_varchar("NONDISCLOSURE_INITIATED")), ''))) as NON_DISCLOSURE_ACTION_INITIATED_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -11200,7 +11199,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("BLACKLISTED")), ''))) as NEGATIVE_LIST_INDICATOR,
                to_varchar(coalesce((nullif(trim(to_varchar("BLACKLIST_DETAILS")), '')), (nullif(trim(to_varchar("REASON_FOR_BLACKLISTING")), '')))) as NEGATIVE_LIST_REASON,
                to_varchar((nullif(trim(to_varchar("NONDISCLOSURE_INITIATED")), ''))) as NON_DISCLOSURE_ACTION_INITIATED_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -11252,7 +11251,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 63. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]  [M1]
+-- 63. MAXIMUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [6 col(s)],
@@ -11290,7 +11289,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("HEIGHT")), ''))) as HEIGHT,
                to_varchar((nullif(trim(to_varchar("DISEASE_NAME")), ''))) as PRE_EXISTING_DISEASE_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("WEIGHT")), ''))) as WEIGHT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -11357,7 +11356,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("HEIGHT")), ''))) as HEIGHT,
                to_varchar((nullif(trim(to_varchar("DISEASE_NAME")), ''))) as PRE_EXISTING_DISEASE_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("WEIGHT")), ''))) as WEIGHT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -11419,7 +11418,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 64. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]  [M1]
+-- 64. MAXIMUS — SAT_PARTY_IDENTIFICATION   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK PARTY_HKEY, child key
 -- IDENTIFICATION_TYPE_CODE; 8 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [7
@@ -11472,7 +11471,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_NUMBER,
                cast(null as varchar) as PASSPORT_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("INSURED_AADHAR_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_party_identification#2
@@ -11486,7 +11485,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_NUMBER,
                cast(null as varchar) as PASSPORT_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("ENTER_CKYC_NO")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_party_identification#3
@@ -11500,7 +11499,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_NUMBER,
                cast(null as varchar) as PASSPORT_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("IDENTIFICATION_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_party_identification#4
@@ -11514,7 +11513,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_NUMBER,
                cast(null as varchar) as PASSPORT_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("GSTN_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_party_identification#5
@@ -11528,7 +11527,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("PAN_NUMBER")), '')))) as PAN_NUMBER,
                cast(null as varchar) as PASSPORT_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("PAN_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_party_identification#6
@@ -11542,7 +11541,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("INSURED_PAN_NUMBER")), '')))) as PAN_NUMBER,
                cast(null as varchar) as PASSPORT_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("INSURED_PAN_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_party_identification#7
@@ -11556,7 +11555,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_NUMBER,
                to_varchar(((nullif(trim(to_varchar("PASSPORT_NUMBER")), '')))) as PASSPORT_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("PASSPORT_NUMBER")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__sat_party_identification#8
@@ -11570,7 +11569,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_NUMBER,
                cast(null as varchar) as PASSPORT_NUMBER,
                to_varchar(((nullif(trim(to_varchar("ENTER_VOTER_ID")), '')))) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("ENTER_VOTER_ID")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -11635,7 +11634,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('NIF') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NIF")), ''))) as IDENTIFICATION_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -11669,7 +11668,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('NIF') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NIF")), ''))) as IDENTIFICATION_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -11703,7 +11702,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('PAN') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("PAN_NO")), '')), (nullif(trim(to_varchar("TDS_PAN_NUMBER")), '')))) as PAN_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -11741,7 +11740,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PASSPORT_ISSUE_DATE")), ''))) as IDENTIFICATION_ISSUE_DATE,
                to_varchar((nullif(trim(to_varchar("PASSPORT_EXPIRY_DATE")), ''))) as PASSPORT_EXPIRY_DATE,
                to_varchar((nullif(trim(to_varchar("PASSPORT_NUMBER")), ''))) as PASSPORT_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -11829,7 +11828,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ID_NUMBER")), '')) is not null or (nullif(trim(to_varchar("IDENTIFICATION_PROOF_EFFECTIVE_DATE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#2
@@ -11859,7 +11858,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("AADHAAR_NUMBER")), '')) is not null or (nullif(trim(to_varchar("POA_AADHAR_CARD_STATUS")), '')) is not null or (nullif(trim(to_varchar("UID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#3
@@ -11889,7 +11888,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("AADHAAR_ENROLLMENT_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#4
@@ -11919,7 +11918,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("VID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#5
@@ -11949,7 +11948,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ABHA_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#6
@@ -11979,7 +11978,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("DOB_PROOF")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#7
@@ -12009,7 +12008,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CIN_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#8
@@ -12039,7 +12038,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CKYC_NUMBER")), '')) is not null or (nullif(trim(to_varchar("CLAIM_CKYC_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#9
@@ -12069,7 +12068,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("DRIVING_LICENSE_EXPIRY_DATE")), '')) is not null or (nullif(trim(to_varchar("DRIVING_LICENSE_ISSUE_DATE")), '')) is not null or (nullif(trim(to_varchar("DRIVING_LICENSE_NUMBER")), '')) is not null or (nullif(trim(to_varchar("DRIVING_LICENSE_PLACE_OF_ISSUE")), '')) is not null or (nullif(trim(to_varchar("POA_DRIVING_LICENSE_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#10
@@ -12099,7 +12098,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("E_INSURANCE_DEMAT_ACCOUNT_VERIFIED")), '')) is not null or (nullif(trim(to_varchar("EIA_NUMBER")), '')) is not null or (nullif(trim(to_varchar("INSURANCE_REPOSITORY_CODE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#11
@@ -12129,7 +12128,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("POI_FORM_60_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#12
@@ -12159,7 +12158,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("EXPIRY_DATE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#13
@@ -12189,7 +12188,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("GSTIN_ISSUANCE_DT")), '')) is not null or (nullif(trim(to_varchar("GSTINUIN")), '')) is not null or (nullif(trim(to_varchar("GSTN_NUMBER")), '')) is not null or (nullif(trim(to_varchar("GSTN_REGN_STATUS")), '')) is not null or (nullif(trim(to_varchar("GSTN_STATUS")), '')) is not null or (nullif(trim(to_varchar("GSTN_TAXPAYER_TYPE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#14
@@ -12219,7 +12218,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("NREGA_JOB_CARD")), '')) is not null or (nullif(trim(to_varchar("POA_NREGA_JOB_CARD_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#15
@@ -12249,7 +12248,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("PAN_NUMBER")), '')) is not null or (nullif(trim(to_varchar("POI_PAN_CARD_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#16
@@ -12279,7 +12278,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("POA_PASSPORT_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#17
@@ -12309,7 +12308,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("PROOF_OF_ADDRESS_SUBMITTED_FOR_CURRENT_PERMANENT_OVERSEAS_ADDRESS")), '')))) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("POA_DOCUMENT_STATUS")), '')) is not null or (nullif(trim(to_varchar("PROOF_OF_ADDRESS_SUBMITTED_FOR_CURRENT_PERMANENT_OVERSEAS_ADDRESS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#18
@@ -12339,7 +12338,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("POI_DOCUMENT_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#19
@@ -12369,7 +12368,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("SEZ_REGISTRATION_DATE")), '')) is not null or (nullif(trim(to_varchar("SEZ_REGISTRATION_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#20
@@ -12399,7 +12398,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                to_varchar(((nullif(trim(to_varchar("TAN_NUMBER")), '')))) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("TAN_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_identification#21
@@ -12429,7 +12428,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as OVD_CATEGORY,
                cast(null as varchar) as TAN_NUMBER,
                to_varchar(((nullif(trim(to_varchar("VOTER_ID")), '')))) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("VOTER_ID")), '')) is not null
       )
      where hkey in (select hkey from s6) and ldts is not null
@@ -12578,7 +12577,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PASSPORT_ISSUE_DATE")), ''))) as IDENTIFICATION_ISSUE_DATE,
                to_varchar((nullif(trim(to_varchar("PASSPORT_EXPIRY_DATE")), ''))) as PASSPORT_EXPIRY_DATE,
                to_varchar((nullif(trim(to_varchar("PASSPORT_NUMBER")), ''))) as PASSPORT_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s7) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -12666,7 +12665,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ID_NUMBER")), '')) is not null or (nullif(trim(to_varchar("ID_PROOF")), '')) is not null or (nullif(trim(to_varchar("IDENTIFICATION_PROOF")), '')) is not null or (nullif(trim(to_varchar("IDENTIFICATION_PROOF_EFFECTIVE_DATE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#2
@@ -12696,7 +12695,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("AADHAAR_NUMBER")), '')) is not null or (nullif(trim(to_varchar("AADHAR_NO")), '')) is not null or (nullif(trim(to_varchar("POA_AADHAR_CARD_STATUS")), '')) is not null or (nullif(trim(to_varchar("UID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#3
@@ -12726,7 +12725,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("AADHAAR_ENROLLMENT_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#4
@@ -12756,7 +12755,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("VID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#5
@@ -12786,7 +12785,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ABHA_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#6
@@ -12816,7 +12815,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("DOB_PROOF")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#7
@@ -12846,7 +12845,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CIN_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#8
@@ -12876,7 +12875,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CKYC_NUMBER")), '')) is not null or (nullif(trim(to_varchar("CLAIM_CKYC_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#9
@@ -12906,7 +12905,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("DRIVING_LICENSE_EXPIRY_DATE")), '')) is not null or (nullif(trim(to_varchar("DRIVING_LICENSE_ISSUE_DATE")), '')) is not null or (nullif(trim(to_varchar("DRIVING_LICENSE_NUMBER")), '')) is not null or (nullif(trim(to_varchar("DRIVING_LICENSE_PLACE_OF_ISSUE")), '')) is not null or (nullif(trim(to_varchar("POA_DRIVING_LICENSE_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#10
@@ -12936,7 +12935,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("E_INSURANCE_DEMAT_ACCOUNT_VERIFIED")), '')) is not null or (nullif(trim(to_varchar("EIA_NUMBER")), '')) is not null or (nullif(trim(to_varchar("INSURANCE_REPOSITORY_CODE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#11
@@ -12966,7 +12965,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("POI_FORM_60_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#12
@@ -12996,7 +12995,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("EXPIRY_DATE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#13
@@ -13026,7 +13025,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("GSTIN_ISSUANCE_DT")), '')) is not null or (nullif(trim(to_varchar("GSTINUIN")), '')) is not null or (nullif(trim(to_varchar("GSTN_NUMBER")), '')) is not null or (nullif(trim(to_varchar("GSTN_REGN_STATUS")), '')) is not null or (nullif(trim(to_varchar("GSTN_STATUS")), '')) is not null or (nullif(trim(to_varchar("GSTN_TAXPAYER_TYPE")), '')) is not null or (nullif(trim(to_varchar("TAXPAYER_TYPE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#14
@@ -13056,7 +13055,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("NREGA_JOB_CARD")), '')) is not null or (nullif(trim(to_varchar("POA_NREGA_JOB_CARD_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#15
@@ -13086,7 +13085,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("POI_PAN_CARD_STATUS")), '')))) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("PAN_NO")), '')) is not null or (nullif(trim(to_varchar("PAN_NUMBER")), '')) is not null or (nullif(trim(to_varchar("POI_PAN_CARD_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#16
@@ -13116,7 +13115,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("POA_PASSPORT_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#17
@@ -13146,7 +13145,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("POA_DOCUMENT_STATUS")), '')) is not null or (nullif(trim(to_varchar("PROOF_OF_ADDRESS_SUBMITTED_FOR_CURRENT_PERMANENT_OVERSEAS_ADDRESS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#18
@@ -13176,7 +13175,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("POI_DOCUMENT_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#19
@@ -13206,7 +13205,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("SEPZ_REGISTRATION_DATE")), '')) is not null or (nullif(trim(to_varchar("SEPZ_REGISTRATION_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#20
@@ -13236,7 +13235,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("SERVICE_TAX")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#21
@@ -13266,7 +13265,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("SEZ_EXPIRY_DATE")), '')) is not null or (nullif(trim(to_varchar("SEZ_REGISTRATION_DATE")), '')) is not null or (nullif(trim(to_varchar("SEZ_REGISTRATION_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#22
@@ -13296,7 +13295,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                to_varchar(((nullif(trim(to_varchar("TAN_NUMBER")), '')))) as TAN_NUMBER,
                cast(null as varchar) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("TAN_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_identification#23
@@ -13326,7 +13325,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PAN_VERIFICATION_STATUS,
                cast(null as varchar) as TAN_NUMBER,
                to_varchar(((nullif(trim(to_varchar("VOTER_ID")), '')))) as VOTER_ID_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("VOTER_ID")), '')) is not null
       )
      where hkey in (select hkey from s8) and ldts is not null
@@ -13540,7 +13539,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 65. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]  [M1]
+-- 65. MAXIMUS — SAT_PARTY_IDENTITY   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 14 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
 -- col(s)], MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY [4 col(s)],
@@ -13588,7 +13587,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ENTER_DOB")), ''))) as DATE_OF_BIRTH,
                to_varchar(coalesce((nullif(trim(to_varchar("INSURED_NAME")), '')), (nullif(trim(to_varchar("MEMBER_NAME")), '')), (nullif(trim(to_varchar("SUB_IMD_NAME")), '')))) as PARTY_FULL_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -13631,7 +13630,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("LASTNAME")), ''))) as LAST_NAME,
                to_varchar((nullif(trim(to_varchar("MIDDLENAME")), ''))) as MIDDLE_NAME,
                to_varchar((nullif(trim(to_varchar("BUSINESS_NAME")), ''))) as PARTY_LEGAL_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PARTY
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -13684,7 +13683,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("LASTNAME")), ''))) as LAST_NAME,
                to_varchar((nullif(trim(to_varchar("MIDDLENAME")), ''))) as MIDDLE_NAME,
                to_varchar((nullif(trim(to_varchar("BUSINESS_NAME")), ''))) as PARTY_LEGAL_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -13731,7 +13730,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_NAME_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_NAME_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PARTY_NAME")), ''))) as PARTY_FULL_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -13763,7 +13762,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("HOSPITAL_ID")), ''))),'') is not null then 'PROVIDER:' || nullif(trim((nullif(trim(to_varchar("HOSPITAL_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("HOSPITAL_NAME")), ''))) as PARTY_FULL_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -13813,7 +13812,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PARTY_STATUS")), ''))) as PARTY_STATUS,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_PARTY")), ''))) as PARTY_TYPE_CODE,
                to_varchar((nullif(trim(to_varchar("TITLE")), ''))) as SALUTATION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
       )
      where hkey in (select hkey from s6) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -13902,7 +13901,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("GENDER")), ''))) as GENDER_CODE,
                to_varchar((nullif(trim(to_varchar("COUNTRY_OF_CITIZENSHIP")), ''))) as NATIONALITY,
                to_varchar(coalesce((nullif(trim(to_varchar("COMPANY")), '')), (nullif(trim(to_varchar("LEGAL_NAME_OF_BUSINESS")), '')))) as PARTY_LEGAL_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s7) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -13964,7 +13963,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))),'') is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))), '')))) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NOMINEE_NAME")), ''))) as PARTY_FULL_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s8) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -13996,7 +13995,7 @@ e9 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w2_policy_holder_code),'') is not null then nullif(trim(w2_policy_holder_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_CLIENT")), ''))) as PARTY_TYPE_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s9) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -14028,7 +14027,7 @@ e10 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PARTY_NAME")), ''))) as PARTY_FULL_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_RELATION
       )
      where hkey in (select hkey from s10) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -14078,7 +14077,7 @@ e11 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PARTY_STATUS")), ''))) as PARTY_STATUS,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_PARTY")), ''))) as PARTY_TYPE_CODE,
                to_varchar((nullif(trim(to_varchar("TITLE")), ''))) as SALUTATION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS
       )
      where hkey in (select hkey from s11) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -14173,7 +14172,7 @@ e12 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce((nullif(trim(to_varchar("COMPANY")), '')), (nullif(trim(to_varchar("LEGAL_NAME_OF_BUSINESS")), '')))) as PARTY_LEGAL_NAME,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_INSURED")), ''))) as PARTY_SUB_TYPE_CODE,
                to_varchar((nullif(trim(to_varchar("POLICY_HOLDER_TYPE")), ''))) as PARTY_TYPE_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s12) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -14250,7 +14249,7 @@ e13 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))),'') is not null then 'NOMINEE:' || md5(upper(trim(nullif(trim((nullif(trim(to_varchar("NOMINEE_NAME")), ''))), '')))) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NOMINEE_NAME")), ''))) as PARTY_FULL_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s13) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -14282,7 +14281,7 @@ e14 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w2_policy_holder_code),'') is not null then nullif(trim(w2_policy_holder_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_CLIENT")), ''))) as PARTY_TYPE_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s14) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -14451,7 +14450,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 66. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M1]
+-- 66. MAXIMUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [4 col(s)],
@@ -14485,7 +14484,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("FATHER_NAME")), ''))) as FATHER_NAME,
                to_varchar((nullif(trim(to_varchar("MARITAL_STATUS")), ''))) as MARITAL_STATUS,
                to_varchar((nullif(trim(to_varchar("SPOUSE_NAME")), ''))) as SPOUSE_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -14542,7 +14541,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("MARITAL_STATUS")), ''))) as MARITAL_STATUS,
                to_varchar((nullif(trim(to_varchar("SPOUSE_NAME")), ''))) as SPOUSE_NAME,
                to_varchar((nullif(trim(to_varchar("NUMBER_OF_YEARS_RESIDING_IN_THE_CITY_OF_RESIDENCE")), ''))) as YEARS_IN_CITY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -14604,7 +14603,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 67. MAXIMUS — SAT_PARTY_KYC   [Implemented]  [M1]
+-- 67. MAXIMUS — SAT_PARTY_KYC   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [7 col(s)],
@@ -14644,7 +14643,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("KYC_DETAILS")), ''))) as KYC_DETAILS_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("KYC_RELATED_DETAILS")), ''))) as KYC_RELATED_DETAILS_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("KYC_VERIFICATION")), ''))) as KYC_STATUS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -14718,7 +14717,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("KYC_DETAILS")), ''))) as KYC_DETAIL_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("KYC_RELATED_DETAILS")), ''))) as KYC_RELATED_DETAILS_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("KYC_VERIFICATION")), ''))) as KYC_STATUS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -14785,7 +14784,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 68. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Implemented]  [M1]
+-- 68. MAXIMUS — SAT_PARTY_KYC_REFERENCE   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK PARTY_HKEY, child key KYC_REFERENCE_TYPE; 2
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -14817,7 +14816,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('PROOF_OF_ADDRESS') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("POA_STATUS")), '')))) as VERIFICATION_STATUS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("POA_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__sat_party_kyc_reference#2
@@ -14825,7 +14824,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('PROOF_OF_IDENTITY') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("POI_STATUS")), '')))) as VERIFICATION_STATUS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("POI_STATUS")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -14860,7 +14859,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('PROOF_OF_ADDRESS') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("POA_STATUS")), '')))) as VERIFICATION_STATUS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("POA_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__sat_party_kyc_reference#2
@@ -14868,7 +14867,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('PROOF_OF_IDENTITY') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("POI_STATUS")), '')))) as VERIFICATION_STATUS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("POI_STATUS")), '')) is not null
       )
      where hkey in (select hkey from s2) and ldts is not null
@@ -14906,7 +14905,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 69. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M1]
+-- 69. MAXIMUS — SAT_PARTY_ONBOARDING_JOURNEY   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [4 col(s)].
@@ -14938,7 +14937,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("APPLICATION_DATE")), ''))) as ONBOARDING_START_DATE,
                to_varchar((nullif(trim(to_varchar("PREVIOUS_COMPANY_NAME")), ''))) as PREVIOUS_EMPLOYER_NAME,
                to_varchar((nullif(trim(to_varchar("NO_OF_YEARS_OF_WORK_EXPERIENCE")), ''))) as PRIOR_WORK_EXPERIENCE_YEARS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -14979,7 +14978,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 70. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]  [M1]
+-- 70. MAXIMUS — SAT_PARTY_ORGANISATION_PROFILE   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS [3
 -- col(s)],
@@ -15014,7 +15013,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("REGISTRATION_NO")), ''))) as BUSINESS_REGISTRATION_NUMBER,
                to_varchar((nullif(trim(to_varchar("REGISTRATION_DATE")), ''))) as DATE_OF_INCORPORATION,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_ORGANIZATION")), ''))) as LEGAL_CONSTITUTION_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -15082,7 +15081,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("IS_THE_ORGANISATION_A_REGISTERED_BUSINESS_TRUST")), ''))) as REGISTERED_BUSINESS_TRUST_INDICATOR,
                to_varchar((nullif(trim(to_varchar("ARE_YOU_REGISTERED_COMPANY")), ''))) as REGISTERED_COMPANY_DECLARED_INDICATOR,
                to_varchar((nullif(trim(to_varchar("TRADE_NAME")), ''))) as TRADE_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -15183,7 +15182,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("REGISTRATION_NO")), ''))) as BUSINESS_REGISTRATION_NUMBER,
                to_varchar((nullif(trim(to_varchar("REGISTRATION_DATE")), ''))) as DATE_OF_INCORPORATION,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_ORGANIZATION")), ''))) as LEGAL_CONSTITUTION_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -15259,7 +15258,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("IS_THE_ORGANISATION_A_REGISTERED_BUSINESS_TRUST")), ''))) as REGISTERED_BUSINESS_TRUST_INDICATOR,
                to_varchar((nullif(trim(to_varchar("ARE_YOU_REGISTERED_COMPANY")), ''))) as REGISTERED_COMPANY_DECLARED_INDICATOR,
                to_varchar((nullif(trim(to_varchar("TRADE_NAME")), ''))) as TRADE_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -15403,7 +15402,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 71. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]  [M2]
+-- 71. MAXIMUS — SAT_PARTY_PAYOUT_PROFILE   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -15429,7 +15428,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("GST_PAYMENT_FLAG")), ''))) as GST_APPLICABLE_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -15455,7 +15454,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 72. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]  [M2]
+-- 72. MAXIMUS — SAT_PARTY_POLICY_HISTORY   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)].
@@ -15481,7 +15480,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("UNIQUE_CUSTOMER_ID")), ''))),''), nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then coalesce(nullif(trim((nullif(trim(to_varchar("UNIQUE_CUSTOMER_ID")), ''))), ''), nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TOTAL_POLICIES_PURCHASED")), ''))) as TOTAL_POLICY_COUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -15507,7 +15506,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 73. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]  [M2]
+-- 73. MAXIMUS — SAT_PARTY_PORTFOLIO_SUMMARY   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [8
 -- col(s)].
@@ -15547,7 +15546,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("LATEST_POLICY_PRODUCT_NAME")), ''))) as LATEST_POLICY_PRODUCT_NAME,
                to_varchar((nullif(trim(to_varchar("LATEST_POLICY_SUB_CHANNNEL")), ''))) as LATEST_POLICY_SUB_CHANNEL,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_TAKING_POLICIES_FROM_MULTIPLE_CHANNELS")), ''))) as MULTI_CHANNEL_PURCHASE_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -15608,7 +15607,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 74. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M2]
+-- 74. MAXIMUS — SAT_PARTY_RELATIONSHIP_PROFILE   [Implemented]
 -- standard satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)].
@@ -15634,7 +15633,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("UNIQUE_CUSTOMER_ID")), ''))),''), nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then coalesce(nullif(trim((nullif(trim(to_varchar("UNIQUE_CUSTOMER_ID")), ''))), ''), nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TOTAL_PREMIUM_PAID")), ''))) as TOTAL_PREMIUM_PAID_LIFETIME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -15660,7 +15659,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 75. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]  [M2]
+-- 75. MAXIMUS — SAT_POLICY_CANCELLATION   [Implemented]
 -- standard satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [5 col(s)].
@@ -15694,7 +15693,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CALCULATED_AMOUNT_FOR_ELAPSED_PERIOD")), ''))) as ELAPSED_PERIOD_PREMIUM_AMOUNT,
                to_varchar((nullif(trim(to_varchar("RETAINED_ADMIN_CHARGES")), ''))) as RETAINED_ADMIN_CHARGES_AMOUNT,
                to_varchar((nullif(trim(to_varchar("CALCULATED_AMOUNT_FOR_REMAINING_PERIOD")), ''))) as UNEXPIRED_PERIOD_PREMIUM_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -15740,7 +15739,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 76. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Implemented]  [M2]
+-- 76. MAXIMUS — SAT_POLICY_CLASSIFICATION   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key CLASSIFICATION_TYPE;
 -- 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
@@ -15774,7 +15773,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('TYPE_OF_BUSINESS') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BUSINESS_TYPE")), ''))) as CLASSIFICATION_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -15808,7 +15807,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('BANCA_POLICY') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("BANCA_POLICY")), '')))) as CLASSIFICATION_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("BANCA_POLICY")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_sp_pv__sat_policy_classification#2
@@ -15816,7 +15815,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('POLICY_PLAN') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar((coalesce((nullif(trim(to_varchar("POLICYPLAN")), '')), (nullif(trim(to_varchar("POLICY_PLAN")), ''))))) as CLASSIFICATION_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("POLICY_PLAN")), '')) is not null or (nullif(trim(to_varchar("POLICYPLAN")), '')) is not null
       )
      where hkey in (select hkey from s2) and ldts is not null
@@ -15851,7 +15850,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('POLICY_PLAN') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("POLICY_PLAN")), '')))) as CLASSIFICATION_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("POLICY_PLAN")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_sp_pv__sat_policy_classification#2
@@ -15859,7 +15858,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('SOURCE_OF_BUSINESS') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("SOURCE_OF_BUSINESS")), '')))) as CLASSIFICATION_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("SOURCE_OF_BUSINESS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_sp_pv__sat_policy_classification#3
@@ -15867,7 +15866,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('TYPE_OF_BUSINESS') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("TYPE_OF_BUSINESS")), '')))) as CLASSIFICATION_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("TYPE_OF_BUSINESS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_sp_pv__sat_policy_classification#4
@@ -15875,7 +15874,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('TYPE_OF_TOUR') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("TYPE_OF_TOUR")), '')))) as CLASSIFICATION_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("TYPE_OF_TOUR")), '')) is not null
       )
      where hkey in (select hkey from s3) and ldts is not null
@@ -15924,7 +15923,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 77. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M2]
+-- 77. MAXIMUS — SAT_POLICY_COVERAGE_SCHEDULE   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key COVERAGE_REFERENCE,
 -- COVERAGE_SEQUENCE; 6 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
@@ -15967,7 +15966,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PA_COVER_EXPIRY_DATE")), ''))) as COVERAGE_END_DATE,
                to_varchar((nullif(trim(to_varchar("PA_COVER_INCEPTION_DATE")), ''))) as COVERAGE_START_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -16010,7 +16009,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_EXPIRY_DATE")), ''))) as COVERAGE_END_DATE,
                to_varchar((nullif(trim(to_varchar("COVER_INCEPTION_DATE")), ''))) as COVERAGE_START_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -16061,7 +16060,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DEDUCTIBLE_VALUE")), ''))) as DEDUCTIBLE_AMOUNT,
                to_varchar((nullif(trim(to_varchar("COVER_PREMIUM_IN_TRANSACTION_CURRENCY")), ''))) as PREMIUM_FOR_COVERAGE,
                to_varchar((nullif(trim(to_varchar("SUM_INSURED")), ''))) as SUM_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -16128,7 +16127,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("COVER_INCEPTION_DATE")), ''))) as COVERAGE_START_DATE,
                to_varchar((nullif(trim(to_varchar("LIMIT")), ''))) as LIMIT_AMOUNT,
                to_varchar((nullif(trim(to_varchar("COVER_PREMIUM_IN_TRANSACTION_CURRENCY")), ''))) as PREMIUM_FOR_COVERAGE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -16179,7 +16178,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DEDUCTIBLE_VALUE_SUBLIMIT")), ''))) as DEDUCTIBLE_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -16215,7 +16214,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('1') as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TRANSIT_JOURNEY_COVER")), ''))) as COVERAGE_OPTED_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s6) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -16296,7 +16295,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 78. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]  [M2]
+-- 78. MAXIMUS — SAT_POLICY_DISCOUNT_LOADING_APPLIED   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key ITEM_CODE; 3
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -16340,7 +16339,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PLAN_DISCOUNT_PERCENTAGE")), ''))) as PERCENTAGE_APPLIED,
                to_varchar((nullif(trim(to_varchar("JOURNEY_TYPE_RELATIVITY")), ''))) as RELATIVITY_APPLIED,
                to_varchar((nullif(trim(to_varchar("RISK_LOAD_TYPE")), ''))) as RISK_LOADING_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -16399,7 +16398,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce(nullif(trim(coalesce(nullif(trim((nullif(trim(to_varchar("SUBLIMIT_NAME")), ''))), ''), '') || '#' || 'LOADING_ACE'), '#LOADING_ACE'),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("LOADING_ACE")), '')), (nullif(trim(to_varchar("LOADING_ACE_FOR_MAIN_SUB_COVER")), '')))) as AMOUNT_APPLIED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -16435,7 +16434,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("ADJUSTMENT_VALUE")), '')))) as AMOUNT_APPLIED,
                cast(null as varchar) as ITEM_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ADJUSTMENT_VALUE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_sp_pv__sat_policy_discount_loading_applied#2
@@ -16444,7 +16443,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("CLAIMS_EXPERIENCE_DISCOUNT")), '')))) as AMOUNT_APPLIED,
                cast(null as varchar) as ITEM_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CLAIMS_EXPERIENCE_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_sp_pv__sat_policy_discount_loading_applied#3
@@ -16453,7 +16452,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("CLAIMS_EXPERIENCE_LOADING")), '')))) as AMOUNT_APPLIED,
                cast(null as varchar) as ITEM_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CLAIMS_EXPERIENCE_LOADING")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_sp_pv__sat_policy_discount_loading_applied#4
@@ -16462,7 +16461,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("CLU_DISCOUNT")), '')))) as AMOUNT_APPLIED,
                cast(null as varchar) as ITEM_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CLU_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_sp_pv__sat_policy_discount_loading_applied#5
@@ -16471,7 +16470,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as AMOUNT_APPLIED,
                to_varchar(((nullif(trim(to_varchar("TYPE_OF_DISCOUNT")), '')))) as ITEM_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("TYPE_OF_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_sp_pv__sat_policy_discount_loading_applied#6
@@ -16480,7 +16479,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("EMPLOYEE_DISCOUNT")), '')))) as AMOUNT_APPLIED,
                cast(null as varchar) as ITEM_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("EMPLOYEE_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_sp_pv__sat_policy_discount_loading_applied#7
@@ -16489,7 +16488,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("GROUP_DISCOUNT")), '')))) as AMOUNT_APPLIED,
                cast(null as varchar) as ITEM_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("GROUP_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_sp_pv__sat_policy_discount_loading_applied#8
@@ -16498,7 +16497,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as AMOUNT_APPLIED,
                to_varchar(((nullif(trim(to_varchar("TYPE_OF_LOADING")), '')))) as ITEM_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("TYPE_OF_LOADING")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_sp_pv__sat_policy_discount_loading_applied#9
@@ -16507,7 +16506,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("NIL_COMMISSION_DISCOUNT")), '')))) as AMOUNT_APPLIED,
                cast(null as varchar) as ITEM_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("NIL_COMMISSION_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_sp_pv__sat_policy_discount_loading_applied#10
@@ -16516,7 +16515,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("ONLINE_DISCOUNT")), '')))) as AMOUNT_APPLIED,
                cast(null as varchar) as ITEM_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ONLINE_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_sp_pv__sat_policy_discount_loading_applied#11
@@ -16525,7 +16524,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("OTHER_DISCOUNT")), '')))) as AMOUNT_APPLIED,
                cast(null as varchar) as ITEM_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("OTHER_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_sp_pv__sat_policy_discount_loading_applied#12
@@ -16534,7 +16533,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("PREMIUM_ADJUSTMENT")), '')))) as AMOUNT_APPLIED,
                cast(null as varchar) as ITEM_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("PREMIUM_ADJUSTMENT")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_sp_pv__sat_policy_discount_loading_applied#13
@@ -16543,7 +16542,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("STUDENT_DISCOUNT")), '')))) as AMOUNT_APPLIED,
                cast(null as varchar) as ITEM_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("STUDENT_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_sp_pv__sat_policy_discount_loading_applied#14
@@ -16552,7 +16551,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("TRAVELLING_COMPANION_DISCOUNT")), '')))) as AMOUNT_APPLIED,
                cast(null as varchar) as ITEM_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("TRAVELLING_COMPANION_DISCOUNT")), '')) is not null
       )
      where hkey in (select hkey from s3) and ldts is not null
@@ -16606,7 +16605,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 79. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Implemented]  [M2]
+-- 79. MAXIMUS — SAT_POLICY_ENDORSEMENT   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key ENDORSEMENT_NUMBER;
 -- 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS [7 col(s)],
@@ -16649,7 +16648,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("ENDORSEMENT_PREMIUM")), ''))) as PREMIUM_IMPACT_AMOUNT,
                to_varchar((nullif(trim(to_varchar("ENDORSEMENT_REVISED_SUM_INSURED")), ''))) as REVISED_SUM_INSURED_AMOUNT,
                to_varchar((nullif(trim(to_varchar("ENDORSEMENT_SUM_INSURED")), ''))) as SUM_INSURED_IMPACT_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_ENDORSEMENT_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -16719,7 +16718,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("REASON_FOR_INITIATING_THIS_ACTION")), ''))) as ENDORSEMENT_REASON,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_ENDORSEMENT")), ''))) as ENDORSEMENT_TYPE,
                to_varchar((nullif(trim(to_varchar("UNIQUE_IDENTIFICATION_CODE_FOR_ENDT")), ''))) as ENDORSEMENT_UNIQUE_IDENTIFICATION_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -16771,7 +16770,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 80. MAXIMUS — SAT_POLICY_GROUP   [Implemented]  [M2]
+-- 80. MAXIMUS — SAT_POLICY_GROUP   [Implemented]
 -- standard satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [7 col(s)].
@@ -16809,7 +16808,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("NATURE_OF_GROUPS")), ''))) as GROUP_TYPE,
                to_varchar(((nullif(trim(to_varchar("BAGIC_RM_ECODE")), '')))) as INSURED_EMPLOYEE_CODE,
                to_varchar((nullif(trim(to_varchar("PROGRAM_ID")), ''))) as PROGRAM_IDENTIFIER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -16865,7 +16864,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 81. MAXIMUS — SAT_POLICY_HEADER   [Implemented]  [M2]
+-- 81. MAXIMUS — SAT_POLICY_HEADER   [Implemented]
 -- standard satellite, automate_dv.sat; PK POLICY_HKEY; 7 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [3
 -- col(s)],
@@ -16904,7 +16903,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("POLICY_STATUS")), ''))) as POLICY_STATUS,
                to_varchar((nullif(trim(to_varchar("POLICY_EXPIRY_DATE")), ''))) as RISK_EXPIRY_DATE,
                to_varchar((nullif(trim(to_varchar("POLICY_INCEPTION_DATE")), ''))) as RISK_INCEPTION_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -16948,7 +16947,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TOTAL_SI_POLICY_CURRENCY")), ''))) as CURRENCY_CODE,
                to_varchar((nullif(trim(to_varchar("TOTAL_SI_AMOUNT_IN_POLICY_SI_CURRENCY")), ''))) as SUM_INSURED_TOTAL
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -16993,7 +16992,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PAYMENT_FREQUENCY")), ''))) as PREMIUM_FREQUENCY,
                to_varchar((nullif(trim(to_varchar("POLICY_EXPIRY_DATE")), ''))) as RISK_EXPIRY_DATE,
                to_varchar((nullif(trim(to_varchar("POLICY_INCEPTION_DATE")), ''))) as RISK_INCEPTION_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -17059,7 +17058,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("POLICY_EXPIRY_DATE")), ''))) as RISK_EXPIRY_DATE,
                to_varchar((nullif(trim(to_varchar("POLICY_INCEPTION_DATE")), ''))) as RISK_INCEPTION_DATE,
                to_varchar((nullif(trim(to_varchar("POLICY_INCEPTION_TIME")), ''))) as RISK_START_TIME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -17152,7 +17151,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce((nullif(trim(to_varchar("EXPIRING_POLICY_EXPIRY_DATE")), '')), (nullif(trim(to_varchar("POLICY_EXPIRY_DATE")), '')))) as RISK_EXPIRY_DATE,
                to_varchar((nullif(trim(to_varchar("POLICY_INCEPTION_DATE")), ''))) as RISK_INCEPTION_DATE,
                to_varchar((nullif(trim(to_varchar("POLICY_INCEPTION_TIME")), ''))) as RISK_START_TIME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -17255,7 +17254,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("POLICY_EXPIRY_DATE")), ''))) as RISK_EXPIRY_DATE,
                to_varchar((nullif(trim(to_varchar("POLICY_INCEPTION_DATE")), ''))) as RISK_INCEPTION_DATE,
                to_varchar((nullif(trim(to_varchar("SUM_INSURED")), ''))) as SUM_INSURED_TOTAL
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS
       )
      where hkey in (select hkey from s6) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -17304,7 +17303,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MASTER_POLICY_TYPE")), ''))) as POLICY_TYPE,
                to_varchar((nullif(trim(to_varchar("EXPIRING_POLICY_EXPIRY_DATE")), ''))) as RISK_EXPIRY_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s7) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -17401,7 +17400,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 82. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M2]
+-- 82. MAXIMUS — SAT_POLICY_INTERMEDIARY_SPLIT   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key
 -- INTERMEDIARY_REFERENCE; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
@@ -17432,7 +17431,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce('AGENT:' || nullif(trim((nullif(trim(to_varchar("AGENT_CODE")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COMMISION")), ''))) as COMMISSION_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -17466,7 +17465,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("IMD_CODE")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUB_IMD_CODE")), ''))) as SUB_IMD_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -17503,7 +17502,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 83. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]  [M2]
+-- 83. MAXIMUS — SAT_POLICY_PORTABILITY_MIGRATION   [Implemented]
 -- standard satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -17529,7 +17528,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PREVIOUS_POLICY_NUMBER")), ''))) as PREVIOUS_POLICY_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -17555,7 +17554,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 84. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Implemented]  [M2]
+-- 84. MAXIMUS — SAT_POLICY_PREMIUM_HEAD   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key ADJUSTED_INDICATOR,
 -- COVERAGE_REFERENCE, PREMIUM_HEAD_CODE, SECTION; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS [1
@@ -17597,7 +17596,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('COVER') as cdk_4,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NET_PREMIUM")), ''))) as NET_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2, cdk_3, cdk_4 order by ldts desc) = 1
@@ -17643,7 +17642,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as BASE_AMOUNT,
                cast(null as varchar) as LOADING_AMOUNT,
                cast(null as varchar) as PREMIUM_BASIS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ACCIDENTAL_PREMIUMACE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_cov_covp_sp_pv__sat_policy_premium_head#2
@@ -17657,7 +17656,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("OLD_PREMIUM")), '')))) as BASE_AMOUNT,
                cast(null as varchar) as LOADING_AMOUNT,
                cast(null as varchar) as PREMIUM_BASIS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("OLD_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_cov_covp_sp_pv__sat_policy_premium_head#3
@@ -17671,7 +17670,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("PREMIUM")), '')))) as BASE_AMOUNT,
                cast(null as varchar) as LOADING_AMOUNT,
                cast(null as varchar) as PREMIUM_BASIS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_cov_covp_sp_pv__sat_policy_premium_head#4
@@ -17685,7 +17684,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as BASE_AMOUNT,
                cast(null as varchar) as LOADING_AMOUNT,
                cast(null as varchar) as PREMIUM_BASIS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("EMERGENCY_HOSPITALIZATION_FOR_SICKNESS_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_cov_covp_sp_pv__sat_policy_premium_head#5
@@ -17699,7 +17698,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as BASE_AMOUNT,
                to_varchar(((nullif(trim(to_varchar("LOADING")), '')))) as LOADING_AMOUNT,
                cast(null as varchar) as PREMIUM_BASIS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("LOADING")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_cov_covp_sp_pv__sat_policy_premium_head#6
@@ -17713,7 +17712,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as BASE_AMOUNT,
                cast(null as varchar) as LOADING_AMOUNT,
                cast(null as varchar) as PREMIUM_BASIS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("NET_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_cov_covp_sp_pv__sat_policy_premium_head#7
@@ -17727,7 +17726,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("NET_PREMIUM_WITHOUT_LOADING_DISCOUNT")), '')))) as BASE_AMOUNT,
                cast(null as varchar) as LOADING_AMOUNT,
                cast(null as varchar) as PREMIUM_BASIS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("NET_PREMIUM_WITHOUT_LOADING_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_cov_covp_sp_pv__sat_policy_premium_head#8
@@ -17741,7 +17740,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as BASE_AMOUNT,
                cast(null as varchar) as LOADING_AMOUNT,
                to_varchar(((nullif(trim(to_varchar("RATE_BASISACE_DOMESTIC")), '')))) as PREMIUM_BASIS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("RATE_BASISACE_DOMESTIC")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_cov_covp_sp_pv__sat_policy_premium_head#9
@@ -17755,7 +17754,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("UPDATE_COVER_PREMIUM_IN_BASE_CURRENCY")), '')))) as BASE_AMOUNT,
                cast(null as varchar) as LOADING_AMOUNT,
                cast(null as varchar) as PREMIUM_BASIS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("UPDATE_COVER_PREMIUM_IN_BASE_CURRENCY")), '')) is not null
       )
      where hkey in (select hkey from s2) and ldts is not null
@@ -17813,7 +17812,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("ENDORSEMENT_PREMIUM")), '')))) as BASE_AMOUNT,
                cast(null as varchar) as NET_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ENDORSEMENT_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_sp_pv__sat_policy_premium_head#2
@@ -17825,7 +17824,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as BASE_AMOUNT,
                to_varchar(((nullif(trim(to_varchar("NET_PREMIUM_IN_PREMIUM_CURRENCY")), '')))) as NET_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("NET_PREMIUM_IN_PREMIUM_CURRENCY")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_sp_pv__sat_policy_premium_head#3
@@ -17837,7 +17836,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("PREMIUM")), '')))) as BASE_AMOUNT,
                cast(null as varchar) as NET_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_sp_pv__sat_policy_premium_head#4
@@ -17849,7 +17848,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("PREMIUM_IN_BHD")), '')))) as BASE_AMOUNT,
                cast(null as varchar) as NET_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("PREMIUM_IN_BHD")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_sp_pv__sat_policy_premium_head#5
@@ -17861,7 +17860,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("RISK_PREMIUM_IN_BASE_CURRENCY")), '')))) as BASE_AMOUNT,
                cast(null as varchar) as NET_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("RISK_PREMIUM_IN_BASE_CURRENCY")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_sp_pv__sat_policy_premium_head#6
@@ -17873,7 +17872,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("RISK_PREMIUM_IN_TRANSACTION_CURRENCY")), '')))) as BASE_AMOUNT,
                cast(null as varchar) as NET_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("RISK_PREMIUM_IN_TRANSACTION_CURRENCY")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_sp_pv__sat_policy_premium_head#7
@@ -17885,7 +17884,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("TOTAL_FEES")), '')))) as BASE_AMOUNT,
                cast(null as varchar) as NET_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("TOTAL_FEES")), '')) is not null
       )
      where hkey in (select hkey from s3) and ldts is not null
@@ -17935,7 +17934,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("ACE_PREMIUM_TYPE")), '')))) as PREMIUM_BASIS,
                cast(null as varchar) as BASE_AMOUNT,
                cast(null as varchar) as NET_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ACE_PREMIUM_TYPE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_msp_msd_prop_pv__sat_policy_premium_head#2
@@ -17948,7 +17947,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PREMIUM_BASIS,
                to_varchar(((nullif(trim(to_varchar("FIXED_ONE_WAY_PREMIUM")), '')))) as BASE_AMOUNT,
                cast(null as varchar) as NET_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("FIXED_ONE_WAY_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_msp_msd_prop_pv__sat_policy_premium_head#3
@@ -17961,7 +17960,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PREMIUM_BASIS,
                to_varchar(((nullif(trim(to_varchar("FIXED_ROUND_TRIP_PREMIUM")), '')))) as BASE_AMOUNT,
                cast(null as varchar) as NET_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("FIXED_ROUND_TRIP_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_msp_msd_prop_pv__sat_policy_premium_head#4
@@ -17974,7 +17973,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PREMIUM_BASIS,
                cast(null as varchar) as BASE_AMOUNT,
                to_varchar(((nullif(trim(to_varchar("GROSS_PREMIUM")), '')))) as NET_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("GROSS_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_msp_msd_prop_pv__sat_policy_premium_head#5
@@ -17987,7 +17986,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PREMIUM_BASIS,
                cast(null as varchar) as BASE_AMOUNT,
                to_varchar(((nullif(trim(to_varchar("ONE_WAY_PREMIUM")), '')))) as NET_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ONE_WAY_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_msp_msd_prop_pv__sat_policy_premium_head#6
@@ -18000,7 +17999,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PREMIUM_BASIS,
                cast(null as varchar) as BASE_AMOUNT,
                to_varchar(((nullif(trim(to_varchar("ROUND_TRIP_PREMIUM")), '')))) as NET_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ROUND_TRIP_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_pol_polp_msp_msd_prop_pv__sat_policy_premium_head#7
@@ -18013,7 +18012,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("SLAB_")), '')))) as PREMIUM_BASIS,
                cast(null as varchar) as BASE_AMOUNT,
                cast(null as varchar) as NET_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("SLAB_")), '')) is not null
       )
      where hkey in (select hkey from s4) and ldts is not null
@@ -18083,7 +18082,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 85. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]  [M2]
+-- 85. MAXIMUS — SAT_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- standard satellite, automate_dv.sat; PK POLICY_HKEY; 5 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [2 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -18115,7 +18114,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TOTAL_PREMIUM")), ''))) as GROSS_PREMIUM,
                to_varchar((nullif(trim(to_varchar("NET_PREMIUM")), ''))) as NET_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -18154,7 +18153,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TOTAL_PREMIUM_DUE")), ''))) as PREMIUM_OUTSTANDING,
                to_varchar((nullif(trim(to_varchar("PREMIUM_COLLECTED")), ''))) as TOTAL_PREMIUM_COLLECTED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -18201,7 +18200,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("NET_PREMIUM")), ''))) as NET_PREMIUM,
                to_varchar((nullif(trim(to_varchar("REFUND_AMOUNT")), ''))) as REFUND_AMOUNT,
                to_varchar((nullif(trim(to_varchar("PREMIUM_COLLECTED")), ''))) as TOTAL_PREMIUM_COLLECTED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -18258,7 +18257,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TOTAL_PREMIUM")), ''))) as GROSS_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -18292,7 +18291,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("OUTSTANDING_PREMIUM")), ''))) as PREMIUM_OUTSTANDING,
                to_varchar((nullif(trim(to_varchar("COLLECTED_PREMIUM")), ''))) as TOTAL_PREMIUM_COLLECTED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_PREMIUM_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_PREMIUM_DETAILS
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -18367,7 +18366,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 86. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]  [M2]
+-- 86. MAXIMUS — SAT_POLICY_RENEWAL   [Implemented]
 -- standard satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
 -- col(s)].
@@ -18395,7 +18394,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BREAK_IN")), ''))) as BREAK_IN_INDICATOR,
                to_varchar((nullif(trim(to_varchar("RENEWAL_DATE")), ''))) as RENEWAL_DUE_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -18426,7 +18425,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 87. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]  [M2]
+-- 87. MAXIMUS — SAT_POLICY_SERVICING_SUMMARY   [Implemented]
 -- standard satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)].
@@ -18452,7 +18451,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(w1_policyno),'') is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("POLICY_BRANCH")), ''))) as SERVICING_ORG_UNIT_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -18478,7 +18477,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 88. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]  [M2]
+-- 88. MAXIMUS — SAT_POLICY_SUM_INSURED_BREAKUP   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key SUM_INSURED_HEAD; 3
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -18514,7 +18513,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("COVER_SUM_INSURED_IN_TRANSACTION_CURRENCY")), '')), (nullif(trim(to_varchar("SUM_INSUREDACE")), '')), (nullif(trim(to_varchar("TOTAL_SUM_INSURED")), '')), (nullif(trim(to_varchar("SI_PER_UNIT")), '')), (nullif(trim(to_varchar("SI_FOR_ABROAD_IN_USD")), '')), (nullif(trim(to_varchar("SI_FOR_INDIA_IN_INR")), '')))) as SUM_INSURED_AMOUNT,
                to_varchar((nullif(trim(to_varchar("SUM_INSURED_BREAK_UP")), ''))) as SUM_INSURED_BREAK_UP_DETAIL
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -18553,7 +18552,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(nullif(trim(w1_pol_risk_id), '') || '#' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') || '#COVER_SI_TXN_CCY') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_SUM_INSURED_IN_TRANSACTION_CURRENCY")), ''))) as SUM_INSURED_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -18587,7 +18586,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce(nullif(trim(coalesce(nullif(trim((nullif(trim(to_varchar("SUBLIMIT_NAME")), ''))), ''), '') || '#' || 'BENEFIT_AMOUNT'), '#BENEFIT_AMOUNT'),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("BENEFIT_AMOUNT")), '')), (nullif(trim(to_varchar("LIMIT_SUM_INSURED")), '')), (cast(null as varchar)), (nullif(trim(to_varchar("SUM_INSURED_ACE")), '')), (nullif(trim(to_varchar("SUM_INSURED_ACE_FOR_MAIN_SUB_COVER")), '')), (nullif(trim(to_varchar("SUM_INSUREDACE")), '')))) as SUM_INSURED_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -18635,7 +18634,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 89. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]  [M2]
+-- 89. MAXIMUS — SAT_POLICY_TAX_BREAKUP   [Implemented]
 -- standard satellite, automate_dv.sat; PK POLICY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -18662,7 +18661,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("STAMP_DUTY")), ''))) as STAMP_DUTY_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -18710,7 +18709,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("SGST_AMOUNT")), ''))) as SGST_AMOUNT,
                to_varchar((nullif(trim(to_varchar("STAMP_RECEIPT_NO")), ''))) as STAMP_DUTY_RECEIPT_NUMBER,
                to_varchar((nullif(trim(to_varchar("TOTAL_TAXES")), ''))) as TOTAL_TAX_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -18787,7 +18786,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 90. MAXIMUS — SAT_POLICY_TAX_HEAD   [Implemented]  [M2]
+-- 90. MAXIMUS — SAT_POLICY_TAX_HEAD   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key TAX_HEAD_CODE; 3
 -- RECORD_SOURCE group(s): MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -18819,7 +18818,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('GST') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("GST")), ''))) as TAX_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -18853,7 +18852,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('TOTAL') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TOTAL_TAXES")), ''))) as TAX_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -18887,7 +18886,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('UTGST') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("UTGST_AMOUNT")), ''))) as TAX_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -18935,7 +18934,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 91. MAXIMUS — SAT_POLICY_TERMS   [Implemented]  [M2]
+-- 91. MAXIMUS — SAT_POLICY_TERMS   [Implemented]
 -- standard satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -18961,7 +18960,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("GEOGRAPHICAL_COVERAGE")), ''))) as GEOGRAPHICAL_SCOPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -18987,7 +18986,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 92. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]  [M2]
+-- 92. MAXIMUS — SAT_PRODUCT_DEFINITION   [Implemented]
 -- standard satellite, automate_dv.sat; PK PRODUCT_HKEY; 7 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
 -- col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
@@ -19024,7 +19023,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("STORED_LOB_CODE")), ''))) as LINE_OF_BUSINESS,
                to_varchar((nullif(trim(to_varchar("PRODUCTPLAN")), ''))) as PRODUCT_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19061,7 +19060,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PRODUCT_CODE")), ''))),'') is not null then 'PROD:' || nullif(trim((nullif(trim(to_varchar("PRODUCT_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PRODUCT_NAME")), ''))) as PRODUCT_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19095,7 +19094,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CATEGORY_NAME")), ''))) as PRODUCT_CATEGORY,
                to_varchar((nullif(trim(to_varchar("MASTER_PLAN_NAME")), ''))) as PRODUCT_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19134,7 +19133,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PLAN_CATEGORY")), ''))) as PRODUCT_CATEGORY,
                to_varchar((nullif(trim(to_varchar("UIN")), ''))) as UIN
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19171,7 +19170,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PRODUCT_CODE")), ''))),'') is not null then 'PROD:' || nullif(trim((nullif(trim(to_varchar("PRODUCT_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PRODUCT_NAME")), ''))) as PRODUCT_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PREVIOUS_POLICY_DETAILS
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19205,7 +19204,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PLAN_CATEGORY")), ''))) as PRODUCT_CATEGORY,
                to_varchar((nullif(trim(to_varchar("UIN")), ''))) as UIN
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s6) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19244,7 +19243,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CATEGORY_NAME")), ''))) as PRODUCT_CATEGORY,
                to_varchar((nullif(trim(to_varchar("MASTER_PLAN_NAME")), ''))) as PRODUCT_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s7) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19341,7 +19340,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 93. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]  [M2]
+-- 93. MAXIMUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- standard satellite, automate_dv.sat; PK PRODUCT_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
@@ -19371,7 +19370,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MINIMUM_DEPOSIT_PREMIUM_APPLICABLE")), ''))) as DEPOSIT_PREMIUM_INDICATOR,
                to_varchar((nullif(trim(to_varchar("MODE_OF_PREMIUM_CALCULATION")), ''))) as RATE_BASIS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19410,7 +19409,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MINIMUM_DEPOSIT_PREMIUM_APPLICABLE")), ''))) as DEPOSIT_PREMIUM_INDICATOR,
                to_varchar((nullif(trim(to_varchar("MODE_OF_PREMIUM_CALCULATION")), ''))) as RATE_BASIS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19452,7 +19451,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 94. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]  [M2]
+-- 94. MAXIMUS — SAT_PRODUCT_TERMS   [Implemented]
 -- standard satellite, automate_dv.sat; PK PRODUCT_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -19480,7 +19479,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("FREE_CANCELLATION_PERIOD")), ''))) as FREE_LOOK_PERIOD
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19512,7 +19511,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("FREE_CANCELLATION_PERIOD")), ''))) as FREE_LOOK_PERIOD
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19549,7 +19548,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 95. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]  [M2]
+-- 95. MAXIMUS — SAT_QUOTE_HEADER   [Implemented]
 -- standard satellite, automate_dv.sat; PK QUOTE_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [4 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
@@ -19584,7 +19583,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("POLICY_STATUS_CODE")), ''))) as QUOTE_STATUS,
                to_varchar((nullif(trim(to_varchar("POLICY_INCEPTION_DATE")), ''))) as REQUESTED_COVER_START_DATE,
                to_varchar((nullif(trim(to_varchar("POLICY_TERM")), ''))) as REQUESTED_POLICY_TERM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19643,7 +19642,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("POLICY_INCEPTION_DATE")), ''))) as REQUESTED_COVER_START_DATE,
                to_varchar((nullif(trim(to_varchar("POLICY_DURATION")), ''))) as REQUESTED_POLICY_TERM,
                to_varchar((nullif(trim(to_varchar("SUM_INSURED")), ''))) as REQUESTED_SUM_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19709,7 +19708,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DATA_SOURCE")), ''))) as QUOTE_SOURCE,
                to_varchar((nullif(trim(to_varchar("POLICY_INCEPTION_DATE")), ''))) as REQUESTED_COVER_START_DATE,
                to_varchar((nullif(trim(to_varchar("POLICY_DURATION")), ''))) as REQUESTED_POLICY_TERM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19767,7 +19766,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 96. MAXIMUS — SAT_QUOTE_RATING   [Implemented]  [M2]
+-- 96. MAXIMUS — SAT_QUOTE_RATING   [Implemented]
 -- standard satellite, automate_dv.sat; PK QUOTE_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [3 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
@@ -19800,7 +19799,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("TOTAL_DISCOUNT_AMOUNT")), ''))) as DISCOUNT_AMOUNT,
                to_varchar((nullif(trim(to_varchar("TOTAL_LOADING_AMOUNT")), ''))) as LOADING_AMOUNT,
                to_varchar((nullif(trim(to_varchar("PREMIUM_FREQUENCY")), ''))) as PREMIUM_FREQUENCY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19850,7 +19849,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("LOADING")), ''))) as LOADING_AMOUNT,
                to_varchar((nullif(trim(to_varchar("NET_PREMIUM")), ''))) as NET_PREMIUM,
                to_varchar((nullif(trim(to_varchar("PAYMENT_FREQUENCY")), ''))) as PREMIUM_FREQUENCY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19902,7 +19901,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PREMIUM")), ''))) as BASE_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -19950,7 +19949,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 97. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Implemented]  [M2]
+-- 97. MAXIMUS — SAT_QUOTE_RATING_INPUT   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK QUOTE_HKEY, child key FACTOR_CODE; 5
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
@@ -19990,7 +19989,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("LOADING_ACE")), '')))) as PREMIUM_IMPACT,
                cast(null as varchar) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("LOADING_ACE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__sat_quote_rating_input#2
@@ -19999,7 +19998,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("LOADING_ACE_FOR_MAIN_SUB_COVER")), '')))) as PREMIUM_IMPACT,
                cast(null as varchar) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("LOADING_ACE_FOR_MAIN_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__sat_quote_rating_input#3
@@ -20008,7 +20007,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__sat_quote_rating_input#4
@@ -20017,7 +20016,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PER_TRIP")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PER_TRIP")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__sat_quote_rating_input#5
@@ -20026,7 +20025,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("PREMIUM_RATE")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("PREMIUM_RATE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__sat_quote_rating_input#6
@@ -20035,7 +20034,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("RATE_PER_TRIP_PER_MILLE")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("RATE_PER_TRIP_PER_MILLE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__sat_quote_rating_input#7
@@ -20044,7 +20043,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("RATE_PER_TRIP_PER_MILLE_FOR_MAIN_SUB_COVER")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("RATE_PER_TRIP_PER_MILLE_FOR_MAIN_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__sat_quote_rating_input#8
@@ -20053,7 +20052,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("SLAB_")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("SLAB_")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -20095,7 +20094,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("ADJUSTMENT_VALUE")), '')))) as PREMIUM_IMPACT,
                cast(null as varchar) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("ADJUSTMENT_VALUE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#2
@@ -20104,7 +20103,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("ALTITUDE")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("ALTITUDE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#3
@@ -20113,7 +20112,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("BAGGAGE_TRACKING_SERVICE_APPLICABLE")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("BAGGAGE_TRACKING_SERVICE_APPLICABLE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#4
@@ -20122,7 +20121,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("CLAIMS_EXPERIENCE_DISCOUNT")), '')))) as PREMIUM_IMPACT,
                cast(null as varchar) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("CLAIMS_EXPERIENCE_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#5
@@ -20131,7 +20130,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("CLAIMS_EXPERIENCE_LOADING")), '')))) as PREMIUM_IMPACT,
                cast(null as varchar) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("CLAIMS_EXPERIENCE_LOADING")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#6
@@ -20140,7 +20139,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("CLU_DISCOUNT")), '')))) as PREMIUM_IMPACT,
                cast(null as varchar) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("CLU_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#7
@@ -20149,7 +20148,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("COUNTRY")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("COUNTRY")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#8
@@ -20158,7 +20157,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("CRUISE")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("CRUISE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#9
@@ -20167,7 +20166,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("CRUISE_DAYS")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("CRUISE_DAYS")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#10
@@ -20176,7 +20175,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("DESTINATION_DETAILS")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("DESTINATION_DETAILS")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#11
@@ -20185,7 +20184,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("EMPLOYEE_DISCOUNT")), '')))) as PREMIUM_IMPACT,
                cast(null as varchar) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("EMPLOYEE_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#12
@@ -20194,7 +20193,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("GEOGRAPHICAL_COVERAGE")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("GEOGRAPHICAL_COVERAGE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#13
@@ -20203,7 +20202,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("GROUP_DISCOUNT")), '')))) as PREMIUM_IMPACT,
                cast(null as varchar) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("GROUP_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#14
@@ -20212,7 +20211,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("HOURS_COVERED")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("HOURS_COVERED")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#15
@@ -20221,7 +20220,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("MODE_OF_TRANSPORT")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("MODE_OF_TRANSPORT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#16
@@ -20230,7 +20229,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("MULTIPLE_CITY")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("MULTIPLE_CITY")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#17
@@ -20239,7 +20238,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("NIL_COMMISSION_DISCOUNT")), '')))) as PREMIUM_IMPACT,
                cast(null as varchar) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("NIL_COMMISSION_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#18
@@ -20248,7 +20247,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("ONLINE_DISCOUNT")), '')))) as PREMIUM_IMPACT,
                cast(null as varchar) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("ONLINE_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#19
@@ -20257,7 +20256,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("OTHER_DISCOUNT")), '')))) as PREMIUM_IMPACT,
                cast(null as varchar) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("OTHER_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#20
@@ -20266,7 +20265,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("PREMIUM_ADJUSTMENT")), '')))) as PREMIUM_IMPACT,
                cast(null as varchar) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("PREMIUM_ADJUSTMENT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#21
@@ -20275,7 +20274,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("STUDENT_DISCOUNT")), '')))) as PREMIUM_IMPACT,
                cast(null as varchar) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("STUDENT_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#22
@@ -20284,7 +20283,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("TRAVELLING_COMPANION_DISCOUNT")), '')))) as PREMIUM_IMPACT,
                cast(null as varchar) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("TRAVELLING_COMPANION_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#23
@@ -20293,7 +20292,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("TYPE_OF_DISCOUNT")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("TYPE_OF_DISCOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_rl_pv__sat_quote_rating_input#24
@@ -20302,7 +20301,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as PREMIUM_IMPACT,
                to_varchar(((nullif(trim(to_varchar("TYPE_OF_LOADING")), '')))) as FACTOR_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
          where (nullif(trim(to_varchar("TYPE_OF_LOADING")), '')) is not null
       )
      where hkey in (select hkey from s2) and ldts is not null
@@ -20344,7 +20343,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("PREMIUM_RATE")), '')), (nullif(trim(to_varchar("RATE_PER_TRIP_PER_MILLE")), '')), (nullif(trim(to_varchar("RATE_PER_TRIP_PER_MILLE_FOR_MAIN_SUB_COVER")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PER_TRIP")), '')), (nullif(trim(to_varchar("SLAB_")), '')), (nullif(trim(to_varchar("ACE_PREMIUM_TYPE")), '')))) as FACTOR_VALUE,
                to_varchar(coalesce((nullif(trim(to_varchar("ONE_WAY_PREMIUM")), '')), (nullif(trim(to_varchar("ROUND_TRIP_PREMIUM")), '')), (nullif(trim(to_varchar("FIXED_ONE_WAY_PREMIUM")), '')), (nullif(trim(to_varchar("FIXED_ROUND_TRIP_PREMIUM")), '')), (nullif(trim(to_varchar("LOADING_ACE")), '')), (nullif(trim(to_varchar("LOADING_ACE_FOR_MAIN_SUB_COVER")), '')))) as PREMIUM_IMPACT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -20385,7 +20384,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("BASE_AMT_ON_CURRENT_PMM_SLAB")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILE")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILELOADING")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_ACCIDENT_ONLY")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_EMERGENCY_OPD_EXPENSES_FOR_SICKNESS")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_ACCIDENT_ONLY")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_AIR_AMBULANCE")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_DEATH")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_FOR_SICKNESS_ONLY")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_FRACTURE_CARE_BENEFIT")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_PPD")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_PTD")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_REPATRIATION_OF_MORTAL_REMAINS")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_REPLACEMENT_AND_REARRANGEMENT_OF_STAFF")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA_ROAD")), '')), (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PER_TRIP")), '')), (nullif(trim(to_varchar("PMM_ADJ_FACTOR_FOR_PRD_ELAPSED")), '')), (nullif(trim(to_varchar("PMM_ADJ_FACTOR_FOR_PRD_REMAIN")), '')), (nullif(trim(to_varchar("PMM_ADJ_FACTOR_FOR_PRODUCT_REMAIN")), '')), (nullif(trim(to_varchar("RELATIVITYACE")), '')), (nullif(trim(to_varchar("RISK_FACTORACE")), '')), (nullif(trim(to_varchar("RISK_LOAD_FACTORACE")), '')), (nullif(trim(to_varchar("SHORT_TERM_FACTORACE")), '')), (nullif(trim(to_varchar("RATE")), '')), (nullif(trim(to_varchar("RATEACE_DOMESTIC")), '')), (nullif(trim(to_varchar("RATE_FOR_DAILY_ALLOWANCE_PA")), '')), (nullif(trim(to_varchar("PREMIUM_PER_DAY")), '')), (nullif(trim(to_varchar("RATE_BASISACE_DOMESTIC")), '')), (nullif(trim(to_varchar("SLAB_DETAILS")), '')))) as FACTOR_VALUE,
                to_varchar((nullif(trim(to_varchar("COMMON_CARRIER_RELATIVITY")), ''))) as RELATIVITY_APPLIED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -20428,7 +20427,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce((nullif(trim(to_varchar("RATE_PERCENTAGE")), '')), (nullif(trim(to_varchar("IS_CONSUMER_LOADING_APPLICABLE")), '')), (nullif(trim(to_varchar("PLAN_DISCOUNT_PERCENTAGE")), '')))) as FACTOR_VALUE,
                to_varchar(coalesce((nullif(trim(to_varchar("AUTO_ADJUSTED_AMOUNT")), '')), (nullif(trim(to_varchar("OTHER_DISCOUNT")), '')))) as PREMIUM_IMPACT,
                to_varchar((nullif(trim(to_varchar("JOURNEY_TYPE_RELATIVITY")), ''))) as RELATIVITY_APPLIED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -20508,7 +20507,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 98. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]  [M2]
+-- 98. MAXIMUS — SAT_RISK_HEALTH_MEMBER_MEDICAL   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key CONDITION_CODE,
 -- MEMBER_REFERENCE; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -20550,7 +20549,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CURRENT_MEDICATION")), ''))) as CURRENT_MEDICATION_DETAIL,
                to_varchar((nullif(trim(to_varchar("PED_MONTH")), ''))) as PRE_EXISTING_DISEASE_ONSET_MONTH,
                to_varchar((nullif(trim(to_varchar("PED_YEAR")), ''))) as PRE_EXISTING_DISEASE_ONSET_YEAR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -20614,7 +20613,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CURRENT_MEDICATION")), ''))) as CURRENT_MEDICATION_DETAIL,
                to_varchar((nullif(trim(to_varchar("PED_MONTH")), ''))) as PRE_EXISTING_DISEASE_ONSET_MONTH,
                to_varchar((nullif(trim(to_varchar("PED_YEAR")), ''))) as PRE_EXISTING_DISEASE_ONSET_YEAR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -20671,7 +20670,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 99. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]  [M2]
+-- 99. MAXIMUS — SAT_RISK_OBJECT_CORE   [Implemented]
 -- standard satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 6 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
 -- col(s)], MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK [1 col(s)],
@@ -20704,7 +20703,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("RISK_CODE")), ''))) as RISK_CLASS_CODE,
                to_varchar((nullif(trim(to_varchar("RISK_DESCRIPTION")), ''))) as RISK_OBJECT_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -20741,7 +20740,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (nullif(trim(case when coalesce(nullif(trim(w0_policyno),''), nullif(trim((nullif(trim(to_varchar("RISKCODE")), ''))),'')) is not null then 'RISK:' || nullif(trim(w0_policyno), '') || '#' || nullif(trim((nullif(trim(to_varchar("RISKCODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("RISKDESC")), ''))) as RISK_OBJECT_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -20775,7 +20774,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("RISK_CODE")), ''))) as RISK_CLASS_CODE,
                to_varchar((nullif(trim(to_varchar("RISK_DESC")), ''))) as RISK_OBJECT_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -20818,7 +20817,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("UNIT")), ''))) as EXPOSURE_UNIT,
                to_varchar(coalesce((nullif(trim(to_varchar("INSUREDINTEREST")), '')), (nullif(trim(to_varchar("INSURED_INTEREST")), '')))) as RISK_OBJECT_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("RISK_TYPE")), ''))) as RISK_OBJECT_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -20869,7 +20868,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("RISK_DESC")), ''))) as RISK_OBJECT_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("RISK_SERIAL_NUMBER")), ''))) as RISK_OBJECT_REFERENCE_NUMBER,
                to_varchar((nullif(trim(to_varchar("RISK_CODE")), ''))) as RISK_OBJECT_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -20917,7 +20916,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("UNIT")), ''))) as EXPOSURE_UNIT,
                to_varchar(coalesce((nullif(trim(to_varchar("INSUREDINTEREST")), '')), (nullif(trim(to_varchar("INSURED_INTEREST")), '')))) as RISK_OBJECT_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("RISK_TYPE")), ''))) as RISK_OBJECT_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s6) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -21013,7 +21012,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 100. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]  [M2]
+-- 100. MAXIMUS — SAT_RISK_OBJECT_VALUATION   [Implemented]
 -- standard satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -21042,7 +21041,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim("FOREIGN_KEY"),''), nullif(trim((nullif(trim(to_varchar("POL_RISK_ID")), ''))),'')) is not null then 'RISK:' || coalesce(nullif(trim(w0_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) || '#' || nullif(trim((nullif(trim(to_varchar("POL_RISK_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUM_INSURED")), ''))) as INSURED_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -21078,7 +21077,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("RISK_SUM_INSURED_IN_BASE_CURRENCY")), ''))) as INSURED_VALUE,
                to_varchar((nullif(trim(to_varchar("SUM_INSURED_IN_SI_CURRENCY")), ''))) as INSURED_VALUE_IN_SUM_INSURED_CURRENCY,
                to_varchar((nullif(trim(to_varchar("RISK_SUM_INSURED_IN_TRANSACTION_CURRENCY")), ''))) as INSURED_VALUE_IN_TRANSACTION_CURRENCY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -21120,7 +21119,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),''), nullif(trim((nullif(trim(to_varchar("POL_RISK_ID")), ''))),'')) is not null then 'RISK:' || nullif(trim(w0_policy_quote_number), '') || '#' || nullif(trim((nullif(trim(to_varchar("POL_RISK_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("RISK_SUM_INSURED")), ''))) as INSURED_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -21156,7 +21155,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("RISK_SUM_INSURED_IN_BASE_CURRENCY")), ''))) as INSURED_VALUE,
                to_varchar((nullif(trim(to_varchar("SUM_INSURED_IN_SI_CURRENCY")), ''))) as INSURED_VALUE_IN_SUM_INSURED_CURRENCY,
                to_varchar((nullif(trim(to_varchar("RISK_SUM_INSURED_IN_TRANSACTION_CURRENCY")), ''))) as INSURED_VALUE_IN_TRANSACTION_CURRENCY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -21225,7 +21224,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 101. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]  [M2]
+-- 101. MAXIMUS — SAT_RISK_PERSON_INSURED   [Implemented]
 -- standard satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [5 col(s)],
@@ -21261,7 +21260,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PED_DETAILS")), ''))) as PRE_EXISTING_DISEASE_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("PED")), ''))) as PRE_EXISTING_DISEASE_INDICATOR,
                to_varchar((nullif(trim(to_varchar("DO_YOU_SMOKE_OR_CONSUME_TOBACCO")), ''))) as SMOKER_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -21321,7 +21320,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PED_DETAILS")), ''))) as PRE_EXISTING_DISEASE_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("PED")), ''))) as PRE_EXISTING_DISEASE_INDICATOR,
                to_varchar((nullif(trim(to_varchar("DO_YOU_SMOKE_OR_CONSUME_TOBACCO")), ''))) as SMOKER_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -21378,7 +21377,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 102. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Implemented]  [M2]
+-- 102. MAXIMUS — SAT_RISK_PERSON_MEMBER   [Implemented]
 -- standard satellite, automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key
 -- MEMBER_SEQUENCE; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -21410,7 +21409,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce(nullif(trim("KEY_HASH"), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DATE_OF_BIRTH")), ''))) as DATE_OF_BIRTH
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -21444,7 +21443,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce(nullif(trim("KEY_HASH"), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DATE_OF_BIRTH")), ''))) as DATE_OF_BIRTH
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -21481,7 +21480,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 103. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]  [M2]
+-- 103. MAXIMUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
 -- standard satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 7 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
@@ -21521,7 +21520,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TRIP_DURATIONACE")), ''))) as TRIP_DURATION,
                to_varchar((nullif(trim(to_varchar("TRIP_TYPEACE_DOMESTIC")), ''))) as TRIP_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -21568,7 +21567,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("RETURN_DATE")), ''))) as TRIP_END_DATE,
                to_varchar((nullif(trim(to_varchar("DEPARTURE_DATE")), ''))) as TRIP_START_DATE,
                to_varchar((nullif(trim(to_varchar("TRIP_TYPE_TRIPCAL")), ''))) as TRIP_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -21629,7 +21628,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PLACE_OF_DESTINATION")), ''))) as DESTINATION_COUNTRY,
                to_varchar((nullif(trim(to_varchar("TOTAL_TRIP_DURATION_IN_DAYS")), ''))) as TRIP_DURATION,
                to_varchar(coalesce((nullif(trim(to_varchar("TRIP_TYPEACE")), '')), (nullif(trim(to_varchar("JOURNEY_TYPEACE")), '')))) as TRIP_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -21675,7 +21674,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DESTINATION_COUNTRY")), ''))) as DESTINATION_COUNTRY,
                to_varchar((nullif(trim(to_varchar("GEOGRAPHICAL_COVERAGE")), ''))) as GEOGRAPHICAL_ZONE,
                to_varchar((nullif(trim(to_varchar("DEPARTURE_DATE")), ''))) as TRIP_START_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -21727,7 +21726,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("RETURN_DATE")), ''))) as TRIP_END_DATE,
                to_varchar((nullif(trim(to_varchar("DEPARTURE_DATE")), ''))) as TRIP_START_DATE,
                to_varchar((nullif(trim(to_varchar("TRIP_TYPE_TRIPCAL")), ''))) as TRIP_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -21786,7 +21785,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TRIP_DURATIONACE")), ''))) as TRIP_DURATION,
                to_varchar((nullif(trim(to_varchar("TRIP_TYPEACE_DOMESTIC")), ''))) as TRIP_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s6) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -21827,7 +21826,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PLACE_OF_DESTINATION")), ''))) as DESTINATION_COUNTRY,
                to_varchar((nullif(trim(to_varchar("TOTAL_TRIP_DURATION_IN_DAYS")), ''))) as TRIP_DURATION,
                to_varchar(coalesce((nullif(trim(to_varchar("TRIP_TYPEACE")), '')), (nullif(trim(to_varchar("JOURNEY_TYPEACE")), '')))) as TRIP_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s7) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -21929,7 +21928,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 104. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]  [M2]
+-- 104. MAXIMUS — SAT_AUG_CLAIM_APPROVAL_ACTION   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [8 col(s)],
@@ -21971,7 +21970,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("LAST_UPDATED_BY")), ''))) as LAST_UPDATED_BY_REFERENCE,
                to_varchar((nullif(trim(to_varchar("REQUESTED_BY")), ''))) as REQUESTOR_REFERENCE,
                to_varchar((nullif(trim(to_varchar("REQUESTOR_REMARKS")), ''))) as REQUESTOR_REMARKS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -22050,7 +22049,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("APPROVER_REMARKS")), ''))) as APPROVER_REMARKS,
                to_varchar((nullif(trim(to_varchar("REQUESTED_BY")), ''))) as REQUESTOR_REFERENCE,
                to_varchar((nullif(trim(to_varchar("REQUESTOR_REMARKS")), ''))) as REQUESTOR_REMARKS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -22117,7 +22116,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 105. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]  [M2]
+-- 105. MAXIMUS — SAT_AUG_CLAIM_ASSESSMENT_SUMMARY   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [6
@@ -22146,7 +22145,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SAVING_AMOUNT")), ''))) as SAVINGS_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -22188,7 +22187,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("64_VB_STATUS")), ''))) as SECTION_64VB_PREMIUM_REALISATION_STATUS,
                to_varchar((nullif(trim(to_varchar("SPOT_SURVEY")), ''))) as SPOT_SURVEY_INDICATOR,
                to_varchar((nullif(trim(to_varchar("SURVEY_FLAG")), ''))) as SURVEY_REQUIRED_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -22249,7 +22248,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("WHO_IS_AT_FAULT")), ''))) as AT_FAULT_PARTY_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("CLAIM_ADMISSIBLE_COMMENTS_NON_MEDICAL")), ''))) as NON_MEDICAL_ADMISSIBILITY_COMMENTS,
                to_varchar((nullif(trim(to_varchar("CLAIM_ADMISSIBLE_NON_MEDICAL")), ''))) as NON_MEDICAL_ADMISSIBILITY_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -22307,7 +22306,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 106. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]  [M2]
+-- 106. MAXIMUS — SAT_AUG_CLAIM_BENEFIT_HEAD   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK CLAIM_HKEY, child key BENEFIT_HEAD_CODE; 3
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -22345,7 +22344,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("BILL_BREAKUP")), ''))) as CLAIMED_AMOUNT_BREAKUP,
                to_varchar((nullif(trim(to_varchar("DISALLOWED_BREAKUP")), ''))) as DEDUCTION_AMOUNT_BREAKUP,
                to_varchar((nullif(trim(to_varchar("PARTICULAR")), ''))) as HEAD_LINE_PARTICULARS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -22389,7 +22388,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("COVER_TAKEN")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_TAKEN")), ''))) as COVER_TAKEN_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -22445,7 +22444,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PANDEMIC_COVER_FLAG")), ''))) as PANDEMIC_COVER_APPLICABLE_INDICATOR,
                to_varchar((nullif(trim(to_varchar("SI_VALIDATION_OVERRIDE")), ''))) as SUM_INSURED_VALIDATION_OVERRIDE_INDICATOR,
                to_varchar((nullif(trim(to_varchar("SI_VALIDATION_OVERRIDE_REMARKS")), ''))) as SUM_INSURED_VALIDATION_OVERRIDE_REMARKS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -22548,7 +22547,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 107. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]  [M2]
+-- 107. MAXIMUS — SAT_AUG_CLAIM_CO_RI_SHARE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
 -- col(s)],
@@ -22578,7 +22577,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar(coalesce((nullif(trim(to_varchar("COINSURANCE_APPLICABLE")), '')), (nullif(trim(to_varchar("COINSURANCE_APPLICABILITY")), '')))) as CO_INSURANCE_APPLICABLE_INDICATOR,
                to_varchar((nullif(trim(to_varchar("COINSURANCE_TYPE")), ''))) as CO_INSURANCE_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -22615,7 +22614,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COINSURANCE_LOSS_RESERVE_INR")), ''))) as CO_INSURANCE_LOSS_RESERVE_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -22652,7 +22651,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 108. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]  [M2]
+-- 108. MAXIMUS — SAT_AUG_CLAIM_DEDUCTION_WAIVER   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)].
@@ -22678,7 +22677,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),''), nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), ''), nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DEDUCTIBLE_COMMENT")), ''))) as DEDUCTIBLE_COMMENT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -22704,7 +22703,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 109. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]  [M2]
+-- 109. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REMINDER   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK CLAIM_HKEY, child key REMINDER_SEQUENCE,
 -- REQUIREMENT_TYPE_NAME; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -22736,7 +22735,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('REQUIREMENT_TYPE_NAME') as cdk_2,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("1ST_REMINDER_DATE")), '')))) as REMINDER_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("1ST_REMINDER_DATE")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmcov_msd_prop_pv__aug_sat_aug_claim_document_reminder#2
@@ -22745,7 +22744,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('REQUIREMENT_TYPE_NAME') as cdk_2,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("2ND_REMINDER_DATE")), '')))) as REMINDER_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("2ND_REMINDER_DATE")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmcov_msd_prop_pv__aug_sat_aug_claim_document_reminder#3
@@ -22754,7 +22753,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('REQUIREMENT_TYPE_NAME') as cdk_2,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("3RD_REMINDER_DATE")), '')))) as REMINDER_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("3RD_REMINDER_DATE")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -22781,7 +22780,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 110. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]  [M2]
+-- 110. MAXIMUS — SAT_AUG_CLAIM_DOCUMENT_REQUIREMENT   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [6 col(s)].
@@ -22817,7 +22816,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("RESPONSE")), ''))) as REQUIREMENT_RESPONSE,
                to_varchar((nullif(trim(to_varchar("REQUIREMENT_STATUS")), ''))) as REQUIREMENT_STATUS,
                to_varchar((nullif(trim(to_varchar("REQUIREMENT_TYPE_NAME")), ''))) as REQUIREMENT_TYPE_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -22868,7 +22867,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 111. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]  [M2]
+-- 111. MAXIMUS — SAT_AUG_CLAIM_EVIDENCE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
 -- col(s)].
@@ -22896,7 +22895,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SPECIAL_ENCLOSURES_DETAILS")), ''))) as SPECIAL_ENCLOSURE_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("SPECIAL_ENCLOSURES_FLAG")), ''))) as SPECIAL_ENCLOSURE_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -22927,7 +22926,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 112. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]  [M2]
+-- 112. MAXIMUS — SAT_AUG_CLAIM_EXCLUSION_APPLIED   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK CLAIM_HKEY, child key EXCLUSION_SET_CODE;
 -- 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
@@ -22957,7 +22956,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('CONDITION') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("EXCLUSION_DETAILCONDITION")), '')))) as EXCLUSION_DETAIL_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("EXCLUSION_DETAILCONDITION")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__aug_sat_aug_claim_exclusion_applied#2
@@ -22965,7 +22964,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('ETRAVEL') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("EXCLUSION_DETAILETRAVEL")), '')))) as EXCLUSION_DETAIL_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("EXCLUSION_DETAILETRAVEL")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__aug_sat_aug_claim_exclusion_applied#3
@@ -22973,7 +22972,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('GROUP BUSINESS TRAVELLER INSURANCE') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("EXCLUSION_DETAILGROUP_BUSINESS_TRAVELER_INSURANCE")), '')))) as EXCLUSION_DETAIL_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("EXCLUSION_DETAILGROUP_BUSINESS_TRAVELER_INSURANCE")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__aug_sat_aug_claim_exclusion_applied#4
@@ -22981,7 +22980,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('STANDARD TRAVEL POLICY EXCLUSIONS') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("EXCLUSION_DETAILSTANDARD_TRAVEL_POLICY_EXCLUSIONS")), '')))) as EXCLUSION_DETAIL_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("EXCLUSION_DETAILSTANDARD_TRAVEL_POLICY_EXCLUSIONS")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__aug_sat_aug_claim_exclusion_applied#5
@@ -22989,7 +22988,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('STANDARD TRAVEL POLICY') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("EXCLUSION_DETAILSTANDARD_TRAVEL_POLICY")), '')))) as EXCLUSION_DETAIL_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("EXCLUSION_DETAILSTANDARD_TRAVEL_POLICY")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__aug_sat_aug_claim_exclusion_applied#6
@@ -22997,7 +22996,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('STANDARD TRAVEL PRIME EXCLUSIONS') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("EXCLUSION_DETAILSTANDARD_TRAVEL_PRIME_EXCLUSIONS")), '')))) as EXCLUSION_DETAIL_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("EXCLUSION_DETAILSTANDARD_TRAVEL_PRIME_EXCLUSIONS")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -23024,7 +23023,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 113. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]  [M2]
+-- 113. MAXIMUS — SAT_AUG_CLAIM_EXPENSE_LINE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [12 col(s)].
@@ -23072,7 +23071,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("EXPENSE_PAYMENT_REFERENCE_NO")), ''))) as EXPENSE_PAYMENT_REFERENCE_NUMBER,
                to_varchar((nullif(trim(to_varchar("EXPENSE_PAYMENT_TYPE")), ''))) as EXPENSE_PAYMENT_TYPE,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_EXPENSES")), ''))) as EXPENSE_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -23153,7 +23152,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 114. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]  [M2]
+-- 114. MAXIMUS — SAT_AUG_CLAIM_FOLLOWUP_TASK   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP [13 col(s)].
 ----------------------------------------------------------------------------------------
@@ -23202,7 +23201,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("LAST_UPDATED_BY")), ''))) as LAST_UPDATED_BY_REFERENCE,
                to_varchar((nullif(trim(to_varchar("LAST_UPDATED_DATE")), ''))) as LAST_UPDATED_DATE,
                to_varchar((nullif(trim(to_varchar("PRIORITY_INDICATOR")), ''))) as PRIORITY_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_EVENT_FOLLOWUP
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -23288,7 +23287,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 115. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]  [M2]
+-- 115. MAXIMUS — SAT_AUG_CLAIM_FRAUD   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [5 col(s)],
@@ -23328,7 +23327,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("FRAUD_CLASSIFICATION")), ''))) as FRAUD_CLASSIFICATION,
                to_varchar((nullif(trim(to_varchar("FRAUD_REQUESTED_BY")), ''))) as FRAUD_REFERRAL_RAISED_BY_REFERENCE,
                to_varchar((nullif(trim(to_varchar("SEVERITY_OF_FRAUD")), ''))) as FRAUD_SEVERITY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -23390,7 +23389,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("ILM_TRIGGER_SELECTED")), ''))) as LIFECYCLE_MANAGEMENT_TRIGGER_SELECTED,
                to_varchar((nullif(trim(to_varchar("NON_DISCLOSURE")), ''))) as NON_DISCLOSURE_INDICATOR,
                to_varchar((nullif(trim(to_varchar("ACCEPTANCE_OF_RISK_PRIORITY")), ''))) as RISK_ACCEPTANCE_PRIORITY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -23455,7 +23454,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("FRAUD_CLASSIFICATION")), ''))) as FRAUD_CLASSIFICATION,
                to_varchar((nullif(trim(to_varchar("FRAUD_REQUESTED_BY")), ''))) as FRAUD_REFERRAL_RAISED_BY_REFERENCE,
                to_varchar((nullif(trim(to_varchar("SEVERITY_OF_FRAUD")), ''))) as FRAUD_SEVERITY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -23509,7 +23508,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SEVERITY_OF_FRAUD")), ''))) as FRAUD_SEVERITY_GRADE,
                to_varchar((nullif(trim(to_varchar("NON_DISCLOSURE")), ''))) as MATERIAL_NON_DISCLOSURE_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -23573,7 +23572,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 116. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]  [M2]
+-- 116. MAXIMUS — SAT_AUG_CLAIM_HEADER   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [4 col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [11
@@ -23608,7 +23607,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PRIMARYCAUSEDESC")), ''))) as PRIMARY_CAUSE_OF_LOSS_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("SECONDARYCAUSECODE")), ''))) as SECONDARY_CAUSE_OF_LOSS_CODE,
                to_varchar((nullif(trim(to_varchar("SECONDARYCAUSEDESC")), ''))) as SECONDARY_CAUSE_OF_LOSS_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -23675,7 +23674,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CLAIM_REGISTRATION_TIME")), ''))) as REGISTRATION_TIME,
                to_varchar((nullif(trim(to_varchar("CLAIM_REOPENING_TYPE")), ''))) as REOPENING_TYPE,
                to_varchar((nullif(trim(to_varchar("REQUIRED_ROAD_SIDE_ASSISTANCE")), ''))) as ROADSIDE_ASSISTANCE_REQUIRED_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -23757,7 +23756,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("LOSS_REASON")), ''))) as LOSS_CAUSE_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -23805,7 +23804,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 117. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]  [M2]
+-- 117. MAXIMUS — SAT_AUG_CLAIM_LITIGATION   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [5 col(s)],
@@ -23843,7 +23842,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DEFENSE_STATUS")), ''))) as DEFENSE_STATUS,
                to_varchar((nullif(trim(to_varchar("DEFENSE_TRIGGER_TYPE")), ''))) as DEFENSE_TRIGGER_TYPE,
                to_varchar((nullif(trim(to_varchar("DEFENSE_TYPE")), ''))) as DEFENSE_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -23897,7 +23896,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COURT_LOCATION_AS_PER_INTIMATION_DETAILS")), ''))) as COURT_LOCATION,
                to_varchar((nullif(trim(to_varchar("CASE_FILED_BEFORE")), ''))) as FORUM_FILED_BEFORE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -23942,7 +23941,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DEFENSE_STATUS")), ''))) as DEFENSE_STATUS,
                to_varchar((nullif(trim(to_varchar("DEFENSE_TRIGGER_TYPE")), ''))) as DEFENSE_TRIGGER_TYPE,
                to_varchar((nullif(trim(to_varchar("DEFENSE_TYPE")), ''))) as DEFENSE_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -24010,7 +24009,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 118. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]  [M2]
+-- 118. MAXIMUS — SAT_AUG_CLAIM_NETWORK_VERIFICATION   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)],
@@ -24038,7 +24037,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),''), nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), ''), nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("HOSPITAL_EMAIL_ID")), ''))) as PROVIDER_EMAIL_ADDRESS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -24070,7 +24069,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("VENDOR_SCORE")), ''))) as VENDOR_PERFORMANCE_SCORE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -24107,7 +24106,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 119. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]  [M2]
+-- 119. MAXIMUS — SAT_AUG_CLAIM_PAYMENT_TRANCHE   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK CLAIM_HKEY, child key TRANCHE_NUMBER; 3
 -- RECORD_SOURCE group(s): MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT [4
 -- col(s)],
@@ -24146,7 +24145,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PAYMENTDUEDATE")), ''))) as PAYMENT_DUE_DATE,
                to_varchar((nullif(trim(to_varchar("REMARKS")), ''))) as PAYMENT_REMARKS,
                to_varchar((nullif(trim(to_varchar("PAYRESERVETYPRE")), ''))) as RESERVE_HEAD_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -24205,7 +24204,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("INTEREST_AMOUNT")), ''))) as INTEREST_AMOUNT,
                to_varchar((nullif(trim(to_varchar("PAYMENT_AUTHORIZATION_DATE")), ''))) as PAYMENT_AUTHORISATION_DATE,
                to_varchar((nullif(trim(to_varchar("SECTION")), ''))) as POLICY_SECTION_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -24274,7 +24273,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PAYMENT_REFERENCE_NO")), ''))) as PAYMENT_REFERENCE_NUMBER,
                to_varchar((nullif(trim(to_varchar("CONFIRM_PAYMENT")), ''))) as PAYMENT_RELEASE_CONFIRMED_INDICATOR,
                to_varchar((nullif(trim(to_varchar("PORTAL_PAYMENT_REFERENCE_NUMBER")), ''))) as PORTAL_PAYMENT_REFERENCE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -24347,7 +24346,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 120. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]  [M2]
+-- 120. MAXIMUS — SAT_AUG_CLAIM_PA_DETAIL   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [2
 -- col(s)],
@@ -24377,7 +24376,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DATE_OF_DEATH")), ''))) as DATE_OF_DEATH,
                to_varchar((nullif(trim(to_varchar("PERSONAL_ACCIDENT_CLAIM_FOR")), ''))) as PERSONAL_ACCIDENT_CLAIMANT_REFERENCE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -24420,7 +24419,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DEATH_OR_HOSPITALIZATION")), ''))) as DEATH_OR_HOSPITALISATION_INDICATOR,
                to_varchar((nullif(trim(to_varchar("DECEASED_OR_PTD")), ''))) as DEATH_OR_PERMANENT_TOTAL_DISABLEMENT_INDICATOR,
                to_varchar((nullif(trim(to_varchar("DECEASED_PERSON_INSURED_WITH_BAGIC")), ''))) as DECEASED_INSURED_WITH_INSURER_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -24472,7 +24471,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 121. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]  [M2]
+-- 121. MAXIMUS — SAT_AUG_CLAIM_PROVIDER_BILLING   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK CLAIM_HKEY, child key BILL_NUMBER; 1
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -24546,7 +24545,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("FACILITY_NAME")), ''))) as PROVIDER_FACILITY_NAME,
                to_varchar((nullif(trim(to_varchar("REVIEWED_VALUE")), ''))) as REVIEWED_AMOUNT,
                to_varchar((nullif(trim(to_varchar("REVIEW_DESCRIPTION")), ''))) as REVIEW_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -24682,7 +24681,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 122. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]  [M2]
+-- 122. MAXIMUS — SAT_AUG_CLAIM_QUALITY_AUDIT   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)].
@@ -24708,7 +24707,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),''), nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), ''), nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("FLAG_FOR_AUDIT")), ''))) as FLAGGED_FOR_AUDIT_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -24734,7 +24733,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 123. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]  [M2]
+-- 123. MAXIMUS — SAT_AUG_CLAIM_RECOVERY_SALVAGE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)],
@@ -24762,7 +24761,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),''), nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), ''), nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DO_YOU_WANT_TO_RETAIN_SALVAGE")), ''))) as SALVAGE_RETAINED_BY_INSURED_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -24794,7 +24793,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_RECOVERY")), ''))) as RECOVERY_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -24831,7 +24830,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 124. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]  [M2]
+-- 124. MAXIMUS — SAT_AUG_CLAIM_SETTLEMENT   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)],
@@ -24861,7 +24860,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),''), nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), ''), nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("OTS_FLAG")), ''))) as ONE_TIME_SETTLEMENT_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -24893,7 +24892,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("IS_INTEREST_APPLICABLE")), ''))) as INTEREST_APPLICABLE_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -24925,7 +24924,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("LINKED_TRIP_DELAY_CLAIM_PAYABLE")), ''))) as LINKED_CLAIM_PAYABLE_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -24973,7 +24972,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 125. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]  [M2]
+-- 125. MAXIMUS — SAT_AUG_CLAIM_SLA_TRACKING   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [8
 -- col(s)],
@@ -25015,7 +25014,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("RISK_PRIORITY_FEEDBACK")), ''))) as RISK_PRIORITY_REVIEW_FEEDBACK,
                to_varchar((nullif(trim(to_varchar("REASONTRIGGER")), ''))) as WORKFLOW_TRIGGER_REASON,
                to_varchar((nullif(trim(to_varchar("BUCKET_DESCRIPTION")), ''))) as WORK_BUCKET_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -25086,7 +25085,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CASE_MANAGEMENT")), ''))) as CASE_MANAGEMENT_INDICATOR,
                to_varchar((nullif(trim(to_varchar("ILM_CASE_STATUS")), ''))) as LOSS_MANAGEMENT_CASE_STATUS,
                to_varchar((nullif(trim(to_varchar("ILM_INTERIM_UPDATE")), ''))) as LOSS_MANAGEMENT_INTERIM_UPDATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -25133,7 +25132,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 126. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]  [M2]
+-- 126. MAXIMUS — SAT_AUG_CLAIM_STATUS_HISTORY   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY [16 col(s)].
 ----------------------------------------------------------------------------------------
@@ -25188,7 +25187,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CLAIM_REQUIREMENT_STATUS")), ''))) as REQUIREMENT_STATUS,
                to_varchar((nullif(trim(to_varchar("SCRUTINY_STATUS")), ''))) as SCRUTINY_STATUS,
                to_varchar((nullif(trim(to_varchar("SURVEY_REPORT_STATUS")), ''))) as SURVEY_REPORT_STATUS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_HISTORY
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -25289,7 +25288,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 127. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]  [M2]
+-- 127. MAXIMUS — SAT_AUG_CLAIM_SURVEY_APPOINTMENT   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)].
@@ -25315,7 +25314,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),''), nullif(trim(w0_claimno),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), ''), nullif(trim(w0_claimno), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SURVEY_REPORT_STATUS")), ''))) as SURVEY_REPORT_STATUS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -25341,7 +25340,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 128. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]  [M2]
+-- 128. MAXIMUS — SAT_AUG_CLAIM_TPA_INTERACTION   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)].
@@ -25369,7 +25368,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TPA_FEE")), ''))) as TPA_FEE_AMOUNT,
                to_varchar((nullif(trim(to_varchar("TPA_FEE_CURRENCY")), ''))) as TPA_FEE_CURRENCY_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -25400,7 +25399,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 129. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]  [M2]
+-- 129. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_DETAIL   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
@@ -25427,7 +25426,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_CLAIM|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CLAIMNO")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NO_OF_DAYS_AVAILED_CONV")), ''))) as BENEFIT_DAYS_AVAILED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -25485,7 +25484,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("TIME_OF_RELEASE")), ''))) as RELEASE_TIME,
                to_varchar((nullif(trim(to_varchar("TRIP_END_COUNTRY")), ''))) as TRIP_DESTINATION_COUNTRY,
                to_varchar((nullif(trim(to_varchar("WEATHER_CONDITION")), ''))) as WEATHER_CONDITION_AT_INCIDENT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -25587,7 +25586,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 130. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]  [M2]
+-- 130. MAXIMUS — SAT_AUG_CLAIM_TRAVEL_SECTOR   [Implemented]
 -- augmented satellite, automate_dv.sat; PK CLAIM_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
 -- [16 col(s)].
@@ -25643,7 +25642,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("FLIGHT_DATE")), ''))) as SCHEDULED_DEPARTURE_DATE,
                to_varchar((nullif(trim(to_varchar("FLIGHT_TIME")), ''))) as SCHEDULED_DEPARTURE_TIME,
                to_varchar((nullif(trim(to_varchar("TYPE_OF_TRANSPORT")), ''))) as TYPE_OF_TRANSPORT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -25744,7 +25743,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 131. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]  [M2]
+-- 131. MAXIMUS — SAT_AUG_COMMON_ADDRESS   [Implemented]
 -- augmented satellite, automate_dv.sat; PK LOCATION_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -25772,7 +25771,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_1")), ''))),''), nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_2")), ''))),''), nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_3")), ''))),''), nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_CITY_TOWN_VILLAGE")), ''))),''), nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_STATE_UT")), ''))),''), nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_COUNTRY")), ''))),''), nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_PIN_CODE")), ''))),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_1")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_2")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_3")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_CITY_TOWN_VILLAGE")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_STATE_UT")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_COUNTRY")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_PIN_CODE")), ''))), ''), '')), '||||||')), '[[:space:]]+', ' '))) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_")), ''))) as FULL_ADDRESS_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -25804,7 +25803,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_LOCATION|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_1")), ''))),''), nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_2")), ''))),''), nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_3")), ''))),''), nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_CITY_TOWN_VILLAGE")), ''))),''), nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_STATE_UT")), ''))),''), nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_COUNTRY")), ''))),''), nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_PIN_CODE")), ''))),'')) is not null then md5(upper(regexp_replace(trim(nullif(trim(coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_1")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_2")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_LINE_3")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_CITY_TOWN_VILLAGE")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_STATE_UT")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_COUNTRY")), ''))), ''), '') || '|' || coalesce(nullif(trim((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_PIN_CODE")), ''))), ''), '')), '||||||')), '[[:space:]]+', ' '))) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CURRENT_PERMANENT_OVERSEAS_ADDRESS_")), ''))) as FULL_ADDRESS_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -25841,7 +25840,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 132. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]  [M2]
+-- 132. MAXIMUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -25869,7 +25868,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PREFERRED_MODE_OF_ALERT")), ''))) as PREFERRED_ALERT_CHANNEL
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -25901,7 +25900,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PREFERRED_MODE_OF_ALERT")), ''))) as PREFERRED_ALERT_CHANNEL
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -25938,7 +25937,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 133. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]  [M2]
+-- 133. MAXIMUS — SAT_AUG_COVERAGE_CONDITIONS   [Implemented]
 -- augmented satellite, automate_dv.sat; PK COVERAGE_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -25966,7 +25965,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUB1")), ''))) as SUB_CONDITION_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -25998,7 +25997,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUB1")), ''))) as SUB_CONDITION_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -26035,7 +26034,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 134. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]  [M2]
+-- 134. MAXIMUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
 -- augmented satellite, automate_dv.sat; PK COVERAGE_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -26067,7 +26066,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w2_cover_code),'') is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_PLAN")), ''))) as COVERAGE_PLAN_VARIANT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -26101,7 +26100,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_PLAN")), ''))) as COVERAGE_PLAN_VARIANT,
                to_varchar((nullif(trim(to_varchar("LEADING_COVER")), ''))) as LEADING_COVER_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -26138,7 +26137,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim(w2_cover_code),'') is not null then 'COV:' || nullif(trim(w2_cover_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_PLAN")), ''))) as COVERAGE_PLAN_VARIANT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -26172,7 +26171,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_PLAN")), ''))) as COVERAGE_PLAN_VARIANT,
                to_varchar((nullif(trim(to_varchar("LEADING_COVER")), ''))) as LEADING_COVER_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -26236,7 +26235,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 135. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]  [M2]
+-- 135. MAXIMUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
 -- augmented satellite, automate_dv.sat; PK COVERAGE_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -26264,7 +26263,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PER_TRIP_LIMIT_IN_DAYS")), ''))) as PER_TRIP_DAY_LIMIT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -26296,7 +26295,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_COVERAGE|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))),'') is not null then 'COV:' || nullif(trim((nullif(trim(to_varchar("COVER_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PER_TRIP_LIMIT_IN_DAYS")), ''))) as PER_TRIP_DAY_LIMIT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -26333,7 +26332,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 136. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]  [M2]
+-- 136. MAXIMUS — SAT_AUG_COVERAGE_SUBLIMIT_SCHEDULE   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK COVERAGE_HKEY, child key
 -- ACTIVE_SEQUENCE_NUMBER; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -26395,7 +26394,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce((nullif(trim(to_varchar("SUM_INSUREDACE")), '')), (nullif(trim(to_varchar("SUM_INSURED_ACE")), '')))) as SUM_INSURED_ACE_VARIANT,
                to_varchar((nullif(trim(to_varchar("TRIP_TYPE_INCOV")), ''))) as TRIP_TYPE_FOR_INCONVENIENCE_COVER,
                to_varchar((nullif(trim(to_varchar("TRIP_TYPE_TRIPCAL")), ''))) as TRIP_TYPE_FOR_TRIP_CALCULATION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -26501,7 +26500,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 137. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]  [M2]
+-- 137. MAXIMUS — SAT_AUG_COVERAGE_SUB_COVER_ELEMENT   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK COVERAGE_HKEY, child key SUB_COVER_CODE; 1
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -26531,7 +26530,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('AMBULANCE') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("AMBULANCE_SUB_COVER")), '')))) as SUB_COVER_APPLICABILITY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("AMBULANCE_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_cov_covp_msp_msd_prop_pv__aug_sat_aug_coverage_sub_cover_element#2
@@ -26539,7 +26538,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('TRAVEL_INCONVENIENCE') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("INCONVENIENCE_SUB_COVER")), '')))) as SUB_COVER_APPLICABILITY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("INCONVENIENCE_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_cov_covp_msp_msd_prop_pv__aug_sat_aug_coverage_sub_cover_element#3
@@ -26547,7 +26546,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('TRIP_CANCELLATION') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("CANCELLATION_SUB_COVER")), '')))) as SUB_COVER_APPLICABILITY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CANCELLATION_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_cov_covp_msp_msd_prop_pv__aug_sat_aug_coverage_sub_cover_element#4
@@ -26555,7 +26554,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('TRIP_CANCELLATION_MAIN') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("CANCELLATION_MAIN_SUB_COVER")), '')))) as SUB_COVER_APPLICABILITY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CANCELLATION_MAIN_SUB_COVER")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -26582,7 +26581,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 138. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]  [M2]
+-- 138. MAXIMUS — SAT_AUG_DOCUMENT_CHECKLIST   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK DOCUMENT_HKEY, child key
 -- REQUIRED_DOCUMENT_TYPE; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -26616,7 +26615,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("RESPONSE")), ''))) as REQUIREMENT_RESPONSE_TEXT,
                to_varchar((nullif(trim(to_varchar("REQUIRED_FROM")), ''))) as REQUIREMENT_SOUGHT_FROM,
                to_varchar((nullif(trim(to_varchar("REQUIREMENT_STATUS")), ''))) as REQUIREMENT_STATUS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -26652,7 +26651,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 139. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]  [M2]
+-- 139. MAXIMUS — SAT_AUG_DOCUMENT_DISPATCH   [Implemented]
 -- augmented satellite, automate_dv.sat; PK DOCUMENT_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [6 col(s)].
@@ -26688,7 +26687,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("SENDER_NAME")), ''))) as SENDER_NAME,
                to_varchar((nullif(trim(to_varchar("SPECIAL_ENCLOSURES_DETAILS")), ''))) as SPECIAL_ENCLOSURES_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("SPECIAL_ENCLOSURES_FLAG")), ''))) as SPECIAL_ENCLOSURES_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -26739,7 +26738,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 140. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]  [M2]
+-- 140. MAXIMUS — SAT_AUG_DOCUMENT_REQUIREMENT_REMINDER   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK DOCUMENT_HKEY, child key
 -- REMINDER_SEQUENCE; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -26769,7 +26768,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('1') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("1ST_REMINDER_DATE")), '')))) as REMINDER_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("1ST_REMINDER_DATE")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clma_msp_msd_prop_pv__aug_sat_aug_document_requirement_reminder#2
@@ -26777,7 +26776,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('2') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("2ND_REMINDER_DATE")), '')))) as REMINDER_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("2ND_REMINDER_DATE")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clma_msp_msd_prop_pv__aug_sat_aug_document_requirement_reminder#3
@@ -26785,7 +26784,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('3') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("3RD_REMINDER_DATE")), '')))) as REMINDER_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("3RD_REMINDER_DATE")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -26812,7 +26811,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 141. MAXIMUS — SAT_AUG_FINTXN_TAX   [Implemented]  [M3]
+-- 141. MAXIMUS — SAT_AUG_FINTXN_TAX   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK FINANCIAL_TRANSACTION_HKEY, child key
 -- TAX_TYPE; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
@@ -26850,7 +26849,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("INVOICE_NO")), '')))) as SUPPLIER_INVOICE_NUMBER,
                cast(null as varchar) as UTGST_AMOUNT,
                cast(null as varchar) as VAT_REGISTRATION_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("INVOICE_MODE")), '')) is not null or (nullif(trim(to_varchar("INVOICE_NO")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmpay_payp_pv__aug_sat_aug_fintxn_tax#2
@@ -26861,7 +26860,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as SUPPLIER_INVOICE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("UGST_AMOUNT")), '')))) as UTGST_AMOUNT,
                cast(null as varchar) as VAT_REGISTRATION_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("UGST_AMOUNT")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmpay_payp_pv__aug_sat_aug_fintxn_tax#3
@@ -26872,7 +26871,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as SUPPLIER_INVOICE_NUMBER,
                cast(null as varchar) as UTGST_AMOUNT,
                to_varchar(((nullif(trim(to_varchar("VAT_NUMBER")), '')))) as VAT_REGISTRATION_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_PAYMENT_PAYMENTPROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("VAT_NUMBER")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -26948,7 +26947,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("TDS_WAIVED_REASON")), '')))) as TDS_WAIVED_REASON,
                cast(null as varchar) as UGST_AMOUNT,
                cast(null as varchar) as UGST_RATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("TDS_CERTIFICATE")), '')) is not null or (nullif(trim(to_varchar("TDS_DD_PAYABLE_AT")), '')) is not null or (nullif(trim(to_varchar("TDS_DD_STATE")), '')) is not null or (nullif(trim(to_varchar("TDS_MAXIMUS_REFERENCE_NO")), '')) is not null or (nullif(trim(to_varchar("TDS_MODE_OF_PAYMENT")), '')) is not null or (nullif(trim(to_varchar("TDS_NONDEDUCTION_FLAG")), '')) is not null or (nullif(trim(to_varchar("TDS_NONDEDUCTION_REASON")), '')) is not null or (nullif(trim(to_varchar("TDS_PORTAL_PAYMENT_REFERENCE_NUMBER")), '')) is not null or (nullif(trim(to_varchar("TDS_SEPARATE_CHEQUE_FLAG")), '')) is not null or (nullif(trim(to_varchar("TDS_SEPARATE_PAYMENT_FLAG")), '')) is not null or (nullif(trim(to_varchar("TDS_WAIVED_FLAG")), '')) is not null or (nullif(trim(to_varchar("TDS_WAIVED_REASON")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmrsk_rska_msp_msd_prop_pv__aug_sat_aug_fintxn_tax#2
@@ -26969,7 +26968,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as TDS_WAIVED_REASON,
                to_varchar(((nullif(trim(to_varchar("UGST")), '')))) as UGST_AMOUNT,
                to_varchar(((nullif(trim(to_varchar("UGST_PERCENTAGE")), '')))) as UGST_RATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("UGST")), '')) is not null or (nullif(trim(to_varchar("UGST_PERCENTAGE")), '')) is not null
       )
      where hkey in (select hkey from s2) and ldts is not null
@@ -27072,7 +27071,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 142. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]  [M3]
+-- 142. MAXIMUS — SAT_AUG_FIN_RECEIPT   [Implemented]
 -- augmented satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 3 RECORD_SOURCE
 -- group(s): MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION [1
 -- col(s)],
@@ -27102,7 +27101,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("TRANSACTION_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COLLECTION_DATE")), ''))) as COLLECTION_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PAYMENT_INFORMATION
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -27134,7 +27133,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when coalesce(nullif(trim(w1_policy_number),''), nullif(trim("FOREIGN_KEY"),'')) is not null then 'POLPREM:' || coalesce(nullif(trim(w1_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PORTAL_PAYMENT_MODE")), ''))) as PORTAL_PAYMENT_MODE_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -27166,7 +27165,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_FINANCIAL_TRANSACTION|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then 'QUOTEPREM:' || nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PORTAL_PAYMENT_MODE")), ''))) as PORTAL_PAYMENT_MODE_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -27214,7 +27213,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 143. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]  [M3]
+-- 143. MAXIMUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -27240,7 +27239,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MEMBER_TYPE")), ''))) as MEMBER_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -27266,7 +27265,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 144. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]  [M3]
+-- 144. MAXIMUS — SAT_AUG_LNK_ROLE_PROVIDER   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_ROLE_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)].
@@ -27294,7 +27293,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NATIONAL_TIEUP_INFORMATION")), ''))) as NATIONAL_TIE_UP_INFORMATION,
                to_varchar((nullif(trim(to_varchar("TASK_THRESHOLD")), ''))) as TASK_ALLOCATION_THRESHOLD
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -27325,7 +27324,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 145. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Implemented]  [M3]
+-- 145. MAXIMUS — SAT_AUG_ORG_UNIT_CONTACT   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK ORG_UNIT_HKEY, child key
 -- CONTACT_POINT_TYPE; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
@@ -27359,7 +27358,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("ALTERNATE_MOB_NUMBERLANDLINE_NUMBER")), '')))) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                cast(null as varchar) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ALTERNATE_MOB_NUMBERLANDLINE_NUMBER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_off_oa_address_prop_pv__aug_sat_aug_org_unit_contact#2
@@ -27369,7 +27368,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("WHATSAPP_NO")), '')))) as MOBILE_NUMBER,
                cast(null as varchar) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("WHATSAPP_NO")), '')) is not null
         union all
         -- via up_mt__uwr_pol_off_oa_address_prop_pv__aug_sat_aug_org_unit_contact#3
@@ -27379,7 +27378,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("FACEBOOK_ID")), '')))) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("FACEBOOK_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_off_oa_address_prop_pv__aug_sat_aug_org_unit_contact#4
@@ -27389,7 +27388,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("INSTAGRAM_ID")), '')))) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("INSTAGRAM_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_off_oa_address_prop_pv__aug_sat_aug_org_unit_contact#5
@@ -27399,7 +27398,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("LINKED_IN_ID")), '')))) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("LINKED_IN_ID")), '')) is not null
         union all
         -- via up_mt__uwr_pol_off_oa_address_prop_pv__aug_sat_aug_org_unit_contact#6
@@ -27409,7 +27408,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ALTERNATE_MOBILE_NUMBER,
                cast(null as varchar) as MOBILE_NUMBER,
                to_varchar(((nullif(trim(to_varchar("TWITTER_ID")), '')))) as SOCIAL_MEDIA_HANDLE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_OFFICE_DETAILS_OFFICE_ADDRESS_ADDRESS_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("TWITTER_ID")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -27446,7 +27445,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 146. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]  [M3]
+-- 146. MAXIMUS — SAT_AUG_PARTY_BANKING   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [7 col(s)],
@@ -27490,7 +27489,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("NEFT_STATUS")), ''))) as NEFT_VERIFICATION_STATUS,
                to_varchar((nullif(trim(to_varchar("PENNY_SCORE")), ''))) as PENNY_DROP_NAME_MATCH_SCORE,
                to_varchar((nullif(trim(to_varchar("PENNYDROPLESS_FLAG")), ''))) as PENNY_DROP_WAIVED_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -27552,7 +27551,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("REFUND_TO_PID_OF_BG_HOLDER_AC")), ''))) as REFUND_TO_BANK_GUARANTEE_HOLDER_ACCOUNT_REFERENCE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -27596,7 +27595,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("NEFT_STATUS")), ''))) as NEFT_VERIFICATION_STATUS,
                to_varchar((nullif(trim(to_varchar("PENNY_SCORE")), ''))) as PENNY_DROP_NAME_MATCH_SCORE,
                to_varchar((nullif(trim(to_varchar("PENNYDROPLESS_FLAG")), ''))) as PENNY_DROP_WAIVED_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -27658,7 +27657,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("REFUND_TO_PID_OF_BG_HOLDER_AC")), ''))) as REFUND_TO_BANK_GUARANTEE_HOLDER_ACCOUNT_REFERENCE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -27717,7 +27716,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 147. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]  [M3]
+-- 147. MAXIMUS — SAT_AUG_PARTY_CLAIM_HISTORY   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)],
@@ -27749,7 +27748,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CLAIM_APPLICANT_DOB")), ''))) as CLAIM_APPLICANT_DATE_OF_BIRTH,
                to_varchar((nullif(trim(to_varchar("CLAIM_APPLICANT_NAME")), ''))) as CLAIM_APPLICANT_NAME,
                to_varchar((nullif(trim(to_varchar("CLAIM_APPLICANT_NAME_PREFIX")), ''))) as CLAIM_APPLICANT_SALUTATION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -27795,7 +27794,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CLAIM_APPLICANT_DOB")), ''))) as CLAIM_APPLICANT_DATE_OF_BIRTH,
                to_varchar((nullif(trim(to_varchar("CLAIM_APPLICANT_NAME")), ''))) as CLAIM_APPLICANT_NAME,
                to_varchar((nullif(trim(to_varchar("CLAIM_APPLICANT_NAME_PREFIX")), ''))) as CLAIM_APPLICANT_SALUTATION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -27842,7 +27841,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 148. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]  [M3]
+-- 148. MAXIMUS — SAT_AUG_PARTY_CONSENT_MANDATE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -27870,7 +27869,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EMANDATE_DETAILS")), ''))) as MANDATE_DETAILS_NARRATIVE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -27902,7 +27901,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EMANDATE_DETAILS")), ''))) as MANDATE_DETAILS_NARRATIVE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -27939,7 +27938,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 149. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]  [M3]
+-- 149. MAXIMUS — SAT_AUG_PARTY_CONTACT_ADDRESS_LINK   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK PARTY_LOCATION_HKEY, child key
 -- ADDRESS_USAGE_TYPE; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
@@ -27971,7 +27970,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('CORRESPONDENCE') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("IS_THE_CORRESPONDENCE_ADDRESS_IS_SAME_AS_MENTIONED_ON_POLICY")), ''))) as SAME_AS_POLICY_ADDRESS_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -28007,7 +28006,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ADDRESS_PROOF_EFFECTIVE_DATE")), ''))) as ADDRESS_PROOF_EFFECTIVE_DATE,
                to_varchar((nullif(trim(to_varchar("FLAG_INDICATING_IF_CURRENT_PERMANENT_OVERSEAS_ADDRESS_IS_SAME_AS_CORRESPONDENCE_LOCAL_ADDRESS")), ''))) as SAME_AS_CORRESPONDENCE_ADDRESS_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -28049,7 +28048,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 150. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]  [M3]
+-- 150. MAXIMUS — SAT_AUG_PARTY_CORRESPONDENCE   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK PARTY_HKEY, child key DISPATCH_REFERENCE;
 -- 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
@@ -28079,7 +28078,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("POD_NUMBER")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SENDER_NAME")), ''))) as SENDER_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -28105,7 +28104,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 151. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]  [M3]
+-- 151. MAXIMUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -28133,7 +28132,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EMPLOYERS_DETAILS")), ''))) as EMPLOYER_DETAILS_NARRATIVE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -28169,7 +28168,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("EMPLOYERS_DETAILS")), ''))) as EMPLOYER_DETAILS_NARRATIVE,
                to_varchar((nullif(trim(to_varchar("PRIMARY_PROFESSION")), ''))) as PRIMARY_PROFESSION,
                to_varchar((nullif(trim(to_varchar("USED_CAR_DEALER")), ''))) as USED_CAR_DEALER_OCCUPATION_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -28216,7 +28215,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 152. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]  [M3]
+-- 152. MAXIMUS — SAT_AUG_PARTY_FINANCIAL_PROFILE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)],
@@ -28246,7 +28245,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_INCOME_SEGMENT")), ''))) as INCOME_SEGMENT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -28288,7 +28287,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("FILED_IT_LAST_2_YEARS")), ''))) as INCOME_TAX_RETURN_FILED_LAST_TWO_YEARS_INDICATOR,
                to_varchar((nullif(trim(to_varchar("LOWER_TDS_CERTIFICATE")), ''))) as LOWER_TDS_CERTIFICATE_REFERENCE,
                to_varchar((nullif(trim(to_varchar("MONTHLY_INCOME")), ''))) as MONTHLY_INCOME_DECLARED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -28359,7 +28358,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("HNI_FLAG")), ''))) as HIGH_NET_WORTH_INDIVIDUAL_INDICATOR,
                to_varchar((nullif(trim(to_varchar("FILED_IT_LAST_2_YEARS")), ''))) as INCOME_TAX_RETURN_FILED_LAST_TWO_YEARS_INDICATOR,
                to_varchar((nullif(trim(to_varchar("MONTHLY_INCOME")), ''))) as MONTHLY_INCOME_DECLARED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -28442,7 +28441,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 153. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]  [M3]
+-- 153. MAXIMUS — SAT_AUG_PARTY_GROUP_SCHEME   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -28468,7 +28467,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("GROUP_BUFFER")), ''))) as GROUP_BUFFER_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -28494,7 +28493,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 154. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]  [M3]
+-- 154. MAXIMUS — SAT_AUG_PARTY_HEALTH_PROFILE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)],
@@ -28526,7 +28525,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("LOCATION_OF_DISABILITY")), ''))) as DISABILITY_BODY_LOCATION,
                to_varchar((nullif(trim(to_varchar("ICD")), ''))) as ICD_DIAGNOSIS_CODE,
                to_varchar((nullif(trim(to_varchar("SURGERY_DETAILS")), ''))) as SURGERY_HISTORY_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -28572,7 +28571,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("LOCATION_OF_DISABILITY")), ''))) as DISABILITY_BODY_LOCATION,
                to_varchar((nullif(trim(to_varchar("ICD")), ''))) as ICD_DIAGNOSIS_CODE,
                to_varchar((nullif(trim(to_varchar("SURGERY_DETAILS")), ''))) as SURGERY_HISTORY_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -28619,7 +28618,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 155. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]  [M3]
+-- 155. MAXIMUS — SAT_AUG_PARTY_HIERARCHY   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [3 col(s)].
@@ -28649,7 +28648,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("BRANCH")), ''))) as SERVICING_BRANCH_REFERENCE,
                to_varchar((nullif(trim(to_varchar("TRANSFER_CASE")), ''))) as TRANSFER_CASE_REFERENCE,
                to_varchar((nullif(trim(to_varchar("TRANSFER")), ''))) as TRANSFER_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -28685,7 +28684,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 156. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]  [M3]
+-- 156. MAXIMUS — SAT_AUG_PARTY_IDENTIFICATION   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK PARTY_HKEY, child key
 -- IDENTIFICATION_TYPE_CODE; 5 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
@@ -28723,7 +28722,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('PAN') as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("NAME_AS_PER_PAN")), ''))) as NAME_AS_PER_IDENTIFICATION_DOCUMENT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -28759,7 +28758,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PASSPORT_FILE_NO")), ''))) as PASSPORT_FILE_NUMBER,
                to_varchar((nullif(trim(to_varchar("PASSPORT_ISSUE_COUNTRY")), ''))) as PASSPORT_ISSUING_COUNTRY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -28820,7 +28819,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_DETAIL_DESCRIPTION,
                cast(null as varchar) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as OVD_CATEGORY_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("NAME_AS_PER_AADHAAR")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#2
@@ -28839,7 +28838,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_DETAIL_DESCRIPTION,
                cast(null as varchar) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as OVD_CATEGORY_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("NAME_AS_PER_CKYC")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#3
@@ -28858,7 +28857,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_DETAIL_DESCRIPTION,
                cast(null as varchar) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as OVD_CATEGORY_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("DRIVING_LICENSE_DETAILS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#4
@@ -28877,7 +28876,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_DETAIL_DESCRIPTION,
                cast(null as varchar) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as OVD_CATEGORY_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("EIA_AVAILABLE")), '')) is not null or (nullif(trim(to_varchar("EIA_CREDIT_REQUIRED")), '')) is not null or (nullif(trim(to_varchar("EIA_DETAILS")), '')) is not null or (nullif(trim(to_varchar("EIA_REQUIRED")), '')) is not null or (nullif(trim(to_varchar("EIA_WHEN_LINKED")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#5
@@ -28896,7 +28895,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_DETAIL_DESCRIPTION,
                cast(null as varchar) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as OVD_CATEGORY_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("STATEWISE_GSTIN_DETAILS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#6
@@ -28915,7 +28914,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_DETAIL_DESCRIPTION,
                cast(null as varchar) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as OVD_CATEGORY_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("NAME_AS_PER_PAN")), '')) is not null or (nullif(trim(to_varchar("PAN_AADHAAR_LINKED")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#7
@@ -28934,7 +28933,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("PASSPORT_DETAILS")), '')))) as PASSPORT_DETAIL_DESCRIPTION,
                cast(null as varchar) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as OVD_CATEGORY_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("PASSPORT_DETAILS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#8
@@ -28953,7 +28952,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_DETAIL_DESCRIPTION,
                to_varchar(((nullif(trim(to_varchar("CLAIM_POA_STATUS")), '')))) as IDENTIFICATION_VERIFICATION_STATUS,
                to_varchar(((nullif(trim(to_varchar("PROOF_OF_ADDRESS_SUBMITTED_FOR_CURRENT_PERMANENT_OVERSEAS_ADDRESSOTHERS")), '')))) as OVD_CATEGORY_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CLAIM_POA_STATUS")), '')) is not null or (nullif(trim(to_varchar("PROOF_OF_ADDRESS_SUBMITTED_FOR_CURRENT_PERMANENT_OVERSEAS_ADDRESSOTHERS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_mbr_pp_sp_pv__aug_sat_aug_party_identification#9
@@ -28972,7 +28971,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_DETAIL_DESCRIPTION,
                to_varchar(((nullif(trim(to_varchar("CLAIM_POI_STATUS")), '')))) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as OVD_CATEGORY_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CLAIM_POI_STATUS")), '')) is not null
       )
      where hkey in (select hkey from s3) and ldts is not null
@@ -29064,7 +29063,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PASSPORT_FILE_NO")), ''))) as PASSPORT_FILE_NUMBER,
                to_varchar((nullif(trim(to_varchar("PASSPORT_ISSUE_COUNTRY")), ''))) as PASSPORT_ISSUING_COUNTRY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -29127,7 +29126,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
                cast(null as varchar) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("NAME_AS_PER_AADHAAR")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#2
@@ -29147,7 +29146,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
                cast(null as varchar) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("NAME_AS_PER_CKYC")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#3
@@ -29167,7 +29166,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
                cast(null as varchar) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("DRIVING_LICENSE_DETAILS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#4
@@ -29187,7 +29186,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
                cast(null as varchar) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("EIA_AVAILABLE")), '')) is not null or (nullif(trim(to_varchar("EIA_CREDIT_REQUIRED")), '')) is not null or (nullif(trim(to_varchar("EIA_DETAILS")), '')) is not null or (nullif(trim(to_varchar("EIA_REQUIRED")), '')) is not null or (nullif(trim(to_varchar("EIA_WHEN_LINKED")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#5
@@ -29207,7 +29206,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
                cast(null as varchar) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("STATEWISE_GSTIN_DETAILS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#6
@@ -29227,7 +29226,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
                cast(null as varchar) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("NAME_AS_PER_PAN")), '')) is not null or (nullif(trim(to_varchar("PAN_AADHAAR_LINKED")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#7
@@ -29247,7 +29246,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("PASSPORT_ISSUE_COUNTRY")), '')))) as PASSPORT_ISSUING_COUNTRY,
                cast(null as varchar) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("PASSPORT_DETAILS")), '')) is not null or (nullif(trim(to_varchar("PASSPORT_ISSUE_COUNTRY")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#8
@@ -29267,7 +29266,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
                to_varchar(((nullif(trim(to_varchar("CLAIM_POA_STATUS")), '')))) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CLAIM_POA_STATUS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#9
@@ -29287,7 +29286,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
                cast(null as varchar) as IDENTIFICATION_VERIFICATION_STATUS,
                to_varchar(((nullif(trim(to_varchar("PROOF_OF_ADDRESS_SUBMITTED_FOR_CURRENT_PERMANENT_OVERSEAS_ADDRESSOTHERS")), '')))) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("PROOF_OF_ADDRESS_SUBMITTED_FOR_CURRENT_PERMANENT_OVERSEAS_ADDRESSOTHERS")), '')) is not null
         union all
         -- via up_mt__uwr_pol_prp_pp_sp_pv__aug_sat_aug_party_identification#10
@@ -29307,7 +29306,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PASSPORT_ISSUING_COUNTRY,
                to_varchar(((nullif(trim(to_varchar("CLAIM_POI_STATUS")), '')))) as IDENTIFICATION_VERIFICATION_STATUS,
                cast(null as varchar) as PROOF_OF_ADDRESS_OTHER_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CLAIM_POI_STATUS")), '')) is not null
       )
      where hkey in (select hkey from s5) and ldts is not null
@@ -29438,7 +29437,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 157. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]  [M3]
+-- 157. MAXIMUS — SAT_AUG_PARTY_IDENTITY   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 5 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -29471,7 +29470,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CLAIMANT_PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("GUARDIAN_NAME")), ''))) as GUARDIAN_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -29505,7 +29504,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CREATED_BY")), ''))) as CREATED_BY_USER_REFERENCE,
                to_varchar((nullif(trim(to_varchar("PARTY_LAST_MODIFICATION_DATE")), ''))) as RECORD_LAST_MODIFIED_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -29544,7 +29543,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COUNTRY")), ''))) as PARTY_COUNTRY,
                to_varchar((nullif(trim(to_varchar("REFERENCE_CODE")), ''))) as SOURCE_REFERENCE_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -29583,7 +29582,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CREATED_BY")), ''))) as CREATED_BY_USER_REFERENCE,
                to_varchar((nullif(trim(to_varchar("PARTY_LAST_MODIFICATION_DATE")), ''))) as RECORD_LAST_MODIFIED_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -29620,7 +29619,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COUNTRY")), ''))) as PARTY_COUNTRY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -29690,7 +29689,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 158. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]  [M3]
+-- 158. MAXIMUS — SAT_AUG_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)],
@@ -29720,7 +29719,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CUSTOMER_AGE_SLAB")), ''))) as AGE_BAND
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -29764,7 +29763,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("OTHER_RELATIONSHIP")), ''))) as OTHER_RELATIONSHIP_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("PERSONAL_DETAILS")), ''))) as PERSONAL_DETAILS_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("RELATIONSHIP")), ''))) as RELATIONSHIP_TO_PRIMARY_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -29858,7 +29857,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("MONTH_OF_PASSING")), ''))) as QUALIFICATION_MONTH_OF_PASSING,
                to_varchar((nullif(trim(to_varchar("RELATIONSHIP")), ''))) as RELATIONSHIP_TO_PRIMARY_INSURED,
                to_varchar((nullif(trim(to_varchar("YEAR_OF_PASSING")), ''))) as YEAR_OF_PASSING_QUALIFICATION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -29986,7 +29985,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 159. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]  [M3]
+-- 159. MAXIMUS — SAT_AUG_PARTY_LOYALTY_CLASSIFICATION   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK PARTY_HKEY, child key
 -- LOYALTY_CLASSIFICATION_TYPE; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
@@ -30016,7 +30015,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('NOMENCLATURE') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("LOYALITY_BUCKET_BY_NOMENCLATURE")), '')))) as LOYALTY_BUCKET
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("LOYALITY_BUCKET_BY_NOMENCLATURE")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__aug_sat_aug_party_loyalty_classification#2
@@ -30024,7 +30023,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('SEVERITY') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("LOYALITY_BUCKET_BY_SEVERITY")), '')))) as LOYALTY_BUCKET
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("LOYALITY_BUCKET_BY_SEVERITY")), '')) is not null
         union all
         -- via up_mt__clm_clmd_clmap_pv__aug_sat_aug_party_loyalty_classification#3
@@ -30032,7 +30031,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('SEVERITY_FINAL') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("LOYALTYSEVERITYFINAL")), '')))) as LOYALTY_BUCKET
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
          where (nullif(trim(to_varchar("LOYALTYSEVERITYFINAL")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -30059,7 +30058,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 160. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]  [M3]
+-- 160. MAXIMUS — SAT_AUG_PARTY_ONBOARDING_JOURNEY   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
@@ -30089,7 +30088,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("REJECTED_REASON")), ''))) as APPLICATION_REJECTION_REASON,
                to_varchar((nullif(trim(to_varchar("DECLARATION")), ''))) as PARTY_DECLARATION_TEXT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -30152,7 +30151,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("REASON_FOR_LEAVING_REMARKS")), ''))) as REASON_FOR_LEAVING_PREVIOUS_EMPLOYER,
                to_varchar((nullif(trim(to_varchar("DATE_OF_ACCEPTANCE_OF_RESIGNATION")), ''))) as RESIGNATION_ACCEPTANCE_DATE,
                to_varchar((nullif(trim(to_varchar("DATE_OF_SUBMITTING_RESIGNATION")), ''))) as RESIGNATION_SUBMISSION_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -30254,7 +30253,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 161. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]  [M3]
+-- 161. MAXIMUS — SAT_AUG_PARTY_PAYOUT_PROFILE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
@@ -30284,7 +30283,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TDS_CODE")), ''))) as TDS_CODE,
                to_varchar((nullif(trim(to_varchar("TDS_CODE_DESC")), ''))) as TDS_CODE_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -30331,7 +30330,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("TDS_CODE")), ''))) as TDS_CODE,
                to_varchar((nullif(trim(to_varchar("TDS_CODE_DESC")), ''))) as TDS_CODE_DESCRIPTION,
                to_varchar((nullif(trim(to_varchar("TDS_DETAILS")), ''))) as TDS_DETAILS_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -30393,7 +30392,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 162. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]  [M3]
+-- 162. MAXIMUS — SAT_AUG_PARTY_PREFERENCE_PROFILE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
@@ -30423,7 +30422,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EPOLICY_REQUIRED")), ''))) as ELECTRONIC_POLICY_REQUIRED_INDICATOR,
                to_varchar((nullif(trim(to_varchar("UPDATE_CONTACT_DETAILS_IN_ALL_POLICIES")), ''))) as PROPAGATE_CONTACT_UPDATE_TO_ALL_POLICIES_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -30462,7 +30461,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EPOLICY_REQUIRED")), ''))) as ELECTRONIC_POLICY_REQUIRED_INDICATOR,
                to_varchar((nullif(trim(to_varchar("UPDATE_CONTACT_DETAILS_IN_ALL_POLICIES")), ''))) as PROPAGATE_CONTACT_UPDATE_TO_ALL_POLICIES_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -30504,7 +30503,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 163. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]  [M3]
+-- 163. MAXIMUS — SAT_AUG_PARTY_RELATIONSHIP_PROFILE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS [1
 -- col(s)],
@@ -30535,7 +30534,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("RELATED_PARTY")), ''))) as RELATED_PARTY_REFERENCE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -30573,7 +30572,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("RELATIONSHIP_WITH_EMPLOYEE")), ''))) as RELATIONSHIP_WITH_EMPLOYEE,
                to_varchar((nullif(trim(to_varchar("RELATIONSHIP_WITH_HNI")), ''))) as RELATIONSHIP_WITH_HNI_CUSTOMER,
                to_varchar((nullif(trim(to_varchar("RELATIONSHIP_WITH_PRIVE")), ''))) as RELATIONSHIP_WITH_PRIVE_CUSTOMER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -30620,7 +30619,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("PARTY_CODE")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("RELATED_PARTY")), ''))) as RELATED_PARTY_REFERENCE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -30658,7 +30657,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("RELATIONSHIP_WITH_EMPLOYEE")), ''))) as RELATIONSHIP_WITH_EMPLOYEE,
                to_varchar((nullif(trim(to_varchar("RELATIONSHIP_WITH_HNI")), ''))) as RELATIONSHIP_WITH_HNI_CUSTOMER,
                to_varchar((nullif(trim(to_varchar("RELATIONSHIP_WITH_PRIVE")), ''))) as RELATIONSHIP_WITH_PRIVE_CUSTOMER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_PROPOSER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -30732,7 +30731,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 164. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]  [M3]
+-- 164. MAXIMUS — SAT_AUG_PARTY_RISK_ANALYTICS   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)].
@@ -30758,7 +30757,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PARTY|' || (nullif(trim(case when coalesce(nullif(trim((nullif(trim(to_varchar("UNIQUE_CUSTOMER_ID")), ''))),''), nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))),'')) is not null then coalesce(nullif(trim((nullif(trim(to_varchar("UNIQUE_CUSTOMER_ID")), ''))), ''), nullif(trim((nullif(trim(to_varchar("CUSTOMERID")), ''))), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("RETAIL_CUSTOMER_PROFITABILITY_FLAG_AS_PER_LOGIC_BY_ACTUARY_TEAM")), ''))) as CUSTOMER_PROFITABILITY_CLASSIFICATION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -30784,7 +30783,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 165. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]  [M3]
+-- 165. MAXIMUS — SAT_AUG_POLICY_CLAIM_EXPERIENCE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [3 col(s)].
@@ -30814,7 +30813,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CLAIM_OUTSTANDING")), ''))) as CLAIMS_OUTSTANDING_AMOUNT,
                to_varchar((nullif(trim(to_varchar("CLAIMS_PAID")), ''))) as CLAIMS_PAID_AMOUNT,
                to_varchar((nullif(trim(to_varchar("CLAIM_EXPENSES")), ''))) as CLAIM_EXPENSES_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -30850,7 +30849,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 166. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]  [M3]
+-- 166. MAXIMUS — SAT_AUG_POLICY_COVERAGE_SCHEDULE   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key COVERAGE_REFERENCE,
 -- COVERAGE_SEQUENCE; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS [1
@@ -30886,7 +30885,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce(nullif(trim(w1_pol_risk_id), ''),'')) as cdk_2,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EVENT_CODE")), ''))) as BUSINESS_EVENT_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -30976,7 +30975,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("INCONVENIENCE_SUBCOVER")), ''))) as TRAVEL_INCONVENIENCE_SUB_COVER_VALUE,
                to_varchar((nullif(trim(to_varchar("CANCELLATION_SUBCOVER")), ''))) as TRIP_CANCELLATION_SUB_COVER_VALUE,
                to_varchar((nullif(trim(to_varchar("TRIP_DELAY_OPTION")), ''))) as TRIP_DELAY_OPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -31155,7 +31154,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("COVER_LEVEL_TRANSACTION_CURRENCY")), ''))) as COVERAGE_TRANSACTION_CURRENCY_CODE,
                to_varchar((nullif(trim(to_varchar("COVER_PREMIUM_IN_BASE_CURRENCY")), ''))) as PREMIUM_FOR_COVERAGE_IN_BASE_CURRENCY,
                to_varchar((nullif(trim(to_varchar("COVER_SUM_INSURED_IN_BASE_CURRENCY")), ''))) as SUM_INSURED_IN_BASE_CURRENCY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -31223,7 +31222,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 167. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]  [M3]
+-- 167. MAXIMUS — SAT_AUG_POLICY_DELIVERY   [Implemented]
 -- augmented satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)].
@@ -31249,7 +31248,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EMAIL_COMMUNICATION")), ''))) as EMAIL_COMMUNICATION_REFERENCE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -31275,7 +31274,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 168. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]  [M3]
+-- 168. MAXIMUS — SAT_AUG_POLICY_DOCUMENT_DISPATCH   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key
 -- DISPATCH_SERIAL_NUMBER; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS [10 col(s)].
@@ -31322,7 +31321,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("REMARKS")), ''))) as DISPATCH_REMARKS,
                to_varchar((nullif(trim(to_varchar("POD_NUMBER")), ''))) as PROOF_OF_DELIVERY_NUMBER,
                to_varchar((nullif(trim(to_varchar("RECIPIENT_NAME")), ''))) as RECIPIENT_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_DISPATCH_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -31393,7 +31392,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 169. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]  [M3]
+-- 169. MAXIMUS — SAT_AUG_POLICY_HEADER   [Implemented]
 -- augmented satellite, automate_dv.sat; PK POLICY_HKEY; 4 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
 -- col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [3 col(s)],
@@ -31423,7 +31422,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim(w1_policyno),'') is not null then nullif(trim(w1_policyno), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CHANNEL_NAME")), ''))) as DISTRIBUTION_CHANNEL_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -31459,7 +31458,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("POLICY_INTIMATION_DATE")), ''))) as POLICY_INTIMATION_DATE,
                to_varchar((nullif(trim(to_varchar("POLICY_DURATIONUNIT")), ''))) as POLICY_TERM_UNIT,
                to_varchar((nullif(trim(to_varchar("PREMIUM_MODE")), ''))) as PREMIUM_PAYMENT_MODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -31503,7 +31502,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PREMIUM_OPTIONS")), ''))) as PREMIUM_PAYMENT_OPTION,
                to_varchar((nullif(trim(to_varchar("REINS_PENDING_INDICATOR")), ''))) as REINSURANCE_PLACEMENT_PENDING_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -31572,7 +31571,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("SUM_INSURED_IN_SI_CURRENCY")), ''))) as SUM_INSURED_TOTAL_IN_SUM_INSURED_CURRENCY,
                to_varchar((nullif(trim(to_varchar("POLICY_SUM_INSURED_IN_TRANSACTION_CURRENCY")), ''))) as SUM_INSURED_TOTAL_IN_TRANSACTION_CURRENCY,
                to_varchar((nullif(trim(to_varchar("UNDERWRITING_RQRD_FLAG")), ''))) as UNDERWRITING_REFERRAL_REQUIRED_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -31711,7 +31710,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 170. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]  [M3]
+-- 170. MAXIMUS — SAT_AUG_POLICY_HEALTH_DECLARATION   [Implemented]
 -- augmented satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [2 col(s)].
@@ -31739,7 +31738,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PED_MONTH")), ''))) as PRE_EXISTING_DISEASE_ONSET_MONTH,
                to_varchar((nullif(trim(to_varchar("PED_YEAR")), ''))) as PRE_EXISTING_DISEASE_ONSET_YEAR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -31770,7 +31769,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 171. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]  [M3]
+-- 171. MAXIMUS — SAT_AUG_POLICY_INSURED_DECLARATION   [Implemented]
 -- augmented satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [5 col(s)].
@@ -31804,7 +31803,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DATE_OF_BIRTH")), ''))) as DATE_OF_BIRTH,
                to_varchar((nullif(trim(to_varchar("DISEASE")), ''))) as PRE_EXISTING_DISEASE_CODE,
                to_varchar((nullif(trim(to_varchar("DISEASE_DESCRIPTION")), ''))) as PRE_EXISTING_DISEASE_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -31850,7 +31849,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 172. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]  [M3]
+-- 172. MAXIMUS — SAT_AUG_POLICY_INTERMEDIARY_SPLIT   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key
 -- INTERMEDIARY_REFERENCE; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW [1
@@ -31882,7 +31881,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("SUB_IMD_CODE")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SUBCHANNEL_NAME")), ''))) as SUB_CHANNEL_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -31916,7 +31915,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(coalesce(nullif(trim((nullif(trim(to_varchar("IMD_CODE")), ''))), ''),'')) as cdk_1,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("DATE_FOR_COMMISSION_CHANGE")), ''))) as COMMISSION_CHANGE_EFFECTIVE_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1 order by ldts desc) = 1
@@ -31953,7 +31952,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 173. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]  [M3]
+-- 173. MAXIMUS — SAT_AUG_POLICY_NOMINEE_DECLARATION   [Implemented]
 -- augmented satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [4 col(s)].
@@ -31985,7 +31984,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("ALLOCATION_PERCENTAGE")), ''))) as NOMINATION_PERCENTAGE,
                to_varchar((nullif(trim(to_varchar("NOMINEE_NAME")), ''))) as NOMINEE_NAME,
                to_varchar((nullif(trim(to_varchar("RELATION_WITH_INSURED")), ''))) as RELATIONSHIP_TO_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -32026,7 +32025,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 174. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]  [M3]
+-- 174. MAXIMUS — SAT_AUG_POLICY_PREMIUM_HEAD   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK POLICY_HKEY, child key ADJUSTED_INDICATOR,
 -- COVERAGE_REFERENCE, PREMIUM_HEAD_CODE, SECTION; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS [1
@@ -32064,7 +32063,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('COVER') as cdk_4,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TOTAL_PREMIUM")), ''))) as GROSS_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2, cdk_3, cdk_4 order by ldts desc) = 1
@@ -32104,7 +32103,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('RISK') as cdk_4,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("GROSS_PREMIUM")), ''))) as GROSS_HEAD_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2, cdk_3, cdk_4 order by ldts desc) = 1
@@ -32141,7 +32140,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 175. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]  [M3]
+-- 175. MAXIMUS — SAT_AUG_POLICY_PREMIUM_SUMMARY   [Implemented]
 -- augmented satellite, automate_dv.sat; PK POLICY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -32169,7 +32168,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim("FOREIGN_KEY"),'')) is not null then coalesce(nullif(trim(w0_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("RATE_PERCENTAGE")), ''))) as PREMIUM_RATE_PERCENTAGE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -32239,7 +32238,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("SERVICE_CHARGE")), ''))) as SERVICE_CHARGE_AMOUNT,
                to_varchar((nullif(trim(to_varchar("TOTAL_FEES")), ''))) as TOTAL_FEES_AMOUNT,
                to_varchar((nullif(trim(to_varchar("WRITEOFF_WAIVER_FLAG")), ''))) as WRITE_OFF_WAIVER_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -32371,7 +32370,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 176. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]  [M3]
+-- 176. MAXIMUS — SAT_AUG_POLICY_PROPERTY_LINE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [4 col(s)].
@@ -32403,7 +32402,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("REFERENCE_NUMBER")), ''))) as EXTERNAL_REFERENCE_NUMBER,
                to_varchar((nullif(trim(to_varchar("REF_TYPE")), ''))) as EXTERNAL_REFERENCE_TYPE,
                to_varchar((nullif(trim(to_varchar("SERIAL_NO")), ''))) as LINE_SEQUENCE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -32444,7 +32443,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 177. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]  [M3]
+-- 177. MAXIMUS — SAT_AUG_POLICY_RENEWAL   [Implemented]
 -- augmented satellite, automate_dv.sat; PK POLICY_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -32471,7 +32470,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_POLICY|' || (nullif(trim(case when nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))),'') is not null then nullif(trim((nullif(trim(to_varchar("POLICY_NUMBER")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("RENEWAL_FLAG")), ''))) as RENEWAL_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -32515,7 +32514,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("OLD_EXPIRY_DATE")), ''))) as REPLACED_POLICY_EXPIRY_DATE,
                to_varchar((nullif(trim(to_varchar("OLD_INCEPTION_DATE")), ''))) as REPLACED_POLICY_INCEPTION_DATE,
                to_varchar((nullif(trim(to_varchar("OLD_PRODUCT_CODE")), ''))) as REPLACED_POLICY_PRODUCT_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -32582,7 +32581,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 178. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]  [M3]
+-- 178. MAXIMUS — SAT_AUG_POLICY_TERMS   [Implemented]
 -- augmented satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [7 col(s)].
@@ -32620,7 +32619,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("EXCLUDED_EVENTS_REMARKS")), ''))) as EXCLUDED_EVENTS_REMARKS,
                to_varchar((nullif(trim(to_varchar("MANDATORY_QUESTIONNAIRE")), ''))) as MANDATORY_QUESTIONNAIRE_INDICATOR,
                to_varchar((nullif(trim(to_varchar("BYPASS_RULES")), ''))) as UNDERWRITING_RULES_BYPASSED_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -32676,7 +32675,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 179. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]  [M3]
+-- 179. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TERMS   [Implemented]
 -- augmented satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [9 col(s)].
@@ -32718,7 +32717,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("MULTIPLE_CITY")), ''))) as MULTIPLE_DESTINATION_CITY_INDICATOR,
                to_varchar((nullif(trim(to_varchar("COUNTRY")), ''))) as TRIP_DESTINATION_COUNTRY,
                to_varchar((nullif(trim(to_varchar("DESTINATION_DETAILS")), ''))) as TRIP_DESTINATION_DETAILS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -32784,7 +32783,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 180. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
+-- 180. MAXIMUS — SAT_AUG_POLICY_TRAVEL_TRIP_SCHEDULE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [9 col(s)].
@@ -32826,7 +32825,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("TRAVEL_DATE")), ''))) as TRIP_START_DATE,
                to_varchar((nullif(trim(to_varchar("TRIP_TYPE_INCOV")), ''))) as TRIP_TYPE_ON_COVER,
                to_varchar((nullif(trim(to_varchar("TRIP_TYPE_TRIPCAL")), ''))) as TRIP_TYPE_ON_TRIP_CALCULATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -32892,7 +32891,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 181. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]  [M3]
+-- 181. MAXIMUS — SAT_AUG_POLICY_UW_QUERY   [Implemented]
 -- augmented satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [11 col(s)].
@@ -32938,7 +32937,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("REPLIED_BY_USER")), ''))) as REPLIED_BY_USER_REFERENCE,
                to_varchar((nullif(trim(to_varchar("REPLY_DATE_AND_TIME")), ''))) as REPLY_DATE_TIME,
                to_varchar((nullif(trim(to_varchar("SR_NUMBER")), ''))) as SERVICE_REQUEST_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -33014,7 +33013,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 182. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]  [M3]
+-- 182. MAXIMUS — SAT_AUG_POLICY_WORK_ITEM   [Implemented]
 -- augmented satellite, automate_dv.sat; PK POLICY_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_WORK_ITEM_DETAILS [6 col(s)].
 ----------------------------------------------------------------------------------------
@@ -33049,7 +33048,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("REMARKS")), ''))) as TASK_REMARKS,
                to_varchar((nullif(trim(to_varchar("STATUS")), ''))) as TASK_STATUS,
                to_varchar((nullif(trim(to_varchar("TASK_TYPE")), ''))) as TASK_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_WORK_ITEM_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_WORK_ITEM_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -33100,7 +33099,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 183. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]  [M3]
+-- 183. MAXIMUS — SAT_AUG_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PRODUCT_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -33128,7 +33127,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MINIMUM_DEPOSIT_PREMIUM_TYPE")), ''))) as DEPOSIT_PREMIUM_BASIS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -33160,7 +33159,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("MINIMUM_DEPOSIT_PREMIUM_TYPE")), ''))) as DEPOSIT_PREMIUM_BASIS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -33197,7 +33196,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 184. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]  [M3]
+-- 184. MAXIMUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PRODUCT_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -33225,7 +33224,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CHILD_POLICY_MAX_DURATION")), ''))) as CHILD_POLICY_MAXIMUM_DURATION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -33257,7 +33256,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_PRODUCT|' || (nullif(trim(case when nullif(trim(w3_product_code),'') is not null then 'PROD:' || nullif(trim(w3_product_code), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CHILD_POLICY_MAX_DURATION")), ''))) as CHILD_POLICY_MAXIMUM_DURATION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -33294,7 +33293,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 185. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]  [M3]
+-- 185. MAXIMUS — SAT_AUG_QUOTE_CLAIM_EXPERIENCE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [3 col(s)].
@@ -33324,7 +33323,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CLAIM_OUTSTANDING")), ''))) as CLAIMS_OUTSTANDING_AMOUNT,
                to_varchar((nullif(trim(to_varchar("CLAIMS_PAID")), ''))) as CLAIMS_PAID_AMOUNT,
                to_varchar((nullif(trim(to_varchar("CLAIM_EXPENSES")), ''))) as CLAIM_EXPENSES_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -33360,7 +33359,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 186. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]  [M3]
+-- 186. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_LINE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK QUOTE_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER [2 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
@@ -33391,7 +33390,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("COVER_EXPIRY_DATE")), ''))) as COVERAGE_END_DATE,
                to_varchar((nullif(trim(to_varchar("COVER_INCEPTION_DATE")), ''))) as COVERAGE_START_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -33484,7 +33483,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("NUMBER_OF_WEEKS")), ''))) as NUMBER_OF_WEEKS_COVERED,
                to_varchar((nullif(trim(to_varchar("INCONVENIENCE_SUBCOVER")), ''))) as TRAVEL_INCONVENIENCE_SUB_COVER_VALUE,
                to_varchar((nullif(trim(to_varchar("CANCELLATION_SUBCOVER")), ''))) as TRIP_CANCELLATION_SUB_COVER_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -33680,7 +33679,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("ENDORSEMENT_PREMIUM")), ''))) as ENDORSEMENT_PREMIUM,
                to_varchar((nullif(trim(to_varchar("GROSS_PREMIUM")), ''))) as GROSS_PREMIUM,
                to_varchar((nullif(trim(to_varchar("NET_PREMIUM_IN_PREMIUM_CURRENCY")), ''))) as NET_PREMIUM_IN_PREMIUM_CURRENCY
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -33788,7 +33787,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 187. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]  [M3]
+-- 187. MAXIMUS — SAT_AUG_QUOTE_COVERAGE_SCHEDULE   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK QUOTE_HKEY, child key COVERAGE_REFERENCE;
 -- 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
@@ -33834,7 +33833,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as EXCLUDED_EVENTS,
                cast(null as varchar) as ITEMS_COVERED,
                cast(null as varchar) as SUM_INSURED_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ACE_DURATION")), '')) is not null or (nullif(trim(to_varchar("ACE_PREMIUM_TYPE")), '')) is not null or (nullif(trim(to_varchar("DELAY_EXCEEDING_ACE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_coverage_schedule#2
@@ -33850,7 +33849,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as EXCLUDED_EVENTS,
                cast(null as varchar) as ITEMS_COVERED,
                cast(null as varchar) as SUM_INSURED_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("AMBULANCE_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_coverage_schedule#3
@@ -33866,7 +33865,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("EXCLUDED_EVENTS")), '')))) as EXCLUDED_EVENTS,
                to_varchar(((nullif(trim(to_varchar("ITEMS_COVERED")), '')))) as ITEMS_COVERED,
                to_varchar(((nullif(trim(to_varchar("LIMIT_SUM_INSURED")), '')))) as SUM_INSURED_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("DEDUCTIBLE_VALUE_SUBLIMIT")), '')) is not null or (nullif(trim(to_varchar("EXCLUDED_COUNTRIES")), '')) is not null or (nullif(trim(to_varchar("EXCLUDED_EVENTS")), '')) is not null or (nullif(trim(to_varchar("ITEMS_COVERED")), '')) is not null or (nullif(trim(to_varchar("LIMIT_SUM_INSURED")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_coverage_schedule#4
@@ -33882,7 +33881,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as EXCLUDED_EVENTS,
                cast(null as varchar) as ITEMS_COVERED,
                to_varchar(((nullif(trim(to_varchar("BENEFIT_AMOUNT")), '')))) as SUM_INSURED_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("BENEFIT_AMOUNT")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_coverage_schedule#5
@@ -33898,7 +33897,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as EXCLUDED_EVENTS,
                cast(null as varchar) as ITEMS_COVERED,
                cast(null as varchar) as SUM_INSURED_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("INCONVENIENCE_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_coverage_schedule#6
@@ -33914,7 +33913,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as EXCLUDED_EVENTS,
                cast(null as varchar) as ITEMS_COVERED,
                cast(null as varchar) as SUM_INSURED_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CANCELLATION_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_coverage_schedule#7
@@ -33930,7 +33929,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as EXCLUDED_EVENTS,
                cast(null as varchar) as ITEMS_COVERED,
                cast(null as varchar) as SUM_INSURED_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CANCELLATION_MAIN_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_coverage_schedule#8
@@ -33946,7 +33945,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as EXCLUDED_EVENTS,
                cast(null as varchar) as ITEMS_COVERED,
                cast(null as varchar) as SUM_INSURED_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("DELAY_EXCEEDING")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -34013,7 +34012,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 188. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]  [M3]
+-- 188. MAXIMUS — SAT_AUG_QUOTE_COVER_DETAIL   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK QUOTE_HKEY, child key COVERAGE_REFERENCE,
 -- COVERAGE_SEQUENCE; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
@@ -34073,7 +34072,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("SI_PER_UNIT")), ''))) as SUM_INSURED_PER_UNIT,
                to_varchar((nullif(trim(to_varchar("TOTAL_SUM_INSURED")), ''))) as TOTAL_COVER_SUM_INSURED,
                to_varchar((nullif(trim(to_varchar("TRIP_DELAY_OPTION")), ''))) as TRIP_DELAY_OPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey, cdk_1, cdk_2 order by ldts desc) = 1
@@ -34169,7 +34168,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 189. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]  [M3]
+-- 189. MAXIMUS — SAT_AUG_QUOTE_HEADER   [Implemented]
 -- augmented satellite, automate_dv.sat; PK QUOTE_HKEY; 9 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [6 col(s)],
@@ -34206,7 +34205,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w1_quotation_number),'') is not null then nullif(trim(w1_quotation_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("CALCULATOR_URN_NUMBER")), ''))) as PREMIUM_CALCULATOR_URN
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -34248,7 +34247,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("REFER_INDICATOR")), ''))) as REFERRAL_INDICATOR,
                to_varchar((nullif(trim(to_varchar("POLICY_EXPIRY_DATE")), ''))) as REQUESTED_COVER_END_DATE,
                to_varchar((nullif(trim(to_varchar("POLICY_TERM_UNIT")), ''))) as REQUESTED_POLICY_TERM_UNIT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -34305,7 +34304,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("BUSINESS_EVENT")), ''))) as BUSINESS_EVENT_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -34337,7 +34336,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ENDORSEMENT_TYPE")), ''))) as ENDORSEMENT_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -34469,7 +34468,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("TYPE_OF_TOUR")), ''))) as TOUR_TYPE_CODE,
                to_varchar((nullif(trim(to_varchar("TRANSIT_JOURNEY_COVER")), ''))) as TRANSIT_JOURNEY_COVER,
                to_varchar((nullif(trim(to_varchar("UNDERWRITING_RQRD_FLAG")), ''))) as UNDERWRITING_REFERRAL_REQUIRED_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -34751,7 +34750,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("POLICY_ID")), ''))) as SOURCE_POLICY_IDENTIFIER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
       )
      where hkey in (select hkey from s6) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -34783,7 +34782,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EVENT_CODE")), ''))) as QUOTE_CAPTURE_EVENT_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY
       )
      where hkey in (select hkey from s7) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -34815,7 +34814,7 @@ e8 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("EVENT_CODE")), ''))) as QUOTE_CAPTURE_EVENT_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY
       )
      where hkey in (select hkey from s8) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -34863,7 +34862,7 @@ e9 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("POLICY_EXPIRY_DATE")), ''))) as REQUESTED_COVER_END_DATE,
                to_varchar((nullif(trim(to_varchar("POLICY_EXPIRY_TIME")), ''))) as REQUESTED_COVER_END_TIME,
                to_varchar((nullif(trim(to_varchar("POLICY_INCEPTION_TIME")), ''))) as REQUESTED_COVER_START_TIME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s9) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -35017,7 +35016,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 190. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]  [M3]
+-- 190. MAXIMUS — SAT_AUG_QUOTE_HEALTH_DECLARATION   [Implemented]
 -- augmented satellite, automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [2 col(s)].
@@ -35045,7 +35044,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("PED_MONTH")), ''))) as PRE_EXISTING_DISEASE_ONSET_MONTH,
                to_varchar((nullif(trim(to_varchar("PED_YEAR")), ''))) as PRE_EXISTING_DISEASE_ONSET_YEAR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -35076,7 +35075,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 191. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]  [M3]
+-- 191. MAXIMUS — SAT_AUG_QUOTE_INSURED_DECLARATION   [Implemented]
 -- augmented satellite, automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [5 col(s)].
@@ -35110,7 +35109,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DATE_OF_BIRTH")), ''))) as DATE_OF_BIRTH,
                to_varchar((nullif(trim(to_varchar("DISEASE")), ''))) as PRE_EXISTING_DISEASE_CODE,
                to_varchar((nullif(trim(to_varchar("DISEASE_DESCRIPTION")), ''))) as PRE_EXISTING_DISEASE_DESCRIPTION
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -35156,7 +35155,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 192. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]  [M3]
+-- 192. MAXIMUS — SAT_AUG_QUOTE_NOMINEE_DECLARATION   [Implemented]
 -- augmented satellite, automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [4 col(s)].
@@ -35188,7 +35187,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("ALLOCATION_PERCENTAGE")), ''))) as NOMINATION_PERCENTAGE,
                to_varchar((nullif(trim(to_varchar("NOMINEE_NAME")), ''))) as NOMINEE_NAME,
                to_varchar((nullif(trim(to_varchar("RELATION_WITH_INSURED")), ''))) as RELATIONSHIP_TO_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -35229,7 +35228,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 193. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]  [M3]
+-- 193. MAXIMUS — SAT_AUG_QUOTE_PREMIUM_HEAD   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK QUOTE_HKEY, child key PREMIUM_HEAD_CODE; 1
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
@@ -35261,7 +35260,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("GROSS_PREMIUM")), '')))) as NET_HEAD_PREMIUM,
                cast(null as varchar) as BASE_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("GROSS_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_premium_head#2
@@ -35270,7 +35269,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as NET_HEAD_PREMIUM,
                to_varchar(((nullif(trim(to_varchar("FIXED_ONE_WAY_PREMIUM")), '')))) as BASE_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("FIXED_ONE_WAY_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_premium_head#3
@@ -35279,7 +35278,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("ONE_WAY_PREMIUM")), '')))) as NET_HEAD_PREMIUM,
                cast(null as varchar) as BASE_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ONE_WAY_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_premium_head#4
@@ -35288,7 +35287,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("ROUND_TRIP_PREMIUM")), '')))) as NET_HEAD_PREMIUM,
                cast(null as varchar) as BASE_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ROUND_TRIP_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_premium_head#5
@@ -35297,7 +35296,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                rec_refresh_at as ldts,
                cast(null as varchar) as NET_HEAD_PREMIUM,
                to_varchar(((nullif(trim(to_varchar("FIXED_ROUND_TRIP_PREMIUM")), '')))) as BASE_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("FIXED_ROUND_TRIP_PREMIUM")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -35329,7 +35328,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 194. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]  [M3]
+-- 194. MAXIMUS — SAT_AUG_QUOTE_PROPERTY_LINE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [4 col(s)].
@@ -35361,7 +35360,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("REFERENCE_NUMBER")), ''))) as EXTERNAL_REFERENCE_NUMBER,
                to_varchar((nullif(trim(to_varchar("REF_TYPE")), ''))) as EXTERNAL_REFERENCE_TYPE,
                to_varchar((nullif(trim(to_varchar("SERIAL_NO")), ''))) as LINE_SEQUENCE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -35402,7 +35401,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 195. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]  [M3]
+-- 195. MAXIMUS — SAT_AUG_QUOTE_RATING   [Implemented]
 -- augmented satellite, automate_dv.sat; PK QUOTE_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS [3 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
@@ -35435,7 +35434,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("COMMISSION")), ''))) as COMMISSION_AMOUNT,
                to_varchar((nullif(trim(to_varchar("NEW_PREM_INDICATOR")), ''))) as NEW_PREMIUM_INDICATOR,
                to_varchar((nullif(trim(to_varchar("STRPRIVILEGE_CODE")), ''))) as PRIVILEGE_SCHEME_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -35553,7 +35552,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CALCULATED_AMOUNT_FOR_REMAINING_PERIOD")), ''))) as UNEXPIRED_PERIOD_PREMIUM_AMOUNT,
                to_varchar((nullif(trim(to_varchar("UTGST_AMOUNT")), ''))) as UTGST_AMOUNT,
                to_varchar((nullif(trim(to_varchar("WRITEOFF_WAIVER_FLAG")), ''))) as WRITE_OFF_WAIVER_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -35795,7 +35794,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("TOTAL_PREMIUM_DUE")), ''))) as TOTAL_PREMIUM_DUE,
                to_varchar((nullif(trim(to_varchar("TOTAL_TAXES")), ''))) as TOTAL_TAX_AMOUNT,
                to_varchar((nullif(trim(to_varchar("TRAVELLING_COMPANION_DISCOUNT")), ''))) as TRAVELLING_COMPANION_DISCOUNT_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -35893,7 +35892,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 196. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]  [M3]
+-- 196. MAXIMUS — SAT_AUG_QUOTE_RISK_LINE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [5 col(s)].
 ----------------------------------------------------------------------------------------
@@ -35926,7 +35925,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("LOADING")), ''))) as LOADING_AMOUNT,
                to_varchar((nullif(trim(to_varchar("RISK_EXPIRY_DATE")), ''))) as RISK_EXPIRY_DATE,
                to_varchar((nullif(trim(to_varchar("RISK_INCEPTION_DATE")), ''))) as RISK_INCEPTION_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -35972,7 +35971,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 197. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]  [M3]
+-- 197. MAXIMUS — SAT_AUG_QUOTE_SUM_INSURED_BREAKUP   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK QUOTE_HKEY, child key SUM_INSURED_HEAD; 1
 -- RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
@@ -36002,7 +36001,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('ACE') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar((coalesce((nullif(trim(to_varchar("SUM_INSURED_ACE")), '')), (nullif(trim(to_varchar("SUM_INSUREDACE")), ''))))) as SUM_INSURED_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("SUM_INSURED_ACE")), '')) is not null or (nullif(trim(to_varchar("SUM_INSUREDACE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_sum_insured_breakup#2
@@ -36010,7 +36009,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('ACE_MAIN_SUB_COVER') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("SUM_INSURED_ACE_FOR_MAIN_SUB_COVER")), '')))) as SUM_INSURED_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("SUM_INSURED_ACE_FOR_MAIN_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_polp_msp_imsd_inp_pv__aug_sat_aug_quote_sum_insured_breakup#3
@@ -36018,7 +36017,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar('LINE_SUM_INSURED') as cdk_1,
                rec_refresh_at as ldts,
                to_varchar(((nullif(trim(to_varchar("SUM_INSURED")), '')))) as SUM_INSURED_AMOUNT
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("SUM_INSURED")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -36045,7 +36044,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 198. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]  [M3]
+-- 198. MAXIMUS — SAT_AUG_QUOTE_TERMS   [Implemented]
 -- augmented satellite, automate_dv.sat; PK QUOTE_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
 -- [10 col(s)], MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST [1 col(s)].
@@ -36089,7 +36088,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("EXCLUDED_EVENTS_REMARKS")), ''))) as EXCLUDED_EVENTS_REMARKS,
                to_varchar((nullif(trim(to_varchar("MANDATORY_QUESTIONNAIRE")), ''))) as MANDATORY_QUESTIONNAIRE_INDICATOR,
                to_varchar((nullif(trim(to_varchar("BYPASS_RULES")), ''))) as UNDERWRITING_RULES_BYPASSED_INDICATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -36166,7 +36165,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_QUOTE|' || (nullif(trim(case when nullif(trim(w0_policy_quote_number),'') is not null then nullif(trim(w0_policy_quote_number), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("POLICY_COUNTRY")), ''))) as JURISDICTION_COUNTRY_CODE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -36203,7 +36202,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 199. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]  [M3]
+-- 199. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP   [Implemented]
 -- augmented satellite, automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [12 col(s)].
@@ -36251,7 +36250,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("GEOGRAPHICAL_COVERAGE")), ''))) as GEOGRAPHICAL_ZONE,
                to_varchar((nullif(trim(to_varchar("DURATION_TYPE")), ''))) as TRIP_DURATION_TYPE,
                to_varchar((nullif(trim(to_varchar("DEPARTURE_DATE")), ''))) as TRIP_START_DATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -36332,7 +36331,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 200. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]  [M3]
+-- 200. MAXIMUS — SAT_AUG_QUOTE_TRAVEL_TRIP_SCHEDULE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [9 col(s)].
@@ -36374,7 +36373,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("TRAVEL_DATE")), ''))) as TRIP_START_DATE,
                to_varchar((nullif(trim(to_varchar("TRIP_TYPE_INCOV")), ''))) as TRIP_TYPE_ON_COVER,
                to_varchar((nullif(trim(to_varchar("TRIP_TYPE_TRIPCAL")), ''))) as TRIP_TYPE_ON_TRIP_CALCULATOR
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -36440,7 +36439,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 201. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]  [M3]
+-- 201. MAXIMUS — SAT_AUG_QUOTE_UW_QUERY   [Implemented]
 -- augmented satellite, automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
 -- [11 col(s)].
@@ -36486,7 +36485,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("REPLIED_BY_USER")), ''))) as REPLIED_BY_USER_REFERENCE,
                to_varchar((nullif(trim(to_varchar("REPLY_DATE_AND_TIME")), ''))) as REPLY_DATE_TIME,
                to_varchar((nullif(trim(to_varchar("SR_NUMBER")), ''))) as SERVICE_REQUEST_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -36562,7 +36561,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 202. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]  [M3]
+-- 202. MAXIMUS — SAT_AUG_RISK_OBJECT_CORE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 3 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS [1 col(s)],
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
@@ -36591,7 +36590,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim("FOREIGN_KEY"),''), nullif(trim((nullif(trim(to_varchar("POL_RISK_ID")), ''))),'')) is not null then 'RISK:' || coalesce(nullif(trim(w0_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) || '#' || nullif(trim((nullif(trim(to_varchar("POL_RISK_ID")), ''))), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("RISK_SERIAL_NUMBER")), ''))) as RISK_LINE_SEQUENCE_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -36625,7 +36624,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ENTRY_DATE")), ''))) as RISK_ENTRY_DATE,
                to_varchar((nullif(trim(to_varchar("FOREX_RATE_AT_RISK_LEVEL")), ''))) as RISK_LEVEL_EXCHANGE_RATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -36664,7 +36663,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("ENTRY_DATE")), ''))) as RISK_ENTRY_DATE,
                to_varchar((nullif(trim(to_varchar("FOREX_RATE_AT_RISK_LEVEL")), ''))) as RISK_LEVEL_EXCHANGE_RATE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -36717,7 +36716,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 203. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]  [M3]
+-- 203. MAXIMUS — SAT_AUG_RISK_OBJECT_PREMIUM   [Implemented]
 -- augmented satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS [2 col(s)].
 ----------------------------------------------------------------------------------------
@@ -36744,7 +36743,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TOTAL_PREMIUM")), ''))) as GROSS_PREMIUM,
                to_varchar((nullif(trim(to_varchar("NET_PREMIUM")), ''))) as NET_PREMIUM
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -36775,7 +36774,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 204. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]  [M3]
+-- 204. MAXIMUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
 -- augmented satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [10 col(s)],
@@ -36821,7 +36820,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CLAIM_DETAILS")), ''))) as PREVIOUS_CLAIM_DECLARATION_DETAIL,
                to_varchar((nullif(trim(to_varchar("DO_YOU_DO_RECREATIONAL_DRUG_USE")), ''))) as RECREATIONAL_DRUG_USE_INDICATOR,
                to_varchar((nullif(trim(to_varchar("RELATIONSHIP_TO_INSURED")), ''))) as RELATIONSHIP_TO_PRIMARY_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -36916,7 +36915,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("CLAIM_DETAILS")), ''))) as PREVIOUS_CLAIM_DECLARATION_DETAIL,
                to_varchar((nullif(trim(to_varchar("DO_YOU_DO_RECREATIONAL_DRUG_USE")), ''))) as RECREATIONAL_DRUG_USE_INDICATOR,
                to_varchar((nullif(trim(to_varchar("RELATIONSHIP_TO_INSURED")), ''))) as RELATIONSHIP_TO_PRIMARY_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -36998,7 +36997,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 205. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]  [M3]
+-- 205. MAXIMUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
 -- augmented satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 7 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [1 col(s)],
@@ -37036,7 +37035,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim("FOREIGN_KEY"),''), nullif(trim(w1_pol_risk_id),'')) is not null then 'RISK:' || coalesce(nullif(trim(w0_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) || '#' || nullif(trim(w1_pol_risk_id), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TRIP_COVERAGE")), ''))) as TRIP_COVERAGE_BASIS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_COVER_DETAILS_COVER_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -37068,7 +37067,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_number),''), nullif(trim("FOREIGN_KEY"),''), nullif(trim(w1_pol_risk_id),'')) is not null then 'RISK:' || coalesce(nullif(trim(w0_policy_number), ''), nullif(trim("FOREIGN_KEY"), '')) || '#' || nullif(trim(w1_pol_risk_id), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TRIP_TYPE_INCOV")), ''))) as COVER_TRIP_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -37124,7 +37123,7 @@ e3 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PLACE_OF_ORIGIN")), ''))) as TRIP_ORIGIN_PLACE,
                to_varchar((nullif(trim(to_varchar("UHC_CODE")), ''))) as UHC_CODE,
                to_varchar((nullif(trim(to_varchar("VISA_APPLICATION_NUMBER")), ''))) as VISA_APPLICATION_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s3) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -37232,7 +37231,7 @@ e4 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("DESTINATION_CONTINENT")), ''))) as DESTINATION_CONTINENT,
                to_varchar((nullif(trim(to_varchar("FLIGHT_NO")), ''))) as FLIGHT_NUMBER,
                to_varchar((nullif(trim(to_varchar("DURATION_TYPE")), ''))) as TRIP_DURATION_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s4) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -37304,7 +37303,7 @@ e5 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),''), nullif(trim(w1_pol_risk_id),'')) is not null then 'RISK:' || nullif(trim(w0_policy_quote_number), '') || '#' || nullif(trim(w1_pol_risk_id), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TRIP_TYPE_INCOV")), ''))) as COVER_TRIP_TYPE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s5) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -37336,7 +37335,7 @@ e6 as (  -- expected value(s) at the latest RAW load timestamp per key
         select MD5_BINARY(NULLIF(UPPER(TRIM(CAST('HUB_RISK_OBJECT|' || (nullif(trim(case when coalesce(nullif(trim(w0_policy_quote_number),''), nullif(trim(w1_pol_risk_id),'')) is not null then 'RISK:' || nullif(trim(w0_policy_quote_number), '') || '#' || nullif(trim(w1_pol_risk_id), '') end),'')) AS VARCHAR))), '')) as hkey,
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("TRIP_COVERAGE")), ''))) as TRIP_COVERAGE_BASIS
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_COVER_RISK_COVER_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s6) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -37392,7 +37391,7 @@ e7 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PLACE_OF_ORIGIN")), ''))) as TRIP_ORIGIN_PLACE,
                to_varchar((nullif(trim(to_varchar("UHC_CODE")), ''))) as UHC_CODE,
                to_varchar((nullif(trim(to_varchar("VISA_APPLICATION_NUMBER")), ''))) as VISA_APPLICATION_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s7) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -37544,7 +37543,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 206. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]  [M3]
+-- 206. MAXIMUS — SAT_AUG_RISK_TRAVEL_COVER_TERMS   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key
 -- SUB_COVER_CODE; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -37580,7 +37579,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("ACE_DURATION")), '')))) as ACE_COVER_DURATION,
                to_varchar((coalesce((nullif(trim(to_varchar("SUM_INSURED_ACE")), '')), (nullif(trim(to_varchar("SUM_INSUREDACE")), ''))))) as ACE_SUM_INSURED,
                cast(null as varchar) as SUB_COVER_SUM_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ACE_DURATION")), '')) is not null or (nullif(trim(to_varchar("SUM_INSURED_ACE")), '')) is not null or (nullif(trim(to_varchar("SUM_INSUREDACE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_msp_msd_prop_pv__aug_sat_aug_risk_travel_cover_terms#2
@@ -37590,7 +37589,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ACE_COVER_DURATION,
                cast(null as varchar) as ACE_SUM_INSURED,
                to_varchar(((nullif(trim(to_varchar("AMBULANCE_SUB_COVER")), '')))) as SUB_COVER_SUM_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("AMBULANCE_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_msp_msd_prop_pv__aug_sat_aug_risk_travel_cover_terms#3
@@ -37600,7 +37599,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ACE_COVER_DURATION,
                cast(null as varchar) as ACE_SUM_INSURED,
                to_varchar(((nullif(trim(to_varchar("STANDARD_FIRE_AND_SPECIAL_PERILS_SUB_COVER")), '')))) as SUB_COVER_SUM_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("STANDARD_FIRE_AND_SPECIAL_PERILS_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_msp_msd_prop_pv__aug_sat_aug_risk_travel_cover_terms#4
@@ -37610,7 +37609,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ACE_COVER_DURATION,
                cast(null as varchar) as ACE_SUM_INSURED,
                to_varchar(((nullif(trim(to_varchar("INCONVENIENCE_SUB_COVER")), '')))) as SUB_COVER_SUM_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("INCONVENIENCE_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_msp_msd_prop_pv__aug_sat_aug_risk_travel_cover_terms#5
@@ -37620,7 +37619,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ACE_COVER_DURATION,
                cast(null as varchar) as ACE_SUM_INSURED,
                to_varchar(((nullif(trim(to_varchar("CANCELLATION_SUB_COVER")), '')))) as SUB_COVER_SUM_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CANCELLATION_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_msp_msd_prop_pv__aug_sat_aug_risk_travel_cover_terms#6
@@ -37630,7 +37629,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ACE_COVER_DURATION,
                cast(null as varchar) as ACE_SUM_INSURED,
                to_varchar(((nullif(trim(to_varchar("CANCELLATION_MAIN_SUB_COVER")), '')))) as SUB_COVER_SUM_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CANCELLATION_MAIN_SUB_COVER")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -37679,7 +37678,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("ACE_DURATION")), '')))) as ACE_COVER_DURATION,
                to_varchar((coalesce((nullif(trim(to_varchar("SUM_INSURED_ACE")), '')), (nullif(trim(to_varchar("SUM_INSUREDACE")), ''))))) as ACE_SUM_INSURED,
                cast(null as varchar) as SUB_COVER_SUM_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ACE_DURATION")), '')) is not null or (nullif(trim(to_varchar("SUM_INSURED_ACE")), '')) is not null or (nullif(trim(to_varchar("SUM_INSUREDACE")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_rskl_msp_imsd_inp_pv__aug_sat_aug_risk_travel_cover_terms#2
@@ -37689,7 +37688,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ACE_COVER_DURATION,
                cast(null as varchar) as ACE_SUM_INSURED,
                to_varchar(((nullif(trim(to_varchar("AMBULANCE_SUB_COVER")), '')))) as SUB_COVER_SUM_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("AMBULANCE_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_rskl_msp_imsd_inp_pv__aug_sat_aug_risk_travel_cover_terms#3
@@ -37699,7 +37698,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ACE_COVER_DURATION,
                cast(null as varchar) as ACE_SUM_INSURED,
                to_varchar(((nullif(trim(to_varchar("STANDARD_FIRE_AND_SPECIAL_PERILS_SUB_COVER")), '')))) as SUB_COVER_SUM_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("STANDARD_FIRE_AND_SPECIAL_PERILS_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_rskl_msp_imsd_inp_pv__aug_sat_aug_risk_travel_cover_terms#4
@@ -37709,7 +37708,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ACE_COVER_DURATION,
                cast(null as varchar) as ACE_SUM_INSURED,
                to_varchar(((nullif(trim(to_varchar("INCONVENIENCE_SUB_COVER")), '')))) as SUB_COVER_SUM_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("INCONVENIENCE_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_rskl_msp_imsd_inp_pv__aug_sat_aug_risk_travel_cover_terms#5
@@ -37719,7 +37718,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ACE_COVER_DURATION,
                cast(null as varchar) as ACE_SUM_INSURED,
                to_varchar(((nullif(trim(to_varchar("CANCELLATION_SUB_COVER")), '')))) as SUB_COVER_SUM_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CANCELLATION_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_qpd_rskl_msp_imsd_inp_pv__aug_sat_aug_risk_travel_cover_terms#6
@@ -37729,7 +37728,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as ACE_COVER_DURATION,
                cast(null as varchar) as ACE_SUM_INSURED,
                to_varchar(((nullif(trim(to_varchar("CANCELLATION_MAIN_SUB_COVER")), '')))) as SUB_COVER_SUM_INSURED
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("CANCELLATION_MAIN_SUB_COVER")), '')) is not null
       )
      where hkey in (select hkey from s2) and ldts is not null
@@ -37777,7 +37776,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 207. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]  [M3]
+-- 207. MAXIMUS — SAT_AUG_RISK_TRAVEL_RATING_INPUT   [Implemented]
 -- augmented satellite, automate_dv.ma_sat; PK RISK_OBJECT_HKEY, child key
 -- RATING_INPUT_CODE; 1 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
@@ -37811,7 +37810,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar(((nullif(trim(to_varchar("ACE_PREMIUM_TYPE")), '')))) as PREMIUM_TYPE,
                cast(null as varchar) as PREMIUM_COMPONENT_AMOUNT,
                cast(null as varchar) as PREMIUM_RATE_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ACE_PREMIUM_TYPE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_msp_msd_prop_pv__aug_sat_aug_risk_travel_rating_input#2
@@ -37821,7 +37820,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PREMIUM_TYPE,
                to_varchar(((nullif(trim(to_varchar("FIXED_ONE_WAY_PREMIUM")), '')))) as PREMIUM_COMPONENT_AMOUNT,
                cast(null as varchar) as PREMIUM_RATE_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("FIXED_ONE_WAY_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_msp_msd_prop_pv__aug_sat_aug_risk_travel_rating_input#3
@@ -37831,7 +37830,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PREMIUM_TYPE,
                to_varchar(((nullif(trim(to_varchar("FIXED_ROUND_TRIP_PREMIUM")), '')))) as PREMIUM_COMPONENT_AMOUNT,
                cast(null as varchar) as PREMIUM_RATE_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("FIXED_ROUND_TRIP_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_msp_msd_prop_pv__aug_sat_aug_risk_travel_rating_input#4
@@ -37841,7 +37840,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PREMIUM_TYPE,
                to_varchar(((nullif(trim(to_varchar("LOADING_ACE")), '')))) as PREMIUM_COMPONENT_AMOUNT,
                cast(null as varchar) as PREMIUM_RATE_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("LOADING_ACE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_msp_msd_prop_pv__aug_sat_aug_risk_travel_rating_input#5
@@ -37851,7 +37850,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PREMIUM_TYPE,
                to_varchar(((nullif(trim(to_varchar("LOADING_ACE_FOR_MAIN_SUB_COVER")), '')))) as PREMIUM_COMPONENT_AMOUNT,
                cast(null as varchar) as PREMIUM_RATE_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("LOADING_ACE_FOR_MAIN_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_msp_msd_prop_pv__aug_sat_aug_risk_travel_rating_input#6
@@ -37861,7 +37860,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PREMIUM_TYPE,
                cast(null as varchar) as PREMIUM_COMPONENT_AMOUNT,
                to_varchar(((nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA")), '')))) as PREMIUM_RATE_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PA")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_msp_msd_prop_pv__aug_sat_aug_risk_travel_rating_input#7
@@ -37871,7 +37870,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PREMIUM_TYPE,
                cast(null as varchar) as PREMIUM_COMPONENT_AMOUNT,
                to_varchar(((nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PER_TRIP")), '')))) as PREMIUM_RATE_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("OFFICE_PREMIUM_PER_MILLE_PER_TRIP")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_msp_msd_prop_pv__aug_sat_aug_risk_travel_rating_input#8
@@ -37881,7 +37880,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PREMIUM_TYPE,
                to_varchar(((nullif(trim(to_varchar("ONE_WAY_PREMIUM")), '')))) as PREMIUM_COMPONENT_AMOUNT,
                cast(null as varchar) as PREMIUM_RATE_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ONE_WAY_PREMIUM")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_msp_msd_prop_pv__aug_sat_aug_risk_travel_rating_input#9
@@ -37891,7 +37890,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PREMIUM_TYPE,
                cast(null as varchar) as PREMIUM_COMPONENT_AMOUNT,
                to_varchar(((nullif(trim(to_varchar("PREMIUM_RATE")), '')))) as PREMIUM_RATE_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("PREMIUM_RATE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_msp_msd_prop_pv__aug_sat_aug_risk_travel_rating_input#10
@@ -37901,7 +37900,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PREMIUM_TYPE,
                cast(null as varchar) as PREMIUM_COMPONENT_AMOUNT,
                to_varchar(((nullif(trim(to_varchar("RATE_PER_TRIP_PER_MILLE")), '')))) as PREMIUM_RATE_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("RATE_PER_TRIP_PER_MILLE")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_msp_msd_prop_pv__aug_sat_aug_risk_travel_rating_input#11
@@ -37911,7 +37910,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PREMIUM_TYPE,
                cast(null as varchar) as PREMIUM_COMPONENT_AMOUNT,
                to_varchar(((nullif(trim(to_varchar("RATE_PER_TRIP_PER_MILLE_FOR_MAIN_SUB_COVER")), '')))) as PREMIUM_RATE_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("RATE_PER_TRIP_PER_MILLE_FOR_MAIN_SUB_COVER")), '')) is not null
         union all
         -- via up_mt__uwr_pol_ins_rskp_msp_msd_prop_pv__aug_sat_aug_risk_travel_rating_input#12
@@ -37921,7 +37920,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                cast(null as varchar) as PREMIUM_TYPE,
                to_varchar(((nullif(trim(to_varchar("ROUND_TRIP_PREMIUM")), '')))) as PREMIUM_COMPONENT_AMOUNT,
                cast(null as varchar) as PREMIUM_RATE_VALUE
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
          where (nullif(trim(to_varchar("ROUND_TRIP_PREMIUM")), '')) is not null
       )
      where hkey in (select hkey from s1) and ldts is not null
@@ -37958,7 +37957,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 208. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]  [M3]
+-- 208. MAXIMUS — SAT_AUG_RISK_TRAVEL_SPONSOR   [Implemented]
 -- augmented satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
 -- [2 col(s)],
@@ -37988,7 +37987,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SPONSER_CONTACT_NUMBER")), ''))) as SPONSOR_CONTACT_NUMBER,
                to_varchar((nullif(trim(to_varchar("SPONSER_NAME")), ''))) as SPONSOR_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -38027,7 +38026,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                (nullif(trim(to_varchar("REC_REFRESH_AT")), '')) as ldts,
                to_varchar((nullif(trim(to_varchar("SPONSER_CONTACT_NUMBER")), ''))) as SPONSOR_CONTACT_NUMBER,
                to_varchar((nullif(trim(to_varchar("SPONSER_NAME")), ''))) as SPONSOR_NAME
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_RISK_PROPERTY_RULE_LIST_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -38069,7 +38068,7 @@ order by record_source, column_name;
 
 
 ----------------------------------------------------------------------------------------
--- 209. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]  [M3]
+-- 209. MAXIMUS — SAT_AUG_RISK_TRAVEL_TRIP_ITINERARY   [Implemented]
 -- augmented satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
 -- MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
 -- [10 col(s)],
@@ -38115,7 +38114,7 @@ e1 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PNR")), ''))) as PNR_NUMBER,
                to_varchar((nullif(trim(to_varchar("TRAVEL_DATE")), ''))) as TRAVEL_DATE,
                to_varchar((nullif(trim(to_varchar("TRIP_NO")), ''))) as TRIP_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s1) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1
@@ -38210,7 +38209,7 @@ e2 as (  -- expected value(s) at the latest RAW load timestamp per key
                to_varchar((nullif(trim(to_varchar("PNR")), ''))) as PNR_NUMBER,
                to_varchar((nullif(trim(to_varchar("TRAVEL_DATE")), ''))) as TRAVEL_DATE,
                to_varchar((nullif(trim(to_varchar("TRIP_NO")), ''))) as TRIP_NUMBER
-          from RAW.MAXIMUS_TRAVEL.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
+          from BAGIC_PROD_MIRROR_DB.MAXI_RAW.NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW
       )
      where hkey in (select hkey from s2) and ldts is not null
     qualify rank() over (partition by hkey order by ldts desc) = 1

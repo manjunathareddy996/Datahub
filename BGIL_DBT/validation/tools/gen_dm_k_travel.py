@@ -50,8 +50,9 @@ RAW_SCHEMA.update({
     "travel_raw": "BAGIC_PROD_MIRROR_DB.OPUS_GG_DWHSTAGE",
     # Opus travel dev / test (overridden by profile).
     "travel_test_raw": "BAGIC_PREPROD_CURATED_DB.UTILS",
-    # Maximus Travel.
-    "maximus_travel_raw": "RAW.MAXIMUS_TRAVEL",
+    # Maximus Travel (from maximus_travel_dv_dbt/dbt_project.yml vars
+    # mt_raw_database / mt_raw_schema).
+    "maximus_travel_raw": "BAGIC_PROD_MIRROR_DB.MAXI_RAW",
 })
 
 # Redirect helpers (parse_stg, write_sql / write_docx, out_dir, hub_meta)
@@ -87,10 +88,11 @@ def parse_resolved(models_dir, name):
     if not base:
         raise ValueError(f"{name}: no 'from {{{{ ref(..) }}}} b' found")
     walks = {}
-    # left join {{ ref('stg_mt__X') }} <alias> on <alias>.<pcol> = b.<bcol>
+    # left join {{ ref('stg_mt__X') }} <alias> on <alias>.<pcol> = <any>.<col>
+    # Capture every left-joined alias regardless of what the ON clause joins to
+    # -- multi-hop resolvers chain joins off previous walk aliases, not just b.
     join_re = re.compile(
-        r"left\s+join\s*\{\{\s*ref\('([^']+)'\)\s*\}\}\s+([A-Za-z0-9_]+)\s+on\s+"
-        r"\2\.[A-Za-z0-9_]+\s*=\s*b\.[A-Za-z0-9_]+", re.I)
+        r"left\s+join\s*\{\{\s*ref\('([^']+)'\)\s*\}\}\s+([A-Za-z0-9_]+)\s+on\b", re.I)
     joins = {m.group(2): m.group(1) for m in join_re.finditer(sql)}
     # select b.*, <alias>.<pcol> as <walk_name>
     walk_re = re.compile(r"([A-Za-z0-9_]+)\.([A-Za-z0-9_]+)\s+as\s+([A-Za-z0-9_]+)", re.I)
