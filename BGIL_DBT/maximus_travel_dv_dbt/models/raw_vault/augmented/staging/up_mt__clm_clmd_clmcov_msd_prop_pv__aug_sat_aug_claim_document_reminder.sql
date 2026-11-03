@@ -12,7 +12,7 @@
         'REQUIREMENT_TYPE_NAME' as REQUIREMENT_TYPE_NAME,
         col_1st_reminder_date as REMINDER_DATE,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmcov_msd_prop_pv') }}
     where col_1st_reminder_date is not null
 union all
@@ -22,7 +22,7 @@ union all
         'REQUIREMENT_TYPE_NAME' as REQUIREMENT_TYPE_NAME,
         col_2nd_reminder_date as REMINDER_DATE,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmcov_msd_prop_pv') }}
     where col_2nd_reminder_date is not null
 union all
@@ -32,6 +32,6 @@ union all
         'REQUIREMENT_TYPE_NAME' as REQUIREMENT_TYPE_NAME,
         col_3rd_reminder_date as REMINDER_DATE,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_COVER_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmcov_msd_prop_pv') }}
     where col_3rd_reminder_date is not null

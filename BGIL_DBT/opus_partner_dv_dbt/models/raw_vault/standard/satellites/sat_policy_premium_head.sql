@@ -18,8 +18,8 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_sat_bjaz_hcf_member_dtls__policy_premium_head: 'OPUS'
-  stg2_sat_bjaz_starpkg_ff_dtls__policy_premium_head: 'OPUS'
+  stg2_sat_bjaz_hcf_member_dtls__policy_premium_head: 'OPUS_PARTNER'
+  stg2_sat_bjaz_starpkg_ff_dtls__policy_premium_head: 'OPUS_PARTNER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

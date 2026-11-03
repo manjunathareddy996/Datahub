@@ -26,7 +26,7 @@ derived_columns:
   ELECTORAL_ROLL_PART_NAME: "cast(null as varchar)"
   FULL_ADDRESS_TEXT: 'combine_address'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_EKYC'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_EKYC'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

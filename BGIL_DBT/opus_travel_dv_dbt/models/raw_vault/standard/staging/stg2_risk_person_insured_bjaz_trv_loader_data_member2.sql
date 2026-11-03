@@ -21,7 +21,7 @@ derived_columns:
   INSURED_MEMBER_NAME: 'member2name'
   RELATIONSHIP_TO_PROPOSER: 'member2relation'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_TRV_LOADER_DATA'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -17,7 +17,7 @@ derived_columns:
   TAX_TYPE: '!cess'
   CESS_AMOUNT: 'edu_cess_amt'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BA_TRV_DATA_POLICY_DTLS'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

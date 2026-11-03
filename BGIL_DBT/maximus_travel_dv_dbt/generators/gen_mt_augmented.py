@@ -72,7 +72,8 @@ def branch_select(branch, sat, view, spec, source_model):
         else:
             lines.append("        cast(null as varchar) as %s," % col)
     lines.append("        rec_refresh_at,")
-    lines.append("        '%s' as record_source" % view)
+    rs_view = ("MAXIMUS_TRAVEL_" + view[len("MAXIMUS_"):]) if view.startswith("MAXIMUS_") else ("MAXIMUS_TRAVEL_" + view)
+    lines.append("        '%s' as record_source" % rs_view)
     guard = " or ".join("%s is not null" % c for c in sorted(set(contributing))) or "1 = 1"
     return ("    select\n" + "\n".join(lines)
             + "\n    from {{ ref('%s') }}\n    where %s" % (source_model, guard))
@@ -130,7 +131,8 @@ def aug_stage_body(feeder, sat, spec, aligned_note, fanout_model=None):
             derived.append("  %s: %s" % (c, N.yaml_scalar(sql)))
         for c in sat["payload"]:
             derived.append("  %s: %s" % (c, N.yaml_scalar(S.payload_sql(b["attributes"].get(c)))))
-        derived.append("  RECORD_SOURCE: '!%s'" % view)
+        rs_view = ("MAXIMUS_TRAVEL_" + view[len("MAXIMUS_"):]) if view.startswith("MAXIMUS_") else ("MAXIMUS_TRAVEL_" + view)
+        derived.append("  RECORD_SOURCE: '!%s'" % rs_view)
     derived.append("  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'")
     for line in derived:
         K.assert_no_prose(line, "augmented stage %s / %s" % (view, sat["emit_name"]))

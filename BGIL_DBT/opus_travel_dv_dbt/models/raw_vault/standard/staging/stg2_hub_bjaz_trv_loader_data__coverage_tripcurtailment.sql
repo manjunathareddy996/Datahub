@@ -16,7 +16,7 @@ derived_columns:
   PARENT_BK: "policy_ref || '|' || 'TRV_TRIP_CURTAILMENT'"
   PARENT_NK: "'HUB_COVERAGE|' || (policy_ref || '|' || 'TRV_TRIP_CURTAILMENT')"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_TRV_LOADER_DATA'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

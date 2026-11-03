@@ -22,12 +22,12 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_aug_product_terms_ba_trv_plan_mst_multi_year_yn: 'OPUS'
-  stg2_aug_product_terms_ba_trv_plan_mst_age_bypass_yn: 'OPUS'
-  stg2_aug_product_terms_ba_trv_plan_mst_cft_yn: 'OPUS'
-  stg2_aug_product_terms_bjaz_trv_rate_master_cft_yn: 'OPUS'
-  stg2_aug_product_terms_bjaz_trv_plan_area: 'OPUS'
-  stg2_aug_product_terms_bjaz_trv_rate_master_area: 'OPUS'
+  stg2_aug_product_terms_ba_trv_plan_mst_multi_year_yn: 'OPUS_TRAVEL'
+  stg2_aug_product_terms_ba_trv_plan_mst_age_bypass_yn: 'OPUS_TRAVEL'
+  stg2_aug_product_terms_ba_trv_plan_mst_cft_yn: 'OPUS_TRAVEL'
+  stg2_aug_product_terms_bjaz_trv_rate_master_cft_yn: 'OPUS_TRAVEL'
+  stg2_aug_product_terms_bjaz_trv_plan_area: 'OPUS_TRAVEL'
+  stg2_aug_product_terms_bjaz_trv_rate_master_area: 'OPUS_TRAVEL'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

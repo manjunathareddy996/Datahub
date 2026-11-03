@@ -25,7 +25,7 @@ derived_columns:
   MINIMUM_ENTRY_AGE: 'plan_min_age_from'
   MINIMUM_POLICY_TERM: 'plan_min_days'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BA_TRV_PLAN_MST'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BA_TRV_PLAN_MST'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

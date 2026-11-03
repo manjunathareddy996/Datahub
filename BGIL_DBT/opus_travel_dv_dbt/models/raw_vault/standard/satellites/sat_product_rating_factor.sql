@@ -19,10 +19,10 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_product_rating_factor_bjaz_trv_rate_master_0: 'OPUS'
-  stg2_product_rating_factor_bjaz_trv_rate_master_1: 'OPUS'
-  stg2_product_rating_factor_bjaz_trv_rate_master_2: 'OPUS'
-  stg2_product_rating_factor_bjaz_trv_rate_master_3: 'OPUS'
+  stg2_product_rating_factor_bjaz_trv_rate_master_0: 'OPUS_TRAVEL'
+  stg2_product_rating_factor_bjaz_trv_rate_master_1: 'OPUS_TRAVEL'
+  stg2_product_rating_factor_bjaz_trv_rate_master_2: 'OPUS_TRAVEL'
+  stg2_product_rating_factor_bjaz_trv_rate_master_3: 'OPUS_TRAVEL'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

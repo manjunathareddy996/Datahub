@@ -17,7 +17,7 @@ derived_columns:
   NUMBER_OF_LIVES_COVERED: 'no_members'
   POLICY_TYPE: 'p_policy_type'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_TRV_RIDER_DTLS'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

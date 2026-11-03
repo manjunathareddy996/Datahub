@@ -11,7 +11,7 @@ derived_columns:
   PARENT_BK: "upper(trim(business_unit))"
   PARENT_NK: "'HUB_ORG_UNIT|' || (upper(trim(business_unit)))"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_CKYC_SEARCH'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_CKYC_SEARCH'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

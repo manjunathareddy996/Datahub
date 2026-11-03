@@ -166,7 +166,7 @@ derived_columns:
   STAMP_DUTY_RECEIPT_NUMBER: 'cast(null as varchar)'
   TOTAL_TAX_AMOUNT: 'cast(null as varchar)'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS'
+  RECORD_SOURCE: '!MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

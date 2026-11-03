@@ -33,9 +33,9 @@ src_source: 'RECORD_SOURCE'
 src_extra_columns:
   - 'DBT_RUN_TS'
 src_record_source_map:
-  stg2_party_individual_demographics: 'OPUS'
-  stg2_sat_bjaz_t_ckyc_personal_dtls__party_individual_demographics: 'OPUS'
-  stg2_sat_bjaz_t_kyc_ocr__party_individual_demographics: 'OPUS'
+  stg2_party_individual_demographics: 'OPUS_PARTNER'
+  stg2_sat_bjaz_t_ckyc_personal_dtls__party_individual_demographics: 'OPUS_PARTNER'
+  stg2_sat_bjaz_t_kyc_ocr__party_individual_demographics: 'OPUS_PARTNER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

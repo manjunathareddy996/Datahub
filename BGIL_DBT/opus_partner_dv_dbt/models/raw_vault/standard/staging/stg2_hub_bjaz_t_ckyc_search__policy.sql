@@ -26,7 +26,7 @@ derived_columns:
   PARENT_BK: "upper(case when upper(trim(field_type)) like 'POLICY%' then trim(field_value) end)"
   PARENT_NK: "'HUB_POLICY|' || (upper(case when upper(trim(field_type)) like 'POLICY%' then trim(field_value) end))"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_CKYC_SEARCH'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_CKYC_SEARCH'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

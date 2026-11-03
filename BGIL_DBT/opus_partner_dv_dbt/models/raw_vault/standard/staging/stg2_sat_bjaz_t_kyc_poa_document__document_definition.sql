@@ -45,7 +45,7 @@ derived_columns:
   STORAGEREFERENCE: 'omni_doc_index'
   VERIFICATIONSTATUS: 'response_code'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_KYC_POA_DOCUMENT'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_KYC_POA_DOCUMENT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

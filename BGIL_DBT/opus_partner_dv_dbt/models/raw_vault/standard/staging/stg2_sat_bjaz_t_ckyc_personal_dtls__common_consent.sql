@@ -54,7 +54,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (nullif('CKYC:' || upper(trim(coalesce(ckyc_no,''))), 'CKYC:'))"
   CONSENTDATE: 'dec_date'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_CKYC_PERSONAL_DTLS'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_CKYC_PERSONAL_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -79,7 +79,7 @@ derived_columns:
   OCCUPATIONDESCRIPTION: "cast(null as varchar)"
   SPOUSENAME: "cast(null as varchar)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_CKYC_PERSONAL_DTLS'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_CKYC_PERSONAL_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

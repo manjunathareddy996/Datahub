@@ -24,10 +24,10 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_mp_up__pd_prop_msdp_pv__lnk_party_role_core: 'MAXIMUS'
-  stg2_mp_up__pd_prop_sp_pv__lnk_party_role_core: 'MAXIMUS'
-  stg2_mp_up__pd_rel__lnk_party_role_core: 'MAXIMUS'
-  stg2_mp_up__pd_relparty__lnk_party_role_core: 'MAXIMUS'
+  stg2_mp_up__pd_prop_msdp_pv__lnk_party_role_core: 'MAXIMUS_PARTNER'
+  stg2_mp_up__pd_prop_sp_pv__lnk_party_role_core: 'MAXIMUS_PARTNER'
+  stg2_mp_up__pd_rel__lnk_party_role_core: 'MAXIMUS_PARTNER'
+  stg2_mp_up__pd_relparty__lnk_party_role_core: 'MAXIMUS_PARTNER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -13,7 +13,7 @@
         coalesce(sum_insured_ace, sum_insuredace) as ACE_SUM_INSURED,
         cast(null as varchar) as SUB_COVER_SUM_INSURED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where ace_duration is not null or sum_insured_ace is not null or sum_insuredace is not null
 union all
@@ -24,7 +24,7 @@ union all
         cast(null as varchar) as ACE_SUM_INSURED,
         ambulance_sub_cover as SUB_COVER_SUM_INSURED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where ambulance_sub_cover is not null
 union all
@@ -35,7 +35,7 @@ union all
         cast(null as varchar) as ACE_SUM_INSURED,
         standard_fire_and_special_perils_sub_cover as SUB_COVER_SUM_INSURED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where standard_fire_and_special_perils_sub_cover is not null
 union all
@@ -46,7 +46,7 @@ union all
         cast(null as varchar) as ACE_SUM_INSURED,
         inconvenience_sub_cover as SUB_COVER_SUM_INSURED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where inconvenience_sub_cover is not null
 union all
@@ -57,7 +57,7 @@ union all
         cast(null as varchar) as ACE_SUM_INSURED,
         cancellation_sub_cover as SUB_COVER_SUM_INSURED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where cancellation_sub_cover is not null
 union all
@@ -68,6 +68,6 @@ union all
         cast(null as varchar) as ACE_SUM_INSURED,
         cancellation_main_sub_cover as SUB_COVER_SUM_INSURED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_pol_ins_rskp_msp_msd_prop_pv') }}
     where cancellation_main_sub_cover is not null

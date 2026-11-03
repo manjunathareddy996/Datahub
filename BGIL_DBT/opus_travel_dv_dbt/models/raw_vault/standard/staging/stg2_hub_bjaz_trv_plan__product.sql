@@ -10,7 +10,7 @@ derived_columns:
   PARENT_BK: 'plan_id'
   PARENT_NK: "'HUB_PRODUCT|' || (plan_id)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_TRV_PLAN'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BJAZ_TRV_PLAN'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

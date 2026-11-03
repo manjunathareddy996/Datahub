@@ -29,7 +29,7 @@ derived_columns:
   PARENT_BK: "nullif(upper(trim(coalesce(field_type,''))) || ':' || upper(trim(coalesce(field_value,''))), ':')"
   PARENT_NK: "'HUB_PARTY|' || (nullif(upper(trim(coalesce(field_type,''))) || ':' || upper(trim(coalesce(field_value,''))), ':'))"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_KYC_OCR'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_KYC_OCR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

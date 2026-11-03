@@ -24,10 +24,10 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_sat_azbj_partner_extn__party_banking: 'OPUS'
-  stg2_sat_bjaz_clm_supp_extn__party_banking: 'OPUS'
-  stg2_sat_bjaz_ctngy_pa_mem_dtls__party_banking: 'OPUS'
-  stg2_sat_bjaz_hm_member_dtls__party_banking: 'OPUS'
+  stg2_sat_azbj_partner_extn__party_banking: 'OPUS_PARTNER'
+  stg2_sat_bjaz_clm_supp_extn__party_banking: 'OPUS_PARTNER'
+  stg2_sat_bjaz_ctngy_pa_mem_dtls__party_banking: 'OPUS_PARTNER'
+  stg2_sat_bjaz_hm_member_dtls__party_banking: 'OPUS_PARTNER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

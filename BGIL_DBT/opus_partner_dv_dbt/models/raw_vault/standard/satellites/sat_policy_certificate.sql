@@ -20,9 +20,9 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_sat_ba_hcp_dt_mem__policy_certificate: 'OPUS'
-  stg2_sat_bjaz_ctngy_pa_mem_dtls__policy_certificate: 'OPUS'
-  stg2_sat_bjaz_hm_member_dtls__policy_certificate: 'OPUS'
+  stg2_sat_ba_hcp_dt_mem__policy_certificate: 'OPUS_PARTNER'
+  stg2_sat_bjaz_ctngy_pa_mem_dtls__policy_certificate: 'OPUS_PARTNER'
+  stg2_sat_bjaz_hm_member_dtls__policy_certificate: 'OPUS_PARTNER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

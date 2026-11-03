@@ -49,7 +49,7 @@ derived_columns:
   PARENT_BK: "nullif('VOTER:' || upper(trim(coalesce(voter_number,''))), 'VOTER:')"
   PARENT_NK: "'HUB_PARTY|' || (nullif('VOTER:' || upper(trim(coalesce(voter_number,''))), 'VOTER:'))"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_M_KYC_VOTER'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_M_KYC_VOTER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

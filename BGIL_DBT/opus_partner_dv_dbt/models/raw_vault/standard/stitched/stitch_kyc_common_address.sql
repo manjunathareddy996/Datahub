@@ -25,7 +25,7 @@
 -- They are reported by name in BUILD_STATUS.json. Overruling re-chains a loaded
 -- satellite's hashdiff; that is the open shared-vault hashdiff issue.
 --
--- opus_partner_dv_dbt: record_source tagged OPUS_<TABLE> and inc_job_updated_at carried per
+-- opus_partner_dv_dbt: record_source tagged OPUS_PARTNER_<TABLE> and inc_job_updated_at carried per
 -- branch, matching stitch_common_address's outputs (stg2_kyc_common_address loads on it).
 --
 -- opus_partner_dv_dbt: rewritten onto the stitch_incremental macro, same as the other
@@ -46,7 +46,7 @@
             {'src': "upper(state)", 'tgt': 'statename'},
             {'src': "cast(null as varchar)", 'tgt': 'careofname'}
         ],
-        'source_tag': 'OPUS_BJAZ_M_KYC_DRIVING_LICENCE'
+        'source_tag': 'OPUS_PARTNER_BJAZ_M_KYC_DRIVING_LICENCE'
     },
     {
         'model': 'stg_partner__bjaz_m_kyc_gstn',
@@ -56,7 +56,7 @@
         'columns': [
             {'src': "upper(business_place)", 'tgt': 'addressline1'}
         ],
-        'source_tag': 'OPUS_BJAZ_M_KYC_GSTN'
+        'source_tag': 'OPUS_PARTNER_BJAZ_M_KYC_GSTN'
     },
     {
         'model': 'stg_partner__bjaz_m_kyc_voter',
@@ -66,7 +66,7 @@
         'columns': [
             {'src': "upper(state)", 'tgt': 'statename'}
         ],
-        'source_tag': 'OPUS_BJAZ_M_KYC_VOTER'
+        'source_tag': 'OPUS_PARTNER_BJAZ_M_KYC_VOTER'
     },
     {
         'model': 'stg_partner__bjaz_t_ckyc_personal_dtls',
@@ -82,7 +82,7 @@
             {'src': "upper(corres_pin)", 'tgt': 'postalcode'},
             {'src': "upper(corres_state)", 'tgt': 'statename'}
         ],
-        'source_tag': 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS'
+        'source_tag': 'OPUS_PARTNER_BJAZ_T_CKYC_PERSONAL_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_t_ckyc_personal_dtls',
@@ -97,7 +97,7 @@
             {'src': "upper(juri_country)", 'tgt': 'countryname'},
             {'src': "upper(juri_state)", 'tgt': 'statename'}
         ],
-        'source_tag': 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS'
+        'source_tag': 'OPUS_PARTNER_BJAZ_T_CKYC_PERSONAL_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_t_ckyc_personal_dtls',
@@ -113,7 +113,7 @@
             {'src': "upper(perm_pin)", 'tgt': 'postalcode'},
             {'src': "upper(perm_state)", 'tgt': 'statename'}
         ],
-        'source_tag': 'OPUS_BJAZ_T_CKYC_PERSONAL_DTLS'
+        'source_tag': 'OPUS_PARTNER_BJAZ_T_CKYC_PERSONAL_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_t_ekyc',
@@ -128,7 +128,7 @@
             {'src': "upper(state)", 'tgt': 'statename'},
             {'src': "upper(street)", 'tgt': 'streetname'}
         ],
-        'source_tag': 'OPUS_BJAZ_T_EKYC'
+        'source_tag': 'OPUS_PARTNER_BJAZ_T_EKYC'
     },
     {
         'model': 'stg_partner__bjaz_t_kyc_ocr',
@@ -143,7 +143,7 @@
             {'src': "upper(state)", 'tgt': 'statename'},
             {'src': "upper(street)", 'tgt': 'streetname'}
         ],
-        'source_tag': 'OPUS_BJAZ_T_KYC_OCR'
+        'source_tag': 'OPUS_PARTNER_BJAZ_T_KYC_OCR'
     }
 ] -%}
 

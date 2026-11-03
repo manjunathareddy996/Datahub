@@ -18,8 +18,8 @@ src_hashdiff: 'HASHDIFF_PARTY_DIGITAL_IDENTITY'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_mp_up__pd_prop_msdp_pv__party_digital_identity: 'MAXIMUS'
-  stg2_mp_up__pd_prop_sp_pv__party_digital_identity: 'MAXIMUS'
+  stg2_mp_up__pd_prop_msdp_pv__party_digital_identity: 'MAXIMUS_PARTNER'
+  stg2_mp_up__pd_prop_sp_pv__party_digital_identity: 'MAXIMUS_PARTNER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

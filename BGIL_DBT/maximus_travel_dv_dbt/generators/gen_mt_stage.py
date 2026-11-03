@@ -78,7 +78,10 @@ def stage_body(view, spec, slots, sat_feeders, sats):
     for col in sorted(emitted):
         derived.append("  %s: %s" % (col, N.yaml_scalar(emitted[col])))
     derived.append("  LOAD_DATETIME: '!CURRENT_TIMESTAMP()'")
-    derived.append("  RECORD_SOURCE: '!%s'" % view)
+    # view already starts with 'MAXIMUS_' (Snowflake view identifier). Inject the LOB token
+    # 'TRAVEL_' right after it so RECORD_SOURCE is 'MAXIMUS_TRAVEL_<rest>' (LOB-scoped).
+    rs_view = ("MAXIMUS_TRAVEL_" + view[len("MAXIMUS_"):]) if view.startswith("MAXIMUS_") else ("MAXIMUS_TRAVEL_" + view)
+    derived.append("  RECORD_SOURCE: '!%s'" % rs_view)
 
     for line in derived:
         K.assert_no_prose(line, "stage %s" % view)

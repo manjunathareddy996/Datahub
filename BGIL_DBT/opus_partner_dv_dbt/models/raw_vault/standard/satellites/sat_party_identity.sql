@@ -46,15 +46,15 @@ src_source: 'RECORD_SOURCE'
 src_extra_columns:
   - 'DBT_RUN_TS'
 src_record_source_map:
-  stg2_party_identity: 'OPUS'
-  stg2_sat_bjaz_t_ckyc_personal_dtls__party_identity: 'OPUS'
-  stg2_sat_bjaz_t_ckyc_rel_persion_dtls__party_identity__related_person: 'OPUS'
-  stg2_sat_bjaz_t_ckyc_search__party_identity: 'OPUS'
-  stg2_sat_bjaz_t_ekyc__party_identity: 'OPUS'
-  stg2_sat_bjaz_t_kyc_auth__party_identity: 'OPUS'
-  stg2_sat_bjaz_t_kyc_details__party_identity: 'OPUS'
-  stg2_sat_bjaz_t_kyc_incoming__party_identity: 'OPUS'
-  stg2_sat_bjaz_t_kyc_ocr__party_identity: 'OPUS'
+  stg2_party_identity: 'OPUS_PARTNER'
+  stg2_sat_bjaz_t_ckyc_personal_dtls__party_identity: 'OPUS_PARTNER'
+  stg2_sat_bjaz_t_ckyc_rel_persion_dtls__party_identity__related_person: 'OPUS_PARTNER'
+  stg2_sat_bjaz_t_ckyc_search__party_identity: 'OPUS_PARTNER'
+  stg2_sat_bjaz_t_ekyc__party_identity: 'OPUS_PARTNER'
+  stg2_sat_bjaz_t_kyc_auth__party_identity: 'OPUS_PARTNER'
+  stg2_sat_bjaz_t_kyc_details__party_identity: 'OPUS_PARTNER'
+  stg2_sat_bjaz_t_kyc_incoming__party_identity: 'OPUS_PARTNER'
+  stg2_sat_bjaz_t_kyc_ocr__party_identity: 'OPUS_PARTNER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

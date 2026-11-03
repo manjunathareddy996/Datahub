@@ -144,7 +144,7 @@ derived_columns:
   VERIFIED_SURNAME: "cast(null as varchar)"
   VERIFIED_TRADE_NAME: "cast(null as varchar)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_KYC_OCR'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_KYC_OCR'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

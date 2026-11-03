@@ -24,7 +24,7 @@
             {'src': 'vip_cust', 'tgt': 'prioritycode'},
             {'src': 'ucic_flag', 'tgt': 'segmentcode'}
         ],
-        'source_tag': 'OPUS_AZBJ_PARTNER_EXTN'
+        'source_tag': 'OPUS_PARTNER_AZBJ_PARTNER_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_intermediary',
@@ -34,7 +34,7 @@
         'columns': [
             {'src': 'flagging', 'tgt': 'segmentcode'}
         ],
-        'source_tag': 'OPUS_BJAZ_INTERMEDIARY'
+        'source_tag': 'OPUS_PARTNER_BJAZ_INTERMEDIARY'
     }
 ] -%}
 

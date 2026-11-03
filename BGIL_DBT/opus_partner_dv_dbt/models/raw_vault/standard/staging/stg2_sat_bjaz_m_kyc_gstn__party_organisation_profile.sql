@@ -77,7 +77,7 @@ derived_columns:
   PAIDUPCAPITAL: "cast(null as varchar)"
   PARENTENTITYNAME: "cast(null as varchar)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_M_KYC_GSTN'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_M_KYC_GSTN'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

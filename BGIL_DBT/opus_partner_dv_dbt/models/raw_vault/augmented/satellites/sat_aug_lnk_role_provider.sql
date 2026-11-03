@@ -67,8 +67,8 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_aug_rolesat_bjaz_clm_supp_extn__lnk_role_provider: 'OPUS'
-  stg2_aug_rolesat_bjaz_hm_hospital_master__lnk_role_provider: 'OPUS'
+  stg2_aug_rolesat_bjaz_clm_supp_extn__lnk_role_provider: 'OPUS_PARTNER'
+  stg2_aug_rolesat_bjaz_hm_hospital_master__lnk_role_provider: 'OPUS_PARTNER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

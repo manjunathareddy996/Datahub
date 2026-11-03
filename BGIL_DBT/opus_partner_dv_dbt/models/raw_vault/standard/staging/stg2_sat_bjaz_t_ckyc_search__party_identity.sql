@@ -81,7 +81,7 @@ derived_columns:
   PLACEOFBIRTH: "cast(null as varchar)"
   SALUTATION: "cast(null as varchar)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_CKYC_SEARCH'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_CKYC_SEARCH'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

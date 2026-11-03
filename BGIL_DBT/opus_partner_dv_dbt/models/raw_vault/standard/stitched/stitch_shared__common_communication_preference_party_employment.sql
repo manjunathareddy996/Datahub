@@ -15,7 +15,7 @@
             {'src': 'literature', 'tgt': 'marketingoptinindicator'},
             {'src': 'employment_status', 'tgt': 'employmentstatus'}
         ],
-        'source_tag': 'OPUS_CP_PARTNERS'
+        'source_tag': 'OPUS_PARTNER_CP_PARTNERS'
     }
 ] -%}
 

@@ -44,7 +44,7 @@
         adjustment_value as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where adjustment_value is not null
 union all
@@ -55,7 +55,7 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where altitude is not null
 union all
@@ -66,7 +66,7 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where baggage_tracking_service_applicable is not null
 union all
@@ -77,7 +77,7 @@ union all
         claims_experience_discount as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where claims_experience_discount is not null
 union all
@@ -88,7 +88,7 @@ union all
         claims_experience_loading as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where claims_experience_loading is not null
 union all
@@ -99,7 +99,7 @@ union all
         clu_discount as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where clu_discount is not null
 union all
@@ -110,7 +110,7 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where country is not null
 union all
@@ -121,7 +121,7 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where cruise is not null
 union all
@@ -132,7 +132,7 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where cruise_days is not null
 union all
@@ -143,7 +143,7 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where destination_details is not null
 union all
@@ -154,7 +154,7 @@ union all
         employee_discount as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where employee_discount is not null
 union all
@@ -165,7 +165,7 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where geographical_coverage is not null
 union all
@@ -176,7 +176,7 @@ union all
         group_discount as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where group_discount is not null
 union all
@@ -187,7 +187,7 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where hours_covered is not null
 union all
@@ -198,7 +198,7 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where mode_of_transport is not null
 union all
@@ -209,7 +209,7 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where multiple_city is not null
 union all
@@ -220,7 +220,7 @@ union all
         nil_commission_discount as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where nil_commission_discount is not null
 union all
@@ -231,7 +231,7 @@ union all
         online_discount as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where online_discount is not null
 union all
@@ -242,7 +242,7 @@ union all
         other_discount as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where other_discount is not null
 union all
@@ -253,7 +253,7 @@ union all
         premium_adjustment as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where premium_adjustment is not null
 union all
@@ -264,7 +264,7 @@ union all
         student_discount as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where student_discount is not null
 union all
@@ -275,7 +275,7 @@ union all
         travelling_companion_discount as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where travelling_companion_discount is not null
 union all
@@ -286,7 +286,7 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where type_of_discount is not null
 union all
@@ -297,6 +297,6 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_rl_pv') }}
     where type_of_loading is not null

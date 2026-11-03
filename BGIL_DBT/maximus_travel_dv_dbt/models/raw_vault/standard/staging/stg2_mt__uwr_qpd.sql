@@ -104,7 +104,7 @@ derived_columns:
   REQUESTED_SUM_INSURED: 'cast(null as varchar)'
   BASE_CURRENCY_EXCHANGE_RATE: 'base_currency_rate'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS'
+  RECORD_SOURCE: '!MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

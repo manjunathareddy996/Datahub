@@ -24,7 +24,7 @@ derived_columns:
   FULLADDRESSTEXT: "current_permanent_overseas_address_"
   UNIONTERRITORYINDICATOR: "ut_flag"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!MAXIMUS_pd_prop_sp_pv'
+  RECORD_SOURCE: '!MAXIMUS_PARTNER_pd_prop_sp_pv'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

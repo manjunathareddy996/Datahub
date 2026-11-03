@@ -17,7 +17,7 @@
             {'src': 'paidup_capital', 'tgt': 'paidupcapital'},
             {'src': 'parent_co', 'tgt': 'parententityname'}
         ],
-        'source_tag': 'OPUS_AZBJ_PARTNER_EXTN'
+        'source_tag': 'OPUS_PARTNER_AZBJ_PARTNER_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_clm_supp_extn',
@@ -30,7 +30,7 @@
             {'src': 'msme_class', 'tgt': 'msmeindicator'},
             {'src': 'parent_co_name', 'tgt': 'parententityname'}
         ],
-        'source_tag': 'OPUS_BJAZ_CLM_SUPP_EXTN'
+        'source_tag': 'OPUS_PARTNER_BJAZ_CLM_SUPP_EXTN'
     },
     {
         'model': 'stg_partner__cp_partners',
@@ -40,7 +40,7 @@
         'columns': [
             {'src': 'legal_form', 'tgt': 'legalconstitutiontype'}
         ],
-        'source_tag': 'OPUS_CP_PARTNERS'
+        'source_tag': 'OPUS_PARTNER_CP_PARTNERS'
     }
 ] -%}
 

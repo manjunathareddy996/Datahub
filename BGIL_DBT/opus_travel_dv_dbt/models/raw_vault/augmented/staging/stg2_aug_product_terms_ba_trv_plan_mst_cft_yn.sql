@@ -15,7 +15,7 @@ derived_columns:
   PARENT_NK: "'HUB_PRODUCT|' || (plan_no)"
   CFT_ELIGIBLE_INDICATOR: 'cft_yn'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BA_TRV_PLAN_MST'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BA_TRV_PLAN_MST'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

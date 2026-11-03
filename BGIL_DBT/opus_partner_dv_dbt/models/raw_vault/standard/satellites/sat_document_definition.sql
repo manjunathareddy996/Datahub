@@ -37,9 +37,9 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_sat_bjaz_t_kyc_ocr__document_definition: 'OPUS'
-  stg2_sat_bjaz_t_kyc_poa_document__document_definition: 'OPUS'
-  stg2_sat_bjaz_t_kyc_poi_document__document_definition: 'OPUS'
+  stg2_sat_bjaz_t_kyc_ocr__document_definition: 'OPUS_PARTNER'
+  stg2_sat_bjaz_t_kyc_poa_document__document_definition: 'OPUS_PARTNER'
+  stg2_sat_bjaz_t_kyc_poi_document__document_definition: 'OPUS_PARTNER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

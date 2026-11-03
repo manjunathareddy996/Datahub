@@ -31,12 +31,12 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_risk_person_travel_bjaz_trv_loader_data_member1: 'OPUS'
-  stg2_risk_person_travel_bjaz_trv_loader_data_member2: 'OPUS'
-  stg2_risk_person_travel_bjaz_trv_loader_data_member3: 'OPUS'
-  stg2_risk_person_travel_bjaz_trv_loader_data_member4: 'OPUS'
-  stg2_risk_person_travel_bjaz_trv_loader_data_member5: 'OPUS'
-  stg2_risk_person_travel_bjaz_trv_loader_log_table: 'OPUS'
+  stg2_risk_person_travel_bjaz_trv_loader_data_member1: 'OPUS_TRAVEL'
+  stg2_risk_person_travel_bjaz_trv_loader_data_member2: 'OPUS_TRAVEL'
+  stg2_risk_person_travel_bjaz_trv_loader_data_member3: 'OPUS_TRAVEL'
+  stg2_risk_person_travel_bjaz_trv_loader_data_member4: 'OPUS_TRAVEL'
+  stg2_risk_person_travel_bjaz_trv_loader_data_member5: 'OPUS_TRAVEL'
+  stg2_risk_person_travel_bjaz_trv_loader_log_table: 'OPUS_TRAVEL'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

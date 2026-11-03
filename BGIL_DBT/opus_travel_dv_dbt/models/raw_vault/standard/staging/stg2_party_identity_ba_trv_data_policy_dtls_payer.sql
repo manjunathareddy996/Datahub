@@ -17,7 +17,7 @@ derived_columns:
   AGE: 'age_array_comma_separated'
   DATE_OF_BIRTH: 'date_of_birth'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BA_TRV_DATA_POLICY_DTLS'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

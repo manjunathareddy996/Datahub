@@ -11,7 +11,7 @@
         'CONDITION' as EXCLUSION_SET_CODE,
         exclusion_detailcondition as EXCLUSION_DETAIL_TEXT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where exclusion_detailcondition is not null
 union all
@@ -20,7 +20,7 @@ union all
         'ETRAVEL' as EXCLUSION_SET_CODE,
         exclusion_detailetravel as EXCLUSION_DETAIL_TEXT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where exclusion_detailetravel is not null
 union all
@@ -29,7 +29,7 @@ union all
         'GROUP BUSINESS TRAVELLER INSURANCE' as EXCLUSION_SET_CODE,
         exclusion_detailgroup_business_traveler_insurance as EXCLUSION_DETAIL_TEXT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where exclusion_detailgroup_business_traveler_insurance is not null
 union all
@@ -38,7 +38,7 @@ union all
         'STANDARD TRAVEL POLICY EXCLUSIONS' as EXCLUSION_SET_CODE,
         exclusion_detailstandard_travel_policy_exclusions as EXCLUSION_DETAIL_TEXT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where exclusion_detailstandard_travel_policy_exclusions is not null
 union all
@@ -47,7 +47,7 @@ union all
         'STANDARD TRAVEL POLICY' as EXCLUSION_SET_CODE,
         exclusion_detailstandard_travel_policy as EXCLUSION_DETAIL_TEXT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where exclusion_detailstandard_travel_policy is not null
 union all
@@ -56,6 +56,6 @@ union all
         'STANDARD TRAVEL PRIME EXCLUSIONS' as EXCLUSION_SET_CODE,
         exclusion_detailstandard_travel_prime_exclusions as EXCLUSION_DETAIL_TEXT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where exclusion_detailstandard_travel_prime_exclusions is not null

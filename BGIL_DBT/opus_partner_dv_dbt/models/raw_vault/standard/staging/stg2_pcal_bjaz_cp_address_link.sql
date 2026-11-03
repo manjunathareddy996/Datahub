@@ -20,7 +20,7 @@ derived_columns:
   ADDRESS_USAGE_TYPE: 'to_varchar(add_type)'
   PRIMARY_ADDRESS_INDICATOR: 'primary_yn'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_CP_ADDRESS_LINK'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_CP_ADDRESS_LINK'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -61,7 +61,7 @@ derived_columns:
   LASTKYCREVIEWDATE: "cast(null as varchar)"
   OVDSUBMITTEDCOUNT: "cast(null as varchar)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_KYC_DETAILS'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_KYC_DETAILS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

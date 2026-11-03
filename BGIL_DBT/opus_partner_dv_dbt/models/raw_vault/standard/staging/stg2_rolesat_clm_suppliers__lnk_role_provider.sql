@@ -27,7 +27,7 @@ derived_columns:
   PROVIDER_TYPE: 'supp_type'
   SUPPLIER_ID: 'supp_id'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_CLM_SUPPLIERS'
+  RECORD_SOURCE: '!OPUS_PARTNER_CLM_SUPPLIERS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

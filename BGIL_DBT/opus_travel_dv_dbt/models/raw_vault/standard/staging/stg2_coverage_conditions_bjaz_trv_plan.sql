@@ -17,7 +17,7 @@ derived_columns:
   CONDITION_DESCRIPTION: 'claim_cover_desc'
   WAITING_PERIOD_CONDITION: 'deductable_time'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_TRV_PLAN'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BJAZ_TRV_PLAN'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

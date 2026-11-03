@@ -22,7 +22,7 @@ derived_columns:
   PARENT_NK: "'HUB_DOCUMENT|' || (upper(trim(coalesce(docs_type,''))) || ':' || upper(trim(coalesce(docs_number,''))))"
   VERIFICATION_RESPONSE_MESSAGE: 'response_message'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_KYC_POA_DOCUMENT'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_KYC_POA_DOCUMENT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

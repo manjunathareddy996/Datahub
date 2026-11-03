@@ -28,7 +28,7 @@
         loading_ace as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where loading_ace is not null
 union all
@@ -39,7 +39,7 @@ union all
         loading_ace_for_main_sub_cover as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where loading_ace_for_main_sub_cover is not null
 union all
@@ -50,7 +50,7 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where office_premium_per_mille_pa is not null
 union all
@@ -61,7 +61,7 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where office_premium_per_mille_per_trip is not null
 union all
@@ -72,7 +72,7 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where premium_rate is not null
 union all
@@ -83,7 +83,7 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where rate_per_trip_per_mille is not null
 union all
@@ -94,7 +94,7 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where rate_per_trip_per_mille_for_main_sub_cover is not null
 union all
@@ -105,6 +105,6 @@ union all
         cast(null as varchar) as PREMIUM_IMPACT,
         cast(null as varchar) as RELATIVITY_APPLIED,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where slab_ is not null

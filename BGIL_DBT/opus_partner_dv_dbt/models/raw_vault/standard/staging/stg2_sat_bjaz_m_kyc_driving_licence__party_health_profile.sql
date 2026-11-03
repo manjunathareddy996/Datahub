@@ -71,7 +71,7 @@ derived_columns:
   SMOKERINDICATOR: "cast(null as varchar)"
   WEIGHT: "cast(null as varchar)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_M_KYC_DRIVING_LICENCE'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_M_KYC_DRIVING_LICENCE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -21,7 +21,7 @@ derived_columns:
   COMMISSION_AMOUNT: 'commission_amt'
   COMMISSION_RATE: 'commission_rate'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BA_TRV_DATA_POLICY_DTLS'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

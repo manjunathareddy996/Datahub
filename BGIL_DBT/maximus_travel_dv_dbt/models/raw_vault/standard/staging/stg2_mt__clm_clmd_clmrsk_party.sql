@@ -130,7 +130,7 @@ derived_columns:
   TAN_NUMBER: 'cast(null as varchar)'
   VOTER_ID_NUMBER: 'cast(null as varchar)'
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY'
+  RECORD_SOURCE: '!MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_PARTY'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

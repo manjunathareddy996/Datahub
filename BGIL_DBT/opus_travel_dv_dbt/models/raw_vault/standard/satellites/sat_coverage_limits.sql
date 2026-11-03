@@ -15,9 +15,9 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_coverage_limits_bjaz_trv_plan: 'OPUS'
-  stg2_coverage_limits_bjaz_trv_rider_dtls: 'OPUS'
-  stg2_coverage_limits_bjaz_trv_rider_rate_mast: 'OPUS'
+  stg2_coverage_limits_bjaz_trv_plan: 'OPUS_TRAVEL'
+  stg2_coverage_limits_bjaz_trv_rider_dtls: 'OPUS_TRAVEL'
+  stg2_coverage_limits_bjaz_trv_rider_rate_mast: 'OPUS_TRAVEL'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

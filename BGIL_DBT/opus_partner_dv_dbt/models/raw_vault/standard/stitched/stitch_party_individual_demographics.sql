@@ -18,7 +18,7 @@
             {'src': 'occupation_desc_gen', 'tgt': 'occupationdescription'},
             {'src': 'spouse_name', 'tgt': 'spousename'}
         ],
-        'source_tag': 'OPUS_AZBJ_PARTNER_EXTN'
+        'source_tag': 'OPUS_PARTNER_AZBJ_PARTNER_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_ec_mem_dtls_extn',
@@ -29,7 +29,7 @@
             {'src': 'gross_income', 'tgt': 'annualincome'},
             {'src': 'occupation', 'tgt': 'occupationcode'}
         ],
-        'source_tag': 'OPUS_BJAZ_EC_MEM_DTLS_EXTN'
+        'source_tag': 'OPUS_PARTNER_BJAZ_EC_MEM_DTLS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_hcf_member_dtls',
@@ -40,7 +40,7 @@
             {'src': 'monthly_income', 'tgt': 'annualincome'},
             {'src': 'member_occupation', 'tgt': 'occupationcode'}
         ],
-        'source_tag': 'OPUS_BJAZ_HCF_MEMBER_DTLS'
+        'source_tag': 'OPUS_PARTNER_BJAZ_HCF_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_hc_part_extn',
@@ -50,7 +50,7 @@
         'columns': [
             {'src': 'occupation', 'tgt': 'occupationcode'}
         ],
-        'source_tag': 'OPUS_BJAZ_HC_PART_EXTN'
+        'source_tag': 'OPUS_PARTNER_BJAZ_HC_PART_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_hm_member_dtls',
@@ -62,7 +62,7 @@
             {'src': 'designation', 'tgt': 'designation'},
             {'src': 'occupation', 'tgt': 'occupationcode'}
         ],
-        'source_tag': 'OPUS_BJAZ_HM_MEMBER_DTLS'
+        'source_tag': 'OPUS_PARTNER_BJAZ_HM_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__bjaz_sh_mem_dtls_extn',
@@ -73,7 +73,7 @@
             {'src': 'gross_income', 'tgt': 'annualincome'},
             {'src': 'occupation', 'tgt': 'occupationcode'}
         ],
-        'source_tag': 'OPUS_BJAZ_SH_MEM_DTLS_EXTN'
+        'source_tag': 'OPUS_PARTNER_BJAZ_SH_MEM_DTLS_EXTN'
     },
     {
         'model': 'stg_partner__bjaz_spp_member_dtls',
@@ -83,7 +83,7 @@
         'columns': [
             {'src': 'member_occupation', 'tgt': 'occupationcode'}
         ],
-        'source_tag': 'OPUS_BJAZ_SPP_MEMBER_DTLS'
+        'source_tag': 'OPUS_PARTNER_BJAZ_SPP_MEMBER_DTLS'
     },
     {
         'model': 'stg_partner__cp_partners',
@@ -94,7 +94,7 @@
             {'src': 'marital_status', 'tgt': 'maritalstatus'},
             {'src': 'occupation', 'tgt': 'occupationcode'}
         ],
-        'source_tag': 'OPUS_CP_PARTNERS'
+        'source_tag': 'OPUS_PARTNER_CP_PARTNERS'
     }
 ] -%}
 

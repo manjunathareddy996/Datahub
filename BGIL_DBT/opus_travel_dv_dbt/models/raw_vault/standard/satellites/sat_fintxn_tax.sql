@@ -20,9 +20,9 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_fintxn_tax_ba_trv_data_policy_dtls_0: 'OPUS'
-  stg2_fintxn_tax_ba_trv_data_policy_dtls_1: 'OPUS'
-  stg2_fintxn_tax_bjaz_trv_loader_log_table_2: 'OPUS'
+  stg2_fintxn_tax_ba_trv_data_policy_dtls_0: 'OPUS_TRAVEL'
+  stg2_fintxn_tax_ba_trv_data_policy_dtls_1: 'OPUS_TRAVEL'
+  stg2_fintxn_tax_bjaz_trv_loader_log_table_2: 'OPUS_TRAVEL'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

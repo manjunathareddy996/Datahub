@@ -15,7 +15,7 @@ derived_columns:
   PARENT_NK: "'HUB_PRODUCT|' || (plan_id)"
   MAXIMUM_POLICY_TERM: 'max_days'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_TRV_PLAN'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BJAZ_TRV_PLAN'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

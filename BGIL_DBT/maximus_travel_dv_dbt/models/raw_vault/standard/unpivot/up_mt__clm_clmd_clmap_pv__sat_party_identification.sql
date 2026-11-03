@@ -50,7 +50,7 @@
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where insured_aadhar_number is not null
 union all
@@ -83,7 +83,7 @@ union all
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where enter_ckyc_no is not null
 union all
@@ -116,7 +116,7 @@ union all
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where identification_number is not null
 union all
@@ -149,7 +149,7 @@ union all
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where gstn_number is not null
 union all
@@ -182,7 +182,7 @@ union all
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where pan_number is not null
 union all
@@ -215,7 +215,7 @@ union all
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where insured_pan_number is not null
 union all
@@ -248,7 +248,7 @@ union all
         cast(null as varchar) as TAN_NUMBER,
         cast(null as varchar) as VOTER_ID_NUMBER,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where passport_number is not null
 union all
@@ -281,6 +281,6 @@ union all
         cast(null as varchar) as TAN_NUMBER,
         enter_voter_id as VOTER_ID_NUMBER,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmap_pv') }}
     where enter_voter_id is not null

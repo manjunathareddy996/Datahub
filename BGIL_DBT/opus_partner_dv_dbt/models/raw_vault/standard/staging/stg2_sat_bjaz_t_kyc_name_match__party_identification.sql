@@ -69,7 +69,7 @@ derived_columns:
   TANNUMBER: "cast(null as varchar)"
   VATREGISTRATIONNUMBER: "cast(null as varchar)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_KYC_NAME_MATCH'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_KYC_NAME_MATCH'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

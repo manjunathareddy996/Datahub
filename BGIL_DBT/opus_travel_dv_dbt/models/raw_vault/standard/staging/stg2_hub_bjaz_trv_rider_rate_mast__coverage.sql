@@ -10,7 +10,7 @@ derived_columns:
   PARENT_BK: 'rider_seq_no'
   PARENT_NK: "'HUB_COVERAGE|' || (rider_seq_no)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_TRV_RIDER_RATE_MAST'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BJAZ_TRV_RIDER_RATE_MAST'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

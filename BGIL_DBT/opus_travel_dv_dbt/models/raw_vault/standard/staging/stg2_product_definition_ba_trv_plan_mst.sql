@@ -23,7 +23,7 @@ derived_columns:
   PRODUCT_NAME: 'plan_name'
   PRODUCT_CODE: 'product_4digit_code'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BA_TRV_PLAN_MST'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BA_TRV_PLAN_MST'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

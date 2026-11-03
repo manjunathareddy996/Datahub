@@ -15,8 +15,8 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_aug_party_employment_ba_trv_data_policy_dtls_cft_emp_no: 'OPUS'
-  stg2_aug_party_employment_bjaz_trv_loader_log_table_empno: 'OPUS'
+  stg2_aug_party_employment_ba_trv_data_policy_dtls_cft_emp_no: 'OPUS_TRAVEL'
+  stg2_aug_party_employment_bjaz_trv_loader_log_table_empno: 'OPUS_TRAVEL'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

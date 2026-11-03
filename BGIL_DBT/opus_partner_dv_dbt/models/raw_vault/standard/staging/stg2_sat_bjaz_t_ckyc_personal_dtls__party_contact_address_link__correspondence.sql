@@ -25,7 +25,7 @@ derived_columns:
   ADDRESS_USAGE_TYPE: "'CORRESPONDENCE'"
   PRIMARY_ADDRESS_INDICATOR: "cast(null as varchar)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_CKYC_PERSONAL_DTLS'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_CKYC_PERSONAL_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

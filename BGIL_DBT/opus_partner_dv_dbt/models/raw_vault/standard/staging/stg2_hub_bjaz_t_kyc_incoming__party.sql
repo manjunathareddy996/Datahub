@@ -30,7 +30,7 @@ derived_columns:
   PARENT_BK: "nullif(upper(trim(coalesce(search_category,''))) || ':' || upper(trim(coalesce(search_input,''))), ':')"
   PARENT_NK: "'HUB_PARTY|' || (nullif(upper(trim(coalesce(search_category,''))) || ':' || upper(trim(coalesce(search_input,''))), ':'))"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_KYC_INCOMING'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_KYC_INCOMING'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

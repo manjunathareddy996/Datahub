@@ -23,12 +23,12 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_party_identification_ba_trv_data_policy_dtls_0: 'OPUS'
-  stg2_party_identification_bjaz_trv_loader_data_1: 'OPUS'
-  stg2_party_identification_bjaz_trv_loader_data_2: 'OPUS'
-  stg2_party_identification_bjaz_trv_loader_data_3: 'OPUS'
-  stg2_party_identification_bjaz_trv_loader_data_4: 'OPUS'
-  stg2_party_identification_bjaz_trv_loader_log_table_5: 'OPUS'
+  stg2_party_identification_ba_trv_data_policy_dtls_0: 'OPUS_TRAVEL'
+  stg2_party_identification_bjaz_trv_loader_data_1: 'OPUS_TRAVEL'
+  stg2_party_identification_bjaz_trv_loader_data_2: 'OPUS_TRAVEL'
+  stg2_party_identification_bjaz_trv_loader_data_3: 'OPUS_TRAVEL'
+  stg2_party_identification_bjaz_trv_loader_data_4: 'OPUS_TRAVEL'
+  stg2_party_identification_bjaz_trv_loader_log_table_5: 'OPUS_TRAVEL'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

@@ -91,7 +91,7 @@ derived_columns:
   VATREGISTRATIONNUMBER: "cast(null as varchar)"
   VOTERIDNUMBER: 'voter_number'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_M_KYC_VOTER'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_M_KYC_VOTER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

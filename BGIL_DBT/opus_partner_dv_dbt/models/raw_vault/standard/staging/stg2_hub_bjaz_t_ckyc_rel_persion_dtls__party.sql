@@ -47,7 +47,7 @@ derived_columns:
   PARENT_BK: "nullif('CKYC:' || upper(trim(coalesce(ckyc_no,''))), 'CKYC:')"
   PARENT_NK: "'HUB_PARTY|' || (nullif('CKYC:' || upper(trim(coalesce(ckyc_no,''))), 'CKYC:'))"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_CKYC_REL_PERSION_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

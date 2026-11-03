@@ -22,7 +22,7 @@ derived_columns:
   PARENT_NK: "'HUB_POLICY|' || (case when upper(trim(field_type)) like 'POLICY%' then trim(field_value) end)"
   SALES_ORDER_NUMBER: 'order_number'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_KYC_INCOMING'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_KYC_INCOMING'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

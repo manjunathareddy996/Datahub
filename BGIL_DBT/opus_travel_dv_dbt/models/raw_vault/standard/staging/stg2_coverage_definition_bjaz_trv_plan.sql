@@ -17,7 +17,7 @@ derived_columns:
   COVERAGE_DESCRIPTION: 'cover_desc'
   PERIL_COVERED: 'type_of_claim'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_TRV_PLAN'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BJAZ_TRV_PLAN'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

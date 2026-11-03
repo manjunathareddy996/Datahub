@@ -19,8 +19,8 @@ src_hashdiff: 'HASHDIFF_COMMON_GEO'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_mp__pd_party_addr_prop_pv: 'MAXIMUS'
-  stg2_mp__pd_prop_sp_pv: 'MAXIMUS'
+  stg2_mp__pd_party_addr_prop_pv: 'MAXIMUS_PARTNER'
+  stg2_mp__pd_prop_sp_pv: 'MAXIMUS_PARTNER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

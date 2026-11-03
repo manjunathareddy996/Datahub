@@ -33,8 +33,8 @@ src_source: 'RECORD_SOURCE'
 src_extra_columns:
   - 'DBT_RUN_TS'
 src_record_source_map:
-  stg2_common_address: 'OPUS'
-  stg2_kyc_common_address: 'OPUS'
+  stg2_common_address: 'OPUS_PARTNER'
+  stg2_kyc_common_address: 'OPUS_PARTNER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

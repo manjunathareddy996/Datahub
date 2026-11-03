@@ -49,7 +49,7 @@ derived_columns:
   PARENT_BK: "nullif('PASSPORT:' || upper(trim(coalesce(passport_number,''))), 'PASSPORT:')"
   PARENT_NK: "'HUB_PARTY|' || (nullif('PASSPORT:' || upper(trim(coalesce(passport_number,''))), 'PASSPORT:'))"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_M_KYC_PASSPORT'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_M_KYC_PASSPORT'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

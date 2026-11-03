@@ -58,7 +58,7 @@ derived_columns:
   LOCATION_HKEY_NK: "'HUB_LOCATION|' || (coalesce(nullif(upper(trim(to_varchar(perm_line1))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_line2))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_line3))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_city))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_dist))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_state))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_pin))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_country))), ''), ''))"
   PARTY_LOCATION_HKEY_NK: "'LNK_PARTY_LOCATION|' || (nullif('CKYC:' || upper(trim(coalesce(ckyc_no,''))), 'CKYC:') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_line1))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_line2))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_line3))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_city))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_dist))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_state))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_pin))), ''), '') || '|' || coalesce(nullif(upper(trim(to_varchar(perm_country))), ''), ''))"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_CKYC_PERSONAL_DTLS'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_CKYC_PERSONAL_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

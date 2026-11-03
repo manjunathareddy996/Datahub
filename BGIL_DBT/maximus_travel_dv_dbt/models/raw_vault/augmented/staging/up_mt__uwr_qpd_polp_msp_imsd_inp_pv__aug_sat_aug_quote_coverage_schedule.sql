@@ -19,7 +19,7 @@
         cast(null as varchar) as SUB_COVER_SELECTION,
         cast(null as varchar) as SUM_INSURED_AMOUNT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where ace_duration is not null or ace_premium_type is not null or delay_exceeding_ace is not null
 union all
@@ -36,7 +36,7 @@ union all
         ambulance_sub_cover as SUB_COVER_SELECTION,
         cast(null as varchar) as SUM_INSURED_AMOUNT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where ambulance_sub_cover is not null
 union all
@@ -53,7 +53,7 @@ union all
         cast(null as varchar) as SUB_COVER_SELECTION,
         limit_sum_insured as SUM_INSURED_AMOUNT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where deductible_value_sublimit is not null or excluded_countries is not null or excluded_events is not null or items_covered is not null or limit_sum_insured is not null
 union all
@@ -70,7 +70,7 @@ union all
         cast(null as varchar) as SUB_COVER_SELECTION,
         benefit_amount as SUM_INSURED_AMOUNT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where benefit_amount is not null
 union all
@@ -87,7 +87,7 @@ union all
         inconvenience_sub_cover as SUB_COVER_SELECTION,
         cast(null as varchar) as SUM_INSURED_AMOUNT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where inconvenience_sub_cover is not null
 union all
@@ -104,7 +104,7 @@ union all
         cancellation_sub_cover as SUB_COVER_SELECTION,
         cast(null as varchar) as SUM_INSURED_AMOUNT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where cancellation_sub_cover is not null
 union all
@@ -121,7 +121,7 @@ union all
         cancellation_main_sub_cover as SUB_COVER_SELECTION,
         cast(null as varchar) as SUM_INSURED_AMOUNT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where cancellation_main_sub_cover is not null
 union all
@@ -138,6 +138,6 @@ union all
         cast(null as varchar) as SUB_COVER_SELECTION,
         cast(null as varchar) as SUM_INSURED_AMOUNT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__uwr_qpd_polp_msp_imsd_inp_pv') }}
     where delay_exceeding is not null

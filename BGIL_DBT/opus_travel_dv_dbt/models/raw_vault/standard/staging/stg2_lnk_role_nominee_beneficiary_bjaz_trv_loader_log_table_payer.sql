@@ -16,7 +16,7 @@ derived_columns:
   ROLE_TYPE_CK: '!nominee-beneficiary'
   RELATIONSHIP_TO_INSURED: 'relation'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

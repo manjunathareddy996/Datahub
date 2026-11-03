@@ -15,7 +15,7 @@ derived_columns:
   PARENT_NK: "'HUB_ORG_UNIT|' || (location_code)"
   COST_CENTRE_CODE: 'cost_center'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BA_TRV_DATA_POLICY_DTLS'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

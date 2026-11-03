@@ -41,7 +41,7 @@ derived_columns:
   SOURCELASTMODIFIEDDATE: "party_last_modification_date"
   STATUSREASONOTHERDETAIL: "cast(null as varchar)"
   LOAD_DATETIME: 'REC_REFRESH_AT'
-  RECORD_SOURCE: '!MAXIMUS_pd'
+  RECORD_SOURCE: '!MAXIMUS_PARTNER_pd'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

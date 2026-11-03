@@ -49,7 +49,7 @@ derived_columns:
   PARENT_NK: "'HUB_PARTY|' || (nullif(upper(trim(coalesce(category,''))) || ':' || upper(trim(coalesce(input,''))), ':'))"
   KYCREFERENCETYPE: "cast(null as varchar)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_CKYC_OTP'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_CKYC_OTP'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

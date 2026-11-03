@@ -23,8 +23,8 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_aug_cp_addresses__location: 'OPUS'
-  stg2_aug_cp_partners__location: 'OPUS'
+  stg2_aug_cp_addresses__location: 'OPUS_PARTNER'
+  stg2_aug_cp_partners__location: 'OPUS_PARTNER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

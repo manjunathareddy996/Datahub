@@ -17,7 +17,7 @@ derived_columns:
   ACTIVE_SEQUENCE_NUMBER: '!days_band'
   VALUE_RANGE_TO: 'days_to'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_TRV_RATE_MASTER'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

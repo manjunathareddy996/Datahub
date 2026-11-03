@@ -10,7 +10,7 @@ The per-source src_column_map is derived from each source stg2 model's own
 that satellite), intersected with the satellite payload. This is what keeps the fan-in /
 dropped-column reconciliation honest (skill 2b / defect classes #9/#10).
 
-RECORD_SOURCE prefix / source-system group for this project is MAXIMUS (from the `!MAXIMUS_...`
+RECORD_SOURCE prefix / source-system group for this project is MAXIMUS_PARTNER (from the `!MAXIMUS_PARTNER_...`
 RECORD_SOURCE literals in the stg2 models).
 """
 import os
@@ -27,7 +27,7 @@ STG_DIRS = [
     os.path.join(MODELS, "standard", "staging"),
     os.path.join(MODELS, "augmented", "staging"),
 ]
-GROUP = "MAXIMUS"
+GROUP = "MAXIMUS_PARTNER"
 
 
 def read(path):

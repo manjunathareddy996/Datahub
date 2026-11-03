@@ -10,7 +10,7 @@ derived_columns:
   PARENT_BK: 'cft_mst_comp_ref'
   PARENT_NK: "'HUB_PARTY|' || (cft_mst_comp_ref)"
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BA_TRV_DATA_POLICY_DTLS'
+  RECORD_SOURCE: '!OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

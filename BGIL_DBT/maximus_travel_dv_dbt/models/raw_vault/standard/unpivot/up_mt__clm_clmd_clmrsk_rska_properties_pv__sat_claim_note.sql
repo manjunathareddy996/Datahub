@@ -22,7 +22,7 @@
         cast(null as varchar) as ACTION_TAKEN,
         comments as NOTE_TEXT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmrsk_rska_properties_pv') }}
     where comments is not null
 union all
@@ -32,7 +32,7 @@ union all
         cast(null as varchar) as ACTION_TAKEN,
         reason as NOTE_TEXT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmrsk_rska_properties_pv') }}
     where reason is not null
 union all
@@ -42,6 +42,6 @@ union all
         cast(null as varchar) as ACTION_TAKEN,
         general_team_comments_tracking_comments as NOTE_TEXT,
         rec_refresh_at,
-        'MAXIMUS_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
+        'MAXIMUS_TRAVEL_NONHLTH_TRV_CLM_VW_DATA_CLAIM_DETAILS_CLAIM_RISK_RISK_ATTRIBUTE_PROPERTIES_PIVOT_VW' as record_source
     from {{ ref('resolved_mt__clm_clmd_clmrsk_rska_properties_pv') }}
     where general_team_comments_tracking_comments is not null

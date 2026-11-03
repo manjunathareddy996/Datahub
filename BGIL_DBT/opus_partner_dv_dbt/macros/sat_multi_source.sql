@@ -191,7 +191,7 @@
                     {%- set wm_query -%}
                         SELECT COALESCE(MAX({{ src_run_ts }}), TO_TIMESTAMP_NTZ('{{ sentinel }}')) AS mx
                         FROM {{ sat_rel }}
-                        WHERE {{ src_source }} LIKE '{{ source_group }}_%'
+                        WHERE STARTSWITH({{ src_source }}, '{{ source_group }}_')
                     {%- endset -%}
                     {%- set results = run_query(wm_query) -%}
                     {%- if results and (results.rows | length) > 0 and results.rows[0][0] is not none -%}

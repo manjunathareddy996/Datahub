@@ -18,9 +18,9 @@ src_hashdiff: 'HASHDIFF'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_product_definition_ba_trv_data_policy_dtls: 'OPUS'
-  stg2_product_definition_ba_trv_plan_mst: 'OPUS'
-  stg2_product_definition_bjaz_trv_loader_data: 'OPUS'
+  stg2_product_definition_ba_trv_data_policy_dtls: 'OPUS_TRAVEL'
+  stg2_product_definition_ba_trv_plan_mst: 'OPUS_TRAVEL'
+  stg2_product_definition_bjaz_trv_loader_data: 'OPUS_TRAVEL'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

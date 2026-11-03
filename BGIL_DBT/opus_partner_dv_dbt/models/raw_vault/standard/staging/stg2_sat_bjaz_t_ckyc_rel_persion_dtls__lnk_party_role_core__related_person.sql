@@ -56,7 +56,7 @@ derived_columns:
   ROLESEQUENCE: "coalesce(nullif(trim(to_varchar(sequence_no)), ''), '~')"
   ROLESTATUS: 'add_del_flag'
   LOAD_DATETIME: 'INC_JOB_UPDATED_AT'
-  RECORD_SOURCE: '!OPUS_BJAZ_T_CKYC_REL_PERSION_DTLS'
+  RECORD_SOURCE: '!OPUS_PARTNER_BJAZ_T_CKYC_REL_PERSION_DTLS'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}

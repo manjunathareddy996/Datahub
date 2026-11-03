@@ -23,8 +23,8 @@ src_hashdiff: 'HASHDIFF_AUG_PARTY_BANKING'
 src_ldts: 'LOAD_DATETIME'
 src_source: 'RECORD_SOURCE'
 src_record_source_map:
-  stg2_aug_mp__pd_prop_msdp_pv__party: 'MAXIMUS'
-  stg2_aug_mp__pd_prop_sp_pv__party: 'MAXIMUS'
+  stg2_aug_mp__pd_prop_msdp_pv__party: 'MAXIMUS_PARTNER'
+  stg2_aug_mp__pd_prop_sp_pv__party: 'MAXIMUS_PARTNER'
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
