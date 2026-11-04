@@ -10,3 +10,7 @@ amp-chats/
 
 # dbt shared environment file (no secrets, but keep local-only to avoid drift)
 #BGIL_DBT/.env
+
+# Python bytecode cache
+**/__pycache__/
+*.pyc
