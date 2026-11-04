@@ -1,0 +1,761 @@
+{
+ "lob": "maximus_health_v3",
+ "stage": "1",
+ "generated": "2026-10-02",
+ "elapsed_seconds": 25.2,
+ "map": {
+  "file": "04_column_map.json",
+  "bytes": 7325889,
+  "md5": "f3f1fd8284b4aac8f10ef216e3dcf87d",
+  "sha256": "8dfe93f59a3cbc757df3ff46ab7ea83e5157aa45e44d8696882a8d7ce85d944d"
+ },
+ "inputs_verified_before_and_after": true,
+ "additivity_proof": {
+  "proof": "PASS",
+  "statement": "strip(round2, 'directive_kind') == round1",
+  "unit": "the whole JSON object",
+  "population": "the entire map file",
+  "matcher": "canonical json.dumps(sort_keys=True) string equality",
+  "round1_file": "04_column_map.pre_r1fix1.json",
+  "round1_md5": "fce40feba2b9326690b8f862d780f06e",
+  "round2_md5": "f3f1fd8284b4aac8f10ef216e3dcf87d",
+  "round1_status": "NON_INPUT -- read for this proof only, never as a build input"
+ },
+ "models_total": 1016,
+ "models_by_directory": {
+  "augmented": 112,
+  "hopviews": 75,
+  "quarantine": 7,
+  "reference_decode": 2,
+  "reject_log": 77,
+  "resolvers": 61,
+  "stage": 83,
+  "staging": 83,
+  "tests": 3,
+  "unpivot": 14,
+  "vault/hubs": 23,
+  "vault/hub_feeds": 325,
+  "vault/links": 1,
+  "vault/link_feeds": 11,
+  "vault/satellites": 139
+ },
+ "model_tree_digest": {
+  "files": 1016,
+  "tree_sha256": "58ba6c7ff07ea62cb15f407c7bf2e28a6039e3cbaabc7d27b883cb267a6bf995",
+  "combining_method": "per file: <posix-relpath> + LF + sha256(file bytes); lines sorted bytewise; joined with LF; sha256 of the UTF-8 encoding of that join"
+ },
+ "generators": [
+  {
+   "generator": "build_mxh3_spec",
+   "purpose": "map -> the ONE spec artifact (the only reader of the map)",
+   "models": null
+  },
+  {
+   "generator": "gen_mxh3_staging",
+   "purpose": "layer-1 casts for views that NEED one",
+   "models": 83
+  },
+  {
+   "generator": "gen_mxh3_hopviews",
+   "purpose": "walk-only casts: every intervening level",
+   "models": 75
+  },
+  {
+   "generator": "gen_mxh3_resolvers",
+   "purpose": "one resolver per start view, joins per REAL level",
+   "models": 61
+  },
+  {
+   "generator": "gen_mxh3_unpivot",
+   "purpose": "column-as-instance families -> one row per instance",
+   "models": 14
+  },
+  {
+   "generator": "gen_mxh3_stage",
+   "purpose": "one wide stage per view: keys + EMIT flags",
+   "models": 83
+  },
+  {
+   "generator": "gen_mxh3_rejectlog",
+   "purpose": "divert-and-COUNT, the exact complement of EMIT",
+   "models": 77
+  },
+  {
+   "generator": "gen_mxh3_vault",
+   "purpose": "hub feeds, hubs, links, satellites",
+   "models": 499
+  },
+  {
+   "generator": "gen_mxh3_augmented",
+   "purpose": "the unratified build-side track",
+   "models": 112
+  },
+  {
+   "generator": "gen_mxh3_quarantine",
+   "purpose": "BESPOKE: surrogate_child_key_quarantine",
+   "models": 7
+  },
+  {
+   "generator": "gen_mxh3_refdecode",
+   "purpose": "BESPOKE: reference_decode_gate",
+   "models": 2
+  },
+  {
+   "generator": "gen_mxh3_tests",
+   "purpose": "3 load-time assertions (runtime NOT RUN -- no source access)",
+   "models": 3
+  }
+ ],
+ "generators_total": 12,
+ "in_chain_invariants": {
+  "check": "check_mxh3_hashkeys (hash-key fixpoint + per-source completeness, both directions)",
+  "verdict": "PASS",
+  "exit_code": 0,
+  "detail": "  PASS -- every <X>_HK is produced locally or exposed by a ref() (fixpoint); every per-source feed is consumed by exactly one assembled model, in both directions; refs resolve; names unique."
+ },
+ "census": {
+  "blocks": 2948,
+  "side_target": 2000,
+  "verdict_null_on_blank_row": 2100,
+  "tier_tier3_spine": 1317,
+  "legs": 1568,
+  "leg_state_ok": 1380,
+  "tier_tier1_business_code": 861,
+  "side_augmentation": 948,
+  "verdict_empty_on_blank_row": 326,
+  "tier_tier4_content_hash": 237,
+  "refused_unrenderable_child_key": 138,
+  "leg_state_unresolved": 138,
+  "leg_state_surrogate_quarantine": 45,
+  "refused_s54_collision": 6,
+  "leg_state_refused_component_scope": 5,
+  "tier_tier2_foreign_key": 12,
+  "refused_by_disposition": 6,
+  "tier_unresolved": 16,
+  "verdict_constant_on_blank_row": 1,
+  "refused_row_scope": 3,
+  "spans": 87,
+  "spans_climb": 71,
+  "spans_cross": 16,
+  "spans_skipping_a_level": 33,
+  "spans_direction_reclassified_from_graph": 0,
+  "staging_views": 83,
+  "hopview_views": 75,
+  "resolver_views": 61,
+  "unpivot_views": 14
+ },
+ "notes_decided": {
+  "directive_route_surrogate_child_key_quarantine": 45,
+  "surrogate_component": 45,
+  "do_not_build_legs_refused": 5,
+  "directive_route_reference_decode_gate": 3,
+  "do_not_build_row_refused": 3,
+  "reject_class_key_not_null": 2100,
+  "leg_rendered": 1380,
+  "reject_class_key_not_null_and_not_empty": 326,
+  "leg_unresolved_spine_display_rung_with_no_declared_walk": 132,
+  "child_key_leg_is_also_a_declared_attribute_emit_once": 64,
+  "payload_pending_anchor_resolution": 505,
+  "s54_payload_shares_a_child_key_leg_name": 6,
+  "s54_collision_block_REFUSED": 6,
+  "leg_unresolved_child_key_leg_does_not_resolve_on_its_own_view": 6,
+  "reject_class_unresolved_no_expression": 16,
+  "reject_class_constant_no_source_operand_accepted": 1,
+  "disposition_refuse_stale": 2,
+  "disposition_refuse_live": 6,
+  "disposition_emit_hop_from_graph": 1,
+  "disposition_emit_with_instability_declared": 1,
+  "disposition_emit_both_no_normalisation": 1,
+  "anchor_resolved_uniquely": 315,
+  "anchor_REFUSED_ambiguous": 147,
+  "anchor_REFUSED_absent": 43,
+  "anchor_resolved_at_view_hub_instance": 239,
+  "walk_only_casts": 75,
+  "unpivot_views": 14
+ },
+ "directive_kind": {
+  "blocks": 48,
+  "census": {
+   "surrogate_child_key": 45,
+   "reference_decode": 3
+  },
+  "values": 2,
+  "unlabelled": 0
+ },
+ "do_not_build": {
+  "block_level_rows": 3,
+  "component_level_legs": 5,
+  "total": 8,
+  "disjoint": true,
+  "block_rows": [
+   [
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_PARTY_PARTY_DETAILS_PIVOT_VW",
+    "REFUND_TO_PID_OF_BG_HOLDER_AC",
+    "augmentation"
+   ],
+   [
+    "MAXI_HLTH_UWR_VW_DATA_RELATIONS_PARTY_PARTY_DETAILS_PIVOT_VW",
+    "REFUND_TO_PID_OF_BG_HOLDER_AC",
+    "augmentation"
+   ],
+   [
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_MULTISET_ATTRIBUTE_ATTRIBUTES_PIVOT_VW",
+    "FINANCIAL_NAME",
+    "target"
+   ]
+  ],
+  "component_legs": [
+   [
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "ENDORSEMENT_DESCRIPTION",
+    "augmentation",
+    "Endorsement Number"
+   ],
+   [
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "ENDORSEMENT_REASONNEW",
+    "augmentation",
+    "Endorsement Number"
+   ],
+   [
+    "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "PREVIOUS_TRANS_ID",
+    "augmentation",
+    "Endorsement Number"
+   ],
+   [
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+    "MEMBER_WISE_PREVIOUS_INSURANCE_DETAILS",
+    "augmentation",
+    "Line Of Business"
+   ],
+   [
+    "MAXI_HLTH_UWR_VW_DATA_MEMBERS_MEMBER_DETAILS_PIVOT_VW",
+    "MEMBER_WISE_PREVIOUS_INSURANCE_DETAILS",
+    "augmentation",
+    "Previous Policy Number"
+   ]
+  ]
+ },
+ "dispositions": [
+  {
+   "disposition": "REFUSE",
+   "action": "refuse_the_blocks",
+   "declared_blocks": 18,
+   "candidates": 41,
+   "re_derived_unresolvable": 0,
+   "of_those_inside_the_declared_view_list": 0,
+   "declared_view_list_under_covers": false,
+   "verdict": "STALE_NOT_REFUSED",
+   "map_owes": "re-key to a per-view token and correct resolved_on_view",
+   "matcher": "this build's ladder-aware leg_resolves() over the row's OWN view, plus do_not_build at both scopes",
+   "target": "SAT_DOCUMENT_CHECKLIST, child key leg 'Required Document Type'",
+   "evidence_note": "STALE: all 41 candidate blocks resolve every declared leg on their own view, so the finding's stated mechanism does not hold on this map. Refusing them would DELETE correctly-keyed blocks. Reported, not executed."
+  },
+  {
+   "disposition": "REFUSE",
+   "action": "refuse_the_blocks",
+   "declared_blocks": 10,
+   "candidates": 41,
+   "re_derived_unresolvable": 0,
+   "of_those_inside_the_declared_view_list": 0,
+   "declared_view_list_under_covers": false,
+   "verdict": "STALE_NOT_REFUSED",
+   "map_owes": "a per-view token, and re-assert resolved_on_view",
+   "matcher": "this build's ladder-aware leg_resolves() over the row's OWN view, plus do_not_build at both scopes",
+   "target": "SAT_DOCUMENT_CHECKLIST, child key leg 'Required Document Type'",
+   "evidence_note": "STALE: all 41 candidate blocks resolve every declared leg on their own view, so the finding's stated mechanism does not hold on this map. Refusing them would DELETE correctly-keyed blocks. Reported, not executed."
+  },
+  {
+   "disposition": "REFUSE",
+   "action": "refuse_the_blocks",
+   "declared_blocks": 3,
+   "candidates": 54,
+   "re_derived_unresolvable": 3,
+   "of_those_inside_the_declared_view_list": 3,
+   "declared_view_list_under_covers": false,
+   "verdict": "LIVE_REFUSED",
+   "map_owes": "declared source gap; source/modeller must supply a resolvable discriminator",
+   "matcher": "this build's ladder-aware leg_resolves() over the row's OWN view, plus do_not_build at both scopes",
+   "target": "SAT_PARTY_BANKING, child key leg 'Account Number Masked'",
+   "evidence_note": null
+  },
+  {
+   "disposition": "EMIT, resolving hop direction FROM THE GRAPH",
+   "action": "emit_hop_from_graph",
+   "declared_blocks": 12,
+   "verdict": "APPLIED_AS_DECLARED",
+   "map_owes": "re-encode the hop with this run's documented descend operator and spell the join path out"
+  },
+  {
+   "disposition": "EMIT, with the instability declared",
+   "action": "emit_with_instability_declared",
+   "declared_blocks": 45,
+   "verdict": "APPLIED_AS_DECLARED",
+   "map_owes": "re-key the 7 legs onto the business value the model names"
+  },
+  {
+   "disposition": "EMIT BOTH, do not normalise",
+   "action": "emit_both_no_normalisation",
+   "declared_blocks": null,
+   "verdict": "APPLIED_AS_DECLARED",
+   "map_owes": "one key space per (satellite, leg) pair"
+  },
+  {
+   "disposition": "REFUSE",
+   "action": "refuse_the_blocks",
+   "declared_blocks": 3,
+   "candidates": 23,
+   "re_derived_unresolvable": 3,
+   "of_those_inside_the_declared_view_list": 2,
+   "declared_view_list_under_covers": true,
+   "verdict": "LIVE_REFUSED",
+   "map_owes": "source must state what delimits the list; do not resolve build-side",
+   "matcher": "this build's ladder-aware leg_resolves() over the row's OWN view, plus do_not_build at both scopes",
+   "target": "SAT_PARTY_BENEFICIARY_LINE Beneficiary Sequence (proposed); SAT_POLICY_COVERAGE_SCHEDULE Coverage Reference (EXISTS in data_7)",
+   "evidence_note": null
+  }
+ ],
+ "anchor_resolution": {
+  "resolved_uniquely": 315,
+  "refused_ambiguous": 147,
+  "refused_absent": 43,
+  "resolved_at_view_hub_instance": 239,
+  "instance_note": "46 of 217 (view,hub) pairs carry >1 key expression and the profile records 45 of them as LEGITIMATE NAMESPACES, so the resolution key is (view, hub, instance); at the triple only 10 of 297 are non-unique. Resolving at the pair alone would refuse 239 blocks, almost all of them false accusations.",
+  "rule_note": "a feeder is (view, DECLARED ANCHOR EXPRESSION), never (view) alone; an anchor that does not resolve uniquely is REFUSED and REPORTED",
+  "ambiguous_detail": [
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PROPOSAL",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_PROPOSAL_UNDERWRITING",
+    "attribute": "Agent Confidential Report"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PAYMENT_INSTRUMENT",
+    "instance": null,
+    "candidates": 3,
+    "satellite": "SAT_INSTRUMENT_NACH_MANDATE",
+    "attribute": "Mandate Instalment Amount"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PAYMENT_INSTRUMENT",
+    "instance": null,
+    "candidates": 3,
+    "satellite": "SAT_INSTRUMENT_NACH_MANDATE",
+    "attribute": "Mandate Instalment Amount"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PAYMENT_INSTRUMENT",
+    "instance": null,
+    "candidates": 3,
+    "satellite": "SAT_INSTRUMENT_NACH_MANDATE",
+    "attribute": "Mandate Maximum Amount"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PAYMENT_INSTRUMENT",
+    "instance": null,
+    "candidates": 3,
+    "satellite": "SAT_INSTRUMENT_NACH_MANDATE",
+    "attribute": "Mandate Maximum Amount"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PARTY",
+    "instance": null,
+    "candidates": 8,
+    "satellite": "SAT_COMMON_CLASSIFICATION",
+    "attribute": "Category Description"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PAYMENT_INSTRUMENT",
+    "instance": null,
+    "candidates": 3,
+    "satellite": "SAT_INSTRUMENT_NACH_MANDATE",
+    "attribute": "Mandate Signed Date"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PAYMENT_INSTRUMENT",
+    "instance": null,
+    "candidates": 3,
+    "satellite": "SAT_INSTRUMENT_NACH_MANDATE",
+    "attribute": "Mandate Signed Date"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PAYMENT_INSTRUMENT",
+    "instance": null,
+    "candidates": 3,
+    "satellite": "SAT_INSTRUMENT_NACH_MANDATE",
+    "attribute": "Mandate Signed Date"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PAYMENT_INSTRUMENT",
+    "instance": null,
+    "candidates": 3,
+    "satellite": "SAT_INSTRUMENT_NACH_MANDATE",
+    "attribute": "Mandate Debit Type"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PAYMENT_INSTRUMENT",
+    "instance": null,
+    "candidates": 3,
+    "satellite": "SAT_INSTRUMENT_NACH_MANDATE",
+    "attribute": "Mandate Debit Type"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PARTY",
+    "instance": null,
+    "candidates": 8,
+    "satellite": "SAT_PARTY_KYC",
+    "attribute": "CKYC Number Available Indicator"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PROPOSAL",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_PROPOSAL_HEADER",
+    "attribute": "Quick Quote Edited Indicator"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PROPOSAL",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_PROPOSAL_UNDERWRITING",
+    "attribute": "Underwriting Exception Type"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PRODUCT",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_PRODUCT_DEFINITION",
+    "attribute": "NEE Product Variant Indicator"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PRODUCT",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_PRODUCT_TERMS",
+    "attribute": "Maximum Entry Age Unit"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PARTY",
+    "instance": null,
+    "candidates": 8,
+    "satellite": "SAT_PARTY_HEALTH_PROFILE",
+    "attribute": "Medicare Scheme Registration Status"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_ASSESSMENT",
+    "instance": null,
+    "candidates": 3,
+    "satellite": "SAT_ASSESSMENT_RISK_SCORING",
+    "attribute": "Key Signals Summary"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_ASSESSMENT",
+    "instance": null,
+    "candidates": 3,
+    "satellite": "SAT_ASSESSMENT_RISK_SCORING",
+    "attribute": "Predicted Healthcare Cost Amount"
+   },
+   {
+    "view": "MAXI_HLTH_UWR_VW_DATA_BASIC_DETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_ASSESSMENT",
+    "instance": null,
+    "candidates": 3,
+    "satellite": "SAT_ASSESSMENT_HEADER",
+    "attribute": "Analytics Assessment Required Indicator"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_HEADER",
+    "attribute": "Additional Claim Reference Number"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_ASSESSMENT_SUMMARY",
+    "attribute": "Adjudication Passed Indicator"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_HEADER",
+    "attribute": "Analytics Selection Indicator"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_QUALITY_AUDIT",
+    "attribute": "Audit Selected Indicator"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_QUALITY_AUDIT",
+    "attribute": "Audit Detail"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_QUALITY_AUDIT",
+    "attribute": "Audit Required Indicator"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+    "attribute": "Deductible Balance Amount"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+    "attribute": "Cataract Eye Count"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_PARTY",
+    "instance": null,
+    "candidates": 4,
+    "satellite": "SAT_PARTY_KYC",
+    "attribute": "CKYC Detail"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_SETTLEMENT",
+    "attribute": "Approval Remarks"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_FRAUD",
+    "attribute": "Claim Document Analysis Detail"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_SLA_TRACKING",
+    "attribute": "Hold Decision Detail"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_SLA_TRACKING",
+    "attribute": "Claim Hold Indicator"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_HEADER",
+    "attribute": "Claim Servicing Entity Type"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_HEADER",
+    "attribute": "Claim Submission Reason"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_HEADER",
+    "attribute": "Policy Year Number"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_SLA_TRACKING",
+    "attribute": "Claim Referral Team Name"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_HEADER",
+    "attribute": "Closure Reason"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_PROVIDER_BILLING",
+    "attribute": "Cost Negotiation Indicator"
+   },
+   {
+    "view": "MAXI_HLTH_CLM_VW_DATA_CLAIM_DETAIL_CLAIMDETAIL_ATTRIBUTE_PIVOT_VW",
+    "hub": "HUB_CLAIM",
+    "instance": null,
+    "candidates": 2,
+    "satellite": "SAT_CLAIM_PROVIDER_BILLING",
+    "attribute": "Cost Negotiation Contact Person Name"
+   }
+  ]
+ },
+ "hop_direction_report": {
+  "cross_spans_graph_validated": 16,
+  "declared_join_path_blocks": 12,
+  "join_path_graph_disagreements": 0,
+  "spans_reclassified_climb_to_cross": 0,
+  "finding_4_state": "ALREADY_RE_ENCODED_IN_THE_MAP",
+  "detail_note": "0 spans needed reclassification because the round-2 map already spells the 12 HUB_CLAIM hops with the '>>' descend operator and supplies resolved_key.join_path for each. Every cross destination was still verified to be a real descendant of the lowest common ancestor, and every declared join_path was re-derived from shred.parent_table_candidate and found to agree. The disposition is satisfied by corroboration, not by rewrite."
+ },
+ "fully_keyed_report": {
+  "SAT_COMMON_CONTACT": {
+   "declared_legs": [
+    "Contact Point Type",
+    "Contact Priority Order"
+   ],
+   "blocks": 85,
+   "under_keyed_blocks": 0
+  },
+  "SAT_LNK_POLICY_PARTY_ROLE": {
+   "declared_legs": [
+    "Party Role Type",
+    "Role Sequence"
+   ],
+   "blocks": 5,
+   "under_keyed_blocks": 0
+  },
+  "SAT_LNK_PARTY_ROLE_CORE": {
+   "declared_legs": [
+    "Role Code",
+    "Role Sequence"
+   ],
+   "blocks": 9,
+   "under_keyed_blocks": 0
+  },
+  "SAT_POLICY_COVERAGE_SCHEDULE": {
+   "declared_legs": [
+    "Coverage Reference",
+    "Coverage Sequence"
+   ],
+   "blocks": 20,
+   "under_keyed_blocks": 0
+  }
+ },
+ "unresolved_total": 334,
+ "unresolved_by_kind": {
+  "spine_display_rung_with_no_declared_walk": 132,
+  "s54_payload_attribute_is_also_a_child_key_leg": 6,
+  "child_key_leg_does_not_resolve_on_its_own_view": 6,
+  "anchor_does_not_resolve_uniquely": 147,
+  "anchor_has_no_declared_expression_on_this_view": 43
+ },
+ "builder_decisions": [
+  "D1-REFDECODE-DEFAULT-REFUSE",
+  "D2-REFDECODE-SCOPE-IS-THE-DIRECTIVE",
+  "D3-QUARANTINE-RENAMES-THE-UNSTABLE-LEG",
+  "D4-EMI-HOME-IS-THE-RATIFIED-SATELLITE",
+  "D5-TRANSITION-IS-BUILD-SIDE",
+  "D6-CROSS-VALUE-ONLY-WHEN-UNIQUE",
+  "D7-UNRESOLVED-KEYS-GET-NO-KEY",
+  "D8-COVERGRAIN-BUILT-WITH-A-FANOUT-COUNT",
+  "D9-MEMBERSHIP-RE-DERIVED-NOT-TRUSTED",
+  "D10-SPINE-DISPLAY-RUNG-RESOLVED-FROM-THE-GRAPH"
+ ],
+ "build_directives_implemented": 15,
+ "bespoke_layers": [
+  "surrogate_child_key_quarantine",
+  "reference_decode_gate"
+ ],
+ "containment": {
+  "manifest": "build_artifacts/write_manifest.jsonl",
+  "writes_recorded": 1028,
+  "distinct_processes": 1,
+  "files_outside_project_root": 0,
+  "containment_assertion_token": "PASS",
+  "read_only_roots_asserted": 24
+ },
+ "load_time_assertions": {
+  "emitted": 3,
+  "runtime_verdict": "NOT RUN",
+  "reason": "no source access in this environment: no Oracle client on PATH, no driver importable, no TNS/wallet/ODBC config, no env var, no dbt profile. Each assertion fails LOUDLY at first load instead."
+ },
+ "gates": [
+  {
+   "gate": "check_patterns",
+   "verdict": "PASS",
+   "exit_code": 0,
+   "detail": "files scanned                 : 20 |   PASS -- no control bytes, every statically-known pattern compiles."
+  },
+  {
+   "gate": "check_prose_counts",
+   "verdict": "PASS",
+   "exit_code": 0,
+   "detail": "prose files scanned           : 1 |   PASS -- every quantity in current-state prose is sourced or absent."
+  },
+  {
+   "gate": "check_prose_shape",
+   "verdict": "PASS",
+   "exit_code": 0,
+   "detail": "models examined               : 1016   (population) |   PASS -- no identifier-position token contains a space."
+  },
+  {
+   "gate": "check_internal",
+   "verdict": "PASS",
+   "exit_code": 0,
+   "detail": "models                        : 1016   (maximus_health_v3_dv_dbt) |   PASS -- refs resolve, every declared source column is emitted, names unique."
+  },
+  {
+   "gate": "check_vault_alignment",
+   "verdict": "FAIL",
+   "exit_code": 1,
+   "detail": "        SAT_ACCOUNT_DEFINITION.ACCOUNT_TYPE   (satellite not built at all) |         SAT_ASSESSMENT_FRAUD_INVESTIGATION.FINDINGS_SUMMARY   (satellite not built at all) |         SAT_ASSESSMENT_FRAUD_INVESTIGATION.MISREPRESENTATION_INDICATOR   (satellite not built at all) |         ... and 636 more"
+  }
+ ]
+}

@@ -1,0 +1,1177 @@
+{
+  "stage": "crossrun_vocabulary",
+  "rule": "child key = MODEL property, divergence always wrong (BLOCK); column target = SOURCE property, divergence usually right (not checked)",
+  "runs": {
+    "opus_health_legacy_v4": {
+      "map": "Health Consolidated\\outputs\\04_column_map.legacy_v4_merged.json",
+      "columns": 2817,
+      "child_keys_read": 155
+    },
+    "opus_health_v2": {
+      "map": "OPUS Health\\outputs\\04_column_map.json",
+      "columns": 860,
+      "child_keys_read": 121
+    }
+  },
+  "summary": {
+    "satellites": 21,
+    "blockers": 5,
+    "synonym_candidates": 10,
+    "run_specific_labels": 97,
+    "prose_child_keys": 0
+  },
+  "blockers": [
+    {
+      "satellite": "SAT_COMMON_CONTACT",
+      "concept": "EMAIL",
+      "runs_disagreeing": [
+        "opus_health_legacy_v4",
+        "opus_health_v2"
+      ],
+      "spellings_by_run": {
+        "opus_health_legacy_v4": [
+          "email"
+        ],
+        "opus_health_v2": [
+          "EMAIL"
+        ]
+      },
+      "detail": "SAT_COMMON_CONTACT is one physical table. Runs ['opus_health_legacy_v4', 'opus_health_v2'] write the same child-key concept 'EMAIL' as ['EMAIL', 'email'] — these land as separate rows and no consumer can tell they are the same thing. Agree one spelling; the child key is a MODEL property."
+    },
+    {
+      "satellite": "SAT_COMMON_CONTACT",
+      "concept": "LANDLINE",
+      "runs_disagreeing": [
+        "opus_health_legacy_v4",
+        "opus_health_v2"
+      ],
+      "spellings_by_run": {
+        "opus_health_legacy_v4": [
+          "landline"
+        ],
+        "opus_health_v2": [
+          "LANDLINE"
+        ]
+      },
+      "detail": "SAT_COMMON_CONTACT is one physical table. Runs ['opus_health_legacy_v4', 'opus_health_v2'] write the same child-key concept 'LANDLINE' as ['LANDLINE', 'landline'] — these land as separate rows and no consumer can tell they are the same thing. Agree one spelling; the child key is a MODEL property."
+    },
+    {
+      "satellite": "SAT_COMMON_CONTACT",
+      "concept": "MOBILE",
+      "runs_disagreeing": [
+        "opus_health_legacy_v4",
+        "opus_health_v2"
+      ],
+      "spellings_by_run": {
+        "opus_health_legacy_v4": [
+          "mobile"
+        ],
+        "opus_health_v2": [
+          "MOBILE"
+        ]
+      },
+      "detail": "SAT_COMMON_CONTACT is one physical table. Runs ['opus_health_legacy_v4', 'opus_health_v2'] write the same child-key concept 'MOBILE' as ['MOBILE', 'mobile'] — these land as separate rows and no consumer can tell they are the same thing. Agree one spelling; the child key is a MODEL property."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "ADDITIONAL_LOADING",
+      "runs_disagreeing": [
+        "opus_health_legacy_v4",
+        "opus_health_v2"
+      ],
+      "spellings_by_run": {
+        "opus_health_legacy_v4": [
+          "Additional Loading"
+        ],
+        "opus_health_v2": [
+          "ADDITIONAL_LOADING"
+        ]
+      },
+      "detail": "SAT_POLICY_DISCOUNT_LOADING_APPLIED is one physical table. Runs ['opus_health_legacy_v4', 'opus_health_v2'] write the same child-key concept 'ADDITIONAL_LOADING' as ['ADDITIONAL_LOADING', 'Additional Loading'] — these land as separate rows and no consumer can tell they are the same thing. Agree one spelling; the child key is a MODEL property."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "SPECIAL_DISCOUNT",
+      "runs_disagreeing": [
+        "opus_health_legacy_v4",
+        "opus_health_v2"
+      ],
+      "spellings_by_run": {
+        "opus_health_legacy_v4": [
+          "Special Discount"
+        ],
+        "opus_health_v2": [
+          "SPECIAL_DISCOUNT"
+        ]
+      },
+      "detail": "SAT_POLICY_DISCOUNT_LOADING_APPLIED is one physical table. Runs ['opus_health_legacy_v4', 'opus_health_v2'] write the same child-key concept 'SPECIAL_DISCOUNT' as ['SPECIAL_DISCOUNT', 'Special Discount'] — these land as separate rows and no consumer can tell they are the same thing. Agree one spelling; the child key is a MODEL property."
+    }
+  ],
+  "synonym_candidates": [
+    {
+      "satellite": "SAT_COMMON_CONTACT",
+      "labels": [
+        "ALT_EMAIL",
+        "EMAIL"
+      ],
+      "match": "containment",
+      "confidence": "likely",
+      "runs": {
+        "ALT_EMAIL": [
+          "opus_health_legacy_v4"
+        ],
+        "EMAIL": [
+          "opus_health_legacy_v4",
+          "opus_health_v2"
+        ]
+      },
+      "detail": "'ALT_EMAIL' and 'EMAIL' on SAT_COMMON_CONTACT come from different runs and may be the same concept spelled differently (matched by containment). Normalisation cannot decide this — a human or the consolidation-judge must. Reported, never blocked."
+    },
+    {
+      "satellite": "SAT_COMMON_CONTACT",
+      "labels": [
+        "ALT_MOBILE",
+        "MOBILE"
+      ],
+      "match": "containment",
+      "confidence": "likely",
+      "runs": {
+        "ALT_MOBILE": [
+          "opus_health_legacy_v4"
+        ],
+        "MOBILE": [
+          "opus_health_legacy_v4",
+          "opus_health_v2"
+        ]
+      },
+      "detail": "'ALT_MOBILE' and 'MOBILE' on SAT_COMMON_CONTACT come from different runs and may be the same concept spelled differently (matched by containment). Normalisation cannot decide this — a human or the consolidation-judge must. Reported, never blocked."
+    },
+    {
+      "satellite": "SAT_COMMON_CONTACT",
+      "labels": [
+        "EMAIL",
+        "EMAIL_AUTO_MAILER"
+      ],
+      "match": "containment",
+      "confidence": "likely",
+      "runs": {
+        "EMAIL": [
+          "opus_health_legacy_v4",
+          "opus_health_v2"
+        ],
+        "EMAIL_AUTO_MAILER": [
+          "opus_health_v2"
+        ]
+      },
+      "detail": "'EMAIL' and 'EMAIL_AUTO_MAILER' on SAT_COMMON_CONTACT come from different runs and may be the same concept spelled differently (matched by containment). Normalisation cannot decide this — a human or the consolidation-judge must. Reported, never blocked."
+    },
+    {
+      "satellite": "SAT_COMMON_CONTACT",
+      "labels": [
+        "EMAIL",
+        "EMAIL_CORPORATE"
+      ],
+      "match": "containment",
+      "confidence": "likely",
+      "runs": {
+        "EMAIL": [
+          "opus_health_legacy_v4",
+          "opus_health_v2"
+        ],
+        "EMAIL_CORPORATE": [
+          "opus_health_v2"
+        ]
+      },
+      "detail": "'EMAIL' and 'EMAIL_CORPORATE' on SAT_COMMON_CONTACT come from different runs and may be the same concept spelled differently (matched by containment). Normalisation cannot decide this — a human or the consolidation-judge must. Reported, never blocked."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "labels": [
+        "ADDITIONAL_LOADING",
+        "LOADING"
+      ],
+      "match": "containment",
+      "confidence": "likely",
+      "runs": {
+        "ADDITIONAL_LOADING": [
+          "opus_health_legacy_v4",
+          "opus_health_v2"
+        ],
+        "LOADING": [
+          "opus_health_legacy_v4"
+        ]
+      },
+      "detail": "'ADDITIONAL_LOADING' and 'LOADING' on SAT_POLICY_DISCOUNT_LOADING_APPLIED come from different runs and may be the same concept spelled differently (matched by containment). Normalisation cannot decide this — a human or the consolidation-judge must. Reported, never blocked."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "labels": [
+        "DISCOUNT_FAMILY",
+        "DISCOUNT_IN_LIEU_OF_AGENCY_COMMISSION"
+      ],
+      "match": "shared_leading_token",
+      "confidence": "review",
+      "runs": {
+        "DISCOUNT_FAMILY": [
+          "opus_health_v2"
+        ],
+        "DISCOUNT_IN_LIEU_OF_AGENCY_COMMISSION": [
+          "opus_health_legacy_v4"
+        ]
+      },
+      "detail": "'DISCOUNT_FAMILY' and 'DISCOUNT_IN_LIEU_OF_AGENCY_COMMISSION' on SAT_POLICY_DISCOUNT_LOADING_APPLIED come from different runs and may be the same concept spelled differently (matched by shared_leading_token). Normalisation cannot decide this — a human or the consolidation-judge must. Reported, never blocked."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "labels": [
+        "DISCOUNT_FAMILY",
+        "FAMILY_DISCOUNT"
+      ],
+      "match": "reordered_tokens",
+      "confidence": "likely",
+      "runs": {
+        "DISCOUNT_FAMILY": [
+          "opus_health_v2"
+        ],
+        "FAMILY_DISCOUNT": [
+          "opus_health_legacy_v4"
+        ]
+      },
+      "detail": "'DISCOUNT_FAMILY' and 'FAMILY_DISCOUNT' on SAT_POLICY_DISCOUNT_LOADING_APPLIED come from different runs and may be the same concept spelled differently (matched by reordered_tokens). Normalisation cannot decide this — a human or the consolidation-judge must. Reported, never blocked."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "labels": [
+        "LOADING",
+        "LOADING_FAMILY"
+      ],
+      "match": "containment",
+      "confidence": "likely",
+      "runs": {
+        "LOADING": [
+          "opus_health_legacy_v4"
+        ],
+        "LOADING_FAMILY": [
+          "opus_health_v2"
+        ]
+      },
+      "detail": "'LOADING' and 'LOADING_FAMILY' on SAT_POLICY_DISCOUNT_LOADING_APPLIED come from different runs and may be the same concept spelled differently (matched by containment). Normalisation cannot decide this — a human or the consolidation-judge must. Reported, never blocked."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "labels": [
+        "LOADING",
+        "UW_LOADING"
+      ],
+      "match": "containment",
+      "confidence": "likely",
+      "runs": {
+        "LOADING": [
+          "opus_health_legacy_v4"
+        ],
+        "UW_LOADING": [
+          "opus_health_v2"
+        ]
+      },
+      "detail": "'LOADING' and 'UW_LOADING' on SAT_POLICY_DISCOUNT_LOADING_APPLIED come from different runs and may be the same concept spelled differently (matched by containment). Normalisation cannot decide this — a human or the consolidation-judge must. Reported, never blocked."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "labels": [
+        "SPECIAL_DISC",
+        "SPECIAL_DISCOUNT"
+      ],
+      "match": "containment",
+      "confidence": "likely",
+      "runs": {
+        "SPECIAL_DISC": [
+          "opus_health_v2"
+        ],
+        "SPECIAL_DISCOUNT": [
+          "opus_health_legacy_v4",
+          "opus_health_v2"
+        ]
+      },
+      "detail": "'SPECIAL_DISC' and 'SPECIAL_DISCOUNT' on SAT_POLICY_DISCOUNT_LOADING_APPLIED come from different runs and may be the same concept spelled differently (matched by containment). Normalisation cannot decide this — a human or the consolidation-judge must. Reported, never blocked."
+    }
+  ],
+  "run_specific_labels": [
+    {
+      "satellite": "SAT_CASE_EXTERNAL_REF",
+      "concept": "OMNI_INWARD",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "OMNI_INWARD"
+      ],
+      "detail": "'OMNI_INWARD' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_BENEFIT_HEAD",
+      "concept": "CHILD",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "CHILD"
+      ],
+      "detail": "'CHILD' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_BENEFIT_HEAD",
+      "concept": "COVER_SECTION",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "{COVER_SECTION}"
+      ],
+      "detail": "'COVER_SECTION' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_BENEFIT_HEAD",
+      "concept": "CRITIC",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "CRITIC"
+      ],
+      "detail": "'CRITIC' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_BENEFIT_HEAD",
+      "concept": "DEATH",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "DEATH"
+      ],
+      "detail": "'DEATH' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_BENEFIT_HEAD",
+      "concept": "EDU",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "EDU"
+      ],
+      "detail": "'EDU' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_BENEFIT_HEAD",
+      "concept": "EMI",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "EMI"
+      ],
+      "detail": "'EMI' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_BENEFIT_HEAD",
+      "concept": "FAMILY",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "FAMILY"
+      ],
+      "detail": "'FAMILY' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_BENEFIT_HEAD",
+      "concept": "FUNERAL",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "FUNERAL"
+      ],
+      "detail": "'FUNERAL' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_BENEFIT_HEAD",
+      "concept": "HOSP",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "HOSP"
+      ],
+      "detail": "'HOSP' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_BENEFIT_HEAD",
+      "concept": "MED",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "MED"
+      ],
+      "detail": "'MED' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_BENEFIT_HEAD",
+      "concept": "PTD",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "PTD"
+      ],
+      "detail": "'PTD' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_BENEFIT_HEAD",
+      "concept": "TRANS",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "TRANS"
+      ],
+      "detail": "'TRANS' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_BENEFIT_HEAD",
+      "concept": "TTD",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "TTD"
+      ],
+      "detail": "'TTD' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_PROVIDER_BILLING",
+      "concept": "BILL_ID",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "{BILL_ID}"
+      ],
+      "detail": "'BILL_ID' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_PROVIDER_BILLING",
+      "concept": "BILL_NUMBER",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "{BILL_NUMBER}"
+      ],
+      "detail": "'BILL_NUMBER' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_PROVIDER_BILLING",
+      "concept": "DISC_BILL_NUMBER",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "{DISC_BILL_NUMBER}"
+      ],
+      "detail": "'DISC_BILL_NUMBER' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_CLAIM_RESERVE_HEAD",
+      "concept": "COVER_SECTION",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "{COVER_SECTION}"
+      ],
+      "detail": "'COVER_SECTION' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COMMON_CONTACT",
+      "concept": "ALT_EMAIL",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "alt-email"
+      ],
+      "detail": "'ALT_EMAIL' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COMMON_CONTACT",
+      "concept": "ALT_MOBILE",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "alt-mobile"
+      ],
+      "detail": "'ALT_MOBILE' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COMMON_CONTACT",
+      "concept": "EMAIL_AUTO_MAILER",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "EMAIL_AUTO_MAILER"
+      ],
+      "detail": "'EMAIL_AUTO_MAILER' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COMMON_CONTACT",
+      "concept": "EMAIL_CORPORATE",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "EMAIL_CORPORATE"
+      ],
+      "detail": "'EMAIL_CORPORATE' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COMMON_CONTACT",
+      "concept": "FAX",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "fax"
+      ],
+      "detail": "'FAX' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COMMON_CONTACT",
+      "concept": "STD",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "std"
+      ],
+      "detail": "'STD' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
+      "concept": "ACCIDENT_PROTECTION",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "accident-protection"
+      ],
+      "detail": "'ACCIDENT_PROTECTION' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
+      "concept": "AIR_AMBULANCE",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "air-ambulance"
+      ],
+      "detail": "'AIR_AMBULANCE' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
+      "concept": "BASE_PLAN",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "base-plan"
+      ],
+      "detail": "'BASE_PLAN' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
+      "concept": "CHILD_EDUCATION_BENEFIT",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "child-education-benefit"
+      ],
+      "detail": "'CHILD_EDUCATION_BENEFIT' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
+      "concept": "CRITICAL_ILLNESS",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "critical-illness"
+      ],
+      "detail": "'CRITICAL_ILLNESS' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
+      "concept": "DISABILITY_BENEFIT",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "disability-benefit"
+      ],
+      "detail": "'DISABILITY_BENEFIT' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
+      "concept": "EMI_TOTAL",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "emi-total"
+      ],
+      "detail": "'EMI_TOTAL' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
+      "concept": "FIRE_PROPERTY_BUILDING",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "fire-property-building"
+      ],
+      "detail": "'FIRE_PROPERTY_BUILDING' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
+      "concept": "FIRE_PROPERTY_BURGLARY_CONTENTS",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "fire-property-burglary-contents"
+      ],
+      "detail": "'FIRE_PROPERTY_BURGLARY_CONTENTS' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
+      "concept": "HOSPITALIZATION",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "hospitalization"
+      ],
+      "detail": "'HOSPITALIZATION' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
+      "concept": "MATERNITY",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "maternity"
+      ],
+      "detail": "'MATERNITY' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
+      "concept": "MONTHLY_EMI",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "monthly-emi"
+      ],
+      "detail": "'MONTHLY_EMI' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
+      "concept": "OPD",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "opd"
+      ],
+      "detail": "'OPD' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
+      "concept": "ORGAN_DONOR",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "organ-donor"
+      ],
+      "detail": "'ORGAN_DONOR' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
+      "concept": "PHYSIOTHERAPY",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "physiotherapy"
+      ],
+      "detail": "'PHYSIOTHERAPY' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_COVERAGE_MEMBER_BENEFIT",
+      "concept": "RECOVERY_THEFT",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "recovery-theft"
+      ],
+      "detail": "'RECOVERY_THEFT' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_LNK_PARTY_ROLE_CORE",
+      "concept": "SUPPLIER_TYPE",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "{SUPPLIER_TYPE}"
+      ],
+      "detail": "'SUPPLIER_TYPE' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_LNK_POLICY_PARTY_ROLE",
+      "concept": "ENROLLED_EMPLOYEE",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "ENROLLED_EMPLOYEE"
+      ],
+      "detail": "'ENROLLED_EMPLOYEE' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_PARTY_BANKING",
+      "concept": "BANKACCOUNTNO",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "{BANKACCOUNTNO}"
+      ],
+      "detail": "'BANKACCOUNTNO' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_PARTY_BANKING",
+      "concept": "HOSPITAL_SETTLEMENT_ACCOUNT",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Hospital Settlement Account"
+      ],
+      "detail": "'HOSPITAL_SETTLEMENT_ACCOUNT' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_PARTY_BANKING",
+      "concept": "PAYEE_SETTLEMENT_ACCOUNT",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Payee Settlement Account"
+      ],
+      "detail": "'PAYEE_SETTLEMENT_ACCOUNT' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_PARTY_BANKING",
+      "concept": "RE_ENTERED_ACC_NO",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "{RE_ENTERED_ACC_NO}"
+      ],
+      "detail": "'RE_ENTERED_ACC_NO' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_PARTY_IDENTIFICATION",
+      "concept": "AADHAAR",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "AADHAAR"
+      ],
+      "detail": "'AADHAAR' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_PARTY_IDENTIFICATION",
+      "concept": "AGE_PROOF",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Age Proof"
+      ],
+      "detail": "'AGE_PROOF' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_PARTY_IDENTIFICATION",
+      "concept": "EMPLOYEE_ID",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "EMPLOYEE_ID"
+      ],
+      "detail": "'EMPLOYEE_ID' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_PARTY_IDENTIFICATION",
+      "concept": "GSTIN",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "GSTIN"
+      ],
+      "detail": "'GSTIN' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_PARTY_IDENTIFICATION",
+      "concept": "PAN",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "PAN"
+      ],
+      "detail": "'PAN' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_PARTY_IDENTIFICATION",
+      "concept": "SUPPLIER_ID",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "SUPPLIER_ID"
+      ],
+      "detail": "'SUPPLIER_ID' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_CERTIFICATE",
+      "concept": "PER_MEMBER_CERTIFICATE",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Per-Member Certificate"
+      ],
+      "detail": "'PER_MEMBER_CERTIFICATE' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_CLASSIFICATION",
+      "concept": "BUSINESS_TYPE",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "BUSINESS_TYPE"
+      ],
+      "detail": "'BUSINESS_TYPE' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_CLASSIFICATION",
+      "concept": "CRC_APPLICABLE",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "CRC_APPLICABLE"
+      ],
+      "detail": "'CRC_APPLICABLE' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_CLASSIFICATION",
+      "concept": "ENROLLMENT_TYPE",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "ENROLLMENT_TYPE"
+      ],
+      "detail": "'ENROLLMENT_TYPE' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_CLASSIFICATION",
+      "concept": "PARAM_REF",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "{PARAM_REF}"
+      ],
+      "detail": "'PARAM_REF' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_CLASSIFICATION",
+      "concept": "TRANSACTION_TYPE",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "TRANSACTION_TYPE"
+      ],
+      "detail": "'TRANSACTION_TYPE' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+      "concept": "AIR_AMBULANCE",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Air Ambulance"
+      ],
+      "detail": "'AIR_AMBULANCE' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+      "concept": "BASE_COVER",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Base Cover"
+      ],
+      "detail": "'BASE_COVER' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+      "concept": "COVER_CODE",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "{COVER_CODE}"
+      ],
+      "detail": "'COVER_CODE' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+      "concept": "MATERNITY",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "MATERNITY"
+      ],
+      "detail": "'MATERNITY' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "ADD_ON_COVER_DISCOUNT",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Add-On Cover Discount"
+      ],
+      "detail": "'ADD_ON_COVER_DISCOUNT' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "CD_DISCOUNT",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "CD Discount"
+      ],
+      "detail": "'CD_DISCOUNT' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "CLAIM_FREE_RENEWAL_DISCOUNT",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Claim-Free Renewal Discount"
+      ],
+      "detail": "'CLAIM_FREE_RENEWAL_DISCOUNT' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "COMMERCIAL_DISC",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "COMMERCIAL_DISC"
+      ],
+      "detail": "'COMMERCIAL_DISC' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "DIRECT_CUSTOMER_DISCOUNT",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Direct Customer Discount"
+      ],
+      "detail": "'DIRECT_CUSTOMER_DISCOUNT' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "DISCOUNT_FAMILY",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "DISCOUNT_FAMILY"
+      ],
+      "detail": "'DISCOUNT_FAMILY' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "DISCOUNT_IN_LIEU_OF_AGENCY_COMMISSION",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Discount In Lieu Of Agency Commission"
+      ],
+      "detail": "'DISCOUNT_IN_LIEU_OF_AGENCY_COMMISSION' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "EMPLOYEE_DISCOUNT",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Employee Discount"
+      ],
+      "detail": "'EMPLOYEE_DISCOUNT' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "FAMILY_DISCOUNT",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Family Discount"
+      ],
+      "detail": "'FAMILY_DISCOUNT' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "GOOD_HEALTH_DISCOUNT",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Good Health Discount"
+      ],
+      "detail": "'GOOD_HEALTH_DISCOUNT' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "LOADING",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Loading"
+      ],
+      "detail": "'LOADING' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "LOADING_FAMILY",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "LOADING_FAMILY"
+      ],
+      "detail": "'LOADING_FAMILY' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "LONG_TERM_POLICY_DISCOUNT",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Long Term Policy Discount"
+      ],
+      "detail": "'LONG_TERM_POLICY_DISCOUNT' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "ONLINE_DISCOUNT",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Online Discount"
+      ],
+      "detail": "'ONLINE_DISCOUNT' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "OTHER_DISCOUNT",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "OTHER_DISCOUNT"
+      ],
+      "detail": "'OTHER_DISCOUNT' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "SPECIAL_DISC",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "SPECIAL_DISC"
+      ],
+      "detail": "'SPECIAL_DISC' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "UNDERWRITING_LOADING",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Underwriting Loading"
+      ],
+      "detail": "'UNDERWRITING_LOADING' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "UW_LOADING",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "UW_LOADING"
+      ],
+      "detail": "'UW_LOADING' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+      "concept": "VOLUNTARY_DEDUCTIBLE_DISCOUNT",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Voluntary Deductible Discount"
+      ],
+      "detail": "'VOLUNTARY_DEDUCTIBLE_DISCOUNT' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_INTERMEDIARY_SPLIT",
+      "concept": "IMD_CODE",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "{IMD_CODE}"
+      ],
+      "detail": "'IMD_CODE' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_TAX_HEAD",
+      "concept": "SERVICE_TAX",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "SERVICE_TAX"
+      ],
+      "detail": "'SERVICE_TAX' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_POLICY_TAX_HEAD",
+      "concept": "S_TAX",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "S_TAX"
+      ],
+      "detail": "'S_TAX' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_PROVIDER_TARIFF",
+      "concept": "STEP_DOWN_ROOM_RENT",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Step-Down Room Rent"
+      ],
+      "detail": "'STEP_DOWN_ROOM_RENT' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_QUOTE_RATING_INPUT",
+      "concept": "QUOTED_RATE",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "QUOTED_RATE"
+      ],
+      "detail": "'QUOTED_RATE' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_RISK_HEALTH_MEMBER_COVERAGE",
+      "concept": "MEMBER_ID",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "{MEMBER_ID}"
+      ],
+      "detail": "'MEMBER_ID' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+      "concept": "BMI",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "BMI"
+      ],
+      "detail": "'BMI' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+      "concept": "CHOLESTEROL_DISORDERS",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Cholesterol Disorders"
+      ],
+      "detail": "'CHOLESTEROL_DISORDERS' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+      "concept": "DIABETES",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "DIABETES",
+        "Diabetes"
+      ],
+      "detail": "'DIABETES' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+      "concept": "HEART_DISEASE",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "Heart Disease"
+      ],
+      "detail": "'HEART_DISEASE' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+      "concept": "HYPERLIPIDEMIA",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "HYPERLIPIDEMIA"
+      ],
+      "detail": "'HYPERLIPIDEMIA' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+      "concept": "HYPERTENSION",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "HYPERTENSION",
+        "Hypertension"
+      ],
+      "detail": "'HYPERTENSION' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+      "concept": "MEMBER_ID",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "{MEMBER_ID}"
+      ],
+      "detail": "'MEMBER_ID' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+      "concept": "OBESITY",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "OBESITY",
+        "Obesity"
+      ],
+      "detail": "'OBESITY' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+      "concept": "OTHER",
+      "only_in": "opus_health_legacy_v4",
+      "spellings": [
+        "OTHER"
+      ],
+      "detail": "'OTHER' appears only in opus_health_legacy_v4 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    },
+    {
+      "satellite": "SAT_RISK_HEALTH_PED_WAITING",
+      "concept": "GMC_DISEASE_TO_BE_EXCLUDED",
+      "only_in": "opus_health_v2",
+      "spellings": [
+        "{GMC_DISEASE_TO_BE_EXCLUDED}"
+      ],
+      "detail": "'GMC_DISEASE_TO_BE_EXCLUDED' appears only in opus_health_v2 — normal if that LOB genuinely has this instance; check it is not a synonym of a label another run already uses."
+    }
+  ],
+  "prose_child_keys": []
+}

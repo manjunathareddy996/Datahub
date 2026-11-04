@@ -1,0 +1,4087 @@
+{
+ "stage": "6.5",
+ "map": "Health Consolidated/outputs/04_column_map.json",
+ "model": "OPUS Health/data_7.js",
+ "model_md5": "082b92d7650cf4e192b6e9bb931cdc7e",
+ "invariant": {
+  "surviving_needs_reanchor_rows": 0,
+  "reanchor_gaps_entries": 0,
+  "holds": true,
+  "note": "Every surviving needs_reanchor row must have a matching reanchor_gaps entry. Both are zero: all 29 were resolved to augmentation_needed under an existing reference master, so no escalation is owed."
+ },
+ "reanchor_gaps": [],
+ "reanchor_augmentations": [
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_DISEASE_ICD is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_DISEASE_ICD",
+   "new_satellite": null,
+   "proposed_attribute": "Associated ICD Code",
+   "attribute_already_on_ref": false,
+   "ask": "NEW ATTRIBUTE on this REF - requires modeller ratification.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_ICD_MASTER",
+     "column_name": "ASSOCIATE_CODE"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_DISEASE_ICD is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_DISEASE_ICD",
+   "new_satellite": null,
+   "proposed_attribute": "Associated Procedure Code",
+   "attribute_already_on_ref": false,
+   "ask": "NEW ATTRIBUTE on this REF - requires modeller ratification.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_DIAGNOSIS_MASTER",
+     "column_name": "DIG_PROCEDURE"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_DISEASE_ICD is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_DISEASE_ICD",
+   "new_satellite": null,
+   "proposed_attribute": "Diagnosis Full Detail Text",
+   "attribute_already_on_ref": false,
+   "ask": "NEW ATTRIBUTE on this REF - requires modeller ratification.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_DIAGNOSIS_MASTER",
+     "column_name": "ALL_DETAIL"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_DISEASE_ICD is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_DISEASE_ICD",
+   "new_satellite": null,
+   "proposed_attribute": "Disease Category",
+   "attribute_already_on_ref": true,
+   "ask": "ROUTING ONLY - the attribute already exists on this REF; the modeller need only confirm the source feeds it.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_DISEASE_MASTER",
+     "column_name": "DISEASE_CATEGORY"
+    },
+    {
+     "table_name": "BJAZ_HM_ICD_DISEASE_MASTER",
+     "column_name": "DISEASE_CATEGORY"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_DISEASE_ICD is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_DISEASE_ICD",
+   "new_satellite": null,
+   "proposed_attribute": "Disease Name",
+   "attribute_already_on_ref": true,
+   "ask": "ROUTING ONLY - the attribute already exists on this REF; the modeller need only confirm the source feeds it.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_DIAGNOSIS_MASTER",
+     "column_name": "DIAGNOSIS_DETAIL"
+    },
+    {
+     "table_name": "BJAZ_HM_ICD_DISEASE_MASTER",
+     "column_name": "ICD_DESCRIPTION"
+    },
+    {
+     "table_name": "BJAZ_HM_ICD_MASTER",
+     "column_name": "ICD_DESCRIPTION"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_DISEASE_ICD is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_DISEASE_ICD",
+   "new_satellite": null,
+   "proposed_attribute": "ICD Code",
+   "attribute_already_on_ref": true,
+   "ask": "ROUTING ONLY - the attribute already exists on this REF; the modeller need only confirm the source feeds it.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_ICD_DISEASE_MASTER",
+     "column_name": "ICD_CODE"
+    },
+    {
+     "table_name": "BJAZ_HM_ICD_MASTER",
+     "column_name": "ICD_CODE"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_DISEASE_ICD is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_DISEASE_ICD",
+   "new_satellite": null,
+   "proposed_attribute": "Source Diagnosis Identifier",
+   "attribute_already_on_ref": false,
+   "ask": "NEW ATTRIBUTE on this REF - requires modeller ratification.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_DIAGNOSIS_MASTER",
+     "column_name": "DIAGNOSIS_ID"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_DISEASE_ICD is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_DISEASE_ICD",
+   "new_satellite": null,
+   "proposed_attribute": "Source Disease Identifier",
+   "attribute_already_on_ref": false,
+   "ask": "NEW ATTRIBUTE on this REF - requires modeller ratification.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_DIAGNOSIS_MASTER",
+     "column_name": "DISEASE_ID"
+    },
+    {
+     "table_name": "BJAZ_HM_DISEASE_MASTER",
+     "column_name": "DISEASE_ID"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_DISEASE_ICD is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_DISEASE_ICD",
+   "new_satellite": null,
+   "proposed_attribute": "Source ICD Disease Map Identifier",
+   "attribute_already_on_ref": false,
+   "ask": "NEW ATTRIBUTE on this REF - requires modeller ratification.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_ICD_DISEASE_MASTER",
+     "column_name": "ICD_ID"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_DISEASE_ICD is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_DISEASE_ICD",
+   "new_satellite": null,
+   "proposed_attribute": "Source ICD Master Identifier",
+   "attribute_already_on_ref": false,
+   "ask": "NEW ATTRIBUTE on this REF - requires modeller ratification.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_ICD_MASTER",
+     "column_name": "ICD_ID"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_MEDICAL_CHARGE_HEAD is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_MEDICAL_CHARGE_HEAD",
+   "new_satellite": null,
+   "proposed_attribute": "Add To Bill Total Indicator",
+   "attribute_already_on_ref": false,
+   "ask": "NEW ATTRIBUTE on this REF - requires modeller ratification.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_CHARGE_MASTER",
+     "column_name": "ADD_IN_TOTAL"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_MEDICAL_CHARGE_HEAD is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_MEDICAL_CHARGE_HEAD",
+   "new_satellite": null,
+   "proposed_attribute": "Charge Head Code",
+   "attribute_already_on_ref": true,
+   "ask": "ROUTING ONLY - the attribute already exists on this REF; the modeller need only confirm the source feeds it.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_CHARGE_MASTER",
+     "column_name": "CHARGE_ID"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_MEDICAL_CHARGE_HEAD is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_MEDICAL_CHARGE_HEAD",
+   "new_satellite": null,
+   "proposed_attribute": "Charge Head Name",
+   "attribute_already_on_ref": true,
+   "ask": "ROUTING ONLY - the attribute already exists on this REF; the modeller need only confirm the source feeds it.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_CHARGE_MASTER",
+     "column_name": "CHARGE_NAME"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_MEDICAL_PROCEDURE is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_MEDICAL_PROCEDURE",
+   "new_satellite": null,
+   "proposed_attribute": "Associated ICD Code",
+   "attribute_already_on_ref": false,
+   "ask": "NEW ATTRIBUTE on this REF - requires modeller ratification.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_PCS_MASTER",
+     "column_name": "ICD_ID"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_MEDICAL_PROCEDURE is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_MEDICAL_PROCEDURE",
+   "new_satellite": null,
+   "proposed_attribute": "Associated Procedure Code",
+   "attribute_already_on_ref": false,
+   "ask": "NEW ATTRIBUTE on this REF - requires modeller ratification.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_PCS_MASTER",
+     "column_name": "ASSOCIATE_CODE"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_MEDICAL_PROCEDURE is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_MEDICAL_PROCEDURE",
+   "new_satellite": null,
+   "proposed_attribute": "Procedure Code",
+   "attribute_already_on_ref": true,
+   "ask": "ROUTING ONLY - the attribute already exists on this REF; the modeller need only confirm the source feeds it.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_PCS_DES_MASTER",
+     "column_name": "PCS_CODE"
+    },
+    {
+     "table_name": "BJAZ_HM_PCS_MASTER",
+     "column_name": "PCS_CODE"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_MEDICAL_PROCEDURE is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_MEDICAL_PROCEDURE",
+   "new_satellite": null,
+   "proposed_attribute": "Procedure Detail Text",
+   "attribute_already_on_ref": false,
+   "ask": "NEW ATTRIBUTE on this REF - requires modeller ratification.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_PCS_DES_MASTER",
+     "column_name": "PROCEDURE_DESC"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_MEDICAL_PROCEDURE is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_MEDICAL_PROCEDURE",
+   "new_satellite": null,
+   "proposed_attribute": "Procedure Name",
+   "attribute_already_on_ref": true,
+   "ask": "ROUTING ONLY - the attribute already exists on this REF; the modeller need only confirm the source feeds it.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_PCS_DES_MASTER",
+     "column_name": "PCS_DESCRIPTION"
+    },
+    {
+     "table_name": "BJAZ_HM_PCS_MASTER",
+     "column_name": "PCS_DESCRIPTION"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_MEDICAL_PROCEDURE is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_MEDICAL_PROCEDURE",
+   "new_satellite": null,
+   "proposed_attribute": "Source Procedure Master Identifier",
+   "attribute_already_on_ref": false,
+   "ask": "NEW ATTRIBUTE on this REF - requires modeller ratification.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_PCS_DES_MASTER",
+     "column_name": "PCS_ID"
+    },
+    {
+     "table_name": "BJAZ_HM_PCS_MASTER",
+     "column_name": "PCS_ID"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_ROOM_CATEGORY is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_ROOM_CATEGORY",
+   "new_satellite": null,
+   "proposed_attribute": "Room Category Code",
+   "attribute_already_on_ref": true,
+   "ask": "ROUTING ONLY - the attribute already exists on this REF; the modeller need only confirm the source feeds it.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_ROOM_MASTER",
+     "column_name": "ROOM_ID"
+    }
+   ]
+  },
+  {
+   "anchor": null,
+   "anchor_note": "No hub/link anchor. REF_ROOM_CATEGORY is a REFERENCE MASTER (value domain), not a satellite-carrying anchor, so there is no hub or link to name. This is a REF-master build-side extension, the same disposition the gate-clean v2 half gave BJAZ_NEFT_IFSC_MASTER -> REF_BANK_BRANCH_IFSC.",
+   "best_home_satellite": "REF_ROOM_CATEGORY",
+   "new_satellite": null,
+   "proposed_attribute": "Room Category Name",
+   "attribute_already_on_ref": true,
+   "ask": "ROUTING ONLY - the attribute already exists on this REF; the modeller need only confirm the source feeds it.",
+   "tier": "build-side",
+   "applied": false,
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_ROOM_MASTER",
+     "column_name": "ROOM_TYPE"
+    }
+   ]
+  }
+ ],
+ "suggested_anchors_not_in_model_non_blocking": [
+  {
+   "suggested_anchor_as_written": "HUB_CHARGE_TYPE (charge-type reference/master)",
+   "normalised": "HUB_CHARGE_TYPE",
+   "exists_in_model": false,
+   "kind": "missing_hub",
+   "resolved_to": "REF_MEDICAL_CHARGE_HEAD",
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_CHARGE_MASTER",
+     "column_name": "ADD_IN_TOTAL"
+    },
+    {
+     "table_name": "BJAZ_HM_CHARGE_MASTER",
+     "column_name": "CHARGE_ID"
+    },
+    {
+     "table_name": "BJAZ_HM_CHARGE_MASTER",
+     "column_name": "CHARGE_NAME"
+    }
+   ],
+   "note": "Stage 4 named an anchor absent from data_7.js in every form. The CONCEPT exists as a reference master, so this is a naming divergence resolved by precedent, NOT a structural model gap. Recorded for the modeller only as evidence that the Stage-3/4 vocabulary reached for a hub that the model expresses as a REF."
+  },
+  {
+   "suggested_anchor_as_written": "HUB_DISEASE",
+   "normalised": "HUB_DISEASE",
+   "exists_in_model": false,
+   "kind": "missing_hub",
+   "resolved_to": "REF_DISEASE_ICD",
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_DISEASE_MASTER",
+     "column_name": "DISEASE_CATEGORY"
+    },
+    {
+     "table_name": "BJAZ_HM_DISEASE_MASTER",
+     "column_name": "DISEASE_ID"
+    }
+   ],
+   "note": "Stage 4 named an anchor absent from data_7.js in every form. The CONCEPT exists as a reference master, so this is a naming divergence resolved by precedent, NOT a structural model gap. Recorded for the modeller only as evidence that the Stage-3/4 vocabulary reached for a hub that the model expresses as a REF."
+  },
+  {
+   "suggested_anchor_as_written": "HUB_DISEASE (ICD/disease reference master)",
+   "normalised": "HUB_DISEASE",
+   "exists_in_model": false,
+   "kind": "missing_hub",
+   "resolved_to": "REF_DISEASE_ICD",
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_ICD_DISEASE_MASTER",
+     "column_name": "DISEASE_CATEGORY"
+    },
+    {
+     "table_name": "BJAZ_HM_ICD_DISEASE_MASTER",
+     "column_name": "ICD_CODE"
+    },
+    {
+     "table_name": "BJAZ_HM_ICD_DISEASE_MASTER",
+     "column_name": "ICD_DESCRIPTION"
+    },
+    {
+     "table_name": "BJAZ_HM_ICD_DISEASE_MASTER",
+     "column_name": "ICD_ID"
+    }
+   ],
+   "note": "Stage 4 named an anchor absent from data_7.js in every form. The CONCEPT exists as a reference master, so this is a naming divergence resolved by precedent, NOT a structural model gap. Recorded for the modeller only as evidence that the Stage-3/4 vocabulary reached for a hub that the model expresses as a REF."
+  },
+  {
+   "suggested_anchor_as_written": "HUB_PROCEDURE_CODE",
+   "normalised": "HUB_PROCEDURE_CODE",
+   "exists_in_model": false,
+   "kind": "missing_hub",
+   "resolved_to": "REF_MEDICAL_PROCEDURE",
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_PCS_DES_MASTER",
+     "column_name": "PCS_CODE"
+    },
+    {
+     "table_name": "BJAZ_HM_PCS_DES_MASTER",
+     "column_name": "PCS_DESCRIPTION"
+    },
+    {
+     "table_name": "BJAZ_HM_PCS_DES_MASTER",
+     "column_name": "PCS_ID"
+    },
+    {
+     "table_name": "BJAZ_HM_PCS_DES_MASTER",
+     "column_name": "PROCEDURE_DESC"
+    }
+   ],
+   "note": "Stage 4 named an anchor absent from data_7.js in every form. The CONCEPT exists as a reference master, so this is a naming divergence resolved by precedent, NOT a structural model gap. Recorded for the modeller only as evidence that the Stage-3/4 vocabulary reached for a hub that the model expresses as a REF."
+  },
+  {
+   "suggested_anchor_as_written": "HUB_ROOM",
+   "normalised": "HUB_ROOM",
+   "exists_in_model": false,
+   "kind": "missing_hub",
+   "resolved_to": "REF_ROOM_CATEGORY",
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_ROOM_MASTER",
+     "column_name": "ROOM_ID"
+    },
+    {
+     "table_name": "BJAZ_HM_ROOM_MASTER",
+     "column_name": "ROOM_TYPE"
+    }
+   ],
+   "note": "Stage 4 named an anchor absent from data_7.js in every form. The CONCEPT exists as a reference master, so this is a naming divergence resolved by precedent, NOT a structural model gap. Recorded for the modeller only as evidence that the Stage-3/4 vocabulary reached for a hub that the model expresses as a REF."
+  },
+  {
+   "suggested_anchor_as_written": "REF_DIAGNOSIS",
+   "normalised": "REF_DIAGNOSIS",
+   "exists_in_model": false,
+   "kind": "missing_ref",
+   "resolved_to": "REF_DISEASE_ICD",
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_DIAGNOSIS_MASTER",
+     "column_name": "ALL_DETAIL"
+    },
+    {
+     "table_name": "BJAZ_HM_DIAGNOSIS_MASTER",
+     "column_name": "DIAGNOSIS_DETAIL"
+    },
+    {
+     "table_name": "BJAZ_HM_DIAGNOSIS_MASTER",
+     "column_name": "DIAGNOSIS_ID"
+    },
+    {
+     "table_name": "BJAZ_HM_DIAGNOSIS_MASTER",
+     "column_name": "DIG_PROCEDURE"
+    },
+    {
+     "table_name": "BJAZ_HM_DIAGNOSIS_MASTER",
+     "column_name": "DISEASE_ID"
+    }
+   ],
+   "note": "Stage 4 named an anchor absent from data_7.js in every form. The CONCEPT exists as a reference master, so this is a naming divergence resolved by precedent, NOT a structural model gap. Recorded for the modeller only as evidence that the Stage-3/4 vocabulary reached for a hub that the model expresses as a REF."
+  },
+  {
+   "suggested_anchor_as_written": "REF_HEALTH_PROCEDURE_CODE",
+   "normalised": "REF_HEALTH_PROCEDURE_CODE",
+   "exists_in_model": false,
+   "kind": "missing_ref",
+   "resolved_to": "REF_MEDICAL_PROCEDURE",
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_PCS_MASTER",
+     "column_name": "ASSOCIATE_CODE"
+    },
+    {
+     "table_name": "BJAZ_HM_PCS_MASTER",
+     "column_name": "PCS_CODE"
+    },
+    {
+     "table_name": "BJAZ_HM_PCS_MASTER",
+     "column_name": "PCS_DESCRIPTION"
+    },
+    {
+     "table_name": "BJAZ_HM_PCS_MASTER",
+     "column_name": "PCS_ID"
+    }
+   ],
+   "note": "Stage 4 named an anchor absent from data_7.js in every form. The CONCEPT exists as a reference master, so this is a naming divergence resolved by precedent, NOT a structural model gap. Recorded for the modeller only as evidence that the Stage-3/4 vocabulary reached for a hub that the model expresses as a REF."
+  },
+  {
+   "suggested_anchor_as_written": "REF_ICD",
+   "normalised": "REF_ICD",
+   "exists_in_model": false,
+   "kind": "missing_ref",
+   "resolved_to": "REF_DISEASE_ICD",
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_ICD_MASTER",
+     "column_name": "ASSOCIATE_CODE"
+    },
+    {
+     "table_name": "BJAZ_HM_ICD_MASTER",
+     "column_name": "ICD_CODE"
+    },
+    {
+     "table_name": "BJAZ_HM_ICD_MASTER",
+     "column_name": "ICD_DESCRIPTION"
+    },
+    {
+     "table_name": "BJAZ_HM_ICD_MASTER",
+     "column_name": "ICD_ID"
+    }
+   ],
+   "note": "Stage 4 named an anchor absent from data_7.js in every form. The CONCEPT exists as a reference master, so this is a naming divergence resolved by precedent, NOT a structural model gap. Recorded for the modeller only as evidence that the Stage-3/4 vocabulary reached for a hub that the model expresses as a REF."
+  },
+  {
+   "suggested_anchor_as_written": "REF_ICD_DIAGNOSIS_CODE",
+   "normalised": "REF_ICD_DIAGNOSIS_CODE",
+   "exists_in_model": false,
+   "kind": "missing_ref",
+   "resolved_to": "REF_MEDICAL_PROCEDURE",
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_PCS_MASTER",
+     "column_name": "ICD_ID"
+    }
+   ],
+   "note": "Stage 4 named an anchor absent from data_7.js in every form. The CONCEPT exists as a reference master, so this is a naming divergence resolved by precedent, NOT a structural model gap. Recorded for the modeller only as evidence that the Stage-3/4 vocabulary reached for a hub that the model expresses as a REF."
+  }
+ ],
+ "modeller_questions": [
+  {
+   "id": "Q1",
+   "severity": "info",
+   "question": "Should a reference master's SOURCE SURROGATE id be carried onto the REF at all? 8 of the 29 columns are source-system surrogates (DIAGNOSIS_ID, DISEASE_ID x2, ICD_ID x2, PCS_ID x2, and the ICD-to-disease map id). Each REF is keyed on a business code (ICD Code / Procedure Code / Charge Head Code / Room Category Code), so these surrogates are not canonical keys. I proposed them as 'Source ... Identifier' attributes rather than dropping them, because dropping a column is not a mapping decision. The modeller may prefer to drop them.",
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_DIAGNOSIS_MASTER",
+     "column_name": "DIAGNOSIS_ID"
+    },
+    {
+     "table_name": "BJAZ_HM_DIAGNOSIS_MASTER",
+     "column_name": "DISEASE_ID"
+    },
+    {
+     "table_name": "BJAZ_HM_DISEASE_MASTER",
+     "column_name": "DISEASE_ID"
+    },
+    {
+     "table_name": "BJAZ_HM_ICD_DISEASE_MASTER",
+     "column_name": "ICD_ID"
+    },
+    {
+     "table_name": "BJAZ_HM_ICD_MASTER",
+     "column_name": "ICD_ID"
+    },
+    {
+     "table_name": "BJAZ_HM_PCS_DES_MASTER",
+     "column_name": "PCS_ID"
+    },
+    {
+     "table_name": "BJAZ_HM_PCS_MASTER",
+     "column_name": "PCS_ID"
+    }
+   ]
+  },
+  {
+   "id": "Q2",
+   "severity": "info",
+   "question": "REF_DISEASE_ICD is ONE reference ('Canonical disease/diagnosis reference keyed by ICD') but FOUR source masters feed it: DIAGNOSIS, DISEASE, ICD_DISEASE and ICD. Three of them carry an ICD code and one (BJAZ_HM_DISEASE_MASTER) does not. Confirm the four collapse into one REF, or split disease from ICD-diagnosis. This is a modeller decision; the map routes all four to the single existing REF.",
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_DIAGNOSIS_MASTER",
+     "column_name": "*"
+    },
+    {
+     "table_name": "BJAZ_HM_DISEASE_MASTER",
+     "column_name": "*"
+    },
+    {
+     "table_name": "BJAZ_HM_ICD_DISEASE_MASTER",
+     "column_name": "*"
+    },
+    {
+     "table_name": "BJAZ_HM_ICD_MASTER",
+     "column_name": "*"
+    }
+   ]
+  },
+  {
+   "id": "Q3",
+   "severity": "info",
+   "question": "SAT_PRODUCT_EXCLUSION_CATALOGUE declares child key 'Active Sequence Number', which is NOT one of its attributes. Stage 4 mapped BJAZ_HM_EXCLUSION_MASTER.EXCLUSION_ID onto that name as if it were a payload attribute. It is now an augmentation recording EXCLUSION_ID as the CHILD-KEY SOURCE. Confirm the child-key column naming for the build.",
+   "affected_columns": [
+    {
+     "table_name": "BJAZ_HM_EXCLUSION_MASTER",
+     "column_name": "EXCLUSION_ID"
+    }
+   ]
+  },
+  {
+   "id": "Q4",
+   "severity": "info",
+   "question": "SAT_PARTY_ADDRESS_USAGE was targeted by 14 mapped rows and does not exist in data_7.js. All 14 were re-homed to SAT_COMMON_ADDRESS. If an address-USAGE satellite (address type/role per party) is actually intended, it is a real model gap worth raising separately - but nothing in this source needed it, because usage is already carried by the instance label.",
+   "affected_columns": [
+    {
+     "table_name": "BA_HCP_PP_MEM_DTLS",
+     "column_name": "DC_ADDRESS"
+    },
+    {
+     "table_name": "BJAZ_BANDHAN_MEDI_CLAM",
+     "column_name": "M_ADDRESS_LINE_1"
+    },
+    {
+     "table_name": "BJAZ_BANDHAN_MEDI_CLAM",
+     "column_name": "M_ADDRESS_LINE_2"
+    },
+    {
+     "table_name": "BJAZ_BANDHAN_MEDI_CLAM",
+     "column_name": "M_CITY"
+    },
+    {
+     "table_name": "BJAZ_BANDHAN_MEDI_CLAM",
+     "column_name": "M_PINCODE"
+    },
+    {
+     "table_name": "BJAZ_BANDHAN_MEDI_CLAM",
+     "column_name": "M_STATE"
+    },
+    {
+     "table_name": "BJAZ_BANDHAN_MEDI_CLAM",
+     "column_name": "P_ADDRESS_LINE_1"
+    },
+    {
+     "table_name": "BJAZ_BANDHAN_MEDI_CLAM",
+     "column_name": "P_ADDRESS_LINE_2"
+    },
+    {
+     "table_name": "BJAZ_BANDHAN_MEDI_CLAM",
+     "column_name": "P_CITY"
+    },
+    {
+     "table_name": "BJAZ_BANDHAN_MEDI_CLAM",
+     "column_name": "P_PINCODE"
+    },
+    {
+     "table_name": "BJAZ_BANDHAN_MEDI_CLAM",
+     "column_name": "P_STATE"
+    },
+    {
+     "table_name": "BJAZ_HAT_ID_MEM_DETLS",
+     "column_name": "ADDLINE1"
+    },
+    {
+     "table_name": "BJAZ_HAT_ID_MEM_DETLS",
+     "column_name": "ADDLINE2"
+    },
+    {
+     "table_name": "BJAZ_TPA_CLAIM_DETAILS_WS",
+     "column_name": "PAYEE_ADDRESS"
+    }
+   ]
+  },
+  {
+   "stage": "6.5b",
+   "id": "Q-6.5b-PROSE-HOME",
+   "table": "BJAZ_HDFC_SEC_FHPP",
+   "column": "PARAM_NAME",
+   "field": "augmentation.new_satellite",
+   "current_value": "Product Configuration Parameter (name/value)",
+   "question": "This is the build register's `satellite_home_is_pure_prose` record. It carries NO SAT_/REF_ code at all, so unlike the target-block row fixed by Stage 6.5b (D3) there is no code to separate from a description -- a name would have to be COINED. The build correctly refuses to coin one. Requested: either ratify a code for this proposed EAV product-parameter satellite (e.g. a SAT_PRODUCT_CONFIG_PARAMETER-shaped name, multi-active per parameter name), or confirm the column is not loadable. NOT changed by this stage: the brief scoped Stage 6.5b to the single target-block row and explicitly excluded the other new_satellite prose rows."
+  }
+ ],
+ "anchor_key_recovery_required": {
+  "stage": "6.5b",
+  "unit": "distinct (view, unkeyable_anchor) pairs",
+  "count": 157,
+  "scope": "the 646 map rows left as declared_absence by Stage 6.5b",
+  "why_not_reanchor_gaps": "A reanchor_gap is structural: the anchor does not exist, carries zero satellites, or is a REF_*. All 240 (view, satellite) pairs here have an anchor that EXISTS, carries satellites, and equals parent(satellite). Recording these as reanchor_gaps would conflate a COVERAGE/key gap with a MISSING-ANCHOR gap -- the conflation CLAUDE.md records as having cost a passing gate on an earlier run. reanchor_gaps is deliberately left empty and needs_reanchor stays 0.",
+  "items": [
+   {
+    "view": "BA_HCP_DT_MEM",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_PERSON_MEMBER"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_DT_PREMIUM",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_DEFINITION"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_DT_PREMIUM",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FINTXN_PREMIUM",
+     "SAT_FINTXN_TAX",
+     "SAT_FIN_RECEIPT"
+    ],
+    "map_rows_affected": 21,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 8,
+     "B_candidate_host_rejected_collapse": 10,
+     "C_candidate_host_rejected_grain": 3
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PORT_WORDINGS",
+    "unkeyable_anchor": "HUB_PARTY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_CONTACT",
+     "SAT_PARTY_IDENTITY"
+    ],
+    "map_rows_affected": 4,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 4
+    },
+    "note": "HUB_PARTY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PARTY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PARTY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PORT_WORDINGS",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PP_MEM_DTLS",
+    "unkeyable_anchor": "HUB_LOCATION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_ADDRESS"
+    ],
+    "map_rows_affected": 5,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PROPOSAL",
+     "LNK_PARTY_ROLE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 5
+    },
+    "note": "HUB_LOCATION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_LOCATION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_LOCATION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PRIME_RIDER_DTLS",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FINTXN_PREMIUM",
+     "SAT_FINTXN_TAX"
+    ],
+    "map_rows_affected": 6,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "C_candidate_host_rejected_grain": 4,
+     "B_candidate_host_rejected_collapse": 1,
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8428_GPG_LOADER",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_MEMBER_BENEFIT"
+    ],
+    "map_rows_affected": 24,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 18,
+     "B_candidate_host_rejected_collapse": 6
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8428_GPG_LOADER",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FINTXN_PREMIUM",
+     "SAT_FIN_RECEIPT"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8428_GPG_LOADER",
+    "unkeyable_anchor": "HUB_LOCATION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_ADDRESS"
+    ],
+    "map_rows_affected": 8,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 7,
+     "D_candidate_host_rejected_concept": 1
+    },
+    "note": "HUB_LOCATION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_LOCATION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_LOCATION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8428_GPG_LOADER",
+    "unkeyable_anchor": "HUB_REINSURANCE_TREATY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RI_CESSION_DETAIL"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_REINSURANCE_TREATY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_REINSURANCE_TREATY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_REINSURANCE_TREATY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8428_GPG_LOADER",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_EMPLOYEE",
+     "SAT_LNK_ROLE_NOMINEE_BENEFICIARY"
+    ],
+    "map_rows_affected": 3,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2,
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8432_ECP_LOADER",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FINTXN_PREMIUM",
+     "SAT_FIN_RECEIPT"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8432_ECP_LOADER",
+    "unkeyable_anchor": "HUB_LOCATION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_ADDRESS"
+    ],
+    "map_rows_affected": 8,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 8
+    },
+    "note": "HUB_LOCATION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_LOCATION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_LOCATION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8432_ECP_LOADER",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_HEALTH_MEMBER_COVERAGE",
+     "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+     "SAT_RISK_PERSON_INSURED",
+     "SAT_RISK_PERSON_MEMBER"
+    ],
+    "map_rows_affected": 13,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 8,
+     "C_candidate_host_rejected_grain": 5
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8432_ECP_LOADER",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_CUSTOMER",
+     "SAT_LNK_ROLE_EMPLOYEE",
+     "SAT_LNK_ROLE_NOMINEE_BENEFICIARY"
+    ],
+    "map_rows_affected": 4,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 3,
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8433_FHC_LOADER",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_CONDITIONS",
+     "SAT_COVERAGE_MEMBER_BENEFIT"
+    ],
+    "map_rows_affected": 4,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 3,
+     "D_candidate_host_rejected_concept": 1
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8433_FHC_LOADER",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FINTXN_PREMIUM",
+     "SAT_FIN_RECEIPT"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8433_FHC_LOADER",
+    "unkeyable_anchor": "HUB_LOCATION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_ADDRESS"
+    ],
+    "map_rows_affected": 8,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 7,
+     "D_candidate_host_rejected_concept": 1
+    },
+    "note": "HUB_LOCATION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_LOCATION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_LOCATION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8433_FHC_LOADER",
+    "unkeyable_anchor": "HUB_PROPOSAL",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_PROPOSAL_QUESTIONNAIRE"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_PROPOSAL is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PROPOSAL is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PROPOSAL on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8433_FHC_LOADER",
+    "unkeyable_anchor": "HUB_REINSURANCE_TREATY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RI_CESSION_DETAIL"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_REINSURANCE_TREATY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_REINSURANCE_TREATY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_REINSURANCE_TREATY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8433_FHC_LOADER",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_CUSTOMER",
+     "SAT_LNK_ROLE_EMPLOYEE",
+     "SAT_LNK_ROLE_NOMINEE_BENEFICIARY"
+    ],
+    "map_rows_affected": 4,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 3,
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8439_CLH_LOADER",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_CONDITIONS",
+     "SAT_COVERAGE_DEFINITION",
+     "SAT_COVERAGE_MEMBER_BENEFIT"
+    ],
+    "map_rows_affected": 13,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 11,
+     "B_candidate_host_rejected_collapse": 2
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8439_CLH_LOADER",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FINTXN_PREMIUM",
+     "SAT_FIN_RECEIPT"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8439_CLH_LOADER",
+    "unkeyable_anchor": "HUB_LOCATION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_ADDRESS"
+    ],
+    "map_rows_affected": 8,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 8
+    },
+    "note": "HUB_LOCATION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_LOCATION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_LOCATION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8439_CLH_LOADER",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_HEALTH_MEMBER_COVERAGE",
+     "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+     "SAT_RISK_OBJECT_CORE",
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 11,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 8,
+     "C_candidate_host_rejected_grain": 3
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BA_HCP_PROD_8439_CLH_LOADER",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_EMPLOYEE",
+     "SAT_LNK_ROLE_NOMINEE_BENEFICIARY"
+    ],
+    "map_rows_affected": 3,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2,
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BGIL_GMC_FINAL_INSTL_DATA",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_HEALTH_MEMBER_COVERAGE",
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_BANDHAN_MEDI_CLAM",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_LIMITS"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_CLAIM",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_LOCATION",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_BANDHAN_MEDI_CLAM",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FIN_RECEIPT"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_CLAIM",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_LOCATION",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_BANDHAN_MEDI_CLAM",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_CLAIM",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_LOCATION",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_BANDHAN_MEDI_CLAM",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_NOMINEE_BENEFICIARY"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_CLAIM",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_LOCATION",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_CARD_DTLS",
+    "unkeyable_anchor": "HUB_PARTY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_PARTY_GROUP_CENSUS",
+     "SAT_PARTY_IDENTITY"
+    ],
+    "map_rows_affected": 7,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_DOCUMENT",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 7
+    },
+    "note": "HUB_PARTY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PARTY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PARTY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_CARD_DTLS",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_HEALTH_MEMBER_COVERAGE",
+     "SAT_RISK_PERSON_INSURED",
+     "SAT_RISK_PERSON_MEMBER"
+    ],
+    "map_rows_affected": 4,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_DOCUMENT",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 4
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_ECARD_MEMBR_DEL_DTLS",
+    "unkeyable_anchor": "HUB_POLICY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_POLICY_CERTIFICATE"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_PARTY",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_POLICY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_POLICY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_POLICY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_ECARD_MEMBR_DEL_DTLS",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_PARTY",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_ECARD_POL_DTLS_CONFIG",
+    "unkeyable_anchor": "HUB_PARTY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_PARTY_IDENTITY"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_PARTY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PARTY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PARTY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_ECARD_POL_DTLS_CONFIG",
+    "unkeyable_anchor": "HUB_PRODUCT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_PRODUCT_HEALTH_MEMBERSHIP_RULES",
+     "SAT_PRODUCT_RATING_FACTOR"
+    ],
+    "map_rows_affected": 6,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 6
+    },
+    "note": "HUB_PRODUCT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PRODUCT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PRODUCT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_EC_MEM_DTLS_EXTN",
+    "unkeyable_anchor": "HUB_CLAIM",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_CLAIM_HEADER",
+     "SAT_CLAIM_HEALTH_DETAIL"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_DOCUMENT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "D_candidate_host_rejected_concept": 1,
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_CLAIM is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_CLAIM is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_CLAIM on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_EC_MEM_DTLS_EXTN",
+    "unkeyable_anchor": "HUB_PROPOSAL",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_PROPOSAL_HEADER"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_DOCUMENT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_PROPOSAL is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PROPOSAL is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PROPOSAL on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_EC_MEM_DTLS_EXTN",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_NOMINEE_BENEFICIARY"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_DOCUMENT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_EHH_POL_DTLS",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FINTXN_PREMIUM",
+     "SAT_FIN_RECEIPT"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_LOCATION",
+     "HUB_ORG_UNIT",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_EHH_POL_DTLS",
+    "unkeyable_anchor": "HUB_PARTY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_CONTACT",
+     "SAT_PARTY_IDENTIFICATION",
+     "SAT_PARTY_IDENTITY"
+    ],
+    "map_rows_affected": 9,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_LOCATION",
+     "HUB_ORG_UNIT",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 9
+    },
+    "note": "HUB_PARTY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PARTY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PARTY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GENERIC_LOADER_LOG_TABLE",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FINTXN_PREMIUM"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_LOCATION",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GENERIC_LOADER_LOG_TABLE",
+    "unkeyable_anchor": "HUB_PARTY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_CONTACT",
+     "SAT_PARTY_EMPLOYMENT",
+     "SAT_PARTY_GROUP_CENSUS",
+     "SAT_PARTY_IDENTIFICATION",
+     "SAT_PARTY_IDENTITY",
+     "SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS"
+    ],
+    "map_rows_affected": 19,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_LOCATION",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 19
+    },
+    "note": "HUB_PARTY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PARTY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PARTY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GPG_POL_DTLS",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FINTXN_PREMIUM",
+     "SAT_FINTXN_TAX"
+    ],
+    "map_rows_affected": 23,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_REINSURANCE_TREATY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 5,
+     "B_candidate_host_rejected_collapse": 18
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GPG_POL_DTLS",
+    "unkeyable_anchor": "HUB_LOCATION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_ADDRESS"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_REINSURANCE_TREATY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_LOCATION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_LOCATION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_LOCATION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GPG_POL_DTLS",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_EMPLOYEE"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_REINSURANCE_TREATY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GP_HOSPITAL_CASH",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_LIMITS"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_PROPOSAL"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GP_HOSPITAL_CASH",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 4,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_PROPOSAL"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1,
+     "C_candidate_host_rejected_grain": 3
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GP_HOSPITAL_CASH",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_NOMINEE_BENEFICIARY"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_PROPOSAL"
+    ],
+    "dispositions": {
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GRP_HLT_CUST_DTLS",
+    "unkeyable_anchor": "HUB_DISTRIBUTION_CHANNEL",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_CHANNEL_DEFINITION"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_DISTRIBUTION_CHANNEL is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_DISTRIBUTION_CHANNEL is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_DISTRIBUTION_CHANNEL on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GRP_HLT_CUST_DTLS",
+    "unkeyable_anchor": "HUB_LOCATION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_ADDRESS"
+    ],
+    "map_rows_affected": 5,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 5
+    },
+    "note": "HUB_LOCATION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_LOCATION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_LOCATION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GRP_HLT_CUST_DTLS",
+    "unkeyable_anchor": "HUB_PARTY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_CONTACT",
+     "SAT_PARTY_IDENTITY"
+    ],
+    "map_rows_affected": 10,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 10
+    },
+    "note": "HUB_PARTY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PARTY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PARTY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GRP_HLT_DTLS",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_CONDITIONS",
+     "SAT_COVERAGE_DEFINITION",
+     "SAT_COVERAGE_LIMITS"
+    ],
+    "map_rows_affected": 4,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_ORG_UNIT",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_PROPOSAL",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 4
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GRP_HLT_DTLS",
+    "unkeyable_anchor": "HUB_DISTRIBUTION_CHANNEL",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_CHANNEL_DEFINITION"
+    ],
+    "map_rows_affected": 3,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_ORG_UNIT",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_PROPOSAL",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 3
+    },
+    "note": "HUB_DISTRIBUTION_CHANNEL is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_DISTRIBUTION_CHANNEL is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_DISTRIBUTION_CHANNEL on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GRP_HLT_DTLS",
+    "unkeyable_anchor": "HUB_PARTY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_PARTY_IDENTITY",
+     "SAT_PARTY_ORGANISATION_PROFILE"
+    ],
+    "map_rows_affected": 9,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_ORG_UNIT",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_PROPOSAL",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 9
+    },
+    "note": "HUB_PARTY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PARTY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PARTY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GRP_HLT_DTLS",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_OBJECT_CORE"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_ORG_UNIT",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_PROPOSAL",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+    "unkeyable_anchor": "HUB_CLAIM",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_CLAIM_HEALTH_DETAIL"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_CLAIM is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_CLAIM is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_CLAIM on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_CONDITIONS",
+     "SAT_COVERAGE_LIMITS",
+     "SAT_COVERAGE_MEMBER_BENEFIT"
+    ],
+    "map_rows_affected": 3,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2,
+     "B_candidate_host_rejected_collapse": 1
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FINTXN_TAX"
+    ],
+    "map_rows_affected": 9,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2,
+     "B_candidate_host_rejected_collapse": 4,
+     "C_candidate_host_rejected_grain": 3
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+    "unkeyable_anchor": "HUB_PARTY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_PARTY_IDENTIFICATION"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_PARTY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PARTY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PARTY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_HEALTH_MEMBER_COVERAGE"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_GRP_TPA_EXTN",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FIN_CHARGE_RATE"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HAT_ID_MEM_DETLS",
+    "unkeyable_anchor": "HUB_LOCATION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_ADDRESS"
+    ],
+    "map_rows_affected": 5,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 5
+    },
+    "note": "HUB_LOCATION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_LOCATION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_LOCATION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HAT_ID_MEM_DETLS",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+     "SAT_RISK_HEALTH_PED_WAITING",
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 9,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 9
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HAT_OCR_FINA_DTLS_LST",
+    "unkeyable_anchor": "HUB_PARTY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_PARTY_IDENTITY"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_PARTY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PARTY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PARTY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HCF_MEMBER_DTLS",
+    "unkeyable_anchor": "HUB_ASSESSMENT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_ASSESSMENT_MEDICAL"
+    ],
+    "map_rows_affected": 3,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 3
+    },
+    "note": "HUB_ASSESSMENT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_ASSESSMENT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_ASSESSMENT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HCF_MEMBER_DTLS",
+    "unkeyable_anchor": "HUB_CLAIM",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_CLAIM_HEADER"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_CLAIM is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_CLAIM is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_CLAIM on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HCF_MEMBER_DTLS",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_CONDITIONS",
+     "SAT_COVERAGE_DEFINITION",
+     "SAT_COVERAGE_MEMBER_BENEFIT"
+    ],
+    "map_rows_affected": 7,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 7
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HCF_MEMBER_DTLS",
+    "unkeyable_anchor": "HUB_PROPOSAL",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_PROPOSAL_UNDERWRITING"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_PROPOSAL is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PROPOSAL is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PROPOSAL on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HCF_MEMBER_DTLS",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_NOMINEE_BENEFICIARY"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_RISK_OBJECT"
+    ],
+    "dispositions": {
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HCP_TRANSCRIPT_URL",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_MEMBER_BENEFIT"
+    ],
+    "map_rows_affected": 5,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 5
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HCP_TRANSCRIPT_URL",
+    "unkeyable_anchor": "HUB_DOCUMENT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_DOCUMENT_DEFINITION"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_DOCUMENT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_DOCUMENT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_DOCUMENT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HCP_TRANSCRIPT_URL",
+    "unkeyable_anchor": "HUB_PARTY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_CONTACT"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_PARTY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PARTY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PARTY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HCP_TRANSCRIPT_URL",
+    "unkeyable_anchor": "HUB_POLICY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_POLICY_CLASSIFICATION"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_POLICY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_POLICY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_POLICY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HCP_TRANSCRIPT_URL",
+    "unkeyable_anchor": "HUB_PROPOSAL",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_PROPOSAL_HEADER"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_PROPOSAL is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PROPOSAL is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PROPOSAL on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HCS_PLANSI_MAPP",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_MEMBER_BENEFIT"
+    ],
+    "map_rows_affected": 8,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 8
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HC_PART_EXTN",
+    "unkeyable_anchor": "HUB_CLAIM",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_CLAIM_HEALTH_DETAIL"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_CLAIM is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_CLAIM is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_CLAIM on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HC_PART_EXTN",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_MEMBER_BENEFIT"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HC_PART_EXTN",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 4,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 3,
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HC_PART_EXTN",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_NOMINEE_BENEFICIARY"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HDFC_SEC_FHPP",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 4,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_PROPOSAL"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1,
+     "C_candidate_host_rejected_grain": 3
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HDFC_SEC_FHPP",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_NOMINEE_BENEFICIARY"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_PROPOSAL"
+    ],
+    "dispositions": {
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HEALTH_WEBSERVICE_INFO",
+    "unkeyable_anchor": "HUB_PARTY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_PARTY_BANKING",
+     "SAT_PARTY_IDENTITY"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_AGREEMENT",
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_FINANCIAL_TRANSACTION",
+     "HUB_ORG_UNIT",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_PARTY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PARTY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PARTY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HEALTH_WEBSERVICE_INFO",
+    "unkeyable_anchor": "HUB_PAYMENT_INSTRUMENT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_INSTRUMENT_DEFINITION"
+    ],
+    "map_rows_affected": 3,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_AGREEMENT",
+     "HUB_ASSESSMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_FINANCIAL_TRANSACTION",
+     "HUB_ORG_UNIT",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "C_candidate_host_rejected_grain": 1,
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_PAYMENT_INSTRUMENT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PAYMENT_INSTRUMENT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PAYMENT_INSTRUMENT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HG_POL_DTLS",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FINTXN_HEADER",
+     "SAT_FINTXN_PREMIUM",
+     "SAT_FINTXN_TAX",
+     "SAT_FIN_RECEIPT"
+    ],
+    "map_rows_affected": 19,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_COVERAGE",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_PROPOSAL",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 9,
+     "C_candidate_host_rejected_grain": 10
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HG_POL_DTLS",
+    "unkeyable_anchor": "HUB_LOCATION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_ADDRESS",
+     "SAT_COMMON_GEO"
+    ],
+    "map_rows_affected": 17,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_COVERAGE",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_PROPOSAL",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 17
+    },
+    "note": "HUB_LOCATION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_LOCATION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_LOCATION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HG_POL_DTLS",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_COVERAGE",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_PROPOSAL",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "D_candidate_host_rejected_concept": 1
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HG_POL_DTLS",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_AGENT"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_COVERAGE",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT",
+     "HUB_PROPOSAL",
+     "HUB_QUOTE"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HLT_ENSURE_MEM_DTLS",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "C_candidate_host_rejected_grain": 1,
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HLT_ENSURE_MEM_DTLS",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_NOMINEE_BENEFICIARY"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_BILL_DETAIL",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_DEFINITION"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_BILL_DETAIL_OCR",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_DEFINITION"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_CASHLESS_INWARD",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_CASHLESS_INWARD",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_CUSTOMER"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_CLAIM_STATUS_DASH_APP",
+    "unkeyable_anchor": "HUB_CLAIM",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_CLAIM_HEADER"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_LOCATION"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_CLAIM is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_CLAIM is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_CLAIM on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_COINSU_CLM_DTLS",
+    "unkeyable_anchor": "HUB_LOCATION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_ADDRESS"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_LOCATION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_LOCATION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_LOCATION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_COINSU_CLM_DTLS",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 3,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 3
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_GMC_AHC",
+    "unkeyable_anchor": "HUB_CLAIM",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_CLAIM_HEALTH_DETAIL"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_CLAIM is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_CLAIM is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_CLAIM on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_GMC_AHC",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FINTXN_HEADER"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_GMC_AHC",
+    "unkeyable_anchor": "HUB_PARTY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_CONTACT",
+     "SAT_PARTY_GROUP_CENSUS",
+     "SAT_PARTY_IDENTITY"
+    ],
+    "map_rows_affected": 5,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 5
+    },
+    "note": "HUB_PARTY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PARTY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PARTY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_GMC_AHC",
+    "unkeyable_anchor": "HUB_PRODUCT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_PRODUCT_DEFINITION"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_PRODUCT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PRODUCT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PRODUCT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_GMC_AHC",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_HCM_EXTRACT",
+    "unkeyable_anchor": "HUB_ASSESSMENT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_ASSESSMENT_HEADER",
+     "SAT_ASSESSMENT_MEDICAL"
+    ],
+    "map_rows_affected": 3,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_TRANSACTION",
+     "HUB_LOCATION",
+     "HUB_LOSS_EVENT",
+     "HUB_PARTY",
+     "HUB_PAYMENT_INSTRUMENT",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 3
+    },
+    "note": "HUB_ASSESSMENT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_ASSESSMENT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_ASSESSMENT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_HCM_EXTRACT",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_SUBLIMIT_SCHEDULE"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_TRANSACTION",
+     "HUB_LOCATION",
+     "HUB_LOSS_EVENT",
+     "HUB_PARTY",
+     "HUB_PAYMENT_INSTRUMENT",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_HCM_EXTRACT",
+    "unkeyable_anchor": "HUB_DOCUMENT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_DOCUMENT_CHECKLIST",
+     "SAT_DOCUMENT_DEFINITION"
+    ],
+    "map_rows_affected": 7,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_TRANSACTION",
+     "HUB_LOCATION",
+     "HUB_LOSS_EVENT",
+     "HUB_PARTY",
+     "HUB_PAYMENT_INSTRUMENT",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 5,
+     "B_candidate_host_rejected_collapse": 2
+    },
+    "note": "HUB_DOCUMENT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_DOCUMENT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_DOCUMENT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_HCM_EXTRACT",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_HEALTH_MEMBER_COVERAGE"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_TRANSACTION",
+     "HUB_LOCATION",
+     "HUB_LOSS_EVENT",
+     "HUB_PARTY",
+     "HUB_PAYMENT_INSTRUMENT",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "B_candidate_host_rejected_collapse": 2
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_HCM_EXTRACT",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_PROVIDER"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_TRANSACTION",
+     "HUB_LOCATION",
+     "HUB_LOSS_EVENT",
+     "HUB_PARTY",
+     "HUB_PAYMENT_INSTRUMENT",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_HOSPITAL_MASTER",
+    "unkeyable_anchor": "HUB_POLICY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_POLICY_HEADER"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_AGREEMENT",
+     "HUB_LOCATION",
+     "HUB_PARTY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_POLICY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_POLICY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_POLICY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_HOSPITAL_MASTER",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_PROVIDER"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_AGREEMENT",
+     "HUB_LOCATION",
+     "HUB_PARTY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+    "unkeyable_anchor": "HUB_LOCATION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_ADDRESS",
+     "SAT_COMMON_ADMIN_GEOGRAPHY",
+     "SAT_COMMON_GEO"
+    ],
+    "map_rows_affected": 6,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_AGREEMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_PARTY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 6
+    },
+    "note": "HUB_LOCATION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_LOCATION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_LOCATION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+    "unkeyable_anchor": "HUB_ORG_UNIT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_ORG_UNIT_DEFINITION"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_AGREEMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_PARTY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_ORG_UNIT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_ORG_UNIT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_ORG_UNIT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+    "unkeyable_anchor": "HUB_PAYMENT_INSTRUMENT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_INSTRUMENT_DEFINITION"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_AGREEMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_PARTY"
+    ],
+    "dispositions": {
+     "B_candidate_host_rejected_collapse": 1
+    },
+    "note": "HUB_PAYMENT_INSTRUMENT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PAYMENT_INSTRUMENT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PAYMENT_INSTRUMENT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_PROVIDER"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_AGREEMENT",
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_PARTY"
+    ],
+    "dispositions": {
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_HOSP_MASTER_EXTN1",
+    "unkeyable_anchor": "HUB_ASSESSMENT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_ASSESSMENT_HEADER"
+    ],
+    "map_rows_affected": 4,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_AGREEMENT",
+     "HUB_PARTY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 4
+    },
+    "note": "HUB_ASSESSMENT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_ASSESSMENT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_ASSESSMENT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_HOSP_MASTER_EXTN1",
+    "unkeyable_anchor": "HUB_LOCATION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_ADDRESS"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_AGREEMENT",
+     "HUB_PARTY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_LOCATION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_LOCATION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_LOCATION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_HOSP_MASTER_EXTN1",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_PROVIDER"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_AGREEMENT",
+     "HUB_PARTY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_INWARD_DTLS",
+    "unkeyable_anchor": "HUB_PRODUCT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_PRODUCT_DEFINITION"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_DOCUMENT",
+     "HUB_LOCATION",
+     "HUB_LOSS_EVENT",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_PRODUCT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PRODUCT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PRODUCT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_INWARD_DTLS",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_DOCUMENT",
+     "HUB_LOCATION",
+     "HUB_LOSS_EVENT",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_INWARD_DTLS",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_CUSTOMER"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_DOCUMENT",
+     "HUB_LOCATION",
+     "HUB_LOSS_EVENT",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_MEMBER_DTLS",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_MEMBER_BENEFIT"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_MEMBER_DTLS",
+    "unkeyable_anchor": "HUB_LOCATION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_ADDRESS"
+    ],
+    "map_rows_affected": 4,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 4
+    },
+    "note": "HUB_LOCATION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_LOCATION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_LOCATION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_MEMBER_DTLS",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_HEALTH_MEMBER_COVERAGE",
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 7,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 7
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_MEMBER_DTLS",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_CUSTOMER"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_FINANCIAL_ACCOUNT",
+     "HUB_PARTY",
+     "HUB_POLICY",
+     "HUB_PRODUCT"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_ORPHAN_REG",
+    "unkeyable_anchor": "HUB_PARTY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_CONTACT",
+     "SAT_PARTY_IDENTITY"
+    ],
+    "map_rows_affected": 6,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_LOCATION",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 6
+    },
+    "note": "HUB_PARTY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PARTY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PARTY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_ORPHAN_REG",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_LOCATION",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_HM_PRO_ASSESSMENT",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FINTXN_PREMIUM",
+     "SAT_FIN_RECEIPT"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_CLAIM"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_IHG_MEM_DTLS_EXTN",
+    "unkeyable_anchor": "HUB_ASSESSMENT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_ASSESSMENT_UNDERWRITING"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_DOCUMENT",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_ASSESSMENT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_ASSESSMENT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_ASSESSMENT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_IHG_MEM_DTLS_EXTN",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FINTXN_PREMIUM"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_DOCUMENT",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_IHG_MEM_DTLS_EXTN",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_HEALTH_MEMBER_COVERAGE",
+     "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 12,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_DOCUMENT",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 7,
+     "C_candidate_host_rejected_grain": 5
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_IHG_MEM_DTLS_EXTN",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_NOMINEE_BENEFICIARY"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_DOCUMENT",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_ILLNESS_BASES_EXTN",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_MEMBER_BENEFIT"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_ILLNESS_BASES_EXTN",
+    "unkeyable_anchor": "HUB_PARTY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_PARTY_FINANCIAL_PROFILE",
+     "SAT_PARTY_IDENTITY"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "HUB_PARTY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PARTY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PARTY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_ILLNESS_BASES_EXTN",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_ILLNESS_BASES_EXTN",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_NOMINEE_BENEFICIARY"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_PMJAY_PRMBOOK_DTLS",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_LIVES_COUNT"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_PMJAY_PRMBOOK_DTLS",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FIN_PREMIUM_REGISTER"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1,
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_REMEDINET_CLAIM_DETAILS",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FINTXN_CLAIM_PAYMENT"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_AGREEMENT",
+     "HUB_CLAIM",
+     "HUB_DOCUMENT",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_REMEDINET_CLAIM_DETAILS",
+    "unkeyable_anchor": "HUB_ORG_UNIT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_ORG_UNIT_DEFINITION"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_AGREEMENT",
+     "HUB_CLAIM",
+     "HUB_DOCUMENT",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_ORG_UNIT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_ORG_UNIT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_ORG_UNIT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_REMEDINET_CLAIM_DETAILS",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_PROVIDER"
+    ],
+    "map_rows_affected": 2,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_AGREEMENT",
+     "HUB_CLAIM",
+     "HUB_DOCUMENT",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 2
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_SCR_HLTH_PORTABLE_DTLS",
+    "unkeyable_anchor": "HUB_POLICY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_POLICY_PORTABILITY_MIGRATION"
+    ],
+    "map_rows_affected": 3,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_CASE",
+     "HUB_PARTY"
+    ],
+    "dispositions": {
+     "D_candidate_host_rejected_concept": 2,
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_POLICY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_POLICY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_POLICY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_SCR_HLTH_PORTABLE_DTLS",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_HEALTH_MEMBER_COVERAGE"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_ASSESSMENT",
+     "HUB_CASE",
+     "HUB_PARTY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_SH_MEM_DTLS_EXTN",
+    "unkeyable_anchor": "HUB_CLAIM",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_CLAIM_HEALTH_DETAIL"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_DOCUMENT",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_CLAIM is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_CLAIM is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_CLAIM on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_SH_MEM_DTLS_EXTN",
+    "unkeyable_anchor": "HUB_FINANCIAL_TRANSACTION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_FINTXN_PREMIUM"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_DOCUMENT",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "HUB_FINANCIAL_TRANSACTION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_FINANCIAL_TRANSACTION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_FINANCIAL_TRANSACTION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_SH_MEM_DTLS_EXTN",
+    "unkeyable_anchor": "HUB_LOCATION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_ADDRESS"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_DOCUMENT",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_LOCATION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_LOCATION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_LOCATION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_SH_MEM_DTLS_EXTN",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_HEALTH_MEMBER_COVERAGE",
+     "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 8,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_DOCUMENT",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 6,
+     "C_candidate_host_rejected_grain": 2
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_SH_MEM_DTLS_EXTN",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_NOMINEE_BENEFICIARY"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_DISTRIBUTION_CHANNEL",
+     "HUB_DOCUMENT",
+     "HUB_PARTY",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "C_candidate_host_rejected_grain": 1
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_TPA_CLAIM_DETAILS_WS",
+    "unkeyable_anchor": "HUB_ASSESSMENT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_ASSESSMENT_HEADER"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_FINANCIAL_TRANSACTION",
+     "HUB_LOSS_EVENT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_PAYMENT_INSTRUMENT",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_ASSESSMENT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_ASSESSMENT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_ASSESSMENT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_TPA_CLAIM_DETAILS_WS",
+    "unkeyable_anchor": "HUB_COVERAGE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COVERAGE_DEFINITION"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_FINANCIAL_TRANSACTION",
+     "HUB_LOSS_EVENT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_PAYMENT_INSTRUMENT",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_COVERAGE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_COVERAGE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_COVERAGE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_TPA_CLAIM_DETAILS_WS",
+    "unkeyable_anchor": "HUB_LOCATION",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_COMMON_ADDRESS"
+    ],
+    "map_rows_affected": 10,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_FINANCIAL_TRANSACTION",
+     "HUB_LOSS_EVENT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_PAYMENT_INSTRUMENT",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "B_candidate_host_rejected_collapse": 5,
+     "A_concept_home_absent_under_keyed_hubs": 4,
+     "D_candidate_host_rejected_concept": 1
+    },
+    "note": "HUB_LOCATION is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_LOCATION is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_LOCATION on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_TPA_CLAIM_DETAILS_WS",
+    "unkeyable_anchor": "HUB_PRODUCT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_PRODUCT_DEFINITION"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_FINANCIAL_TRANSACTION",
+     "HUB_LOSS_EVENT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_PAYMENT_INSTRUMENT",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_PRODUCT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PRODUCT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PRODUCT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_TPA_CLAIM_DETAILS_WS",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_HEALTH_MEMBER_COVERAGE",
+     "SAT_RISK_PERSON_INSURED"
+    ],
+    "map_rows_affected": 3,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_FINANCIAL_TRANSACTION",
+     "HUB_LOSS_EVENT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_PAYMENT_INSTRUMENT",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 3
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_TPA_CLAIM_DETAILS_WS",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_AGENT",
+     "SAT_LNK_ROLE_PROVIDER",
+     "SAT_LNK_ROLE_TPA"
+    ],
+    "map_rows_affected": 3,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_CLAIM",
+     "HUB_FINANCIAL_TRANSACTION",
+     "HUB_LOSS_EVENT",
+     "HUB_ORG_UNIT",
+     "HUB_PARTY",
+     "HUB_PAYMENT_INSTRUMENT",
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 3
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+    "unkeyable_anchor": "HUB_PARTY",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_PARTY_GROUP_HOUSEHOLD"
+    ],
+    "map_rows_affected": 1,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 1
+    },
+    "note": "HUB_PARTY is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_PARTY is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_PARTY on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+    "unkeyable_anchor": "HUB_RISK_OBJECT",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_RISK_PERSON_MEMBER"
+    ],
+    "map_rows_affected": 72,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 72
+    },
+    "note": "HUB_RISK_OBJECT is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for HUB_RISK_OBJECT is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for HUB_RISK_OBJECT on this view or accept that these columns are not loadable from it."
+   },
+   {
+    "view": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+    "unkeyable_anchor": "LNK_PARTY_ROLE",
+    "kind": "anchor_key_not_recoverable_on_view",
+    "severity": "blocker_for_this_feeder",
+    "satellites_affected": [
+     "SAT_LNK_ROLE_NOMINEE_BENEFICIARY"
+    ],
+    "map_rows_affected": 18,
+    "hubs_already_keyed_on_this_view": [
+     "HUB_POLICY"
+    ],
+    "dispositions": {
+     "A_concept_home_absent_under_keyed_hubs": 18
+    },
+    "note": "LNK_PARTY_ROLE is a real hub/link carrying satellites, and equals parent(satellite) for every affected row, so this is NOT a missing-anchor model gap. It is a SOURCE gap: no business key for LNK_PARTY_ROLE is recoverable on this view in the legacy SQL, and the legacy half of this map carries no resolved_key at all (0 of 2817 rows, measured in both target and augmentation blocks). Either establish a key for LNK_PARTY_ROLE on this view or accept that these columns are not loadable from it."
+   }
+  ]
+ },
+ "stage_log": [
+  {
+   "stage": "6.5b",
+   "rehomed_rows": 22,
+   "declared_absence_rows": 646,
+   "d3_target_block_prose_fixed": 1,
+   "reanchor_gaps_added": 0,
+   "needs_reanchor_after": 0
+  }
+ ]
+}

@@ -1,0 +1,1226 @@
+[
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PORT_WORDINGS",
+  "column": "EMAIL",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PP_MEM_DTLS",
+  "column": "DC_TELENO",
+  "block": "target",
+  "value": "landline"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8428_GPG_LOADER",
+  "column": "PD_TELEPHONE",
+  "block": "target",
+  "value": "landline"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8428_GPG_LOADER",
+  "column": "PD_EMAIL",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8428_GPG_LOADER",
+  "column": "PD_FAX",
+  "block": "target",
+  "value": "fax"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8428_GPG_LOADER",
+  "column": "PD_MOBILE_NUMBER",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8428_GPG_LOADER",
+  "column": "PD_AGENT_EMAIL_ID",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8432_ECP_LOADER",
+  "column": "PD_TELEPHONE",
+  "block": "target",
+  "value": "landline"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8432_ECP_LOADER",
+  "column": "PD_EMAIL",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8432_ECP_LOADER",
+  "column": "PD_FAX",
+  "block": "target",
+  "value": "fax"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8432_ECP_LOADER",
+  "column": "PD_MOBILE_NUMBER",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8432_ECP_LOADER",
+  "column": "PD_AGENT_EMAIL_ID",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8433_FHC_LOADER",
+  "column": "PD_TELEPHONE",
+  "block": "target",
+  "value": "landline"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8433_FHC_LOADER",
+  "column": "PD_EMAIL",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8433_FHC_LOADER",
+  "column": "PD_FAX",
+  "block": "target",
+  "value": "fax"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8433_FHC_LOADER",
+  "column": "PD_MOBILE_NUMBER",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8433_FHC_LOADER",
+  "column": "PD_AGENT_EMAIL_ID",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8439_CLH_LOADER",
+  "column": "PD_TELEPHONE",
+  "block": "target",
+  "value": "landline"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8439_CLH_LOADER",
+  "column": "PD_EMAIL",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8439_CLH_LOADER",
+  "column": "PD_FAX",
+  "block": "target",
+  "value": "fax"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8439_CLH_LOADER",
+  "column": "PD_MOBILE_NUMBER",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8439_CLH_LOADER",
+  "column": "PD_AGENT_EMAIL_ID",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_BANDHAN_MEDI_CLAM",
+  "column": "P_EMAIL",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_BANDHAN_MEDI_CLAM",
+  "column": "MOBILE",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_BANDHAN_MEDI_CLAM",
+  "column": "M_EMAIL",
+  "block": "target",
+  "value": "alt-email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_BANDHAN_MEDI_CLAM",
+  "column": "M_MOBILE",
+  "block": "target",
+  "value": "alt-mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_EHH_POL_DTLS",
+  "column": "MOBILE1",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_EHH_POL_DTLS",
+  "column": "MOBILE2",
+  "block": "target",
+  "value": "alt-mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_EHH_POL_DTLS",
+  "column": "EMAIL",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_GENERIC_LOADER_LOG_TABLE",
+  "column": "TELEPHONE",
+  "block": "target",
+  "value": "landline"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_GENERIC_LOADER_LOG_TABLE",
+  "column": "MOBILENUMBER",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_GENERIC_LOADER_LOG_TABLE",
+  "column": "EMAIL",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_GENERIC_LOADER_LOG_TABLE",
+  "column": "FAX",
+  "block": "target",
+  "value": "fax"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_GRP_HLT_CUST_DTLS",
+  "column": "PHONE_NUMBER",
+  "block": "target",
+  "value": "landline"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_GRP_HLT_CUST_DTLS",
+  "column": "MOBILE",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_GRP_HLT_CUST_DTLS",
+  "column": "E_MAIL_ID",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HAT_ID_MEM_DETLS",
+  "column": "EMAIL_ID",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HAT_ID_MEM_DETLS",
+  "column": "TEL",
+  "block": "target",
+  "value": "landline"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HCP_TRANSCRIPT_URL",
+  "column": "PARTNER_MAIL_ID",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HCP_TRANSCRIPT_URL",
+  "column": "PARTNER_MOBILE_NO",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HG_POL_DTLS",
+  "column": "MOBILE_NO",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HG_POL_DTLS",
+  "column": "TELEPHONE",
+  "block": "target",
+  "value": "landline"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HG_POL_DTLS",
+  "column": "EMAIL",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HG_POL_DTLS",
+  "column": "EMAIL_CUST",
+  "block": "target",
+  "value": "alt-email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_GMC_AHC",
+  "column": "CONTACT_NO",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_GMC_AHC",
+  "column": "EMAIL_ID",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HCM_EXTRACT",
+  "column": "STD",
+  "block": "target",
+  "value": "std"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HCM_EXTRACT",
+  "column": "PHONE",
+  "block": "target",
+  "value": "landline"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HCM_EXTRACT",
+  "column": "FAX",
+  "block": "target",
+  "value": "fax"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HCM_EXTRACT",
+  "column": "TELEPHONE",
+  "block": "target",
+  "value": "landline"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HCM_EXTRACT",
+  "column": "MOBILE_NO",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+  "column": "MOBILE_NO",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+  "column": "MOB_FIN_OFFICER",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+  "column": "EMAIL_FIN_DEPT",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+  "column": "PHONE_NO2",
+  "block": "target",
+  "value": "landline"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+  "column": "FAX_NO2",
+  "block": "target",
+  "value": "fax"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+  "column": "BILLINGMOBILENO",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+  "column": "TPAEMAIL",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+  "column": "BILLINGEMAIL",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+  "column": "ADMINMOBILENO",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+  "column": "ADMINEMAIL",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+  "column": "MEDDIRMOB",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+  "column": "MEDDIREMAIL",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+  "column": "MEDSUPERNAMEMOBNO",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+  "column": "MEDSUPERNAMEEMAIL",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+  "column": "MKTHEADMOBILENO",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+  "column": "MKTHEADEMAIL",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+  "column": "CEOMOBILENO",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSP_MASTER_EXTN1",
+  "column": "CEOEMAIL",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_INWARD_DTLS",
+  "column": "EMAIL_ID",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_INWARD_DTLS",
+  "column": "CALLER_EMAIL_ID",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_INWARD_DTLS",
+  "column": "CALLER_CONTACT_NO",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_INWARD_DTLS",
+  "column": "INSURED_EMAIL_ID",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_INWARD_DTLS",
+  "column": "INSURED_CONTACT_NO",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_INWARD_DTLS",
+  "column": "MOBILE_NO",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_MEMBER_DTLS",
+  "column": "EMAIL_ID",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_MEMBER_DTLS",
+  "column": "PHONE_NO",
+  "block": "target",
+  "value": "landline"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_ORPHAN_REG",
+  "column": "TELEPHONE_NO",
+  "block": "target",
+  "value": "landline"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_SH_MEM_DTLS_EXTN",
+  "column": "EMAIL_ID",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_TPA_CLAIM_DETAILS_WS",
+  "column": "EMAIL_ID_1",
+  "block": "target",
+  "value": "email"
+ },
+ {
+  "satellite": "SAT_COMMON_CONTACT",
+  "model_childkey": "Contact Point Type + Contact Priority Order",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_TPA_CLAIM_DETAILS_WS",
+  "column": "MOB_NO",
+  "block": "target",
+  "value": "mobile"
+ },
+ {
+  "satellite": "SAT_PARTY_BANKING",
+  "model_childkey": "Account Number Masked",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HCM_EXTRACT",
+  "column": "BANK_NAME",
+  "block": "target",
+  "value": "Payee Settlement Account"
+ },
+ {
+  "satellite": "SAT_PARTY_BANKING",
+  "model_childkey": "Account Number Masked",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HCM_EXTRACT",
+  "column": "BANK_AC_NO",
+  "block": "target",
+  "value": "Payee Settlement Account"
+ },
+ {
+  "satellite": "SAT_PARTY_BANKING",
+  "model_childkey": "Account Number Masked",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HCM_EXTRACT",
+  "column": "ACCOUNT_NO",
+  "block": "target",
+  "value": "Payee Settlement Account"
+ },
+ {
+  "satellite": "SAT_PARTY_BANKING",
+  "model_childkey": "Account Number Masked",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+  "column": "NAME_BANK_ACCOUNT",
+  "block": "target",
+  "value": "Hospital Settlement Account"
+ },
+ {
+  "satellite": "SAT_PARTY_BANKING",
+  "model_childkey": "Account Number Masked",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+  "column": "BANK_NAME",
+  "block": "target",
+  "value": "Hospital Settlement Account"
+ },
+ {
+  "satellite": "SAT_PARTY_BANKING",
+  "model_childkey": "Account Number Masked",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+  "column": "BR_MICR_CODE",
+  "block": "target",
+  "value": "Hospital Settlement Account"
+ },
+ {
+  "satellite": "SAT_PARTY_BANKING",
+  "model_childkey": "Account Number Masked",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+  "column": "IFSC_CODE_NEFT",
+  "block": "target",
+  "value": "Hospital Settlement Account"
+ },
+ {
+  "satellite": "SAT_PARTY_BANKING",
+  "model_childkey": "Account Number Masked",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+  "column": "ACCOUNT_TYPE",
+  "block": "target",
+  "value": "Hospital Settlement Account"
+ },
+ {
+  "satellite": "SAT_PARTY_BANKING",
+  "model_childkey": "Account Number Masked",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+  "column": "ACCOUNT_NO",
+  "block": "target",
+  "value": "Hospital Settlement Account"
+ },
+ {
+  "satellite": "SAT_PARTY_IDENTIFICATION",
+  "model_childkey": "Identification Type Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HLT_ENSURE_MEM_DTLS",
+  "column": "AGE_PROOF_YN",
+  "block": "target",
+  "value": "Age Proof"
+ },
+ {
+  "satellite": "SAT_POLICY_CERTIFICATE",
+  "model_childkey": "Certificate Number",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_POL_COV",
+  "column": "MEM_ADD_FLAG",
+  "block": "target",
+  "value": "Per-Member Certificate"
+ },
+ {
+  "satellite": "SAT_POLICY_CERTIFICATE",
+  "model_childkey": "Certificate Number",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_POL_COV",
+  "column": "MEM_STATUS",
+  "block": "target",
+  "value": "Per-Member Certificate"
+ },
+ {
+  "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+  "model_childkey": "Coverage Reference + Coverage Sequence",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_POL_COV",
+  "column": "PREM_BASE_COVER",
+  "block": "target",
+  "value": "Base Cover"
+ },
+ {
+  "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+  "model_childkey": "Coverage Reference + Coverage Sequence",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BJAZ_HG_POL_DTLS",
+  "column": "AIR_AMBULANCE_YN",
+  "block": "target",
+  "value": "Air Ambulance"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "FAMILY_DISC_RATE",
+  "block": "target",
+  "value": "Family Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "FAMILY_DISC_AMT",
+  "block": "target",
+  "value": "Family Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "GOOD_HEALTH_DISC_RATE",
+  "block": "target",
+  "value": "Good Health Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "GOOD_HEALTH_DISC_AMT",
+  "block": "target",
+  "value": "Good Health Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "ADDON_COV_DISC_RATE",
+  "block": "target",
+  "value": "Add-On Cover Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "ADDON_COV_DISC_AMT",
+  "block": "target",
+  "value": "Add-On Cover Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "CLAIM_FREE_RENEWAL_DISC_RATE",
+  "block": "target",
+  "value": "Claim-Free Renewal Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "CLAIM_FREE_RENEWAL_DISC_AMT",
+  "block": "target",
+  "value": "Claim-Free Renewal Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "ONLINE_DISC_RATE",
+  "block": "target",
+  "value": "Online Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "ONLINE_DISC_AMT",
+  "block": "target",
+  "value": "Online Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "DIRECT_CUST_DISC_RATE",
+  "block": "target",
+  "value": "Direct Customer Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "DIRECT_CUST_DISC_AMT",
+  "block": "target",
+  "value": "Direct Customer Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "DISC_IN_LIEU_AGENCY_COMM_RATE",
+  "block": "target",
+  "value": "Discount In Lieu Of Agency Commission"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "DISC_IN_LIEU_AGENCY_COMM_AMT",
+  "block": "target",
+  "value": "Discount In Lieu Of Agency Commission"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "LOADING_RATE",
+  "block": "target",
+  "value": "Loading"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "LOADING_AMT",
+  "block": "target",
+  "value": "Loading"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "CD_RATE",
+  "block": "target",
+  "value": "CD Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "CD_AMT",
+  "block": "target",
+  "value": "CD Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "LONG_TERM_POLICY_DISC",
+  "block": "target",
+  "value": "Long Term Policy Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "LONG_TERM_POLICY_DISC_AMT",
+  "block": "target",
+  "value": "Long Term Policy Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "UW_LOADING_RATE",
+  "block": "target",
+  "value": "Underwriting Loading"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "UW_LOADING_AMT",
+  "block": "target",
+  "value": "Underwriting Loading"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "SP_DISC_RATE",
+  "block": "target",
+  "value": "Special Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "SP_DISC_AMT",
+  "block": "target",
+  "value": "Special Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "ADDITIONAL_LOAD_RATE",
+  "block": "target",
+  "value": "Additional Loading"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "ADDITIONAL_LOAD_AMT",
+  "block": "target",
+  "value": "Additional Loading"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "EMP_DISC_RATE",
+  "block": "target",
+  "value": "Employee Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "EMP_DISC_AMT",
+  "block": "target",
+  "value": "Employee Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "VOLUNTARY_DEDUCT_RATE",
+  "block": "target",
+  "value": "Voluntary Deductible Discount"
+ },
+ {
+  "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+  "model_childkey": "Item Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_DT_PREMIUM",
+  "column": "VOLUNTARY_DEDUCT_AMT",
+  "block": "target",
+  "value": "Voluntary Deductible Discount"
+ },
+ {
+  "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+  "model_childkey": "Member Reference + Condition Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8439_CLH_LOADER",
+  "column": "MD_CHOLESTEROL_DISORDERS",
+  "block": "target",
+  "value": "Cholesterol Disorders"
+ },
+ {
+  "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+  "model_childkey": "Member Reference + Condition Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8439_CLH_LOADER",
+  "column": "MD_HEART_DISEASES",
+  "block": "target",
+  "value": "Heart Disease"
+ },
+ {
+  "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+  "model_childkey": "Member Reference + Condition Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8439_CLH_LOADER",
+  "column": "MD_HYPERTENSION",
+  "block": "target",
+  "value": "Hypertension"
+ },
+ {
+  "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+  "model_childkey": "Member Reference + Condition Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8439_CLH_LOADER",
+  "column": "MD_DIABETES",
+  "block": "target",
+  "value": "Diabetes"
+ },
+ {
+  "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+  "model_childkey": "Member Reference + Condition Code",
+  "bucket": "E_PROSE_no_leg_no_code",
+  "table": "BA_HCP_PROD_8439_CLH_LOADER",
+  "column": "MD_OBESITY",
+  "block": "target",
+  "value": "Obesity"
+ },
+ {
+  "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+  "model_childkey": "Member Reference + Condition Code",
+  "bucket": "B_bare_code_or_token_no_leg_named",
+  "table": "BJAZ_HCF_MEMBER_DTLS",
+  "column": "OBESITY_LOAD",
+  "block": "target",
+  "value": "OBESITY"
+ },
+ {
+  "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+  "model_childkey": "Member Reference + Condition Code",
+  "bucket": "B_bare_code_or_token_no_leg_named",
+  "table": "BJAZ_HCF_MEMBER_DTLS",
+  "column": "BMI_LOAD",
+  "block": "target",
+  "value": "BMI"
+ },
+ {
+  "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+  "model_childkey": "Member Reference + Condition Code",
+  "bucket": "B_bare_code_or_token_no_leg_named",
+  "table": "BJAZ_HCF_MEMBER_DTLS",
+  "column": "HYPERTENS_LOAD",
+  "block": "target",
+  "value": "HYPERTENSION"
+ },
+ {
+  "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+  "model_childkey": "Member Reference + Condition Code",
+  "bucket": "B_bare_code_or_token_no_leg_named",
+  "table": "BJAZ_HCF_MEMBER_DTLS",
+  "column": "DIABETES_LOAD",
+  "block": "target",
+  "value": "DIABETES"
+ },
+ {
+  "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+  "model_childkey": "Member Reference + Condition Code",
+  "bucket": "B_bare_code_or_token_no_leg_named",
+  "table": "BJAZ_HCF_MEMBER_DTLS",
+  "column": "HYPERLIPIDEMIA_LOAD",
+  "block": "target",
+  "value": "HYPERLIPIDEMIA"
+ },
+ {
+  "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+  "model_childkey": "Member Reference + Condition Code",
+  "bucket": "B_bare_code_or_token_no_leg_named",
+  "table": "BJAZ_HCF_MEMBER_DTLS",
+  "column": "OTHER_RISK_LOAD",
+  "block": "target",
+  "value": "OTHER"
+ }
+]

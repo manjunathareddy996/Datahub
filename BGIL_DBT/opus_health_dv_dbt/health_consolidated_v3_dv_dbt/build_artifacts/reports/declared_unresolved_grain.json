@@ -1,0 +1,1126 @@
+{
+ "satellite": "SAT_RISK_PERSON_MEMBER",
+ "model_childkey": "Member Sequence",
+ "model_hist": "Multi-Active SCD2",
+ "model_parent": "HUB_RISK_OBJECT",
+ "shared_token": "LEGACY_ONLY_NOT_SHARED",
+ "satellite_rows": 59,
+ "repeating_group_rows": 54,
+ "group_reanchored": 45,
+ "group_not_reanchored": 9,
+ "matcher_note": "group matcher = SUBSTRING 'MEMBER[1-8]' or 'SELF' in column_name. A word-boundary regex r'\\bMEMBER[1-8]\\b' matches 0 of these rows because MEMBER1DOB puts an alphanumeric after the digit.",
+ "three_state_note": "ABSENT, PRESENT_NULL and the string 'None' are THREE different states and all are carried per row below. Both ABSENT and PRESENT_NULL mean 'no discriminator', so refuse-and-declare is unchanged - but a future reader fixing 'null' would never look for 'absent', so the STATE is recorded and not just the conclusion.",
+ "group_field_states": {
+  "key_name": {
+   "PRESENT_NULL": 54
+  },
+  "child_key_value": {
+   "ABSENT": 54
+  },
+  "child_key_components": {
+   "ABSENT": 54
+  },
+  "instance": {
+   "PRESENT_NULL": 54
+  },
+  "child_key": {
+   "ABSENT": 54
+  }
+ },
+ "whole_map_field_states": {
+  "key_name": {
+   "POPULATED": 306,
+   "PRESENT_NULL": 2612,
+   "ABSENT": 1114
+  },
+  "child_key_value": {
+   "ABSENT": 2738,
+   "PRESENT_NULL": 770,
+   "POPULATED": 524
+  },
+  "child_key_components": {
+   "ABSENT": 3855,
+   "POPULATED": 160,
+   "PRESENT_NULL": 17
+  },
+  "instance": {
+   "PRESENT_NULL": 2641,
+   "ABSENT": 1002,
+   "POPULATED": 389
+  },
+  "child_key": {
+   "ABSENT": 3281,
+   "POPULATED": 435,
+   "PRESENT_NULL": 316
+  }
+ },
+ "disjointness": {
+  "either_populated": 830,
+  "both_populated": 0,
+  "result_token": "DISJOINT"
+ },
+ "rows": [
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BA_HCP_DT_MEM",
+   "column": "MEM_ADD_FLAG",
+   "attribute": "Member Addition Indicator",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": false,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BA_HCP_PROD_8432_ECP_LOADER",
+   "column": "MD_RELATION",
+   "attribute": "Relationship To Proposer",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": false,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BA_HCP_PROD_8433_FHC_LOADER",
+   "column": "MD_RELATION",
+   "attribute": "Relationship To Proposer",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": false,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_CARD_DTLS",
+   "column": "MEMBER_TYPE",
+   "attribute": "Member Type",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": false,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_CARD_DTLS",
+   "column": "RELATION_DESC",
+   "attribute": "Relationship To Proposer",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": false,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "SELFNAME",
+   "attribute": "Member Name",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "SELFRELATION",
+   "attribute": "Relationship To Proposer",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "SELFDOB",
+   "attribute": "Date Of Birth",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "SELFGENDER",
+   "attribute": "Gender",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "SELFPASSPORTNO",
+   "attribute": "Passport Number",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "SELFPREEXISITNGDISEASE",
+   "attribute": "Pre-Existing Disease Description",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": false,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER1NAME",
+   "attribute": "Member Name",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER1RELATION",
+   "attribute": "Relationship To Proposer",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER1DOB",
+   "attribute": "Date Of Birth",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER1GENDER",
+   "attribute": "Gender",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER1PASSPORTNO",
+   "attribute": "Passport Number",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER1PREEXISITNGDISEASE",
+   "attribute": "Pre-Existing Disease Description",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": false,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER2NAME",
+   "attribute": "Member Name",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER2RELATION",
+   "attribute": "Relationship To Proposer",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER2DOB",
+   "attribute": "Date Of Birth",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER2GENDER",
+   "attribute": "Gender",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER2PASSPORTNO",
+   "attribute": "Passport Number",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER2PREEXISITNGDISEASE",
+   "attribute": "Pre-Existing Disease Description",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": false,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER3NAME",
+   "attribute": "Member Name",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER3RELATION",
+   "attribute": "Relationship To Proposer",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER3DOB",
+   "attribute": "Date Of Birth",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER3GENDER",
+   "attribute": "Gender",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER3PASSPORTNO",
+   "attribute": "Passport Number",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER3PREEXISITNGDISEASE",
+   "attribute": "Pre-Existing Disease Description",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": false,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER4NAME",
+   "attribute": "Member Name",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER4RELATION",
+   "attribute": "Relationship To Proposer",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER4DOB",
+   "attribute": "Date Of Birth",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER4GENDER",
+   "attribute": "Gender",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER4PASSPORTNO",
+   "attribute": "Passport Number",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER4PREEXISITNGDISEASE",
+   "attribute": "Pre-Existing Disease Description",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": false,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER5NAME",
+   "attribute": "Member Name",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER5RELATION",
+   "attribute": "Relationship To Proposer",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER5DOB",
+   "attribute": "Date Of Birth",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER5GENDER",
+   "attribute": "Gender",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER5PASSPORTNO",
+   "attribute": "Passport Number",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER5PREEXISITNGDISEASE",
+   "attribute": "Pre-Existing Disease Description",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": false,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER6NAME",
+   "attribute": "Member Name",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER6RELATION",
+   "attribute": "Relationship To Proposer",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER6DOB",
+   "attribute": "Date Of Birth",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER6GENDER",
+   "attribute": "Gender",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER6PASSPORTNO",
+   "attribute": "Passport Number",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER6PREEXISITNGDISEASE",
+   "attribute": "Pre-Existing Disease Description",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": false,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER7NAME",
+   "attribute": "Member Name",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER7RELATION",
+   "attribute": "Relationship To Proposer",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER7DOB",
+   "attribute": "Date Of Birth",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER7GENDER",
+   "attribute": "Gender",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER7PASSPORTNO",
+   "attribute": "Passport Number",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER7PREEXISITNGDISEASE",
+   "attribute": "Pre-Existing Disease Description",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": false,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER8NAME",
+   "attribute": "Member Name",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER8RELATION",
+   "attribute": "Relationship To Proposer",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER8DOB",
+   "attribute": "Date Of Birth",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER8GENDER",
+   "attribute": "Gender",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER8PASSPORTNO",
+   "attribute": "Passport Number",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": true,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  },
+  {
+   "source_run": "opus_health_legacy_v4",
+   "table": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+   "column": "MEMBER8PREEXISITNGDISEASE",
+   "attribute": "Pre-Existing Disease Description",
+   "anchor": "HUB_RISK_OBJECT",
+   "satellite": "SAT_RISK_PERSON_MEMBER",
+   "in_repeating_group": true,
+   "reanchored": false,
+   "discriminator_states": {
+    "key_name": "PRESENT_NULL",
+    "child_key_value": "ABSENT",
+    "child_key_components": "ABSENT",
+    "instance": "PRESENT_NULL",
+    "child_key": "ABSENT"
+   },
+   "disposition": "REFUSE_AND_DECLARE"
+  }
+ ]
+}

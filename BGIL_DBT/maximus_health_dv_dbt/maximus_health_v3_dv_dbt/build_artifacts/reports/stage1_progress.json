@@ -1,0 +1,101 @@
+{
+ "layers": [
+  {
+   "layer": "staging",
+   "models": 83,
+   "detail": {
+    "skipped_views": 0,
+    "skipped_reason": "supplies no referenced column"
+   }
+  },
+  {
+   "layer": "hopviews",
+   "models": 75,
+   "detail": {
+    "with_no_map_row": 75
+   }
+  },
+  {
+   "layer": "resolvers",
+   "models": 61,
+   "detail": {
+    "climb_span_joins": 71,
+    "cross_span_joins": 16
+   }
+  },
+  {
+   "layer": "unpivot",
+   "models": 14,
+   "detail": {
+    "families": 91,
+    "instance_branches": 398
+   }
+  },
+  {
+   "layer": "stage",
+   "models": 83,
+   "detail": {
+    "key_slots": 325
+   }
+  },
+  {
+   "layer": "reject_log",
+   "models": 77,
+   "detail": {
+    "branches": 324,
+    "accepted_constants": 1,
+    "by_class": {
+     "key_not_null": 258,
+     "key_not_null_and_not_empty": 66,
+     "constant_no_source_operand_accepted": 1
+    }
+   }
+  },
+  {
+   "layer": "vault",
+   "models": 499,
+   "detail": {
+    "hub_feeds_and_link_feeds": 336,
+    "hubs": 23,
+    "links": 1,
+    "satellites": 139,
+    "satellites_skipped": 13
+   }
+  },
+  {
+   "layer": "augmented",
+   "models": 112,
+   "detail": {
+    "new_satellites": 16,
+    "unresolved_child_key_marked": 1,
+    "bi41_suppressed": 0,
+    "skipped": 17
+   }
+  },
+  {
+   "layer": "quarantine",
+   "models": 7,
+   "detail": {
+    "surrogate_components": 45,
+    "satellites": 7
+   }
+  },
+  {
+   "layer": "reference_decode",
+   "models": 2,
+   "detail": {
+    "rows_gated": 3,
+    "default": "REFUSE"
+   }
+  },
+  {
+   "layer": "tests",
+   "models": 3,
+   "detail": {
+    "runtime_verdict": "NOT RUN -- no source access",
+    "static_only": true
+   }
+  }
+ ],
+ "models_so_far": 1016
+}

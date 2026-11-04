@@ -1,0 +1,42 @@
+{
+  "label": "OPUS Health Delta 3",
+  "map": "OPUS Health Delta 3/outputs/04_column_map.json",
+  "model": "OPUS Health Delta 3/data_7.js",
+  "columns_processed": 507,
+  "outcomes": {
+    "mapped": 329,
+    "augmentation_needed": 178
+  },
+  "by_target_kind": {
+    "hub_key": 39,
+    "satellite_attribute": 290
+  },
+  "distinct_model_targets": 132,
+  "satellite_rows": 468,
+  "resolved_key": {
+    "present": 507,
+    "of_satellite_rows": 468,
+    "by_tier": {
+      "tier1_business_code": 458,
+      "tier4_content_hash": 43,
+      "unresolved": 6
+    }
+  },
+  "augmentation_by_tier": {
+    "build-side": 178
+  },
+  "childkey_gap_rows": 25,
+  "validation": {
+    "gate": "PASS",
+    "totals": {
+      "blocker": 0,
+      "warn": 18,
+      "info": 0
+    },
+    "skipped": [
+      "opus_vocabulary_divergence (no --opus-build supplied)"
+    ]
+  },
+  "review_flag_rows": 56,
+  "tables": 19
+}

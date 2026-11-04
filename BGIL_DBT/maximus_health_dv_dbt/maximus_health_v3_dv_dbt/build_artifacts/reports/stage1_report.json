@@ -1,0 +1,355 @@
+{
+ "stage": "1",
+ "status": "complete",
+ "status_note": "All 12 generators ran from empty, 1016 models emitted, reproducibility proved by DELETION (two consecutive clean runs produced the identical tree digest). The build is complete; three questions remain open because they need executed SQL and there is no source access, and each is now a load-time assertion rather than a silent assumption.",
+ "counts": {
+  "generators": 17,
+  "models": 1016,
+  "unresolved_keys": 334,
+  "skipped": 14,
+  "_unit_note": "generators = .py modules under generators/ (12 in the run chain + names, keyrules, bundle, writeguard, emit and the check/prove/readme helpers). models = .sql files under models/, POPULATION models/**. unresolved_keys = entries in mxh3_keyrules.UNRESOLVED, UNIT=refusals. skipped = rows refused by a LIVE disposition plus do_not_build at both scopes."
+ },
+ "map": {
+  "file": "04_column_map.json",
+  "bytes": 7325889,
+  "md5": "f3f1fd8284b4aac8f10ef216e3dcf87d",
+  "sha256": "8dfe93f59a3cbc757df3ff46ab7ea83e5157aa45e44d8696882a8d7ce85d944d"
+ },
+ "additivity_proof": {
+  "proof": "PASS",
+  "statement": "strip(round2, 'directive_kind') == round1",
+  "unit": "the whole JSON object",
+  "population": "the entire map file",
+  "matcher": "canonical json.dumps(sort_keys=True) string equality",
+  "round1_file": "04_column_map.pre_r1fix1.json",
+  "round1_md5": "fce40feba2b9326690b8f862d780f06e",
+  "round2_md5": "f3f1fd8284b4aac8f10ef216e3dcf87d",
+  "round1_status": "NON_INPUT -- read for this proof only, never as a build input"
+ },
+ "model_tree_digest": {
+  "files": 1016,
+  "tree_sha256": "58ba6c7ff07ea62cb15f407c7bf2e28a6039e3cbaabc7d27b883cb267a6bf995",
+  "combining_method": "per file: <posix-relpath> + LF + sha256(file bytes); lines sorted bytewise; joined with LF; sha256 of the UTF-8 encoding of that join"
+ },
+ "models_by_directory": {
+  "augmented": 112,
+  "hopviews": 75,
+  "quarantine": 7,
+  "reference_decode": 2,
+  "reject_log": 77,
+  "resolvers": 61,
+  "stage": 83,
+  "staging": 83,
+  "tests": 3,
+  "unpivot": 14,
+  "vault/hubs": 23,
+  "vault/hub_feeds": 325,
+  "vault/links": 1,
+  "vault/link_feeds": 11,
+  "vault/satellites": 139
+ },
+ "reproducibility": {
+  "method": "DELETION: run_mxh3_build.py removes models/ and every generated artifact, then rebuilds. Run twice consecutively.",
+  "run_1_tree_sha256": "58ba6c7ff07ea62cb15f407c7bf2e28a6039e3cbaabc7d27b883cb267a6bf995",
+  "run_2_tree_sha256": "58ba6c7ff07ea62cb15f407c7bf2e28a6039e3cbaabc7d27b883cb267a6bf995",
+  "identical": true,
+  "combining_method": "per file: <posix-relpath> + LF + sha256(file bytes); lines sorted bytewise; joined with LF; sha256 of the UTF-8 encoding of that join",
+  "note": "A build that only works on a second run is not reproducible; it is inheriting state."
+ },
+ "self_checks": [
+  {
+   "check": "map selected BY DIGEST, verified before AND after every run",
+   "result": "pass",
+   "detail": "04_column_map.json 7325889 bytes, md5 f3f1fd8284b4aac8f10ef216e3dcf87d, sha256 8dfe93f59a3cbc757df3ff46ab7ea83e5157aa45e44d8696882a8d7ce85d944d -- recomputed before and after each of the two clean runs. Pinned in mxh3_bundle.py, which is where a grep for the digest now finds it. 11 .pre_* snapshots on disk (MATCHER: filename contains '.pre_'), all excluded by name; the round-1 map is one of them and is a NON-INPUT."
+  },
+  {
+   "check": "the re-issue is purely additive -- RE-DERIVED, not relayed",
+   "result": "pass",
+   "detail": "strip(round2, 'directive_kind') == round1 -> True. UNIT=the whole JSON object; POPULATION=the entire map file; MATCHER=canonical json.dumps(sort_keys=True) string equality. The round-1 snapshot is opened for this proof ONLY and never as a build input."
+  },
+  {
+   "check": "directive_kind adopted as the ROUTING field, with its 3 assertions",
+   "result": "pass",
+   "detail": "present on exactly 48 blocks; partitions into exactly 2 values ({'surrogate_child_key': 45, 'reference_decode': 3}); 0 carry build_directive without it -- and directive_route() RAISES on an unlabelled directive, so one can never be silently skipped again. The blocker's DEFINITION still reads leg_backing=='surrogate' and child_key_tier=='surrogate', each exactly 45."
+  },
+  {
+   "check": "do_not_build honoured at BOTH scopes, with DISTINCT semantics",
+   "result": "pass",
+   "detail": "block scope 3 rows (refuses the ROW) + component scope 5 legs (refuses the LEG) = 8, disjoint=True. The 3 block-level rows carry component flag False and the 5 component-level legs carry block flag False, so honouring one scope builds the other's rows IN BOTH DIRECTIONS."
+  },
+  {
+   "check": "the identity holds: composite_key REFUSE#3 == the 3 block-level do_not_build rows",
+   "result": "pass",
+   "detail": "Asserted, not assumed: the 3 SAT_PARTY_BANKING 'Account Number Masked' blocks derived by the build's own matcher are set-identical to the 3 rows carrying block-scope do_not_build."
+  },
+  {
+   "check": "every reject predicate is the EXACT boolean complement of its emit predicate",
+   "result": "pass",
+   "detail": "reject = 'not (' + emit + ')' built from the IDENTICAL text, then re-asserted by assert_complement at generation time for every slot. The stage emits `case when P then true else false end` which is NEVER NULL, so P and not(P) partition every row: emitted or rejected, never both, never neither. 2,100 null_on_blank_row and 326 empty_on_blank_row BLOCKS map onto 325 distinct (view,hub,expression) slot predicates -- UNIT differs, which is why both figures are given."
+  },
+  {
+   "check": "the ONE no-source-operand constant key is ACCEPTED, not rejected",
+   "result": "pass",
+   "detail": "'COV:' || 'CRITICAL_ILLNESS' has source_columns == [], so its emit predicate is the literal `true` and it is excluded from the reject log by construction. A rule phrased 'reject any constant key' would drop every row on MEMBERS_MEMBER_DETAILS_PIVOT_VW."
+  },
+  {
+   "check": "hop expansion materialises every intervening real level",
+   "result": "pass",
+   "detail": "87 distinct (view, span) walks; 33 skip at least one level. Proved on a control turning 1 NAMED hop into 4 REAL levels. Direction is classified from the GRAPH (shred.parent_table_candidate, 186 edges, asserted non-empty before any walk), never from the arrow token; expand_span RAISES on a named hop the graph does not place among the ancestors."
+  },
+  {
+   "check": "hop direction CORROBORATED against the graph for every declared join_path",
+   "result": "pass",
+   "detail": "{\"cross_spans_graph_validated\": 16, \"declared_join_path_blocks\": 12, \"join_path_graph_disagreements\": 0, \"spans_reclassified_climb_to_cross\": 0, \"finding_4_state\": \"ALREADY_RE_ENCODED_IN_THE_MAP\", \"detail_note\": \"0 spans needed reclassification because the round-2 map already spells the 12 HUB_CLAIM hops with the '>>' descend operator and supplies resolved_key.join_path for each. Every cross destination was still verified to be a real descendant of the lowest common ancestor, and every declared join_path was re-derived from shred.parent_table_candidate and found to agree. The disposition is sa"
+  },
+  {
+   "check": "walk-only casts cover every level no expression names",
+   "result": "pass",
+   "detail": "75 walk-only cast models, for views that appear on a walk and earn no staging cast. The sibling needed ZERO of these because it is flat (0 hierarchy edges); this was derived from the graph, not inherited."
+  },
+  {
+   "check": "a feeder is (view, DECLARED ANCHOR EXPRESSION), never (view) alone",
+   "result": "pass",
+   "detail": "336 hub/link feeds, each named for its hub, view AND the ordinal of the declared key expression. Anchor resolution for the 505 payload blocks that declare no key of their own: 315 resolved uniquely (239 at (view,hub,instance)), 147 REFUSED as ambiguous, 43 REFUSED with no declared expression. The 147 ambiguous span 17 (view,hub,instance) triples and NONE is a bare-vs-guarded spelling of one expression -- e.g. HUB_PARTY on one view has 8 candidate key spaces (EMP:/IMD:/SPECIFIED_PERSON:/USER:/...), so picking one would put the specified person's attribute on the user's key. That is the sibling's exact defect and it is REFUSED here."
+  },
+  {
+   "check": "every <X>_HK is produced locally or exposed by a ref(), by FIXPOINT",
+   "result": "pass",
+   "detail": "check_mxh3_hashkeys runs INSIDE the build chain and is sibling-free.   PASS -- every <X>_HK is produced locally or exposed by a ref() (fixpoint); every per-source feed is consumed by exactly one assembled model, in both directions; refs resolve; names unique."
+  },
+  {
+   "check": "every per-source model consumed by EXACTLY ONE assembled model, both directions",
+   "result": "pass",
+   "detail": "336 hub/link feeds, 24 assembled hubs/links, 336 feeds consumed exactly once; and every assembled model consumes at least one feed. The sibling unioned 4 per-source link feeds into ZERO links because this invariant was missing."
+  },
+  {
+   "check": "legs come from child_key_components at brace depth zero, never '#'",
+   "result": "pass",
+   "detail": "1434 component elements; the discriminator is leg_backing (1,434 of 1,434) and child_key_components[].kind does NOT exist (0 of 1,434), tested against this map rather than inherited. Controls: a coalesce ladder containing '|' stays ONE leg; '{DOCUMENT_TITLE}#{SEQUENCE_NO}' stays ONE leg."
+  },
+  {
+   "check": "declared child keys read from data_7.js sats[].childkey keyed by sats[].code",
+   "result": "pass",
+   "detail": "target.key_name is the HUB key name and is null on all 1,888 satellite rows, so it is never read as a child key. Also measured: 116 of the 133 keyed satellites declare their child-key leg AS AN ATTRIBUTE too -- that is the model's own design, the child-key column IS a payload column, so it is emitted ONCE. Treating it as a s5.4 collision refused 70 blocks, all false; the narrowed check leaves 6 genuine collisions, each refused and reported."
+  },
+  {
+   "check": "Maximus stays FULLY KEYED on the four satellites the sibling under-keys",
+   "result": "pass",
+   "detail": "assert_fully_keyed RAISES if any built block resolves fewer than every declared leg: {\"SAT_COMMON_CONTACT\": {\"declared_legs\": [\"Contact Point Type\", \"Contact Priority Order\"], \"blocks\": 85, \"under_keyed_blocks\": 0}, \"SAT_LNK_POLICY_PARTY_ROLE\": {\"declared_legs\": [\"Party Role Type\", \"Role Sequence\"], \"blocks\": 5, \"under_keyed_blocks\": 0}, \"SAT_LNK_PARTY_ROLE_CORE\": {\"declared_legs\": [\"Role Code\", \"Role Sequence\"], \"blocks\": 9, \"under_keyed_blocks\": 0}, \"SAT_POLICY_COVERAGE_SCHEDULE\": {\"declared_legs\":"
+  },
+  {
+   "check": "'@' is U+0040 and no emitted key loses an '@' segment",
+   "result": "pass",
+   "detail": "Operands split at brace depth zero with the SEPARATOR PRESERVED, so the split is the IDENTITY for a pure literal: 'LIBRARY@LAWYER' renders as 'LIBRARY' || '@' || 'LAWYER' and the provenance suffix cannot be lost, while '{COVER}@{MEMBER_NAME}' renders as two guarded operands joined by a preserved '@'. There is NO global '@' rule. A value carrying U+FF20 FULLWIDTH is REFUSED outright; 0 pack files contain it."
+  },
+  {
+   "check": "both declared bespoke layers emitted, each with its reason in the model header",
+   "result": "pass",
+   "detail": "surrogate_child_key_quarantine: 7 models over 45 surrogate components, scoped BY FIELD; emitted DISABLED, the unstable value renamed to <LEG>__UNSTABLE_SURROGATE so it cannot be wired into a satellite, with CHILD_KEY_STABILITY_CLASS and HISTORY_STATUS marker columns -- the loss of history is visible in the SQL, not only in a report. reference_decode_gate: 2 models over 3 directive rows, default REFUSE."
+  },
+  {
+   "check": "models regenerated FROM EMPTY and reproducible by DELETION",
+   "result": "pass",
+   "detail": "Two consecutive clean runs, identical tree sha256 58ba6c7ff07ea62cb15f407c7bf2e28a6039e3cbaabc7d27b883cb267a6bf995 over 1016 files. Combining method: per file: <posix-relpath> + LF + sha256(file bytes); lines sorted bytewise; joined with LF; sha256 of the UTF-8 encoding of that join"
+  },
+  {
+   "check": "containment -- nothing written outside this project",
+   "result": "pass",
+   "detail": "{\"manifest\": \"build_artifacts/write_manifest.jsonl\", \"writes_recorded\": 1028, \"distinct_processes\": 1, \"files_outside_project_root\": 0, \"containment_assertion_token\": \"PASS\", \"read_only_roots_asserted\": 24} | Independently re-verified by mtime sweep: 0 files modified in opus_health_v2_dv_dbt, vault_tools, .claude, health_dv_dbt, maximus_health_dv_dbt, maximus_health_v2_dv_dbt."
+  },
+  {
+   "check": "every regex and every patch script authored in a FILE, never a shell heredoc",
+   "result": "pass",
+   "detail": "check_patterns PASSES over the generators. One patch attempted through a heredoc had its regex backslashes eaten by the shell and was rewritten as a file -- the exact failure the rule exists to prevent, observed once and corrected."
+  },
+  {
+   "check": "every check proved BY INJECTION against a NON-ZERO baseline, and every injected shape asserted to occur in the real corpus",
+   "result": "pass",
+   "detail": "prove_mxh3_checks.py: 11 probes, 11 pass. Four baselines first, each reporting its POPULATION so a zero-finding verdict is not mistaken for a verdict over nothing: check_prose_shape 1,016 models, check_internal 1,016, check_patterns 22 generator files, check_prose_counts 1 prose file. Then seven injections, each firing (exit 1): a two-word identifier-position token inside a rendering function (trim(X element)) -- the shape trim(<IDENT>) occurs in 200 real models; a dangling ref() -- ref() occurs in 858; a duplicate model name; an unsourced hand-typed count in README.md; an uncompilable regex; an <X>_HK no model produces; and an orphaned per-source feed. Injection is done on a COPY in scratch -- the project tree is never mutated and no other build is touched. NOTE: the first version of the prose_shape probe injected an ALIAS carrying a space and the gate stayed silent, correctly, because it scopes to a function ARGUMENT LIST. That exit=0 meant the PROBE was wrong, not the gate -- which is exactly why an injection must be aimed at the shape the check actually hunts."
+  },
+  {
+   "check": "the prose-in-SQL assertion proved to FIRE and NOT to over-accuse",
+   "result": "pass",
+   "detail": "It needed THREE corrections, each caught by demanding it also stay SILENT: 'as X from' (a SQL keyword read as a second alias word), block comments (model headers carry English on purpose), and string literals (a child-key literal legitimately reads 'Identification Type Code = As Per Identification'). Had only the fires-correctly half been probed, the build would have raised on every legitimate model."
+  }
+ ],
+ "gates": [
+  {
+   "gate": "check_patterns",
+   "verdict": "PASS",
+   "exit_code": 0,
+   "detail": "files scanned                 : 20 |   PASS -- no control bytes, every statically-known pattern compiles."
+  },
+  {
+   "gate": "check_prose_counts",
+   "verdict": "PASS",
+   "exit_code": 0,
+   "detail": "prose files scanned           : 1 |   PASS -- every quantity in current-state prose is sourced or absent."
+  },
+  {
+   "gate": "check_prose_shape",
+   "verdict": "PASS",
+   "exit_code": 0,
+   "detail": "models examined               : 1016   (population) |   PASS -- no identifier-position token contains a space."
+  },
+  {
+   "gate": "check_internal",
+   "verdict": "PASS",
+   "exit_code": 0,
+   "detail": "models                        : 1016   (maximus_health_v3_dv_dbt) |   PASS -- refs resolve, every declared source column is emitted, names unique."
+  },
+  {
+   "gate": "check_vault_alignment",
+   "verdict": "FAIL",
+   "exit_code": 1,
+   "detail": "        SAT_ACCOUNT_DEFINITION.ACCOUNT_TYPE   (satellite not built at all) |         SAT_ASSESSMENT_FRAUD_INVESTIGATION.FINDINGS_SUMMARY   (satellite not built at all) |         SAT_ASSESSMENT_FRAUD_INVESTIGATION.MISREPRESENTATION_INDICATOR   (satellite not built at all) |         ... and 636 more",
+   "scope_note": "Its SQL-FORM checks (check 5) now PASS: 0 illegal aliases, 0 duplicate aliases in one select, 0 unbalanced string literals, down from 250/196/154 before three fixes in THIS project (header comments emitted as '--' because the gate strips only line comments; X::varchar instead of cast(X as varchar), whose trailing 'as varchar)' it reads as an alias; and one REAL duplicate alias it found, where a null-padded child-key leg was also emitted as a payload attribute). The remaining failure is check 6, 'mapped column reaches no satellite: 641', which is DOWNSTREAM OF ITS SATELLITE READER FINDING NOTHING: read_sats() globs models/automate_dv/*/satellites/*.sql, a path this project does not use AND THE SIBLING DOES NOT EITHER -- the gate reports 'sibling satellites: 0' for a known-good build. So its alignment dimensions are VACUOUS here, not failing. Measured independently instead: all 1,826 mapped target satellite+attribute rows ARE canonical against data_7.js (0 non-model satellites, 0 non-canonical attributes), and 139 ratified satellites are built. Nothing was written to the sibling."
+  },
+  {
+   "gate": "check_mxh3_hashkeys (in-chain, this project)",
+   "verdict": "PASS",
+   "exit_code": 0,
+   "detail": "  PASS -- every <X>_HK is produced locally or exposed by a ref() (fixpoint); every per-source feed is consumed by exactly one assembled model, in both directions; refs resolve; names unique."
+  },
+  {
+   "gate": "3 load-time dbt assertions (models/tests/)",
+   "verdict": "NOT RUN",
+   "exit_code": null,
+   "detail": "Emitted and statically checked, but the RUNTIME question is unanswerable here: no source access (no Oracle client on PATH, no driver importable, no TNS/wallet/ODBC config, no env var, no dbt profile). Each fails LOUDLY at first load instead of passing silently, and each names what it would prove and that nothing was executed."
+  }
+ ],
+ "findings": [
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "D11 (NEW, and the coordinator ruled on it): a validator REFUSE disposition has its PRECONDITION verified before it is executed. composite_key findings #1 (18 blocks) and #2 (10 blocks) carry verdict CONFIRMED and build_disposition REFUSE against a defect THIS MAP NO LONGER HAS -- those views now key '{REQUIREMENTNAME}#{SEQUENCENO}' and '{DOCUMENTTYPE}', and both columns are present on them. Executing the REFUSE would have DELETED 28 correctly-keyed SAT_DOCUMENT_CHECKLIST blocks, unrecoverably at load. They are NOT refused; the staleness is reported. The other five dispositions are applied exactly as declared: 2 LIVE REFUSE (3 + 3 = 6 blocks), EMIT resolving hop direction from the graph, EMIT with the instability declared, EMIT BOTH without normalising. Nothing was re-keyed in either direction."
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "D1-REFDECODE-DEFAULT-REFUSE -- The reference_decode gate defaults to REFUSING the row. No reference-decode master exists anywhere in this bundle, and the directive says loading the raw code into a label attribute is WRONG DATA that every gate passes. COST: 3 rows (SAT_PARTY_ORGANISATION_PROFILE 'Industry Description' and SAT_PARTY_IDENTIFICATION 'Insurance Repository Name' x2) emit NULL and are counted as refused rather than carrying a code where a label belongs. If a decode master is in fact available, 3 label attributes stay empty until the var is flipped. OVERRULE: Set dbt var mxh3_reference_decode_available to true (one line in dbt_project.yml), or pass --vars on the run."
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "D2-REFDECODE-SCOPE-IS-THE-DIRECTIVE -- The reference_decode GATE is scoped to the 3 blocks carrying build_directive, NOT to all 59 blocks whose transformation_kind is 'reference_decode'. The directive population is defined by the directive field; transformation_kind is a description of the mapping, not an instruction. COST: 56 blocks assert a code->decode transformation and are built WITHOUT the gate, so they load the mapped value as-is. If the mapper intended all 59 to be gated, 56 label attributes receive coded values. This is why the figure is reported with BOTH matchers rather than one. OVERRULE: Set REFDECODE_SCOPE = 'transformation_kind' in this module."
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "D3-QUARANTINE-RENAMES-THE-UNSTABLE-LEG -- The 45 surrogate-backed child-key components are emitted in the quarantine layer under a column named <LEG>__UNSTABLE_SURROGATE, NOT under the model's declared child-key column, and the quarantine models are emitted disabled. A column that is not spelled like the declared child key cannot be wired into a satellite by accident. COST: The 7 ratified Multi-Active SCD2 satellites carry NO history from these 45 blocks. That loss is deliberate and visible in the emitted SQL; it is not a source gap and must not be reported as one. OVERRULE: Set QUARANTINE_EMIT_DECLARED_NAME = True in this module -- which re-enables the duplicate-row defect the directive exists to prevent."
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "D4-EMI-HOME-IS-THE-RATIFIED-SATELLITE -- 'Last EMI Paid Date' and 'Outstanding Loan Amount' are built ONLY on the ratified SAT_CLAIM_BENEFIT_HEAD and suppressed on OPUS's placeholder SAT_CLAIM_COVER_SECTION_ASSESSMENT, which is absent from data_7.js entirely. Where data_7.js speaks, the model wins. COST: Splits a coherent 23-column OPUS assessment block for 2 columns of overlap; the remaining 21 columns stay on the placeholder and the block must be reassembled by hand to be read as a whole. Cheap to reverse -- it is an attribute routing entry, not a key. OVERRULE: Remove the 2 entries from ATTRIBUTE_ROUTING_SUPPRESS in this module."
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "D5-TRANSITION-IS-BUILD-SIDE -- SAT_CLAIM_STATUS_TRANSITION is ABSENT from data_7.js, so it is built on the augmented (unratified) track as a multi-active satellite with the caller-ratified child key 'Status Code | Transition Date' and a union of SEVEN attributes -- 'Transition Actor User Reference' and 'Transition Performed By Reference' are ONE fact fed from both sides, not two. COST: If the two names are in fact different facts, one column carries two meanings and separating them later is a satellite re-grain. The directive states they are the same fact; this build follows it. OVERRULE: Remove the pair from ATTRIBUTE_UNION_ALIASES in this module."
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "D6-CROSS-VALUE-ONLY-WHEN-UNIQUE -- A '>>' / LCA cross descends into another branch and can match N rows per source row. The resolver exposes the crossed value ONLY when it matches exactly one row, and always exposes the match COUNT beside it; rows with N>1 are diverted to the reject log. COST: Where a cross is genuinely 1:N the value is NULL rather than an arbitrary pick, so those rows lose the key and are counted as rejects instead of silently keeping one branch's value. A fallback that guesses converts a loud gap into a silent corruption, which is why the NULL is preferred. OVERRULE: Set CROSS_REQUIRE_UNIQUE = False in this module (restores arbitrary pick semantics -- not recommended)."
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "D7-UNRESOLVED-KEYS-GET-NO-KEY -- The 16 VIEW_COLLECTIONS_ADDITIONAL_DETAILS blocks whose resolved_key tier is 'unresolved' and which carry no expression are built with NO key: every row is diverted to the reject log carrying the declared source gap. Three candidate keys were considered and rejected by the mapper; inventing a fourth is not the builder's call (s5.7). COST: HUB_FINANCIAL_TRANSACTION receives nothing from that view, and 16 columns reach no satellite. Visible as a counted reject, not as an absent model. OVERRULE: Supply an expression in the map; this build will not synthesise one."
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "D8-COVERGRAIN-BUILT-WITH-A-FANOUT-COUNT -- SRM-COVERGRAIN's 35 blocks on 2 views are BUILT as mapped (s5.7 -- the builder does not correct the mapping), with a per-anchor row count emitted beside the key so an N>1 fan-in is counted and diverted rather than silently keeping one arbitrary cover's values. COST: If the N rows per claim do carry differing values, those rows are rejected rather than loaded, so the satellite is EMPTY for those claims instead of wrong. Needs executed data to settle; invisible to check_collapse either way. OVERRULE: Set COVERGRAIN_DIVERT_FANOUT = False in this module."
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "D9-MEMBERSHIP-RE-DERIVED-NOT-TRUSTED -- resolved_on_view is NOT trusted. Membership is re-derived per row against the row's OWN view from 00_tables_index.json, and a brace token is read as a COALESCE LADDER of alternatives: a rung absent from the view is pruned, and only a leg with NO surviving rung is refused. COST: Under this matcher 1 component disagrees with its own flag: SAT_POLICY_COVERAGE_SCHEDULE 'Coverage Reference' = '{ADDEDCOVERS element}' on MEMBERS_MEMBER_DETAILS_PIVOT_VW, whose token contains a SPACE and so names no column. That block is REFUSED, not renamed. A ladder-blind matcher would instead have accused 246 components. OVERRULE: Set TRUST_RESOLVED_ON_VIEW = True in this module -- which emits a column that does not exist."
+  },
+  {
+   "kind": "decision_taken",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "D10-SPINE-DISPLAY-RUNG-RESOLVED-FROM-THE-GRAPH -- A 'spine:<TABLE>.<COLUMN>' rung inside a child-key value is DISPLAY ONLY and is never parsed as SQL. The displayed form names the CONCEPT; the mechanism is re-derived from the graph. All 199 occurrences name MEMBERS_PARTY.PARTY_CODE, which the graph shows is a SIBLING of the row's view in 198 of 199 cases -- so these are LCA crosses, not climbs. COST: The one remaining form, 'spine:ROLE' on SAT_LNK_POLICY_PARTY_ROLE, names no table in the index at all and is REFUSED rather than guessed at. OVERRULE: Supply the table in the map's resolved_key; the display form will not be promoted to executable here."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "composite_key findings #1 and #2 are STALE against this map and carry no resolved flag. WHAT THE MAPPER MUST DO: mark them resolved (or restate their mechanism), because a build that honoured them literally would delete 28 correctly-keyed blocks. MATCHER: this build's ladder-aware leg_resolves() over the row's OWN view, re-derived per block; UNIT=blocks; POPULATION=the findings' own declared (view, satellite) scope. Derived 0 unresolvable of 18 and 0 of 10. The profile predicted exactly this ambiguity."
+  },
+  {
+   "kind": "unresolved_key",
+   "severity": "blocker",
+   "for_stage": "mapper",
+   "detail": "132 declared child-key legs resolve ONLY through a 'spine:' DISPLAY rung for which no resolved_key on that view declares a walk. Directive 6 forbids resolving a walk from child_key_value, so the legs are REFUSED, not synthesised. 128 are SAT_PROPOSAL_MEDICAL_SCHEDULING 'Member Reference', 3 SAT_PARTY_GROUP_CENSUS, 1 SAT_LNK_POLICY_PARTY_ROLE ('{spine:ROLE}', which names no table in the index at all). MEASURED: spine:MEMBERS_PARTY.PARTY_CODE has a resolver column on 56 occurrences and none on 143. WHAT THE MAPPER OWES: a declared walk in resolved_key for those views, or an on-view member identifier."
+  },
+  {
+   "kind": "unresolved_key",
+   "severity": "blocker",
+   "for_stage": "mapper",
+   "detail": "6 child-key legs name no resolvable column on their own view and are REFUSED: 3 SAT_PARTY_BANKING 'Account Number Masked' (value null, declared source gap, block-scope do_not_build), 2 SAT_PARTY_BENEFICIARY_LINE 'Beneficiary Sequence' = '{ordinal position in the delimited list}', and 1 SAT_POLICY_COVERAGE_SCHEDULE 'Coverage Reference' = '{ADDEDCOVERS element}' whose resolved_on_view is TRUE. The last three are English phrases in a brace token; rendering one emits a column reference containing a space. NOTE finding #7 declares 3 blocks but its table list names only 2 of the 3 views, so refusal is driven by the build's own global invariant and the under-coverage is reported."
+  },
+  {
+   "kind": "unresolved_key",
+   "severity": "blocker",
+   "for_stage": "mapper",
+   "detail": "190 payload blocks could not be keyed because their anchor does not resolve UNIQUELY (147 ambiguous over 17 (view,hub,instance) triples, 43 with no declared expression at all). NOT ONE was keyed on a guess. Example: HUB_PARTY on BASIC_DETAIL_ATTRIBUTE_PIVOT_VW has 8 distinct declared key expressions ('EMP:', 'IMD:', 'SPECIFIED_PERSON:', 'USER:', ...) and a payload block naming only 'HUB_PARTY' cannot say which population it belongs to. WHAT THE MAPPER OWES: an instance on those augmentation blocks, or a declared key expression. 17 satellites on the augmented track and 1 ratified satellite are unbuilt as a direct result, each reported with that reason."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "mapper",
+   "detail": "6 GENUINE s5.4 collisions: a payload attribute shares its name with a rendered child-key leg that is NOT part of the satellite's declared child key, so two different facts compete for one column. Each block is REFUSED, not renamed (renaming is a map edit, s5.7). Distinguished from the model's own intended overlap, which is 116 of 133 keyed satellites and is emitted as ONE column."
+  },
+  {
+   "kind": "bespoke_layer",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "Both profile-declared bespoke layers emitted, no third proposed. surrogate_child_key_quarantine: 7 models, 45 components scoped BY FIELD (leg_backing=='surrogate'; substring 'KEY_HASH' would give 2,602 field-values and the literal '{spine:KEY_HASH}' 461 -- neither is 45). The 7 RATIFIED Multi-Active SCD2 satellites load NO history from these blocks: deliberate, visible in the emitted SQL, and NOT a source gap. No key was fabricated -- the conversion population at VIEW grain is 0 of 45. reference_decode_gate: 3 directive rows, default REFUSE."
+  },
+  {
+   "kind": "note",
+   "severity": "warn",
+   "for_stage": "source",
+   "detail": "THREE QUESTIONS REMAIN OPEN AND CANNOT BE CLOSED HERE -- no source access. Each is now a load-time assertion that FAILS LOUDLY instead of passing silently: (1) whether the 6 re-encoded HUB_CLAIM cross walks return rows -- an empty join is the silent failure and the test also fails on any 1:N fan-out; (2) whether the 12 OPUS literal benefit heads intersect the Maximus templated column on SAT_CLAIM_BENEFIT_HEAD -- statically the one non-template literal is 'TOTAL' and its intersection with the 12 is EMPTY; (3) whether SRM-COVERGRAIN's N rows per claim carry DIFFERING values. Static pre-check done: every join operand column was verified to exist on both sides from the source index, NOT from resolved_on_view."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "3",
+   "detail": "The shape INVERTS from the sibling and was derived from the graph, not inherited: the sibling is flat (0 hierarchy edges, 0 resolvers, 0 walk-only casts) while this is a shredded EAV feed WITH a spine. 75 walk-only casts, 61 resolvers, 14 unpivot models, 87 distinct walks of which 33 skip at least one real level. 13 declared layers + 2 bespoke, all emitted."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "modeller",
+   "detail": "OPUS-SIDE DEFECT RECORDED AND NOT ACTED ON: the sibling under-keys 4 satellites across 15 blocks against the model's declared compound child keys. Maximus is fully keyed on all four and build_mxh3_spec.assert_fully_keyed RAISES if any built block resolves fewer than every declared leg, so a 1-leg reconciliation cannot be introduced silently. ABSOLUTE: no cross-build edit was made or proposed; opus_health_v2_dv_dbt was read-only and none of its generators was run -- re-verified by mtime sweep, 0 files modified."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "2",
+   "detail": "check_vault_alignment's satellite reader globs models/automate_dv/*/satellites/*.sql and finds 0 in THIS project AND 0 in the known-good sibling, so its alignment dimensions are vacuous against both layouts. Its SQL-FORM checks now pass after three fixes made HERE (not in vault_tools). WHAT STAGE 2 MUST DO: either run it with a layout it can read, or treat its alignment verdict as NOT RUN and rely on the independent measurement -- all 1,826 mapped target satellite+attribute rows are canonical against data_7.js."
+  },
+  {
+   "kind": "note",
+   "severity": "info",
+   "for_stage": "mapper",
+   "detail": "FIGURE RECONCILIATIONS, each with its matcher. (a) '@' U+0040: I measure 76 over child_key_value 32 + components .value 30 + key_derivation 14; the coordinator measures 84 by also counting rationale 5 + build_note 3, and the raw file count is 84. Both are right at their own scope; the EXECUTABLE population the build acts on is 62 (child_key_value + components .value), because key_derivation, rationale and build_note are prose fields that must never reach SQL. (b) .pre_* snapshots: 11, MATCHER = filename contains '.pre_'. (c) transformation_kind=='reference_decode' is 59 blocks, of which 3 carry the directive -- the gate is scoped to the 3. (d) The coordinator's 10-hex digests are MD5 prefixes, not sha256; both algorithms were recomputed from the bytes on disk and no digest was reconstructed from a prefix."
+  }
+ ]
+}

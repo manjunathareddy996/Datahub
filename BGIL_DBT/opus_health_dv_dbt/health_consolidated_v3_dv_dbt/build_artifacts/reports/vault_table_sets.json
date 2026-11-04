@@ -1,0 +1,813 @@
+{
+ "shared_62": {
+  "hub_assessment": {
+   "legacy_model_paths": [
+    "automate_dv/standard/hubs/hub_assessment.sql"
+   ],
+   "v2_model_paths": [
+    "vault/hubs/hub_assessment.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "hub_case": {
+   "legacy_model_paths": [
+    "automate_dv/standard/hubs/hub_case.sql"
+   ],
+   "v2_model_paths": [
+    "vault/hubs/hub_case.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "hub_claim": {
+   "legacy_model_paths": [
+    "automate_dv/standard/hubs/hub_claim.sql"
+   ],
+   "v2_model_paths": [
+    "vault/hubs/hub_claim.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "hub_coverage": {
+   "legacy_model_paths": [
+    "automate_dv/standard/hubs/hub_coverage.sql"
+   ],
+   "v2_model_paths": [
+    "vault/hubs/hub_coverage.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "hub_distribution_channel": {
+   "legacy_model_paths": [
+    "automate_dv/standard/hubs/hub_distribution_channel.sql"
+   ],
+   "v2_model_paths": [
+    "vault/hubs/hub_distribution_channel.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "hub_document": {
+   "legacy_model_paths": [
+    "automate_dv/standard/hubs/hub_document.sql"
+   ],
+   "v2_model_paths": [
+    "vault/hubs/hub_document.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "hub_location": {
+   "legacy_model_paths": [
+    "automate_dv/standard/hubs/hub_location.sql"
+   ],
+   "v2_model_paths": [
+    "vault/hubs/hub_location.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "hub_org_unit": {
+   "legacy_model_paths": [
+    "automate_dv/standard/hubs/hub_org_unit.sql"
+   ],
+   "v2_model_paths": [
+    "vault/hubs/hub_org_unit.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "hub_party": {
+   "legacy_model_paths": [
+    "automate_dv/standard/hubs/hub_party.sql"
+   ],
+   "v2_model_paths": [
+    "vault/hubs/hub_party.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "hub_policy": {
+   "legacy_model_paths": [
+    "automate_dv/standard/hubs/hub_policy.sql"
+   ],
+   "v2_model_paths": [
+    "vault/hubs/hub_policy.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "hub_product": {
+   "legacy_model_paths": [
+    "automate_dv/standard/hubs/hub_product.sql"
+   ],
+   "v2_model_paths": [
+    "vault/hubs/hub_product.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "hub_proposal": {
+   "legacy_model_paths": [
+    "automate_dv/standard/hubs/hub_proposal.sql"
+   ],
+   "v2_model_paths": [
+    "vault/hubs/hub_proposal.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "hub_quote": {
+   "legacy_model_paths": [
+    "automate_dv/standard/hubs/hub_quote.sql"
+   ],
+   "v2_model_paths": [
+    "vault/hubs/hub_quote.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "hub_risk_object": {
+   "legacy_model_paths": [
+    "automate_dv/standard/hubs/hub_risk_object.sql"
+   ],
+   "v2_model_paths": [
+    "vault/hubs/hub_risk_object.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "lnk_party_role": {
+   "legacy_model_paths": [
+    "automate_dv/standard/links/lnk_party_role.sql"
+   ],
+   "v2_model_paths": [
+    "vault/links/lnk_party_role.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "lnk_policy_party": {
+   "legacy_model_paths": [
+    "automate_dv/standard/links/lnk_policy_party.sql"
+   ],
+   "v2_model_paths": [
+    "vault/links/lnk_policy_party.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_assessment_header": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_assessment_header.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_assessment_header.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_assessment_underwriting": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_assessment_underwriting.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_assessment_underwriting.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_claim_benefit_head": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_claim_benefit_head.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_claim_benefit_head.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_claim_header": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_claim_header.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_claim_header.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_claim_health_detail": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_claim_health_detail.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_claim_health_detail.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_claim_provider_billing": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_claim_provider_billing.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_claim_provider_billing.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_claim_repudiation": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_claim_repudiation.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_claim_repudiation.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_claim_tpa_interaction": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_claim_tpa_interaction.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_claim_tpa_interaction.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_common_address": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_common_address.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_common_address.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_common_admin_geography": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_common_admin_geography.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_common_admin_geography.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_common_contact": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_common_contact.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_common_contact.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_document_definition": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_document_definition.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_document_definition.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_lnk_party_role_core": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_lnk_party_role_core.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_lnk_party_role_core.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_lnk_policy_party_role": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_lnk_policy_party_role.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_lnk_policy_party_role.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_lnk_role_agent": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_lnk_role_agent.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_lnk_role_agent.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_lnk_role_nominee_beneficiary": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_lnk_role_nominee_beneficiary.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_lnk_role_nominee_beneficiary.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_org_unit_definition": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_org_unit_definition.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_org_unit_definition.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_party_banking": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_party_banking.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_party_banking.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_party_digital_identity": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_party_digital_identity.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_party_digital_identity.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_party_health_profile": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_party_health_profile.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_party_health_profile.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_party_hierarchy": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_party_hierarchy.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_party_hierarchy.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_party_identification": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_party_identification.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_party_identification.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_party_identity": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_party_identity.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_party_identity.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_party_organisation_profile": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_party_organisation_profile.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_party_organisation_profile.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_policy_certificate": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_policy_certificate.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_policy_certificate.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_policy_classification": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_policy_classification.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_policy_classification.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_policy_coverage_schedule": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_policy_coverage_schedule.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_policy_coverage_schedule.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_policy_discount_loading_applied": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_policy_discount_loading_applied.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_policy_discount_loading_applied.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_policy_group": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_policy_group.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_policy_group.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_policy_header": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_policy_header.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_policy_header.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_policy_intermediary_split": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_policy_intermediary_split.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_policy_intermediary_split.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_policy_portability_migration": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_policy_portability_migration.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_policy_portability_migration.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_policy_premium_summary": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_policy_premium_summary.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_policy_premium_summary.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_policy_renewal": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_policy_renewal.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_policy_renewal.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_policy_tax_head": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_policy_tax_head.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_policy_tax_head.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_policy_terms": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_policy_terms.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_policy_terms.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_product_definition": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_product_definition.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_product_definition.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_product_health_membership_rules": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_product_health_membership_rules.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_product_health_membership_rules.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_product_terms": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_product_terms.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_product_terms.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_product_version": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_product_version.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_product_version.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_proposal_underwriting": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_proposal_underwriting.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_proposal_underwriting.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_quote_header": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_quote_header.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_quote_header.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_quote_rating": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_quote_rating.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_quote_rating.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_risk_health_member_coverage": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_risk_health_member_coverage.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_risk_health_member_coverage.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_risk_health_member_medical": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_risk_health_member_medical.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_risk_health_member_medical.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  },
+  "sat_risk_person_insured": {
+   "legacy_model_paths": [
+    "automate_dv/standard/satellites/sat_risk_person_insured.sql"
+   ],
+   "v2_model_paths": [
+    "vault/satellites/sat_risk_person_insured.sql"
+   ],
+   "legacy_feed_models": 1,
+   "v2_feed_models": 1
+  }
+ },
+ "legacy_only_140": [
+  "hub_agreement",
+  "hub_financial_account",
+  "hub_financial_transaction",
+  "hub_loss_event",
+  "hub_payment_instrument",
+  "hub_reinsurance_treaty",
+  "lnk_agreement_channel",
+  "lnk_agreement_document",
+  "lnk_agreement_party",
+  "lnk_agreement_product",
+  "lnk_assessment_party",
+  "lnk_case_document",
+  "lnk_case_party",
+  "lnk_case_policy",
+  "lnk_channel_org_unit",
+  "lnk_claim_assessment",
+  "lnk_claim_case",
+  "lnk_claim_coverage",
+  "lnk_claim_document",
+  "lnk_claim_location",
+  "lnk_claim_loss_event",
+  "lnk_claim_party",
+  "lnk_claim_payment_instrument",
+  "lnk_claim_policy",
+  "lnk_fintxn_account",
+  "lnk_fintxn_claim",
+  "lnk_fintxn_instrument",
+  "lnk_fintxn_party",
+  "lnk_fintxn_policy",
+  "lnk_loss_event_location",
+  "lnk_org_unit_hierarchy",
+  "lnk_org_unit_location",
+  "lnk_party_channel",
+  "lnk_party_document",
+  "lnk_party_location",
+  "lnk_party_org_unit",
+  "lnk_party_payment_instrument",
+  "lnk_policy_cession",
+  "lnk_policy_channel",
+  "lnk_policy_coverage",
+  "lnk_policy_document",
+  "lnk_policy_endorsement",
+  "lnk_policy_location",
+  "lnk_policy_org_unit",
+  "lnk_policy_payment_instrument",
+  "lnk_policy_product",
+  "lnk_policy_renewal",
+  "lnk_policy_risk_object",
+  "lnk_product_coverage",
+  "lnk_product_variant",
+  "lnk_proposal_assessment",
+  "lnk_proposal_party",
+  "lnk_proposal_policy",
+  "lnk_proposal_product",
+  "lnk_quote_party",
+  "lnk_quote_product",
+  "lnk_quote_proposal",
+  "lnk_risk_object_assessment",
+  "lnk_risk_object_document",
+  "lnk_risk_object_party",
+  "lnk_treaty_party",
+  "lnk_treaty_product",
+  "sat_account_balance",
+  "sat_account_definition",
+  "sat_agreement_commercial_terms",
+  "sat_agreement_definition",
+  "sat_agreement_sla",
+  "sat_assessment_medical",
+  "sat_aug_agreement",
+  "sat_aug_assessment",
+  "sat_aug_case",
+  "sat_aug_claim",
+  "sat_aug_coverage",
+  "sat_aug_distribution_channel",
+  "sat_aug_document",
+  "sat_aug_financial_account",
+  "sat_aug_org_unit",
+  "sat_aug_party",
+  "sat_aug_policy",
+  "sat_aug_product",
+  "sat_aug_proposal",
+  "sat_aug_quote",
+  "sat_aug_risk_object",
+  "sat_case_header",
+  "sat_channel_definition",
+  "sat_claim_assessment_summary",
+  "sat_claim_bill_digitisation",
+  "sat_claim_co_ri_share",
+  "sat_claim_communication",
+  "sat_claim_disbursement_batch",
+  "sat_claim_fnol",
+  "sat_claim_note",
+  "sat_claim_reserve",
+  "sat_claim_settlement",
+  "sat_common_consent",
+  "sat_common_geo",
+  "sat_common_status",
+  "sat_document_checklist",
+  "sat_fin_charge_rate",
+  "sat_fin_receipt",
+  "sat_fintxn_claim_payment",
+  "sat_fintxn_commission",
+  "sat_fintxn_header",
+  "sat_fintxn_premium",
+  "sat_fintxn_recon_instrument",
+  "sat_fintxn_tax",
+  "sat_instrument_definition",
+  "sat_lnk_role_customer",
+  "sat_lnk_role_employee",
+  "sat_lnk_role_provider",
+  "sat_lnk_role_tpa",
+  "sat_location_profile",
+  "sat_loss_event_detail",
+  "sat_party_claim_history",
+  "sat_party_contact_address_link",
+  "sat_party_correspondence",
+  "sat_party_employment",
+  "sat_party_financial_profile",
+  "sat_party_fraud_profile",
+  "sat_party_group_census",
+  "sat_party_group_household",
+  "sat_party_group_scheme",
+  "sat_party_individual_demographics",
+  "sat_party_policy_history",
+  "sat_party_provider_capability",
+  "sat_policy_bonus_tracking",
+  "sat_policy_clause_attached",
+  "sat_policy_coinsurance",
+  "sat_policy_endorsement",
+  "sat_policy_instalment_schedule",
+  "sat_policy_lifecycle",
+  "sat_policy_premium_head",
+  "sat_policy_refund_detail",
+  "sat_policy_tenure_schedule",
+  "sat_product_rating_factor",
+  "sat_proposal_questionnaire",
+  "sat_provider_quality",
+  "sat_provider_tariff",
+  "sat_risk_object_core",
+  "sat_risk_person_member"
+ ],
+ "v2_only_45": [
+  "lnk_party_role__intermediary__ca6818",
+  "lnk_party_role__pmsby_data_web_service__ac324c",
+  "lnk_party_role__pmsby_data_web_service__e29d78",
+  "lnk_policy_party__hat_pol_emp_map__85e816",
+  "sat_case_external_ref",
+  "sat_channel_digital_integration",
+  "sat_claim_anomaly_detection",
+  "sat_claim_bill_line",
+  "sat_claim_conversion_event",
+  "sat_claim_cover_section_assessment",
+  "sat_claim_disability_head",
+  "sat_claim_follow_up_chase",
+  "sat_claim_hospital_day_limit",
+  "sat_claim_pa_detail",
+  "sat_claim_process_step_log",
+  "sat_claim_reopen",
+  "sat_claim_reserve_head",
+  "sat_claim_sla_tracking",
+  "sat_claim_status_transition",
+  "sat_claim_transport_leg",
+  "sat_common_business_audit",
+  "sat_common_classification",
+  "sat_common_communication_preference",
+  "sat_lnk_role_bancassurance",
+  "sat_org_unit_contact",
+  "sat_org_unit_licence",
+  "sat_party_consent_mandate",
+  "sat_party_payout_profile",
+  "sat_policy_contingency_scheme",
+  "sat_policy_coverage_parameter",
+  "sat_policy_delivery",
+  "sat_policy_doc_checklist",
+  "sat_policy_group_document_control",
+  "sat_policy_group_relation_eligibility",
+  "sat_policy_premium_settlement",
+  "sat_policy_tax_breakup",
+  "sat_product_capture_parameter",
+  "sat_product_distribution_rules",
+  "sat_product_issuance_output_rule",
+  "sat_product_rating_structure",
+  "sat_proposal_header",
+  "sat_quote_premium_rate_age_band",
+  "sat_quote_premium_rate_slab",
+  "sat_quote_rating_input",
+  "sat_risk_health_ped_waiting"
+ ]
+}

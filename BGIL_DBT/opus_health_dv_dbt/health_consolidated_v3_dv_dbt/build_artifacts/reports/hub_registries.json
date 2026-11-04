@@ -1,0 +1,4764 @@
+{
+ "unit_note": "one entry per (vault table, run, business-key column): a REGISTRY, i.e. one identifier population feeding that key space.",
+ "risk_note": "Unifying the hash form does NOT establish that the two runs' identifier spaces denote the same entities. 6 of the 14 shared hubs have ZERO BK-column overlap between the runs. Each shared hub's model header says so. A false merge is unrecoverable after load.",
+ "zero_overlap_hubs": [
+  "hub_case",
+  "hub_coverage",
+  "hub_distribution_channel",
+  "hub_location",
+  "hub_proposal",
+  "hub_risk_object"
+ ],
+ "namespace_scope_note": "The 'HUB_X|' namespace separates HUBS, not registries WITHIN a hub: 'HUB_POLICY|' prefixes POLICY_REF and POLICY_NO identically.",
+ "per_hub": {
+  "HUB_AGREEMENT": {
+   "runs": [
+    "opus_health_legacy_v4"
+   ],
+   "registries_per_run": {
+    "opus_health_legacy_v4": 3
+   },
+   "bk_columns_per_run": {
+    "opus_health_legacy_v4": [
+     "HUB_AGREEMENT_BK__DEAL_ID",
+     "HUB_AGREEMENT_BK__HOSID",
+     "HUB_AGREEMENT_BK__REMEDINET_PROVIDER_CODE"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_AGREEMENT_BK__DEAL_ID",
+      "view": "BJAZ_HEALTH_WEBSERVICE_INFO",
+      "source_columns": [
+       "DEAL_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_AGREEMENT_BK__HOSID",
+      "view": "BJAZ_HM_HOSPITAL_MASTER",
+      "source_columns": [
+       "HOSID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_AGREEMENT_BK__HOSID",
+      "view": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+      "source_columns": [
+       "HOSID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_AGREEMENT_BK__HOSID",
+      "view": "BJAZ_HM_HOSP_MASTER_EXTN1",
+      "source_columns": [
+       "HOSID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_AGREEMENT_BK__REMEDINET_PROVIDER_CODE",
+      "view": "BJAZ_REMEDINET_CLAIM_DETAILS",
+      "source_columns": [
+       "REMEDINET_PROVIDER_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_ASSESSMENT": {
+   "runs": [
+    "opus_health_delta3",
+    "opus_health_legacy_v4",
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 2,
+    "opus_health_legacy_v4": 4
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "HUB_ASSESSMENT_BK__SCRUTINY_NO"
+    ],
+    "opus_health_delta3": [
+     "HUB_ASSESSMENT_BK__CONTRACT_ID_CLAIM_ID_RISK_ID",
+     "HUB_ASSESSMENT_BK__RISK_ID"
+    ],
+    "opus_health_legacy_v4": [
+     "HUB_ASSESSMENT_BK__ASSESS_ID",
+     "HUB_ASSESSMENT_BK__DOCASESS_ID",
+     "HUB_ASSESSMENT_BK__PD_SCRUTINY_NUMBER",
+     "HUB_ASSESSMENT_BK__SCRUTINY_NO"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__SCRUTINY_NO",
+      "view": "BJAZ_ENROLL_SCR_DTLS",
+      "source_columns": [
+       "SCRUTINY_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_delta3": [
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__CONTRACT_ID_CLAIM_ID_RISK_ID",
+      "view": "BJAZ_RISK_TRANS_DTLS",
+      "source_columns": [
+       "CONTRACT_ID",
+       "CLAIM_ID",
+       "RISK_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__RISK_ID",
+      "view": "BJAZ_RISK_IDENTIFIERS_MASTER",
+      "source_columns": [
+       "RISK_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__SCRUTINY_NO",
+      "view": "BA_HCP_PORT_WORDINGS",
+      "source_columns": [
+       "SCRUTINY_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__SCRUTINY_NO",
+      "view": "BA_HCP_PP_MEM_DTLS",
+      "source_columns": [
+       "SCRUTINY_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__PD_SCRUTINY_NUMBER",
+      "view": "BA_HCP_PROD_8428_GPG_LOADER",
+      "source_columns": [
+       "PD_SCRUTINY_NUMBER"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__PD_SCRUTINY_NUMBER",
+      "view": "BA_HCP_PROD_8432_ECP_LOADER",
+      "source_columns": [
+       "PD_SCRUTINY_NUMBER"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__PD_SCRUTINY_NUMBER",
+      "view": "BA_HCP_PROD_8433_FHC_LOADER",
+      "source_columns": [
+       "PD_SCRUTINY_NUMBER"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__PD_SCRUTINY_NUMBER",
+      "view": "BA_HCP_PROD_8439_CLH_LOADER",
+      "source_columns": [
+       "PD_SCRUTINY_NUMBER"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__SCRUTINY_NO",
+      "view": "BJAZ_BANDHAN_MEDI_CLAM",
+      "source_columns": [
+       "SCRUTINY_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__SCRUTINY_NO",
+      "view": "BJAZ_EHH_POL_DTLS",
+      "source_columns": [
+       "SCRUTINY_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__SCRUTINY_NO",
+      "view": "BJAZ_GPG_POL_DTLS",
+      "source_columns": [
+       "SCRUTINY_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__SCRUTINY_NO",
+      "view": "BJAZ_GRP_HLT_DTLS",
+      "source_columns": [
+       "SCRUTINY_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__SCRUTINY_NO",
+      "view": "BJAZ_HCP_TRANSCRIPT_URL",
+      "source_columns": [
+       "SCRUTINY_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__SCRUTINY_NO",
+      "view": "BJAZ_HEALTH_WEBSERVICE_INFO",
+      "source_columns": [
+       "SCRUTINY_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__DOCASESS_ID",
+      "view": "BJAZ_HM_DOCTOR_ASSESS",
+      "source_columns": [
+       "DOCASESS_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__DOCASESS_ID",
+      "view": "BJAZ_HM_DOCTOR_MULTI_ASSESS",
+      "source_columns": [
+       "DOCASESS_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__SCRUTINY_NO",
+      "view": "BJAZ_HM_HAT_ITRACK_DTLS",
+      "source_columns": [
+       "SCRUTINY_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__DOCASESS_ID",
+      "view": "BJAZ_HM_PCS_MULTI_ASSESS",
+      "source_columns": [
+       "DOCASESS_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__ASSESS_ID",
+      "view": "BJAZ_HM_PRO_ASSESSMENT",
+      "source_columns": [
+       "ASSESS_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ASSESSMENT_BK__SCRUTINY_NO",
+      "view": "BJAZ_SCR_HLTH_PORTABLE_DTLS",
+      "source_columns": [
+       "SCRUTINY_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_CASE": {
+   "runs": [
+    "opus_health_delta3",
+    "opus_health_legacy_v4",
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1,
+    "opus_health_legacy_v4": 5
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "HUB_CASE_BK__CASHLESS_IN_ID"
+    ],
+    "opus_health_delta3": [
+     "HUB_CASE_BK__INWARDNO"
+    ],
+    "opus_health_legacy_v4": [
+     "HUB_CASE_BK__ALLOCATE_ID",
+     "HUB_CASE_BK__ENHANCE_REF_ID",
+     "HUB_CASE_BK__ITRACK_NO",
+     "HUB_CASE_BK__QUERY_REF_ID",
+     "HUB_CASE_BK__REQUEST_NO"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "HUB_CASE_BK__CASHLESS_IN_ID",
+      "view": "BJAZ_HM_INWARD_OMNI_MAPPING",
+      "source_columns": [
+       "CASHLESS_IN_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_delta3": [
+     {
+      "bk_column": "HUB_CASE_BK__INWARDNO",
+      "view": "NG_FAX_INWARD_DETAILS",
+      "source_columns": [
+       "INWARDNO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_CASE_BK__ITRACK_NO",
+      "view": "BJAZ_HM_HAT_ITRACK_DTLS",
+      "source_columns": [
+       "ITRACK_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CASE_BK__ALLOCATE_ID",
+      "view": "BJAZ_HM_INWARD_AUTOALLOCATION",
+      "source_columns": [
+       "ALLOCATE_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CASE_BK__ENHANCE_REF_ID",
+      "view": "BJAZ_HM_PREAUTH_ENHANCE",
+      "source_columns": [
+       "ENHANCE_REF_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CASE_BK__QUERY_REF_ID",
+      "view": "BJAZ_HM_PREAUTH_QUERY",
+      "source_columns": [
+       "QUERY_REF_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CASE_BK__REQUEST_NO",
+      "view": "BJAZ_SCR_HLTH_PORTABLE_DTLS",
+      "source_columns": [
+       "REQUEST_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_CLAIM": {
+   "runs": [
+    "opus_health_delta3",
+    "opus_health_legacy_v4",
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 6,
+    "opus_health_delta3": 2,
+    "opus_health_legacy_v4": 6
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "HUB_CLAIM_BK__CASE_ID",
+     "HUB_CLAIM_BK__CLAIM_ID",
+     "HUB_CLAIM_BK__CLAIM_NO",
+     "HUB_CLAIM_BK__DISC_CASE_ID",
+     "HUB_CLAIM_BK__NON_PAY_CASE_ID",
+     "HUB_CLAIM_BK__RET_CASE_ID"
+    ],
+    "opus_health_delta3": [
+     "HUB_CLAIM_BK__CLAIM_ID",
+     "HUB_CLAIM_BK__REQUESTID"
+    ],
+    "opus_health_legacy_v4": [
+     "HUB_CLAIM_BK__BJAZ_CLAIM_ID",
+     "HUB_CLAIM_BK__CASE_ID",
+     "HUB_CLAIM_BK__CLAIM_ID",
+     "HUB_CLAIM_BK__CLAIM_NO",
+     "HUB_CLAIM_BK__CLID",
+     "HUB_CLAIM_BK__REFERENCE_ID"
+    ]
+   },
+   "bk_column_overlap_between_runs": [
+    "HUB_CLAIM_BK__CLAIM_ID"
+   ],
+   "overlap_count": 1,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_GPA_BILL_DTLS",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_PREAUTH_REQUEST",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_CLAIM_CLOSE",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_CLAIM_TRACKER",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_HCS_TECH_ASSESS_COV",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_CLAIM_CONVERSION",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_NO",
+      "view": "BJAZ_BFHL_DTLS",
+      "source_columns": [
+       "CLAIM_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_ORPHAN_FOLLOW_DTLS",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_USER_TAT",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__DISC_CASE_ID",
+      "view": "BJAZ_HAT_DISC_SUMMARY_LST",
+      "source_columns": [
+       "DISC_CASE_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__NON_PAY_CASE_ID",
+      "view": "BJAZ_HAT_NON_PAYABLE_LST",
+      "source_columns": [
+       "NON_PAY_CASE_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__RET_CASE_ID",
+      "view": "BJAZ_HAT_RETURN_SUMMARY_LST",
+      "source_columns": [
+       "RET_CASE_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CASE_ID",
+      "view": "BJAZ_HAT_OCR_FINA_PERTICULARS",
+      "source_columns": [
+       "CASE_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_CLAIM_REOPEN",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_delta3": [
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_RISK_TRANS_DTLS",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__REQUESTID",
+      "view": "BJAZ_REMEDINET_PATIENT_DETAILS",
+      "source_columns": [
+       "REQUESTID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_CLAIM_BK__REFERENCE_ID",
+      "view": "BJAZ_BANDHAN_MEDI_CLAM",
+      "source_columns": [
+       "REFERENCE_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CASE_ID",
+      "view": "BJAZ_HAT_OCR_BILL_DETAILS",
+      "source_columns": [
+       "CASE_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CASE_ID",
+      "view": "BJAZ_HAT_OCR_FINA_DTLS_LST",
+      "source_columns": [
+       "CASE_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_BILL_CHARGE",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_BILL_DETAIL",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_BILL_DETAIL_OCR",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_CASHLESS_INWARD",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_COINSU_CLM_DTLS",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_DOCTOR_ASSESS",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_DOCTOR_MULTI_ASSESS",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLID",
+      "view": "BJAZ_HM_HCM_EXTRACT",
+      "source_columns": [
+       "CLID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_INWARD_AUTOALLOCATION",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_INWARD_DTLS",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_ORPHAN_REG",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_PCS_MULTI_ASSESS",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLID",
+      "view": "BJAZ_HM_PREAUTH_ENHANCE",
+      "source_columns": [
+       "CLID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLID",
+      "view": "BJAZ_HM_PREAUTH_QUERY",
+      "source_columns": [
+       "CLID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_PRO_ASSESSMENT",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_ID",
+      "view": "BJAZ_HM_QUERY_REMARK",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__CLAIM_NO",
+      "view": "BJAZ_REMEDINET_CLAIM_DETAILS",
+      "source_columns": [
+       "CLAIM_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_CLAIM_BK__BJAZ_CLAIM_ID",
+      "view": "BJAZ_TPA_CLAIM_DETAILS_WS",
+      "source_columns": [
+       "BJAZ_CLAIM_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_COVERAGE": {
+   "runs": [
+    "opus_health_delta3",
+    "opus_health_legacy_v4",
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 2,
+    "opus_health_legacy_v4": 3
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "HUB_COVERAGE_BK__CVR_CODE"
+    ],
+    "opus_health_delta3": [
+     "HUB_COVERAGE_BK__COVERAGE",
+     "HUB_COVERAGE_BK__COVER_CODE"
+    ],
+    "opus_health_legacy_v4": [
+     "HUB_COVERAGE_BK__COVER_CODE",
+     "HUB_COVERAGE_BK__COVER_SECTION",
+     "HUB_COVERAGE_BK__HCP_SEQNO"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "HUB_COVERAGE_BK__CVR_CODE",
+      "view": "BJAZ_CTNGY_BASES_EXTN",
+      "source_columns": [
+       "CVR_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_delta3": [
+     {
+      "bk_column": "HUB_COVERAGE_BK__COVER_CODE",
+      "view": "BJAZ_STARPKG_COVER_MST",
+      "source_columns": [
+       "COVER_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_COVERAGE_BK__COVERAGE",
+      "view": "BJAZ_GRP_HLT_MEM_DTLS",
+      "source_columns": [
+       "COVERAGE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_COVERAGE_BK__COVER_CODE",
+      "view": "BJAZ_STARPKG_COV_PREM_MST",
+      "source_columns": [
+       "COVER_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_COVERAGE_BK__HCP_SEQNO",
+      "view": "BA_HCP_DT_MEM_COV",
+      "source_columns": [
+       "HCP_SEQNO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_COVERAGE_BK__COVER_CODE",
+      "view": "BJAZ_HG_POL_DTLS",
+      "source_columns": [
+       "COVER_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_COVERAGE_BK__COVER_SECTION",
+      "view": "BJAZ_HM_DOCTOR_MULTI_ASSESS",
+      "source_columns": [
+       "COVER_SECTION"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_DISTRIBUTION_CHANNEL": {
+   "runs": [
+    "opus_health_delta3",
+    "opus_health_legacy_v4",
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 3,
+    "opus_health_delta3": 1,
+    "opus_health_legacy_v4": 6
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "HUB_DISTRIBUTION_CHANNEL_BK__BUSINESS_CHANNEL",
+     "HUB_DISTRIBUTION_CHANNEL_BK__NEW_BC",
+     "HUB_DISTRIBUTION_CHANNEL_BK__USER_TRANS_KEY_NO"
+    ],
+    "opus_health_delta3": [
+     "HUB_DISTRIBUTION_CHANNEL_BK__chatbot_id"
+    ],
+    "opus_health_legacy_v4": [
+     "HUB_DISTRIBUTION_CHANNEL_BK__BUSINESS_SOURCE",
+     "HUB_DISTRIBUTION_CHANNEL_BK__DISTRIBUTION_PARTNER",
+     "HUB_DISTRIBUTION_CHANNEL_BK__IMD_CODE",
+     "HUB_DISTRIBUTION_CHANNEL_BK__PARTNERID",
+     "HUB_DISTRIBUTION_CHANNEL_BK__PARTNER_ID",
+     "HUB_DISTRIBUTION_CHANNEL_BK__PD_PARTNER_ID"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__USER_TRANS_KEY_NO",
+      "view": "BJAZ_PMSBY_DATA_WEB_SERVICE",
+      "source_columns": [
+       "USER_TRANS_KEY_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__BUSINESS_CHANNEL",
+      "view": "BJAZ_INTERMEDIARY",
+      "source_columns": [
+       "BUSINESS_CHANNEL"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__NEW_BC",
+      "view": "BJAZ_INTERMEDIARY",
+      "source_columns": [
+       "NEW_BC"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_delta3": [
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__chatbot_id",
+      "view": "BJAZ_BOT_UTILIZATION_DTLS",
+      "source_columns": [
+       "chatbot_id"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PARTNER_ID",
+      "view": "BA_HCP_POL_MST",
+      "source_columns": [
+       "PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PARTNER_ID",
+      "view": "BA_HCP_PORT_WORDINGS",
+      "source_columns": [
+       "PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PD_PARTNER_ID",
+      "view": "BA_HCP_PROD_8428_GPG_LOADER",
+      "source_columns": [
+       "PD_PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PD_PARTNER_ID",
+      "view": "BA_HCP_PROD_8432_ECP_LOADER",
+      "source_columns": [
+       "PD_PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PD_PARTNER_ID",
+      "view": "BA_HCP_PROD_8433_FHC_LOADER",
+      "source_columns": [
+       "PD_PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PD_PARTNER_ID",
+      "view": "BA_HCP_PROD_8439_CLH_LOADER",
+      "source_columns": [
+       "PD_PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PARTNER_ID",
+      "view": "BJAZ_BANDHAN_MEDI_CLAM",
+      "source_columns": [
+       "PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PARTNER_ID",
+      "view": "BJAZ_CARD_DTLS",
+      "source_columns": [
+       "PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PARTNER_ID",
+      "view": "BJAZ_CTNGY_SCHEME_MST",
+      "source_columns": [
+       "PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PARTNER_ID",
+      "view": "BJAZ_EC_MEM_DTLS_EXTN",
+      "source_columns": [
+       "PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PARTNER_ID",
+      "view": "BJAZ_EHH_POL_DTLS",
+      "source_columns": [
+       "PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PARTNERID",
+      "view": "BJAZ_GENERIC_LOADER_LOG_TABLE",
+      "source_columns": [
+       "PARTNERID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__IMD_CODE",
+      "view": "BJAZ_GPG_POL_DTLS",
+      "source_columns": [
+       "IMD_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__IMD_CODE",
+      "view": "BJAZ_GP_HOSPITAL_CASH",
+      "source_columns": [
+       "IMD_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__IMD_CODE",
+      "view": "BJAZ_GRP_HLT_IMD_DTLS",
+      "source_columns": [
+       "IMD_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PARTNER_ID",
+      "view": "BJAZ_HCF_MEMBER_DTLS",
+      "source_columns": [
+       "PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__IMD_CODE",
+      "view": "BJAZ_HCP_TRANSCRIPT_URL",
+      "source_columns": [
+       "IMD_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__IMD_CODE",
+      "view": "BJAZ_HDFC_SEC_FHPP",
+      "source_columns": [
+       "IMD_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PARTNER_ID",
+      "view": "BJAZ_HEALTH_WEBSERVICE_INFO",
+      "source_columns": [
+       "PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__BUSINESS_SOURCE",
+      "view": "BJAZ_HG_POL_DTLS",
+      "source_columns": [
+       "BUSINESS_SOURCE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PARTNER_ID",
+      "view": "BJAZ_HLT_ENSURE_MEM_DTLS",
+      "source_columns": [
+       "PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__IMD_CODE",
+      "view": "BJAZ_HM_HCM_EXTRACT",
+      "source_columns": [
+       "IMD_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__DISTRIBUTION_PARTNER",
+      "view": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+      "source_columns": [
+       "DISTRIBUTION_PARTNER"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PARTNER_ID",
+      "view": "BJAZ_HM_MEMBER_DTLS",
+      "source_columns": [
+       "PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PARTNER_ID",
+      "view": "BJAZ_IHG_MEM_DTLS_EXTN",
+      "source_columns": [
+       "PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DISTRIBUTION_CHANNEL_BK__PARTNER_ID",
+      "view": "BJAZ_SH_MEM_DTLS_EXTN",
+      "source_columns": [
+       "PARTNER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_DOCUMENT": {
+   "runs": [
+    "opus_health_delta3",
+    "opus_health_legacy_v4",
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 4,
+    "opus_health_delta3": 1,
+    "opus_health_legacy_v4": 4
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "HUB_DOCUMENT_BK__FIR_NO",
+     "HUB_DOCUMENT_BK__INWARD_NO",
+     "HUB_DOCUMENT_BK__OMNI_INWARD_NO",
+     "HUB_DOCUMENT_BK__OMNI_INWARD_NO_REPORT_ATTACH_PATH"
+    ],
+    "opus_health_delta3": [
+     "HUB_DOCUMENT_BK__INWARDNO"
+    ],
+    "opus_health_legacy_v4": [
+     "HUB_DOCUMENT_BK__CARD_NO",
+     "HUB_DOCUMENT_BK__INWARD_ID",
+     "HUB_DOCUMENT_BK__MEDICAL_REPORT",
+     "HUB_DOCUMENT_BK__OMNI_INWARD_NO"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "HUB_DOCUMENT_BK__FIR_NO",
+      "view": "BJAZ_HM_PREAUTH_REQUEST",
+      "source_columns": [
+       "FIR_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DOCUMENT_BK__OMNI_INWARD_NO",
+      "view": "BJAZ_HM_PREAUTH_REQUEST",
+      "source_columns": [
+       "OMNI_INWARD_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DOCUMENT_BK__INWARD_NO",
+      "view": "BJAZ_HAT_OCR_FINA_PERTICULARS",
+      "source_columns": [
+       "INWARD_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DOCUMENT_BK__OMNI_INWARD_NO_REPORT_ATTACH_PATH",
+      "view": "BJAZ_HM_PREAUTH_ATTACH",
+      "source_columns": [
+       "OMNI_INWARD_NO",
+       "REPORT_ATTACH_PATH"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_delta3": [
+     {
+      "bk_column": "HUB_DOCUMENT_BK__INWARDNO",
+      "view": "NG_FAX_INWARD_DETAILS",
+      "source_columns": [
+       "INWARDNO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_DOCUMENT_BK__CARD_NO",
+      "view": "BJAZ_CARD_DTLS",
+      "source_columns": [
+       "CARD_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DOCUMENT_BK__MEDICAL_REPORT",
+      "view": "BJAZ_EC_MEM_DTLS_EXTN",
+      "source_columns": [
+       "MEDICAL_REPORT"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DOCUMENT_BK__INWARD_ID",
+      "view": "BJAZ_HM_INWARD_DTLS",
+      "source_columns": [
+       "INWARD_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DOCUMENT_BK__OMNI_INWARD_NO",
+      "view": "BJAZ_HM_PREAUTH_ENHANCE",
+      "source_columns": [
+       "OMNI_INWARD_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DOCUMENT_BK__OMNI_INWARD_NO",
+      "view": "BJAZ_HM_PREAUTH_QUERY",
+      "source_columns": [
+       "OMNI_INWARD_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DOCUMENT_BK__MEDICAL_REPORT",
+      "view": "BJAZ_IHG_MEM_DTLS_EXTN",
+      "source_columns": [
+       "MEDICAL_REPORT"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DOCUMENT_BK__OMNI_INWARD_NO",
+      "view": "BJAZ_REMEDINET_CLAIM_DETAILS",
+      "source_columns": [
+       "OMNI_INWARD_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_DOCUMENT_BK__MEDICAL_REPORT",
+      "view": "BJAZ_SH_MEM_DTLS_EXTN",
+      "source_columns": [
+       "MEDICAL_REPORT"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_FINANCIAL_ACCOUNT": {
+   "runs": [
+    "opus_health_legacy_v4"
+   ],
+   "registries_per_run": {
+    "opus_health_legacy_v4": 7
+   },
+   "bk_columns_per_run": {
+    "opus_health_legacy_v4": [
+     "HUB_FINANCIAL_ACCOUNT_BK__BANK_AC_NO",
+     "HUB_FINANCIAL_ACCOUNT_BK__LMS_NO",
+     "HUB_FINANCIAL_ACCOUNT_BK__LOAN_ACCNO",
+     "HUB_FINANCIAL_ACCOUNT_BK__MLAC_EMI_PC_LOAN_ACCOUNT_NO",
+     "HUB_FINANCIAL_ACCOUNT_BK__PD_BANK_REF_NO1_LAC_SAC",
+     "HUB_FINANCIAL_ACCOUNT_BK__PLC_LOAN_ACC_NO",
+     "HUB_FINANCIAL_ACCOUNT_BK__S_ACCOUNT_NUMBER"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_FINANCIAL_ACCOUNT_BK__MLAC_EMI_PC_LOAN_ACCOUNT_NO",
+      "view": "BA_HCP_PROD_8428_GPG_LOADER",
+      "source_columns": [
+       "MLAC_EMI_PC_LOAN_ACCOUNT_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_FINANCIAL_ACCOUNT_BK__PD_BANK_REF_NO1_LAC_SAC",
+      "view": "BA_HCP_PROD_8432_ECP_LOADER",
+      "source_columns": [
+       "PD_BANK_REF_NO1_LAC_SAC"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_FINANCIAL_ACCOUNT_BK__PD_BANK_REF_NO1_LAC_SAC",
+      "view": "BA_HCP_PROD_8433_FHC_LOADER",
+      "source_columns": [
+       "PD_BANK_REF_NO1_LAC_SAC"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_FINANCIAL_ACCOUNT_BK__PLC_LOAN_ACC_NO",
+      "view": "BA_HCP_PROD_8439_CLH_LOADER",
+      "source_columns": [
+       "PLC_LOAN_ACC_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_FINANCIAL_ACCOUNT_BK__LMS_NO",
+      "view": "BJAZ_GPG_POL_DTLS",
+      "source_columns": [
+       "LMS_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_FINANCIAL_ACCOUNT_BK__S_ACCOUNT_NUMBER",
+      "view": "BJAZ_GP_HOSPITAL_CASH",
+      "source_columns": [
+       "S_ACCOUNT_NUMBER"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_FINANCIAL_ACCOUNT_BK__S_ACCOUNT_NUMBER",
+      "view": "BJAZ_HDFC_SEC_FHPP",
+      "source_columns": [
+       "S_ACCOUNT_NUMBER"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_FINANCIAL_ACCOUNT_BK__LOAN_ACCNO",
+      "view": "BJAZ_HEALTH_WEBSERVICE_INFO",
+      "source_columns": [
+       "LOAN_ACCNO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_FINANCIAL_ACCOUNT_BK__BANK_AC_NO",
+      "view": "BJAZ_HM_MEMBER_DTLS",
+      "source_columns": [
+       "BANK_AC_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_FINANCIAL_TRANSACTION": {
+   "runs": [
+    "opus_health_delta3",
+    "opus_health_legacy_v4"
+   ],
+   "registries_per_run": {
+    "opus_health_delta3": 1,
+    "opus_health_legacy_v4": 3
+   },
+   "bk_columns_per_run": {
+    "opus_health_delta3": [
+     "HUB_FINANCIAL_TRANSACTION_BK__TRANSACTION_ID"
+    ],
+    "opus_health_legacy_v4": [
+     "HUB_FINANCIAL_TRANSACTION_BK__PTRANSACTION_ID",
+     "HUB_FINANCIAL_TRANSACTION_BK__TPA_TRANS_KEY",
+     "HUB_FINANCIAL_TRANSACTION_BK__UTR_NO"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_delta3": [
+     {
+      "bk_column": "HUB_FINANCIAL_TRANSACTION_BK__TRANSACTION_ID",
+      "view": "BJAZ_STARPKG_POL_DTLS",
+      "source_columns": [
+       "TRANSACTION_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_FINANCIAL_TRANSACTION_BK__TRANSACTION_ID",
+      "view": "BJAZ_POLICY_BASES_EXTN",
+      "source_columns": [
+       "TRANSACTION_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_FINANCIAL_TRANSACTION_BK__PTRANSACTION_ID",
+      "view": "BJAZ_HEALTH_WEBSERVICE_INFO",
+      "source_columns": [
+       "PTRANSACTION_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_FINANCIAL_TRANSACTION_BK__UTR_NO",
+      "view": "BJAZ_HM_HCM_EXTRACT",
+      "source_columns": [
+       "UTR_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_FINANCIAL_TRANSACTION_BK__TPA_TRANS_KEY",
+      "view": "BJAZ_TPA_CLAIM_DETAILS_WS",
+      "source_columns": [
+       "TPA_TRANS_KEY"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_LOCATION": {
+   "runs": [
+    "opus_health_delta3",
+    "opus_health_legacy_v4",
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 8,
+    "opus_health_delta3": 7,
+    "opus_health_legacy_v4": 8
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "HUB_LOCATION_BK__ADDRESS_1_ADDRESS_2_PINCODE",
+     "HUB_LOCATION_BK__ADDRESS_LINE1_CORP_CITY_CORP_PIN",
+     "HUB_LOCATION_BK__ADD_LINE1_ADD_LINE2_ADD_LINE3_ADD_LINE4_CITY_STATE_STATE_CODE_PINCODE",
+     "HUB_LOCATION_BK__BRANCH_ADDRESS",
+     "HUB_LOCATION_BK__HAT_ID_CITY_HAT_ID_STATE",
+     "HUB_LOCATION_BK__MANDATE_ADDRESS_AREA_CITY_STATE_PINCODE",
+     "HUB_LOCATION_BK__PH_ADDRESS",
+     "HUB_LOCATION_BK__PP_ADDRESS"
+    ],
+    "opus_health_delta3": [
+     "HUB_LOCATION_BK__ADDRESS1_ADDRESS2_ADDRESS3_CITY_STATE_PIN_CODE",
+     "HUB_LOCATION_BK__ADDRESS_CITY_REGION",
+     "HUB_LOCATION_BK__INSURED_ADDRESS_PINCODE",
+     "HUB_LOCATION_BK__MAILING_ADDRESS_ID",
+     "HUB_LOCATION_BK__MAILING_PINCODE",
+     "HUB_LOCATION_BK__PREV_INSURER_ADD",
+     "HUB_LOCATION_BK__pincode"
+    ],
+    "opus_health_legacy_v4": [
+     "HUB_LOCATION_BK__CHILD_LOC_CODE",
+     "HUB_LOCATION_BK__LOCATIONCODE",
+     "HUB_LOCATION_BK__LOCATION_CODE",
+     "HUB_LOCATION_BK__LOC_CODE",
+     "HUB_LOCATION_BK__ORPHAN_LOC",
+     "HUB_LOCATION_BK__PIN_CODE",
+     "HUB_LOCATION_BK__POLICY_LOCATION",
+     "HUB_LOCATION_BK__RISK_LOCATION"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "HUB_LOCATION_BK__ADDRESS_LINE1_CORP_CITY_CORP_PIN",
+      "view": "BJAZ_ENROLL_POL_DTLS",
+      "source_columns": [
+       "ADDRESS_LINE1",
+       "CORP_CITY",
+       "CORP_PIN"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__PH_ADDRESS",
+      "view": "BJAZ_ENROLL_POL_DTLS",
+      "source_columns": [
+       "PH_ADDRESS"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__PP_ADDRESS",
+      "view": "BJAZ_ENROLL_POL_DTLS",
+      "source_columns": [
+       "PP_ADDRESS"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__ADD_LINE1_ADD_LINE2_ADD_LINE3_ADD_LINE4_CITY_STATE_STATE_CODE_PINCODE",
+      "view": "BJAZ_BRANCH_MASTER",
+      "source_columns": [
+       "ADD_LINE1",
+       "ADD_LINE2",
+       "ADD_LINE3",
+       "ADD_LINE4",
+       "CITY",
+       "STATE",
+       "STATE_CODE",
+       "PINCODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__MANDATE_ADDRESS_AREA_CITY_STATE_PINCODE",
+      "view": "BJAZ_NEFT_PARTNER_DTLS",
+      "source_columns": [
+       "MANDATE_ADDRESS",
+       "AREA",
+       "CITY",
+       "STATE",
+       "PINCODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__HAT_ID_CITY_HAT_ID_STATE",
+      "view": "BJAZ_HM_MEMBER_HLTH_DTLS",
+      "source_columns": [
+       "HAT_ID_CITY",
+       "HAT_ID_STATE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__ADDRESS_1_ADDRESS_2_PINCODE",
+      "view": "BJAZ_PMSBY_DATA_WEB_SERVICE",
+      "source_columns": [
+       "ADDRESS_1",
+       "ADDRESS_2",
+       "PINCODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__BRANCH_ADDRESS",
+      "view": "BJAZ_NEFT_IFSC_MASTER",
+      "source_columns": [
+       "BRANCH_ADDRESS"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     }
+    ],
+    "opus_health_delta3": [
+     {
+      "bk_column": "HUB_LOCATION_BK__MAILING_ADDRESS_ID",
+      "view": "OCP_INTERESTED_PARTIES",
+      "source_columns": [
+       "MAILING_ADDRESS_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__pincode",
+      "view": "BJAZ_BOT_UTILIZATION_DTLS",
+      "source_columns": [
+       "pincode"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__ADDRESS1_ADDRESS2_ADDRESS3_CITY_STATE_PIN_CODE",
+      "view": "BJAZ_REMEDINET_PATIENT_DETAILS",
+      "source_columns": [
+       "ADDRESS1",
+       "ADDRESS2",
+       "ADDRESS3",
+       "CITY",
+       "STATE",
+       "PIN_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__MAILING_PINCODE",
+      "view": "BJAZ_POLICY_SUMMARY",
+      "source_columns": [
+       "MAILING_PINCODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__INSURED_ADDRESS_PINCODE",
+      "view": "BJAZ_POLICY_SUMMARY",
+      "source_columns": [
+       "INSURED_ADDRESS",
+       "PINCODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__ADDRESS_CITY_REGION",
+      "view": "BJAZ_POLICY_SUMMARY",
+      "source_columns": [
+       "ADDRESS",
+       "CITY",
+       "REGION"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__MAILING_PINCODE",
+      "view": "BJAZ_POLICY_BASES_EXTN",
+      "source_columns": [
+       "MAILING_PINCODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__PREV_INSURER_ADD",
+      "view": "BJAZ_POLICY_BASES_EXTN",
+      "source_columns": [
+       "PREV_INSURER_ADD"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     }
+    ],
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_LOCATION_BK__CHILD_LOC_CODE",
+      "view": "BA_HCP_POL_MST",
+      "source_columns": [
+       "CHILD_LOC_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__LOCATION_CODE",
+      "view": "BJAZ_BANDHAN_MEDI_CLAM",
+      "source_columns": [
+       "LOCATION_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__LOCATION_CODE",
+      "view": "BJAZ_EHH_POL_DTLS",
+      "source_columns": [
+       "LOCATION_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__LOCATIONCODE",
+      "view": "BJAZ_EHH_POL_DTLS",
+      "source_columns": [
+       "LOCATIONCODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__ORPHAN_LOC",
+      "view": "BJAZ_EHH_POL_DTLS",
+      "source_columns": [
+       "ORPHAN_LOC"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__POLICY_LOCATION",
+      "view": "BJAZ_EHH_POL_DTLS",
+      "source_columns": [
+       "POLICY_LOCATION"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__RISK_LOCATION",
+      "view": "BJAZ_EHH_POL_DTLS",
+      "source_columns": [
+       "RISK_LOCATION"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__LOCATION_CODE",
+      "view": "BJAZ_GENERIC_LOADER_LOG_TABLE",
+      "source_columns": [
+       "LOCATION_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__LOCATIONCODE",
+      "view": "BJAZ_GENERIC_LOADER_LOG_TABLE",
+      "source_columns": [
+       "LOCATIONCODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__ORPHAN_LOC",
+      "view": "BJAZ_GENERIC_LOADER_LOG_TABLE",
+      "source_columns": [
+       "ORPHAN_LOC"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__POLICY_LOCATION",
+      "view": "BJAZ_GENERIC_LOADER_LOG_TABLE",
+      "source_columns": [
+       "POLICY_LOCATION"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__RISK_LOCATION",
+      "view": "BJAZ_GENERIC_LOADER_LOG_TABLE",
+      "source_columns": [
+       "RISK_LOCATION"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__LOC_CODE",
+      "view": "BJAZ_HM_CLAIM_STATUS_DASH_APP",
+      "source_columns": [
+       "LOC_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__LOCATION_CODE",
+      "view": "BJAZ_HM_HCM_EXTRACT",
+      "source_columns": [
+       "LOCATION_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__LOCATIONCODE",
+      "view": "BJAZ_HM_HCM_EXTRACT",
+      "source_columns": [
+       "LOCATIONCODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__ORPHAN_LOC",
+      "view": "BJAZ_HM_HCM_EXTRACT",
+      "source_columns": [
+       "ORPHAN_LOC"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__POLICY_LOCATION",
+      "view": "BJAZ_HM_HCM_EXTRACT",
+      "source_columns": [
+       "POLICY_LOCATION"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__RISK_LOCATION",
+      "view": "BJAZ_HM_HCM_EXTRACT",
+      "source_columns": [
+       "RISK_LOCATION"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__PIN_CODE",
+      "view": "BJAZ_HM_HOSPITAL_MASTER",
+      "source_columns": [
+       "PIN_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__LOCATION_CODE",
+      "view": "BJAZ_HM_INWARD_DTLS",
+      "source_columns": [
+       "LOCATION_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__LOCATIONCODE",
+      "view": "BJAZ_HM_INWARD_DTLS",
+      "source_columns": [
+       "LOCATIONCODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__ORPHAN_LOC",
+      "view": "BJAZ_HM_INWARD_DTLS",
+      "source_columns": [
+       "ORPHAN_LOC"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__POLICY_LOCATION",
+      "view": "BJAZ_HM_INWARD_DTLS",
+      "source_columns": [
+       "POLICY_LOCATION"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__RISK_LOCATION",
+      "view": "BJAZ_HM_INWARD_DTLS",
+      "source_columns": [
+       "RISK_LOCATION"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__LOCATION_CODE",
+      "view": "BJAZ_HM_ORPHAN_REG",
+      "source_columns": [
+       "LOCATION_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__LOCATIONCODE",
+      "view": "BJAZ_HM_ORPHAN_REG",
+      "source_columns": [
+       "LOCATIONCODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__ORPHAN_LOC",
+      "view": "BJAZ_HM_ORPHAN_REG",
+      "source_columns": [
+       "ORPHAN_LOC"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__POLICY_LOCATION",
+      "view": "BJAZ_HM_ORPHAN_REG",
+      "source_columns": [
+       "POLICY_LOCATION"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOCATION_BK__RISK_LOCATION",
+      "view": "BJAZ_HM_ORPHAN_REG",
+      "source_columns": [
+       "RISK_LOCATION"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_LOSS_EVENT": {
+   "runs": [
+    "opus_health_legacy_v4"
+   ],
+   "registries_per_run": {
+    "opus_health_legacy_v4": 3
+   },
+   "bk_columns_per_run": {
+    "opus_health_legacy_v4": [
+     "HUB_LOSS_EVENT_BK__CLAIM_ID",
+     "HUB_LOSS_EVENT_BK__CLAIM_NO",
+     "HUB_LOSS_EVENT_BK__TPA_CLAIM_NO"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_LOSS_EVENT_BK__CLAIM_NO",
+      "view": "BJAZ_HM_HCM_EXTRACT",
+      "source_columns": [
+       "CLAIM_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOSS_EVENT_BK__CLAIM_ID",
+      "view": "BJAZ_HM_INWARD_DTLS",
+      "source_columns": [
+       "CLAIM_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_LOSS_EVENT_BK__TPA_CLAIM_NO",
+      "view": "BJAZ_TPA_CLAIM_DETAILS_WS",
+      "source_columns": [
+       "TPA_CLAIM_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_ORG_UNIT": {
+   "runs": [
+    "opus_health_delta3",
+    "opus_health_legacy_v4",
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 3,
+    "opus_health_legacy_v4": 9
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "HUB_ORG_UNIT_BK__BRANCH_CODE"
+    ],
+    "opus_health_delta3": [
+     "HUB_ORG_UNIT_BK__BRANCH_CODE",
+     "HUB_ORG_UNIT_BK__DEPARTMENT_CODE",
+     "HUB_ORG_UNIT_BK__branch_code"
+    ],
+    "opus_health_legacy_v4": [
+     "HUB_ORG_UNIT_BK__BRANCH",
+     "HUB_ORG_UNIT_BK__BRANCH_CODE",
+     "HUB_ORG_UNIT_BK__COMPANY_ORG_UNIT",
+     "HUB_ORG_UNIT_BK__CONTROLLING_OFFICE",
+     "HUB_ORG_UNIT_BK__DEPARTMENT",
+     "HUB_ORG_UNIT_BK__DEPARTMENT_CODE",
+     "HUB_ORG_UNIT_BK__DEPT_CODE",
+     "HUB_ORG_UNIT_BK__OPERATING_OFFICE",
+     "HUB_ORG_UNIT_BK__PD_LOCATION_CODE"
+    ]
+   },
+   "bk_column_overlap_between_runs": [
+    "HUB_ORG_UNIT_BK__BRANCH_CODE"
+   ],
+   "overlap_count": 1,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__BRANCH_CODE",
+      "view": "BJAZ_BRANCH_MASTER",
+      "source_columns": [
+       "BRANCH_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_delta3": [
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__branch_code",
+      "view": "BJAZ_BOT_UTILIZATION_DTLS",
+      "source_columns": [
+       "branch_code"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__DEPARTMENT_CODE",
+      "view": "BJAZ_POLICY_SUMMARY",
+      "source_columns": [
+       "DEPARTMENT_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__BRANCH_CODE",
+      "view": "BJAZ_POLICY_SUMMARY",
+      "source_columns": [
+       "BRANCH_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__DEPARTMENT_CODE",
+      "view": "BJAZ_POLICY_BASES_EXTN",
+      "source_columns": [
+       "DEPARTMENT_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__PD_LOCATION_CODE",
+      "view": "BA_HCP_PROD_8428_GPG_LOADER",
+      "source_columns": [
+       "PD_LOCATION_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__PD_LOCATION_CODE",
+      "view": "BA_HCP_PROD_8432_ECP_LOADER",
+      "source_columns": [
+       "PD_LOCATION_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__PD_LOCATION_CODE",
+      "view": "BA_HCP_PROD_8433_FHC_LOADER",
+      "source_columns": [
+       "PD_LOCATION_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__PD_LOCATION_CODE",
+      "view": "BA_HCP_PROD_8439_CLH_LOADER",
+      "source_columns": [
+       "PD_LOCATION_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__COMPANY_ORG_UNIT",
+      "view": "BJAZ_EHH_POL_DTLS",
+      "source_columns": [
+       "COMPANY_ORG_UNIT"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__COMPANY_ORG_UNIT",
+      "view": "BJAZ_GPG_POL_DTLS",
+      "source_columns": [
+       "COMPANY_ORG_UNIT"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__BRANCH",
+      "view": "BJAZ_GRP_HLT_DTLS",
+      "source_columns": [
+       "BRANCH"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__DEPARTMENT",
+      "view": "BJAZ_GRP_HLT_DTLS",
+      "source_columns": [
+       "DEPARTMENT"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__BRANCH_CODE",
+      "view": "BJAZ_HEALTH_WEBSERVICE_INFO",
+      "source_columns": [
+       "BRANCH_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__DEPT_CODE",
+      "view": "BJAZ_HEALTH_WEBSERVICE_INFO",
+      "source_columns": [
+       "DEPT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__COMPANY_ORG_UNIT",
+      "view": "BJAZ_HG_POL_DTLS",
+      "source_columns": [
+       "COMPANY_ORG_UNIT"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__DEPARTMENT_CODE",
+      "view": "BJAZ_HG_POL_DTLS",
+      "source_columns": [
+       "DEPARTMENT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__CONTROLLING_OFFICE",
+      "view": "BJAZ_TPA_CLAIM_DETAILS_WS",
+      "source_columns": [
+       "CONTROLLING_OFFICE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_ORG_UNIT_BK__OPERATING_OFFICE",
+      "view": "BJAZ_TPA_CLAIM_DETAILS_WS",
+      "source_columns": [
+       "OPERATING_OFFICE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_PARTY": {
+   "runs": [
+    "opus_health_delta3",
+    "opus_health_legacy_v4",
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 15,
+    "opus_health_delta3": 8,
+    "opus_health_legacy_v4": 27
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "HUB_PARTY_BK__CORPORATE_ID",
+     "HUB_PARTY_BK__CUST_ID",
+     "HUB_PARTY_BK__HOS_ID",
+     "HUB_PARTY_BK__IMD_CODE",
+     "HUB_PARTY_BK__INSURED_CARD_NO",
+     "HUB_PARTY_BK__INTERMEDIARY_ID",
+     "HUB_PARTY_BK__PARTNER_ID",
+     "HUB_PARTY_BK__PART_ID",
+     "HUB_PARTY_BK__PATIENT_ID_CARD",
+     "HUB_PARTY_BK__PH_ID",
+     "HUB_PARTY_BK__POLICY_NO_EMP_CODE",
+     "HUB_PARTY_BK__POLICY_REF_NOMINEENAME",
+     "HUB_PARTY_BK__PP_ID",
+     "HUB_PARTY_BK__RM_CODE",
+     "HUB_PARTY_BK__SUBIMD_CODE"
+    ],
+    "opus_health_delta3": [
+     "HUB_PARTY_BK__CONTRACT_ID_INSURED_NAME",
+     "HUB_PARTY_BK__MEMBER_NO",
+     "HUB_PARTY_BK__PARTNER_ID",
+     "HUB_PARTY_BK__PART_ID",
+     "HUB_PARTY_BK__contract_id_first_name_middle_name_last_name_date_of_birth",
+     "HUB_PARTY_BK__contract_id_nominee_name",
+     "HUB_PARTY_BK__cust_name",
+     "HUB_PARTY_BK__user_name"
+    ],
+    "opus_health_legacy_v4": [
+     "HUB_PARTY_BK__ALLOTED_TO",
+     "HUB_PARTY_BK__BAGIC_E_CODE",
+     "HUB_PARTY_BK__BAGIC_RM_E_CODE",
+     "HUB_PARTY_BK__CLIENT_ID",
+     "HUB_PARTY_BK__COURIER_ID",
+     "HUB_PARTY_BK__CUSTOMER_ID",
+     "HUB_PARTY_BK__EMP_CODE",
+     "HUB_PARTY_BK__HOSID",
+     "HUB_PARTY_BK__HOSPITAL_CODE",
+     "HUB_PARTY_BK__HOSPITAL_ID",
+     "HUB_PARTY_BK__HOSP_ID",
+     "HUB_PARTY_BK__IMD_CODE",
+     "HUB_PARTY_BK__LDR_PID",
+     "HUB_PARTY_BK__LOGINNAME",
+     "HUB_PARTY_BK__MEMBER_ID",
+     "HUB_PARTY_BK__MEMBER_IDENTIFIER",
+     "HUB_PARTY_BK__MEMBER_NO",
+     "HUB_PARTY_BK__PART_ID",
+     "HUB_PARTY_BK__PAYER_CODE",
+     "HUB_PARTY_BK__PD_BAGIC_RM_E_CODE",
+     "HUB_PARTY_BK__PD_IMD_RM_E_CODE",
+     "HUB_PARTY_BK__PD_PREMIUM_PAYER_ID",
+     "HUB_PARTY_BK__REMEDINET_PROVIDER_CODE",
+     "HUB_PARTY_BK__RM_CODE",
+     "HUB_PARTY_BK__SUB_IMD_CODE",
+     "HUB_PARTY_BK__TPA_CODE",
+     "HUB_PARTY_BK__USER_ID"
+    ]
+   },
+   "bk_column_overlap_between_runs": [
+    "HUB_PARTY_BK__PART_ID"
+   ],
+   "overlap_count": 1,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "HUB_PARTY_BK__IMD_CODE",
+      "view": "BJAZ_ENROLL_POL_DTLS",
+      "source_columns": [
+       "IMD_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__RM_CODE",
+      "view": "BJAZ_ENROLL_POL_DTLS",
+      "source_columns": [
+       "RM_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PH_ID",
+      "view": "BJAZ_ENROLL_POL_DTLS",
+      "source_columns": [
+       "PH_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__CORPORATE_ID",
+      "view": "BJAZ_ENROLL_POL_DTLS",
+      "source_columns": [
+       "CORPORATE_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PP_ID",
+      "view": "BJAZ_ENROLL_POL_DTLS",
+      "source_columns": [
+       "PP_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__SUBIMD_CODE",
+      "view": "BJAZ_ENROLL_POL_DTLS",
+      "source_columns": [
+       "SUBIMD_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__HOS_ID",
+      "view": "BJAZ_HM_PREAUTH_REQUEST",
+      "source_columns": [
+       "HOS_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PATIENT_ID_CARD",
+      "view": "BJAZ_HM_PREAUTH_REQUEST",
+      "source_columns": [
+       "PATIENT_ID_CARD"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__INSURED_CARD_NO",
+      "view": "BJAZ_HM_PREAUTH_REQUEST",
+      "source_columns": [
+       "INSURED_CARD_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PART_ID",
+      "view": "BJAZ_NEFT_PARTNER_DTLS",
+      "source_columns": [
+       "PART_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__INTERMEDIARY_ID",
+      "view": "BJAZ_NEFT_PARTNER_DTLS",
+      "source_columns": [
+       "INTERMEDIARY_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PARTNER_ID",
+      "view": "BJAZ_CTNGY_SCHEME_PLANS",
+      "source_columns": [
+       "PARTNER_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__CUST_ID",
+      "view": "BJAZ_PMSBY_DATA_WEB_SERVICE",
+      "source_columns": [
+       "CUST_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__POLICY_REF_NOMINEENAME",
+      "view": "BJAZ_PMSBY_DATA_WEB_SERVICE",
+      "source_columns": [
+       "POLICY_REF",
+       "NOMINEENAME"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__INTERMEDIARY_ID",
+      "view": "BJAZ_INTERMEDIARY",
+      "source_columns": [
+       "INTERMEDIARY_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__POLICY_NO_EMP_CODE",
+      "view": "BJAZ_HAT_POL_EMP_MAP",
+      "source_columns": [
+       "POLICY_NO",
+       "EMP_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_delta3": [
+     {
+      "bk_column": "HUB_PARTY_BK__PARTNER_ID",
+      "view": "OCP_INTERESTED_PARTIES",
+      "source_columns": [
+       "PARTNER_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__user_name",
+      "view": "BJAZ_BOT_UTILIZATION_DTLS",
+      "source_columns": [
+       "user_name"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__cust_name",
+      "view": "BJAZ_BOT_UTILIZATION_DTLS",
+      "source_columns": [
+       "cust_name"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__contract_id_first_name_middle_name_last_name_date_of_birth",
+      "view": "BA_CCP_INSURED_DETAILS",
+      "source_columns": [
+       "contract_id",
+       "first_name",
+       "middle_name",
+       "last_name",
+       "date_of_birth"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__contract_id_nominee_name",
+      "view": "BA_CCP_INSURED_DETAILS",
+      "source_columns": [
+       "contract_id",
+       "nominee_name"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__MEMBER_NO",
+      "view": "BJAZ_REMEDINET_PATIENT_DETAILS",
+      "source_columns": [
+       "MEMBER_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__CONTRACT_ID_INSURED_NAME",
+      "view": "BJAZ_POLICY_SUMMARY",
+      "source_columns": [
+       "CONTRACT_ID",
+       "INSURED_NAME"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PART_ID",
+      "view": "BJAZ_POLICY_SUMMARY",
+      "source_columns": [
+       "PART_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_PARTY_BK__PART_ID",
+      "view": "BA_HCP_DT_MEM",
+      "source_columns": [
+       "PART_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PART_ID",
+      "view": "BA_HCP_DT_MEM_COV",
+      "source_columns": [
+       "PART_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PART_ID",
+      "view": "BA_HCP_DT_POL_COV",
+      "source_columns": [
+       "PART_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__USER_ID",
+      "view": "BA_HCP_DT_PREMIUM",
+      "source_columns": [
+       "USER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__USER_ID",
+      "view": "BA_HCP_POL_MST",
+      "source_columns": [
+       "USER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__ALLOTED_TO",
+      "view": "BA_HCP_PP_MEM_DTLS",
+      "source_columns": [
+       "ALLOTED_TO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PD_BAGIC_RM_E_CODE",
+      "view": "BA_HCP_PROD_8428_GPG_LOADER",
+      "source_columns": [
+       "PD_BAGIC_RM_E_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PD_IMD_RM_E_CODE",
+      "view": "BA_HCP_PROD_8428_GPG_LOADER",
+      "source_columns": [
+       "PD_IMD_RM_E_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PD_PREMIUM_PAYER_ID",
+      "view": "BA_HCP_PROD_8428_GPG_LOADER",
+      "source_columns": [
+       "PD_PREMIUM_PAYER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PD_BAGIC_RM_E_CODE",
+      "view": "BA_HCP_PROD_8432_ECP_LOADER",
+      "source_columns": [
+       "PD_BAGIC_RM_E_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PD_IMD_RM_E_CODE",
+      "view": "BA_HCP_PROD_8432_ECP_LOADER",
+      "source_columns": [
+       "PD_IMD_RM_E_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PD_PREMIUM_PAYER_ID",
+      "view": "BA_HCP_PROD_8432_ECP_LOADER",
+      "source_columns": [
+       "PD_PREMIUM_PAYER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PD_BAGIC_RM_E_CODE",
+      "view": "BA_HCP_PROD_8433_FHC_LOADER",
+      "source_columns": [
+       "PD_BAGIC_RM_E_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PD_IMD_RM_E_CODE",
+      "view": "BA_HCP_PROD_8433_FHC_LOADER",
+      "source_columns": [
+       "PD_IMD_RM_E_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PD_PREMIUM_PAYER_ID",
+      "view": "BA_HCP_PROD_8433_FHC_LOADER",
+      "source_columns": [
+       "PD_PREMIUM_PAYER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PD_BAGIC_RM_E_CODE",
+      "view": "BA_HCP_PROD_8439_CLH_LOADER",
+      "source_columns": [
+       "PD_BAGIC_RM_E_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PD_IMD_RM_E_CODE",
+      "view": "BA_HCP_PROD_8439_CLH_LOADER",
+      "source_columns": [
+       "PD_IMD_RM_E_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PD_PREMIUM_PAYER_ID",
+      "view": "BA_HCP_PROD_8439_CLH_LOADER",
+      "source_columns": [
+       "PD_PREMIUM_PAYER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__EMP_CODE",
+      "view": "BGIL_GMC_FINAL_INSTL_DATA",
+      "source_columns": [
+       "EMP_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__CUSTOMER_ID",
+      "view": "BJAZ_BANDHAN_MEDI_CLAM",
+      "source_columns": [
+       "CUSTOMER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__EMP_CODE",
+      "view": "BJAZ_ECARD_MEMBR_DEL_DTLS",
+      "source_columns": [
+       "EMP_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__MEMBER_NO",
+      "view": "BJAZ_EC_MEM_DTLS_EXTN",
+      "source_columns": [
+       "MEMBER_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__BAGIC_E_CODE",
+      "view": "BJAZ_GPG_POL_DTLS",
+      "source_columns": [
+       "BAGIC_E_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__BAGIC_RM_E_CODE",
+      "view": "BJAZ_GPG_POL_DTLS",
+      "source_columns": [
+       "BAGIC_RM_E_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__IMD_CODE",
+      "view": "BJAZ_GPG_POL_DTLS",
+      "source_columns": [
+       "IMD_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__SUB_IMD_CODE",
+      "view": "BJAZ_GPG_POL_DTLS",
+      "source_columns": [
+       "SUB_IMD_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__USER_ID",
+      "view": "BJAZ_GP_HOSPITAL_CASH",
+      "source_columns": [
+       "USER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__IMD_CODE",
+      "view": "BJAZ_GRP_HLT_IMD_DTLS",
+      "source_columns": [
+       "IMD_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__RM_CODE",
+      "view": "BJAZ_GRP_HLT_IMD_DTLS",
+      "source_columns": [
+       "RM_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__SUB_IMD_CODE",
+      "view": "BJAZ_GRP_HLT_IMD_DTLS",
+      "source_columns": [
+       "SUB_IMD_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__TPA_CODE",
+      "view": "BJAZ_GRP_TPA_EXTN",
+      "source_columns": [
+       "TPA_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__MEMBER_NO",
+      "view": "BJAZ_HAT_ID_MEM_DETLS",
+      "source_columns": [
+       "MEMBER_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__MEMBER_NO",
+      "view": "BJAZ_HCF_MEMBER_DTLS",
+      "source_columns": [
+       "MEMBER_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PART_ID",
+      "view": "BJAZ_HC_PART_EXTN",
+      "source_columns": [
+       "PART_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__CLIENT_ID",
+      "view": "BJAZ_HDFC_SEC_FHPP",
+      "source_columns": [
+       "CLIENT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PART_ID",
+      "view": "BJAZ_HG_POL_DTLS",
+      "source_columns": [
+       "PART_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__MEMBER_NO",
+      "view": "BJAZ_HLT_ENSURE_MEM_DTLS",
+      "source_columns": [
+       "MEMBER_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__HOSPITAL_ID",
+      "view": "BJAZ_HM_CASHLESS_INWARD",
+      "source_columns": [
+       "HOSPITAL_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__LDR_PID",
+      "view": "BJAZ_HM_COINSU_CLM_DTLS",
+      "source_columns": [
+       "LDR_PID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__HOSPITAL_ID",
+      "view": "BJAZ_HM_HCM_EXTRACT",
+      "source_columns": [
+       "HOSPITAL_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__HOSID",
+      "view": "BJAZ_HM_HOSPITAL_MASTER",
+      "source_columns": [
+       "HOSID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__HOSID",
+      "view": "BJAZ_HM_HOSPITAL_MASTER_EXTN",
+      "source_columns": [
+       "HOSID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__HOSID",
+      "view": "BJAZ_HM_HOSP_MASTER_EXTN1",
+      "source_columns": [
+       "HOSID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__COURIER_ID",
+      "view": "BJAZ_HM_INWARD_DTLS",
+      "source_columns": [
+       "COURIER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__MEMBER_ID",
+      "view": "BJAZ_HM_MEMBER_DTLS",
+      "source_columns": [
+       "MEMBER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__LOGINNAME",
+      "view": "BJAZ_HM_POLICY_USERMAPPING",
+      "source_columns": [
+       "LOGINNAME"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__HOSP_ID",
+      "view": "BJAZ_HM_PREAUTH_ENHANCE",
+      "source_columns": [
+       "HOSP_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__HOSP_ID",
+      "view": "BJAZ_HM_PREAUTH_QUERY",
+      "source_columns": [
+       "HOSP_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__MEMBER_NO",
+      "view": "BJAZ_IHG_MEM_DTLS_EXTN",
+      "source_columns": [
+       "MEMBER_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__PAYER_CODE",
+      "view": "BJAZ_REMEDINET_CLAIM_DETAILS",
+      "source_columns": [
+       "PAYER_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__REMEDINET_PROVIDER_CODE",
+      "view": "BJAZ_REMEDINET_CLAIM_DETAILS",
+      "source_columns": [
+       "REMEDINET_PROVIDER_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__MEMBER_IDENTIFIER",
+      "view": "BJAZ_SCR_HLTH_PORTABLE_DTLS",
+      "source_columns": [
+       "MEMBER_IDENTIFIER"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__MEMBER_NO",
+      "view": "BJAZ_SH_MEM_DTLS_EXTN",
+      "source_columns": [
+       "MEMBER_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__CUSTOMER_ID",
+      "view": "BJAZ_TPA_CLAIM_DETAILS_WS",
+      "source_columns": [
+       "CUSTOMER_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PARTY_BK__HOSPITAL_CODE",
+      "view": "BJAZ_TPA_CLAIM_DETAILS_WS",
+      "source_columns": [
+       "HOSPITAL_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_PAYMENT_INSTRUMENT": {
+   "runs": [
+    "opus_health_legacy_v4"
+   ],
+   "registries_per_run": {
+    "opus_health_legacy_v4": 1
+   },
+   "bk_columns_per_run": {
+    "opus_health_legacy_v4": [
+     "HUB_PAYMENT_INSTRUMENT_BK__CHEQUE_NO"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_PAYMENT_INSTRUMENT_BK__CHEQUE_NO",
+      "view": "BJAZ_HM_HCM_EXTRACT",
+      "source_columns": [
+       "CHEQUE_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PAYMENT_INSTRUMENT_BK__CHEQUE_NO",
+      "view": "BJAZ_TPA_CLAIM_DETAILS_WS",
+      "source_columns": [
+       "CHEQUE_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_POLICY": {
+   "runs": [
+    "opus_health_delta3",
+    "opus_health_legacy_v4",
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 3,
+    "opus_health_delta3": 4,
+    "opus_health_legacy_v4": 12
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "HUB_POLICY_BK__CONTRACT_ID",
+     "HUB_POLICY_BK__POLICY_NO",
+     "HUB_POLICY_BK__POLICY_REF"
+    ],
+    "opus_health_delta3": [
+     "HUB_POLICY_BK__CONTRACT_ID",
+     "HUB_POLICY_BK__REG_NO",
+     "HUB_POLICY_BK__contract_id",
+     "HUB_POLICY_BK__reg_no"
+    ],
+    "opus_health_legacy_v4": [
+     "HUB_POLICY_BK__BASE_POLICY_REF",
+     "HUB_POLICY_BK__CONTRACT_ID",
+     "HUB_POLICY_BK__MASTER_POLICY_NO",
+     "HUB_POLICY_BK__PMASTERPOLICYNUMBER",
+     "HUB_POLICY_BK__POLICY",
+     "HUB_POLICY_BK__POLICY_NO",
+     "HUB_POLICY_BK__POLICY_NUMBER",
+     "HUB_POLICY_BK__POLICY_REF",
+     "HUB_POLICY_BK__POL_SERIAL_NO",
+     "HUB_POLICY_BK__PREV_POL_REF",
+     "HUB_POLICY_BK__REFERENCE_ID",
+     "HUB_POLICY_BK__REG_NO"
+    ]
+   },
+   "bk_column_overlap_between_runs": [
+    "HUB_POLICY_BK__CONTRACT_ID"
+   ],
+   "overlap_count": 1,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_CTNGY_BASES_EXTN",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_NO",
+      "view": "BJAZ_ENROLL_POL_DTLS",
+      "source_columns": [
+       "POLICY_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_HM_MEMBER_HLTH_DTLS",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_REF",
+      "view": "BJAZ_CTNGY_GC_CONTROL",
+      "source_columns": [
+       "POLICY_REF"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_REF",
+      "view": "BJAZ_PMSBY_DATA_WEB_SERVICE",
+      "source_columns": [
+       "POLICY_REF"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_ENROLL_SCR_DTLS",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_CTNGY_COVERS_EXT",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_CTNGY_NR_BASES_EXTN",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_NO",
+      "view": "BJAZ_HAT_POL_EMP_MAP",
+      "source_columns": [
+       "POLICY_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_delta3": [
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "OCP_INTERESTED_PARTIES",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_STARPKG_COVER_DTLS",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__reg_no",
+      "view": "BJAZ_GRP_HLT_COVERAGE_DTLS",
+      "source_columns": [
+       "reg_no"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__REG_NO",
+      "view": "BJAZ_GRP_HLT_MEM_DTLS",
+      "source_columns": [
+       "REG_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_VERSIONS_EXTN",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_RISK_TRANS_DTLS",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__contract_id",
+      "view": "BJAZ_GMC_BASES_EXTN",
+      "source_columns": [
+       "contract_id"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__contract_id",
+      "view": "BA_CCP_INSURED_DETAILS",
+      "source_columns": [
+       "contract_id"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_STARPKG_POL_DTLS",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "OCP_POLICY_COVERS",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BA_CCP_SUB_MATER_DTLS",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_POLICY_SUMMARY",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_POLICY_BASES_EXTN",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BA_HCP_DT_MEM",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BA_HCP_DT_MEM_COV",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BA_HCP_DT_POL_COV",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BA_HCP_DT_PREMIUM",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BA_HCP_POL_MST",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BA_HCP_PORT_WORDINGS",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BA_HCP_PP_MEM_DTLS",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__BASE_POLICY_REF",
+      "view": "BA_HCP_PRIME_RIDER_DTLS",
+      "source_columns": [
+       "BASE_POLICY_REF"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POL_SERIAL_NO",
+      "view": "BA_HCP_PROD_8428_GPG_LOADER",
+      "source_columns": [
+       "POL_SERIAL_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POL_SERIAL_NO",
+      "view": "BA_HCP_PROD_8432_ECP_LOADER",
+      "source_columns": [
+       "POL_SERIAL_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POL_SERIAL_NO",
+      "view": "BA_HCP_PROD_8433_FHC_LOADER",
+      "source_columns": [
+       "POL_SERIAL_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POL_SERIAL_NO",
+      "view": "BA_HCP_PROD_8439_CLH_LOADER",
+      "source_columns": [
+       "POL_SERIAL_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_NO",
+      "view": "BGIL_GMC_FINAL_INSTL_DATA",
+      "source_columns": [
+       "POLICY_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_REF",
+      "view": "BJAZ_BANDHAN_MEDI_CLAM",
+      "source_columns": [
+       "POLICY_REF"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_REF",
+      "view": "BJAZ_CARD_DTLS",
+      "source_columns": [
+       "POLICY_REF"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_REF",
+      "view": "BJAZ_ECARD_POL_DTLS_CONFIG",
+      "source_columns": [
+       "POLICY_REF"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_EC_MEM_DTLS_EXTN",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_REF",
+      "view": "BJAZ_EHH_POL_DTLS",
+      "source_columns": [
+       "POLICY_REF"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__PMASTERPOLICYNUMBER",
+      "view": "BJAZ_GENERIC_LOADER_LOG_TABLE",
+      "source_columns": [
+       "PMASTERPOLICYNUMBER"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__REFERENCE_ID",
+      "view": "BJAZ_GPG_POL_DTLS",
+      "source_columns": [
+       "REFERENCE_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__MASTER_POLICY_NO",
+      "view": "BJAZ_GP_HOSPITAL_CASH",
+      "source_columns": [
+       "MASTER_POLICY_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__REG_NO",
+      "view": "BJAZ_GRP_HLT_CUST_DTLS",
+      "source_columns": [
+       "REG_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_NO",
+      "view": "BJAZ_GRP_HLT_DTLS",
+      "source_columns": [
+       "POLICY_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__PREV_POL_REF",
+      "view": "BJAZ_GRP_HLT_DTLS",
+      "source_columns": [
+       "PREV_POL_REF"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__REG_NO",
+      "view": "BJAZ_GRP_HLT_DTLS",
+      "source_columns": [
+       "REG_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__REG_NO",
+      "view": "BJAZ_GRP_HLT_IMD_DTLS",
+      "source_columns": [
+       "REG_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__REG_NO",
+      "view": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+      "source_columns": [
+       "REG_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_GRP_TPA_EXTN",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_HAT_ID_MEM_DETLS",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_HCF_MEMBER_DTLS",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_HC_PART_EXTN",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__REFERENCE_ID",
+      "view": "BJAZ_HDFC_SEC_FHPP",
+      "source_columns": [
+       "REFERENCE_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_REF",
+      "view": "BJAZ_HEALTH_WEBSERVICE_INFO",
+      "source_columns": [
+       "POLICY_REF"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_HG_POL_DTLS",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_HLT_ENSURE_MEM_DTLS",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_REF",
+      "view": "BJAZ_HM_CASHLESS_INWARD",
+      "source_columns": [
+       "POLICY_REF"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_REF",
+      "view": "BJAZ_HM_COINSU_CLM_DTLS",
+      "source_columns": [
+       "POLICY_REF"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_NO",
+      "view": "BJAZ_HM_GMC_AHC",
+      "source_columns": [
+       "POLICY_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY",
+      "view": "BJAZ_HM_HCM_EXTRACT",
+      "source_columns": [
+       "POLICY"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_REF",
+      "view": "BJAZ_HM_INWARD_DTLS",
+      "source_columns": [
+       "POLICY_REF"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_HM_MEMBER_DTLS",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_NUMBER",
+      "view": "BJAZ_HM_ORPHAN_REG",
+      "source_columns": [
+       "POLICY_NUMBER"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_REF",
+      "view": "BJAZ_HM_POLICY_USERMAPPING",
+      "source_columns": [
+       "POLICY_REF"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_IHG_MEM_DTLS_EXTN",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_ILLNESS_BASES_EXTN",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_REF",
+      "view": "BJAZ_PMJAY_PRMBOOK_DTLS",
+      "source_columns": [
+       "POLICY_REF"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_NO",
+      "view": "BJAZ_REMEDINET_CLAIM_DETAILS",
+      "source_columns": [
+       "POLICY_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "BJAZ_SH_MEM_DTLS_EXTN",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__POLICY_NO",
+      "view": "BJAZ_TPA_CLAIM_DETAILS_WS",
+      "source_columns": [
+       "POLICY_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__PMASTERPOLICYNUMBER",
+      "view": "BJAZ_WS_FAMILY_DTLS_BANDHAN",
+      "source_columns": [
+       "PMASTERPOLICYNUMBER"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_POLICY_BK__CONTRACT_ID",
+      "view": "STG_HCF_MEMBER_DTLS",
+      "source_columns": [
+       "CONTRACT_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_PRODUCT": {
+   "runs": [
+    "opus_health_delta3",
+    "opus_health_legacy_v4",
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 3,
+    "opus_health_delta3": 6,
+    "opus_health_legacy_v4": 9
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "HUB_PRODUCT_BK__PRODUCT_CODE",
+     "HUB_PRODUCT_BK__SCHEME_CODE",
+     "HUB_PRODUCT_BK__SCHEME_CODE_PLAN_ID"
+    ],
+    "opus_health_delta3": [
+     "HUB_PRODUCT_BK__PRODUCT",
+     "HUB_PRODUCT_BK__PRODUCT_4DIGIT_CODE",
+     "HUB_PRODUCT_BK__PRODUCT_CODE",
+     "HUB_PRODUCT_BK__PROD_CODE",
+     "HUB_PRODUCT_BK__product",
+     "HUB_PRODUCT_BK__product_code"
+    ],
+    "opus_health_legacy_v4": [
+     "HUB_PRODUCT_BK__PD_PRODUCT_CODE",
+     "HUB_PRODUCT_BK__PLANID",
+     "HUB_PRODUCT_BK__PLAN_ID",
+     "HUB_PRODUCT_BK__PRODUCT",
+     "HUB_PRODUCT_BK__PRODUCT_4DIGIT_CODE",
+     "HUB_PRODUCT_BK__PRODUCT_CODE",
+     "HUB_PRODUCT_BK__PROD_CD",
+     "HUB_PRODUCT_BK__SCHEMECODE",
+     "HUB_PRODUCT_BK__SCHEME_CODE"
+    ]
+   },
+   "bk_column_overlap_between_runs": [
+    "HUB_PRODUCT_BK__PRODUCT_CODE"
+   ],
+   "overlap_count": 1,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "HUB_PRODUCT_BK__SCHEME_CODE",
+      "view": "BJAZ_CTNGY_BASES_EXTN",
+      "source_columns": [
+       "SCHEME_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__SCHEME_CODE",
+      "view": "BJAZ_CTNGY_SCHEME_NR_PARMS",
+      "source_columns": [
+       "SCHEME_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__SCHEME_CODE_PLAN_ID",
+      "view": "BJAZ_CTNGY_SCHEME_PLANS",
+      "source_columns": [
+       "SCHEME_CODE",
+       "PLAN_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT_CODE",
+      "view": "BJAZ_CTNGY_GC_CONTROL",
+      "source_columns": [
+       "PRODUCT_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__SCHEME_CODE",
+      "view": "BJAZ_CTNGY_COVERS_EXT",
+      "source_columns": [
+       "SCHEME_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_delta3": [
+     {
+      "bk_column": "HUB_PRODUCT_BK__product",
+      "view": "BJAZ_GRP_HLT_COVERAGE_DTLS",
+      "source_columns": [
+       "product"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT",
+      "view": "BJAZ_GRP_HLT_MEM_DTLS",
+      "source_columns": [
+       "PRODUCT"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__product_code",
+      "view": "BJAZ_BOT_UTILIZATION_DTLS",
+      "source_columns": [
+       "product_code"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PROD_CODE",
+      "view": "BJAZ_STARPKG_POL_DTLS",
+      "source_columns": [
+       "PROD_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT_CODE",
+      "view": "BJAZ_POLICY_SUMMARY",
+      "source_columns": [
+       "PRODUCT_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT_4DIGIT_CODE",
+      "view": "BJAZ_POLICY_BASES_EXTN",
+      "source_columns": [
+       "PRODUCT_4DIGIT_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT_CODE",
+      "view": "BA_HCP_DT_PREMIUM",
+      "source_columns": [
+       "PRODUCT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT_CODE",
+      "view": "BA_HCP_PRIME_RIDER_DTLS",
+      "source_columns": [
+       "PRODUCT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PD_PRODUCT_CODE",
+      "view": "BA_HCP_PROD_8428_GPG_LOADER",
+      "source_columns": [
+       "PD_PRODUCT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PD_PRODUCT_CODE",
+      "view": "BA_HCP_PROD_8432_ECP_LOADER",
+      "source_columns": [
+       "PD_PRODUCT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PD_PRODUCT_CODE",
+      "view": "BA_HCP_PROD_8433_FHC_LOADER",
+      "source_columns": [
+       "PD_PRODUCT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PD_PRODUCT_CODE",
+      "view": "BA_HCP_PROD_8439_CLH_LOADER",
+      "source_columns": [
+       "PD_PRODUCT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PLAN_ID",
+      "view": "BJAZ_BANDHAN_MEDI_CLAM",
+      "source_columns": [
+       "PLAN_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT_CODE",
+      "view": "BJAZ_BANDHAN_MEDI_CLAM",
+      "source_columns": [
+       "PRODUCT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__SCHEME_CODE",
+      "view": "BJAZ_CTNGY_SCHEME_MST",
+      "source_columns": [
+       "SCHEME_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT_4DIGIT_CODE",
+      "view": "BJAZ_EHH_POL_DTLS",
+      "source_columns": [
+       "PRODUCT_4DIGIT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PLANID",
+      "view": "BJAZ_GENERIC_LOADER_LOG_TABLE",
+      "source_columns": [
+       "PLANID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__SCHEMECODE",
+      "view": "BJAZ_GENERIC_LOADER_LOG_TABLE",
+      "source_columns": [
+       "SCHEMECODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT_CODE",
+      "view": "BJAZ_GPG_POL_DTLS",
+      "source_columns": [
+       "PRODUCT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT_CODE",
+      "view": "BJAZ_GP_HOSPITAL_CASH",
+      "source_columns": [
+       "PRODUCT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT",
+      "view": "BJAZ_GRP_HLT_CUST_DTLS",
+      "source_columns": [
+       "PRODUCT"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT",
+      "view": "BJAZ_GRP_HLT_DTLS",
+      "source_columns": [
+       "PRODUCT"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT",
+      "view": "BJAZ_GRP_HLT_IMD_DTLS",
+      "source_columns": [
+       "PRODUCT"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT",
+      "view": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+      "source_columns": [
+       "PRODUCT"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT_CODE",
+      "view": "BJAZ_HCP_TRANSCRIPT_URL",
+      "source_columns": [
+       "PRODUCT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT_CODE",
+      "view": "BJAZ_HCS_PLANSI_MAPP",
+      "source_columns": [
+       "PRODUCT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT_CODE",
+      "view": "BJAZ_HDFC_SEC_FHPP",
+      "source_columns": [
+       "PRODUCT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT_CODE",
+      "view": "BJAZ_HEALTH_WEBSERVICE_INFO",
+      "source_columns": [
+       "PRODUCT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT_4DIGIT_CODE",
+      "view": "BJAZ_HG_POL_DTLS",
+      "source_columns": [
+       "PRODUCT_4DIGIT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PROD_CD",
+      "view": "BJAZ_HM_COINSU_CLM_DTLS",
+      "source_columns": [
+       "PROD_CD"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PRODUCT_BK__PRODUCT_CODE",
+      "view": "BJAZ_HM_MEMBER_DTLS",
+      "source_columns": [
+       "PRODUCT_CODE"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_PROPOSAL": {
+   "runs": [
+    "opus_health_legacy_v4",
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 1,
+    "opus_health_legacy_v4": 5
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "HUB_PROPOSAL_BK__SCRUTINY_NO"
+    ],
+    "opus_health_legacy_v4": [
+     "HUB_PROPOSAL_BK__BA_LEAD_NO",
+     "HUB_PROPOSAL_BK__HI_CONTROL_NUMBER",
+     "HUB_PROPOSAL_BK__KGC_PROPOSAL_NUMBER",
+     "HUB_PROPOSAL_BK__QUOTE_REF_NO",
+     "HUB_PROPOSAL_BK__REFERENCE_ID"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "HUB_PROPOSAL_BK__SCRUTINY_NO",
+      "view": "BJAZ_ENROLL_POL_DTLS",
+      "source_columns": [
+       "SCRUTINY_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_PROPOSAL_BK__HI_CONTROL_NUMBER",
+      "view": "BA_HCP_PP_MEM_DTLS",
+      "source_columns": [
+       "HI_CONTROL_NUMBER"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PROPOSAL_BK__KGC_PROPOSAL_NUMBER",
+      "view": "BJAZ_GP_HOSPITAL_CASH",
+      "source_columns": [
+       "KGC_PROPOSAL_NUMBER"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PROPOSAL_BK__REFERENCE_ID",
+      "view": "BJAZ_GP_HOSPITAL_CASH",
+      "source_columns": [
+       "REFERENCE_ID"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PROPOSAL_BK__QUOTE_REF_NO",
+      "view": "BJAZ_GRP_HLT_DTLS",
+      "source_columns": [
+       "QUOTE_REF_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PROPOSAL_BK__BA_LEAD_NO",
+      "view": "BJAZ_HDFC_SEC_FHPP",
+      "source_columns": [
+       "BA_LEAD_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_PROPOSAL_BK__QUOTE_REF_NO",
+      "view": "BJAZ_HG_POL_DTLS",
+      "source_columns": [
+       "QUOTE_REF_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_QUOTE": {
+   "runs": [
+    "opus_health_delta3",
+    "opus_health_legacy_v4",
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 2,
+    "opus_health_delta3": 2,
+    "opus_health_legacy_v4": 3
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "HUB_QUOTE_BK__QUOTATION_NO",
+     "HUB_QUOTE_BK__QUOTE_NO"
+    ],
+    "opus_health_delta3": [
+     "HUB_QUOTE_BK__QUOTE_NO",
+     "HUB_QUOTE_BK__quote_no"
+    ],
+    "opus_health_legacy_v4": [
+     "HUB_QUOTE_BK__QUOTE_REF",
+     "HUB_QUOTE_BK__QUOTE_REF_NO",
+     "HUB_QUOTE_BK__QUOTE_SUB_NO"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "HUB_QUOTE_BK__QUOTATION_NO",
+      "view": "BJAZ_ENROLL_POL_DTLS",
+      "source_columns": [
+       "QUOTATION_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_QUOTE_BK__QUOTATION_NO",
+      "view": "BJAZ_ENROLL_SCR_DTLS",
+      "source_columns": [
+       "QUOTATION_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_QUOTE_BK__QUOTE_NO",
+      "view": "BJAZ_GRP_HLT_PREMIUM_DTLS_TYP1",
+      "source_columns": [
+       "QUOTE_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_delta3": [
+     {
+      "bk_column": "HUB_QUOTE_BK__quote_no",
+      "view": "BJAZ_GRP_HLT_COVERAGE_DTLS",
+      "source_columns": [
+       "quote_no"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_QUOTE_BK__QUOTE_NO",
+      "view": "BJAZ_GRP_HLT_MEM_DTLS",
+      "source_columns": [
+       "QUOTE_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_QUOTE_BK__QUOTE_REF",
+      "view": "BJAZ_ECARD_MEMBR_DEL_DTLS",
+      "source_columns": [
+       "QUOTE_REF"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_QUOTE_BK__QUOTE_REF",
+      "view": "BJAZ_ECARD_POL_DTLS_CONFIG",
+      "source_columns": [
+       "QUOTE_REF"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_QUOTE_BK__QUOTE_SUB_NO",
+      "view": "BJAZ_GRP_HLT_CUST_DTLS",
+      "source_columns": [
+       "QUOTE_SUB_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_QUOTE_BK__QUOTE_SUB_NO",
+      "view": "BJAZ_GRP_HLT_DTLS",
+      "source_columns": [
+       "QUOTE_SUB_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_QUOTE_BK__QUOTE_SUB_NO",
+      "view": "BJAZ_GRP_HLT_IMD_DTLS",
+      "source_columns": [
+       "QUOTE_SUB_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_QUOTE_BK__QUOTE_SUB_NO",
+      "view": "BJAZ_GRP_HLT_MATERNITY_DTLS",
+      "source_columns": [
+       "QUOTE_SUB_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_QUOTE_BK__QUOTE_REF_NO",
+      "view": "BJAZ_HG_POL_DTLS",
+      "source_columns": [
+       "QUOTE_REF_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_REINSURANCE_TREATY": {
+   "runs": [
+    "opus_health_legacy_v4"
+   ],
+   "registries_per_run": {
+    "opus_health_legacy_v4": 1
+   },
+   "bk_columns_per_run": {
+    "opus_health_legacy_v4": [
+     "HUB_REINSURANCE_TREATY_BK__RE_INSU"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_REINSURANCE_TREATY_BK__RE_INSU",
+      "view": "BJAZ_GPG_POL_DTLS",
+      "source_columns": [
+       "RE_INSU"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "HUB_RISK_OBJECT": {
+   "runs": [
+    "opus_health_delta3",
+    "opus_health_legacy_v4",
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 3,
+    "opus_health_delta3": 3,
+    "opus_health_legacy_v4": 2
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "HUB_RISK_OBJECT_BK__CONTRACT_ID_MEMBER_ID",
+     "HUB_RISK_OBJECT_BK__CUST_ID",
+     "HUB_RISK_OBJECT_BK__ID_CARD_NO"
+    ],
+    "opus_health_delta3": [
+     "HUB_RISK_OBJECT_BK__LOAN_ACC_NUMBER",
+     "HUB_RISK_OBJECT_BK__MEMBER_NO",
+     "HUB_RISK_OBJECT_BK__contract_id_first_name_middle_name_last_name_date_of_birth"
+    ],
+    "opus_health_legacy_v4": [
+     "HUB_RISK_OBJECT_BK__MD_SEQ_NO",
+     "HUB_RISK_OBJECT_BK__MEMBER_NO"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "HUB_RISK_OBJECT_BK__CONTRACT_ID_MEMBER_ID",
+      "view": "BJAZ_HM_MEMBER_HLTH_DTLS",
+      "source_columns": [
+       "CONTRACT_ID",
+       "MEMBER_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_RISK_OBJECT_BK__CUST_ID",
+      "view": "BJAZ_PMSBY_DATA_WEB_SERVICE",
+      "source_columns": [
+       "CUST_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_RISK_OBJECT_BK__ID_CARD_NO",
+      "view": "BJAZ_HM_HCS_TECH_ASSESS_COV",
+      "source_columns": [
+       "ID_CARD_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_delta3": [
+     {
+      "bk_column": "HUB_RISK_OBJECT_BK__contract_id_first_name_middle_name_last_name_date_of_birth",
+      "view": "BA_CCP_INSURED_DETAILS",
+      "source_columns": [
+       "contract_id",
+       "first_name",
+       "middle_name",
+       "last_name",
+       "date_of_birth"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "HUB_RISK_OBJECT_BK__MEMBER_NO",
+      "view": "BJAZ_REMEDINET_PATIENT_DETAILS",
+      "source_columns": [
+       "MEMBER_NO"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_RISK_OBJECT_BK__LOAN_ACC_NUMBER",
+      "view": "BA_CCP_SUB_MATER_DTLS",
+      "source_columns": [
+       "LOAN_ACC_NUMBER"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "HUB_RISK_OBJECT_BK__MD_SEQ_NO",
+      "view": "BA_HCP_PROD_8428_GPG_LOADER",
+      "source_columns": [
+       "MD_SEQ_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_RISK_OBJECT_BK__MD_SEQ_NO",
+      "view": "BA_HCP_PROD_8433_FHC_LOADER",
+      "source_columns": [
+       "MD_SEQ_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_RISK_OBJECT_BK__MEMBER_NO",
+      "view": "BJAZ_EC_MEM_DTLS_EXTN",
+      "source_columns": [
+       "MEMBER_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "HUB_RISK_OBJECT_BK__MEMBER_NO",
+      "view": "BJAZ_HCF_MEMBER_DTLS",
+      "source_columns": [
+       "MEMBER_NO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "LNK_PARTY_ROLE": {
+   "runs": [
+    "opus_health_delta3",
+    "opus_health_legacy_v4",
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 3,
+    "opus_health_delta3": 1,
+    "opus_health_legacy_v4": 1
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "LNK_PARTY_ROLE_BK__INTERMEDIARY_ID",
+     "LNK_PARTY_ROLE_BK__PARTNER_ID",
+     "LNK_PARTY_ROLE_BK__POLICY_REF_NOMINEENAME"
+    ],
+    "opus_health_delta3": [
+     "LNK_PARTY_ROLE_BK__contract_id_nominee_name"
+    ],
+    "opus_health_legacy_v4": [
+     "LNK_PARTY_ROLE_BK__MEM_SEQNO"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "LNK_PARTY_ROLE_BK__POLICY_REF_NOMINEENAME",
+      "view": "BJAZ_PMSBY_DATA_WEB_SERVICE",
+      "source_columns": [
+       "POLICY_REF",
+       "NOMINEENAME"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     },
+     {
+      "bk_column": "LNK_PARTY_ROLE_BK__PARTNER_ID",
+      "view": "BJAZ_PMSBY_DATA_WEB_SERVICE",
+      "source_columns": [
+       "PARTNER_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "LNK_PARTY_ROLE_BK__INTERMEDIARY_ID",
+      "view": "BJAZ_INTERMEDIARY",
+      "source_columns": [
+       "INTERMEDIARY_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_delta3": [
+     {
+      "bk_column": "LNK_PARTY_ROLE_BK__contract_id_nominee_name",
+      "view": "BA_CCP_INSURED_DETAILS",
+      "source_columns": [
+       "contract_id",
+       "nominee_name"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier4_content_hash"
+     }
+    ],
+    "opus_health_legacy_v4": [
+     {
+      "bk_column": "LNK_PARTY_ROLE_BK__MEM_SEQNO",
+      "view": "BA_HCP_DT_MEM_COV",
+      "source_columns": [
+       "MEM_SEQNO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     },
+     {
+      "bk_column": "LNK_PARTY_ROLE_BK__MEM_SEQNO",
+      "view": "BA_HCP_PP_MEM_DTLS",
+      "source_columns": [
+       "MEM_SEQNO"
+      ],
+      "origin": "legacy_emitted_sql",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "LNK_POLICY_PARTY": {
+   "runs": [
+    "opus_health_delta3",
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "LNK_POLICY_PARTY_BK__POLICY_NO_EMP_CODE"
+    ],
+    "opus_health_delta3": [
+     "LNK_POLICY_PARTY_BK__CONTRACT_ID_PARTNER_ID"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "LNK_POLICY_PARTY_BK__POLICY_NO_EMP_CODE",
+      "view": "BJAZ_HAT_POL_EMP_MAP",
+      "source_columns": [
+       "POLICY_NO",
+       "EMP_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ],
+    "opus_health_delta3": [
+     {
+      "bk_column": "LNK_POLICY_PARTY_BK__CONTRACT_ID_PARTNER_ID",
+      "view": "OCP_INTERESTED_PARTIES",
+      "source_columns": [
+       "CONTRACT_ID",
+       "PARTNER_ID"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  },
+  "REF_BANK_BRANCH_IFSC": {
+   "runs": [
+    "opus_health_v2"
+   ],
+   "registries_per_run": {
+    "opus_health_v2": 1
+   },
+   "bk_columns_per_run": {
+    "opus_health_v2": [
+     "REF_BANK_BRANCH_IFSC_BK__IFSC_CODE"
+    ]
+   },
+   "bk_column_overlap_between_runs": [],
+   "overlap_count": 0,
+   "slots": {
+    "opus_health_v2": [
+     {
+      "bk_column": "REF_BANK_BRANCH_IFSC_BK__IFSC_CODE",
+      "view": "BJAZ_NEFT_IFSC_MASTER",
+      "source_columns": [
+       "IFSC_CODE"
+      ],
+      "origin": "map.resolved_key",
+      "tier": "tier1_business_code"
+     }
+    ]
+   }
+  }
+ }
+}

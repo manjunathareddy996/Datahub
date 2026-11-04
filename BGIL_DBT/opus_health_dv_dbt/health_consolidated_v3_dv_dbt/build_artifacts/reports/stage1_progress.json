@@ -1,0 +1,30 @@
+{
+ "stage": "1",
+ "state": "COMPLETE",
+ "steps_total": 20,
+ "steps_complete": 20,
+ "layers_done": [
+  "hcon_writeguard.py",
+  "hcon_names.py",
+  "hcon_keyrules.py",
+  "build_hcon_spec.py",
+  "gen_hcon_staging.py",
+  "gen_hcon_hopviews.py",
+  "gen_hcon_resolvers.py",
+  "gen_hcon_stage.py",
+  "gen_hcon_unpivot.py",
+  "gen_hcon_vault.py",
+  "gen_hcon_augmented.py",
+  "gen_hcon_rejectlog.py",
+  "gen_hcon_assertions.py",
+  "check_hcon_reachability.py",
+  "check_hcon_payload_naming.py",
+  "emit_hcon_status.py",
+  "gen_hcon_readme.py",
+  "run_hcon_gates.py",
+  "prove_hcon_checks.py"
+ ],
+ "last_step": "emit_hcon_stage1_report.py",
+ "last_step_exit": 0,
+ "resume_note": "Re-run run_hcon_build.py. Every step is idempotent and reads only the spec, so resuming re-does at most the failed step; --fresh re-does all of them and is what proves reproducibility."
+}

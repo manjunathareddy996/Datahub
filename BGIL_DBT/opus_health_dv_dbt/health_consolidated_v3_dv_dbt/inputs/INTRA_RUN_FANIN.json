@@ -1,0 +1,2378 @@
+{
+ "unit": "(run, satellite, attribute) group; writers = distinct (table, column)",
+ "scope": "all blocks, single-active satellites, no instance, no redundant_of",
+ "same_table_groups": 6,
+ "cross_table_groups": 174,
+ "cross_table": [
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_HEADER",
+   "attribute": "Risk Inception Date",
+   "writers": 27,
+   "tables": 27,
+   "columns": [
+    "BA_HCP_POL_MST.POLICY_START_DATE",
+    "BA_HCP_PORT_WORDINGS.INCEPTION_DATE",
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_RISK_INCEPTION_DATE",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_RISK_INCEPTION_DATE",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_RISK_INCEPTION_DATE",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_RISK_INCEPTION_DATE",
+    "BGIL_GMC_FINAL_INSTL_DATA.POLICY_START_DATE",
+    "BJAZ_BANDHAN_MEDI_CLAM.TERM_START_DATE",
+    "BJAZ_CARD_DTLS.EFF_DATE",
+    "BJAZ_ECARD_POL_DTLS_CONFIG.RISK_INCEPTION_DATE",
+    "BJAZ_EC_MEM_DTLS_EXTN.INCEPTION_DATE",
+    "BJAZ_EHH_POL_DTLS.TERM_START_DATE",
+    "BJAZ_GENERIC_LOADER_LOG_TABLE.PSTARTDATE",
+    "BJAZ_GPG_POL_DTLS.RISK_INCEPTION_DATE",
+    "BJAZ_GP_HOSPITAL_CASH.TERM_START_DATE",
+    "BJAZ_GRP_HLT_DTLS.EFFECTIVE_DATE",
+    "BJAZ_HC_PART_EXTN.INCEPTION_DATE",
+    "BJAZ_HDFC_SEC_FHPP.TERM_START_DATE",
+    "BJAZ_HEALTH_WEBSERVICE_INFO.TERM_START_DATE",
+    "BJAZ_HG_POL_DTLS.TERM_START_DATE",
+    "BJAZ_HM_COINSU_CLM_DTLS.COMNCMNT_DATE",
+    "BJAZ_HM_HCM_EXTRACT.RID",
+    "BJAZ_HM_MEMBER_DTLS.TERM_START_DATE",
+    "BJAZ_HM_ORPHAN_REG.START_DATE",
+    "BJAZ_IHG_MEM_DTLS_EXTN.INCEPTION_DATE",
+    "BJAZ_SH_MEM_DTLS_EXTN.INCEPTION_DATE",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.POLICY_FROM"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_HEADER",
+   "attribute": "Risk Expiry Date",
+   "writers": 24,
+   "tables": 24,
+   "columns": [
+    "BA_HCP_POL_MST.POLICY_END_DATE",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_RISK_END_DATE",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_RISK_END_DATE",
+    "BGIL_GMC_FINAL_INSTL_DATA.POLICY_EXPIRY_DATE",
+    "BJAZ_BANDHAN_MEDI_CLAM.TERM_END_DATE",
+    "BJAZ_CARD_DTLS.EXPIRY_DATE",
+    "BJAZ_ECARD_POL_DTLS_CONFIG.RISK_EXPIRY_DATE",
+    "BJAZ_EC_MEM_DTLS_EXTN.EXPIRY_DATE",
+    "BJAZ_EHH_POL_DTLS.TERM_END_DATE",
+    "BJAZ_GENERIC_LOADER_LOG_TABLE.PTODATE",
+    "BJAZ_GPG_POL_DTLS.RISK_EXPIRY_DATE",
+    "BJAZ_GP_HOSPITAL_CASH.TERM_END_DATE",
+    "BJAZ_GRP_HLT_DTLS.EXPIRY_DATE",
+    "BJAZ_HDFC_SEC_FHPP.TERM_END_DATE",
+    "BJAZ_HEALTH_WEBSERVICE_INFO.TERM_END_DATE",
+    "BJAZ_HG_POL_DTLS.TERM_END_DATE",
+    "BJAZ_HM_COINSU_CLM_DTLS.VALID_UPTO_DATE",
+    "BJAZ_HM_HCM_EXTRACT.RED",
+    "BJAZ_HM_HOSPITAL_MASTER.EXPIRY_DATE",
+    "BJAZ_HM_MEMBER_DTLS.TERM_END_DATE",
+    "BJAZ_HM_ORPHAN_REG.END_DATE",
+    "BJAZ_IHG_MEM_DTLS_EXTN.EXPIRY_DATE",
+    "BJAZ_SH_MEM_DTLS_EXTN.EXPIRY_DATE",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.POLICY_UPTO"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_IDENTITY",
+   "attribute": "Party Full Name",
+   "writers": 20,
+   "tables": 20,
+   "columns": [
+    "BA_HCP_DT_MEM.MEMBER_NAME",
+    "BA_HCP_DT_MEM_COV.MEMBER_NAME",
+    "BA_HCP_DT_POL_COV.MEMBER_NAME",
+    "BA_HCP_POL_MST.IMD_NAME",
+    "BA_HCP_PORT_WORDINGS.MEM_NAME",
+    "BGIL_GMC_FINAL_INSTL_DATA.EMP_NAME",
+    "BJAZ_BANDHAN_MEDI_CLAM.CUSTOMER_NAME",
+    "BJAZ_CARD_DTLS.MEMBER_NAME",
+    "BJAZ_ECARD_POL_DTLS_CONFIG.CORPORATE_NAME",
+    "BJAZ_EC_MEM_DTLS_EXTN.NAME",
+    "BJAZ_HAT_ID_MEM_DETLS.EMP_NAME",
+    "BJAZ_HAT_OCR_FINA_DTLS_LST.NAME",
+    "BJAZ_HC_PART_EXTN.MEMBER_NAME",
+    "BJAZ_HLT_ENSURE_MEM_DTLS.NAME",
+    "BJAZ_HM_CASHLESS_INWARD.PATIENT_NAME",
+    "BJAZ_HM_HOSPITAL_MASTER.HOSPITAL_NAME",
+    "BJAZ_HM_MEMBER_DTLS.MEMBER_NAME",
+    "BJAZ_IHG_MEM_DTLS_EXTN.NAME",
+    "BJAZ_SCR_HLTH_PORTABLE_DTLS.INSURED_NAME",
+    "BJAZ_SH_MEM_DTLS_EXTN.NAME"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_IDENTITY",
+   "attribute": "Date Of Birth",
+   "writers": 20,
+   "tables": 20,
+   "columns": [
+    "BA_HCP_PORT_WORDINGS.DOB",
+    "BA_HCP_PROD_8428_GPG_LOADER.MD_DATE_OF_BIRTH",
+    "BA_HCP_PROD_8432_ECP_LOADER.MD_DATE_OF_BIRTH",
+    "BA_HCP_PROD_8433_FHC_LOADER.MD_DATE_OF_BIRTH",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_DATE_OF_BIRTH",
+    "BGIL_GMC_FINAL_INSTL_DATA.DATE_OF_BIRTH",
+    "BJAZ_BANDHAN_MEDI_CLAM.DOB",
+    "BJAZ_CARD_DTLS.DOB",
+    "BJAZ_EC_MEM_DTLS_EXTN.DATE_OF_BIRTH",
+    "BJAZ_EHH_POL_DTLS.DOB",
+    "BJAZ_GENERIC_LOADER_LOG_TABLE.DATEOFBIRTH",
+    "BJAZ_HAT_ID_MEM_DETLS.DATE_OF_BIRTH",
+    "BJAZ_HCF_MEMBER_DTLS.DATE_OF_BIRTH",
+    "BJAZ_HC_PART_EXTN.DATE_OF_BIRTH",
+    "BJAZ_HG_POL_DTLS.DATE_OF_BIRTH",
+    "BJAZ_HLT_ENSURE_MEM_DTLS.DATE_OF_BIRTH",
+    "BJAZ_HM_MEMBER_DTLS.DOB",
+    "BJAZ_IHG_MEM_DTLS_EXTN.DATE_OF_BIRTH",
+    "BJAZ_SCR_HLTH_PORTABLE_DTLS.INSURED_DOB",
+    "BJAZ_SH_MEM_DTLS_EXTN.DATE_OF_BIRTH"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_IDENTITY",
+   "attribute": "Gender Code",
+   "writers": 18,
+   "tables": 18,
+   "columns": [
+    "BA_HCP_PORT_WORDINGS.GENDER",
+    "BA_HCP_PROD_8428_GPG_LOADER.MD_GENDER",
+    "BA_HCP_PROD_8432_ECP_LOADER.MD_GENDER",
+    "BA_HCP_PROD_8433_FHC_LOADER.MD_GENDER",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_GENDER",
+    "BJAZ_BANDHAN_MEDI_CLAM.GENDER",
+    "BJAZ_CARD_DTLS.GENDER",
+    "BJAZ_EC_MEM_DTLS_EXTN.GENDER",
+    "BJAZ_EHH_POL_DTLS.GENDER",
+    "BJAZ_GENERIC_LOADER_LOG_TABLE.SEX",
+    "BJAZ_HAT_ID_MEM_DETLS.SEX",
+    "BJAZ_HCF_MEMBER_DTLS.GENDER",
+    "BJAZ_HC_PART_EXTN.SEX",
+    "BJAZ_HLT_ENSURE_MEM_DTLS.GENDER",
+    "BJAZ_HM_MEMBER_DTLS.GENDER",
+    "BJAZ_IHG_MEM_DTLS_EXTN.GENDER",
+    "BJAZ_SCR_HLTH_PORTABLE_DTLS.INSURED_GENDER",
+    "BJAZ_SH_MEM_DTLS_EXTN.GENDER"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "attribute": "Relationship To Proposer",
+   "writers": 18,
+   "tables": 18,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.MD_RELATION",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_RELATION",
+    "BGIL_GMC_FINAL_INSTL_DATA.RELATION",
+    "BJAZ_CARD_DTLS.RELATION",
+    "BJAZ_ECARD_MEMBR_DEL_DTLS.RELATION",
+    "BJAZ_EC_MEM_DTLS_EXTN.RELATION",
+    "BJAZ_GP_HOSPITAL_CASH.RELATION",
+    "BJAZ_HAT_ID_MEM_DETLS.RELATION",
+    "BJAZ_HCF_MEMBER_DTLS.RELATION",
+    "BJAZ_HC_PART_EXTN.RELATION",
+    "BJAZ_HDFC_SEC_FHPP.RELATION",
+    "BJAZ_HLT_ENSURE_MEM_DTLS.RELATION",
+    "BJAZ_HM_MEMBER_DTLS.RELATION",
+    "BJAZ_HM_ORPHAN_REG.RELATION",
+    "BJAZ_IHG_MEM_DTLS_EXTN.RELATION",
+    "BJAZ_ILLNESS_BASES_EXTN.RELATION",
+    "BJAZ_SH_MEM_DTLS_EXTN.RELATION",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.RELATION"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_LNK_ROLE_NOMINEE_BENEFICIARY",
+   "attribute": "Relationship To Insured",
+   "writers": 16,
+   "tables": 8,
+   "columns": [
+    "BA_HCP_PROD_8432_ECP_LOADER.MD_NOMINEE_RELATION",
+    "BA_HCP_PROD_8433_FHC_LOADER.MD_NOMINEE_RELATION",
+    "BJAZ_BANDHAN_MEDI_CLAM.NOMINEE_RELATION",
+    "BJAZ_EC_MEM_DTLS_EXTN.NOMINEE_RLTN",
+    "BJAZ_GP_HOSPITAL_CASH.NOMINEE_RELATION",
+    "BJAZ_HDFC_SEC_FHPP.NOMINEE_RELATION",
+    "BJAZ_ILLNESS_BASES_EXTN.NOMINEE_RELATION",
+    "BJAZ_WS_FAMILY_DTLS_BANDHAN.MEMBER1NOMINEERELATION",
+    "BJAZ_WS_FAMILY_DTLS_BANDHAN.MEMBER2NOMINEERELATION",
+    "BJAZ_WS_FAMILY_DTLS_BANDHAN.MEMBER3NOMINEERELATION",
+    "BJAZ_WS_FAMILY_DTLS_BANDHAN.MEMBER4NOMINEERELATION",
+    "BJAZ_WS_FAMILY_DTLS_BANDHAN.MEMBER5NOMINEERELATION",
+    "BJAZ_WS_FAMILY_DTLS_BANDHAN.MEMBER6NOMINEERELATION",
+    "BJAZ_WS_FAMILY_DTLS_BANDHAN.MEMBER7NOMINEERELATION",
+    "BJAZ_WS_FAMILY_DTLS_BANDHAN.MEMBER8NOMINEERELATION",
+    "BJAZ_WS_FAMILY_DTLS_BANDHAN.SELFNOMINEERELATION"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_PREMIUM_SUMMARY",
+   "attribute": "Gross Premium",
+   "writers": 15,
+   "tables": 15,
+   "columns": [
+    "BA_HCP_DT_PREMIUM.POL_GROSS_PREM_AMT",
+    "BA_HCP_PRIME_RIDER_DTLS.TOTAL_FINAL_PREMIUM",
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_PREMIUM_INCLUDING_ST",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_PREMIUM_INCLUDING_ST",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_PREMIUM_INCLUDING_ST",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_PREMIUM_INCLUDING_ST",
+    "BJAZ_BANDHAN_MEDI_CLAM.GROSS_PREMINUM",
+    "BJAZ_EHH_POL_DTLS.GROSS_PREMIUM",
+    "BJAZ_GENERIC_LOADER_LOG_TABLE.PGROSSPREMIUM",
+    "BJAZ_GPG_POL_DTLS.FINAL_PREMIUM",
+    "BJAZ_GP_HOSPITAL_CASH.GROSS_PREMIUM",
+    "BJAZ_GRP_HLT_MATERNITY_DTLS.GROSS_PERMIUM",
+    "BJAZ_HDFC_SEC_FHPP.GROSS_PREMIUM",
+    "BJAZ_HEALTH_WEBSERVICE_INFO.GROSS_PREMIUM",
+    "BJAZ_HG_POL_DTLS.GROSS_PREMIUM"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_HEADER",
+   "attribute": "Policy Term",
+   "writers": 14,
+   "tables": 14,
+   "columns": [
+    "BA_HCP_PRIME_RIDER_DTLS.POLICY_PERIOD",
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_POLICY_PERIOD",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_POLICY_PERIOD",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_POLICY_PERIOD",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_POLICY_PERIOD",
+    "BJAZ_BANDHAN_MEDI_CLAM.NO_OF_YEARS",
+    "BJAZ_EHH_POL_DTLS.POL_PERIOD",
+    "BJAZ_GPG_POL_DTLS.POLICY_PERIOD",
+    "BJAZ_GP_HOSPITAL_CASH.NO_OF_YEARS",
+    "BJAZ_GRP_HLT_DTLS.POLICY_PERIOD",
+    "BJAZ_HDFC_SEC_FHPP.NO_OF_YEARS",
+    "BJAZ_HEALTH_WEBSERVICE_INFO.POLICY_PERIOD",
+    "BJAZ_HG_POL_DTLS.POL_PERIOD",
+    "BJAZ_SH_MEM_DTLS_EXTN.PERIOD_OF_INSURANCE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_PORTABILITY_MIGRATION",
+   "attribute": "Previous Policy Number",
+   "writers": 13,
+   "tables": 13,
+   "columns": [
+    "BA_HCP_PORT_WORDINGS.PREV_POLICY_NO",
+    "BA_HCP_PROD_8428_GPG_LOADER.MD_PREV_POLICY_NUMBER",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_PREV_POLICY_NUMBER",
+    "BJAZ_EC_MEM_DTLS_EXTN.PREV_POLICY_DTLS",
+    "BJAZ_GPG_POL_DTLS.PREV_POL_NO",
+    "BJAZ_GRP_HLT_DTLS.PRV_POLICY_NO",
+    "BJAZ_HAT_ID_MEM_DETLS.PREV_POLICY_DETAILS",
+    "BJAZ_HC_PART_EXTN.FIRST_POLICY_REF",
+    "BJAZ_HG_POL_DTLS.PREV_POLICY_NO",
+    "BJAZ_HLT_ENSURE_MEM_DTLS.PREV_POLICY_NO",
+    "BJAZ_IHG_MEM_DTLS_EXTN.PREV_POLICY_DTLS",
+    "BJAZ_SCR_HLTH_PORTABLE_DTLS.PREV_POLICY_NO",
+    "BJAZ_SH_MEM_DTLS_EXTN.PREV_POLICY_DTLS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_COMMON_ADDRESS",
+   "attribute": "Postal Code",
+   "writers": 13,
+   "tables": 13,
+   "columns": [
+    "BA_HCP_PP_MEM_DTLS.DC_PINCODE",
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_PIN_CODE",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_PIN_CODE",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_PIN_CODE",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_PIN_CODE",
+    "BJAZ_EHH_POL_DTLS.POSTCODE",
+    "BJAZ_GENERIC_LOADER_LOG_TABLE.PINCODE",
+    "BJAZ_GPG_POL_DTLS.MAILING_PINCODE",
+    "BJAZ_GRP_HLT_CUST_DTLS.PIN_CODE",
+    "BJAZ_HAT_ID_MEM_DETLS.PIN",
+    "BJAZ_HM_HOSPITAL_MASTER.PIN_CODE",
+    "BJAZ_HM_INWARD_DTLS.PIN_CODE",
+    "BJAZ_HM_MEMBER_DTLS.PIN"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_IDENTITY",
+   "attribute": "Age",
+   "writers": 13,
+   "tables": 13,
+   "columns": [
+    "BGIL_GMC_FINAL_INSTL_DATA.AGE",
+    "BJAZ_BANDHAN_MEDI_CLAM.AGE",
+    "BJAZ_CARD_DTLS.AGE",
+    "BJAZ_EC_MEM_DTLS_EXTN.AGE",
+    "BJAZ_GENERIC_LOADER_LOG_TABLE.AGE",
+    "BJAZ_HAT_ID_MEM_DETLS.AGE",
+    "BJAZ_HCF_MEMBER_DTLS.AGE",
+    "BJAZ_HC_PART_EXTN.AGE",
+    "BJAZ_HLT_ENSURE_MEM_DTLS.AGE",
+    "BJAZ_HM_MEMBER_DTLS.AGE",
+    "BJAZ_IHG_MEM_DTLS_EXTN.AGE",
+    "BJAZ_SCR_HLTH_PORTABLE_DTLS.AGE",
+    "BJAZ_SH_MEM_DTLS_EXTN.AGE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_COMMON_ADDRESS",
+   "attribute": "Address Line 1",
+   "writers": 12,
+   "tables": 12,
+   "columns": [
+    "BA_HCP_PP_MEM_DTLS.DC_ADDRESS",
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_ADDRESS_LINE_1",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_ADDRESS_LINE_1",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_ADDRESS_LINE_1",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_ADDRESS_LINE_1",
+    "BJAZ_EHH_POL_DTLS.ADDRESS_LINE1",
+    "BJAZ_GRP_HLT_CUST_DTLS.ADDRESS_LINE_1",
+    "BJAZ_HAT_ID_MEM_DETLS.ADDLINE1",
+    "BJAZ_HM_HOSPITAL_MASTER.ADDRESS1",
+    "BJAZ_HM_MEMBER_DTLS.ADDRESS",
+    "BJAZ_HM_ORPHAN_REG.ADDRESS",
+    "BJAZ_SH_MEM_DTLS_EXTN.ADDRESS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_COMMON_ADDRESS",
+   "attribute": "City",
+   "writers": 12,
+   "tables": 12,
+   "columns": [
+    "BA_HCP_PP_MEM_DTLS.DC_CITY",
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_CITY",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_CITY",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_CITY",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_CITY",
+    "BJAZ_EHH_POL_DTLS.CITY",
+    "BJAZ_GENERIC_LOADER_LOG_TABLE.CITY",
+    "BJAZ_GRP_HLT_CUST_DTLS.CITY",
+    "BJAZ_HAT_ID_MEM_DETLS.CITY",
+    "BJAZ_HM_HOSPITAL_MASTER.CITY_NAME",
+    "BJAZ_HM_INWARD_DTLS.CITY_NAME",
+    "BJAZ_HM_MEMBER_DTLS.CITY"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_COMMON_ADDRESS",
+   "attribute": "State Name",
+   "writers": 12,
+   "tables": 12,
+   "columns": [
+    "BA_HCP_PP_MEM_DTLS.DC_STATE",
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_STATE",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_STATE",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_STATE",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_STATE",
+    "BJAZ_EHH_POL_DTLS.STATE",
+    "BJAZ_GENERIC_LOADER_LOG_TABLE.STATE",
+    "BJAZ_GRP_HLT_CUST_DTLS.STATE",
+    "BJAZ_HAT_ID_MEM_DETLS.STATE",
+    "BJAZ_HM_HOSPITAL_MASTER.STATE_NAME",
+    "BJAZ_HM_INWARD_DTLS.STATE_NAME",
+    "BJAZ_HM_MEMBER_DTLS.STATE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "attribute": "Pre-Existing Disease Description",
+   "writers": 12,
+   "tables": 12,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.MD_PRE_EXIST_DISEASE_DIS_INF",
+    "BA_HCP_PROD_8432_ECP_LOADER.MD_PRE_EXIST_DISEASE_DIS_INF",
+    "BA_HCP_PROD_8433_FHC_LOADER.MD_PRE_EXIST_DISEASE_DIS_INF",
+    "BJAZ_BANDHAN_MEDI_CLAM.PREEXISTING_DISEASE",
+    "BJAZ_EC_MEM_DTLS_EXTN.DISEASE_DTLS",
+    "BJAZ_GP_HOSPITAL_CASH.PREEXISTING_DISEASE",
+    "BJAZ_HCF_MEMBER_DTLS.PREEXIST_DICEASE",
+    "BJAZ_HC_PART_EXTN.DISEASE_DTLS",
+    "BJAZ_HDFC_SEC_FHPP.PREEXISTING_DISEASE",
+    "BJAZ_HLT_ENSURE_MEM_DTLS.PRE_DISEASE",
+    "BJAZ_IHG_MEM_DTLS_EXTN.DISEASE_DTLS",
+    "BJAZ_SH_MEM_DTLS_EXTN.DISEASE_DTLS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_FINANCIAL_PROFILE",
+   "attribute": "Annual Income",
+   "writers": 10,
+   "tables": 10,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.MD_GROSS_MONTHLY_INCOME",
+    "BA_HCP_PROD_8432_ECP_LOADER.MD_GROSS_MONTHLY_INCOME",
+    "BA_HCP_PROD_8433_FHC_LOADER.MD_GROSS_MONTHLY_INCOME",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_GROSS_MONTHLY_INCOME",
+    "BJAZ_EC_MEM_DTLS_EXTN.GROSS_INCOME",
+    "BJAZ_HCF_MEMBER_DTLS.MONTHLY_INCOME",
+    "BJAZ_HM_MEMBER_DTLS.GROSS_INCOME",
+    "BJAZ_IHG_MEM_DTLS_EXTN.GROSS_INCOME",
+    "BJAZ_ILLNESS_BASES_EXTN.ANNUAL_INCOME",
+    "BJAZ_SH_MEM_DTLS_EXTN.GROSS_INCOME"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_PORTABILITY_MIGRATION",
+   "attribute": "Previous Sum Insured",
+   "writers": 9,
+   "tables": 9,
+   "columns": [
+    "BA_HCP_PORT_WORDINGS.PREV_SI",
+    "BA_HCP_PROD_8428_GPG_LOADER.MD_PREV_SUM_INSURED",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_PREV_SUM_INSURED",
+    "BJAZ_EC_MEM_DTLS_EXTN.PREV_SUM_INSURED",
+    "BJAZ_HCF_MEMBER_DTLS.PREVIOUS_SI",
+    "BJAZ_HG_POL_DTLS.PREV_SUM_INSURED",
+    "BJAZ_HLT_ENSURE_MEM_DTLS.PREVIOUS_SUM_INSURED",
+    "BJAZ_IHG_MEM_DTLS_EXTN.PREV_SUM_INSURED",
+    "BJAZ_SH_MEM_DTLS_EXTN.PREV_SUM_INSURED"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_IDENTITY",
+   "attribute": "First Name",
+   "writers": 9,
+   "tables": 9,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.MD_FIRST_NAME",
+    "BA_HCP_PROD_8432_ECP_LOADER.MD_FIRST_NAME",
+    "BA_HCP_PROD_8433_FHC_LOADER.MD_FIRST_NAME",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_FIRST_NAME",
+    "BJAZ_BANDHAN_MEDI_CLAM.FIRST_NAME",
+    "BJAZ_EHH_POL_DTLS.FIRST_NAME",
+    "BJAZ_GENERIC_LOADER_LOG_TABLE.FIRSTNAME",
+    "BJAZ_HAT_ID_MEM_DETLS.FIRST_NAME",
+    "BJAZ_HG_POL_DTLS.FIRST_NAME"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_IDENTITY",
+   "attribute": "Last Name",
+   "writers": 9,
+   "tables": 9,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.MD_LAST_NAME",
+    "BA_HCP_PROD_8432_ECP_LOADER.MD_LAST_NAME",
+    "BA_HCP_PROD_8433_FHC_LOADER.MD_LAST_NAME",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_LAST_NAME",
+    "BJAZ_BANDHAN_MEDI_CLAM.LAST_NAME",
+    "BJAZ_EHH_POL_DTLS.LAST_NAME",
+    "BJAZ_GENERIC_LOADER_LOG_TABLE.SURNAME",
+    "BJAZ_HAT_ID_MEM_DETLS.LAST_NAME",
+    "BJAZ_HG_POL_DTLS.LAST_NAME"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_FINTXN_PREMIUM",
+   "attribute": "Collection Mode",
+   "writers": 9,
+   "tables": 9,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_PAYMENT_MODE",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_PAYMENT_MODE",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_PAYMENT_MODE",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_PAYMENT_MODE",
+    "BJAZ_EHH_POL_DTLS.PAYMENT_MODE",
+    "BJAZ_GENERIC_LOADER_LOG_TABLE.PAYMENTMODE",
+    "BJAZ_GPG_POL_DTLS.PAYMENT_MODE",
+    "BJAZ_HEALTH_WEBSERVICE_INFO.PAYMENT_MODE",
+    "BJAZ_HG_POL_DTLS.PAYMENT_MODE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PRODUCT_DEFINITION",
+   "attribute": "Product Name",
+   "writers": 9,
+   "tables": 9,
+   "columns": [
+    "BA_HCP_PROD_8433_FHC_LOADER.PLAN_NAME",
+    "BA_HCP_PROD_8439_CLH_LOADER.PLAN_NAME",
+    "BJAZ_CTNGY_SCHEME_MST.SCHEME_DESC",
+    "BJAZ_GRP_HLT_DTLS.PRODUCT_NAME",
+    "BJAZ_HCS_PLANSI_MAPP.PLAN_NAME",
+    "BJAZ_HM_GMC_AHC.PACKAGE_NAME",
+    "BJAZ_HM_INWARD_DTLS.PLAN_NAME",
+    "BJAZ_HM_MEMBER_DTLS.PLAN_NAME",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.PRODUCT_NAME"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_PORTABILITY_MIGRATION",
+   "attribute": "Previous Insurer Name",
+   "writers": 8,
+   "tables": 8,
+   "columns": [
+    "BA_HCP_PORT_WORDINGS.PREV_INSURER",
+    "BA_HCP_PROD_8428_GPG_LOADER.MD_PREV_COMP_NAME",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_PREV_COMP_NAME",
+    "BJAZ_EC_MEM_DTLS_EXTN.PREV_COMPANY_NAME",
+    "BJAZ_GPG_POL_DTLS.PREV_POLICY_COMP_NAME",
+    "BJAZ_GRP_HLT_DTLS.PRE_INSURER_NAME",
+    "BJAZ_HLT_ENSURE_MEM_DTLS.PREVIOUS_COMPANY_NAME",
+    "BJAZ_SCR_HLTH_PORTABLE_DTLS.PREV_INSURER_NAME"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_PORTABILITY_MIGRATION",
+   "attribute": "Previous Policy Expiry Date",
+   "writers": 8,
+   "tables": 7,
+   "columns": [
+    "BA_HCP_PORT_WORDINGS.PREV_POLICY_EXP_DATE",
+    "BA_HCP_PROD_8428_GPG_LOADER.MD_PREV_EXPIRY_DATE",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_PREV_EXPIRY_DATE",
+    "BJAZ_EC_MEM_DTLS_EXTN.CON_EXP_DATE",
+    "BJAZ_EC_MEM_DTLS_EXTN.PERV_POL_EXP_DATE",
+    "BJAZ_GPG_POL_DTLS.PREV_POLICY_EXPIRY",
+    "BJAZ_HG_POL_DTLS.PERV_POL_EXP_DATE",
+    "BJAZ_HLT_ENSURE_MEM_DTLS.PREVIOUS_TO_DATE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_IDENTITY",
+   "attribute": "Middle Name",
+   "writers": 8,
+   "tables": 8,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.MD_MIDDLE_NAME",
+    "BA_HCP_PROD_8432_ECP_LOADER.MD_MIDDLE_NAME",
+    "BA_HCP_PROD_8433_FHC_LOADER.MD_MIDDLE_NAME",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_MIDDLE_NAME",
+    "BJAZ_BANDHAN_MEDI_CLAM.MIDDLE_NAME",
+    "BJAZ_EHH_POL_DTLS.MIDDLE_NAME",
+    "BJAZ_GENERIC_LOADER_LOG_TABLE.MIDDLENAME",
+    "BJAZ_HAT_ID_MEM_DETLS.MIDDLE_NAME"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "attribute": "Height",
+   "writers": 8,
+   "tables": 8,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.MD_HEIGHT_CM",
+    "BA_HCP_PROD_8432_ECP_LOADER.MD_HEIGHT_CM",
+    "BA_HCP_PROD_8433_FHC_LOADER.MD_HEIGHT_CM",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_HEIGHT_CM",
+    "BJAZ_EC_MEM_DTLS_EXTN.HEIGHT_CM",
+    "BJAZ_GP_HOSPITAL_CASH.HEIGHT",
+    "BJAZ_HDFC_SEC_FHPP.HEIGHT",
+    "BJAZ_IHG_MEM_DTLS_EXTN.HEIGHT_CM"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "attribute": "Weight",
+   "writers": 8,
+   "tables": 8,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.MD_WEIGHT_KG",
+    "BA_HCP_PROD_8432_ECP_LOADER.MD_WEIGHT_KG",
+    "BA_HCP_PROD_8433_FHC_LOADER.MD_WEIGHT_KG",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_WEIGHT_KG",
+    "BJAZ_EC_MEM_DTLS_EXTN.WEIGHT_KG",
+    "BJAZ_GP_HOSPITAL_CASH.WEIGHT",
+    "BJAZ_HDFC_SEC_FHPP.WEIGHT",
+    "BJAZ_IHG_MEM_DTLS_EXTN.WEIGHT_KG"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_TERMS",
+   "attribute": "Special Conditions",
+   "writers": 8,
+   "tables": 8,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.PLC_SPECIAL_TERMS_CONDITIONS",
+    "BA_HCP_PROD_8432_ECP_LOADER.PLC_SPECIAL_TERMS_CONDITIONS",
+    "BA_HCP_PROD_8433_FHC_LOADER.PLC_SPECIAL_TERMS_CONDITIONS",
+    "BA_HCP_PROD_8439_CLH_LOADER.PLC_SPECIAL_TERMS_CONDITIONS",
+    "BJAZ_GPG_POL_DTLS.SPCL_TERMS_COND",
+    "BJAZ_GRP_HLT_DTLS.OTHER_CONDITIONS",
+    "BJAZ_HLT_ENSURE_MEM_DTLS.SPECIAL_CONDITION",
+    "BJAZ_ILLNESS_BASES_EXTN.SPECIAL_CONDITION"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_FIN_RECEIPT",
+   "attribute": "Receipt Number",
+   "writers": 8,
+   "tables": 8,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_RECEIPT_NO",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_RECEIPT_NO",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_RECEIPT_NO",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_RECEIPT_NO",
+    "BJAZ_BANDHAN_MEDI_CLAM.RECEIPT_NO",
+    "BJAZ_EHH_POL_DTLS.RECEIPT_NO",
+    "BJAZ_HEALTH_WEBSERVICE_INFO.RECEIPT_NO",
+    "BJAZ_HG_POL_DTLS.RECEIPT_NO"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_COMMON_ADDRESS",
+   "attribute": "Address Line 2",
+   "writers": 8,
+   "tables": 8,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_ADDRESS_LINE_2",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_ADDRESS_LINE_2",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_ADDRESS_LINE_2",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_ADDRESS_LINE_2",
+    "BJAZ_EHH_POL_DTLS.ADDRESS_LINE2",
+    "BJAZ_GRP_HLT_CUST_DTLS.ADDRESS_LINE_2",
+    "BJAZ_HAT_ID_MEM_DETLS.ADDLINE2",
+    "BJAZ_HM_HOSPITAL_MASTER.ADDRESS2"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_BONUS_TRACKING",
+   "attribute": "Bonus Amount",
+   "writers": 7,
+   "tables": 7,
+   "columns": [
+    "BA_HCP_DT_PREMIUM.CUMULATIVE_BONUS_AMT",
+    "BA_HCP_PROD_8433_FHC_LOADER.PLC_CB_AMOUNT",
+    "BJAZ_HCF_MEMBER_DTLS.CUMULATIVE_AMT",
+    "BJAZ_HM_MEMBER_DTLS.CUMM_BONUS",
+    "BJAZ_IHG_MEM_DTLS_EXTN.CUMM_BONUS",
+    "BJAZ_SH_MEM_DTLS_EXTN.CUMM_BONUS",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.BONUS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_COMMON_ADDRESS",
+   "attribute": "Locality",
+   "writers": 7,
+   "tables": 7,
+   "columns": [
+    "BA_HCP_PP_MEM_DTLS.DC_LOCATION",
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_AREA_AS_PER_PF",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_AREA_AS_PER_PF",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_AREA_AS_PER_PF",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_AREA_AS_PER_PF",
+    "BJAZ_EHH_POL_DTLS.AREA",
+    "BJAZ_HM_HOSP_MASTER_EXTN1.AREA"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CHANNEL_DEFINITION",
+   "attribute": "Channel Type",
+   "writers": 7,
+   "tables": 7,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_PARTNER_TYPE",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_PARTNER_TYPE",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_PARTNER_TYPE",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_PARTNER_TYPE",
+    "BJAZ_BANDHAN_MEDI_CLAM.PARTNER_TYPE",
+    "BJAZ_EHH_POL_DTLS.PARTNER_TYPE",
+    "BJAZ_GRP_HLT_DTLS.CHANNEL"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_EMPLOYMENT",
+   "attribute": "Occupation Description",
+   "writers": 7,
+   "tables": 7,
+   "columns": [
+    "BJAZ_EC_MEM_DTLS_EXTN.OCCUPATION",
+    "BJAZ_HAT_ID_MEM_DETLS.PROFESSION",
+    "BJAZ_HCF_MEMBER_DTLS.MEMBER_OCCUPATION",
+    "BJAZ_HC_PART_EXTN.OCCUPATION",
+    "BJAZ_HM_MEMBER_DTLS.OCCUPATION",
+    "BJAZ_IHG_MEM_DTLS_EXTN.OCCUPATION",
+    "BJAZ_SH_MEM_DTLS_EXTN.OCCUPATION"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_BONUS_TRACKING",
+   "attribute": "Cumulative Bonus Percentage",
+   "writers": 6,
+   "tables": 6,
+   "columns": [
+    "BA_HCP_DT_PREMIUM.CUMULATIVE_BONUS_RATE",
+    "BA_HCP_PROD_8433_FHC_LOADER.PLC_CB_PER",
+    "BJAZ_HCF_MEMBER_DTLS.CUMULATIVE_BNOUZ_PER",
+    "BJAZ_HM_MEMBER_DTLS.CUMM_BONUS_PER",
+    "BJAZ_IHG_MEM_DTLS_EXTN.CUMM_BONUS_PER",
+    "BJAZ_SH_MEM_DTLS_EXTN.CUMM_BONUS_PER"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_COMMON_ADDRESS",
+   "attribute": "Country Name",
+   "writers": 6,
+   "tables": 6,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_COUNTRY",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_COUNTRY",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_COUNTRY",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_COUNTRY",
+    "BJAZ_GENERIC_LOADER_LOG_TABLE.COUNTRY",
+    "BJAZ_HM_HOSPITAL_MASTER_EXTN.COUNTRY_NAME"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "attribute": "Smoker Indicator",
+   "writers": 6,
+   "tables": 6,
+   "columns": [
+    "BA_HCP_PROD_8432_ECP_LOADER.MD_SMOKER_TOBACCO_CHEWER",
+    "BA_HCP_PROD_8433_FHC_LOADER.MD_SMOKER_TOBACCO_CHEWER",
+    "BJAZ_EC_MEM_DTLS_EXTN.SMOKER_YN",
+    "BJAZ_HCF_MEMBER_DTLS.SMOKER_FLAG",
+    "BJAZ_IHG_MEM_DTLS_EXTN.SMOKER_YN",
+    "BJAZ_SH_MEM_DTLS_EXTN.SMOKER_YN"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_HEADER",
+   "attribute": "Policy Type",
+   "writers": 6,
+   "tables": 6,
+   "columns": [
+    "BJAZ_CARD_DTLS.POLICY_TYPE",
+    "BJAZ_ECARD_POL_DTLS_CONFIG.POLICY_TYPE",
+    "BJAZ_GPG_POL_DTLS.POLICY_TYPE",
+    "BJAZ_GRP_HLT_DTLS.POLICY_TYPE",
+    "BJAZ_HG_POL_DTLS.POLICY_TYPE",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.POLICY_TYPE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "attribute": "Health Card Number",
+   "writers": 6,
+   "tables": 6,
+   "columns": [
+    "BJAZ_HAT_ID_MEM_DETLS.ID_CARD_NO",
+    "BJAZ_HM_CASHLESS_INWARD.CARD_NUMBER",
+    "BJAZ_HM_GMC_AHC.ID_CARD_NO",
+    "BJAZ_HM_INWARD_DTLS.ID_CARD_NO",
+    "BJAZ_HM_MEMBER_DTLS.ID_CARD_NO",
+    "BJAZ_HM_ORPHAN_REG.IDCARDNO"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_PREMIUM_SUMMARY",
+   "attribute": "Net Premium",
+   "writers": 5,
+   "tables": 5,
+   "columns": [
+    "BA_HCP_DT_PREMIUM.POL_NET_PREM_AMT",
+    "BA_HCP_PRIME_RIDER_DTLS.TOTAL_NET_PREMIUM",
+    "BJAZ_GPG_POL_DTLS.NET_PREMIUM",
+    "BJAZ_GRP_HLT_DTLS.FINAL_PRM_EX_STAX",
+    "BJAZ_HEALTH_WEBSERVICE_INFO.NET_PREMIUM"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_HEADER",
+   "attribute": "Risk Start Time",
+   "writers": 5,
+   "tables": 5,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_RISK_INCEPTION_TIME_HHMM",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_RISK_INCEPTION_TIME_HHMM",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_RISK_INCEPTION_TIME_HHMM",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_RISK_INCEPTION_TIME_HHMM",
+    "BJAZ_GPG_POL_DTLS.RISK_INCEPTION_TIME"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Room Rent Amount",
+   "writers": 5,
+   "tables": 5,
+   "columns": [
+    "BJAZ_GRP_HLT_MATERNITY_DTLS.ROOM_RENT",
+    "BJAZ_HM_BILL_DETAIL.AVAILED_ROOM_RENT_PER_DAY",
+    "BJAZ_HM_BILL_DETAIL_OCR.ROOM_RENT",
+    "BJAZ_HM_HCM_EXTRACT.ROOM_CHARGES",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.ROOM_CHARGES"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "attribute": "Member Risk Loading Percentage",
+   "writers": 5,
+   "tables": 5,
+   "columns": [
+    "BJAZ_HCF_MEMBER_DTLS.LOAD_PER",
+    "BJAZ_HC_PART_EXTN.LOAD_RATE",
+    "BJAZ_HM_MEMBER_DTLS.LOAD_RATE",
+    "BJAZ_IHG_MEM_DTLS_EXTN.LOAD_RATE",
+    "BJAZ_SH_MEM_DTLS_EXTN.LOAD_RATE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEADER",
+   "attribute": "Claim Status",
+   "writers": 5,
+   "tables": 5,
+   "columns": [
+    "BJAZ_HM_CLAIM_STATUS_DASH_APP.STATUS",
+    "BJAZ_HM_COINSU_CLM_DTLS.STATUS",
+    "BJAZ_HM_HCM_EXTRACT.CLAIM_STATUS",
+    "BJAZ_REMEDINET_CLAIM_DETAILS.CLAIM_STATUS",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.BJAZ_CLAIM_STATUS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Admission Date",
+   "writers": 5,
+   "tables": 5,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.DATE_ADMISSION",
+    "BJAZ_HM_GMC_AHC.DOA",
+    "BJAZ_HM_HCM_EXTRACT.ACTUAL_DOA",
+    "BJAZ_SH_MEM_DTLS_EXTN.PERIOD_TREATMENT",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.DOA"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Final Bill Amount",
+   "writers": 5,
+   "tables": 5,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.FINAL_BILL_AMT",
+    "BJAZ_HM_HCM_EXTRACT.TOTAL_BILL",
+    "BJAZ_HM_PRO_ASSESSMENT.TOT_CLAIMED_AMT",
+    "BJAZ_REMEDINET_CLAIM_DETAILS.TOTAL_BILL_AMOUNT",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.CLAIM_AMOUNT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEADER",
+   "attribute": "Claim Type",
+   "writers": 5,
+   "tables": 5,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.TYPE_OF_CLAIM",
+    "BJAZ_HM_HCM_EXTRACT.CLAIM_TYPE",
+    "BJAZ_HM_ORPHAN_REG.CLAIM_TYPE",
+    "BJAZ_REMEDINET_CLAIM_DETAILS.CLAIM_TYPE",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.CLAIM_TYPE"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_CLAIM_HEADER",
+   "attribute": "Claim Reference Number",
+   "writers": 5,
+   "tables": 5,
+   "columns": [
+    "BJAZ_HM_CLAIM_CLOSE.CLID_HPMS",
+    "BJAZ_HM_CLAIM_REOPEN.CLID_HPMS",
+    "BJAZ_HM_GPA_BILL_DTLS.CLID_HPMS",
+    "BJAZ_HM_HCS_TECH_ASSESS_COV.CLID_HPMS",
+    "BJAZ_HM_PREAUTH_REQUEST.CLAIM_REF"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_GROUP_HOUSEHOLD",
+   "attribute": "Relationship Composition",
+   "writers": 4,
+   "tables": 4,
+   "columns": [
+    "BA_HCP_DT_PREMIUM.MEMBER_COMBO",
+    "BA_HCP_PROD_8432_ECP_LOADER.MD_FAMILY_MEM_COMBINATION",
+    "BA_HCP_PROD_8433_FHC_LOADER.MD_FAMILY_MEM_COMBINATION",
+    "BJAZ_WS_FAMILY_DTLS_BANDHAN.FAMILYCOMBINATION"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_ASSESSMENT_HEADER",
+   "attribute": "Assessment Status",
+   "writers": 4,
+   "tables": 4,
+   "columns": [
+    "BA_HCP_PP_MEM_DTLS.STATUS_CODE",
+    "BA_HCP_PROD_8439_CLH_LOADER.PLC_MEDICAL_TEST_ALRDY_CON",
+    "BJAZ_SCR_HLTH_PORTABLE_DTLS.STATUS",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.PRE_AUTH_STATUS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS",
+   "attribute": "Occupation Description",
+   "writers": 4,
+   "tables": 4,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.MD_OCCUPATION",
+    "BA_HCP_PROD_8432_ECP_LOADER.MD_OCCUPATION",
+    "BA_HCP_PROD_8433_FHC_LOADER.MD_OCCUPATION",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_OCCUPATION"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CHANNEL_DEFINITION",
+   "attribute": "Sub Channel Code",
+   "writers": 4,
+   "tables": 4,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_SUB_IMD_CODE",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_SUB_IMD_CODE",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_SUB_IMD_CODE",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_SUB_IMD_CODE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_COMMON_ADDRESS",
+   "attribute": "Post Office Name",
+   "writers": 4,
+   "tables": 4,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_AREA_POST_OFFICE",
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_AREA_POST_OFFICE",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_AREA_POST_OFFICE",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_AREA_POST_OFFICE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "attribute": "Body Mass Index",
+   "writers": 4,
+   "tables": 4,
+   "columns": [
+    "BA_HCP_PROD_8432_ECP_LOADER.MD_BMI",
+    "BA_HCP_PROD_8433_FHC_LOADER.MD_BMI",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_BMI",
+    "BJAZ_IHG_MEM_DTLS_EXTN.BODY_MAS_INDX"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_IDENTITY",
+   "attribute": "Party Legal Name",
+   "writers": 4,
+   "tables": 4,
+   "columns": [
+    "BA_HCP_PROD_8433_FHC_LOADER.PLC_INSTITUTION_NAME",
+    "BJAZ_GENERIC_LOADER_LOG_TABLE.COMPANYNAME",
+    "BJAZ_IHG_MEM_DTLS_EXTN.COMPANY_NAME",
+    "BJAZ_SH_MEM_DTLS_EXTN.COMPANY_NAME"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEADER",
+   "attribute": "Registration Date",
+   "writers": 4,
+   "tables": 4,
+   "columns": [
+    "BJAZ_EC_MEM_DTLS_EXTN.CLAIM_RECEIVED",
+    "BJAZ_HM_COINSU_CLM_DTLS.DATE_OF_CL_LODGED",
+    "BJAZ_HM_HCM_EXTRACT.REGISTRATION_DATE",
+    "BJAZ_HM_ORPHAN_REG.ORPHAN_DATE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Ailment Description",
+   "writers": 4,
+   "tables": 4,
+   "columns": [
+    "BJAZ_EC_MEM_DTLS_EXTN.CLAIMED_FOR",
+    "BJAZ_HM_COINSU_CLM_DTLS.AILMENT",
+    "BJAZ_HM_HCM_EXTRACT.DIAGNOSIS_DETAIL",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.DIAGNOSIS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_CLAIM_HISTORY",
+   "attribute": "Total Claim Amount",
+   "writers": 4,
+   "tables": 4,
+   "columns": [
+    "BJAZ_HAT_ID_MEM_DETLS.PREV_POL_CLM_AMT",
+    "BJAZ_HC_PART_EXTN.AMOUNT_CLAIMED",
+    "BJAZ_IHG_MEM_DTLS_EXTN.AMOUNT_CLAIMED",
+    "BJAZ_SH_MEM_DTLS_EXTN.AMOUNT_CLAIMED"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Cashless Authorisation Number",
+   "writers": 4,
+   "tables": 4,
+   "columns": [
+    "BJAZ_HM_CASHLESS_INWARD.CASHLESS_IN_NO",
+    "BJAZ_HM_INWARD_AUTOALLOCATION.CASHLESS_IN_NO",
+    "BJAZ_REMEDINET_CLAIM_DETAILS.PREAUTH_NO",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.PRE_AUTH_LETTER_NO"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Diagnosis Code",
+   "writers": 4,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.FINAL_DIAGNOSIS",
+    "BJAZ_HM_HCM_EXTRACT.FINAL_DIAGNOSIS",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.DIAGNOSIS_CODE_LEVEL1",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.DIAGNOSIS_CODE_LEVEL2"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Co-Pay Amount",
+   "writers": 4,
+   "tables": 4,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.CO_PAYMNT_DEDUCTION",
+    "BJAZ_HM_HCM_EXTRACT.CO_PAYMENT",
+    "BJAZ_REMEDINET_CLAIM_DETAILS.COPAY_AMOUNT",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.CO_PAY_AMOUNT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_SETTLEMENT",
+   "attribute": "Approved Amount",
+   "writers": 4,
+   "tables": 4,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.CLAIM_PASSED",
+    "BJAZ_HM_HCM_EXTRACT.APPROVED_AMT",
+    "BJAZ_REMEDINET_CLAIM_DETAILS.TOTAL_APPROVED_AMOUNT",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.APPROVED_AMOUNT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_ASSESSMENT_MEDICAL",
+   "attribute": "Medical Management Date",
+   "writers": 4,
+   "tables": 4,
+   "columns": [
+    "BJAZ_HM_DOCTOR_ASSESS.MEDICAL_MGMT_DATE",
+    "BJAZ_HM_DOCTOR_MULTI_ASSESS.MEDICAL_MGMT_DATE",
+    "BJAZ_HM_HCM_EXTRACT.MEDICAL_MGT_DATE",
+    "BJAZ_HM_PCS_MULTI_ASSESS.MEDICAL_MGMT_DATE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Actual Package Amount",
+   "writers": 4,
+   "tables": 4,
+   "columns": [
+    "BJAZ_HM_DOCTOR_ASSESS.PACKAGE_CHARGE",
+    "BJAZ_HM_DOCTOR_MULTI_ASSESS.PACKAGE_CHARGE",
+    "BJAZ_HM_HCM_EXTRACT.PACKAGE_CHARGES",
+    "BJAZ_REMEDINET_CLAIM_DETAILS.ACTUAL_PACKAGE_AMOUNT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_PREMIUM_SUMMARY",
+   "attribute": "Base Premium",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BA_HCP_DT_PREMIUM.TOTAL_PREM_ON_BASE_COV",
+    "BJAZ_GPG_POL_DTLS.TOTAL_BASE_PREMIUM",
+    "BJAZ_GRP_HLT_MATERNITY_DTLS.BASE_PREMIUM"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_PREMIUM_SUMMARY",
+   "attribute": "Add On Premium",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BA_HCP_DT_PREMIUM.TOTAL_PREM_ON_BASE_COV_ADDON",
+    "BJAZ_GPG_POL_DTLS.TOTAL_ADDON_PREMIUM",
+    "BJAZ_HEALTH_WEBSERVICE_INFO.ADD_ON_PREM"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_FINTXN_PREMIUM",
+   "attribute": "Net Premium",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BA_HCP_DT_PREMIUM.EMI_NET_PREM_SELECTED",
+    "BA_HCP_PRIME_RIDER_DTLS.FINAL_PREMIUM",
+    "BJAZ_HG_POL_DTLS.CAL_PREM"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_HEADER",
+   "attribute": "Policy Status",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BA_HCP_POL_MST.POLICY_STATUS",
+    "BJAZ_CARD_DTLS.STATUS",
+    "BJAZ_ECARD_POL_DTLS_CONFIG.POLICY_STATUS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_PORTABILITY_MIGRATION",
+   "attribute": "First Policy Inception Date",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.MD_FIRST_POLICY_INCEPTION_DATE",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_FIRST_POLICY_INCEPTION_DATE",
+    "BJAZ_HLT_ENSURE_MEM_DTLS.FIRST_POL_INCEPTION_DATE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_RISK_OBJECT_CORE",
+   "attribute": "Risk Class Code",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.MLC_RISK_CLASS",
+    "BA_HCP_PROD_8439_CLH_LOADER.MD_RISK_CLASS",
+    "BJAZ_GRP_HLT_DTLS.TENTATIVE_RISK"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_QUOTE_HEADER",
+   "attribute": "Quote Status",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_ECARD_POL_DTLS_CONFIG.QUOTE_STATUS",
+    "BJAZ_GRP_HLT_DTLS.QUOTE_STATUS",
+    "BJAZ_HG_POL_DTLS.QUOTE_STATUS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Ambulance Charges",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_GRP_HLT_MATERNITY_DTLS.AMBULANCE_CHARGES",
+    "BJAZ_HM_HCM_EXTRACT.AMBULANCE",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.AMBULANCE_CHARGES"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEADER",
+   "attribute": "Claim Reference Number",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HAT_OCR_FINA_DTLS_LST.INWARD_NO",
+    "BJAZ_HM_COINSU_CLM_DTLS.CLAIM_REF",
+    "BJAZ_REMEDINET_CLAIM_DETAILS.PAYER_REFERENCE_NO"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEADER",
+   "attribute": "Claim Remarks",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HCF_MEMBER_DTLS.CLAIM_DTLS",
+    "BJAZ_HM_HCM_EXTRACT.GENERAL_REMARKS",
+    "BJAZ_HM_ORPHAN_REG.ORPHAN_REMARK"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Eligible Room Category",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_BILL_DETAIL.ELIGIBLE_ROOM_CATEGORY",
+    "BJAZ_HM_BILL_DETAIL_OCR.ELIGIBLE_ROOM_CATEGORY",
+    "BJAZ_HM_HCM_EXTRACT.ELIGIBLE_ROOM_CATEGORY"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Eligible Room Rent",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_BILL_DETAIL.ELIGIBLE_ROOM_RENT",
+    "BJAZ_HM_BILL_DETAIL_OCR.ELIGIBLE_ROOM_RENT",
+    "BJAZ_HM_HCM_EXTRACT.ELIGIBLE_ROOM_RENT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Room Category",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_BILL_DETAIL.AVAILED_ROOM_CATEGORY",
+    "BJAZ_HM_BILL_DETAIL_OCR.AVAILED_ROOM_CATEGORY",
+    "BJAZ_HM_HCM_EXTRACT.ROOM_CATEGORY"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "ICU Rent Amount",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_BILL_DETAIL.CRITI_UNIT_ROOM_RENT_PER_DAY",
+    "BJAZ_HM_BILL_DETAIL_OCR.CRITI_UNIT_ROOM_RENT_PER_DAY",
+    "BJAZ_HM_HCM_EXTRACT.CRITI_UNIT_ROOM_RENT_PER_DAY"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "IPD Number",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_BILL_DETAIL.IP_NO",
+    "BJAZ_HM_BILL_DETAIL_OCR.IP_NO",
+    "BJAZ_HM_HCM_EXTRACT.IP_NO"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_TPA_INTERACTION",
+   "attribute": "Pre-Auth Request Date",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_CASHLESS_INWARD.CASHLESS_IN_DATE",
+    "BJAZ_HM_HCM_EXTRACT.PRE_AUTH_DATE",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.PRE_AUTH_RECEIVED_ON"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_TPA_INTERACTION",
+   "attribute": "Authorisation Remarks",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_CASHLESS_INWARD.INWARD_REMARK",
+    "BJAZ_HM_HCM_EXTRACT.AUTHORIZATION_REMARKS",
+    "BJAZ_REMEDINET_CLAIM_DETAILS.PAYER_REMARKS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_LNK_ROLE_CUSTOMER",
+   "attribute": "VIP Indicator",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_CASHLESS_INWARD.VIP_FLAG_INWARD",
+    "BJAZ_HM_INWARD_DTLS.VIP_FLAG",
+    "BJAZ_HM_MEMBER_DTLS.VIP_FLG"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_SETTLEMENT",
+   "attribute": "Settlement Amount",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.PAID_AMOUNT",
+    "BJAZ_REMEDINET_CLAIM_DETAILS.TOTAL_PAYABLE_AMOUNT",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.PAYBLE_AMOUNT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEADER",
+   "attribute": "Notification Date",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.CLAIM_DATE",
+    "BJAZ_HM_ORPHAN_REG.ORPHAN_INTI_DATE",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.INTIMATION_DATE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Treatment Type",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.LEVEL_OF_CARE",
+    "BJAZ_HM_HCM_EXTRACT.TREATMENT_TYPE",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.TREATMENT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Procedure Code",
+   "writers": 3,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.PRIMARY_PROC",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.PROCEDURE_CODES_LEVEL1",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.PROCEDURE_CODES_LEVEL2"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Discharge Date",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.DATE_OF_DISCHARGE",
+    "BJAZ_HM_HCM_EXTRACT.ACTUAL_DOD",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.DOD"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Disallowance Reason",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.REASONS",
+    "BJAZ_HM_HCM_EXTRACT.HOSPITAL_DISALLOW_AMT_REASON",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.DEDUCTION_REASON"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEADER",
+   "attribute": "Claim Sub Status",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.RFA_STATUS",
+    "BJAZ_HM_HCM_EXTRACT.CLAIM_CLOSE_STATUS",
+    "BJAZ_REMEDINET_CLAIM_DETAILS.ACTION_STATUS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_ASSESSMENT_MEDICAL",
+   "attribute": "Medical Management Type",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_DOCTOR_ASSESS.MEDICAL_MGMT_TYPE",
+    "BJAZ_HM_DOCTOR_MULTI_ASSESS.MEDICAL_MGMT_TYPE",
+    "BJAZ_HM_PCS_MULTI_ASSESS.MEDICAL_MGMT_TYPE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_TPA_INTERACTION",
+   "attribute": "Pre-Auth Approved Date",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.AUTH_DATE",
+    "BJAZ_REMEDINET_CLAIM_DETAILS.APPROVED_DATE",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.PRE_AUTH_APPROVED_ON"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_REPUDIATION",
+   "attribute": "Repudiation Reason",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.REPUDIATION_REASON",
+    "BJAZ_HM_PRO_ASSESSMENT.REPUDI_REMARK",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.REJECTION_REASON"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_ASSESSMENT_HEADER",
+   "attribute": "Conducted Date",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.ASSSEMENT_DATE",
+    "BJAZ_HM_HOSP_MASTER_EXTN1.HOSPVISITEDDATE",
+    "BJAZ_HM_PRO_ASSESSMENT.ASSESSMENT_SDATE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Procedure Description",
+   "writers": 3,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.DIG_PROCEDURE",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.PROCEDURE_DESCRIPTION_LEVEL1",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.PROCEDURE_DESCRIPTION_LEVEL2"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_FINTXN_CLAIM_PAYMENT",
+   "attribute": "TDS On Claim Amount",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.TDS_AMOUNT",
+    "BJAZ_REMEDINET_CLAIM_DETAILS.TDS",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.TDS_AMOUNT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_AGREEMENT_DEFINITION",
+   "attribute": "Effective Date",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_HOSPITAL_MASTER.EFFECTIVE_DATE",
+    "BJAZ_HM_HOSPITAL_MASTER_EXTN.MOU_FROM_DATE",
+    "BJAZ_HM_HOSP_MASTER_EXTN1.TRFVALFROM"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_CLAIM_HISTORY",
+   "attribute": "Total Claim Count",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_MEMBER_DTLS.CLAIM_COUNT",
+    "BJAZ_IHG_MEM_DTLS_EXTN.CLAIM_HISTORY",
+    "BJAZ_SH_MEM_DTLS_EXTN.CLAIM_HISTORY"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Admission Date",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_HM_GPA_BILL_DTLS.HOSP_DOA",
+    "BJAZ_HM_HCS_TECH_ASSESS_COV.ACTUAL_DOA",
+    "BJAZ_HM_PREAUTH_REQUEST.PATIENT_ADMISSION_DT"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_POLICY_HEADER",
+   "attribute": "Product Reference",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_CTNGY_GC_CONTROL.PRODUCT_CODE",
+    "BJAZ_ENROLL_POL_DTLS.PRODUCT_NAME",
+    "BJAZ_ENROLL_SCR_DTLS.PRODUCT_CODE"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_COMMON_ADDRESS",
+   "attribute": "City",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_BRANCH_MASTER.CITY",
+    "BJAZ_HM_MEMBER_HLTH_DTLS.HAT_ID_CITY",
+    "BJAZ_NEFT_PARTNER_DTLS.CITY"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_COMMON_ADDRESS",
+   "attribute": "Postal Code",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_BRANCH_MASTER.PINCODE",
+    "BJAZ_NEFT_PARTNER_DTLS.PINCODE",
+    "BJAZ_PMSBY_DATA_WEB_SERVICE.PINCODE"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_COMMON_ADDRESS",
+   "attribute": "State Name",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_BRANCH_MASTER.STATE",
+    "BJAZ_HM_MEMBER_HLTH_DTLS.HAT_ID_STATE",
+    "BJAZ_NEFT_PARTNER_DTLS.STATE"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_PRODUCT_VERSION",
+   "attribute": "Version Number",
+   "writers": 3,
+   "tables": 3,
+   "columns": [
+    "BJAZ_CTNGY_COVERS_EXT.SCHEME_VERSION",
+    "BJAZ_CTNGY_SCHEME_NR_PARMS.SCHEME_VERSION",
+    "BJAZ_CTNGY_SCHEME_PLANS.SCHEME_VERSION"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_GROUP_HOUSEHOLD",
+   "attribute": "Member Count",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BA_HCP_DT_PREMIUM.TOTAL_MEMBER_NOS",
+    "BJAZ_HG_POL_DTLS.TOTAL_MEM_CNT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_FIN_RECEIPT",
+   "attribute": "Amount Received",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BA_HCP_DT_PREMIUM.EMI_COLLECTED_AMOUNT",
+    "BJAZ_HM_PRO_ASSESSMENT.PREMIUM_COLLECT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_ASSESSMENT_HEADER",
+   "attribute": "Outcome Summary",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BA_HCP_PP_MEM_DTLS.REMARKS",
+    "BJAZ_HM_HOSP_MASTER_EXTN1.HOSPVISITEDREMARK"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_ACCOUNT_DEFINITION",
+   "attribute": "Account Type",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.MLAC_EMI_PC_TYPE_OF_LOAN",
+    "BA_HCP_PROD_8439_CLH_LOADER.PLC_TYPE_OF_LOAN"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_COMMON_CONSENT",
+   "attribute": "Consent Given Indicator",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BA_HCP_PROD_8428_GPG_LOADER.PD_CUSTOMER_CONSENT",
+    "BA_HCP_PROD_8439_CLH_LOADER.PD_CUSTOMER_CONSENT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_TERMS",
+   "attribute": "Deductible Total",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BA_HCP_PROD_8432_ECP_LOADER.PLC_AGGR_DEDUCTIBLE",
+    "BJAZ_HG_POL_DTLS.AGGREGATE_DEDUCTIBLE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_ASSESSMENT_MEDICAL",
+   "attribute": "Prior Medical Test Conducted Indicator",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BA_HCP_PROD_8432_ECP_LOADER.PLC_MEDICAL_TEST_ALRDY_CON",
+    "BA_HCP_PROD_8433_FHC_LOADER.PLC_MEDICAL_TEST_ALRDY_CON"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_LNK_ROLE_CUSTOMER",
+   "attribute": "Consent For Data Sharing Indicator",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BA_HCP_PROD_8432_ECP_LOADER.PD_CUSTOMER_CONSENT",
+    "BA_HCP_PROD_8433_FHC_LOADER.PD_CUSTOMER_CONSENT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PRODUCT_DEFINITION",
+   "attribute": "Product Display Name",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BA_HCP_PROD_8433_FHC_LOADER.PLAN_OPTION",
+    "BA_HCP_PROD_8439_CLH_LOADER.PLAN_OPTION"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_COVERAGE_CONDITIONS",
+   "attribute": "Exclusion Description",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BA_HCP_PROD_8433_FHC_LOADER.EXCLUSION_WORDING",
+    "BJAZ_GRP_HLT_DTLS.EXCLUSIONS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_COVERAGE_LIMITS",
+   "attribute": "Indemnity Period",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_BANDHAN_MEDI_CLAM.NUMBER_OF_DAYS",
+    "BJAZ_GP_HOSPITAL_CASH.NO_OF_DAYS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_PORTABILITY_MIGRATION",
+   "attribute": "Cumulative Bonus Ported",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_EC_MEM_DTLS_EXTN.PRE_POL_NCB_PER",
+    "BJAZ_HLT_ENSURE_MEM_DTLS.PREVIOUS_CUM_BONUS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_PREMIUM_SUMMARY",
+   "attribute": "Total Premium Collected",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_GENERIC_LOADER_LOG_TABLE.PTOTALPREMIUM",
+    "BJAZ_GRP_HLT_MATERNITY_DTLS.TOTAL_PERMIUM"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CHANNEL_DEFINITION",
+   "attribute": "Channel Name",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_GP_HOSPITAL_CASH.SOURCE_NAME",
+    "BJAZ_HDFC_SEC_FHPP.SOURCE_NAME"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PRODUCT_TERMS",
+   "attribute": "Family Definition",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_GRP_HLT_DTLS.HEALTH_PRIME_RIDER_FAM_DEF",
+    "BJAZ_GRP_HLT_MATERNITY_DTLS.FAMILY_DEFINITION"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_COVERAGE_CONDITIONS",
+   "attribute": "Condition Description",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_GRP_HLT_MATERNITY_DTLS.MATERNITY_CONDITION",
+    "BJAZ_HCF_MEMBER_DTLS.SPECIAL_CONDITIONS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_EMPLOYMENT",
+   "attribute": "Designation",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HAT_ID_MEM_DETLS.DESIGNATION",
+    "BJAZ_HM_MEMBER_DTLS.DESIGNATION"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_FINTXN_HEADER",
+   "attribute": "Originating System Reference",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HEALTH_WEBSERVICE_INFO.BANCA_REF_ID",
+    "BJAZ_HG_POL_DTLS.TRACE_NUMBER"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_HEADER",
+   "attribute": "Sum Insured Total",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HEALTH_WEBSERVICE_INFO.TOT_PLAN_SI",
+    "BJAZ_HG_POL_DTLS.TOTAL_SUM_INSURED"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_FIN_RECEIPT",
+   "attribute": "Bank Reference",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HEALTH_WEBSERVICE_INFO.ADVICE_NO",
+    "BJAZ_HG_POL_DTLS.PAYMENT_BANK_NAME"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_POLICY_PORTABILITY_MIGRATION",
+   "attribute": "Portability Indicator",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HG_POL_DTLS.POL_BENEFIT_TRAN_YN",
+    "BJAZ_SCR_HLTH_PORTABLE_DTLS.PORTABILITY"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "attribute": "Occupation Risk Class",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HG_POL_DTLS.RISK_CLASS",
+    "BJAZ_HM_MEMBER_DTLS.RISK_CLASS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Room Rent Eligibility Percentage",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_BILL_DETAIL.ROOM_RENT_PERC",
+    "BJAZ_HM_BILL_DETAIL_OCR.ROOM_RENT_PERC"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_COVERAGE_DEFINITION",
+   "attribute": "Coverage Type",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_BILL_DETAIL.COVER_TYPE",
+    "BJAZ_HM_BILL_DETAIL_OCR.COVER_TYPE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Network Discount Amount",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_BILL_DETAIL_OCR.DISCOUNT",
+    "BJAZ_HM_HCM_EXTRACT.DISCOUNT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Disease Category",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.DISEASE_CATAGORY",
+    "BJAZ_HM_HCM_EXTRACT.DISEASE_CATEGORY"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "ICD Code",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.ICD_CODE",
+    "BJAZ_HM_HCM_EXTRACT.ICD_CODE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Disallowed Amount",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.NOT_PAYABLE_EXP",
+    "BJAZ_HM_HCM_EXTRACT.HOSPITAL_DISALLOWED_AMT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Other Deduction Amount",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_COINSU_CLM_DTLS.NON_PAYABLE_DEF_AMT",
+    "BJAZ_HM_HCM_EXTRACT.OTHER_DEDUCTION"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_ASSESSMENT_MEDICAL",
+   "attribute": "Health Advice Text",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_DOCTOR_ASSESS.HLTH_TIPS",
+    "BJAZ_HM_DOCTOR_MULTI_ASSESS.HLTH_TIPS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_TPA_INTERACTION",
+   "attribute": "Final Authorisation Amount",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.AUTH_AMOUNT",
+    "BJAZ_HM_PREAUTH_ENHANCE.TRANS_AMOUNT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Expected Discharge Date",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.EXPECTED_DOD",
+    "BJAZ_HM_PREAUTH_ENHANCE.EXPECTED_DOD"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_DOCUMENT_DEFINITION",
+   "attribute": "Received Date",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.DOCUMENT_RECEIVE_DATE",
+    "BJAZ_HM_INWARD_DTLS.DOC_REC_DATE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "OT Charges",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.OT_CHARGES",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.OTCHARGES"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Pharmacy Amount",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.PHARMACY",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.MEDICINES"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Miscellaneous Charges Amount",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.MISCELLANEOUS",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.MISC"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_SETTLEMENT",
+   "attribute": "Settlement Date",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.APPROVAL_DATE",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.SETTELEMENT_DATE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEADER",
+   "attribute": "Closed Date",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.CLOSE_DATE",
+    "BJAZ_HM_PRO_ASSESSMENT.CLOSER_LETDATE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_FINTXN_CLAIM_PAYMENT",
+   "attribute": "Cheque Date",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.CHEQUE_DATE",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.CHEQUE_DATE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Surgeon Fee",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.SURGEON_CHARGES",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.SURGEON_CHARGES"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Nursing Charges",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.NURSING_CHARGES",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.NURSING_FEES"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "ICU Charges Amount",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.ICU_CHARGES",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.ICUCHARGES"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_REPUDIATION",
+   "attribute": "Repudiation Date",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.REPUDIATION_DT",
+    "BJAZ_HM_PRO_ASSESSMENT.REPUDI_DATE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_LOSS_EVENT_DETAIL",
+   "attribute": "Loss Event Type",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCM_EXTRACT.TYPE_OF_LOSS",
+    "BJAZ_HM_INWARD_DTLS.TYPE_OF_LOSS"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_AGREEMENT_DEFINITION",
+   "attribute": "Execution Date",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HOSPITAL_MASTER.EMPANEL_DATE",
+    "BJAZ_HM_HOSPITAL_MASTER_EXTN.MOU_REVISION_DATE"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_IDENTITY",
+   "attribute": "Party Sub Type Code",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HOSPITAL_MASTER.HOSP_TYPE",
+    "BJAZ_HM_HOSP_MASTER_EXTN1.HOSPCATG"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_AGREEMENT_COMMERCIAL_TERMS",
+   "attribute": "Early Payment Discount Percentage",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HOSPITAL_MASTER.EARLY_DISCOUNT",
+    "BJAZ_HM_HOSP_MASTER_EXTN1.EARLYPAYDISC"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_ORG_UNIT_DEFINITION",
+   "attribute": "Zone Name",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HOSPITAL_MASTER_EXTN.ZONE_NAME",
+    "BJAZ_REMEDINET_CLAIM_DETAILS.ZONE_NAME"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_AGREEMENT_DEFINITION",
+   "attribute": "Expiry Date",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HOSPITAL_MASTER_EXTN.MOU_TO_DATE",
+    "BJAZ_HM_HOSP_MASTER_EXTN1.TRFVALTO"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_PARTY_FRAUD_PROFILE",
+   "attribute": "Fraud Suspicion Indicator",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HOSPITAL_MASTER_EXTN.SUSPFRAUD",
+    "BJAZ_HM_HOSP_MASTER_EXTN1.SUSPFRAUD"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_FINTXN_PREMIUM",
+   "attribute": "Loading Amount",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_IHG_MEM_DTLS_EXTN.LOAD_AMT",
+    "BJAZ_SH_MEM_DTLS_EXTN.LOAD_AMT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Pre-Authorisation Amount",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_REMEDINET_CLAIM_DETAILS.PREAUTH_AMOUNT",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.PRE_AUTH_AMOUNT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_ASSESSMENT_SUMMARY",
+   "attribute": "Admissible Loss Amount",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_REMEDINET_CLAIM_DETAILS.TOTAL_ALLOWED_AMOUNT",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.RECOMMEND_AMOUNT"
+   ]
+  },
+  {
+   "run": "opus_health_legacy_v4",
+   "satellite": "SAT_CLAIM_ASSESSMENT_SUMMARY",
+   "attribute": "Total Deduction Amount",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_REMEDINET_CLAIM_DETAILS.DEDUCTION_AMOUNT",
+    "BJAZ_TPA_CLAIM_DETAILS_WS.DEDUCTED_AMOUNT"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Discharge Date",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_GPA_BILL_DTLS.HOSP_DOD",
+    "BJAZ_HM_HCS_TECH_ASSESS_COV.ACTUAL_DOD"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_POLICY_HEADER",
+   "attribute": "Policy Remarks",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_CTNGY_GC_CONTROL.REMARKS",
+    "BJAZ_ENROLL_POL_DTLS.REMARKS"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_POLICY_HEADER",
+   "attribute": "Policy Reference Number",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_CTNGY_GC_CONTROL.MASTER_CONTRACT_ID",
+    "BJAZ_ENROLL_POL_DTLS.HAT_REF_NO"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_COMMON_ADDRESS",
+   "attribute": "Address Line 1",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_BRANCH_MASTER.ADD_LINE1",
+    "BJAZ_PMSBY_DATA_WEB_SERVICE.ADDRESS_1"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_COMMON_ADDRESS",
+   "attribute": "Address Line 2",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_BRANCH_MASTER.ADD_LINE2",
+    "BJAZ_PMSBY_DATA_WEB_SERVICE.ADDRESS_2"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_COMMON_ADDRESS",
+   "attribute": "Locality",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_BRANCH_MASTER.ADD_LINE4",
+    "BJAZ_NEFT_PARTNER_DTLS.AREA"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Treating Doctor Name",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCS_TECH_ASSESS_COV.TREAT_DR",
+    "BJAZ_HM_PREAUTH_REQUEST.TREATING_DOC_NAME"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Ailment Description",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCS_TECH_ASSESS_COV.FINAL_DIAG",
+    "BJAZ_HM_PREAUTH_REQUEST.ILLNESS_NATURE"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "First Consultation Date",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCS_TECH_ASSESS_COV.FIRST_CONSULT_DATE",
+    "BJAZ_HM_PREAUTH_REQUEST.FIRST_CONSULATION_DATE"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Provisional Diagnosis Description",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCS_TECH_ASSESS_COV.PROV_DIAG",
+    "BJAZ_HM_PREAUTH_REQUEST.PROVISIONAL_DIAGNOSIS"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "Treatment Type",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCS_TECH_ASSESS_COV.TREAT_TYPE",
+    "BJAZ_HM_PREAUTH_REQUEST.LINE_OF_TREATMENT"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_CLAIM_HEADER",
+   "attribute": "Loss Date",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCS_TECH_ASSESS_COV.DATE_OF_LOSS",
+    "BJAZ_HM_PREAUTH_REQUEST.INJURY_DATE"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "attribute": "ICD Code",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCS_TECH_ASSESS_COV.ICD_CODE",
+    "BJAZ_HM_PREAUTH_REQUEST.ICD_CODE"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_CLAIM_HEADER",
+   "attribute": "Claim Status",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_CLAIM_CLOSE.CLOSE_STATUS",
+    "BJAZ_HM_CLAIM_TRACKER.CLAIM_STATUS"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_POLICY_HEADER",
+   "attribute": "Issuing Org Unit Code",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_CTNGY_GC_CONTROL.LOCATION_CODE",
+    "BJAZ_ENROLL_SCR_DTLS.BRANCH"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_POLICY_RENEWAL",
+   "attribute": "Renewal Business Indicator",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_CTNGY_GC_CONTROL.ISRENEW",
+    "BJAZ_PMSBY_DATA_WEB_SERVICE.RNW_FLAG"
+   ]
+  },
+  {
+   "run": "opus_health_v2",
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "attribute": "Health Card Number",
+   "writers": 2,
+   "tables": 2,
+   "columns": [
+    "BJAZ_HM_HCS_TECH_ASSESS_COV.ID_CARD_NO",
+    "BJAZ_PMSBY_DATA_WEB_SERVICE.CARD_NUMBER"
+   ]
+  }
+ ]
+}

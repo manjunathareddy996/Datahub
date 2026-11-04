@@ -1,0 +1,2665 @@
+{
+ "mechanism_token": "DECLARED_SOURCE_PRECEDENCE",
+ "key_change_token": "FORBIDDEN",
+ "record_source_in_key_token": "FORBIDDEN",
+ "precedence_order": [
+  "opus_health_v2",
+  "opus_health_legacy_v4",
+  "opus_health_delta3"
+ ],
+ "fires_on_pairs": 151,
+ "columns_over_those_pairs": 1425,
+ "unit_note": "a PAIR is one (satellite, attribute); a COLUMN is one map row writing that attribute. The informative figure is how many PAIRS the precedence actually fires on, measured here from the spec.",
+ "never_report_note": "'R8 fires on 62 of 62' is TRUE BY CONSTRUCTION of an input set DEFINED as the pairs having writers in TWO OR MORE runs, so a single-run pair is 0 by definition for every run. It is never reported as a measurement. That 62 was measured over TWO runs; this build feeds THREE.",
+ "profile_scoped_figures": {
+  "cross_run_single_active_pairs": 62,
+  "columns_total": 607,
+  "satellites_touched": 19,
+  "multi_active_cross_run_pairs": 30,
+  "multi_active_columns": 338,
+  "scope_runs": [
+   "opus_health_legacy_v4",
+   "opus_health_v2"
+  ],
+  "scope_note": "THE FIGURES IN THIS BLOCK COVER TWO RUNS ONLY -- the pair named in scope_runs -- because that is the population that existed when the profile was written. opus_health_delta3 is NOT in them. The profile scopes R8 to CROSS-RUN pairs split single-active / multi-active; this build measures over every (satellite, attribute) written by two or more runs on EITHER track, which is a WIDER population over a LARGER run set. Both are stated; they are not reconciled, must not be added, and the profile figures must not be read as describing this build."
+ },
+ "near_miss_note": "Three different things coincide near 62 and are reconciled NOWHERE: 62 shared vault TABLES (unit = .sql basename in a vault dir), 62 cross-run (satellite, attribute) PAIRS (unit = pair), and 48 shared satellites + 15 anchors = 63 (unit = vault object). Do not add them.",
+ "intra_run_fan_in_note": "WITHIN one run several views may write one attribute and the map declares NO precedence among them, so max() picks arbitrarily. Declared per attribute in each satellite header; it is the pre-existing single-active fan-in, remedy refuse-and-declare.",
+ "rows": [
+  {
+   "satellite": "SAT_POLICY_CERTIFICATE",
+   "track": "ratified",
+   "attribute": "Enrolment Date",
+   "column": "ENROLMENT_DATE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_PARTY_IDENTITY",
+   "track": "ratified",
+   "attribute": "Party Full Name",
+   "column": "PARTY_FULL_NAME",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 95,
+    "opus_health_v2": 10,
+    "opus_health_delta3": 5
+   },
+   "legacy_writers": 95,
+   "v2_writers": 10,
+   "delta3_writers": 5
+  },
+  {
+   "satellite": "SAT_PARTY_IDENTITY",
+   "track": "ratified",
+   "attribute": "Gender Code",
+   "column": "GENDER_CODE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 24,
+    "opus_health_v2": 2,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 24,
+   "v2_writers": 2,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_PARTY_IDENTITY",
+   "track": "ratified",
+   "attribute": "Date Of Birth",
+   "column": "DATE_OF_BIRTH",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 25,
+    "opus_health_v2": 2,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 25,
+   "v2_writers": 2,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_PARTY_IDENTITY",
+   "track": "ratified",
+   "attribute": "Age",
+   "column": "AGE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 20,
+    "opus_health_v2": 2,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 20,
+   "v2_writers": 2,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_PARTY_IDENTITY",
+   "track": "ratified",
+   "attribute": "First Name",
+   "column": "FIRST_NAME",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 10,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 10,
+   "v2_writers": 0,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_PARTY_IDENTITY",
+   "track": "ratified",
+   "attribute": "Middle Name",
+   "column": "MIDDLE_NAME",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 9,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 9,
+   "v2_writers": 0,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_PARTY_IDENTITY",
+   "track": "ratified",
+   "attribute": "Last Name",
+   "column": "LAST_NAME",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 10,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 10,
+   "v2_writers": 0,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_POLICY_PREMIUM_HEAD",
+   "track": "ratified",
+   "attribute": "Net Head Premium",
+   "column": "NET_HEAD_PREMIUM",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 3,
+    "opus_health_delta3": 8
+   },
+   "legacy_writers": 3,
+   "v2_writers": 0,
+   "delta3_writers": 8
+  },
+  {
+   "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+   "track": "ratified",
+   "attribute": "Premium For Coverage",
+   "column": "PREMIUM_FOR_COVERAGE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+   "track": "ratified",
+   "attribute": "Sum Insured",
+   "column": "SUM_INSURED",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 4,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 4,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+   "track": "ratified",
+   "attribute": "Coverage Opted Indicator",
+   "column": "COVERAGE_OPTED_INDICATOR",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 9,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 9,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+   "track": "ratified",
+   "attribute": "Sub Limit Amount",
+   "column": "SUB_LIMIT_AMOUNT",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 17,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 17,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_CLASSIFICATION",
+   "track": "ratified",
+   "attribute": "Classification Value",
+   "column": "CLASSIFICATION_VALUE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 12,
+    "opus_health_v2": 5,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 12,
+   "v2_writers": 5,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_POLICY_PREMIUM_SUMMARY",
+   "track": "ratified",
+   "attribute": "Base Premium",
+   "column": "BASE_PREMIUM",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 3,
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 3,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_PREMIUM_SUMMARY",
+   "track": "ratified",
+   "attribute": "Net Premium",
+   "column": "NET_PREMIUM",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 5,
+    "opus_health_v2": 1,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 5,
+   "v2_writers": 1,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_POLICY_PREMIUM_SUMMARY",
+   "track": "ratified",
+   "attribute": "Gross Premium",
+   "column": "GROSS_PREMIUM",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 15,
+    "opus_health_v2": 1,
+    "opus_health_delta3": 4
+   },
+   "legacy_writers": 15,
+   "v2_writers": 1,
+   "delta3_writers": 4
+  },
+  {
+   "satellite": "SAT_POLICY_PREMIUM_SUMMARY",
+   "track": "ratified",
+   "attribute": "Group Discount Amount",
+   "column": "GROUP_DISCOUNT_AMOUNT",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_POLICY_PREMIUM_SUMMARY",
+   "track": "ratified",
+   "attribute": "Instalment Count",
+   "column": "INSTALMENT_COUNT",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_POLICY_PREMIUM_SUMMARY",
+   "track": "ratified",
+   "attribute": "Total Premium Collected",
+   "column": "TOTAL_PREMIUM_COLLECTED",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 2,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 2,
+   "v2_writers": 0,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_POLICY_PREMIUM_SUMMARY",
+   "track": "ratified",
+   "attribute": "Long Term Discount Amount",
+   "column": "LONG_TERM_DISCOUNT_AMOUNT",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_PREMIUM_SUMMARY",
+   "track": "ratified",
+   "attribute": "Terrorism Premium",
+   "column": "TERRORISM_PREMIUM",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_PREMIUM_SUMMARY",
+   "track": "ratified",
+   "attribute": "Environment Relief Fund Amount",
+   "column": "ENVIRONMENT_RELIEF_FUND_AMOUNT",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+   "track": "ratified",
+   "attribute": "Percentage Applied",
+   "column": "PERCENTAGE_APPLIED",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 19,
+    "opus_health_v2": 2,
+    "opus_health_delta3": 17
+   },
+   "legacy_writers": 19,
+   "v2_writers": 2,
+   "delta3_writers": 17
+  },
+  {
+   "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+   "track": "ratified",
+   "attribute": "Amount Applied",
+   "column": "AMOUNT_APPLIED",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 26,
+    "opus_health_v2": 6,
+    "opus_health_delta3": 27
+   },
+   "legacy_writers": 26,
+   "v2_writers": 6,
+   "delta3_writers": 27
+  },
+  {
+   "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+   "track": "ratified",
+   "attribute": "Justification",
+   "column": "JUSTIFICATION",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 2,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 0,
+   "v2_writers": 2,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_POLICY_BONUS_TRACKING",
+   "track": "ratified",
+   "attribute": "Cumulative Bonus Percentage",
+   "column": "CUMULATIVE_BONUS_PERCENTAGE",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 6,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 6,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_BONUS_TRACKING",
+   "track": "ratified",
+   "attribute": "Bonus Amount",
+   "column": "BONUS_AMOUNT",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 7,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 7,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Risk Inception Date",
+   "column": "RISK_INCEPTION_DATE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 27,
+    "opus_health_v2": 1,
+    "opus_health_delta3": 4
+   },
+   "legacy_writers": 27,
+   "v2_writers": 1,
+   "delta3_writers": 4
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Risk Expiry Date",
+   "column": "RISK_EXPIRY_DATE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 25,
+    "opus_health_v2": 1,
+    "opus_health_delta3": 3
+   },
+   "legacy_writers": 25,
+   "v2_writers": 1,
+   "delta3_writers": 3
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Policy Status",
+   "column": "POLICY_STATUS",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 3,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 3,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Policy Term",
+   "column": "POLICY_TERM",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 14,
+    "opus_health_delta3": 3
+   },
+   "legacy_writers": 14,
+   "v2_writers": 0,
+   "delta3_writers": 3
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Risk Start Time",
+   "column": "RISK_START_TIME",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 5,
+    "opus_health_delta3": 3
+   },
+   "legacy_writers": 5,
+   "v2_writers": 0,
+   "delta3_writers": 3
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Policy Type",
+   "column": "POLICY_TYPE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 7,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 7,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Premium Payer Reference",
+   "column": "PREMIUM_PAYER_REFERENCE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Issue Date",
+   "column": "ISSUE_DATE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Policy Remarks",
+   "column": "POLICY_REMARKS",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 2,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 2,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Policy Term Days",
+   "column": "POLICY_TERM_DAYS",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Sum Insured Total",
+   "column": "SUM_INSURED_TOTAL",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 2,
+    "opus_health_v2": 1,
+    "opus_health_delta3": 4
+   },
+   "legacy_writers": 2,
+   "v2_writers": 1,
+   "delta3_writers": 4
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Sum Insured Basis",
+   "column": "SUM_INSURED_BASIS",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Cover-Note Reference",
+   "column": "COVER_NOTE_REFERENCE",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 1,
+   "v2_writers": 0,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Cover-Note Date",
+   "column": "COVER_NOTE_DATE",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 1,
+   "v2_writers": 0,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Product Reference",
+   "column": "PRODUCT_REFERENCE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 3
+   },
+   "legacy_writers": 1,
+   "v2_writers": 3,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Policy Reference Number",
+   "column": "POLICY_REFERENCE_NUMBER",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 2,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 0,
+   "v2_writers": 2,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Rural Sector Policy Indicator",
+   "column": "RURAL_SECTOR_POLICY_INDICATOR",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "ratified",
+   "attribute": "Co-Insurance Indicator",
+   "column": "CO_INSURANCE_INDICATOR",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "unratified",
+   "attribute": "Policy Version Number",
+   "column": "POLICY_VERSION_NUMBER",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_delta3": 10
+   },
+   "legacy_writers": 1,
+   "v2_writers": 0,
+   "delta3_writers": 10
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "unratified",
+   "attribute": "Additional Remarks",
+   "column": "ADDITIONAL_REMARKS",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_POLICY_HEADER",
+   "track": "unratified",
+   "attribute": "Contract Partition Number",
+   "column": "CONTRACT_PARTITION_NUMBER",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_POLICY_PORTABILITY_MIGRATION",
+   "track": "ratified",
+   "attribute": "Previous Insurer Name",
+   "column": "PREVIOUS_INSURER_NAME",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 8,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 8,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_PORTABILITY_MIGRATION",
+   "track": "ratified",
+   "attribute": "Previous Policy Number",
+   "column": "PREVIOUS_POLICY_NUMBER",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 15,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 15,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "track": "ratified",
+   "attribute": "Relationship To Proposer",
+   "column": "RELATIONSHIP_TO_PROPOSER",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 19,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 19,
+   "v2_writers": 0,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "track": "ratified",
+   "attribute": "Height",
+   "column": "HEIGHT",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 8,
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 8,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "track": "ratified",
+   "attribute": "Weight",
+   "column": "WEIGHT",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 8,
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 8,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "track": "ratified",
+   "attribute": "Pre-Existing Disease Description",
+   "column": "PRE_EXISTING_DISEASE_DESCRIPTION",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 12,
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 12,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "track": "ratified",
+   "attribute": "Body Mass Index",
+   "column": "BODY_MASS_INDEX",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 4,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 4,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "track": "ratified",
+   "attribute": "Smoker Indicator",
+   "column": "SMOKER_INDICATOR",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 6,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 6,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "track": "ratified",
+   "attribute": "Health Card Number",
+   "column": "HEALTH_CARD_NUMBER",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 7,
+    "opus_health_v2": 2
+   },
+   "legacy_writers": 7,
+   "v2_writers": 2,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_RISK_PERSON_INSURED",
+   "track": "ratified",
+   "attribute": "Member Risk Loading Percentage",
+   "column": "MEMBER_RISK_LOADING_PERCENTAGE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 5,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 5,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_COMMON_CONTACT",
+   "track": "ratified",
+   "attribute": "Email Address",
+   "column": "EMAIL_ADDRESS",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 32,
+    "opus_health_v2": 9,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 32,
+   "v2_writers": 9,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_COMMON_CONTACT",
+   "track": "ratified",
+   "attribute": "Landline Number",
+   "column": "LANDLINE_NUMBER",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 15,
+    "opus_health_v2": 1,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 15,
+   "v2_writers": 1,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_COMMON_CONTACT",
+   "track": "ratified",
+   "attribute": "Fax Number",
+   "column": "FAX_NUMBER",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 8,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 8,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_COMMON_CONTACT",
+   "track": "ratified",
+   "attribute": "Mobile Number",
+   "column": "MOBILE_NUMBER",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 24,
+    "opus_health_v2": 4,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 24,
+   "v2_writers": 4,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_POLICY_PORTABILITY_MIGRATION",
+   "track": "unratified",
+   "attribute": "Previous Policy Expiry Date",
+   "column": "PREVIOUS_POLICY_EXPIRY_DATE",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 8,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 8,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_PORTABILITY_MIGRATION",
+   "track": "unratified",
+   "attribute": "First Policy Reference",
+   "column": "FIRST_POLICY_REFERENCE",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_ASSESSMENT_HEADER",
+   "track": "ratified",
+   "attribute": "Assessor Reference",
+   "column": "ASSESSOR_REFERENCE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_COMMON_ADDRESS",
+   "track": "ratified",
+   "attribute": "Address Line 1",
+   "column": "ADDRESS_LINE_1",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 20,
+    "opus_health_v2": 6,
+    "opus_health_delta3": 4
+   },
+   "legacy_writers": 20,
+   "v2_writers": 6,
+   "delta3_writers": 4
+  },
+  {
+   "satellite": "SAT_COMMON_ADDRESS",
+   "track": "ratified",
+   "attribute": "Locality",
+   "column": "LOCALITY",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 10,
+    "opus_health_v2": 2
+   },
+   "legacy_writers": 10,
+   "v2_writers": 2,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_COMMON_ADDRESS",
+   "track": "ratified",
+   "attribute": "City",
+   "column": "CITY",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 21,
+    "opus_health_v2": 4,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 21,
+   "v2_writers": 4,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_COMMON_ADDRESS",
+   "track": "ratified",
+   "attribute": "State Name",
+   "column": "STATE_NAME",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 19,
+    "opus_health_v2": 4,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 19,
+   "v2_writers": 4,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_COMMON_ADDRESS",
+   "track": "ratified",
+   "attribute": "Postal Code",
+   "column": "POSTAL_CODE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 20,
+    "opus_health_v2": 4,
+    "opus_health_delta3": 5
+   },
+   "legacy_writers": 20,
+   "v2_writers": 4,
+   "delta3_writers": 5
+  },
+  {
+   "satellite": "SAT_COMMON_ADDRESS",
+   "track": "ratified",
+   "attribute": "Address Line 2",
+   "column": "ADDRESS_LINE_2",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 13,
+    "opus_health_v2": 2,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 13,
+   "v2_writers": 2,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_COMMON_ADDRESS",
+   "track": "ratified",
+   "attribute": "State Code",
+   "column": "STATE_CODE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 2,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 2,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_COMMON_ADDRESS",
+   "track": "ratified",
+   "attribute": "Address Line 3",
+   "column": "ADDRESS_LINE_3",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_LNK_PARTY_ROLE_CORE",
+   "track": "ratified",
+   "attribute": "Role Type",
+   "column": "ROLE_TYPE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 5,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 5,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS",
+   "track": "ratified",
+   "attribute": "Marital Status",
+   "column": "MARITAL_STATUS",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_LNK_ROLE_NOMINEE_BENEFICIARY",
+   "track": "ratified",
+   "attribute": "Relationship To Insured",
+   "column": "RELATIONSHIP_TO_INSURED",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 14,
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 14,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_PARTY_BANKING",
+   "track": "ratified",
+   "attribute": "Bank Name",
+   "column": "BANK_NAME",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 7,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 7,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_PARTY_BANKING",
+   "track": "ratified",
+   "attribute": "IFSC Code",
+   "column": "IFSC_CODE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 2,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 2,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_POLICY_TERMS",
+   "track": "ratified",
+   "attribute": "Special Conditions",
+   "column": "SPECIAL_CONDITIONS",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 8,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 8,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_TERMS",
+   "track": "ratified",
+   "attribute": "Co-Payment Percentage",
+   "column": "CO_PAYMENT_PERCENTAGE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_CHANNEL_DEFINITION",
+   "track": "ratified",
+   "attribute": "Channel Name",
+   "column": "CHANNEL_NAME",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 3,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 3,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_PARTY_IDENTIFICATION",
+   "track": "ratified",
+   "attribute": "Identification Number",
+   "column": "IDENTIFICATION_NUMBER",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 6,
+    "opus_health_v2": 2,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 6,
+   "v2_writers": 2,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_PARTY_IDENTIFICATION",
+   "track": "ratified",
+   "attribute": "PAN Number",
+   "column": "PAN_NUMBER",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 8,
+    "opus_health_v2": 2
+   },
+   "legacy_writers": 8,
+   "v2_writers": 2,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_PARTY_IDENTIFICATION",
+   "track": "ratified",
+   "attribute": "Aadhaar Number",
+   "column": "AADHAAR_NUMBER",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 6,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 6,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_PARTY_IDENTIFICATION",
+   "track": "ratified",
+   "attribute": "GSTIN",
+   "column": "GSTIN",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 9,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 9,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+   "track": "ratified",
+   "attribute": "Disclosed Indicator",
+   "column": "DISCLOSED_INDICATOR",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 42,
+    "opus_health_v2": 5
+   },
+   "legacy_writers": 42,
+   "v2_writers": 5,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_RISK_HEALTH_MEMBER_MEDICAL",
+   "track": "ratified",
+   "attribute": "Condition Name",
+   "column": "CONDITION_NAME",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 4,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 4,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_PRODUCT_DEFINITION",
+   "track": "ratified",
+   "attribute": "Product Display Name",
+   "column": "PRODUCT_DISPLAY_NAME",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 2,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 2,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_PRODUCT_DEFINITION",
+   "track": "ratified",
+   "attribute": "Product Name",
+   "column": "PRODUCT_NAME",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 9,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 9,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_PARTY_EMPLOYMENT",
+   "track": "ratified",
+   "attribute": "Occupation Description",
+   "column": "OCCUPATION_DESCRIPTION",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 7,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 7,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_PARTY_HEALTH_PROFILE",
+   "track": "ratified",
+   "attribute": "Pre-Existing Disease Description",
+   "column": "PRE_EXISTING_DISEASE_DESCRIPTION",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_RISK_HEALTH_MEMBER_COVERAGE",
+   "track": "ratified",
+   "attribute": "Pre-Policy Checkup Indicator",
+   "column": "PRE_POLICY_CHECKUP_INDICATOR",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 3,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 3,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_COVERAGE_DEFINITION",
+   "track": "ratified",
+   "attribute": "Coverage Name",
+   "column": "COVERAGE_NAME",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_DOCUMENT_DEFINITION",
+   "track": "ratified",
+   "attribute": "Document Type",
+   "column": "DOCUMENT_TYPE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_DOCUMENT_DEFINITION",
+   "track": "ratified",
+   "attribute": "Storage Reference",
+   "column": "STORAGE_REFERENCE",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_DOCUMENT_DEFINITION",
+   "track": "ratified",
+   "attribute": "Received Date",
+   "column": "RECEIVED_DATE",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 3,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 3,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_DOCUMENT_DEFINITION",
+   "track": "ratified",
+   "attribute": "Document Reference Number",
+   "column": "DOCUMENT_REFERENCE_NUMBER",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 2
+   },
+   "legacy_writers": 1,
+   "v2_writers": 2,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_DOCUMENT_DEFINITION",
+   "track": "ratified",
+   "attribute": "Document Name",
+   "column": "DOCUMENT_NAME",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 3,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 3,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_GROUP",
+   "track": "ratified",
+   "attribute": "Member Count",
+   "column": "MEMBER_COUNT",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_QUOTE_HEADER",
+   "track": "ratified",
+   "attribute": "Quote Date",
+   "column": "QUOTE_DATE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_POLICY_GROUP",
+   "track": "unratified",
+   "attribute": "Family Definition Description",
+   "column": "FAMILY_DEFINITION_DESCRIPTION",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_GROUP",
+   "track": "unratified",
+   "attribute": "Eligible Relationship Set",
+   "column": "ELIGIBLE_RELATIONSHIP_SET",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_GROUP",
+   "track": "unratified",
+   "attribute": "Dependent Member Count",
+   "column": "DEPENDENT_MEMBER_COUNT",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_GROUP",
+   "track": "unratified",
+   "attribute": "Maximum Members Per Family",
+   "column": "MAXIMUM_MEMBERS_PER_FAMILY",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_CLAIM_HEADER",
+   "track": "ratified",
+   "attribute": "Claim Reference Number",
+   "column": "CLAIM_REFERENCE_NUMBER",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 3,
+    "opus_health_v2": 5,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 3,
+   "v2_writers": 5,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_CLAIM_HEADER",
+   "track": "ratified",
+   "attribute": "Claim Status",
+   "column": "CLAIM_STATUS",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 5,
+    "opus_health_v2": 2
+   },
+   "legacy_writers": 5,
+   "v2_writers": 2,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_HEADER",
+   "track": "ratified",
+   "attribute": "Closed Date",
+   "column": "CLOSED_DATE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 2,
+    "opus_health_v2": 2
+   },
+   "legacy_writers": 2,
+   "v2_writers": 2,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "track": "ratified",
+   "attribute": "Ailment Description",
+   "column": "AILMENT_DESCRIPTION",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 4,
+    "opus_health_v2": 2
+   },
+   "legacy_writers": 4,
+   "v2_writers": 2,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "track": "ratified",
+   "attribute": "Room Rent Amount",
+   "column": "ROOM_RENT_AMOUNT",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 6,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 6,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "track": "ratified",
+   "attribute": "Eligible Room Rent",
+   "column": "ELIGIBLE_ROOM_RENT",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 3,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 3,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "track": "ratified",
+   "attribute": "Room Category",
+   "column": "ROOM_CATEGORY",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 5,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 5,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "track": "ratified",
+   "attribute": "ICU Rent Amount",
+   "column": "ICU_RENT_AMOUNT",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 4,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 4,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "track": "ratified",
+   "attribute": "IPD Number",
+   "column": "IPD_NUMBER",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 3,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 3,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "track": "ratified",
+   "attribute": "Cashless Authorisation Number",
+   "column": "CASHLESS_AUTHORISATION_NUMBER",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 4,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 4,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "track": "ratified",
+   "attribute": "Admission Date",
+   "column": "ADMISSION_DATE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 5,
+    "opus_health_v2": 3
+   },
+   "legacy_writers": 5,
+   "v2_writers": 3,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "track": "ratified",
+   "attribute": "Treatment Type",
+   "column": "TREATMENT_TYPE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 3,
+    "opus_health_v2": 2
+   },
+   "legacy_writers": 3,
+   "v2_writers": 2,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "track": "ratified",
+   "attribute": "ICD Code",
+   "column": "ICD_CODE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 2,
+    "opus_health_v2": 3
+   },
+   "legacy_writers": 2,
+   "v2_writers": 3,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "track": "ratified",
+   "attribute": "Discharge Date",
+   "column": "DISCHARGE_DATE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 3,
+    "opus_health_v2": 2
+   },
+   "legacy_writers": 3,
+   "v2_writers": 2,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_HEALTH_DETAIL",
+   "track": "ratified",
+   "attribute": "Expected Discharge Date",
+   "column": "EXPECTED_DISCHARGE_DATE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 2,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 2,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_POLICY_INTERMEDIARY_SPLIT",
+   "track": "ratified",
+   "attribute": "IMD Code",
+   "column": "IMD_CODE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_POLICY_INTERMEDIARY_SPLIT",
+   "track": "ratified",
+   "attribute": "Commission Rate",
+   "column": "COMMISSION_RATE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 4
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 4
+  },
+  {
+   "satellite": "SAT_POLICY_TAX_HEAD",
+   "track": "ratified",
+   "attribute": "Tax Amount",
+   "column": "TAX_AMOUNT",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 5,
+    "opus_health_v2": 2,
+    "opus_health_delta3": 60
+   },
+   "legacy_writers": 5,
+   "v2_writers": 2,
+   "delta3_writers": 60
+  },
+  {
+   "satellite": "SAT_POLICY_PREMIUM_SUMMARY",
+   "track": "unratified",
+   "attribute": "Full Year Net Premium",
+   "column": "FULL_YEAR_NET_PREMIUM",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_PARTY_ORGANISATION_PROFILE",
+   "track": "ratified",
+   "attribute": "MSME Indicator",
+   "column": "MSME_INDICATOR",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_RISK_HEALTH_PED_WAITING",
+   "track": "ratified",
+   "attribute": "Condition Name",
+   "column": "CONDITION_NAME",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_BENEFIT_HEAD",
+   "track": "ratified",
+   "attribute": "Claimed Amount",
+   "column": "CLAIMED_AMOUNT",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 2,
+    "opus_health_v2": 13
+   },
+   "legacy_writers": 2,
+   "v2_writers": 13,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_COMMON_GEO",
+   "track": "ratified",
+   "attribute": "Region Name",
+   "column": "REGION_NAME",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_CLAIM_PROVIDER_BILLING",
+   "track": "ratified",
+   "attribute": "Bill Date",
+   "column": "BILL_DATE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 2,
+    "opus_health_v2": 2
+   },
+   "legacy_writers": 2,
+   "v2_writers": 2,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_PROVIDER_BILLING",
+   "track": "ratified",
+   "attribute": "Billed Amount",
+   "column": "BILLED_AMOUNT",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 2,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 2,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_PROVIDER_BILLING",
+   "track": "ratified",
+   "attribute": "Approved Amount",
+   "column": "APPROVED_AMOUNT",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 3,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 3,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_PROVIDER_BILLING",
+   "track": "ratified",
+   "attribute": "Disallowed Amount",
+   "column": "DISALLOWED_AMOUNT",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 3,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 3,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_TPA_INTERACTION",
+   "track": "ratified",
+   "attribute": "Pre-Auth Request Date",
+   "column": "PRE_AUTH_REQUEST_DATE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 3,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 3,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_TPA_INTERACTION",
+   "track": "ratified",
+   "attribute": "Pre-Auth Amount",
+   "column": "PRE_AUTH_AMOUNT",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_HEADER",
+   "track": "unratified",
+   "attribute": "External Claim Reference",
+   "column": "EXTERNAL_CLAIM_REFERENCE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_CLAIM_REPUDIATION",
+   "track": "ratified",
+   "attribute": "Repudiation Reason",
+   "column": "REPUDIATION_REASON",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 3,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 3,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_CLAIM_REPUDIATION",
+   "track": "ratified",
+   "attribute": "Repudiation Date",
+   "column": "REPUDIATION_DATE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 2,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 2,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_LOCATION_PROFILE",
+   "track": "ratified",
+   "attribute": "Location Name",
+   "column": "LOCATION_NAME",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_COMMON_CONTACT",
+   "track": "unratified",
+   "attribute": "Contact Person Name",
+   "column": "CONTACT_PERSON_NAME",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_ORG_UNIT_DEFINITION",
+   "track": "ratified",
+   "attribute": "Zone Name",
+   "column": "ZONE_NAME",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 2,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 2,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_ORG_UNIT_DEFINITION",
+   "track": "ratified",
+   "attribute": "Org Unit Name",
+   "column": "ORG_UNIT_NAME",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 2,
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 2,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_CASE_HEADER",
+   "track": "ratified",
+   "attribute": "Assigned To Reference",
+   "column": "ASSIGNED_TO_REFERENCE",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_CASE_HEADER",
+   "track": "unratified",
+   "attribute": "Allocation Indicator",
+   "column": "ALLOCATION_INDICATOR",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_CASE_HEADER",
+   "track": "unratified",
+   "attribute": "Allocation Date",
+   "column": "ALLOCATION_DATE",
+   "precedence": [
+    "opus_health_legacy_v4",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 0,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_PARTY_DIGITAL_IDENTITY",
+   "track": "ratified",
+   "attribute": "Login Identifier",
+   "column": "LOGIN_IDENTIFIER",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_legacy_v4"
+   ],
+   "writers_by_run": {
+    "opus_health_legacy_v4": 1,
+    "opus_health_v2": 1
+   },
+   "legacy_writers": 1,
+   "v2_writers": 1,
+   "delta3_writers": 0
+  },
+  {
+   "satellite": "SAT_PARTY_HIERARCHY",
+   "track": "ratified",
+   "attribute": "Reporting Parent Reference",
+   "column": "REPORTING_PARENT_REFERENCE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_CLAIM_SLA_TRACKING",
+   "track": "ratified",
+   "attribute": "Last Action Date",
+   "column": "LAST_ACTION_DATE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_POLICY_DISCOUNT_LOADING_APPLIED",
+   "track": "unratified",
+   "attribute": "Item Applied Indicator",
+   "column": "ITEM_APPLIED_INDICATOR",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 2,
+    "opus_health_delta3": 10
+   },
+   "legacy_writers": 0,
+   "v2_writers": 2,
+   "delta3_writers": 10
+  },
+  {
+   "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+   "track": "unratified",
+   "attribute": "Plan Reference",
+   "column": "PLAN_REFERENCE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  },
+  {
+   "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+   "track": "unratified",
+   "attribute": "Source Row Version Number",
+   "column": "SOURCE_ROW_VERSION_NUMBER",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 2
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 2
+  },
+  {
+   "satellite": "SAT_POLICY_COVERAGE_SCHEDULE",
+   "track": "unratified",
+   "attribute": "Section Reference",
+   "column": "SECTION_REFERENCE",
+   "precedence": [
+    "opus_health_v2",
+    "opus_health_delta3"
+   ],
+   "writers_by_run": {
+    "opus_health_v2": 1,
+    "opus_health_delta3": 1
+   },
+   "legacy_writers": 0,
+   "v2_writers": 1,
+   "delta3_writers": 1
+  }
+ ]
+}
