@@ -84,16 +84,174 @@ def _parse_feed_branch_wrapper(part_sql):
 
 def _resolved_source(md, name):
     """Return (raw_fq_table, {col: raw_expr}, walks) for a stg_ or
-    resolved_mt__ view. walks only populated for resolved views."""
+    resolved_mt__ view. walks only populated for resolved views.
+
+    For resolved views, cols is augmented so Lookup.get() resolves walk
+    columns to a sentinel identifier (``__walk__.<walk_name>``). The
+    sentinel is replaced during SQL emission in :func:`_walk_arm_select`
+    with the correct alias of the joined walk CTE/parent RAW table.
+    """
     if name.startswith("resolved_mt__"):
         base_stg, walks = K.parse_resolved(md, name)
         raw, cols = PK.parse_stg(md, base_stg)
-        # Walk columns are not resolvable from the base RAW table; mark
-        # them with a sentinel so Lookup.get() returns None for them
-        # (they'll appear in unresolved).
-        return raw, dict(cols), walks
+        cols = dict(cols)
+        for walk_name in walks:
+            # Resolve walk tokens to themselves so subst() leaves them in
+            # place; _rewrite_arm_expr() replaces each with an aliased
+            # reference to the joined walk/parent RAW table.
+            cols[walk_name] = walk_name
+        return raw, cols, walks
     raw, cols = PK.parse_stg(md, name)
     return raw, dict(cols), {}
+
+
+# ---------------------------------------------------------------------------
+# Walk-aware arm_select
+# ---------------------------------------------------------------------------
+# RAW tables carry the shred lineage columns (FOREIGN_KEY, PARENT_KEY_HASH,
+# KEY_HASH) unaltered by stg_mt__ layer-1 casts, so each walk can be joined
+# straight against the parent's RAW table without going through its stg view.
+_RAW_FQ_CACHE = {}
+
+
+def _parent_raw_fq(md, parent_stg):
+    """Return the RAW fully-qualified table name of a stg_mt__ parent."""
+    key = (id(md), parent_stg)
+    if key in _RAW_FQ_CACHE:
+        return _RAW_FQ_CACHE[key]
+    raw, _cols = PK.parse_stg(md, parent_stg)
+    _RAW_FQ_CACHE[key] = raw
+    return raw
+
+
+# A resolver carries two walk shapes:
+#   * fk_join (document handle): parent.FOREIGN_KEY = b.FOREIGN_KEY
+#   * climb hop: parent.KEY_HASH = b.PARENT_KEY_HASH (single-level), or a
+#     chain of PARENT_KEY_HASH joins. For climb hops of exactly one real
+#     level the parent's RAW row joins directly on b.PARENT_KEY_HASH.
+# Only the shapes required by resolvers wired into the current satellites
+# are emitted below. Deeper climb hops (>1 level) are left unresolved -- the
+# walk column stays NULL in the probe and that falls into no_source_row,
+# which is still a documented gap rather than a wrong result.
+def _walk_join_sql(md, walks):
+    """Build the per-arm JOIN clauses + a map of walk_name -> aliased SQL
+    expression. Return (joins_sql_lines, alias_map, unresolved_walk_names).
+    """
+    joins = []
+    alias_map = {}
+    unresolved = []
+    # De-duplicate by parent RAW table so a resolver with multiple walks
+    # to the same parent (common when both an fk_join and a climb-hop walk
+    # resolve to columns on the same parent document) joins it once.
+    parent_alias = {}
+    for walk_name, info in walks.items():
+        parent_stg = info["parent_stg"]
+        parent_col = info["parent_col"]
+        try:
+            parent_raw = _parent_raw_fq(md, parent_stg)
+        except Exception:
+            unresolved.append(walk_name)
+            continue
+        if parent_raw not in parent_alias:
+            alias = f"wk{len(parent_alias)}"
+            parent_alias[parent_raw] = alias
+            # Walk resolvers use one of two shapes:
+            #   fk_join: parent.FOREIGN_KEY = b.FOREIGN_KEY (document handle)
+            #   climb hop (1 level): parent.KEY_HASH = b.PARENT_KEY_HASH
+            # Both parent and base RAW expose FOREIGN_KEY (BD1 directive),
+            # and every shred row of one document shares it, so the
+            # FOREIGN_KEY join reaches the right parent for fk_join walks
+            # and reduces climb hops within the same document to it.
+            # Multi-document chains would need PARENT_KEY_HASH chaining;
+            # those are left unresolved (probe reports no_source_row).
+            joins.append(
+                f'left join {parent_raw} {alias}\n'
+                f'            on {alias}."FOREIGN_KEY" = b."FOREIGN_KEY"')
+        alias = parent_alias[parent_raw]
+        alias_map[walk_name] = f'{alias}."{parent_col.upper()}"'
+    return joins, alias_map, unresolved
+
+
+_WALK_TOKEN_RE = re.compile(r"\b(w\d+_[a-z0-9_]+)\b")
+_QUOTED_COL_RE = re.compile(r'(?<![\w.])"([A-Z_][A-Z0-9_]*)"')
+
+
+def _rewrite_arm_expr(expr, walks_alias):
+    """Prefix every quoted RAW column `"COL"` with `b.` and replace walk
+    tokens `w<i>_name` with the aliased SQL expression from walks_alias."""
+    if not expr:
+        return expr
+    # Prefix raw columns -> b."COL"
+    out = _QUOTED_COL_RE.sub(r'b."\1"', expr)
+    if walks_alias:
+        # Replace walk column tokens -> alias."PARENT_COL"
+        def _sub(m):
+            tok = m.group(1).lower()
+            return walks_alias.get(tok, m.group(0))
+        out = _WALK_TOKEN_RE.sub(_sub, out)
+    return out
+
+
+_ORIG_ARM_SELECT = A.arm_select
+
+
+def _walk_arm_select(sat, arm, cols, gi, value_of):
+    """Walk-aware replacement for A.arm_select.
+
+    When an arm's lookup resolves walk columns (resolved_mt__ source),
+    rewrite its SELECT to alias the base RAW as ``b``, left-join every
+    walk's parent RAW table, and prefix column references accordingly.
+    Falls back to the original A.arm_select for every other arm shape.
+    """
+    walks = getattr(arm, "walks", None)
+    if not walks or arm.kind == "stitch":
+        return _ORIG_ARM_SELECT(sat, arm, cols, gi, value_of)
+    md = getattr(arm, "_md", None)
+    if md is None:
+        return _ORIG_ARM_SELECT(sat, arm, cols, gi, value_of)
+    joins, alias_map, _unres = _walk_join_sql(md, walks)
+    if not joins:
+        return _ORIG_ARM_SELECT(sat, arm, cols, gi, value_of)
+
+    lk = arm.lookup
+    hkey_expr = _rewrite_arm_expr(lk.get(sat.pk), alias_map)
+    ldts_expr = _rewrite_arm_expr(lk.get(sat.ldts) or "null", alias_map)
+    sel = [f"{hkey_expr} as hkey"]
+    for i, c in enumerate(sat.cdk):
+        cdk_expr = _rewrite_arm_expr(lk.get(c) or "null", alias_map)
+        sel.append(f"to_varchar({cdk_expr}) as {A.cdk_alias(i)}")
+    sel.append(f"{ldts_expr} as ldts")
+    for c in cols:
+        raw_val = value_of(arm, c)
+        sel.append(f"{_rewrite_arm_expr(raw_val, alias_map)} as {c}")
+    frm = f"{arm.raw} b"
+    where = _rewrite_arm_expr(arm.where, alias_map) if arm.where else None
+    s = "select " + ",\n       ".join(sel) + f"\n  from {frm}"
+    for jl in joins:
+        s += f"\n       {jl}"
+    if where:
+        s += f"\n where {where}"
+    return f"-- via {arm.label}\n" + s
+
+
+A.arm_select = _walk_arm_select
+
+
+# Preserve walks / _md across A.Arm.wrap() so feed-wrapped arms also emit
+# walk joins. wrap() returns a new Arm so we patch it to copy both over.
+_ORIG_ARM_WRAP = A.Arm.wrap
+
+
+def _arm_wrap_preserve_walks(self, rename):
+    new = _ORIG_ARM_WRAP(self, rename)
+    if getattr(self, "walks", None):
+        new.walks = self.walks
+    if getattr(self, "_md", None) is not None:
+        new._md = self._md
+    return new
+
+
+A.Arm.wrap = _arm_wrap_preserve_walks
 
 
 def _resolve_stg2(md, name):
@@ -126,15 +284,19 @@ def _resolve_stg2(md, name):
                 continue
             base = {k: A.subst(A.lower_idents(v), cols) for k, v in a["cols"].items()}
             where = A.subst(A.lower_idents(a["where"]), cols) if a["where"] else None
-            arms.append(A.Arm("unpivot", A.Lookup(dc, hc, base), raw=raw,
-                              where=where, label=f"{src}#{i + 1}"))
+            arm = A.Arm("unpivot", A.Lookup(dc, hc, base), raw=raw,
+                        where=where, label=f"{src}#{i + 1}")
+            arm.walks, arm._md = walks, md
+            arms.append(arm)
         return arms
     # Plain stg_ or resolved_mt__ as source.
     try:
         raw, cols, walks = _resolved_source(md, src)
     except (SystemExit, Exception) as e:
         raise RuntimeError(f"{name}: cannot resolve source_model {src} ({e})")
-    return [A.Arm("stg", A.Lookup(dc, hc, cols), raw=raw, label=src)]
+    arm = A.Arm("stg", A.Lookup(dc, hc, cols), raw=raw, label=src)
+    arm.walks, arm._md = walks, md
+    return [arm]
 
 
 def _resolve_plain_stitch_stg2(md, name, dc, hc, stitch_name):
@@ -370,10 +532,11 @@ def main():
             f"{n_app} have mapped payload, {n_grp} RECORD_SOURCE groups, {n_cols} "
             f"mapped (group, column) pairs.",
             "Lineage handled: stg_ direct, Maximus Travel stg2 over "
-            "resolved_mt__ (base stg_mt__ + walk columns -- walk columns are "
-            "reported as unresolved in the first cut), Maximus Travel satfeed "
-            "unions (bare HASHDIFF rename), unpivot arms, OPUS plain-join stitches "
-            "(joined-in columns reported as unresolved in the first cut).",
+            "resolved_mt__ (base stg_mt__ aliased as b, walk columns resolved "
+            "by left-joining the parent RAW table on FOREIGN_KEY), Maximus "
+            "Travel satfeed unions (bare HASHDIFF rename), unpivot arms, "
+            "OPUS plain-join stitches (joined-in columns reported as "
+            "unresolved in the first cut).",
             "Sections marked NA load only hard-coded NULL padding, a disabled "
             "placeholder, or every arm resolved to zero columns.",
         ]

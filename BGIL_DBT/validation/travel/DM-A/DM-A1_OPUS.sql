@@ -329,16 +329,16 @@ select * from x
 ----------------------------------------------------------------------------------------
 -- 2. OPUS — SAT_COMMON_ADDRESS   [Implemented]
 -- standard satellite, sat_multi_source; PK LOCATION_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA [5 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [6 col(s)].
--- stg2_common_address_bjaz_trv_loader_data: column(s) COUNTRY_NAME could not be traced
--- to RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__
--- views or joined-in stitch columns are not yet inlined into the sampled queries).
--- TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim
--- rule retained by design), not a failure.
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [5 col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [6
+-- col(s)]. stg2_common_address_bjaz_trv_loader_data: column(s) COUNTRY_NAME could not be
+-- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception
+-- (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct LOCATION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -350,7 +350,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(STATE_NAME) as STATE_NAME,
            to_varchar(STREET_NAME) as STREET_NAME
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and LOCATION_HKEY in (select hkey from s1)
     qualify rank() over (partition by LOCATION_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -443,7 +443,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct LOCATION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -456,7 +456,7 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(STATE_NAME) as STATE_NAME,
            to_varchar(STREET_NAME) as STREET_NAME
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_ADDRESS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and LOCATION_HKEY in (select hkey from s2)
     qualify rank() over (partition by LOCATION_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -562,7 +562,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.STREET_NAME
 )
-select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -582,7 +582,7 @@ select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'OPUS_BJAZ_TRV_LOAD
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_COMMON_ADDRESS' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -608,13 +608,13 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 3. OPUS — SAT_COMMON_CLASSIFICATION   [Implemented]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. TRIMMED
--- / BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim rule
--- retained by design), not a failure.
+-- OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [1
+-- col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception
+-- (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -622,7 +622,7 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(CATEGORY_CODE) as CATEGORY_CODE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -655,7 +655,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -663,7 +663,7 @@ c2 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(CATEGORY_CODE) as CATEGORY_CODE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -694,7 +694,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.CATEGORY_CODE
 )
-select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -714,7 +714,7 @@ select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'OPUS_BA_TRV
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_COMMON_CLASSIFICATION' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -740,9 +740,9 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 4. OPUS — SAT_COMMON_CONTACT   [Implemented]
 -- standard satellite, ma_sat_multi_source; PK PARTY_HKEY, child key CONTACT_POINT_TYPE,
--- CONTACT_PRIORITY_ORDER; 2 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_LOADER_DATA [4
--- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [4 col(s)]. Multi-active: compared per (key,
--- child key); latest = max LOAD_DATETIME per member.
+-- CONTACT_PRIORITY_ORDER; 2 RECORD_SOURCE group(s): OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [4
+-- col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [4 col(s)]. Multi-active: compared per
+-- (key, child key); latest = max LOAD_DATETIME per member.
 -- stg2_common_contact_bjaz_trv_loader_data_0: column(s) FAX_NUMBER, LANDLINE_NUMBER,
 -- MOBILE_NUMBER could not be traced to RAW on at least one arm -- excluded (first-cut:
 -- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
@@ -771,7 +771,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -784,7 +784,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(MOBILE_NUMBER) as MOBILE_NUMBER,
            to_varchar(LANDLINE_NUMBER) as LANDLINE_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY, CONTACT_POINT_TYPE, CONTACT_PRIORITY_ORDER order by LOAD_DATETIME desc) = 1
 ),
@@ -908,7 +908,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -921,7 +921,7 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(MOBILE_NUMBER) as MOBILE_NUMBER,
            to_varchar(LANDLINE_NUMBER) as LANDLINE_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COMMON_CONTACT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY, CONTACT_POINT_TYPE, CONTACT_PRIORITY_ORDER order by LOAD_DATETIME desc) = 1
 ),
@@ -1032,7 +1032,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey and equal_null(e.cdk_1, c.cdk_1) and equal_null(e.cdk_2, c.cdk_2)
      group by c.hkey, c.cdk_1, c.cdk_2, c.LANDLINE_NUMBER
 )
-select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -1052,7 +1052,7 @@ select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'OPUS_BJAZ_TRV_LOAD
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_COMMON_CONTACT' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -1078,12 +1078,12 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 5. OPUS — SAT_COVERAGE_CONDITIONS   [Implemented]
 -- standard satellite, automate_dv.sat; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_PLAN [2 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns =
--- documented exception (staging trim rule retained by design), not a failure.
+-- OPUS_TRAVEL_BJAZ_TRV_PLAN [2 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns
+-- = documented exception (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_CONDITIONS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_PLAN'
      order by hkey
      limit 100
 ),
@@ -1092,7 +1092,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(CONDITION_DESCRIPTION) as CONDITION_DESCRIPTION,
            to_varchar(WAITING_PERIOD_CONDITION) as WAITING_PERIOD_CONDITION
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_CONDITIONS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_PLAN'
        and COVERAGE_HKEY in (select hkey from s1)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -1138,7 +1138,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.WAITING_PERIOD_CONDITION
 )
-select 'OPUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite, 'OPUS_BJAZ_TRV_PLAN' as record_source,
+select 'OPUS' as project, 'SAT_COVERAGE_CONDITIONS' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_PLAN' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -1164,8 +1164,8 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 6. OPUS — SAT_COVERAGE_DEFINITION   [Implemented]
 -- standard satellite, sat_multi_source; PK COVERAGE_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_PLAN [2 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [1 col(s)],
--- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. stg2_coverage_definition_bjaz_trv_plan:
+-- OPUS_TRAVEL_BJAZ_TRV_PLAN [2 col(s)], OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS [1 col(s)],
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [1 col(s)]. stg2_coverage_definition_bjaz_trv_plan:
 -- column(s) COVERAGE_NAME, FREE_COVER_LIMIT could not be traced to RAW on at least one
 -- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
 -- columns are not yet inlined into the sampled queries).
@@ -1246,7 +1246,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_PLAN'
      order by hkey
      limit 100
 ),
@@ -1255,7 +1255,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(COVERAGE_DESCRIPTION) as COVERAGE_DESCRIPTION,
            to_varchar(PERIL_COVERED) as PERIL_COVERED
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_PLAN'
        and COVERAGE_HKEY in (select hkey from s1)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -1303,7 +1303,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS'
      order by hkey
      limit 100
 ),
@@ -1311,7 +1311,7 @@ c2 as (  -- latest satellite row per sampled key
     select COVERAGE_HKEY as hkey,
            to_varchar(COVERAGE_NAME) as COVERAGE_NAME
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS'
        and COVERAGE_HKEY in (select hkey from s2)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -1344,7 +1344,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -1352,7 +1352,7 @@ c3 as (  -- latest satellite row per sampled key
     select COVERAGE_HKEY as hkey,
            to_varchar(FREE_COVER_LIMIT) as FREE_COVER_LIMIT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and COVERAGE_HKEY in (select hkey from s3)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -1479,7 +1479,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey
      group by c.hkey, c.FREE_COVER_LIMIT
 )
-select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_PLAN' as record_source,
+select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_PLAN' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -1499,7 +1499,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -1519,7 +1519,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV
   from r2
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_COVERAGE_DEFINITION' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -1545,19 +1545,20 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 7. OPUS — SAT_COVERAGE_LIMITS   [Implemented]
 -- standard satellite, sat_multi_source; PK COVERAGE_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_PLAN [2 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [1 col(s)],
--- OPUS_BJAZ_TRV_RIDER_RATE_MAST [1 col(s)]. stg2_coverage_limits_bjaz_trv_rider_dtls:
--- column(s) DEDUCTIBLE_AMOUNT could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries). stg2_coverage_limits_bjaz_trv_rider_rate_mast:
--- column(s) DEDUCTIBLE_AMOUNT could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries). TRIMMED / BLANK_TO_NULL on trim / nullif
--- columns = documented exception (staging trim rule retained by design), not a failure.
+-- OPUS_TRAVEL_BJAZ_TRV_PLAN [2 col(s)], OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS [1 col(s)],
+-- OPUS_TRAVEL_BJAZ_TRV_RIDER_RATE_MAST [1 col(s)].
+-- stg2_coverage_limits_bjaz_trv_rider_dtls: column(s) DEDUCTIBLE_AMOUNT could not be
+-- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). stg2_coverage_limits_bjaz_trv_rider_rate_mast: column(s) DEDUCTIBLE_AMOUNT
+-- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
+-- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
+-- sampled queries). TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented
+-- exception (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_PLAN'
      order by hkey
      limit 100
 ),
@@ -1566,7 +1567,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(DEDUCTIBLE_AMOUNT) as DEDUCTIBLE_AMOUNT,
            to_varchar(LIMIT_AMOUNT) as LIMIT_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_PLAN'
        and COVERAGE_HKEY in (select hkey from s1)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -1614,7 +1615,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS'
      order by hkey
      limit 100
 ),
@@ -1622,7 +1623,7 @@ c2 as (  -- latest satellite row per sampled key
     select COVERAGE_HKEY as hkey,
            to_varchar(LIMIT_AMOUNT) as LIMIT_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS'
        and COVERAGE_HKEY in (select hkey from s2)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -1655,7 +1656,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_RATE_MAST'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RIDER_RATE_MAST'
      order by hkey
      limit 100
 ),
@@ -1663,7 +1664,7 @@ c3 as (  -- latest satellite row per sampled key
     select COVERAGE_HKEY as hkey,
            to_varchar(LIMIT_AMOUNT) as LIMIT_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_COVERAGE_LIMITS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_RATE_MAST'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RIDER_RATE_MAST'
        and COVERAGE_HKEY in (select hkey from s3)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -1694,7 +1695,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey
      group by c.hkey, c.LIMIT_AMOUNT
 )
-select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_PLAN' as record_source,
+select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_PLAN' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -1714,7 +1715,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_PLA
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -1734,7 +1735,7 @@ select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_RID
   from r2
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_RIDER_RATE_MAST' as record_source,
+select 'OPUS' as project, 'SAT_COVERAGE_LIMITS' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_RIDER_RATE_MAST' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -1760,17 +1761,18 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 8. OPUS — SAT_FINTXN_COMMISSION   [Implemented]
 -- standard satellite, ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key
--- COMMISSION_TYPE_CK; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
--- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. Multi-active: compared per (key, child key);
--- latest = max LOAD_DATETIME per member. stg2_fintxn_commission_bjaz_trv_loader_data:
--- column(s) COMMISSION_AMOUNT could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries). TRIMMED / BLANK_TO_NULL on trim / nullif
--- columns = documented exception (staging trim rule retained by design), not a failure.
+-- COMMISSION_TYPE_CK; 2 RECORD_SOURCE group(s): OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [2
+-- col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [1 col(s)]. Multi-active: compared per (key,
+-- child key); latest = max LOAD_DATETIME per member.
+-- stg2_fintxn_commission_bjaz_trv_loader_data: column(s) COMMISSION_AMOUNT could not be
+-- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception
+-- (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_COMMISSION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -1780,7 +1782,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(COMMISSION_AMOUNT) as COMMISSION_AMOUNT,
            to_varchar(COMMISSION_RATE) as COMMISSION_RATE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_COMMISSION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s1)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY, COMMISSION_TYPE_CK order by LOAD_DATETIME desc) = 1
 ),
@@ -1829,7 +1831,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_COMMISSION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -1838,7 +1840,7 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(COMMISSION_TYPE_CK) as cdk_1,
            to_varchar(COMMISSION_RATE) as COMMISSION_RATE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_COMMISSION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s2)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY, COMMISSION_TYPE_CK order by LOAD_DATETIME desc) = 1
 ),
@@ -1870,7 +1872,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey and equal_null(e.cdk_1, c.cdk_1)
      group by c.hkey, c.cdk_1, c.COMMISSION_RATE
 )
-select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -1890,7 +1892,7 @@ select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'OPUS_BA_TRV_DAT
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_FINTXN_COMMISSION' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -1916,13 +1918,13 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 9. OPUS — SAT_FINTXN_HEADER   [Implemented]
 -- standard satellite, automate_dv.sat; PK FINANCIAL_TRANSACTION_HKEY; 1 RECORD_SOURCE
--- group(s): OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim /
--- nullif columns = documented exception (staging trim rule retained by design), not a
--- failure.
+-- group(s): OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. TRIMMED / BLANK_TO_NULL on
+-- trim / nullif columns = documented exception (staging trim rule retained by design),
+-- not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_HEADER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -1930,7 +1932,7 @@ c1 as (  -- latest satellite row per sampled key
     select FINANCIAL_TRANSACTION_HKEY as hkey,
            to_varchar(GROSS_AMOUNT) as GROSS_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_HEADER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s1)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -1961,7 +1963,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.GROSS_AMOUNT
 )
-select 'OPUS' as project, 'SAT_FINTXN_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_FINTXN_HEADER' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -1987,10 +1989,10 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 10. OPUS — SAT_FINTXN_PREMIUM   [Implemented]
 -- standard satellite, sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY; 3 RECORD_SOURCE
--- group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [6 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [5
--- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [4 col(s)].
--- stg2_fintxn_premium_ba_trv_data_policy_dtls: column(s) BASE_PREMIUM could not be
--- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- group(s): OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [6 col(s)],
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [5 col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [4
+-- col(s)]. stg2_fintxn_premium_ba_trv_data_policy_dtls: column(s) BASE_PREMIUM could not
+-- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). stg2_fintxn_premium_bjaz_trv_loader_data: column(s) DISCOUNT_PERCENTAGE,
 -- NET_PREMIUM could not be traced to RAW on at least one arm -- excluded (first-cut:
@@ -2004,7 +2006,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -2017,7 +2019,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(LOADING_AMOUNT) as LOADING_AMOUNT,
            to_varchar(NET_PREMIUM) as NET_PREMIUM
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s1)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -2125,7 +2127,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -2137,7 +2139,7 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(GROSS_PREMIUM) as GROSS_PREMIUM,
            to_varchar(LOADING_AMOUNT) as LOADING_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s2)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -2230,7 +2232,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -2241,7 +2243,7 @@ c3 as (  -- latest satellite row per sampled key
            to_varchar(GROSS_PREMIUM) as GROSS_PREMIUM,
            to_varchar(LOADING_AMOUNT) as LOADING_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s3)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -2317,7 +2319,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey
      group by c.hkey, c.LOADING_AMOUNT
 )
-select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -2337,7 +2339,7 @@ select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BA_TRV_DATA_P
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -2357,7 +2359,7 @@ select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOAD
   from r2
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_FINTXN_PREMIUM' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -2383,9 +2385,9 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 11. OPUS — SAT_FINTXN_TAX   [Implemented]
 -- standard satellite, ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key
--- TAX_TYPE; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. Multi-active: compared per (key, child
--- key); latest = max LOAD_DATETIME per member.
+-- TAX_TYPE; 2 RECORD_SOURCE group(s): OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. Multi-active: compared per (key,
+-- child key); latest = max LOAD_DATETIME per member.
 -- stg2_fintxn_tax_ba_trv_data_policy_dtls_0: column(s) SERVICE_TAX_AMOUNT could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
@@ -2397,7 +2399,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_TAX
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -2407,7 +2409,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(CESS_AMOUNT) as CESS_AMOUNT,
            to_varchar(SERVICE_TAX_AMOUNT) as SERVICE_TAX_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_TAX
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s1)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY, TAX_TYPE order by LOAD_DATETIME desc) = 1
 ),
@@ -2464,7 +2466,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_TAX
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -2473,7 +2475,7 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(TAX_TYPE) as cdk_1,
            to_varchar(SERVICE_TAX_AMOUNT) as SERVICE_TAX_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FINTXN_TAX
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s2)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY, TAX_TYPE order by LOAD_DATETIME desc) = 1
 ),
@@ -2505,7 +2507,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey and equal_null(e.cdk_1, c.cdk_1)
      group by c.hkey, c.cdk_1, c.SERVICE_TAX_AMOUNT
 )
-select 'OPUS' as project, 'SAT_FINTXN_TAX' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_FINTXN_TAX' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -2525,7 +2527,7 @@ select 'OPUS' as project, 'SAT_FINTXN_TAX' as satellite, 'OPUS_BA_TRV_DATA_POLIC
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_FINTXN_TAX' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_FINTXN_TAX' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -2551,9 +2553,9 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 12. OPUS — SAT_FIN_CHARGE_RATE   [Implemented]
 -- standard satellite, ma_sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY, child key
--- CHARGE_TYPE_CK; 2 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. Multi-active: compared per (key, child
--- key); latest = max LOAD_DATETIME per member.
+-- CHARGE_TYPE_CK; 2 RECORD_SOURCE group(s): OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [2
+-- col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. Multi-active: compared per
+-- (key, child key); latest = max LOAD_DATETIME per member.
 -- stg2_fin_charge_rate_ba_trv_data_policy_dtls: column(s) ADDITIONAL_LOADING_RATE could
 -- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
@@ -2565,7 +2567,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_CHARGE_RATE
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -2575,7 +2577,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(CHARGE_AMOUNT) as CHARGE_AMOUNT,
            to_varchar(ADDITIONAL_LOADING_RATE) as ADDITIONAL_LOADING_RATE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_CHARGE_RATE
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s1)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY, CHARGE_TYPE_CK order by LOAD_DATETIME desc) = 1
 ),
@@ -2632,7 +2634,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_CHARGE_RATE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -2641,7 +2643,7 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(CHARGE_TYPE_CK) as cdk_1,
            to_varchar(CHARGE_AMOUNT) as CHARGE_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_CHARGE_RATE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s2)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY, CHARGE_TYPE_CK order by LOAD_DATETIME desc) = 1
 ),
@@ -2673,7 +2675,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey and equal_null(e.cdk_1, c.cdk_1)
      group by c.hkey, c.cdk_1, c.CHARGE_AMOUNT
 )
-select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -2693,7 +2695,7 @@ select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite, 'OPUS_BA_TRV_DATA_
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_FIN_CHARGE_RATE' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -2719,19 +2721,20 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 13. OPUS — SAT_FIN_RECEIPT   [Implemented]
 -- standard satellite, sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY; 2 RECORD_SOURCE
--- group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [3
--- col(s)]. stg2_fin_receipt_ba_trv_data_policy_dtls: column(s) AMOUNT_RECEIVED,
--- INSTRUMENT_DATE could not be traced to RAW on at least one arm -- excluded (first-cut:
--- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
--- into the sampled queries). stg2_fin_receipt_bjaz_trv_loader_data: column(s)
--- PAYMENT_GATEWAY_REFERENCE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries). TRIMMED / BLANK_TO_NULL on trim / nullif
--- columns = documented exception (staging trim rule retained by design), not a failure.
+-- group(s): OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [3 col(s)]. stg2_fin_receipt_ba_trv_data_policy_dtls:
+-- column(s) AMOUNT_RECEIVED, INSTRUMENT_DATE could not be traced to RAW on at least one
+-- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
+-- columns are not yet inlined into the sampled queries).
+-- stg2_fin_receipt_bjaz_trv_loader_data: column(s) PAYMENT_GATEWAY_REFERENCE could not
+-- be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception
+-- (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -2740,7 +2743,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(PAYMENT_GATEWAY_REFERENCE) as PAYMENT_GATEWAY_REFERENCE,
            to_varchar(RECEIPT_NUMBER) as RECEIPT_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s1)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -2788,7 +2791,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -2798,7 +2801,7 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(INSTRUMENT_DATE) as INSTRUMENT_DATE,
            to_varchar(RECEIPT_NUMBER) as RECEIPT_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_FIN_RECEIPT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s2)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -2859,7 +2862,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.RECEIPT_NUMBER
 )
-select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -2879,7 +2882,7 @@ select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'OPUS_BA_TRV_DATA_POLI
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_FIN_RECEIPT' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -2905,13 +2908,13 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 14. OPUS — SAT_LNK_ROLE_NOMINEE_BENEFICIARY   [Implemented]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
--- TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim
--- rule retained by design), not a failure.
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [1 col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [1
+-- col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception
+-- (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -2919,7 +2922,7 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(RELATIONSHIP_TO_INSURED) as RELATIONSHIP_TO_INSURED
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -2952,7 +2955,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -2960,7 +2963,7 @@ c2 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(RELATIONSHIP_TO_INSURED) as RELATIONSHIP_TO_INSURED
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_LNK_ROLE_NOMINEE_BENEFICIARY
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -2991,7 +2994,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.RELATIONSHIP_TO_INSURED
 )
-select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -3011,7 +3014,7 @@ select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'OPUS
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_LNK_ROLE_NOMINEE_BENEFICIARY' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -3037,12 +3040,13 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 15. OPUS — SAT_ORG_UNIT_DEFINITION   [Implemented]
 -- standard satellite, automate_dv.sat; PK ORG_UNIT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
--- columns = documented exception (staging trim rule retained by design), not a failure.
+-- OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim /
+-- nullif columns = documented exception (staging trim rule retained by design), not a
+-- failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct ORG_UNIT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ORG_UNIT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -3050,7 +3054,7 @@ c1 as (  -- latest satellite row per sampled key
     select ORG_UNIT_HKEY as hkey,
            to_varchar(COST_CENTRE_CODE) as COST_CENTRE_CODE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_ORG_UNIT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and ORG_UNIT_HKEY in (select hkey from s1)
     qualify rank() over (partition by ORG_UNIT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -3081,7 +3085,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.COST_CENTRE_CODE
 )
-select 'OPUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_ORG_UNIT_DEFINITION' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -3107,16 +3111,16 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 16. OPUS — SAT_PARTY_EMPLOYMENT   [Implemented]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [2 col(s)].
--- stg2_party_employment_bjaz_trv_loader_data_payer: column(s) DESIGNATION could not be
--- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [1 col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [2
+-- col(s)]. stg2_party_employment_bjaz_trv_loader_data_payer: column(s) DESIGNATION could
+-- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
 -- queries). TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception
 -- (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -3124,7 +3128,7 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(EMPLOYMENT_STATUS) as EMPLOYMENT_STATUS
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -3157,7 +3161,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -3166,7 +3170,7 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(DESIGNATION) as DESIGNATION,
            to_varchar(EMPLOYMENT_STATUS) as EMPLOYMENT_STATUS
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_EMPLOYMENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -3212,7 +3216,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.EMPLOYMENT_STATUS
 )
-select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -3232,7 +3236,7 @@ select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'OPUS_BJAZ_TRV_LO
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_PARTY_EMPLOYMENT' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -3258,13 +3262,13 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 17. OPUS — SAT_PARTY_HEALTH_PROFILE   [Implemented]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. TRIMMED
--- / BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim rule
--- retained by design), not a failure.
+-- OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [1
+-- col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception
+-- (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -3272,7 +3276,7 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(PRE_EXISTING_DISEASE_DESCRIPTION) as PRE_EXISTING_DISEASE_DESCRIPTION
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -3305,7 +3309,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -3313,7 +3317,7 @@ c2 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(PRE_EXISTING_DISEASE_DESCRIPTION) as PRE_EXISTING_DISEASE_DESCRIPTION
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_HEALTH_PROFILE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -3344,7 +3348,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.PRE_EXISTING_DISEASE_DESCRIPTION
 )
-select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -3364,7 +3368,7 @@ select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'OPUS_BA_TRV_
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_PARTY_HEALTH_PROFILE' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -3390,10 +3394,11 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 18. OPUS — SAT_PARTY_IDENTIFICATION   [Implemented]
 -- standard satellite, ma_sat_multi_source; PK PARTY_HKEY, child key
--- IDENTIFICATION_TYPE_CODE; 3 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [1
--- col(s)], OPUS_BJAZ_TRV_LOADER_DATA [4 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1
--- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
--- member. stg2_party_identification_ba_trv_data_policy_dtls_0: column(s) AADHAAR_NUMBER,
+-- IDENTIFICATION_TYPE_CODE; 3 RECORD_SOURCE group(s):
+-- OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [4
+-- col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. Multi-active: compared per
+-- (key, child key); latest = max LOAD_DATETIME per member.
+-- stg2_party_identification_ba_trv_data_policy_dtls_0: column(s) AADHAAR_NUMBER,
 -- EIA_NUMBER, GSTIN could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
@@ -3416,18 +3421,18 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
 c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
-           to_varchar(IDENTIFICATIONTYPECODE) as cdk_1,
-           to_varchar(PASSPORTNUMBER) as PASSPORT_NUMBER
+           to_varchar(IDENTIFICATION_TYPE_CODE) as cdk_1,
+           to_varchar(PASSPORT_NUMBER) as PASSPORT_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and PARTY_HKEY in (select hkey from s1)
-    qualify rank() over (partition by PARTY_HKEY, IDENTIFICATIONTYPECODE order by LOAD_DATETIME desc) = 1
+    qualify rank() over (partition by PARTY_HKEY, IDENTIFICATION_TYPE_CODE order by LOAD_DATETIME desc) = 1
 ),
 e1 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
@@ -3459,21 +3464,21 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
 c2 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
-           to_varchar(IDENTIFICATIONTYPECODE) as cdk_1,
-           to_varchar(AADHAARNUMBER) as AADHAAR_NUMBER,
-           to_varchar(EIANUMBER) as EIA_NUMBER,
+           to_varchar(IDENTIFICATION_TYPE_CODE) as cdk_1,
+           to_varchar(AADHAAR_NUMBER) as AADHAAR_NUMBER,
+           to_varchar(EIA_NUMBER) as EIA_NUMBER,
            to_varchar(GSTIN) as GSTIN,
-           to_varchar(PASSPORTNUMBER) as PASSPORT_NUMBER
+           to_varchar(PASSPORT_NUMBER) as PASSPORT_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s2)
-    qualify rank() over (partition by PARTY_HKEY, IDENTIFICATIONTYPECODE order by LOAD_DATETIME desc) = 1
+    qualify rank() over (partition by PARTY_HKEY, IDENTIFICATION_TYPE_CODE order by LOAD_DATETIME desc) = 1
 ),
 e2 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
@@ -3580,18 +3585,18 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
 c3 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
-           to_varchar(IDENTIFICATIONTYPECODE) as cdk_1,
-           to_varchar(PASSPORTNUMBER) as PASSPORT_NUMBER
+           to_varchar(IDENTIFICATION_TYPE_CODE) as cdk_1,
+           to_varchar(PASSPORT_NUMBER) as PASSPORT_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s3)
-    qualify rank() over (partition by PARTY_HKEY, IDENTIFICATIONTYPECODE order by LOAD_DATETIME desc) = 1
+    qualify rank() over (partition by PARTY_HKEY, IDENTIFICATION_TYPE_CODE order by LOAD_DATETIME desc) = 1
 ),
 e3 as (  -- expected value(s) at the latest RAW load timestamp per key
     select *
@@ -3621,7 +3626,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey and equal_null(e.cdk_1, c.cdk_1)
      group by c.hkey, c.cdk_1, c.PASSPORT_NUMBER
 )
-select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -3639,9 +3644,9 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BA_TRV_
            and (case_changed = 0 or any_value(r_case))
            and (number_format_changed + date_format_changed = 0 or any_value(r_conv)), 'PASS', 'FAIL') as status
   from r1
-group by column_name, raw_column, model_rule
+ group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -3659,9 +3664,9 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BJAZ_TR
            and (case_changed = 0 or any_value(r_case))
            and (number_format_changed + date_format_changed = 0 or any_value(r_conv)), 'PASS', 'FAIL') as status
   from r2
-group by column_name, raw_column, model_rule
+ group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -3679,7 +3684,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTIFICATION' as satellite, 'OPUS_BJAZ_TR
            and (case_changed = 0 or any_value(r_case))
            and (number_format_changed + date_format_changed = 0 or any_value(r_conv)), 'PASS', 'FAIL') as status
   from r3
-group by column_name, raw_column, model_rule
+ group by column_name, raw_column, model_rule
 order by record_source, column_name;
 
 
@@ -3687,8 +3692,8 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 19. OPUS — SAT_PARTY_IDENTITY   [Implemented]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS [3 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [6 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [8 col(s)].
+-- OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [3 col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [6
+-- col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [8 col(s)].
 -- stg2_party_identity_ba_trv_data_policy_dtls_payer: column(s) FIRST_NAME, GENDER_CODE,
 -- LAST_NAME, MIDDLE_NAME, PARTY_FULL_NAME, PARTY_LEGAL_NAME, TITLE_CODE could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
@@ -3708,7 +3713,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -3718,7 +3723,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(DATE_OF_BIRTH) as DATE_OF_BIRTH,
            to_varchar(PARTY_FULL_NAME) as PARTY_FULL_NAME
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -3789,7 +3794,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -3802,7 +3807,7 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(MIDDLE_NAME) as MIDDLE_NAME,
            to_varchar(PARTY_LEGAL_NAME) as PARTY_LEGAL_NAME
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -3910,7 +3915,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -3925,7 +3930,7 @@ c3 as (  -- latest satellite row per sampled key
            to_varchar(PARTY_LEGAL_NAME) as PARTY_LEGAL_NAME,
            to_varchar(TITLE_CODE) as TITLE_CODE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_IDENTITY
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s3)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -4061,7 +4066,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey
      group by c.hkey, c.TITLE_CODE
 )
-select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -4081,7 +4086,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BA_TRV_DATA_P
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -4101,7 +4106,7 @@ select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BJAZ_TRV_LOAD
   from r2
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_PARTY_IDENTITY' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -4127,13 +4132,13 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 20. OPUS — SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS   [Implemented]
 -- standard satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
--- TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim
--- rule retained by design), not a failure.
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [1 col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [1
+-- col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception
+-- (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -4141,7 +4146,7 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(MARITAL_STATUS) as MARITAL_STATUS
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -4174,7 +4179,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -4182,7 +4187,7 @@ c2 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(MARITAL_STATUS) as MARITAL_STATUS
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -4213,7 +4218,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.MARITAL_STATUS
 )
-select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -4233,7 +4238,7 @@ select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'OPU
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_PARTY_INDIVIDUAL_DEMOGRAPHICS' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -4259,15 +4264,16 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 21. OPUS — SAT_POLICY_CLASSIFICATION   [Implemented]
 -- standard satellite, ma_sat_multi_source; PK POLICY_HKEY, child key
--- CLASSIFICATION_TYPE; 3 RECORD_SOURCE group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [1
--- col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1
--- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
--- member. TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception
--- (staging trim rule retained by design), not a failure.
+-- CLASSIFICATION_TYPE; 3 RECORD_SOURCE group(s): OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [1
+-- col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [1 col(s)],
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. Multi-active: compared per (key,
+-- child key); latest = max LOAD_DATETIME per member. TRIMMED / BLANK_TO_NULL on trim /
+-- nullif columns = documented exception (staging trim rule retained by design), not a
+-- failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -4276,7 +4282,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(CLASSIFICATION_TYPE) as cdk_1,
            to_varchar(CLASSIFICATION_VALUE) as CLASSIFICATION_VALUE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and POLICY_HKEY in (select hkey from s1)
     qualify rank() over (partition by POLICY_HKEY, CLASSIFICATION_TYPE order by LOAD_DATETIME desc) = 1
 ),
@@ -4324,7 +4330,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -4333,7 +4339,7 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(CLASSIFICATION_TYPE) as cdk_1,
            to_varchar(CLASSIFICATION_VALUE) as CLASSIFICATION_VALUE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and POLICY_HKEY in (select hkey from s2)
     qualify rank() over (partition by POLICY_HKEY, CLASSIFICATION_TYPE order by LOAD_DATETIME desc) = 1
 ),
@@ -4367,7 +4373,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -4376,7 +4382,7 @@ c3 as (  -- latest satellite row per sampled key
            to_varchar(CLASSIFICATION_TYPE) as cdk_1,
            to_varchar(CLASSIFICATION_VALUE) as CLASSIFICATION_VALUE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_CLASSIFICATION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and POLICY_HKEY in (select hkey from s3)
     qualify rank() over (partition by POLICY_HKEY, CLASSIFICATION_TYPE order by LOAD_DATETIME desc) = 1
 ),
@@ -4415,7 +4421,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey and equal_null(e.cdk_1, c.cdk_1)
      group by c.hkey, c.cdk_1, c.CLASSIFICATION_VALUE
 )
-select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -4435,7 +4441,7 @@ select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'OPUS_BA_TRV
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -4455,7 +4461,7 @@ select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'OPUS_BJAZ_T
   from r2
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_POLICY_CLASSIFICATION' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -4481,8 +4487,9 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 22. OPUS — SAT_POLICY_HEADER   [Implemented]
 -- standard satellite, sat_multi_source; PK POLICY_HKEY; 4 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS [9 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [2 col(s)],
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [8 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [2 col(s)].
+-- OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [9 col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [2
+-- col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [8 col(s)],
+-- OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS [2 col(s)].
 -- stg2_policy_header_ba_trv_data_policy_dtls: column(s) POLICY_TYPE, SUM_INSURED_TOTAL
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
 -- from resolved_mt__ views or joined-in stitch columns are not yet inlined into the
@@ -4504,7 +4511,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -4520,7 +4527,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(RISK_INCEPTION_DATE) as RISK_INCEPTION_DATE,
            to_varchar(RURAL_SECTOR_POLICY_INDICATOR) as RURAL_SECTOR_POLICY_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and POLICY_HKEY in (select hkey from s1)
     qualify rank() over (partition by POLICY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -4673,7 +4680,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -4682,7 +4689,7 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(NUMBER_OF_LIVES_COVERED) as NUMBER_OF_LIVES_COVERED,
            to_varchar(RURAL_SECTOR_POLICY_INDICATOR) as RURAL_SECTOR_POLICY_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and POLICY_HKEY in (select hkey from s2)
     qualify rank() over (partition by POLICY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -4730,7 +4737,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -4745,7 +4752,7 @@ c3 as (  -- latest satellite row per sampled key
            to_varchar(RURAL_SECTOR_POLICY_INDICATOR) as RURAL_SECTOR_POLICY_INDICATOR,
            to_varchar(SUM_INSURED_TOTAL) as SUM_INSURED_TOTAL
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and POLICY_HKEY in (select hkey from s3)
     qualify rank() over (partition by POLICY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -4883,7 +4890,7 @@ r3 as (
 ),
 s4 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS'
      order by hkey
      limit 100
 ),
@@ -4892,7 +4899,7 @@ c4 as (  -- latest satellite row per sampled key
            to_varchar(NUMBER_OF_LIVES_COVERED) as NUMBER_OF_LIVES_COVERED,
            to_varchar(POLICY_TYPE) as POLICY_TYPE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_HEADER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS'
        and POLICY_HKEY in (select hkey from s4)
     qualify rank() over (partition by POLICY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -4938,7 +4945,7 @@ r4 as (
       from c4 c left join e4 e on e.hkey = c.hkey
      group by c.hkey, c.POLICY_TYPE
 )
-select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -4958,7 +4965,7 @@ select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BA_TRV_DATA_PO
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -4978,7 +4985,7 @@ select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADE
   from r2
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -4998,7 +5005,7 @@ select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_LOADE
   from r3
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_POLICY_HEADER' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -5024,13 +5031,13 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 23. OPUS — SAT_POLICY_TERMS   [Implemented]
 -- standard satellite, sat_multi_source; PK POLICY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
--- TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim
--- rule retained by design), not a failure.
+-- OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE
+-- [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception
+-- (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -5038,7 +5045,7 @@ c1 as (  -- latest satellite row per sampled key
     select POLICY_HKEY as hkey,
            to_varchar(SPECIAL_CONDITIONS) as SPECIAL_CONDITIONS
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and POLICY_HKEY in (select hkey from s1)
     qualify rank() over (partition by POLICY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -5071,7 +5078,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct POLICY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -5079,7 +5086,7 @@ c2 as (  -- latest satellite row per sampled key
     select POLICY_HKEY as hkey,
            to_varchar(SPECIAL_CONDITIONS) as SPECIAL_CONDITIONS
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_POLICY_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and POLICY_HKEY in (select hkey from s2)
     qualify rank() over (partition by POLICY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -5110,7 +5117,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.SPECIAL_CONDITIONS
 )
-select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -5130,7 +5137,7 @@ select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite, 'OPUS_BA_TRV_DATA_POL
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_POLICY_TERMS' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -5156,21 +5163,21 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 24. OPUS — SAT_PRODUCT_DEFINITION   [Implemented]
 -- standard satellite, sat_multi_source; PK PRODUCT_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS [3 col(s)], OPUS_BA_TRV_PLAN_MST [5 col(s)],
--- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. stg2_product_definition_ba_trv_data_policy_dtls:
--- column(s) PRODUCT_DISPLAY_NAME, PRODUCT_STATUS could not be traced to RAW on at least
--- one arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in
--- stitch columns are not yet inlined into the sampled queries).
--- stg2_product_definition_bjaz_trv_loader_data: column(s) PRODUCT_CODE,
--- PRODUCT_DISPLAY_NAME, PRODUCT_NAME, PRODUCT_STATUS could not be traced to RAW on at
--- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
--- joined-in stitch columns are not yet inlined into the sampled queries). TRIMMED /
--- BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim rule
--- retained by design), not a failure.
+-- OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [3 col(s)], OPUS_TRAVEL_BA_TRV_PLAN_MST [5
+-- col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [1 col(s)].
+-- stg2_product_definition_ba_trv_data_policy_dtls: column(s) PRODUCT_DISPLAY_NAME,
+-- PRODUCT_STATUS could not be traced to RAW on at least one arm -- excluded (first-cut:
+-- walk columns from resolved_mt__ views or joined-in stitch columns are not yet inlined
+-- into the sampled queries). stg2_product_definition_bjaz_trv_loader_data: column(s)
+-- PRODUCT_CODE, PRODUCT_DISPLAY_NAME, PRODUCT_NAME, PRODUCT_STATUS could not be traced
+-- to RAW on at least one arm -- excluded (first-cut: walk columns from resolved_mt__
+-- views or joined-in stitch columns are not yet inlined into the sampled queries).
+-- TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim
+-- rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -5180,7 +5187,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(PRODUCT_CODE) as PRODUCT_CODE,
            to_varchar(PRODUCT_NAME) as PRODUCT_NAME
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and PRODUCT_HKEY in (select hkey from s1)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -5243,7 +5250,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_PLAN_MST'
      order by hkey
      limit 100
 ),
@@ -5255,7 +5262,7 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(PRODUCT_NAME) as PRODUCT_NAME,
            to_varchar(PRODUCT_STATUS) as PRODUCT_STATUS
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_PLAN_MST'
        and PRODUCT_HKEY in (select hkey from s2)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -5348,7 +5355,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -5356,7 +5363,7 @@ c3 as (  -- latest satellite row per sampled key
     select PRODUCT_HKEY as hkey,
            to_varchar(PRODUCT_CATEGORY) as PRODUCT_CATEGORY
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and PRODUCT_HKEY in (select hkey from s3)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -5387,7 +5394,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey
      group by c.hkey, c.PRODUCT_CATEGORY
 )
-select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -5407,7 +5414,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BA_TRV_DA
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BA_TRV_PLAN_MST' as record_source,
+select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_TRAVEL_BA_TRV_PLAN_MST' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -5427,7 +5434,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BA_TRV_PL
   from r2
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_PRODUCT_DEFINITION' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -5453,7 +5460,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 25. OPUS — SAT_PRODUCT_RATING_FACTOR   [Implemented]
 -- standard satellite, ma_sat_multi_source; PK PRODUCT_HKEY, child key
--- ACTIVE_SEQUENCE_NUMBER; 1 RECORD_SOURCE group(s): OPUS_BJAZ_TRV_RATE_MASTER [2
+-- ACTIVE_SEQUENCE_NUMBER; 1 RECORD_SOURCE group(s): OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER [2
 -- col(s)]. Multi-active: compared per (key, child key); latest = max LOAD_DATETIME per
 -- member. stg2_product_rating_factor_bjaz_trv_rate_master_0: column(s) VALUE_RANGE_TO
 -- could not be traced to RAW on at least one arm -- excluded (first-cut: walk columns
@@ -5463,7 +5470,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_FACTOR
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER'
      order by hkey
      limit 100
 ),
@@ -5473,7 +5480,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(VALUE_RANGE_FROM) as VALUE_RANGE_FROM,
            to_varchar(VALUE_RANGE_TO) as VALUE_RANGE_TO
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_FACTOR
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER'
        and PRODUCT_HKEY in (select hkey from s1)
     qualify rank() over (partition by PRODUCT_HKEY, ACTIVE_SEQUENCE_NUMBER order by LOAD_DATETIME desc) = 1
 ),
@@ -5544,7 +5551,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey and equal_null(e.cdk_1, c.cdk_1)
      group by c.hkey, c.cdk_1, c.VALUE_RANGE_TO
 )
-select 'OPUS' as project, 'SAT_PRODUCT_RATING_FACTOR' as satellite, 'OPUS_BJAZ_TRV_RATE_MASTER' as record_source,
+select 'OPUS' as project, 'SAT_PRODUCT_RATING_FACTOR' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -5570,12 +5577,12 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 26. OPUS — SAT_PRODUCT_RATING_STRUCTURE   [Implemented]
 -- standard satellite, automate_dv.sat; PK PRODUCT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_RATE_MASTER [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns
--- = documented exception (staging trim rule retained by design), not a failure.
+-- OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
+-- columns = documented exception (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_STRUCTURE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER'
      order by hkey
      limit 100
 ),
@@ -5583,7 +5590,7 @@ c1 as (  -- latest satellite row per sampled key
     select PRODUCT_HKEY as hkey,
            to_varchar(PRICING_EFFECTIVE_DATE) as PRICING_EFFECTIVE_DATE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_RATING_STRUCTURE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER'
        and PRODUCT_HKEY in (select hkey from s1)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -5614,7 +5621,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.PRICING_EFFECTIVE_DATE
 )
-select 'OPUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite, 'OPUS_BJAZ_TRV_RATE_MASTER' as record_source,
+select 'OPUS' as project, 'SAT_PRODUCT_RATING_STRUCTURE' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -5640,7 +5647,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 27. OPUS — SAT_PRODUCT_TERMS   [Implemented]
 -- standard satellite, sat_multi_source; PK PRODUCT_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_PLAN_MST [6 col(s)], OPUS_BJAZ_TRV_PLAN [1 col(s)].
+-- OPUS_TRAVEL_BA_TRV_PLAN_MST [6 col(s)], OPUS_TRAVEL_BJAZ_TRV_PLAN [1 col(s)].
 -- stg2_product_terms_bjaz_trv_plan: column(s) FAMILY_DEFINITION, GEOGRAPHY_RESTRICTION,
 -- MAXIMUM_ENTRY_AGE, MINIMUM_ENTRY_AGE, MINIMUM_POLICY_TERM could not be traced to RAW
 -- on at least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
@@ -5650,7 +5657,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_PLAN_MST'
      order by hkey
      limit 100
 ),
@@ -5663,7 +5670,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(MINIMUM_ENTRY_AGE) as MINIMUM_ENTRY_AGE,
            to_varchar(MINIMUM_POLICY_TERM) as MINIMUM_POLICY_TERM
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_PLAN_MST'
        and PRODUCT_HKEY in (select hkey from s1)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -5771,7 +5778,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_PLAN'
      order by hkey
      limit 100
 ),
@@ -5779,7 +5786,7 @@ c2 as (  -- latest satellite row per sampled key
     select PRODUCT_HKEY as hkey,
            to_varchar(MAXIMUM_POLICY_TERM) as MAXIMUM_POLICY_TERM
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_PLAN'
        and PRODUCT_HKEY in (select hkey from s2)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -5810,7 +5817,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.MAXIMUM_POLICY_TERM
 )
-select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'OPUS_BA_TRV_PLAN_MST' as record_source,
+select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'OPUS_TRAVEL_BA_TRV_PLAN_MST' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -5830,7 +5837,7 @@ select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'OPUS_BA_TRV_PLAN_MS
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_PLAN' as record_source,
+select 'OPUS' as project, 'SAT_PRODUCT_TERMS' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_PLAN' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -5856,12 +5863,13 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 28. OPUS — SAT_PROPOSAL_UNDERWRITING   [Implemented]
 -- standard satellite, automate_dv.sat; PK PROPOSAL_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
--- columns = documented exception (staging trim rule retained by design), not a failure.
+-- OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [2 col(s)]. TRIMMED / BLANK_TO_NULL on trim /
+-- nullif columns = documented exception (staging trim rule retained by design), not a
+-- failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PROPOSAL_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROPOSAL_UNDERWRITING
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -5870,7 +5878,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(REFERRAL_DATE) as REFERRAL_DATE,
            to_varchar(REFERRAL_INDICATOR) as REFERRAL_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_PROPOSAL_UNDERWRITING
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and PROPOSAL_HKEY in (select hkey from s1)
     qualify rank() over (partition by PROPOSAL_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -5916,7 +5924,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.REFERRAL_INDICATOR
 )
-select 'OPUS' as project, 'SAT_PROPOSAL_UNDERWRITING' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_PROPOSAL_UNDERWRITING' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -5942,12 +5950,13 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 29. OPUS — SAT_QUOTE_HEADER   [Implemented]
 -- standard satellite, automate_dv.sat; PK QUOTE_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
--- columns = documented exception (staging trim rule retained by design), not a failure.
+-- OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim /
+-- nullif columns = documented exception (staging trim rule retained by design), not a
+-- failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct QUOTE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_HEADER
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -5955,7 +5964,7 @@ c1 as (  -- latest satellite row per sampled key
     select QUOTE_HKEY as hkey,
            to_varchar(QUOTE_DATE) as QUOTE_DATE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_QUOTE_HEADER
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and QUOTE_HKEY in (select hkey from s1)
     qualify rank() over (partition by QUOTE_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -5986,7 +5995,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.QUOTE_DATE
 )
-select 'OPUS' as project, 'SAT_QUOTE_HEADER' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_QUOTE_HEADER' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -6012,12 +6021,13 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 30. OPUS — SAT_RISK_MOTOR_DRIVER   [Implemented]
 -- standard satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
--- columns = documented exception (staging trim rule retained by design), not a failure.
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim /
+-- nullif columns = documented exception (staging trim rule retained by design), not a
+-- failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_DRIVER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -6025,7 +6035,7 @@ c1 as (  -- latest satellite row per sampled key
     select RISK_OBJECT_HKEY as hkey,
            to_varchar(OWNER_DRIVER_INDICATOR) as OWNER_DRIVER_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_DRIVER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and RISK_OBJECT_HKEY in (select hkey from s1)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -6056,7 +6066,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.OWNER_DRIVER_INDICATOR
 )
-select 'OPUS' as project, 'SAT_RISK_MOTOR_DRIVER' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_RISK_MOTOR_DRIVER' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -6082,12 +6092,13 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 31. OPUS — SAT_RISK_MOTOR_VEHICLE   [Implemented]
 -- standard satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [9 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
--- columns = documented exception (staging trim rule retained by design), not a failure.
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [9 col(s)]. TRIMMED / BLANK_TO_NULL on trim /
+-- nullif columns = documented exception (staging trim rule retained by design), not a
+-- failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_VEHICLE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -6103,7 +6114,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(SEATING_CAPACITY) as SEATING_CAPACITY,
            to_varchar(VEHICLE_SUB_CLASS) as VEHICLE_SUB_CLASS
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_MOTOR_VEHICLE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and RISK_OBJECT_HKEY in (select hkey from s1)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -6254,7 +6265,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.VEHICLE_SUB_CLASS
 )
-select 'OPUS' as project, 'SAT_RISK_MOTOR_VEHICLE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_RISK_MOTOR_VEHICLE' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -6280,12 +6291,13 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 32. OPUS — SAT_RISK_OBJECT_CORE   [Implemented]
 -- standard satellite, automate_dv.sat; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
--- columns = documented exception (staging trim rule retained by design), not a failure.
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim /
+-- nullif columns = documented exception (staging trim rule retained by design), not a
+-- failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_CORE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -6293,7 +6305,7 @@ c1 as (  -- latest satellite row per sampled key
     select RISK_OBJECT_HKEY as hkey,
            to_varchar(EXPOSURE_QUANTITY) as EXPOSURE_QUANTITY
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_OBJECT_CORE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and RISK_OBJECT_HKEY in (select hkey from s1)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -6324,7 +6336,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.EXPOSURE_QUANTITY
 )
-select 'OPUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_RISK_OBJECT_CORE' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -6350,12 +6362,12 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 33. OPUS — SAT_RISK_PERSON_INSURED   [Implemented]
 -- standard satellite, sat_multi_source; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA [4 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns
--- = documented exception (staging trim rule retained by design), not a failure.
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [4 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
+-- columns = documented exception (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_INSURED
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -6366,7 +6378,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(PRE_EXISTING_DISEASE_DESCRIPTION) as PRE_EXISTING_DISEASE_DESCRIPTION,
            to_varchar(RELATIONSHIP_TO_PROPOSER) as RELATIONSHIP_TO_PROPOSER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_INSURED
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and RISK_OBJECT_HKEY in (select hkey from s1)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -6478,7 +6490,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.RELATIONSHIP_TO_PROPOSER
 )
-select 'OPUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_RISK_PERSON_INSURED' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -6504,8 +6516,8 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 34. OPUS — SAT_RISK_PERSON_TRAVEL   [Implemented]
 -- standard satellite, sat_multi_source; PK RISK_OBJECT_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA [8 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [2 col(s)].
--- stg2_risk_person_travel_bjaz_trv_loader_log_table: column(s) PASSPORT_NUMBER,
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [8 col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [2
+-- col(s)]. stg2_risk_person_travel_bjaz_trv_loader_log_table: column(s) PASSPORT_NUMBER,
 -- TRIP_DURATION, TRIP_END_DATE, TRIP_START_DATE, TRIP_TYPE, VISA_TYPE could not be
 -- traced to RAW on at least one arm -- excluded (first-cut: walk columns from
 -- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
@@ -6514,7 +6526,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -6527,7 +6539,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(TRIP_START_DATE) as TRIP_START_DATE,
            to_varchar(TRIP_TYPE) as TRIP_TYPE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and RISK_OBJECT_HKEY in (select hkey from s1)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -6679,7 +6691,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -6688,7 +6700,7 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(DESTINATION_COUNTRY) as DESTINATION_COUNTRY,
            to_varchar(GEOGRAPHICAL_ZONE) as GEOGRAPHICAL_ZONE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_RISK_PERSON_TRAVEL
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and RISK_OBJECT_HKEY in (select hkey from s2)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -6734,7 +6746,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.GEOGRAPHICAL_ZONE
 )
-select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -6754,7 +6766,7 @@ select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_RISK_PERSON_TRAVEL' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -6780,12 +6792,12 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 35. OPUS — SAT_AUG_COMMON_COMMUNICATION_PREFERENCE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns
--- = documented exception (staging trim rule retained by design), not a failure.
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
+-- columns = documented exception (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -6793,7 +6805,7 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(CUSTOMER_CONSENT_INDICATOR) as CUSTOMER_CONSENT_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COMMON_COMMUNICATION_PREFERENCE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -6824,7 +6836,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.CUSTOMER_CONSENT_INDICATOR
 )
-select 'OPUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_AUG_COMMON_COMMUNICATION_PREFERENCE' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -6850,15 +6862,16 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 36. OPUS — SAT_AUG_COVERAGE_DEFINITION   [Implemented]
 -- augmented satellite, sat_multi_source; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_PLAN [2 col(s)]. stg2_aug_coverage_definition_bjaz_trv_plan_eff_date:
--- column(s) COVERAGE_SEQUENCE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries). TRIMMED / BLANK_TO_NULL on trim / nullif
--- columns = documented exception (staging trim rule retained by design), not a failure.
+-- OPUS_TRAVEL_BJAZ_TRV_PLAN [2 col(s)].
+-- stg2_aug_coverage_definition_bjaz_trv_plan_eff_date: column(s) COVERAGE_SEQUENCE could
+-- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception
+-- (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_PLAN'
      order by hkey
      limit 100
 ),
@@ -6867,7 +6880,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(EFFECTIVE_DATE) as EFFECTIVE_DATE,
            to_varchar(COVERAGE_SEQUENCE) as COVERAGE_SEQUENCE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_DEFINITION
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_PLAN'
        and COVERAGE_HKEY in (select hkey from s1)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -6920,7 +6933,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.COVERAGE_SEQUENCE
 )
-select 'OPUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite, 'OPUS_BJAZ_TRV_PLAN' as record_source,
+select 'OPUS' as project, 'SAT_AUG_COVERAGE_DEFINITION' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_PLAN' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -6946,7 +6959,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 37. OPUS — SAT_AUG_COVERAGE_LIMITS   [Implemented]
 -- augmented satellite, sat_multi_source; PK COVERAGE_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_PLAN [3 col(s)]. stg2_aug_coverage_limits_bjaz_trv_plan_currency:
+-- OPUS_TRAVEL_BJAZ_TRV_PLAN [3 col(s)]. stg2_aug_coverage_limits_bjaz_trv_plan_currency:
 -- column(s) DEDUCTIBLE_DESCRIPTION, LIMIT_DESCRIPTION could not be traced to RAW on at
 -- least one arm -- excluded (first-cut: walk columns from resolved_mt__ views or
 -- joined-in stitch columns are not yet inlined into the sampled queries).
@@ -6958,7 +6971,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_LIMITS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_PLAN'
      order by hkey
      limit 100
 ),
@@ -6968,7 +6981,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(DEDUCTIBLE_DESCRIPTION) as DEDUCTIBLE_DESCRIPTION,
            to_varchar(LIMIT_DESCRIPTION) as LIMIT_DESCRIPTION
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_LIMITS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_PLAN'
        and COVERAGE_HKEY in (select hkey from s1)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -7045,7 +7058,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.LIMIT_DESCRIPTION
 )
-select 'OPUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, 'OPUS_BJAZ_TRV_PLAN' as record_source,
+select 'OPUS' as project, 'SAT_AUG_COVERAGE_LIMITS' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_PLAN' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -7071,9 +7084,9 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 38. OPUS — SAT_AUG_COVERAGE_RATING   [Implemented]
 -- augmented satellite, sat_multi_source; PK COVERAGE_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_RIDER_RATE_MAST [4 col(s)], OPUS_BJAZ_TRV_RIDER_DTLS [1 col(s)].
--- stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_nb_prm_excluding_st: column(s)
--- EXTENSION_PREMIUM_EXCLUDING_ST, MINIMUM_EXTENSION_PREMIUM,
+-- OPUS_TRAVEL_BJAZ_TRV_RIDER_RATE_MAST [4 col(s)], OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS [1
+-- col(s)]. stg2_aug_coverage_rating_bjaz_trv_rider_rate_mast_nb_prm_excluding_st:
+-- column(s) EXTENSION_PREMIUM_EXCLUDING_ST, MINIMUM_EXTENSION_PREMIUM,
 -- MINIMUM_NEW_BUSINESS_PREMIUM, RIDER_PREMIUM could not be traced to RAW on at least one
 -- arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in stitch
 -- columns are not yet inlined into the sampled queries).
@@ -7098,7 +7111,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_RATING
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_RATE_MAST'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RIDER_RATE_MAST'
      order by hkey
      limit 100
 ),
@@ -7109,7 +7122,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(MINIMUM_EXTENSION_PREMIUM) as MINIMUM_EXTENSION_PREMIUM,
            to_varchar(MINIMUM_NEW_BUSINESS_PREMIUM) as MINIMUM_NEW_BUSINESS_PREMIUM
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_RATING
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_RATE_MAST'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RIDER_RATE_MAST'
        and COVERAGE_HKEY in (select hkey from s1)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -7214,7 +7227,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct COVERAGE_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_RATING
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS'
      order by hkey
      limit 100
 ),
@@ -7222,7 +7235,7 @@ c2 as (  -- latest satellite row per sampled key
     select COVERAGE_HKEY as hkey,
            to_varchar(RIDER_PREMIUM) as RIDER_PREMIUM
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_COVERAGE_RATING
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RIDER_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS'
        and COVERAGE_HKEY in (select hkey from s2)
     qualify rank() over (partition by COVERAGE_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -7253,7 +7266,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.RIDER_PREMIUM
 )
-select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'OPUS_BJAZ_TRV_RIDER_RATE_MAST' as record_source,
+select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_RIDER_RATE_MAST' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -7273,7 +7286,7 @@ select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'OPUS_BJAZ_TRV
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'OPUS_BJAZ_TRV_RIDER_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_AUG_COVERAGE_RATING' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_RIDER_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -7299,9 +7312,9 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 39. OPUS — SAT_AUG_FINTXN_PREMIUM   [Implemented]
 -- augmented satellite, sat_multi_source; PK FINANCIAL_TRANSACTION_HKEY; 3 RECORD_SOURCE
--- group(s): OPUS_BA_TRV_DATA_POLICY_DTLS [2 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1
--- col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
--- stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_sp_discount_per: column(s)
+-- group(s): OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [2 col(s)],
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [1 col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [1
+-- col(s)]. stg2_aug_fintxn_premium_ba_trv_data_policy_dtls_sp_discount_per: column(s)
 -- SPECIAL_DISCOUNT_AMOUNT could not be traced to RAW on at least one arm -- excluded
 -- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
 -- yet inlined into the sampled queries).
@@ -7317,7 +7330,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -7326,7 +7339,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(SPECIAL_DISCOUNT_PERCENTAGE) as SPECIAL_DISCOUNT_PERCENTAGE,
            to_varchar(SPECIAL_DISCOUNT_AMOUNT) as SPECIAL_DISCOUNT_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s1)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -7381,7 +7394,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -7389,7 +7402,7 @@ c2 as (  -- latest satellite row per sampled key
     select FINANCIAL_TRANSACTION_HKEY as hkey,
            to_varchar(SPECIAL_DISCOUNT_AMOUNT) as SPECIAL_DISCOUNT_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s2)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -7422,7 +7435,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct FINANCIAL_TRANSACTION_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -7430,7 +7443,7 @@ c3 as (  -- latest satellite row per sampled key
     select FINANCIAL_TRANSACTION_HKEY as hkey,
            to_varchar(SPECIAL_DISCOUNT_AMOUNT) as SPECIAL_DISCOUNT_AMOUNT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_FINTXN_PREMIUM
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and FINANCIAL_TRANSACTION_HKEY in (select hkey from s3)
     qualify rank() over (partition by FINANCIAL_TRANSACTION_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -7461,7 +7474,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey
      group by c.hkey, c.SPECIAL_DISCOUNT_AMOUNT
 )
-select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -7481,7 +7494,7 @@ select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_BA_TRV_DA
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -7501,7 +7514,7 @@ select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_
   from r2
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_AUG_FINTXN_PREMIUM' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -7527,12 +7540,13 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 40. OPUS — SAT_AUG_LNK_PARTY_ROLE_CORE   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
--- columns = documented exception (staging trim rule retained by design), not a failure.
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim /
+-- nullif columns = documented exception (staging trim rule retained by design), not a
+-- failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_PARTY_ROLE_CORE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -7540,7 +7554,7 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(PREMIUM_PAYER_INDICATOR) as PREMIUM_PAYER_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_PARTY_ROLE_CORE
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -7571,7 +7585,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.PREMIUM_PAYER_INDICATOR
 )
-select 'OPUS' as project, 'SAT_AUG_LNK_PARTY_ROLE_CORE' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_AUG_LNK_PARTY_ROLE_CORE' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -7597,13 +7611,13 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 41. OPUS — SAT_AUG_LNK_ROLE_CUSTOMER   [Implemented]
 -- augmented satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. TRIMMED
--- / BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim rule
--- retained by design), not a failure.
+-- OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [1
+-- col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception
+-- (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -7611,7 +7625,7 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(PROPOSER_IS_TRAVELLER_INDICATOR) as PROPOSER_IS_TRAVELLER_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -7644,7 +7658,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -7652,7 +7666,7 @@ c2 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(PROPOSER_IS_TRAVELLER_INDICATOR) as PROPOSER_IS_TRAVELLER_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_LNK_ROLE_CUSTOMER
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -7683,7 +7697,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.PROPOSER_IS_TRAVELLER_INDICATOR
 )
-select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -7703,7 +7717,7 @@ select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'OPUS_BA_TRV
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_AUG_LNK_ROLE_CUSTOMER' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -7729,12 +7743,12 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 42. OPUS — SAT_AUG_PARTY_BANKING   [Implemented]
 -- augmented satellite, automate_dv.sat; PK PARTY_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns
--- = documented exception (staging trim rule retained by design), not a failure.
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
+-- columns = documented exception (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_BANKING
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -7742,7 +7756,7 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(BANK_CUSTOMER_IDENTIFIER) as BANK_CUSTOMER_IDENTIFIER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_BANKING
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -7773,7 +7787,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.BANK_CUSTOMER_IDENTIFIER
 )
-select 'OPUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_AUG_PARTY_BANKING' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -7799,13 +7813,13 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 43. OPUS — SAT_AUG_PARTY_EMPLOYMENT   [Implemented]
 -- augmented satellite, sat_multi_source; PK PARTY_HKEY; 2 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_BJAZ_TRV_LOADER_LOG_TABLE [1 col(s)].
--- TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception (staging trim
--- rule retained by design), not a failure.
+-- OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS [1 col(s)], OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE
+-- [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns = documented exception
+-- (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
      order by hkey
      limit 100
 ),
@@ -7813,7 +7827,7 @@ c1 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(EMPLOYEE_NUMBER) as EMPLOYEE_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT
-     where RECORD_SOURCE = 'OPUS_BA_TRV_DATA_POLICY_DTLS'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS'
        and PARTY_HKEY in (select hkey from s1)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -7846,7 +7860,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PARTY_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
      order by hkey
      limit 100
 ),
@@ -7854,7 +7868,7 @@ c2 as (  -- latest satellite row per sampled key
     select PARTY_HKEY as hkey,
            to_varchar(EMPLOYEE_NUMBER) as EMPLOYEE_NUMBER
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PARTY_EMPLOYMENT
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE'
        and PARTY_HKEY in (select hkey from s2)
     qualify rank() over (partition by PARTY_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -7885,7 +7899,7 @@ r2 as (
       from c2 c left join e2 e on e.hkey = c.hkey
      group by c.hkey, c.EMPLOYEE_NUMBER
 )
-select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'OPUS_BA_TRV_DATA_POLICY_DTLS' as record_source,
+select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'OPUS_TRAVEL_BA_TRV_DATA_POLICY_DTLS' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -7905,7 +7919,7 @@ select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'OPUS_BA_TRV_
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'OPUS_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
+select 'OPUS' as project, 'SAT_AUG_PARTY_EMPLOYMENT' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_LOG_TABLE' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -7931,13 +7945,13 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 44. OPUS — SAT_AUG_PRODUCT_TERMS   [Implemented]
 -- augmented satellite, sat_multi_source; PK PRODUCT_HKEY; 3 RECORD_SOURCE group(s):
--- OPUS_BA_TRV_PLAN_MST [3 col(s)], OPUS_BJAZ_TRV_RATE_MASTER [2 col(s)],
--- OPUS_BJAZ_TRV_PLAN [1 col(s)]. stg2_aug_product_terms_ba_trv_plan_mst_multi_year_yn:
--- column(s) AGE_ELIGIBILITY_BYPASS_INDICATOR, CFT_ELIGIBLE_INDICATOR,
--- PLAN_GEOGRAPHICAL_ZONE could not be traced to RAW on at least one arm -- excluded
--- (first-cut: walk columns from resolved_mt__ views or joined-in stitch columns are not
--- yet inlined into the sampled queries).
--- stg2_aug_product_terms_ba_trv_plan_mst_age_bypass_yn: column(s)
+-- OPUS_TRAVEL_BA_TRV_PLAN_MST [3 col(s)], OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER [2 col(s)],
+-- OPUS_TRAVEL_BJAZ_TRV_PLAN [1 col(s)].
+-- stg2_aug_product_terms_ba_trv_plan_mst_multi_year_yn: column(s)
+-- AGE_ELIGIBILITY_BYPASS_INDICATOR, CFT_ELIGIBLE_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could
+-- not be traced to RAW on at least one arm -- excluded (first-cut: walk columns from
+-- resolved_mt__ views or joined-in stitch columns are not yet inlined into the sampled
+-- queries). stg2_aug_product_terms_ba_trv_plan_mst_age_bypass_yn: column(s)
 -- CFT_ELIGIBLE_INDICATOR, PLAN_GEOGRAPHICAL_ZONE could not be traced to RAW on at least
 -- one arm -- excluded (first-cut: walk columns from resolved_mt__ views or joined-in
 -- stitch columns are not yet inlined into the sampled queries).
@@ -7961,7 +7975,7 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_PLAN_MST'
      order by hkey
      limit 100
 ),
@@ -7971,7 +7985,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(AGE_ELIGIBILITY_BYPASS_INDICATOR) as AGE_ELIGIBILITY_BYPASS_INDICATOR,
            to_varchar(CFT_ELIGIBLE_INDICATOR) as CFT_ELIGIBLE_INDICATOR
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BA_TRV_PLAN_MST'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BA_TRV_PLAN_MST'
        and PRODUCT_HKEY in (select hkey from s1)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -8050,7 +8064,7 @@ r1 as (
 ),
 s2 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER'
      order by hkey
      limit 100
 ),
@@ -8059,7 +8073,7 @@ c2 as (  -- latest satellite row per sampled key
            to_varchar(CFT_ELIGIBLE_INDICATOR) as CFT_ELIGIBLE_INDICATOR,
            to_varchar(PLAN_GEOGRAPHICAL_ZONE) as PLAN_GEOGRAPHICAL_ZONE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_RATE_MASTER'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER'
        and PRODUCT_HKEY in (select hkey from s2)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -8114,7 +8128,7 @@ r2 as (
 ),
 s3 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct PRODUCT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_PLAN'
      order by hkey
      limit 100
 ),
@@ -8122,7 +8136,7 @@ c3 as (  -- latest satellite row per sampled key
     select PRODUCT_HKEY as hkey,
            to_varchar(PLAN_GEOGRAPHICAL_ZONE) as PLAN_GEOGRAPHICAL_ZONE
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_PRODUCT_TERMS
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_PLAN'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_PLAN'
        and PRODUCT_HKEY in (select hkey from s3)
     qualify rank() over (partition by PRODUCT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -8153,7 +8167,7 @@ r3 as (
       from c3 c left join e3 e on e.hkey = c.hkey
      group by c.hkey, c.PLAN_GEOGRAPHICAL_ZONE
 )
-select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BA_TRV_PLAN_MST' as record_source,
+select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_TRAVEL_BA_TRV_PLAN_MST' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -8173,7 +8187,7 @@ select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BA_TRV_PLA
   from r1
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_RATE_MASTER' as record_source,
+select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_RATE_MASTER' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -8193,7 +8207,7 @@ select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_R
   from r2
  group by column_name, raw_column, model_rule
 union all
-select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_BJAZ_TRV_PLAN' as record_source,
+select 'OPUS' as project, 'SAT_AUG_PRODUCT_TERMS' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_PLAN' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -8219,12 +8233,12 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 45. OPUS — SAT_AUG_RISK_PERSON_INSURED   [Implemented]
 -- augmented satellite, sat_multi_source; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns
--- = documented exception (staging trim rule retained by design), not a failure.
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [1 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
+-- columns = documented exception (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_INSURED
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -8232,7 +8246,7 @@ c1 as (  -- latest satellite row per sampled key
     select RISK_OBJECT_HKEY as hkey,
            to_varchar(DATE_OF_BIRTH) as DATE_OF_BIRTH
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_INSURED
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and RISK_OBJECT_HKEY in (select hkey from s1)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -8287,7 +8301,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.DATE_OF_BIRTH
 )
-select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_INSURED' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
@@ -8313,12 +8327,12 @@ order by record_source, column_name;
 ----------------------------------------------------------------------------------------
 -- 46. OPUS — SAT_AUG_RISK_PERSON_TRAVEL   [Implemented]
 -- augmented satellite, sat_multi_source; PK RISK_OBJECT_HKEY; 1 RECORD_SOURCE group(s):
--- OPUS_BJAZ_TRV_LOADER_DATA [2 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif columns
--- = documented exception (staging trim rule retained by design), not a failure.
+-- OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA [2 col(s)]. TRIMMED / BLANK_TO_NULL on trim / nullif
+-- columns = documented exception (staging trim rule retained by design), not a failure.
 ----------------------------------------------------------------------------------------
 with s1 as (  -- deterministic sample: first 100 keys of this RECORD_SOURCE by hash key
     select distinct RISK_OBJECT_HKEY as hkey from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_TRAVEL
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
      order by hkey
      limit 100
 ),
@@ -8327,7 +8341,7 @@ c1 as (  -- latest satellite row per sampled key
            to_varchar(ALTITUDE_LIMIT) as ALTITUDE_LIMIT,
            to_varchar(MODE_OF_TRANSPORT) as MODE_OF_TRANSPORT
       from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.SAT_AUG_RISK_PERSON_TRAVEL
-     where RECORD_SOURCE = 'OPUS_BJAZ_TRV_LOADER_DATA'
+     where RECORD_SOURCE = 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA'
        and RISK_OBJECT_HKEY in (select hkey from s1)
     qualify rank() over (partition by RISK_OBJECT_HKEY order by LOAD_DATETIME desc) = 1
 ),
@@ -8401,7 +8415,7 @@ r1 as (
       from c1 c left join e1 e on e.hkey = c.hkey
      group by c.hkey, c.MODE_OF_TRANSPORT
 )
-select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, 'OPUS_BJAZ_TRV_LOADER_DATA' as record_source,
+select 'OPUS' as project, 'SAT_AUG_RISK_PERSON_TRAVEL' as satellite, 'OPUS_TRAVEL_BJAZ_TRV_LOADER_DATA' as record_source,
        column_name, raw_column, model_rule, count(*) as keys_compared,
        count_if(src_rows > 0 and cls = 0) as exact,
        count_if(src_rows > 0 and cls = 1) as blank_to_null,
