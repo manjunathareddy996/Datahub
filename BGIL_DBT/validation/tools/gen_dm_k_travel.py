@@ -62,6 +62,11 @@ PK.RAW_SCHEMA = RAW_SCHEMA
 PK.VALIDATION = VALIDATION
 PK.OPUS = OPUS
 PK.MAXI = MAXI
+# Travel LOB: emits '<SYSTEM>_TRAVEL_<TABLE>' in RECORD_SOURCE. This flips
+# Hub.prefix and every helper that reads K.LOB to the travel scope. Downstream
+# travel generators (gen_dm_a_travel etc.) just import gen_dm_k_travel so this
+# override is in effect by the time they call PK.k2 / PK.k3 / etc.
+PK.LOB = "TRAVEL"
 
 # Pick a docx styles template. The partner suite ships several -- any of
 # them has the styles we need. Prefer DM-K4 if a sibling has it, else fall

@@ -54,7 +54,7 @@ class Link:
 
     @property
     def prefix(self):
-        return f"{self.project}_"
+        return f"{self.project}_{K.LOB}_"
 
 
 def parents():
@@ -125,7 +125,11 @@ def build_links():
 # DM-R1: orphan satellite rows
 # ---------------------------------------------------------------------------------------
 def scope(sat):
-    return f"RECORD_SOURCE = '{sat.project}'" if sat.object_cols else f"startswith(RECORD_SOURCE, '{sat.project}_')"
+    # OBJECT branch sats carry RECORD_SOURCE = '<GROUP>_MULTI' (e.g.
+    # 'OPUS_PARTNER_MULTI'); non-object sats use the LOB-scoped prefix.
+    if sat.object_cols:
+        return f"RECORD_SOURCE = '{sat.project}_{K.LOB}_MULTI'"
+    return f"startswith(RECORD_SOURCE, '{sat.project}_{K.LOB}_')"
 
 
 def r1_section(sat, pmap):

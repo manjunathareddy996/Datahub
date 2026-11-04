@@ -221,7 +221,11 @@ def object_hashdiff_expr(sat):
 
 
 def project_scope(sat):
-    return f"RECORD_SOURCE = '{sat.project}'" if sat.object_cols else f"startswith(RECORD_SOURCE, '{sat.project}_')"
+    # OBJECT sats carry RECORD_SOURCE = '<SYSTEM>_<LOB>_MULTI'. Non-object
+    # sats use the LOB-scoped prefix read from K.LOB (PARTNER or TRAVEL).
+    if sat.object_cols:
+        return f"RECORD_SOURCE = '{sat.project}_{K.LOB}_MULTI'"
+    return f"startswith(RECORD_SOURCE, '{sat.project}_{K.LOB}_')"
 
 
 def part_cols(sat):

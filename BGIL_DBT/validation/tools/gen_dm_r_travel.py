@@ -164,7 +164,7 @@ def scope_travel(sat):
     if rs:
         return _scope_sql(rs)
     # OBJECT sats or stitch grouping (rare in travel): use the partner default.
-    return R.scope(sat) if False else f"startswith(RECORD_SOURCE, '{sat.project}_')"
+    return R.scope(sat) if False else f"startswith(RECORD_SOURCE, '{sat.project}_{K.LOB}_')"
 
 
 # ---------------------------------------------------------------------------

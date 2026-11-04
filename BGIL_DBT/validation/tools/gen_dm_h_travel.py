@@ -96,7 +96,7 @@ def _project_scope_travel(sat):
     if rs:
         lits = ", ".join("'" + v.replace("'", "''") + "'" for v in rs)
         return f"RECORD_SOURCE in ({lits})"
-    return f"startswith(RECORD_SOURCE, '{sat.project}_')"
+    return f"startswith(RECORD_SOURCE, '{sat.project}_{K.LOB}_')"
 
 
 H.project_scope = _project_scope_travel

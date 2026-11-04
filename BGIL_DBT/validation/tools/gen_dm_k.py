@@ -36,6 +36,13 @@ RAW_SCHEMA = {
 }
 GHOST_HKEY = "TO_BINARY(REPEAT('0', 32), 'HEX')"
 
+# LOB token embedded in RECORD_SOURCE values ('<SYSTEM>_<LOB>_<TABLE>').
+# gen_dm_k.py (partner suite) defaults to PARTNER; the travel entry points
+# override this to TRAVEL after import. Keep as a module-level constant so
+# downstream helpers (Hub.prefix, scope predicates, ownership sweeps) read a
+# single source of truth.
+LOB = "PARTNER"
+
 # ---------------------------------------------------------------------------------------
 # Parsing helpers
 # ---------------------------------------------------------------------------------------
@@ -208,7 +215,8 @@ class Hub:
 
     @property
     def prefix(self):
-        return "MAXIMUS_" if self.project == "MAXIMUS" else "OPUS_"
+        # Project-scoped prefix now carries the LOB token ('<SYSTEM>_<LOB>_').
+        return f"{self.project}_{LOB}_"
 
     @property
     def applicable(self):
@@ -481,14 +489,14 @@ def k2_ownership(all_hub_names):
   from (
         {unions}
        )
- where not startswith(RECORD_SOURCE, 'MAXIMUS_')
-   and not startswith(RECORD_SOURCE, 'OPUS_')
+ where not startswith(RECORD_SOURCE, 'MAXIMUS_{LOB}_')
+   and not startswith(RECORD_SOURCE, 'OPUS_{LOB}_')
  group by hub, RECORD_SOURCE
- order by hub, RECORD_SOURCE;"""
+ order by hub, RECORD_SOURCE;""".replace("{LOB}", LOB)
     return dict(project="MAXIMUS + OPUS", hub="Ownership sweep (all hubs)", status="Informational",
                 pass_criteria="0 rows, or only record sources of other known projects",
-                note="Not part of the pass criterion. Rows whose RECORD_SOURCE is neither MAXIMUS_ nor OPUS_ are "
-                     "not covered by the per-hub sections.", queries=[("SQL query", sql)])
+                note=f"Not part of the pass criterion. Rows whose RECORD_SOURCE is neither MAXIMUS_{LOB}_ nor "
+                     f"OPUS_{LOB}_ are not covered by the per-hub sections.", queries=[("SQL query", sql)])
 
 
 def k3_detail(hubs):
