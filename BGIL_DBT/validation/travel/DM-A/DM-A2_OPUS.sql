@@ -32,9 +32,10 @@
    - This file: OPUS only (45 satellites, standard + augmented); 45 have mapped payload,
      83 RECORD_SOURCE groups, 197 mapped (group, column) pairs.
    - Lineage handled: stg_ direct, Maximus Travel stg2 over resolved_mt__ (base stg_mt__
-     + walk columns -- walk columns are reported as unresolved in the first cut), Maximus
-     Travel satfeed unions (bare HASHDIFF rename), unpivot arms, OPUS plain-join stitches
-     (joined-in columns reported as unresolved in the first cut).
+     aliased as b, walk columns resolved by left-joining the parent RAW table on
+     FOREIGN_KEY), Maximus Travel satfeed unions (bare HASHDIFF rename), unpivot arms,
+     OPUS plain-join stitches (joined-in columns reported as unresolved in the first
+     cut).
    - Sections marked NA load only hard-coded NULL padding, a disabled placeholder, or
      every arm resolved to zero columns.
    ===================================================================================== */

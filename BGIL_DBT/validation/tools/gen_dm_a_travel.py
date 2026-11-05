@@ -140,35 +140,65 @@ def _walk_join_sql(md, walks):
     joins = []
     alias_map = {}
     unresolved = []
-    # De-duplicate by parent RAW table so a resolver with multiple walks
-    # to the same parent (common when both an fk_join and a climb-hop walk
-    # resolve to columns on the same parent document) joins it once.
-    parent_alias = {}
+    # Join chain cache: a `chain` fingerprint we've already emitted so a
+    # walk with a chain we've seen reuses the same alias (and we don't
+    # double-join intermediate parents).
+    chain_alias = {}
+    # Count of distinct chain stages so each level gets a unique alias.
+    stage_counter = [0]
+
+    def _next_alias():
+        a = f"wk{stage_counter[0]}"
+        stage_counter[0] += 1
+        return a
+
     for walk_name, info in walks.items():
-        parent_stg = info["parent_stg"]
+        chain = info.get("chain") or []
         parent_col = info["parent_col"]
+        if not chain:
+            unresolved.append(walk_name)
+            continue
+        # chain is destination-first: chain[0] is the destination parent
+        # joined to chain[1] (and so on) until the final leg joins b.
+        # Reverse so we emit joins starting from b outward.
         try:
-            parent_raw = _parent_raw_fq(md, parent_stg)
+            levels = list(reversed(chain))
         except Exception:
             unresolved.append(walk_name)
             continue
-        if parent_raw not in parent_alias:
-            alias = f"wk{len(parent_alias)}"
-            parent_alias[parent_raw] = alias
-            # Walk resolvers use one of two shapes:
-            #   fk_join: parent.FOREIGN_KEY = b.FOREIGN_KEY (document handle)
-            #   climb hop (1 level): parent.KEY_HASH = b.PARENT_KEY_HASH
-            # Both parent and base RAW expose FOREIGN_KEY (BD1 directive),
-            # and every shred row of one document shares it, so the
-            # FOREIGN_KEY join reaches the right parent for fk_join walks
-            # and reduces climb hops within the same document to it.
-            # Multi-document chains would need PARENT_KEY_HASH chaining;
-            # those are left unresolved (probe reports no_source_row).
+        # Fingerprint: tuple of (stg, left_col, right_col) per level. If
+        # two walks share the same chain they share the final alias.
+        fp = tuple((lv["stg"], lv["left"], lv["right"]) for lv in levels)
+        if fp in chain_alias:
+            alias_map[walk_name] = f'{chain_alias[fp]}."{parent_col.upper()}"'
+            continue
+        # Emit the chain. prev_alias starts at `b` for the first level.
+        prev_alias = "b"
+        final_alias = None
+        emitted_fp = tuple()  # prefix fingerprint, to find already-joined prefix
+        for i, lv in enumerate(levels):
+            emitted_fp = emitted_fp + (fp[i],)
+            if emitted_fp in chain_alias:
+                prev_alias = chain_alias[emitted_fp]
+                final_alias = prev_alias
+                continue
+            try:
+                parent_raw = _parent_raw_fq(md, lv["stg"])
+            except Exception:
+                unresolved.append(walk_name)
+                prev_alias = None
+                break
+            alias = _next_alias()
             joins.append(
                 f'left join {parent_raw} {alias}\n'
-                f'            on {alias}."FOREIGN_KEY" = b."FOREIGN_KEY"')
-        alias = parent_alias[parent_raw]
-        alias_map[walk_name] = f'{alias}."{parent_col.upper()}"'
+                f'            on {alias}."{lv["left"].upper()}" '
+                f'= {prev_alias}."{lv["right"].upper()}"')
+            chain_alias[emitted_fp] = alias
+            prev_alias = alias
+            final_alias = alias
+        if final_alias is None:
+            continue
+        alias_map[walk_name] = f'{final_alias}."{parent_col.upper()}"'
     return joins, alias_map, unresolved
 
 

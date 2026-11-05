@@ -84,7 +84,21 @@ _resolved_cache = {}
 
 
 def parse_resolved(models_dir, name):
-    """(base_stg_name, {walk_col: {'parent_stg': ..., 'parent_col': ...}})."""
+    """Return (base_stg_name, {walk_col: {parent_stg, parent_col, chain}}).
+
+    chain is the ordered list of per-level dicts describing the ON clause of
+    each left join leading to the walk's parent, from the leaf side:
+
+        [{'stg': 'stg_mt__level_1', 'left': 'key_hash',
+          'right_alias': 'b', 'right': 'parent_key_hash'},
+         {'stg': 'stg_mt__level_2', 'left': 'key_hash',
+          'right_alias': '<prev-alias>', 'right': 'parent_key_hash'},
+         ...]
+
+    For an fk_join walk (one hop on FOREIGN_KEY) the chain has a single
+    element with left='foreign_key', right='foreign_key'. For climb hops it
+    chains through key_hash/parent_key_hash.
+    """
     key = (models_dir, name)
     if key in _resolved_cache:
         return _resolved_cache[key]
@@ -92,18 +106,47 @@ def parse_resolved(models_dir, name):
     base = re.search(r"from\s*\{\{\s*ref\('([^']+)'\)\s*\}\}\s+b\b", sql)
     if not base:
         raise ValueError(f"{name}: no 'from {{{{ ref(..) }}}} b' found")
+
+    # Capture each left-join leg with ON clause so we can reconstruct the
+    # chain: alias -> (stg, left_col, right_alias, right_col).
+    join_leg_re = re.compile(
+        r"left\s+join\s*\{\{\s*ref\('([^']+)'\)\s*\}\}\s+([A-Za-z0-9_]+)\s+on\s+"
+        r"([A-Za-z0-9_]+)\.([A-Za-z0-9_]+)\s*=\s*([A-Za-z0-9_]+)\.([A-Za-z0-9_]+)",
+        re.I)
+    legs = {}
+    for m in join_leg_re.finditer(sql):
+        stg, alias, left_a, left_c, right_a, right_c = m.groups()
+        # left side should reference the join alias itself (name).left_col = other.right_col
+        if left_a == alias:
+            legs[alias] = {"stg": stg, "left": left_c.lower(),
+                           "right_alias": right_a, "right": right_c.lower()}
+        else:
+            # Fallback: swap sides when author wrote `b.col = x.col`.
+            legs[alias] = {"stg": stg, "left": right_c.lower(),
+                           "right_alias": left_a, "right": left_c.lower()}
+
     walks = {}
-    # left join {{ ref('stg_mt__X') }} <alias> on <alias>.<pcol> = <any>.<col>
-    # Capture every left-joined alias regardless of what the ON clause joins to
-    # -- multi-hop resolvers chain joins off previous walk aliases, not just b.
-    join_re = re.compile(
-        r"left\s+join\s*\{\{\s*ref\('([^']+)'\)\s*\}\}\s+([A-Za-z0-9_]+)\s+on\b", re.I)
-    joins = {m.group(2): m.group(1) for m in join_re.finditer(sql)}
-    # select b.*, <alias>.<pcol> as <walk_name>
     walk_re = re.compile(r"([A-Za-z0-9_]+)\.([A-Za-z0-9_]+)\s+as\s+([A-Za-z0-9_]+)", re.I)
     for alias, pcol, walk_name in walk_re.findall(sql):
-        if alias in joins:
-            walks[walk_name.lower()] = {"parent_stg": joins[alias], "parent_col": pcol.lower()}
+        if alias not in legs:
+            continue
+        # Walk back the chain from this alias to `b`.
+        chain = []
+        cur = alias
+        seen = set()
+        while cur in legs and cur not in seen:
+            seen.add(cur)
+            leg = legs[cur]
+            chain.append({"stg": leg["stg"], "left": leg["left"],
+                          "right_alias": leg["right_alias"], "right": leg["right"]})
+            cur = leg["right_alias"]
+            if cur == "b":
+                break
+        walks[walk_name.lower()] = {
+            "parent_stg": legs[alias]["stg"],
+            "parent_col": pcol.lower(),
+            "chain": chain,
+        }
     _resolved_cache[key] = (base.group(1), walks)
     return _resolved_cache[key]
 
