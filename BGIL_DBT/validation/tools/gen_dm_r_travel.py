@@ -70,7 +70,12 @@ def link_feed_arms_travel(md, feed):
             wa = a.wrap(rename)
             if w:
                 try:
-                    cond = A.subst(A.lower_idents(w.group(1).strip()), wa.lookup)
+                    # The trailing `where <stg2_bk> is not null` references
+                    # a column name defined on the stg2 (not on the feed's
+                    # renamed output), so substitute against the underlying
+                    # arm's lookup directly -- wa.lookup is the thin
+                    # wrapper and returns None for anything outside rename.
+                    cond = A.subst(A.lower_idents(w.group(1).strip()), a.lookup)
                     wa.where = f"({wa.where}) and ({cond})" if wa.where else cond
                 except Exception:
                     pass
