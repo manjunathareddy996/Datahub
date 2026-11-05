@@ -1022,11 +1022,11 @@ select 'MAXIMUS' as project, 'LINK_PARTY_LOCATION' as link, l.RECORD_SOURCE,
 -- lnkfeed_mt_party_role <- stg2_mt__uwr_qpd_rskl_msp_imsd_inp_pv, lnkfeed_mt_party_role
 -- <- stg2_mt__uwr_pol_polp_sp_pv, lnkfeed_mt_party_role <- stg2_mt__uwr_qpd_polp_rl_pv,
 -- lnkfeed_mt_party_role <- stg2_mt__uwr_pol_ins_mbr_pp_sp_pv. FKs: PARTY_HKEY ->
--- HUB_PARTY, PARTY_ROLE_ROLE -> HUB_PARTY_ROLE_ROLE. A RAW relationship counts only when
--- every FK key is present (automate_dv.link does not load a row with a NULL FK). Link
--- hash keys are recomputed from RAW with the stg2 NK expressions (automate_dv 0.11.5
--- MD5_BINARY formula). Excluded: lnkfeed_mt_party_role <- stg2_mt__uwr_pol_prp_pp_sp_pv:
--- FK/PK/LDTS column(s) not traceable ([('PARTY_ROLE_HKEY',
+-- HUB_PARTY. A RAW relationship counts only when every FK key is present
+-- (automate_dv.link does not load a row with a NULL FK). Link hash keys are recomputed
+-- from RAW with the stg2 NK expressions (automate_dv 0.11.5 MD5_BINARY formula).
+-- Excluded: lnkfeed_mt_party_role <- stg2_mt__uwr_pol_prp_pp_sp_pv: FK/PK/LDTS column(s)
+-- not traceable ([('PARTY_ROLE_HKEY',
 -- "MD5_BINARY(NULLIF(UPPER(TRIM(CAST('LNK_PARTY_ROLE|' || (coalesce(nullif(trim(case
 -- when nullif(trim(w0_party_code),'') is not null then nullif(trim(w0_party_code), '')
 -- end),''),'')) AS VARCHAR))), ''))"), ('PARTY_HKEY',
@@ -1055,7 +1055,8 @@ select 'MAXIMUS' as project, 'LINK_PARTY_LOCATION' as link, l.RECORD_SOURCE,
 -- end),\'\')) AS VARCHAR))), \'\'))'), ('PARTY_ROLE_ROLE', None), ('LOAD_DATETIME',
 -- '(nullif(trim(to_varchar("REC_REFRESH_AT")), \'\'))')]). Link rows scoped by
 -- RECORD_SOURCE value set (5 travel feeds) rather than the shared 'MAXIMUS_TRAVEL_'
--- prefix.
+-- prefix. FK(s) PARTY_ROLE_ROLE are degenerate role codes (no corresponding hub);
+-- orphan-FK check skipped for them.
 ----------------------------------------------------------------------------------------
 -- SQL query (a) -- counts per feed
 with src as (
@@ -1276,9 +1277,10 @@ select 'MAXIMUS' as project, 'LINK_PARTY_ROLE' as link, src_feed, to_varchar(lin
 ----------------------------------------------------------------------------------------
 -- 8. MAXIMUS — LINK_PARTY_ROLE -- (b) orphan links (link FK -> hub)   [Implemented]
 -- Link rows scoped to RECORD_SOURCE 'MAXIMUS_TRAVEL_%'; every FK must exist in its hub
--- (any project's rows -- shared vault). FKs: PARTY_HKEY -> HUB_PARTY, PARTY_ROLE_ROLE ->
--- HUB_PARTY_ROLE_ROLE. Link rows scoped by RECORD_SOURCE value set (5 travel feeds)
--- rather than the shared 'MAXIMUS_TRAVEL_' prefix.
+-- (any project's rows -- shared vault). FKs: PARTY_HKEY -> HUB_PARTY. Link rows scoped
+-- by RECORD_SOURCE value set (5 travel feeds) rather than the shared 'MAXIMUS_TRAVEL_'
+-- prefix. FK(s) PARTY_ROLE_ROLE are degenerate role codes (no corresponding hub);
+-- orphan-FK check skipped for them.
 ----------------------------------------------------------------------------------------
 select 'MAXIMUS' as project, 'LINK_PARTY_ROLE' as link, 'PARTY_HKEY' as fk_column, 'HUB_PARTY' as hub,
        count(*) as link_rows,
@@ -1289,16 +1291,6 @@ select 'MAXIMUS' as project, 'LINK_PARTY_ROLE' as link, 'PARTY_HKEY' as fk_colum
   from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_ROLE l
   left join (select distinct PARTY_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY) h on h.k = l.PARTY_HKEY
  where l.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
-union all
-select 'MAXIMUS' as project, 'LINK_PARTY_ROLE' as link, 'PARTY_ROLE_ROLE' as fk_column, 'HUB_PARTY_ROLE_ROLE' as hub,
-       count(*) as link_rows,
-       count_if(l.PARTY_ROLE_ROLE is null) as null_fk_rows,
-       count_if(l.PARTY_ROLE_ROLE is not null and h.k is null) as orphan_fk_rows,
-       array_slice(array_agg(distinct iff(l.PARTY_ROLE_ROLE is not null and h.k is null, to_varchar(l.PARTY_ROLE_ROLE, 'HEX'), null)), 0, 3) as orphan_examples,
-       iff(null_fk_rows = 0 and orphan_fk_rows = 0, 'PASS', 'FAIL') as status
-  from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.LINK_PARTY_ROLE l
-  left join (select distinct PARTY_ROLE_ROLE_HKEY as k from BAGIC_PREPROD_CURATED_DB.BGIL_DATA_MODEL.HUB_PARTY_ROLE_ROLE) h on h.k = l.PARTY_ROLE_ROLE
- where l.RECORD_SOURCE in ('MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_MEMBER_DETAILS_PARTY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_INSURED_DETAILS_RISK_PROPERTY_MULTI_SET_PROPERTY_MULTI_SET_DETAIL_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_POLICY_DETAILS_POLICY_PROPERTY_SIMPLE_PROPERTY_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_POLICY_PROPERTY_RULE_LIST_PIVOT_VW', 'MAXIMUS_TRAVEL_NONHLTH_TRV_UWR_VW_DATA_QUOTE_PARAM_DETAILS_RISK_LIST_MULTI_SET_PROPERTY_INPUT_MULTI_SET_DETAIL_INPUT_PROPERTY_PIVOT_VW')
 order by fk_column;
 
 
@@ -1307,7 +1299,8 @@ order by fk_column;
 -- 9. MAXIMUS — LINK_PARTY_ROLE -- (c) unexpected links (link -> RAW)   [Informational]
 -- Not part of the pass criterion: link rows of this project whose relationship is no
 -- longer in RAW. Link rows scoped by RECORD_SOURCE value set (5 travel feeds) rather
--- than the shared 'MAXIMUS_TRAVEL_' prefix.
+-- than the shared 'MAXIMUS_TRAVEL_' prefix. FK(s) PARTY_ROLE_ROLE are degenerate role
+-- codes (no corresponding hub); orphan-FK check skipped for them.
 ----------------------------------------------------------------------------------------
 with src as (
     -- via lnkfeed_mt_party_role <- stg2_mt__uwr_pol_ins_rskp_msp_msd_prop_pv

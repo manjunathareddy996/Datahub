@@ -170,11 +170,24 @@ def build_links_travel():
                     ln.feeds.append((label, arm))
                     for fk in ln.fks:
                         if fk not in ln.fk_hub:
-                            m = re.search(r"'(HUB_[A-Z_]+)\|'", arm.lookup.get(fk) or "")
-                            # Travel: FK alias name indicates hub target too
-                            # (e.g. CLAIM_HKEY -> HUB_CLAIM; PARTY_HKEY -> HUB_PARTY).
-                            ln.fk_hub[fk] = (m.group(1) if m else
-                                             "HUB_" + re.sub(r"(^RELATED_)|(_HKEY$)", "", fk))
+                            expr = arm.lookup.get(fk) or ""
+                            m = re.search(r"'(HUB_[A-Z_]+)\|'", expr)
+                            # Degenerate FK: carries a bare role code / tag
+                            # rather than a hub hash (feeds select the raw
+                            # column, no MD5_BINARY('HUB_X|' || ...)). The
+                            # link stores it to shape its grain but there
+                            # is no hub to orphan-check against. Mark it
+                            # with None so r2_sections_travel skips it.
+                            if m:
+                                ln.fk_hub[fk] = m.group(1)
+                            elif "MD5_BINARY" in expr.upper():
+                                # Looks like a hash but no HUB_ prefix found;
+                                # fall back to the FK-name convention so the
+                                # orphan check at least runs.
+                                ln.fk_hub[fk] = "HUB_" + re.sub(
+                                    r"(^RELATED_)|(_HKEY$)", "", fk)
+                            else:
+                                ln.fk_hub[fk] = None
             links.append(ln)
     return links
 
@@ -238,22 +251,37 @@ def r1_section_travel(sat, pmap):
 
 def r2_sections_travel(ln):
     rsrcs = _link_rsrcs(ln)
-    sections = R.r2_sections(ln)
-    if not rsrcs:
-        return sections
-    scope_new = _scope_sql(rsrcs, "l")
+    # Peel degenerate FKs (no hub) off ln.fk_hub so partner's r2_sections
+    # does not build an orphan join against a non-existent hub. We restore
+    # them on the way out so downstream readers still see the full FK list.
+    degenerate = {fk: hub for fk, hub in ln.fk_hub.items() if hub is None}
+    for fk in degenerate:
+        del ln.fk_hub[fk]
+    try:
+        sections = R.r2_sections(ln)
+    finally:
+        for fk in degenerate:
+            ln.fk_hub[fk] = None
+    note_degen = ""
+    if degenerate:
+        note_degen = (f" FK(s) {', '.join(degenerate)} are degenerate role "
+                      f"codes (no corresponding hub); orphan-FK check skipped "
+                      f"for them.")
+    scope_new = _scope_sql(rsrcs, "l") if rsrcs else None
     scope_old = f"startswith(l.RECORD_SOURCE, '{ln.prefix}')"
     for sec in sections:
-        if sec.get("queries"):
+        if scope_new and sec.get("queries"):
             new_q = []
             for label, sql in sec["queries"]:
                 new_q.append((label, sql.replace(scope_old, scope_new)))
             sec["queries"] = new_q
         existing_note = sec.get("note") or ""
-        sec["note"] = (existing_note
-                       + f" Link rows scoped by RECORD_SOURCE value set "
-                         f"({len(rsrcs)} travel feeds) rather than the shared "
-                         f"'{ln.prefix}' prefix.")
+        if rsrcs:
+            existing_note = (existing_note
+                             + f" Link rows scoped by RECORD_SOURCE value set "
+                               f"({len(rsrcs)} travel feeds) rather than the "
+                               f"shared '{ln.prefix}' prefix.")
+        sec["note"] = existing_note + note_degen
     return sections
 
 
